@@ -3,2968 +3,3816 @@
     "name": "GMT -11:00",
     "country_zh": "美属萨摩亚",
     "country_en": "American Samoa",
+    "country_vi": "Samoa thuộc Mỹ",
     "city_zh": "帕果帕果",
-    "city_en": "Pago Pago"
-  },
+    "city_en": "Pago Pago",
+    "city_vi": "Pago Pago"
+    },
   {
     "name": "GMT -11:00",
     "country_zh": "纽埃",
     "country_en": "Niue",
+    "country_vi": "Niue",
     "city_zh": "纽埃",
-    "city_en": "Niue"
-  },
+    "city_en": "Niue",
+    "city_vi": "Niue"
+    },
   {
     "name": "GMT -11:00",
     "country_zh": "美国本土外小岛屿",
     "country_en": "United States Minor Outlying Islands",
+    "country_vi": "Các tiểu đảo xa của Hoa Kỳ",
     "city_zh": "中途",
-    "city_en": "Midway"
-  },
+    "city_en": "Midway",
+    "city_vi": "Midway"
+    },
   {
     "name": "GMT -10:00",
     "country_zh": "库克群岛",
     "country_en": "Cook Islands",
+    "country_vi": "Quần đảo Cook",
     "city_zh": "拉罗汤加",
-    "city_en": "Rarotonga"
-  },
+    "city_en": "Rarotonga",
+    "city_vi": "Rarotonga"
+    },
   {
     "name": "GMT -10:00",
     "country_zh": "法属波利尼西亚",
     "country_en": "French Polynesia",
+    "country_vi": "Polynesia thuộc Pháp",
     "city_zh": "大溪地",
-    "city_en": "Tahiti"
-  },
+    "city_en": "Tahiti",
+    "city_vi": "Tahiti"
+    },
   {
     "name": "GMT -10:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "檀香山",
-    "city_en": "Honolulu"
-  },
+    "city_en": "Honolulu",
+    "city_vi": "Honolulu"
+    },
   {
     "name": "GMT -09:30",
     "country_zh": "法属波利尼西亚",
     "country_en": "French Polynesia",
+    "country_vi": "Polynesia thuộc Pháp",
     "city_zh": "马克萨斯",
-    "city_en": "Marquesas"
-  },
+    "city_en": "Marquesas",
+    "city_vi": "Marquesas"
+    },
   {
     "name": "GMT -09:00",
     "country_zh": "法属波利尼西亚",
     "country_en": "French Polynesia",
+    "country_vi": "Polynesia thuộc Pháp",
     "city_zh": "甘比尔",
-    "city_en": "Gambier"
-  },
+    "city_en": "Gambier",
+    "city_vi": "Gambier"
+    },
   {
     "name": "GMT -09:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "阿达克",
-    "city_en": "Adak"
-  },
+    "city_en": "Adak",
+    "city_vi": "Adak"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "皮特凯恩",
     "country_en": "Pitcairn",
+    "country_vi": "Pitcairn",
     "city_zh": "皮特凯恩",
-    "city_en": "Pitcairn"
-  },
+    "city_en": "Pitcairn",
+    "city_vi": "Pitcairn"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "安克雷奇",
-    "city_en": "Anchorage"
-  },
+    "city_en": "Anchorage",
+    "city_vi": "Anchorage"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "朱诺",
-    "city_en": "Juneau"
-  },
+    "city_en": "Juneau",
+    "city_vi": "Juneau"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "梅特拉卡特拉",
-    "city_en": "Metlakatla"
-  },
+    "city_en": "Metlakatla",
+    "city_vi": "Metlakatla"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "名称",
-    "city_en": "Nome"
-  },
+    "city_en": "Nome",
+    "city_vi": "Nome"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "锡特卡",
-    "city_en": "Sitka"
-  },
+    "city_en": "Sitka",
+    "city_vi": "Sitka"
+    },
   {
     "name": "GMT -08:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "雅库塔",
-    "city_en": "Yakutat"
-  },
+    "city_en": "Yakutat",
+    "city_vi": "Yakutat"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "克雷斯顿",
-    "city_en": "Creston"
-  },
+    "city_en": "Creston",
+    "city_vi": "Creston"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "道森",
-    "city_en": "Dawson"
-  },
+    "city_en": "Dawson",
+    "city_vi": "Dawson"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "道森克里克",
-    "city_en": "Dawson Creek"
-  },
+    "city_en": "Dawson Creek",
+    "city_vi": "Dawson Creek"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "纳尔逊堡",
-    "city_en": "Fort Nelson"
-  },
+    "city_en": "Fort Nelson",
+    "city_vi": "Fort Nelson"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "温哥华",
-    "city_en": "Vancouver"
-  },
+    "city_en": "Vancouver",
+    "city_vi": "Vancouver"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "白马",
-    "city_en": "Whitehorse"
-  },
+    "city_en": "Whitehorse",
+    "city_vi": "Whitehorse"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "埃莫西约",
-    "city_en": "Hermosillo"
-  },
+    "city_en": "Hermosillo",
+    "city_vi": "Hermosillo"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "蒂华纳",
-    "city_en": "Tijuana"
-  },
+    "city_en": "Tijuana",
+    "city_vi": "Tijuana"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "洛杉矶",
-    "city_en": "Los Angeles"
-  },
+    "city_en": "Los Angeles",
+    "city_vi": "Los Angeles"
+    },
   {
     "name": "GMT -07:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "凤凰",
-    "city_en": "Phoenix"
-  },
+    "city_en": "Phoenix",
+    "city_vi": "Phoenix"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "伯利兹",
     "country_en": "Belize",
+    "country_vi": "Belize",
     "city_zh": "伯利兹",
-    "city_en": "Belize"
-  },
+    "city_en": "Belize",
+    "city_vi": "Belize"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "剑桥湾",
-    "city_en": "Cambridge Bay"
-  },
+    "city_en": "Cambridge Bay",
+    "city_vi": "Cambridge Bay"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "埃德蒙顿",
-    "city_en": "Edmonton"
-  },
+    "city_en": "Edmonton",
+    "city_vi": "Edmonton"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "伊努维克",
-    "city_en": "Inuvik"
-  },
+    "city_en": "Inuvik",
+    "city_vi": "Inuvik"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "里贾纳",
-    "city_en": "Regina"
-  },
+    "city_en": "Regina",
+    "city_vi": "Regina"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "Swift_Current",
-    "city_en": "Swift Current"
-  },
+    "city_en": "Swift Current",
+    "city_vi": "Swift Current"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "黄刀镇",
-    "city_en": "Yellowknife"
-  },
+    "city_en": "Yellowknife",
+    "city_vi": "Yellowknife"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "哥斯达黎加",
     "country_en": "Costa Rica",
+    "country_vi": "Costa Rica",
     "city_zh": "哥斯达黎加",
-    "city_en": "Costa Rica"
-  },
+    "city_en": "Costa Rica",
+    "city_vi": "Costa Rica"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "厄瓜多尔",
     "country_en": "Ecuador",
+    "country_vi": "Ecuador",
     "city_zh": "加拉帕戈斯",
-    "city_en": "Galapagos"
-  },
+    "city_en": "Galapagos",
+    "city_vi": "Galapagos"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "萨尔瓦多",
     "country_en": "El Salvador",
+    "country_vi": "El Salvador",
     "city_zh": "萨尔瓦多",
-    "city_en": "El Salvador"
-  },
+    "city_en": "El Salvador",
+    "city_vi": "El Salvador"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "危地马拉",
     "country_en": "Guatemala",
+    "country_vi": "Guatemala",
     "city_zh": "危地马拉",
-    "city_en": "Guatemala"
-  },
+    "city_en": "Guatemala",
+    "city_vi": "Guatemala"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "洪都拉斯",
     "country_en": "Honduras",
+    "country_vi": "Honduras",
     "city_zh": "特古西加尔巴",
-    "city_en": "Tegucigalpa"
-  },
+    "city_en": "Tegucigalpa",
+    "city_vi": "Tegucigalpa"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "奇瓦瓦",
-    "city_en": "Chihuahua"
-  },
+    "city_en": "Chihuahua",
+    "city_vi": "Chihuahua"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "马萨特兰",
-    "city_en": "Mazatlan"
-  },
+    "city_en": "Mazatlan",
+    "city_vi": "Mazatlan"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "尾长",
-    "city_en": "Ojinaga"
-  },
+    "city_en": "Ojinaga",
+    "city_vi": "Ojinaga"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "尼加拉瓜",
     "country_en": "Nicaragua",
+    "country_vi": "Nicaragua",
     "city_zh": "马那瓜",
-    "city_en": "Managua"
-  },
+    "city_en": "Managua",
+    "city_vi": "Managua"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "博伊西",
-    "city_en": "Boise"
-  },
+    "city_en": "Boise",
+    "city_vi": "Boise"
+    },
   {
     "name": "GMT -06:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "丹佛",
-    "city_en": "Denver"
-  },
+    "city_en": "Denver",
+    "city_vi": "Denver"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "埃鲁内佩",
-    "city_en": "Eirunepe"
-  },
+    "city_en": "Eirunepe",
+    "city_vi": "Eirunepe"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "Rio_Branco",
-    "city_en": "Rio Branco"
-  },
+    "city_en": "Rio Branco",
+    "city_vi": "Rio Branco"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "阿提科坎",
-    "city_en": "Atikokan"
-  },
+    "city_en": "Atikokan",
+    "city_vi": "Atikokan"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "Rainy_River",
-    "city_en": "Rainy River"
-  },
+    "city_en": "Rainy River",
+    "city_vi": "Rainy River"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "Rankin_Inlet",
-    "city_en": "Rankin Inlet"
-  },
+    "city_en": "Rankin Inlet",
+    "city_vi": "Rankin Inlet"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "坚决",
-    "city_en": "Resolute"
-  },
+    "city_en": "Resolute",
+    "city_vi": "Resolute"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "温尼伯",
-    "city_en": "Winnipeg"
-  },
+    "city_en": "Winnipeg",
+    "city_vi": "Winnipeg"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "开曼群岛",
     "country_en": "Cayman Islands",
+    "country_vi": "Quần đảo Cayman",
     "city_zh": "鳄鱼",
-    "city_en": "Cayman"
-  },
+    "city_en": "Cayman",
+    "city_vi": "Cayman"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "智利",
     "country_en": "Chile",
+    "country_vi": "Chile",
     "city_zh": "复活节",
-    "city_en": "Easter"
-  },
+    "city_en": "Easter",
+    "city_vi": "Easter"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "哥伦比亚",
     "country_en": "Colombia",
+    "country_vi": "Colombia",
     "city_zh": "波哥大",
-    "city_en": "Bogota"
-  },
+    "city_en": "Bogota",
+    "city_vi": "Bogota"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "厄瓜多尔",
     "country_en": "Ecuador",
+    "country_vi": "Ecuador",
     "city_zh": "瓜亚基尔",
-    "city_en": "Guayaquil"
-  },
+    "city_en": "Guayaquil",
+    "city_vi": "Guayaquil"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "牙买加",
     "country_en": "Jamaica",
+    "country_vi": "Jamaica",
     "city_zh": "牙买加",
-    "city_en": "Jamaica"
-  },
+    "city_en": "Jamaica",
+    "city_vi": "Jamaica"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "Bahia_Banderas",
-    "city_en": "Bahia Banderas"
-  },
+    "city_en": "Bahia Banderas",
+    "city_vi": "Bahia Banderas"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "坎昆",
-    "city_en": "Cancun"
-  },
+    "city_en": "Cancun",
+    "city_vi": "Cancun"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "马塔莫罗斯",
-    "city_en": "Matamoros"
-  },
+    "city_en": "Matamoros",
+    "city_vi": "Matamoros"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "梅里达",
-    "city_en": "Merida"
-  },
+    "city_en": "Merida",
+    "city_vi": "Merida"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "墨西哥城",
-    "city_en": "Mexico City"
-  },
+    "city_en": "Mexico City",
+    "city_vi": "Thành phố Mexico"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "墨西哥",
     "country_en": "Mexico",
+    "country_vi": "Mexico",
     "city_zh": "蒙特雷",
-    "city_en": "Monterrey"
-  },
+    "city_en": "Monterrey",
+    "city_vi": "Monterrey"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "巴拿马",
     "country_en": "Panama",
+    "country_vi": "Panama",
     "city_zh": "巴拿马",
-    "city_en": "Panama"
-  },
+    "city_en": "Panama",
+    "city_vi": "Panama"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "秘鲁",
     "country_en": "Peru",
+    "country_vi": "Peru",
     "city_zh": "利马",
-    "city_en": "Lima"
-  },
+    "city_en": "Lima",
+    "city_vi": "Lima"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "芝加哥",
-    "city_en": "Chicago"
-  },
+    "city_en": "Chicago",
+    "city_vi": "Chicago"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "诺克斯",
-    "city_en": "Knox"
-  },
+    "city_en": "Knox",
+    "city_vi": "Knox"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "Tell_City",
-    "city_en": "Tell City"
-  },
+    "city_en": "Tell City",
+    "city_vi": "Thành phố Tell"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "梅诺米尼",
-    "city_en": "Menominee"
-  },
+    "city_en": "Menominee",
+    "city_vi": "Menominee"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "比乌拉",
-    "city_en": "Beulah"
-  },
+    "city_en": "Beulah",
+    "city_vi": "Beulah"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "中心",
-    "city_en": "Center"
-  },
+    "city_en": "Center",
+    "city_vi": "Đảo Center"
+    },
   {
     "name": "GMT -05:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "新塞勒姆",
-    "city_en": "New Salem"
-  },
+    "city_en": "New Salem",
+    "city_vi": "New Salem"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "安圭拉",
     "country_en": "Anguilla",
+    "country_vi": "Anguilla",
     "city_zh": "安圭拉",
-    "city_en": "Anguilla"
-  },
+    "city_en": "Anguilla",
+    "city_vi": "Anguilla"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "安提瓜和巴布达",
     "country_en": "Antigua And Barbuda",
+    "country_vi": "Antigua And Barbuda",
     "city_zh": "安提瓜",
-    "city_en": "Antigua"
-  },
+    "city_en": "Antigua",
+    "city_vi": "Antigua"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "阿鲁巴岛",
     "country_en": "Aruba",
+    "country_vi": "Đảo Aruba",
     "city_zh": "阿鲁巴岛",
-    "city_en": "Aruba"
-  },
+    "city_en": "Aruba",
+    "city_vi": "Aruba"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴哈马",
     "country_en": "Bahamas",
+    "country_vi": "Bahamas",
     "city_zh": "拿骚",
-    "city_en": "Nassau"
-  },
+    "city_en": "Nassau",
+    "city_vi": "Nassau"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴巴多斯",
     "country_en": "Barbados",
+    "country_vi": "Barbados",
     "city_zh": "巴巴多斯",
-    "city_en": "Barbados"
-  },
+    "city_en": "Barbados",
+    "city_vi": "Barbados"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "玻利维亚",
     "country_en": "Bolivia",
+    "country_vi": "Bolivia",
     "city_zh": "拉巴斯",
-    "city_en": "La Paz"
-  },
+    "city_en": "La Paz",
+    "city_vi": "La Paz"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "博内尔岛、圣尤斯特歇斯和萨巴岛",
     "country_en": "Bonaire, Saint Eustatius And Saba",
+    "country_vi": "Bonaire St Eustatius và Saba",
     "city_zh": "克拉伦代克",
-    "city_en": "Kralendijk"
-  },
+    "city_en": "Kralendijk",
+    "city_vi": "Kralendijk"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "Boa_Vista",
-    "city_en": "Boa Vista"
-  },
+    "city_en": "Boa Vista",
+    "city_vi": "Boa Vista"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "Campo_Grande",
-    "city_en": "Campo Grande"
-  },
+    "city_en": "Campo Grande",
+    "city_vi": "Campo Grande"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "库亚巴",
-    "city_en": "Cuiaba"
-  },
+    "city_en": "Cuiaba",
+    "city_vi": "Cuiaba"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "马瑙斯",
-    "city_en": "Manaus"
-  },
+    "city_en": "Manaus",
+    "city_vi": "Manaus"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "Porto_Velho",
-    "city_en": "Porto Velho"
-  },
+    "city_en": "Porto Velho",
+    "city_vi": "Porto Velho"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "英属维尔京群岛",
     "country_en": "British Virgin Islands",
+    "country_vi": "Quần đảo Virgin thuộc Anh",
     "city_zh": "托尔托拉",
-    "city_en": "Tortola"
-  },
+    "city_en": "Tortola",
+    "city_vi": "Tortola"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "布兰克-速霸龙",
-    "city_en": "Blanc-Sablon"
-  },
+    "city_en": "Blanc-Sablon",
+    "city_vi": "Blanc-Sablon"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "伊魁特",
-    "city_en": "Iqaluit"
-  },
+    "city_en": "Iqaluit",
+    "city_vi": "Iqaluit"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "尼皮贡",
-    "city_en": "Nipigon"
-  },
+    "city_en": "Nipigon",
+    "city_vi": "Nipigon"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "潘尼通",
-    "city_en": "Pangnirtung"
-  },
+    "city_en": "Pangnirtung",
+    "city_vi": "Pangnirtung"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "雷湾",
-    "city_en": "Thunder Bay"
-  },
+    "city_en": "Thunder Bay",
+    "city_vi": "Thunder Bay"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "多伦多",
-    "city_en": "Toronto"
-  },
+    "city_en": "Toronto",
+    "city_vi": "Toronto"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "古巴",
     "country_en": "Cuba",
+    "country_vi": "Cuba",
     "city_zh": "哈瓦那",
-    "city_en": "Havana"
-  },
+    "city_en": "Havana",
+    "city_vi": "Havana"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "库拉索",
     "country_en": "Curacao",
+    "country_vi": "Curacao",
     "city_zh": "库拉索",
-    "city_en": "Curacao"
-  },
+    "city_en": "Curacao",
+    "city_vi": "Curacao"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "多米尼克",
     "country_en": "Dominica",
+    "country_vi": "Dominica",
     "city_zh": "多米尼克",
-    "city_en": "Dominica"
-  },
+    "city_en": "Dominica",
+    "city_vi": "Dominica"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "多明尼加共和国",
     "country_en": "Dominican Republic",
+    "country_vi": "Cộng hòa Dominica",
     "city_zh": "圣多明哥",
-    "city_en": "Santo Domingo"
-  },
+    "city_en": "Santo Domingo",
+    "city_vi": "Santo Domingo"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "格林纳达",
     "country_en": "Grenada",
+    "country_vi": "Grenada",
     "city_zh": "格林纳达",
-    "city_en": "Grenada"
-  },
+    "city_en": "Grenada",
+    "city_vi": "Grenada"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "瓜德罗普",
     "country_en": "Guadeloupe",
+    "country_vi": "Guadeloupe",
     "city_zh": "瓜德罗普",
-    "city_en": "Guadeloupe"
-  },
+    "city_en": "Guadeloupe",
+    "city_vi": "Guadeloupe"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圭亚那",
     "country_en": "Guyana",
+    "country_vi": "Guyana",
     "city_zh": "圭亚那",
-    "city_en": "Guyana"
-  },
+    "city_en": "Guyana",
+    "city_vi": "Guyana"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "海地",
     "country_en": "Haiti",
+    "country_vi": "Haiti",
     "city_zh": "太子港",
-    "city_en": "Port-au-Prince"
-  },
+    "city_en": "Port-au-Prince",
+    "city_vi": "Port-au-Prince"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "马提尼克岛",
     "country_en": "Martinique",
+    "country_vi": "Martinique",
     "city_zh": "马提尼克岛",
-    "city_en": "Martinique"
-  },
+    "city_en": "Martinique",
+    "city_vi": "Martinique"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "蒙特塞拉特",
     "country_en": "Montserrat",
+    "country_vi": "Montserrat",
     "city_zh": "蒙特塞拉特",
-    "city_en": "Montserrat"
-  },
+    "city_en": "Montserrat",
+    "city_vi": "Montserrat"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "巴拉圭",
     "country_en": "Paraguay",
+    "country_vi": "Paraguay",
     "city_zh": "亚松森",
-    "city_en": "Asuncion"
-  },
+    "city_en": "Asuncion",
+    "city_vi": "Asuncion"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "波多黎各",
     "country_en": "Puerto Rico",
+    "country_vi": "Puerto Rico",
     "city_zh": "波多黎各",
-    "city_en": "Puerto Rico"
-  },
+    "city_en": "Puerto Rico",
+    "city_vi": "Puerto Rico"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圣巴泰勒米",
     "country_en": "Saint Barthelemy",
+    "country_vi": "Saint Barthelemy",
     "city_zh": "圣巴泰勒米",
-    "city_en": "St Barthelemy"
-  },
+    "city_en": "St Barthelemy",
+    "city_vi": "St Barthelemy"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圣基茨和尼维斯",
     "country_en": "Saint Kitts And Nevis",
+    "country_vi": "Saint Kitts và Nevis",
     "city_zh": "圣基茨",
-    "city_en": "St Kitts"
-  },
+    "city_en": "St Kitts",
+    "city_vi": "St Kitts"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圣卢西亚",
     "country_en": "Saint Lucia",
+    "country_vi": "Saint Lucia",
     "city_zh": "圣卢西亚",
-    "city_en": "St Lucia"
-  },
+    "city_en": "St Lucia",
+    "city_vi": "St Lucia"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圣马丁",
     "country_en": "Saint Martin",
+    "country_vi": "Saint Martin",
     "city_zh": "马里戈特",
-    "city_en": "Marigot"
-  },
+    "city_en": "Marigot",
+    "city_vi": "Marigot"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圣文森特和格林纳丁斯",
     "country_en": "Saint Vincent And The Grenadines",
+    "country_vi": "Saint Vincent và Grenadines",
     "city_zh": "圣文森特",
-    "city_en": "St Vincent"
-  },
+    "city_en": "St Vincent",
+    "city_vi": "St Vincent"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "圣马丁",
     "country_en": "Sint Maarten",
+    "country_vi": "Saint Martin",
     "city_zh": "Lower_Princes",
-    "city_en": "Lower Princes"
-  },
+    "city_en": "Lower Princes",
+    "city_vi": "Lower Princes"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "特立尼达和多巴哥",
     "country_en": "Trinidad And Tobago",
+    "country_vi": "Trinidad và Tobago",
     "city_zh": "西班牙港",
-    "city_en": "Port of Spain"
-  },
+    "city_en": "Port of Spain",
+    "city_vi": "Port of Spain"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "特克斯和凯科斯群岛",
     "country_en": "Turks And Caicos Islands",
+    "country_vi": "Turks và Caicos Islands",
     "city_zh": "Grand_Turk",
-    "city_en": "Grand Turk"
-  },
+    "city_en": "Grand Turk",
+    "city_vi": "Grand Turk"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美属维尔京群岛",
     "country_en": "U.S. Virgin Islands",
+    "country_vi": "Quần đảo Virgin thuộc Mỹ",
     "city_zh": "圣托马斯",
-    "city_en": "St Thomas"
-  },
+    "city_en": "St Thomas",
+    "city_vi": "St Thomas"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "底特律",
-    "city_en": "Detroit"
-  },
+    "city_en": "Detroit",
+    "city_vi": "Detroit"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "印第安纳波利斯",
-    "city_en": "Indianapolis"
-  },
+    "city_en": "Indianapolis",
+    "city_vi": "Indianapolis"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "马伦戈",
-    "city_en": "Marengo"
-  },
+    "city_en": "Marengo",
+    "city_vi": "Marengo"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "圣彼得堡",
-    "city_en": "Petersburg"
-  },
+    "city_en": "Petersburg",
+    "city_vi": "Petersburg"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "韦韦",
-    "city_en": "Vevay"
-  },
+    "city_en": "Vevay",
+    "city_vi": "Vevay"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "文森斯",
-    "city_en": "Vincennes"
-  },
+    "city_en": "Vincennes",
+    "city_vi": "Vincennes"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "威纳马克",
-    "city_en": "Winamac"
-  },
+    "city_en": "Winamac",
+    "city_vi": "Winamac"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "路易斯维尔",
-    "city_en": "Louisville"
-  },
+    "city_en": "Louisville",
+    "city_vi": "Louisville"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "蒙蒂塞洛",
-    "city_en": "Monticello"
-  },
+    "city_en": "Monticello",
+    "city_vi": "Monticello"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "美国",
     "country_en": "United States",
+    "country_vi": "Hoa Kỳ",
     "city_zh": "纽约",
-    "city_en": "New York"
-  },
+    "city_en": "New York",
+    "city_vi": "New York"
+    },
   {
     "name": "GMT -04:00",
     "country_zh": "委内瑞拉",
     "country_en": "Venezuela",
+    "country_vi": "Venezuela",
     "city_zh": "加拉加斯",
-    "city_en": "Caracas"
-  },
+    "city_en": "Caracas",
+    "city_vi": "Caracas"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "帕尔默",
-    "city_en": "Palmer"
-  },
+    "city_en": "Palmer",
+    "city_vi": "Palmer"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "罗瑟拉",
-    "city_en": "Rothera"
-  },
+    "city_en": "Rothera",
+    "city_vi": "Rothera"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "布宜诺斯艾利斯",
-    "city_en": "Buenos Aires"
-  },
+    "city_en": "Buenos Aires",
+    "city_vi": "Buenos Aires"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "卡塔马卡",
-    "city_en": "Catamarca"
-  },
+    "city_en": "Catamarca",
+    "city_vi": "Catamarca"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "科尔多瓦",
-    "city_en": "Cordoba"
-  },
+    "city_en": "Cordoba",
+    "city_vi": "Cordoba"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "胡胡伊",
-    "city_en": "Jujuy"
-  },
+    "city_en": "Jujuy",
+    "city_vi": "Jujuy"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "拉里奥哈",
-    "city_en": "La Rioja"
-  },
+    "city_en": "La Rioja",
+    "city_vi": "La Rioja"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "门多萨",
-    "city_en": "Mendoza"
-  },
+    "city_en": "Mendoza",
+    "city_vi": "Mendoza"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "Rio_Gallegos",
-    "city_en": "Rio Gallegos"
-  },
+    "city_en": "Rio Gallegos",
+    "city_vi": "Rio Gallegos"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "萨尔塔",
-    "city_en": "Salta"
-  },
+    "city_en": "Salta",
+    "city_vi": "Salta"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "圣胡安",
-    "city_en": "San Juan"
-  },
+    "city_en": "San Juan",
+    "city_vi": "San Juan"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "圣路易斯",
-    "city_en": "San Luis"
-  },
+    "city_en": "San Luis",
+    "city_vi": "San Luis"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "图库曼",
-    "city_en": "Tucuman"
-  },
+    "city_en": "Tucuman",
+    "city_vi": "Tucuman"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "阿根廷",
     "country_en": "Argentina",
+    "country_vi": "Argentina",
     "city_zh": "乌斯怀亚",
-    "city_en": "Ushuaia"
-  },
+    "city_en": "Ushuaia",
+    "city_vi": "Ushuaia"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "百慕大",
     "country_en": "Bermuda",
+    "country_vi": "Bermuda",
     "city_zh": "百慕大",
-    "city_en": "Bermuda"
-  },
+    "city_en": "Bermuda",
+    "city_vi": "Bermuda"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "阿拉瓜伊纳",
-    "city_en": "Araguaina"
-  },
+    "city_en": "Araguaina",
+    "city_vi": "Araguaina"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "巴伊亚",
-    "city_en": "Bahia"
-  },
+    "city_en": "Bahia",
+    "city_vi": "Bahia"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "贝伦",
-    "city_en": "Belem"
-  },
+    "city_en": "Belem",
+    "city_vi": "Belem"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "福塔莱萨",
-    "city_en": "Fortaleza"
-  },
+    "city_en": "Fortaleza",
+    "city_vi": "Fortaleza"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "马塞约",
-    "city_en": "Maceio"
-  },
+    "city_en": "Maceio",
+    "city_vi": "Maceio"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "累西腓",
-    "city_en": "Recife"
-  },
+    "city_en": "Recife",
+    "city_vi": "Recife"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "圣塔伦",
-    "city_en": "Santarem"
-  },
+    "city_en": "Santarem",
+    "city_vi": "Santarem"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "圣保罗",
-    "city_en": "Sao Paulo"
-  },
+    "city_en": "Sao Paulo",
+    "city_vi": "Sao Paulo"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "Glace_Bay",
-    "city_en": "Glace Bay"
-  },
+    "city_en": "Glace Bay",
+    "city_vi": "Glace Bay"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "鹅湾",
-    "city_en": "Goose Bay"
-  },
+    "city_en": "Goose Bay",
+    "city_vi": "Goose Bay"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "哈利法克斯",
-    "city_en": "Halifax"
-  },
+    "city_en": "Halifax",
+    "city_vi": "Halifax"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "蒙克顿",
-    "city_en": "Moncton"
-  },
+    "city_en": "Moncton",
+    "city_vi": "Moncton"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "智利",
     "country_en": "Chile",
+    "country_vi": "Chile",
     "city_zh": "Punta_Arenas",
-    "city_en": "Punta Arenas"
-  },
+    "city_en": "Punta Arenas",
+    "city_vi": "Punta Arenas"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "智利",
     "country_en": "Chile",
+    "country_vi": "Chile",
     "city_zh": "圣地亚哥",
-    "city_en": "Santiago"
-  },
+    "city_en": "Santiago",
+    "city_vi": "Santiago"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "福克兰群岛",
     "country_en": "Falkland Islands",
+    "country_vi": "Quần đảo Falkland",
     "city_zh": "斯坦利",
-    "city_en": "Stanley"
-  },
+    "city_en": "Stanley",
+    "city_vi": "Stanley"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "法属圭亚那",
     "country_en": "French Guiana",
+    "country_vi": "Guyane thuộc Pháp",
     "city_zh": "辣椒",
-    "city_en": "Cayenne"
-  },
+    "city_en": "Cayenne",
+    "city_vi": "Cayenne"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "格陵兰",
     "country_en": "Greenland",
+    "country_vi": "Greenland",
     "city_zh": "拓乐",
-    "city_en": "Thule"
-  },
+    "city_en": "Thule",
+    "city_vi": "Thule"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "苏里南",
     "country_en": "Suriname",
+    "country_vi": "Suriname",
     "city_zh": "帕拉马里博",
-    "city_en": "Paramaribo"
-  },
+    "city_en": "Paramaribo",
+    "city_vi": "Paramaribo"
+    },
   {
     "name": "GMT -03:00",
     "country_zh": "乌拉圭",
     "country_en": "Uruguay",
+    "country_vi": "Uruguay",
     "city_zh": "蒙得维的亚",
-    "city_en": "Montevideo"
-  },
+    "city_en": "Montevideo",
+    "city_vi": "Montevideo"
+    },
   {
     "name": "GMT -02:30",
     "country_zh": "加拿大",
     "country_en": "Canada",
+    "country_vi": "Canada",
     "city_zh": "圣约翰斯",
-    "city_en": "St Johns"
-  },
+    "city_en": "St Johns",
+    "city_vi": "St Johns"
+    },
   {
     "name": "GMT -02:00",
     "country_zh": "巴西",
     "country_en": "Brazil",
+    "country_vi": "Brazil",
     "city_zh": "诺罗尼亚",
-    "city_en": "Noronha"
-  },
+    "city_en": "Noronha",
+    "city_vi": "Noronha"
+    },
   {
     "name": "GMT -02:00",
     "country_zh": "格陵兰",
     "country_en": "Greenland",
+    "country_vi": "Greenland",
     "city_zh": "哥特哈布",
-    "city_en": "Godthab"
-  },
+    "city_en": "Godthab",
+    "city_vi": "Godthab"
+    },
   {
     "name": "GMT -02:00",
     "country_zh": "圣皮埃尔和密克隆",
     "country_en": "Saint Pierre And Miquelon",
+    "country_vi": "Cộng Đồng Hải Ngoại Saint Pierre và Miqueloniquelon",
     "city_zh": "密克隆",
-    "city_en": "Miquelon"
-  },
+    "city_en": "Miquelon",
+    "city_vi": "Miquelon"
+    },
   {
     "name": "GMT -02:00",
     "country_zh": "南乔治亚岛和南桑威奇群岛",
     "country_en": "South Georgia And The South Sandwich Islands",
+    "country_vi": "Quần đảo Nam Georgia và Nam Sandwich",
     "city_zh": "South_Georgia",
-    "city_en": "South Georgia"
-  },
+    "city_en": "South Georgia",
+    "city_vi": "Nam Georgia"
+    },
   {
     "name": "GMT -01:00",
     "country_zh": "佛得角",
     "country_en": "Cape Verde",
+    "country_vi": "Cape Verde",
     "city_zh": "佛得角",
-    "city_en": "Cape Verde"
-  },
+    "city_en": "Cape Verde",
+    "city_vi": "Cape Verde"
+    },
   {
     "name": "GMT +14:00",
     "country_zh": "基里巴斯",
     "country_en": "Kiribati",
+    "country_vi": "Kiribati",
     "city_zh": "基里蒂马蒂",
-    "city_en": "Kiritimati"
-  },
+    "city_en": "Kiritimati",
+    "city_vi": "Kiritimati"
+    },
   {
     "name": "GMT +13:00",
     "country_zh": "基里巴斯",
     "country_en": "Kiribati",
+    "country_vi": "Kiribati",
     "city_zh": "恩德伯里",
-    "city_en": "Enderbury"
-  },
+    "city_en": "Enderbury",
+    "city_vi": "Enderbury"
+    },
   {
     "name": "GMT +13:00",
     "country_zh": "萨摩亚",
     "country_en": "Samoa",
+    "country_vi": "Samoa",
     "city_zh": "阿皮亚",
-    "city_en": "Apia"
-  },
+    "city_en": "Apia",
+    "city_vi": "Apia"
+    },
   {
     "name": "GMT +13:00",
     "country_zh": "托克劳",
     "country_en": "Tokelau",
+    "country_vi": "Tokelau",
     "city_zh": "法考福",
-    "city_en": "Fakaofo"
-  },
+    "city_en": "Fakaofo",
+    "city_vi": "Fakaofo"
+    },
   {
     "name": "GMT +13:00",
     "country_zh": "汤加",
     "country_en": "Tonga",
+    "country_vi": "Tonga",
     "city_zh": "汤加塔布",
-    "city_en": "Tongatapu"
-  },
+    "city_en": "Tongatapu",
+    "city_vi": "Tongatapu"
+    },
   {
     "name": "GMT +12:45",
     "country_zh": "新西兰",
     "country_en": "New Zealand",
+    "country_vi": "New Zealand",
     "city_zh": "查塔姆",
-    "city_en": "Chatham"
-  },
+    "city_en": "Chatham",
+    "city_vi": "Chatham"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "麦克默多",
-    "city_en": "McMurdo"
-  },
+    "city_en": "McMurdo",
+    "city_vi": "McMurdo"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "斐济",
     "country_en": "Fiji",
+    "country_vi": "Fiji",
     "city_zh": "斐济",
-    "city_en": "Fiji"
-  },
+    "city_en": "Fiji",
+    "city_vi": "Fiji"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "基里巴斯",
     "country_en": "Kiribati",
+    "country_vi": "Kiribati",
     "city_zh": "塔拉瓦",
-    "city_en": "Tarawa"
-  },
+    "city_en": "Tarawa",
+    "city_vi": "Tarawa"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "马绍尔群岛",
     "country_en": "Marshall Islands",
+    "country_vi": "Quần đảo Marshall",
     "city_zh": "夸贾林",
-    "city_en": "Kwajalein"
-  },
+    "city_en": "Kwajalein",
+    "city_vi": "Kwajalein"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "马绍尔群岛",
     "country_en": "Marshall Islands",
+    "country_vi": "Quần đảo Marshall",
     "city_zh": "马朱罗",
-    "city_en": "Majuro"
-  },
+    "city_en": "Majuro",
+    "city_vi": "Majuro"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "瑙鲁",
     "country_en": "Nauru",
+    "country_vi": "Nauru",
     "city_zh": "瑙鲁",
-    "city_en": "Nauru"
-  },
+    "city_en": "Nauru",
+    "city_vi": "Nauru"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "新西兰",
     "country_en": "New Zealand",
+    "country_vi": "New Zealand",
     "city_zh": "奥克兰",
-    "city_en": "Auckland"
-  },
+    "city_en": "Auckland",
+    "city_vi": "Auckland"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "阿纳德尔",
-    "city_en": "Anadyr"
-  },
+    "city_en": "Anadyr",
+    "city_vi": "Anadyr"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "堪察加",
-    "city_en": "Kamchatka"
-  },
+    "city_en": "Kamchatka",
+    "city_vi": "Kamchatka"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "图瓦卢",
     "country_en": "Tuvalu",
+    "country_vi": "Tuvalu",
     "city_zh": "富纳富提",
-    "city_en": "Funafuti"
-  },
+    "city_en": "Funafuti",
+    "city_vi": "Funafuti"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "美国本土外小岛屿",
     "country_en": "United States Minor Outlying Islands",
+    "country_vi": "Các tiểu đảo xa của Hoa Kỳ",
     "city_zh": "唤醒",
-    "city_en": "Wake"
-  },
+    "city_en": "Wake",
+    "city_vi": "Đảo Wake"
+    },
   {
     "name": "GMT +12:00",
     "country_zh": "瓦利斯和富图纳群岛",
     "country_en": "Wallis And Futuna",
+    "country_vi": "Wallis và Futuna",
     "city_zh": "瓦利斯",
-    "city_en": "Wallis"
-  },
+    "city_en": "Wallis",
+    "city_vi": "Wallis"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "麦格理",
-    "city_en": "Macquarie"
-  },
+    "city_en": "Macquarie",
+    "city_vi": "Macquarie"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "密克罗尼西亚",
     "country_en": "Micronesia",
+    "country_vi": "Micronesia",
     "city_zh": "科斯雷",
-    "city_en": "Kosrae"
-  },
+    "city_en": "Kosrae",
+    "city_vi": "Kosrae"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "密克罗尼西亚",
     "country_en": "Micronesia",
+    "country_vi": "Micronesia",
     "city_zh": "波纳佩",
-    "city_en": "Pohnpei"
-  },
+    "city_en": "Pohnpei",
+    "city_vi": "Pohnpei"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "新喀里多尼亚",
     "country_en": "New Caledonia",
+    "country_vi": "New Caledonia",
     "city_zh": "努美阿",
-    "city_en": "Noumea"
-  },
+    "city_en": "Noumea",
+    "city_vi": "Noumea"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "诺福克岛",
     "country_en": "Norfolk Island",
+    "country_vi": "Đảo Norfolk",
     "city_zh": "诺福克",
-    "city_en": "Norfolk"
-  },
+    "city_en": "Norfolk",
+    "city_vi": "Norfolk"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "巴布亚新几内亚",
     "country_en": "Papua New Guinea",
+    "country_vi": "Papua New Guinea",
     "city_zh": "布干维尔",
-    "city_en": "Bougainville"
-  },
+    "city_en": "Bougainville",
+    "city_vi": "Bougainville"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "马加丹",
-    "city_en": "Magadan"
-  },
+    "city_en": "Magadan",
+    "city_vi": "Magadan"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "萨哈林",
-    "city_en": "Sakhalin"
-  },
+    "city_en": "Sakhalin",
+    "city_vi": "Sakhalin"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "斯雷德涅科雷姆斯克",
-    "city_en": "Srednekolymsk"
-  },
+    "city_en": "Srednekolymsk",
+    "city_vi": "Srednekolymsk"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "所罗门群岛",
     "country_en": "Solomon Islands",
+    "country_vi": "Quần đảo Solomon",
     "city_zh": "瓜达尔卡纳尔",
-    "city_en": "Guadalcanal"
-  },
+    "city_en": "Guadalcanal",
+    "city_vi": "Guadalcanal"
+    },
   {
     "name": "GMT +11:00",
     "country_zh": "瓦努阿图",
     "country_en": "Vanuatu",
+    "country_vi": "Vanuatu",
     "city_zh": "埃法特",
-    "city_en": "Efate"
-  },
+    "city_en": "Efate",
+    "city_vi": "Efate"
+    },
   {
     "name": "GMT +10:30",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "Lord_Howe",
-    "city_en": "Lord Howe"
-  },
+    "city_en": "Lord Howe",
+    "city_vi": "Lord Howe"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "杜蒙杜维尔",
-    "city_en": "DumontDUrville"
-  },
+    "city_en": "DumontDUrville",
+    "city_vi": "DumontDUrville"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "布里斯班",
-    "city_en": "Brisbane"
-  },
+    "city_en": "Brisbane",
+    "city_vi": "Brisbane"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "居里",
-    "city_en": "Currie"
-  },
+    "city_en": "Currie",
+    "city_vi": "Currie"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "霍巴特",
-    "city_en": "Hobart"
-  },
+    "city_en": "Hobart",
+    "city_vi": "Hobart"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "林德曼",
-    "city_en": "Lindeman"
-  },
+    "city_en": "Lindeman",
+    "city_vi": "Lindeman"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "墨尔本",
-    "city_en": "Melbourne"
-  },
+    "city_en": "Melbourne",
+    "city_vi": "Melbourne"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "悉尼",
-    "city_en": "Sydney"
-  },
+    "city_en": "Sydney",
+    "city_vi": "Sydney"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "关岛",
     "country_en": "Guam",
+    "country_vi": "Guam",
     "city_zh": "关岛",
-    "city_en": "Guam"
-  },
+    "city_en": "Guam",
+    "city_vi": "Guam"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "密克罗尼西亚",
     "country_en": "Micronesia",
+    "country_vi": "Micronesia",
     "city_zh": "楚克",
-    "city_en": "Chuuk"
-  },
+    "city_en": "Chuuk",
+    "city_vi": "Chuuk"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "北马里亚纳群岛",
     "country_en": "Northern Mariana Islands",
+    "country_vi": "Quần đảo Bắc Mariana",
     "city_zh": "塞班岛",
-    "city_en": "Saipan"
-  },
+    "city_en": "Saipan",
+    "city_vi": "Saipan"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "巴布亚新几内亚",
     "country_en": "Papua New Guinea",
+    "country_vi": "Papua New Guinea",
     "city_zh": "Port_Moresby",
-    "city_en": "Port Moresby"
-  },
+    "city_en": "Port Moresby",
+    "city_vi": "Port Moresby"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "乌斯季尼拉",
-    "city_en": "Ust-Nera"
-  },
+    "city_en": "Ust-Nera",
+    "city_vi": "Ust-Nera"
+    },
   {
     "name": "GMT +10:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "符拉迪沃斯托克",
-    "city_en": "Vladivostok"
-  },
+    "city_en": "Vladivostok",
+    "city_vi": "Vladivostok"
+    },
   {
     "name": "GMT +09:30",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "阿德莱德",
-    "city_en": "Adelaide"
-  },
+    "city_en": "Adelaide",
+    "city_vi": "Adelaide"
+    },
   {
     "name": "GMT +09:30",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "Broken_Hill",
-    "city_en": "Broken Hill"
-  },
+    "city_en": "Broken Hill",
+    "city_vi": "Broken Hill"
+    },
   {
     "name": "GMT +09:30",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "达尔文",
-    "city_en": "Darwin"
-  },
+    "city_en": "Darwin",
+    "city_vi": "Darwin"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "东帝汶",
     "country_en": "East Timor",
+    "country_vi": "Đông Timor",
     "city_zh": "帝力",
-    "city_en": "Dili"
-  },
+    "city_en": "Dili",
+    "city_vi": "Dili"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "印度尼西亚",
     "country_en": "Indonesia",
+    "country_vi": "Indonesia",
     "city_zh": "查亚普拉",
-    "city_en": "Jayapura"
-  },
+    "city_en": "Jayapura",
+    "city_vi": "Jayapura"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "日本",
     "country_en": "Japan",
+    "country_vi": "Nhật Bản",
     "city_zh": "东京",
-    "city_en": "Tokyo"
-  },
+    "city_en": "Tokyo",
+    "city_vi": "Tokyo"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "帕劳",
     "country_en": "Palau",
+    "country_vi": "Palau",
     "city_zh": "帕劳",
-    "city_en": "Palau"
-  },
+    "city_en": "Palau",
+    "city_vi": "Palau"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "赤塔",
-    "city_en": "Chita"
-  },
+    "city_en": "Chita",
+    "city_vi": "Chita"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "康迪加",
-    "city_en": "Khandyga"
-  },
+    "city_en": "Khandyga",
+    "city_vi": "Khandyga"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "雅库茨克",
-    "city_en": "Yakutsk"
-  },
+    "city_en": "Yakutsk",
+    "city_vi": "Yakutsk"
+    },
   {
     "name": "GMT +09:00",
     "country_zh": "韩国",
     "country_en": "South Korea",
+    "country_vi": "Hàn Quốc",
     "city_zh": "汉城",
-    "city_en": "Seoul"
-  },
+    "city_en": "Seoul",
+    "city_vi": "Seoul"
+    },
   {
     "name": "GMT +08:45",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "尤克拉",
-    "city_en": "Eucla"
-  },
+    "city_en": "Eucla",
+    "city_vi": "Eucla"
+    },
   {
     "name": "GMT +08:30",
     "country_zh": "北朝鲜",
     "country_en": "North Korea",
+    "country_vi": "Triều Tiên",
     "city_zh": "平壤",
-    "city_en": "Pyongyang"
-  },
+    "city_en": "Pyongyang",
+    "city_vi": "Pyongyang"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "凯西",
-    "city_en": "Casey"
-  },
+    "city_en": "Casey",
+    "city_vi": "Casey"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "澳大利亚",
     "country_en": "Australia",
+    "country_vi": "Úc",
     "city_zh": "珀斯",
-    "city_en": "Perth"
-  },
+    "city_en": "Perth",
+    "city_vi": "Perth"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "文莱",
     "country_en": "Brunei",
+    "country_vi": "Brunei",
     "city_zh": "文莱",
-    "city_en": "Brunei"
-  },
+    "city_en": "Brunei",
+    "city_vi": "Brunei"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "中国",
     "country_en": "China",
+    "country_vi": "Trung Quốc",
     "city_zh": "上海",
-    "city_en": "Shanghai"
-  },
+    "city_en": "Shanghai",
+    "city_vi": "Thượng Hải"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "香港",
     "country_en": "Hong Kong",
+    "country_vi": "Hồng Kông",
     "city_zh": "香港",
-    "city_en": "Hong Kong"
-  },
+    "city_en": "Hong Kong",
+    "city_vi": "Hồng Kông"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "印度尼西亚",
     "country_en": "Indonesia",
+    "country_vi": "Indonesia",
     "city_zh": "望加锡",
-    "city_en": "Makassar"
-  },
+    "city_en": "Makassar",
+    "city_vi": "Makassar"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "澳门",
     "country_en": "Macao",
+    "country_vi": "Macao",
     "city_zh": "澳门",
-    "city_en": "Macau"
-  },
+    "city_en": "Macau",
+    "city_vi": "Macau"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "马来西亚",
     "country_en": "Malaysia",
+    "country_vi": "Malaysia",
     "city_zh": "吉隆坡",
-    "city_en": "Kuala Lumpur"
-  },
+    "city_en": "Kuala Lumpur",
+    "city_vi": "Kuala Lumpur"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "马来西亚",
     "country_en": "Malaysia",
+    "country_vi": "Malaysia",
     "city_zh": "古晋",
-    "city_en": "Kuching"
-  },
+    "city_en": "Kuching",
+    "city_vi": "Kuching"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "蒙古",
     "country_en": "Mongolia",
+    "country_vi": "Mông Cổ",
     "city_zh": "乔巴山",
-    "city_en": "Choibalsan"
-  },
+    "city_en": "Choibalsan",
+    "city_vi": "Choibalsan"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "蒙古",
     "country_en": "Mongolia",
+    "country_vi": "Mông Cổ",
     "city_zh": "乌兰巴托",
-    "city_en": "Ulaanbaatar"
-  },
+    "city_en": "Ulaanbaatar",
+    "city_vi": "Ulaanbaatar"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "菲律宾",
     "country_en": "Philippines",
+    "country_vi": "Philippines",
     "city_zh": "马尼拉",
-    "city_en": "Manila"
-  },
+    "city_en": "Manila",
+    "city_vi": "Manila"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "伊尔库茨克",
-    "city_en": "Irkutsk"
-  },
+    "city_en": "Irkutsk",
+    "city_vi": "Irkutsk"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "新加坡",
     "country_en": "Singapore",
+    "country_vi": "Singapore",
     "city_zh": "新加坡",
-    "city_en": "Singapore"
-  },
+    "city_en": "Singapore",
+    "city_vi": "Singapore"
+    },
   {
     "name": "GMT +08:00",
     "country_zh": "台湾",
     "country_en": "Taiwan",
+    "country_vi": "Đài Loan",
     "city_zh": "台北",
-    "city_en": "Taipei"
-  },
+    "city_en": "Taipei",
+    "city_vi": "Đài Bắc"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "戴维斯",
-    "city_en": "Davis"
-  },
+    "city_en": "Davis",
+    "city_vi": "Davis"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "柬埔寨",
     "country_en": "Cambodia",
+    "country_vi": "Campuchia",
     "city_zh": "金边",
-    "city_en": "Phnom Penh"
-  },
+    "city_en": "Phnom Penh",
+    "city_vi": "Phnom Penh"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "圣诞岛",
     "country_en": "Christmas Island",
+    "country_vi": "Đảo Christmas",
     "city_zh": "圣诞节",
-    "city_en": "Christmas"
-  },
+    "city_en": "Christmas",
+    "city_vi": "Christmas"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "印度尼西亚",
     "country_en": "Indonesia",
+    "country_vi": "Indonesia",
     "city_zh": "雅加达",
-    "city_en": "Jakarta"
-  },
+    "city_en": "Jakarta",
+    "city_vi": "Jakarta"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "印度尼西亚",
     "country_en": "Indonesia",
+    "country_vi": "Indonesia",
     "city_zh": "坤甸",
-    "city_en": "Pontianak"
-  },
+    "city_en": "Pontianak",
+    "city_vi": "Pontianak"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "老挝",
     "country_en": "Laos",
+    "country_vi": "Lào",
     "city_zh": "万象",
-    "city_en": "Vientiane"
-  },
+    "city_en": "Vientiane",
+    "city_vi": "Vientiane"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "蒙古",
     "country_en": "Mongolia",
+    "country_vi": "Mông Cổ",
     "city_zh": "霍夫德",
-    "city_en": "Hovd"
-  },
+    "city_en": "Hovd",
+    "city_vi": "Hovd"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "巴尔瑙尔",
-    "city_en": "Barnaul"
-  },
+    "city_en": "Barnaul",
+    "city_vi": "Barnaul"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "克拉斯诺亚尔斯克",
-    "city_en": "Krasnoyarsk"
-  },
+    "city_en": "Krasnoyarsk",
+    "city_vi": "Krasnoyarsk"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "新库兹涅茨克",
-    "city_en": "Novokuznetsk"
-  },
+    "city_en": "Novokuznetsk",
+    "city_vi": "Novokuznetsk"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "新西伯利亚",
-    "city_en": "Novosibirsk"
-  },
+    "city_en": "Novosibirsk",
+    "city_vi": "Novosibirsk"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "托木斯克",
-    "city_en": "Tomsk"
-  },
+    "city_en": "Tomsk",
+    "city_vi": "Tomsk"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "泰国",
     "country_en": "Thailand",
+    "country_vi": "Thái Lan",
     "city_zh": "曼谷",
-    "city_en": "Bangkok"
-  },
+    "city_en": "Bangkok",
+    "city_vi": "Bangkok"
+    },
   {
     "name": "GMT +07:00",
     "country_zh": "越南",
     "country_en": "Vietnam",
+    "country_vi": "Việt Nam",
     "city_zh": "胡志明",
-    "city_en": "Ho Chi Minh"
-  },
+    "city_en": "Ho Chi Minh",
+    "city_vi": "Hồ Chí Minh"
+    },
   {
     "name": "GMT +06:30",
     "country_zh": "科科斯群岛",
     "country_en": "Cocos Islands",
+    "country_vi": "Quần đảo Cocos",
     "city_zh": "可可",
-    "city_en": "Cocos"
-  },
+    "city_en": "Cocos",
+    "city_vi": "Cocos"
+    },
   {
     "name": "GMT +06:30",
     "country_zh": "缅甸",
     "country_en": "Myanmar",
+    "country_vi": "Myanmar",
     "city_zh": "仰光",
-    "city_en": "Yangon"
-  },
+    "city_en": "Yangon",
+    "city_vi": "Yangon"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "东方号",
-    "city_en": "Vostok"
-  },
+    "city_en": "Vostok",
+    "city_vi": "Vostok"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "孟加拉国",
     "country_en": "Bangladesh",
+    "country_vi": "Bangladesh",
     "city_zh": "达卡",
-    "city_en": "Dhaka"
-  },
+    "city_en": "Dhaka",
+    "city_vi": "Dhaka"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "不丹",
     "country_en": "Bhutan",
+    "country_vi": "Bhutan",
     "city_zh": "廷布",
-    "city_en": "Thimphu"
-  },
+    "city_en": "Thimphu",
+    "city_vi": "Thimphu"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "英属印度洋领地",
     "country_en": "British Indian Ocean Territory",
+    "country_vi": "Lãnh thổ Ấn Độ Dương thuộc Anh",
     "city_zh": "查戈斯",
-    "city_en": "Chagos"
-  },
+    "city_en": "Chagos",
+    "city_vi": "Chagos"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "中国",
     "country_en": "China",
+    "country_vi": "Trung Quốc",
     "city_zh": "乌鲁木齐",
-    "city_en": "Urumqi"
-  },
+    "city_en": "Urumqi",
+    "city_vi": "Urumqi"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "哈萨克斯坦",
     "country_en": "Kazakhstan",
+    "country_vi": "Kazakhstan",
     "city_zh": "阿拉木图",
-    "city_en": "Almaty"
-  },
+    "city_en": "Almaty",
+    "city_vi": "Almaty"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "哈萨克斯坦",
     "country_en": "Kazakhstan",
+    "country_vi": "Kazakhstan",
     "city_zh": "齐兹洛尔达",
-    "city_en": "Qyzylorda"
-  },
+    "city_en": "Qyzylorda",
+    "city_vi": "Qyzylorda"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "吉尔吉斯斯坦",
     "country_en": "Kyrgyzstan",
+    "country_vi": "Kyrgyzstan",
     "city_zh": "比什凯克",
-    "city_en": "Bishkek"
-  },
+    "city_en": "Bishkek",
+    "city_vi": "Bishkek"
+    },
   {
     "name": "GMT +06:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "鄂木斯克",
-    "city_en": "Omsk"
-  },
+    "city_en": "Omsk",
+    "city_vi": "Omsk"
+    },
   {
     "name": "GMT +05:45",
     "country_zh": "尼泊尔",
     "country_en": "Nepal",
+    "country_vi": "Nepal",
     "city_zh": "加德满都",
-    "city_en": "Kathmandu"
-  },
+    "city_en": "Kathmandu",
+    "city_vi": "Kathmandu"
+    },
   {
     "name": "GMT +05:30",
     "country_zh": "印度",
     "country_en": "India",
+    "country_vi": "Ấn Độ",
     "city_zh": "加尔各答",
-    "city_en": "Kolkata"
-  },
+    "city_en": "Kolkata",
+    "city_vi": "Kolkata"
+    },
   {
     "name": "GMT +05:30",
     "country_zh": "斯里兰卡",
     "country_en": "Sri Lanka",
+    "country_vi": "Sri Lanka",
     "city_zh": "科伦坡",
-    "city_en": "Colombo"
-  },
+    "city_en": "Colombo",
+    "city_vi": "Colombo"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "莫森",
-    "city_en": "Mawson"
-  },
+    "city_en": "Mawson",
+    "city_vi": "Mawson"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "法属南部领地",
     "country_en": "French Southern Territories",
+    "country_vi": "Vùng đất phía Nam thuộc Pháp",
     "city_zh": "克尔盖朗",
-    "city_en": "Kerguelen"
-  },
+    "city_en": "Kerguelen",
+    "city_vi": "Kerguelen"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "哈萨克斯坦",
     "country_en": "Kazakhstan",
+    "country_vi": "Kazakhstan",
     "city_zh": "阿克套",
-    "city_en": "Aqtau"
-  },
+    "city_en": "Aqtau",
+    "city_vi": "Aqtau"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "哈萨克斯坦",
     "country_en": "Kazakhstan",
+    "country_vi": "Kazakhstan",
     "city_zh": "阿克托比",
-    "city_en": "Aqtobe"
-  },
+    "city_en": "Aqtobe",
+    "city_vi": "Aqtobe"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "哈萨克斯坦",
     "country_en": "Kazakhstan",
+    "country_vi": "Kazakhstan",
     "city_zh": "阿特劳",
-    "city_en": "Atyrau"
-  },
+    "city_en": "Atyrau",
+    "city_vi": "Atyrau"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "哈萨克斯坦",
     "country_en": "Kazakhstan",
+    "country_vi": "Kazakhstan",
     "city_zh": "口服",
-    "city_en": "Oral"
-  },
+    "city_en": "Oral",
+    "city_vi": "Oral"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "马尔代夫",
     "country_en": "Maldives",
+    "country_vi": "Maldives",
     "city_zh": "马尔代夫",
-    "city_en": "Maldives"
-  },
+    "city_en": "Maldives",
+    "city_vi": "Maldives"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "巴基斯坦",
     "country_en": "Pakistan",
+    "country_vi": "Pakistan",
     "city_zh": "卡拉奇",
-    "city_en": "Karachi"
-  },
+    "city_en": "Karachi",
+    "city_vi": "Karachi"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "叶卡捷琳堡",
-    "city_en": "Yekaterinburg"
-  },
+    "city_en": "Yekaterinburg",
+    "city_vi": "Yekaterinburg"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "塔吉克斯坦",
     "country_en": "Tajikistan",
+    "country_vi": "Tajikistan",
     "city_zh": "杜尚别",
-    "city_en": "Dushanbe"
-  },
+    "city_en": "Dushanbe",
+    "city_vi": "Dushanbe"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "土库曼斯坦",
     "country_en": "Turkmenistan",
+    "country_vi": "Turkmenistan",
     "city_zh": "阿什哈巴德",
-    "city_en": "Ashgabat"
-  },
+    "city_en": "Ashgabat",
+    "city_vi": "Ashgabat"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "乌兹别克斯坦",
     "country_en": "Uzbekistan",
+    "country_vi": "Uzbekistan",
     "city_zh": "撒马尔罕",
-    "city_en": "Samarkand"
-  },
+    "city_en": "Samarkand",
+    "city_vi": "Samarkand"
+    },
   {
     "name": "GMT +05:00",
     "country_zh": "乌兹别克斯坦",
     "country_en": "Uzbekistan",
+    "country_vi": "Uzbekistan",
     "city_zh": "塔什干",
-    "city_en": "Tashkent"
-  },
+    "city_en": "Tashkent",
+    "city_vi": "Tashkent"
+    },
   {
     "name": "GMT +04:30",
     "country_zh": "阿富汗",
     "country_en": "Afghanistan",
+    "country_vi": "Afghanistan",
     "city_zh": "喀布尔",
-    "city_en": "Kabul"
-  },
+    "city_en": "Kabul",
+    "city_vi": "Kabul"
+    },
   {
     "name": "GMT +04:30",
     "country_zh": "伊朗",
     "country_en": "Iran",
+    "country_vi": "Iran",
     "city_zh": "德黑兰",
-    "city_en": "Tehran"
-  },
+    "city_en": "Tehran",
+    "city_vi": "Tehran"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "亚美尼亚",
     "country_en": "Armenia",
+    "country_vi": "Armenia",
     "city_zh": "埃里温",
-    "city_en": "Yerevan"
-  },
+    "city_en": "Yerevan",
+    "city_vi": "Yerevan"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "阿塞拜疆",
     "country_en": "Azerbaijan",
+    "country_vi": "Azerbaijan",
     "city_zh": "巴库",
-    "city_en": "Baku"
-  },
+    "city_en": "Baku",
+    "city_vi": "Baku"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "乔治亚州",
     "country_en": "Georgia",
+    "country_vi": "Georgia",
     "city_zh": "第比利斯",
-    "city_en": "Tbilisi"
-  },
+    "city_en": "Tbilisi",
+    "city_vi": "Tbilisi"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "毛里求斯",
     "country_en": "Mauritius",
+    "country_vi": "Mauritius",
     "city_zh": "毛里求斯",
-    "city_en": "Mauritius"
-  },
+    "city_en": "Mauritius",
+    "city_vi": "Mauritius"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "阿曼",
     "country_en": "Oman",
+    "country_vi": "Oman",
     "city_zh": "马斯喀特",
-    "city_en": "Muscat"
-  },
+    "city_en": "Muscat",
+    "city_vi": "Muscat"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "团圆",
     "country_en": "Reunion",
+    "country_vi": "Reunion",
     "city_zh": "团圆",
-    "city_en": "Reunion"
-  },
+    "city_en": "Reunion",
+    "city_vi": "Reunion"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "阿斯特拉罕",
-    "city_en": "Astrakhan"
-  },
+    "city_en": "Astrakhan",
+    "city_vi": "Astrakhan"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "萨马拉",
-    "city_en": "Samara"
-  },
+    "city_en": "Samara",
+    "city_vi": "Samara"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "萨拉托夫",
-    "city_en": "Saratov"
-  },
+    "city_en": "Saratov",
+    "city_vi": "Saratov"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "乌里扬诺夫斯克",
-    "city_en": "Ulyanovsk"
-  },
+    "city_en": "Ulyanovsk",
+    "city_vi": "Ulyanovsk"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "塞舌尔",
     "country_en": "Seychelles",
+    "country_vi": "Seychelles",
     "city_zh": "马埃",
-    "city_en": "Mahe"
-  },
+    "city_en": "Mahe",
+    "city_vi": "Mahe"
+    },
   {
     "name": "GMT +04:00",
     "country_zh": "阿拉伯联合酋长国",
     "country_en": "United Arab Emirates",
+    "country_vi": "Các tiểu vương quốc ả rập thống nhất",
     "city_zh": "迪拜",
-    "city_en": "Dubai"
-  },
+    "city_en": "Dubai",
+    "city_vi": "Dubai"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "奥兰群岛",
     "country_en": "Aland Islands",
+    "country_vi": "Quần đảo Åland",
     "city_zh": "玛丽港",
-    "city_en": "Mariehamn"
-  },
+    "city_en": "Mariehamn",
+    "city_vi": "Mariehamn"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "小和",
-    "city_en": "Syowa"
-  },
+    "city_en": "Syowa",
+    "city_vi": "Syowa"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "巴林",
     "country_en": "Bahrain",
+    "country_vi": "Bahrain",
     "city_zh": "巴林",
-    "city_en": "Bahrain"
-  },
+    "city_en": "Bahrain",
+    "city_vi": "Bahrain"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "白俄罗斯",
     "country_en": "Belarus",
+    "country_vi": "Belarus",
     "city_zh": "明斯克",
-    "city_en": "Minsk"
-  },
+    "city_en": "Minsk",
+    "city_vi": "Minsk"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "保加利亚",
     "country_en": "Bulgaria",
+    "country_vi": "Bulgaria",
     "city_zh": "苏菲亚",
-    "city_en": "Sofia"
-  },
+    "city_en": "Sofia",
+    "city_vi": "Sofia"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "科摩罗",
     "country_en": "Comoros",
+    "country_vi": "Comoros",
     "city_zh": "科摩罗",
-    "city_en": "Comoro"
-  },
+    "city_en": "Comoro",
+    "city_vi": "Comoro"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "塞浦路斯",
     "country_en": "Cyprus",
+    "country_vi": "Cyprus",
     "city_zh": "法马古斯塔",
-    "city_en": "Famagusta"
-  },
+    "city_en": "Famagusta",
+    "city_vi": "Famagusta"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "塞浦路斯",
     "country_en": "Cyprus",
+    "country_vi": "Cyprus",
     "city_zh": "尼科西亚",
-    "city_en": "Nicosia"
-  },
+    "city_en": "Nicosia",
+    "city_vi": "Nicosia"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "吉布提",
     "country_en": "Djibouti",
+    "country_vi": "Djibouti",
     "city_zh": "吉布提",
-    "city_en": "Djibouti"
-  },
+    "city_en": "Djibouti",
+    "city_vi": "Djibouti"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "厄立特里亚",
     "country_en": "Eritrea",
+    "country_vi": "Eritrea",
     "city_zh": "阿斯马拉",
-    "city_en": "Asmara"
-  },
+    "city_en": "Asmara",
+    "city_vi": "Asmara"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "爱沙尼亚",
     "country_en": "Estonia",
+    "country_vi": "Estonia",
     "city_zh": "塔林",
-    "city_en": "Tallinn"
-  },
+    "city_en": "Tallinn",
+    "city_vi": "Tallinn"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "埃塞俄比亚",
     "country_en": "Ethiopia",
+    "country_vi": "Ethiopia",
     "city_zh": "亚的斯亚贝巴（埃塞俄比亚首都",
-    "city_en": "Addis Ababa"
-  },
+    "city_en": "Addis Ababa",
+    "city_vi": "Addis Ababa"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "芬兰",
     "country_en": "Finland",
+    "country_vi": "Phần Lan",
     "city_zh": "赫尔辛基",
-    "city_en": "Helsinki"
-  },
+    "city_en": "Helsinki",
+    "city_vi": "Helsinki"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "希腊",
     "country_en": "Greece",
+    "country_vi": "Hy Lạp",
     "city_zh": "雅典",
-    "city_en": "Athens"
-  },
+    "city_en": "Athens",
+    "city_vi": "Athens"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "伊拉克",
     "country_en": "Iraq",
+    "country_vi": "Iraq",
     "city_zh": "巴格达",
-    "city_en": "Baghdad"
-  },
+    "city_en": "Baghdad",
+    "city_vi": "Baghdad"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "以色列",
     "country_en": "Israel",
+    "country_vi": "Israel",
     "city_zh": "耶路撒冷",
-    "city_en": "Jerusalem"
-  },
+    "city_en": "Jerusalem",
+    "city_vi": "Jerusalem"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "约旦",
     "country_en": "Jordan",
+    "country_vi": "Jordan",
     "city_zh": "安曼",
-    "city_en": "Amman"
-  },
+    "city_en": "Amman",
+    "city_vi": "Amman"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "肯尼亚",
     "country_en": "Kenya",
+    "country_vi": "Kenya",
     "city_zh": "内罗毕",
-    "city_en": "Nairobi"
-  },
+    "city_en": "Nairobi",
+    "city_vi": "Nairobi"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "科威特",
     "country_en": "Kuwait",
+    "country_vi": "Kuwait",
     "city_zh": "科威特",
-    "city_en": "Kuwait"
-  },
+    "city_en": "Kuwait",
+    "city_vi": "Kuwait"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "拉脱维亚",
     "country_en": "Latvia",
+    "country_vi": "Latvia",
     "city_zh": "里加",
-    "city_en": "Riga"
-  },
+    "city_en": "Riga",
+    "city_vi": "Riga"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "黎巴嫩",
     "country_en": "Lebanon",
+    "country_vi": "Lebanon",
     "city_zh": "贝鲁特",
-    "city_en": "Beirut"
-  },
+    "city_en": "Beirut",
+    "city_vi": "Beirut"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "立陶宛",
     "country_en": "Lithuania",
+    "country_vi": "Lithuania",
     "city_zh": "维尔纽斯",
-    "city_en": "Vilnius"
-  },
+    "city_en": "Vilnius",
+    "city_vi": "Vilnius"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "马达加斯加",
     "country_en": "Madagascar",
+    "country_vi": "Madagascar",
     "city_zh": "塔那那利佛",
-    "city_en": "Antananarivo"
-  },
+    "city_en": "Antananarivo",
+    "city_vi": "Antananarivo"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "马约特岛",
     "country_en": "Mayotte",
+    "country_vi": "Đảo Mayotte",
     "city_zh": "马约特岛",
-    "city_en": "Mayotte"
-  },
+    "city_en": "Mayotte",
+    "city_vi": "Mayotte"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "摩尔多瓦",
     "country_en": "Moldova",
+    "country_vi": "Moldova",
     "city_zh": "基希讷乌",
-    "city_en": "Chisinau"
-  },
+    "city_en": "Chisinau",
+    "city_vi": "Chisinau"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "巴勒斯坦领土",
     "country_en": "Palestinian Territory",
+    "country_vi": "Palestinian Territory",
     "city_zh": "加沙",
-    "city_en": "Gaza"
-  },
+    "city_en": "Gaza",
+    "city_vi": "Gaza"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "巴勒斯坦领土",
     "country_en": "Palestinian Territory",
+    "country_vi": "Palestinian Territory",
     "city_zh": "希伯伦",
-    "city_en": "Hebron"
-  },
+    "city_en": "Hebron",
+    "city_vi": "Hebron"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "卡塔尔",
     "country_en": "Qatar",
+    "country_vi": "Qatar",
     "city_zh": "卡塔尔",
-    "city_en": "Qatar"
-  },
+    "city_en": "Qatar",
+    "city_vi": "Qatar"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "罗马尼亚",
     "country_en": "Romania",
+    "country_vi": "Romania",
     "city_zh": "布加勒斯特",
-    "city_en": "Bucharest"
-  },
+    "city_en": "Bucharest",
+    "city_vi": "Bucharest"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "基洛夫",
-    "city_en": "Kirov"
-  },
+    "city_en": "Kirov",
+    "city_vi": "Kirov"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "莫斯科",
-    "city_en": "Moscow"
-  },
+    "city_en": "Moscow",
+    "city_vi": "Moscow"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "辛菲罗波尔",
-    "city_en": "Simferopol"
-  },
+    "city_en": "Simferopol",
+    "city_vi": "Simferopol"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "伏尔加格勒",
-    "city_en": "Volgograd"
-  },
+    "city_en": "Volgograd",
+    "city_vi": "Volgograd"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "沙特阿拉伯",
     "country_en": "Saudi Arabia",
+    "country_vi": "Ả Rập Xê Út",
     "city_zh": "利雅得",
-    "city_en": "Riyadh"
-  },
+    "city_en": "Riyadh",
+    "city_vi": "Riyadh"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "索马里",
     "country_en": "Somalia",
+    "country_vi": "Somalia",
     "city_zh": "摩加迪沙",
-    "city_en": "Mogadishu"
-  },
+    "city_en": "Mogadishu",
+    "city_vi": "Mogadishu"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "南苏丹",
     "country_en": "South Sudan",
+    "country_vi": "Nam Sudan",
     "city_zh": "朱巴",
-    "city_en": "Juba"
-  },
+    "city_en": "Juba",
+    "city_vi": "Juba"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "叙利亚",
     "country_en": "Syria",
+    "country_vi": "Syria",
     "city_zh": "大马士革",
-    "city_en": "Damascus"
-  },
+    "city_en": "Damascus",
+    "city_vi": "Damascus"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "坦桑尼亚",
     "country_en": "Tanzania",
+    "country_vi": "Tanzania",
     "city_zh": "Dar_es_Salaam",
-    "city_en": "Dar es Salaam"
-  },
+    "city_en": "Dar es Salaam",
+    "city_vi": "Dar es Salaam"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "火鸡",
     "country_en": "Turkey",
+    "country_vi": "Thổ Nhĩ Kỳ",
     "city_zh": "伊斯坦布尔",
-    "city_en": "Istanbul"
-  },
+    "city_en": "Istanbul",
+    "city_vi": "Istanbul"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "乌干达",
     "country_en": "Uganda",
+    "country_vi": "Uganda",
     "city_zh": "坎帕拉",
-    "city_en": "Kampala"
-  },
+    "city_en": "Kampala",
+    "city_vi": "Kampala"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "乌克兰",
     "country_en": "Ukraine",
+    "country_vi": "Ukraine",
     "city_zh": "基辅",
-    "city_en": "Kiev"
-  },
+    "city_en": "Kiev",
+    "city_vi": "Kiev"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "乌克兰",
     "country_en": "Ukraine",
+    "country_vi": "Ukraine",
     "city_zh": "乌日哥罗德",
-    "city_en": "Uzhgorod"
-  },
+    "city_en": "Uzhgorod",
+    "city_vi": "Uzhgorod"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "乌克兰",
     "country_en": "Ukraine",
+    "country_vi": "Ukraine",
     "city_zh": "扎波罗热",
-    "city_en": "Zaporozhye"
-  },
+    "city_en": "Zaporozhye",
+    "city_vi": "Zaporozhye"
+    },
   {
     "name": "GMT +03:00",
     "country_zh": "也门",
     "country_en": "Yemen",
+    "country_vi": "Yemen",
     "city_zh": "亚丁",
-    "city_en": "Aden"
-  },
+    "city_en": "Aden",
+    "city_vi": "Aden"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "阿尔巴尼亚",
     "country_en": "Albania",
+    "country_vi": "Albania",
     "city_zh": "蒂拉内",
-    "city_en": "Tirane"
-  },
+    "city_en": "Tirane",
+    "city_vi": "Tirane"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "安道尔",
     "country_en": "Andorra",
+    "country_vi": "Andorra",
     "city_zh": "安道尔",
-    "city_en": "Andorra"
-  },
+    "city_en": "Andorra",
+    "city_vi": "Andorra"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "南极洲",
     "country_en": "Antarctica",
+    "country_vi": "Nam cực",
     "city_zh": "巨魔",
-    "city_en": "Troll"
-  },
+    "city_en": "Troll",
+    "city_vi": "Troll"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "奥地利",
     "country_en": "Austria",
+    "country_vi": "Áo",
     "city_zh": "维也纳",
-    "city_en": "Vienna"
-  },
+    "city_en": "Vienna",
+    "city_vi": "Vienna"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "比利时",
     "country_en": "Belgium",
+    "country_vi": "Bỉ",
     "city_zh": "布鲁塞尔",
-    "city_en": "Brussels"
-  },
+    "city_en": "Brussels",
+    "city_vi": "Brussels"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "波斯尼亚和黑塞哥维那",
     "country_en": "Bosnia And Herzegovina",
+    "country_vi": "Bosnia và Herzegovina",
     "city_zh": "萨拉热窝",
-    "city_en": "Sarajevo"
-  },
+    "city_en": "Sarajevo",
+    "city_vi": "Sarajevo"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "博茨瓦纳",
     "country_en": "Botswana",
+    "country_vi": "Botswana",
     "city_zh": "哈博罗内",
-    "city_en": "Gaborone"
-  },
+    "city_en": "Gaborone",
+    "city_vi": "Gaborone"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "布隆迪",
     "country_en": "Burundi",
+    "country_vi": "Burundi",
     "city_zh": "布琼布拉",
-    "city_en": "Bujumbura"
-  },
+    "city_en": "Bujumbura",
+    "city_vi": "Bujumbura"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "克罗地亚",
     "country_en": "Croatia",
+    "country_vi": "Croatia",
     "city_zh": "萨格勒布",
-    "city_en": "Zagreb"
-  },
+    "city_en": "Zagreb",
+    "city_vi": "Zagreb"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "捷克共和国",
     "country_en": "Czech Republic",
+    "country_vi": "Cộng hòa Séc",
     "city_zh": "布拉格",
-    "city_en": "Prague"
-  },
+    "city_en": "Prague",
+    "city_vi": "Prague"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "刚果民主共和国",
     "country_en": "Democratic Republic Of The Congo",
+    "country_vi": "Cộng hòa Dân chủ Congo",
     "city_zh": "卢本巴希",
-    "city_en": "Lubumbashi"
-  },
+    "city_en": "Lubumbashi",
+    "city_vi": "Lubumbashi"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "丹麦",
     "country_en": "Denmark",
+    "country_vi": "Đan Mạch",
     "city_zh": "哥本哈根",
-    "city_en": "Copenhagen"
-  },
+    "city_en": "Copenhagen",
+    "city_vi": "Copenhagen"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "埃及",
     "country_en": "Egypt",
+    "country_vi": "Ai Cập",
     "city_zh": "开罗",
-    "city_en": "Cairo"
-  },
+    "city_en": "Cairo",
+    "city_vi": "Cairo"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "法国",
     "country_en": "France",
+    "country_vi": "Pháp",
     "city_zh": "巴黎",
-    "city_en": "Paris"
-  },
+    "city_en": "Paris",
+    "city_vi": "Paris"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "德国",
     "country_en": "Germany",
+    "country_vi": "Đức",
     "city_zh": "柏林",
-    "city_en": "Berlin"
-  },
+    "city_en": "Berlin",
+    "city_vi": "Berlin"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "德国",
     "country_en": "Germany",
+    "country_vi": "Đức",
     "city_zh": "布辛根",
-    "city_en": "Busingen"
-  },
+    "city_en": "Busingen",
+    "city_vi": "Busingen"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "直布罗陀",
     "country_en": "Gibraltar",
+    "country_vi": "Gibraltar",
     "city_zh": "直布罗陀",
-    "city_en": "Gibraltar"
-  },
+    "city_en": "Gibraltar",
+    "city_vi": "Gibraltar"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "匈牙利",
     "country_en": "Hungary",
+    "country_vi": "Hungary",
     "city_zh": "布达佩斯",
-    "city_en": "Budapest"
-  },
+    "city_en": "Budapest",
+    "city_vi": "Budapest"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "意大利",
     "country_en": "Italy",
+    "country_vi": "Ý",
     "city_zh": "罗马",
-    "city_en": "Rome"
-  },
+    "city_en": "Rome",
+    "city_vi": "Rome"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "莱索托",
     "country_en": "Lesotho",
+    "country_vi": "Lesotho",
     "city_zh": "马塞卢",
-    "city_en": "Maseru"
-  },
+    "city_en": "Maseru",
+    "city_vi": "Maseru"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "利比亚",
     "country_en": "Libya",
+    "country_vi": "Libya",
     "city_zh": "硅藻土",
-    "city_en": "Tripoli"
-  },
+    "city_en": "Tripoli",
+    "city_vi": "Tripoli"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "列支敦士登",
     "country_en": "Liechtenstein",
+    "country_vi": "Liechtenstein",
     "city_zh": "瓦杜兹",
-    "city_en": "Vaduz"
-  },
+    "city_en": "Vaduz",
+    "city_vi": "Vaduz"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "卢森堡",
     "country_en": "Luxembourg",
+    "country_vi": "Luxembourg",
     "city_zh": "卢森堡",
-    "city_en": "Luxembourg"
-  },
+    "city_en": "Luxembourg",
+    "city_vi": "Luxembourg"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "马其顿",
     "country_en": "Macedonia",
+    "country_vi": "Macedonia",
     "city_zh": "斯科普里",
-    "city_en": "Skopje"
-  },
+    "city_en": "Skopje",
+    "city_vi": "Skopje"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "马拉维",
     "country_en": "Malawi",
+    "country_vi": "Malawi",
     "city_zh": "布兰太尔",
-    "city_en": "Blantyre"
-  },
+    "city_en": "Blantyre",
+    "city_vi": "Blantyre"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "马耳他",
     "country_en": "Malta",
+    "country_vi": "Malta",
     "city_zh": "马耳他",
-    "city_en": "Malta"
-  },
+    "city_en": "Malta",
+    "city_vi": "Malta"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "摩纳哥",
     "country_en": "Monaco",
+    "country_vi": "Monaco",
     "city_zh": "摩纳哥",
-    "city_en": "Monaco"
-  },
+    "city_en": "Monaco",
+    "city_vi": "Monaco"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "黑山",
     "country_en": "Montenegro",
+    "country_vi": "Montenegro",
     "city_zh": "波德戈里察",
-    "city_en": "Podgorica"
-  },
+    "city_en": "Podgorica",
+    "city_vi": "Podgorica"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "莫桑比克",
     "country_en": "Mozambique",
+    "country_vi": "Mozambique",
     "city_zh": "马普托",
-    "city_en": "Maputo"
-  },
+    "city_en": "Maputo",
+    "city_vi": "Maputo"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "纳米比亚",
     "country_en": "Namibia",
+    "country_vi": "Namibia",
     "city_zh": "温得和克",
-    "city_en": "Windhoek"
-  },
+    "city_en": "Windhoek",
+    "city_vi": "Windhoek"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "荷兰",
     "country_en": "Netherlands",
+    "country_vi": "Hà Lan",
     "city_zh": "阿姆斯特丹",
-    "city_en": "Amsterdam"
-  },
+    "city_en": "Amsterdam",
+    "city_vi": "Amsterdam"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "挪威",
     "country_en": "Norway",
+    "country_vi": "Na Uy",
     "city_zh": "奥斯陆",
-    "city_en": "Oslo"
-  },
+    "city_en": "Oslo",
+    "city_vi": "Oslo"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "波兰",
     "country_en": "Poland",
+    "country_vi": "Ba Lan",
     "city_zh": "华沙",
-    "city_en": "Warsaw"
-  },
+    "city_en": "Warsaw",
+    "city_vi": "Warsaw"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "俄罗斯",
     "country_en": "Russia",
+    "country_vi": "Nga",
     "city_zh": "加里宁格勒",
-    "city_en": "Kaliningrad"
-  },
+    "city_en": "Kaliningrad",
+    "city_vi": "Kaliningrad"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "卢旺达",
     "country_en": "Rwanda",
+    "country_vi": "Rwanda",
     "city_zh": "基加利",
-    "city_en": "Kigali"
-  },
+    "city_en": "Kigali",
+    "city_vi": "Kigali"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "圣马力诺",
     "country_en": "San Marino",
+    "country_vi": "San Marino",
     "city_zh": "圣马力诺",
-    "city_en": "San Marino"
-  },
+    "city_en": "San Marino",
+    "city_vi": "San Marino"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "塞尔维亚",
     "country_en": "Serbia",
+    "country_vi": "Serbia",
     "city_zh": "贝尔格莱德",
-    "city_en": "Belgrade"
-  },
+    "city_en": "Belgrade",
+    "city_vi": "Belgrade"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "斯洛伐克",
     "country_en": "Slovakia",
+    "country_vi": "Slovakia",
     "city_zh": "布拉迪斯拉发",
-    "city_en": "Bratislava"
-  },
+    "city_en": "Bratislava",
+    "city_vi": "Bratislava"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "斯洛文尼亚",
     "country_en": "Slovenia",
+    "country_vi": "Slovenia",
     "city_zh": "卢布尔雅那",
-    "city_en": "Ljubljana"
-  },
+    "city_en": "Ljubljana",
+    "city_vi": "Ljubljana"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "南非",
     "country_en": "South Africa",
+    "country_vi": "Nam Phi",
     "city_zh": "约翰内斯堡",
-    "city_en": "Johannesburg"
-  },
+    "city_en": "Johannesburg",
+    "city_vi": "Johannesburg"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "西班牙",
     "country_en": "Spain",
+    "country_vi": "Tây Ban Nha",
     "city_zh": "休达",
-    "city_en": "Ceuta"
-  },
+    "city_en": "Ceuta",
+    "city_vi": "Ceuta"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "西班牙",
     "country_en": "Spain",
+    "country_vi": "Tây Ban Nha",
     "city_zh": "马德里",
-    "city_en": "Madrid"
-  },
+    "city_en": "Madrid",
+    "city_vi": "Madrid"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "苏丹",
     "country_en": "Sudan",
+    "country_vi": "Sudan",
     "city_zh": "喀土穆",
-    "city_en": "Khartoum"
-  },
+    "city_en": "Khartoum",
+    "city_vi": "Khartoum"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "斯瓦尔巴和扬马延",
     "country_en": "Svalbard And Jan Mayen",
+    "country_vi": "Svalbard And Jan Mayen",
     "city_zh": "朗伊尔城",
-    "city_en": "Longyearbyen"
-  },
+    "city_en": "Longyearbyen",
+    "city_vi": "Longyearbyen"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "斯威士兰",
     "country_en": "Swaziland",
+    "country_vi": "Swaziland",
     "city_zh": "姆巴巴内",
-    "city_en": "Mbabane"
-  },
+    "city_en": "Mbabane",
+    "city_vi": "Mbabane"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "瑞典",
     "country_en": "Sweden",
+    "country_vi": "Thụy điển",
     "city_zh": "斯德哥尔摩",
-    "city_en": "Stockholm"
-  },
+    "city_en": "Stockholm",
+    "city_vi": "Stockholm"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "瑞士",
     "country_en": "Switzerland",
+    "country_vi": "Thụy sĩ",
     "city_zh": "苏黎世",
-    "city_en": "Zurich"
-  },
+    "city_en": "Zurich",
+    "city_vi": "Zurich"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "教廷",
     "country_en": "Vatican",
+    "country_vi": "Vatican",
     "city_zh": "教廷",
-    "city_en": "Vatican"
-  },
+    "city_en": "Vatican",
+    "city_vi": "Vatican"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "赞比亚",
     "country_en": "Zambia",
+    "country_vi": "Zambia",
     "city_zh": "卢萨卡",
-    "city_en": "Lusaka"
-  },
+    "city_en": "Lusaka",
+    "city_vi": "Lusaka"
+    },
   {
     "name": "GMT +02:00",
     "country_zh": "津巴布韦",
     "country_en": "Zimbabwe",
+    "country_vi": "Zimbabwe",
     "city_zh": "哈拉雷",
-    "city_en": "Harare"
-  },
+    "city_en": "Harare",
+    "city_vi": "Harare"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "阿尔及利亚",
     "country_en": "Algeria",
+    "country_vi": "Algeria",
     "city_zh": "阿尔及尔",
-    "city_en": "Algiers"
-  },
+    "city_en": "Algiers",
+    "city_vi": "Algiers"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "安哥拉",
     "country_en": "Angola",
+    "country_vi": "Angola",
     "city_zh": "罗安达",
-    "city_en": "Luanda"
-  },
+    "city_en": "Luanda",
+    "city_vi": "Luanda"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "贝宁",
     "country_en": "Benin",
+    "country_vi": "Benin",
     "city_zh": "波多诺伏",
-    "city_en": "Porto-Novo"
-  },
+    "city_en": "Porto-Novo",
+    "city_vi": "Porto-Novo"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "喀麦隆",
     "country_en": "Cameroon",
+    "country_vi": "Cameroon",
     "city_zh": "杜阿拉",
-    "city_en": "Douala"
-  },
+    "city_en": "Douala",
+    "city_vi": "Douala"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "中非共和国",
     "country_en": "Central African Republic",
+    "country_vi": "Cộng hòa trung phi",
     "city_zh": "班吉",
-    "city_en": "Bangui"
-  },
+    "city_en": "Bangui",
+    "city_vi": "Bangui"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "乍得",
     "country_en": "Chad",
+    "country_vi": "Chad",
     "city_zh": "恩贾梅纳",
-    "city_en": "Ndjamena"
-  },
+    "city_en": "Ndjamena",
+    "city_vi": "Ndjamena"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "刚果民主共和国",
     "country_en": "Democratic Republic Of The Congo",
+    "country_vi": "Cộng hòa Dân chủ Congo",
     "city_zh": "金沙萨",
-    "city_en": "Kinshasa"
-  },
+    "city_en": "Kinshasa",
+    "city_vi": "Kinshasa"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "赤道几内亚",
     "country_en": "Equatorial Guinea",
+    "country_vi": "Equatorial Guinea",
     "city_zh": "马拉博",
-    "city_en": "Malabo"
-  },
+    "city_en": "Malabo",
+    "city_vi": "Malabo"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "法罗群岛",
     "country_en": "Faroe Islands",
+    "country_vi": "Quần đảo Faroe",
     "city_zh": "法罗",
-    "city_en": "Faroe"
-  },
+    "city_en": "Faroe",
+    "city_vi": "Faroe"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "加蓬",
     "country_en": "Gabon",
+    "country_vi": "Gabon",
     "city_zh": "利伯维尔",
-    "city_en": "Libreville"
-  },
+    "city_en": "Libreville",
+    "city_vi": "Libreville"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "根西岛",
     "country_en": "Guernsey",
+    "country_vi": "Guernsey",
     "city_zh": "根西岛",
-    "city_en": "Guernsey"
-  },
+    "city_en": "Guernsey",
+    "city_vi": "Guernsey"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "爱尔兰",
     "country_en": "Ireland",
+    "country_vi": "Ireland",
     "city_zh": "都柏林",
-    "city_en": "Dublin"
-  },
+    "city_en": "Dublin",
+    "city_vi": "Dublin"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "马恩岛",
     "country_en": "Isle Of Man",
+    "country_vi": "Đảo Man",
     "city_zh": "马恩岛",
-    "city_en": "Isle of Man"
-  },
+    "city_en": "Isle of Man",
+    "city_vi": "Isle of Man"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "球衣",
     "country_en": "Jersey",
+    "country_vi": "Jersey",
     "city_zh": "球衣",
-    "city_en": "Jersey"
-  },
+    "city_en": "Jersey",
+    "city_vi": "Jersey"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "摩洛哥",
     "country_en": "Morocco",
+    "country_vi": "Morocco",
     "city_zh": "卡萨布兰卡",
-    "city_en": "Casablanca"
-  },
+    "city_en": "Casablanca",
+    "city_vi": "Casablanca"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "尼日尔",
     "country_en": "Niger",
+    "country_vi": "Niger",
     "city_zh": "尼亚美",
-    "city_en": "Niamey"
-  },
+    "city_en": "Niamey",
+    "city_vi": "Niamey"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "尼日利亚",
     "country_en": "Nigeria",
+    "country_vi": "Nigeria",
     "city_zh": "拉各斯",
-    "city_en": "Lagos"
-  },
+    "city_en": "Lagos",
+    "city_vi": "Lagos"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "葡萄牙",
     "country_en": "Portugal",
+    "country_vi": "Bồ Đào Nha",
     "city_zh": "马德拉岛",
-    "city_en": "Madeira"
-  },
+    "city_en": "Madeira",
+    "city_vi": "Madeira"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "葡萄牙",
     "country_en": "Portugal",
+    "country_vi": "Bồ Đào Nha",
     "city_zh": "里斯本",
-    "city_en": "Lisbon"
-  },
+    "city_en": "Lisbon",
+    "city_vi": "Lisbon"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "刚果共和国",
     "country_en": "Republic Of The Congo",
+    "country_vi": "Cộng hòa Dân chủ Congo",
     "city_zh": "布拉柴维尔",
-    "city_en": "Brazzaville"
-  },
+    "city_en": "Brazzaville",
+    "city_vi": "Brazzaville"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "圣多美和普林西比",
     "country_en": "Sao Tome And Principe",
+    "country_vi": "Sao Tome và Principe",
     "city_zh": "圣多美",
-    "city_en": "Sao Tome"
-  },
+    "city_en": "Sao Tome",
+    "city_vi": "Sao Tome"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "西班牙",
     "country_en": "Spain",
+    "country_vi": "Tây Ban Nha",
     "city_zh": "金丝雀",
-    "city_en": "Canary"
-  },
+    "city_en": "Canary",
+    "city_vi": "Canary"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "突尼斯",
     "country_en": "Tunisia",
+    "country_vi": "Tunisia",
     "city_zh": "突尼斯",
-    "city_en": "Tunis"
-  },
+    "city_en": "Tunis",
+    "city_vi": "Tunis"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "英国",
     "country_en": "United Kingdom",
+    "country_vi": "Anh",
     "city_zh": "伦敦",
-    "city_en": "London"
-  },
+    "city_en": "London",
+    "city_vi": "London"
+    },
   {
     "name": "GMT +01:00",
     "country_zh": "西撒哈拉",
     "country_en": "Western Sahara",
+    "country_vi": "Tây Sahara",
     "city_zh": "El_Aaiun",
-    "city_en": "El Aaiun"
-  },
+    "city_en": "El Aaiun",
+    "city_vi": "El Aaiun"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "布基纳法索",
     "country_en": "Burkina Faso",
+    "country_vi": "Burkina Faso",
     "city_zh": "瓦加杜古",
-    "city_en": "Ouagadougou"
-  },
+    "city_en": "Ouagadougou",
+    "city_vi": "Ouagadougou"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "冈比亚",
     "country_en": "Gambia",
+    "country_vi": "Gambia",
     "city_zh": "班珠尔",
-    "city_en": "Banjul"
-  },
+    "city_en": "Banjul",
+    "city_vi": "Banjul"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "加纳",
     "country_en": "Ghana",
+    "country_vi": "Ghana",
     "city_zh": "阿克拉",
-    "city_en": "Accra"
-  },
+    "city_en": "Accra",
+    "city_vi": "Accra"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "格陵兰",
     "country_en": "Greenland",
+    "country_vi": "Greenland",
     "city_zh": "丹麦港",
-    "city_en": "Danmarkshavn"
-  },
+    "city_en": "Danmarkshavn",
+    "city_vi": "Danmarkshavn"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "格陵兰",
     "country_en": "Greenland",
+    "country_vi": "Greenland",
     "city_zh": "斯科斯比松",
-    "city_en": "Scoresbysund"
-  },
+    "city_en": "Scoresbysund",
+    "city_vi": "Scoresbysund"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "几内亚",
     "country_en": "Guinea",
+    "country_vi": "Guinea",
     "city_zh": "科纳克里",
-    "city_en": "Conakry"
-  },
+    "city_en": "Conakry",
+    "city_vi": "Conakry"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "几内亚比绍",
     "country_en": "Guinea-Bissau",
+    "country_vi": "Guinea-Bissau",
     "city_zh": "比绍",
-    "city_en": "Bissau"
-  },
+    "city_en": "Bissau",
+    "city_vi": "Bissau"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "冰岛",
     "country_en": "Iceland",
+    "country_vi": "Iceland",
     "city_zh": "雷克雅未克",
-    "city_en": "Reykjavik"
-  },
+    "city_en": "Reykjavik",
+    "city_vi": "Reykjavik"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "象牙海岸",
     "country_en": "Ivory Coast",
+    "country_vi": "Bờ Biển Ngà",
     "city_zh": "阿比让",
-    "city_en": "Abidjan"
-  },
+    "city_en": "Abidjan",
+    "city_vi": "Abidjan"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "利比里亚",
     "country_en": "Liberia",
+    "country_vi": "Liberia",
     "city_zh": "蒙罗维亚",
-    "city_en": "Monrovia"
-  },
+    "city_en": "Monrovia",
+    "city_vi": "Monrovia"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "马里",
     "country_en": "Mali",
+    "country_vi": "Mali",
     "city_zh": "巴马科",
-    "city_en": "Bamako"
-  },
+    "city_en": "Bamako",
+    "city_vi": "Bamako"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "毛里塔尼亚",
     "country_en": "Mauritania",
+    "country_vi": "Mauritania",
     "city_zh": "努瓦克肖特",
-    "city_en": "Nouakchott"
-  },
+    "city_en": "Nouakchott",
+    "city_vi": "Nouakchott"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "葡萄牙",
     "country_en": "Portugal",
+    "country_vi": "Bồ Đào Nha",
     "city_zh": "亚速尔群岛",
-    "city_en": "Azores"
-  },
+    "city_en": "Azores",
+    "city_vi": "Azores"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "圣赫勒拿",
     "country_en": "Saint Helena",
+    "country_vi": "Saint Helena",
     "city_zh": "圣赫勒拿",
-    "city_en": "St Helena"
-  },
+    "city_en": "St Helena",
+    "city_vi": "St Helena"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "塞内加尔",
     "country_en": "Senegal",
+    "country_vi": "Senegal",
     "city_zh": "达喀尔",
-    "city_en": "Dakar"
-  },
+    "city_en": "Dakar",
+    "city_vi": "Dakar"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "塞拉利昂",
     "country_en": "Sierra Leone",
+    "country_vi": "Sierra Leone",
     "city_zh": "弗里敦",
-    "city_en": "Freetown"
-  },
+    "city_en": "Freetown",
+    "city_vi": "Freetown"
+    },
   {
     "name": "GMT +00:00",
     "country_zh": "多哥",
     "country_en": "Togo",
+    "country_vi": "Togo",
     "city_zh": "洛美",
-    "city_en": "Lome"
-  }
+    "city_en": "Lome",
+    "city_vi": "Lome"
+    }
 ]

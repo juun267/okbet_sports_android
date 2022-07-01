@@ -88,7 +88,8 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val displayName=curTimeZone.getDisplayName(false,java.util.TimeZone.SHORT)
         val id=curTimeZone.id
         var selecItem=items.find {
-             displayName.contains(it.name.replace(" ",""))&&id.split("/").contains(it.city_en)
+             displayName.contains(it.name.replace(" ",""),true)
+                     &&id.contains(it.city_en,true)
         }
         selecItem?.let {
             it.isSelected=true
@@ -107,16 +108,16 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             var filterData=items.filter {
                 when(LanguageManager.getSelectLanguage(this)){
                     LanguageManager.Language.ZH->{
-                        it.city_zh.contains(key)
+                        it.city_zh.contains(key,true)
                     }
                     LanguageManager.Language.EN->{
-                        it.city_en.contains(key)
+                        it.city_en.contains(key,true)
                     }
                     LanguageManager.Language.VI->{
-                        it.city_en.contains(key)
+                        it.city_en.contains(key,true)
                     }
                     else->{
-                        it.city_en.contains(key)
+                        it.city_en.contains(key,true)
                     }
                 }
             }

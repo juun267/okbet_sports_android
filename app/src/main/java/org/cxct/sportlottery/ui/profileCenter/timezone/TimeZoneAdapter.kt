@@ -55,8 +55,8 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                     binding.tvCountry.text=data.country_en
                 }
                 LanguageManager.Language.VI->{
-                    binding.tvCity.text=data.city_zh
-                    binding.tvCountry.text=data.country_zh
+                    binding.tvCity.text=data.city_vi
+                    binding.tvCountry.text=data.country_vi
                 }
             }
             TimeUtil
