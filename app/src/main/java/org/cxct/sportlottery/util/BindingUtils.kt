@@ -296,7 +296,7 @@ fun TextView.setProfitFormat(money: Double?, isTotal: Boolean? = false) {
             if (isTotal == true)
                 TextUtil.format(it)
             else
-                "${TextUtil.format(it)}"
+                "+${TextUtil.format(it)}"
         } else {
             TextUtil.format(it)
         }
