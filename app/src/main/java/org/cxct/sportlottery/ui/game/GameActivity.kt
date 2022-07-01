@@ -290,11 +290,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         sport_bottom_navigation.apply {
             setNavigationItemClickListener {
                 when (it) {
-                    R.id.navigation_home -> {
-                        viewModel.navHome()
-                        finish()
-                        false
-                    }
                     R.id.navigation_sport -> {
                         if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(MatchType.MAIN)) {
                             getMatchTypeTabPosition(MatchType.MAIN)?.let { mainMatchTypePosition ->
@@ -308,6 +303,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                             }
                         }
                         true
+                    }
+                    R.id.navigation_game -> {
+                        viewModel.navMyFavorite()
+                        false
                     }
                     R.id.navigation_account_history -> {
                         viewModel.navAccountHistory()

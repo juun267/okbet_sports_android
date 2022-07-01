@@ -83,39 +83,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 onGoHomePageListener = {
                     goGamePage()
                 },
-                onGoNewsPageListener = {
-                    clickNews()
-                },
-                onGoLoginListener = {
-                    goLoginPage()
-                },
-                onGoRegisterListener = {
-                    goRegisterPage()
-                },
-                onGoDepositListener = {
-                    avoidFastDoubleClick()
-                    if (viewModel.isLogin.value != true) {
-                        goLoginPage()
-                    } else {
-                        viewModel.checkRechargeSystem()
-                    }
-                },
-                onGoWithdrawListener = {
-                    avoidFastDoubleClick()
-                    if (viewModel.isLogin.value != true) {
-                        goLoginPage()
-                    } else {
-                        viewModel.checkWithdrawSystem()
-                    }
-                },
-                onGoThirdGamesListener = {
-                    avoidFastDoubleClick()
-                    if (viewModel.isLogin.value != true) {
-                        showLoginNotify()
-                    } else {
-                        viewModel.requestEnterThirdGame(it)
-                    }
-                },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if(mIsEnabled){
                         avoidFastDoubleClick()
@@ -163,6 +130,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         initOnClickListener()
         initRecommendView()
         initTitle()
+        initBottomView()
         initObservers()
         initSocketObservers()
     }
@@ -253,11 +221,13 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     private fun initTitle() {
         with(mPublicityAdapter) {
             addTitle()
-            addAnnouncement()
-            if (!isCreditSystem()) addUserInfo() //非信用盤才顯示
             addSubTitle() //熱門推薦bar需常駐
             addPreload()
         }
+    }
+
+    private fun initBottomView() {
+        mPublicityAdapter.addBottomView()
     }
 
     private fun initObservers() {
@@ -273,16 +243,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             val newDiscount = userInfo?.discount ?: 1.0F
             viewModel.publicityUpdateDiscount(mPublicityAdapter.discount, newDiscount)
             mPublicityAdapter.discount = newDiscount
-            viewModel.getMoney()
-        }
-
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-            if (!isCreditSystem()) { //非信用盤才顯示
-                mPublicityAdapter.updateUserInfoData(
-                    viewModel.userInfo.value?.nickName.orEmpty(),
-                    viewModel.userMoney.value ?: 0.0
-                )
-            }
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
@@ -294,23 +254,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
-                if (recommendList.isEmpty()) {
-                    mPublicityAdapter.removeData(recommendList)
-                    mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
-                    return@observe
-                }
                 isNewestDataFromApi = true
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
-                if (mPublicityAdapter.getRecommendData().size == 0) {
-                    mPublicityAdapter.addRecommend(recommendList)
-                    Timber.e("addRecommend")
-                } else {
-                    recommendList.forEachIndexed { index, recommend ->
-                        recommend.runningTime = mPublicityAdapter.getRecommendData()[0].runningTime
-                        mPublicityAdapter.updateRecommendData(index, recommend)
-                    }
-                }
+                mPublicityAdapter.addRecommend(recommendList)
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
@@ -366,194 +313,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         viewModel.sportMenuFilterList.observe(viewLifecycleOwner){
             it.getContentIfNotHandled()?.let {
                 queryData()
-            }
-        }
-
-        viewModel.messageListResult.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { messageListResult ->
-                val titleList: MutableList<String> = mutableListOf()
-                messageListResult.rows?.forEach { data ->
-                    if (data.type.toInt() == 1) titleList.add(data.title + " - " + data.message)
-                }
-                mPublicityAdapter.updateAnnouncementData(titleList)
-            }
-        }
-
-        //第三方遊戲清單
-        viewModel.gameCateDataList.observe(viewLifecycleOwner) {
-            val cateData = it?.find { gameCateData ->
-                gameCateData.categoryThird == ThirdGameCategory.QP //棋牌
-            }
-            val gameList = mutableListOf<GameItemData>()
-            cateData?.tabDataList?.forEach { gameTabData ->
-                gameTabData.gameList.run { gameList.addAll(this) }
-            }
-            val gameItemData = gameList.find { gameItemData ->
-                gameItemData.thirdGameData != null
-            }
-            if (sConfigData?.thirdOpen == FLAG_OPEN) {
-                mPublicityAdapter.updateEGamesData(gameItemData?.thirdGameData)
-            }
-        }
-
-        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
-            if (isVisible)
-                enterThirdGame(it)
-        }
-
-        //充值提現頁面相關
-        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false) {
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.message_withdraw_maintain)
-                ) {}
-            }
-        }
-
-        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    startActivity(Intent(context, MoneyRechargeActivity::class.java))
-                } else {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.message_recharge_maintain)
-                    ) {}
-                }
-            }
-        }
-
-        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(context, SettingPasswordActivity::class.java).apply {
-                            putExtra(
-                                SettingPasswordActivity.PWD_PAGE,
-                                SettingPasswordActivity.PwdPage.BANK_PWD
-                            )
-                        })
-                    }
-                } else {
-                    viewModel.checkProfileInfoComplete()
-                }
-            }
-        }
-
-        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(context, ProfileActivity::class.java))
-                    }
-                } else {
-                    viewModel.checkBankCardPermissions()
-                }
-            }
-        }
-
-        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { messageId ->
-                if (messageId != -1) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(messageId),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(context, BankActivity::class.java))
-                    }
-                } else {
-                    startActivity(Intent(context, WithdrawActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(context, SettingPasswordActivity::class.java).apply {
-                            putExtra(
-                                SettingPasswordActivity.PWD_PAGE,
-                                SettingPasswordActivity.PwdPage.BANK_PWD
-                            )
-                        })
-                    }
-                } else if (!b) {
-                    startActivity(Intent(context, BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(context, ProfileActivity::class.java))
-                    }
-                } else if (!b) {
-                    startActivity(Intent(context, BankActivity::class.java))
-                }
-            }
-        }
-
-        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    customSecurityDialog = CustomSecurityDialog(requireContext()).apply {
-                        getSecurityCodeClickListener {
-                            this.showSmeTimer300()
-                            viewModel.sendTwoFactor()
-                        }
-                        positiveClickListener = CustomSecurityDialog.PositiveClickListener { number ->
-                            viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
-                        }
-                    }
-                    customSecurityDialog?.show(childFragmentManager, null)
-
-                }
-            }
-        }
-
-        //確認收到簡訊驗證碼
-        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
-            //傳送驗證碼成功後才能解鎖提交按鈕
-            customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
-            sConfigData?.hasGetTwoFactorResult = true
-        }
-
-        //簡訊驗證成功
-        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
-            if (it == true)
-                customSecurityDialog?.dismiss()
-        }
-
-        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
-                startActivity(Intent(context, WithdrawActivity::class.java))
             }
         }
     }
@@ -627,7 +386,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
                             updateBetInfo(recommend, oddsChangeEvent)
                             updateRecommendList(index, recommend)
-                            Timber.e("updateRecommendList")
                         }
 
                         if (isNewestDataFromApi)
@@ -855,25 +613,5 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
 
     private fun subscribeChannelHall(recommend: Recommend) {
         subscribeChannelHall(recommend.gameType, recommend.id)
-    }
-
-    private fun enterThirdGame(result: EnterThirdGameResult) {
-        hideLoading()
-        when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
-                JumpUtil.toThirdGameWeb(
-                    this,
-                    result.url ?: "",
-                    thirdGameCategoryCode = result.thirdGameCategoryCode
-                )
-            }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NONE -> {
-            }
-        }
-        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
-            viewModel.clearThirdGame()
     }
 }

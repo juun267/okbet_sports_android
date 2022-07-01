@@ -129,41 +129,4 @@
         android:src="@drawable/ic_menu"
         android:visibility="gone"
         tools:visibility="visible" />
-
-    <LinearLayout
-        android:id="@+id/ll_language"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-        <ImageView
-            android:id="@+id/iv_language_icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="6dp"
-            android:layout_marginBottom="15dp"
-            android:src="@drawable/ic_flag_cn" />
-
-        <TextView
-            android:id="@+id/tv_language_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_bbbbbb_ffffff"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="@string/language_cn" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/arrow_gray" />
-    </LinearLayout>
-
 </LinearLayout>

@@ -10,14 +10,6 @@
     tools:layout_height="wrap_content">
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
-        android:id="@+id/navigation_home"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:btiIcon="@drawable/ic_home"
-        app:btiTitle="@string/bottom_nav_home" />
-
-    <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
         android:id="@+id/navigation_sport"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -30,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:visibility="gone"
+        android:visibility="visible"
         app:btiIcon="@drawable/ic_navigation_star"
         app:btiTitle="@string/my_favorite" />
 

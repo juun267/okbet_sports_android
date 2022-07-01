@@ -57,18 +57,14 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashSave() {
                 if (checkLogin()) {
-                    MultiLanguagesApplication.mInstance.mThirdGamesCashSystem.value = Event(true)
-                    finish()
-//                    viewModel.checkRechargeSystem()
+                    viewModel.checkRechargeSystem()
                 }
             }
 
             override fun onCashGet() {
                 if (checkLogin()) {
                     avoidFastDoubleClick()
-                    MultiLanguagesApplication.mInstance.mThirdGamesCashSystem.value = Event(false)
-                    finish()
-//                    viewModel.checkWithdrawSystem()
+                    viewModel.checkWithdrawSystem()
                 }
             }
         })

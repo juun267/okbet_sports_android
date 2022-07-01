@@ -4,17 +4,17 @@
     android:id="@+id/ivTitle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/margin_7"
-    android:paddingBottom="@dimen/margin_3"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="10dp"
     android:gravity="center"
     android:orientation="horizontal"
     tools:ignore="SpUsage, ContentDescription">
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16"
-        android:src="@drawable/ic_hot_ball" />
+        android:layout_height="16dp"
+        android:layout_marginStart="14dp"
+        android:src="@drawable/ic_hot" />
 
     <TextView
         android:layout_width="0dp"

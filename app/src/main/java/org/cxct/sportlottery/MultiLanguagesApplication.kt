@@ -94,9 +94,6 @@ class MultiLanguagesApplication : Application() {
     val isScrollDown: LiveData<Event<Boolean>>
         get() = _isScrollDown
 
-    //TODO: 第三方充值提現流程待優化 (先避免橫向畫面彈窗跑版問題)
-    val mThirdGamesCashSystem = MutableLiveData<Event<Boolean>>()
-
 
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }

@@ -771,13 +771,13 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         sport_bottom_navigation.apply {
             setNavigationItemClickListener {
                 when (it) {
-                    R.id.navigation_home -> {
-                        viewModel.navHome()
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
                         finish()
                         false
                     }
-                    R.id.navigation_sport -> {
-                        viewModel.navGame()
+                    R.id.navigation_game -> {
+                        viewModel.navMyFavorite()
                         finish()
                         false
                     }

@@ -2904,15 +2904,9 @@ class GameViewModel(
                             setupSocketMatchStatus()
                         }
                     }
-                    val recommendList = arrayListOf<Recommend>()
-                    if (result.result.recommendList.isNotEmpty())
-                        recommendList.add(result.result.recommendList.first()) //只取第一筆
-
-                    _publicityRecommend.postValue(Event(recommendList))
+                    _publicityRecommend.postValue(Event(result.result.recommendList))
 
                     notifyFavorite(FavoriteType.MATCH)
-                } else {
-                    _publicityRecommend.postValue(Event(emptyList()))
                 }
             }
         }
@@ -3133,17 +3127,6 @@ class GameViewModel(
                 }
             }
         }
-    }
-
-    //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
-    fun clearThirdGame() {
-        _enterThirdGameResult.postValue(
-            EnterThirdGameResult(
-                resultType = EnterThirdGameResult.ResultType.NONE,
-                url = null,
-                errorMsg = null
-            )
-        )
     }
     //endregion
 }
