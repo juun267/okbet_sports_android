@@ -129,6 +129,9 @@ class RedEnvelopeReceiveDialog(
         val lin = LinearInterpolator()
         operatingAnim.interpolator = lin
         iv_radiance.startAnimation(operatingAnim)
+        iv_red_close.setOnClickListener {
+            dismiss()
+        }
     }
 
 
@@ -192,4 +195,7 @@ class RedEnvelopeReceiveDialog(
         mHandler.removeMessages(0)
     }
 
+    fun dismissDialog() {
+        dismiss()
+    }
 }

@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -27,6 +29,10 @@ import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -42,6 +48,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
+import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
@@ -72,17 +79,28 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.parceler.Parcels
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
+    private var mTimer: Timer? = null
+    private var redenpId: Int = 0
+    private var redenpStartTime: String? = null
+    private var redenpEndTime: String? = null
+    private var gone: Boolean = false
+    private var count = 0
 
     companion object {
         fun reStart(context: Context) {
             val intent = Intent(context, GameActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
-            if(context is Activity){
-                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+            if (context is Activity) {
+                context.overridePendingTransition(
+                    R.anim.push_right_to_left_enter,
+                    R.anim.push_right_to_left_exit
+                )
             }
         }
 
@@ -135,11 +153,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 btn_floating_service.setView(this)
             }
             else -> {
-                btn_floating_service.visibility=View.GONE
+                btn_floating_service.visibility = View.GONE
             }
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -164,6 +183,63 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
         queryData()
         setupDataSourceChange()
+        mTimer = Timer()
+        mTimer?.schedule(object : TimerTask() {
+            override fun run() {
+                count++
+
+                if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
+                    if (count % 10 == 0 && viewModel.getLoginBoolean()) {
+                        getRain()
+                        count = 0
+                    }
+
+                    if (redenpStartTime != null && TimeUtil.dateDiffDay(
+                            TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), redenpStartTime,
+                            TimeUtil.YMD_HMS_FORMAT
+                        ) in 0..60
+                    ) {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            btn_floating_red_envelope.setView(true)
+                            //60s 倒计时
+                            btn_floating_red_envelope.setCountdown(
+                                TimeUtil.dateDiffDay(
+                                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), redenpStartTime,
+                                    TimeUtil.YMD_HMS_FORMAT
+                                )
+                            )
+                        }
+
+
+                    }
+
+                    if (redenpStartTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT))) {
+                        logRedEnvelopeReceiveDialog.show(
+                            supportFragmentManager,
+                            GameActivity::class.java.simpleName
+                        )
+                        GlobalScope.launch(Dispatchers.Main) {
+                            btn_floating_red_envelope.setView(false)
+                        }
+
+                    }
+
+                }
+                if (redenpEndTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT)) && logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        logRedEnvelopeReceiveDialog.dismiss()
+                    }
+
+                }
+
+            }
+
+
+        }, 1000, 1000)
+    }
+
+    private fun getRain() {
+        viewModel.getRain()
     }
 
     override fun onStart() {
@@ -173,13 +249,17 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val matchId = intent.getStringExtra(GamePublicityActivity.PUBLICITY_MATCH_ID)
             val gameTypeCode = intent.getStringExtra(GamePublicityActivity.PUBLICITY_GAME_TYPE)
             val gameType = GameType.getGameType(gameTypeCode) ?: GameType.OTHER
-            val intentMatchType = intent.getSerializableExtra(GamePublicityActivity.PUBLICITY_MATCH_TYPE)
+            val intentMatchType =
+                intent.getSerializableExtra(GamePublicityActivity.PUBLICITY_MATCH_TYPE)
             val matchType = if (intentMatchType != null) intentMatchType as MatchType else null
             val matchList =
                 intent.getParcelableArrayListExtra<MatchInfo>(GamePublicityActivity.PUBLICITY_MATCH_LIST)
             matchId?.let {
                 navDeatilFragment(
-                    matchID = matchId, gameType = gameType, matchType = matchType, matchList = matchList
+                    matchID = matchId,
+                    gameType = gameType,
+                    matchType = matchType,
+                    matchList = matchList
                 )
             }
         }
@@ -265,7 +345,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
                 if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             }
-            val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
+            val leftMenuFragment =
+                supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
             leftMenuFragment.setCloseMenuListener {
                 hideSoftKeyboard(this)
                 sub_drawer_layout.closeDrawers()
@@ -431,7 +512,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
-                tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
+                tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday)
+                    .plus(countEarly)
                     .plus(countOutright).plus(countEps).toString()
             }
 
@@ -440,7 +522,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_number?.text = countInPlay.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.AT_START) ?: 2)?.customView?.apply {
+            tabLayout.getTabAt(
+                getMatchTypeTabPosition(MatchType.AT_START) ?: 2
+            )?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_at_start), 0.7f)
                 tv_number?.text = countAtStart.toString()
             }
@@ -455,7 +539,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_number?.text = countEarly.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5)?.customView?.apply {
+            tabLayout.getTabAt(
+                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5
+            )?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
@@ -597,10 +683,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
-                val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(
-                    detailMatchType, gameType, matchID,
-                    detailMatchList
-                )
+                val action =
+                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(
+                        detailMatchType, gameType, matchID,
+                        detailMatchList
+                    )
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
@@ -825,7 +912,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
                     MatchType.DETAIL -> {
                         it.matchID?.let { matchId ->
-                            navDeatilFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
+                            navDeatilFragment(
+                                matchId,
+                                it.gameType ?: GameType.OTHER,
+                                it.gameMatchType
+                            )
                         }
                     }
                     else -> {
@@ -852,12 +943,24 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     else -> {
                         //僅有要切換的MatchType與當前選中的Tab相同時才繼續進行後續的切頁行為, 避免快速切頁導致切頁邏輯進入無窮迴圈
                         when {
-                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.IN_PLAY) ||
-                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(MatchType.AT_START) ||
-                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.TODAY) ||
-                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.EARLY) ||
-                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(MatchType.OUTRIGHT) ||
-                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.PARLAY)
+                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.IN_PLAY
+                            ) ||
+                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.AT_START
+                            ) ||
+                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.TODAY
+                            ) ||
+                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.EARLY
+                            ) ||
+                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.OUTRIGHT
+                            ) ||
+                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.PARLAY
+                            )
                             -> {
                                 navGameFragment(it)
                             }
@@ -910,6 +1013,38 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.navPublicityPage.observe(this) {
             GamePublicityActivity.reStart(this)
+        }
+        viewModel.rainResult.observe(this) {
+            var redEnvelopeInfo = it.redEnvelopeInfo
+            if (redEnvelopeInfo != null) {
+                var serverTime =
+                    TimeUtil.timeFormat(redEnvelopeInfo.serverTime, TimeUtil.YMD_HMS_FORMAT)
+
+                var difference = TimeUtil.dateDiffDay(
+                    serverTime,
+                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT),
+                    TimeUtil.YMD_HMS_FORMAT
+                )
+
+                redenpId = redEnvelopeInfo.redenpId
+                if (logRedEnvelopeReceiveDialog.redenpId == 0) {
+                    logRedEnvelopeReceiveDialog.redenpId = redEnvelopeInfo.redenpId
+                }
+                redenpStartTime = TimeUtil.getPreTime(
+                    TimeUtil.timeFormat(
+                        (redEnvelopeInfo.redenpStartTime),
+                        TimeUtil.YMD_HMS_FORMAT
+                    ), difference, TimeUtil.YMD_HMS_FORMAT
+                )
+                redenpEndTime = TimeUtil.getPreTime(
+                    TimeUtil.timeFormat(
+                        (redEnvelopeInfo.redenpEndTime),
+                        TimeUtil.YMD_HMS_FORMAT
+                    ), difference, TimeUtil.YMD_HMS_FORMAT
+                )
+
+            }
+
         }
     }
 
@@ -1096,7 +1231,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun closeLeftMenu() {
-        val leftMenuFragment = supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
+        val leftMenuFragment =
+            supportFragmentManager.findFragmentById(R.id.fl_left_menu) as LeftMenuFragment
         leftMenuFragment.clearLeftMenu()
         if (sub_drawer_layout.isDrawerOpen(nav_left)) sub_drawer_layout.closeDrawers()
     }
@@ -1110,6 +1246,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onDestroy() {
         expandCheckList.clear()
         HomePageStatusManager.clear()
+        mTimer?.cancel()
+        mTimer = null
         super.onDestroy()
     }
 
@@ -1120,4 +1258,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             )
         }
     }
+
+    private val logRedEnvelopeReceiveDialog by lazy {
+        RedEnvelopeReceiveDialog(
+            this,
+            redenpId
+        )
+    }
+
 }

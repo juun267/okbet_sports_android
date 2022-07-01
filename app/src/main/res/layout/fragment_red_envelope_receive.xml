@@ -18,6 +18,15 @@
         tools:ignore="MissingConstraints">
 
         <ImageView
+            android:id="@+id/iv_red_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/red_envelope_close" />
+
+        <ImageView
             android:id="@+id/iv_radiance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
