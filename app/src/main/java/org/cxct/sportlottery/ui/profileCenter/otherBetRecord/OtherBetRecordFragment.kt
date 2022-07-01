@@ -119,7 +119,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
 
                 layout_total.apply {
                     tv_total_number.text = (totalCount ?: 0).toString()
-                    tv_total_bet_profit.setProfitFormat(totalWin)
+                    tv_total_bet_profit.setProfitFormat(totalWin, isTotal = true)
                     tv_total_bet_profit.setMoneyColor(totalWin ?: 0.0)
                 }
 

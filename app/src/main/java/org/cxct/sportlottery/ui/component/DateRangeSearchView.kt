@@ -3,24 +3,21 @@ package org.cxct.sportlottery.ui.component
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
-import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
 import java.util.*
 
 class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     var dateRange = -30
-    private var minusDays = 7
+    private var minusDays = 6
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
@@ -42,7 +39,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         val view = LayoutInflater.from(context).inflate(R.layout.component_date_range_selector, this, false)
         addView(view)
         dateRange = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_dateRange, -30)
-        minusDays = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_minusDays, 7)
+        minusDays = typedArray.getInteger(R.styleable.CalendarBottomSheetStyle_minusDays, 6)
 
         try {
             initDate(minusDays)
@@ -58,7 +55,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun initDate(minusDays: Int) {
-        tv_start_date.text = TimeUtil.getDefaultDate(minusDays).startTime
+        tv_start_date.text = TimeUtil.getDefaultDate().startTime
         tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
 
