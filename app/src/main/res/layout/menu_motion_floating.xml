@@ -18,42 +18,50 @@
 
     <ImageView
         android:id="@+id/motion_back_home"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_circle_0058c0"
         android:contentDescription="@null"
-        android:src="@drawable/motion_back_home"
+        android:padding="14dp"
+        android:src="@drawable/ic_floating_home"
         app:layout_constraintBottom_toTopOf="@id/motion_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/motion_cash_save"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="38.75dp"
+        android:background="@drawable/bg_circle_0058c0"
         android:contentDescription="@null"
-        android:src="@drawable/motion_cash_save"
+        android:padding="14dp"
+        android:src="@drawable/ic_floating_depoit"
         app:layout_constraintStart_toEndOf="@id/motion_close"
         app:layout_constraintTop_toTopOf="@id/motion_back_home" />
 
     <ImageView
         android:id="@+id/motion_cash_get"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="30dp"
+        android:background="@drawable/bg_circle_0058c0"
         android:contentDescription="@null"
-        android:src="@drawable/motion_cash_get"
+        android:padding="14dp"
+        android:src="@drawable/ic_floating_withdraw"
         app:layout_constraintStart_toStartOf="@id/motion_cash_save"
         app:layout_constraintTop_toBottomOf="@id/motion_cash_save" />
 
     <ImageView
         android:id="@+id/motion_close"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="@drawable/bg_circle_0058c0"
         android:contentDescription="@null"
-        android:src="@drawable/ic_btnclose"
+        android:padding="21dp"
+        android:src="@drawable/ic_floating_close"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
