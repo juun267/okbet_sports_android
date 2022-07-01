@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
@@ -576,6 +577,18 @@ object SocketUpdateUtil {
 
         oddsDetailListData.oddArrayList.forEach { odd ->
             odd?.status = BetStatus.LOCKED.code
+            isNeedRefresh = true
+        }
+
+        return isNeedRefresh
+    }
+
+    fun updateOddStatus(betInfoListData: BetInfoListData, matchStatusEvent: MatchStatusChangeEvent): Boolean {
+        var isNeedRefresh = false
+
+        if (betInfoListData.matchOdd.matchId == matchStatusEvent.matchStatusCO?.matchId) {
+            betInfoListData.matchOdd.status = BetStatus.LOCKED.code
+            betInfoListData.amountError = true
             isNeedRefresh = true
         }
 
