@@ -1217,8 +1217,6 @@
     <string name="timezone_list_no_record">搜寻结果为空</string>
     <!--endregion-->
 
-    <string name="e_games">E-Games</string>
-    <string name="e_games_slogan">全新体验</string>
     <string name="verification_status">身份证验证</string>
     <string name="register_identity_photo_front">上传身分证正面</string>
     <string name="register_identity_photo_hint_front">请点击上传身分证正面照</string>

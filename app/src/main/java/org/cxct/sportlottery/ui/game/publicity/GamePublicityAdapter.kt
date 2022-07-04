@@ -6,37 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
-import kotlinx.android.synthetic.main.button_odd_detail_publicity.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
-import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
-import org.cxct.sportlottery.ui.game.common.OddStatePublicityViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
 
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :

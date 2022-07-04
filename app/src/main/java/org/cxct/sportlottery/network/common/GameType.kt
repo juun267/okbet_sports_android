@@ -196,27 +196,5 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
-        fun getGameTypeBackground(gameType: String): Int {
-            return when (gameType) {
-                FT.key -> R.drawable.bg_board_game_soccer
-                BK.key -> R.drawable.bg_board_game_basketball
-                TN.key -> R.drawable.bg_board_game_tennis
-                VB.key -> R.drawable.bg_board_game_volleyball
-                TT.key -> R.drawable.bg_board_game_pingpong
-                BM.key -> R.drawable.bg_board_game_badminton
-                AFT.key -> R.drawable.bg_board_game_amfootball
-                BB.key -> R.drawable.bg_board_game_baseball
-                BX.key -> R.drawable.bg_board_game_boxing
-                CK.key -> R.drawable.bg_board_game_cricket
-                FB.key -> R.drawable.bg_board_game_finance
-                GF.key -> R.drawable.bg_board_game_golf
-                IH.key -> R.drawable.bg_board_game_ice_hockey
-                MR.key -> R.drawable.bg_board_game_racing
-                RB.key -> R.drawable.bg_board_game_rugby
-                CB.key -> R.drawable.bg_board_game_snooker
-                OTHER.key -> R.drawable.bg_board_game_other
-                else -> R.drawable.bg_board_game_other
-            }
-        }
     }
 }
