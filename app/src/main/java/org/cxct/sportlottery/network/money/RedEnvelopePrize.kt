@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 data class RedEnvelopePrize(
     @Json(name = "grabMoney")
-    val grabMoney: String,//抢包金额
+    val grabMoney: String?,//抢包金额
     @Json(name = "betMoney")
     val betMoney: String?,//红包雨设置打码量
     @Json(name = "userBetMoney")

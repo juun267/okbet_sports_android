@@ -15,7 +15,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     init {
-        setStyle(R.style.CustomDialogStyle)
+        setStyle(R.style.FullScreen)
     }
     companion object {
         @JvmStatic

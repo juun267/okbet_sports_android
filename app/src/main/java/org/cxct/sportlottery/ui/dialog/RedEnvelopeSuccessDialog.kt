@@ -17,7 +17,7 @@ import org.cxct.sportlottery.util.TextUtil
 
 class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     init {
-        setStyle(R.style.CustomDialogStyle)
+        setStyle(R.style.FullScreen)
     }
 
     companion object {

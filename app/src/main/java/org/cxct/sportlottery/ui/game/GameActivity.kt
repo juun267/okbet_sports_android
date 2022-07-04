@@ -48,7 +48,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
+import org.cxct.sportlottery.ui.dialo.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
@@ -88,7 +88,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private var redenpId: Int = 0
     private var redenpStartTime: String? = null
     private var redenpEndTime: String? = null
-    private var gone: Boolean = false
     private var count = 0
 
     companion object {
@@ -173,6 +172,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initTabLayout()
         initObserve()
         initServiceButton()
+
+        logRedEnvelopeReceiveDialog.show(
+            supportFragmentManager,
+            GameActivity::class.java.simpleName
+        )
         try {
             val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
             if (flag == "true") {
@@ -181,13 +185,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
         queryData()
         setupDataSourceChange()
         mTimer = Timer()
         mTimer?.schedule(object : TimerTask() {
             override fun run() {
                 count++
-
                 if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
                     if (count % 10 == 0 && viewModel.getLoginBoolean()) {
                         getRain()
@@ -195,16 +199,17 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
 
                     if (redenpStartTime != null && TimeUtil.dateDiffDay(
-                            TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), redenpStartTime,
+                            TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), "$redenpStartTime:00",
                             TimeUtil.YMD_HMS_FORMAT
-                        ) in 0..60
+                        ) in 0..180
                     ) {
                         GlobalScope.launch(Dispatchers.Main) {
                             btn_floating_red_envelope.setView(true)
-                            //60s 倒计时
+                            //180s 倒计时
                             btn_floating_red_envelope.setCountdown(
                                 TimeUtil.dateDiffDay(
-                                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), redenpStartTime,
+                                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT),
+                                    "$redenpStartTime:00",
                                     TimeUtil.YMD_HMS_FORMAT
                                 )
                             )
@@ -213,7 +218,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
                     }
 
-                    if (redenpStartTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT))) {
+                    if (redenpStartTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HM_FORMAT))) {
                         logRedEnvelopeReceiveDialog.show(
                             supportFragmentManager,
                             GameActivity::class.java.simpleName
@@ -225,11 +230,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
 
                 }
-                if (redenpEndTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT)) && logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        logRedEnvelopeReceiveDialog.dismiss()
-                    }
-
+                if (redenpEndTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HM_FORMAT)) && logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
+                    logRedEnvelopeReceiveDialog.dismiss()
                 }
 
             }
@@ -1018,12 +1020,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             var redEnvelopeInfo = it.redEnvelopeInfo
             if (redEnvelopeInfo != null) {
                 var serverTime =
-                    TimeUtil.timeFormat(redEnvelopeInfo.serverTime, TimeUtil.YMD_HMS_FORMAT)
+                    TimeUtil.timeFormat(redEnvelopeInfo.serverTime, TimeUtil.YMD_HM_FORMAT)
 
                 var difference = TimeUtil.dateDiffDay(
                     serverTime,
-                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT),
-                    TimeUtil.YMD_HMS_FORMAT
+                    TimeUtil.nowTime(TimeUtil.YMD_HM_FORMAT),
+                    TimeUtil.YMD_HM_FORMAT
                 )
 
                 redenpId = redEnvelopeInfo.redenpId
@@ -1033,16 +1035,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 redenpStartTime = TimeUtil.getPreTime(
                     TimeUtil.timeFormat(
                         (redEnvelopeInfo.redenpStartTime),
-                        TimeUtil.YMD_HMS_FORMAT
-                    ), difference, TimeUtil.YMD_HMS_FORMAT
+                        TimeUtil.YMD_HM_FORMAT
+                    ), difference, TimeUtil.YMD_HM_FORMAT
                 )
                 redenpEndTime = TimeUtil.getPreTime(
                     TimeUtil.timeFormat(
                         (redEnvelopeInfo.redenpEndTime),
-                        TimeUtil.YMD_HMS_FORMAT
-                    ), difference, TimeUtil.YMD_HMS_FORMAT
+                        TimeUtil.YMD_HM_FORMAT
+                    ), difference, TimeUtil.YMD_HM_FORMAT
                 )
-
             }
 
         }

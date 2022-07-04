@@ -1,15 +1,14 @@
-package org.cxct.sportlottery.ui.dialog
+package org.cxct.sportlottery.ui.dialo
 
+import org.cxct.sportlottery.ui.dialog.RedEnvelopeFailDialog
+import org.cxct.sportlottery.ui.dialog.RedEnvelopeSuccessDialog
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,12 +21,13 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Lifecycle
 import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -42,6 +42,11 @@ class RedEnvelopeReceiveDialog(
         BitmapFactory.decodeResource(context?.resources, R.drawable.packet_three),
         BitmapFactory.decodeResource(context?.resources, R.drawable.luck_packet),
     )
+
+    init {
+        setStyle(R.style.FullScreen)
+    }
+
     private val BARRAGE_GAP_MIN_DURATION: Long = 1000 //两个弹幕的最小间隔时间
     private val BARRAGE_GAP_MAX_DURATION: Long = 3000 //两个弹幕的最大间隔时间
 
@@ -63,31 +68,54 @@ class RedEnvelopeReceiveDialog(
         super.onViewCreated(view, savedInstanceState)
         initView()
         initObserve()
-    }
 
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
+
     private fun initObserve() {
-        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) {
+        viewModel.redEnvelopePrizeResult.observe(this) { it ->
             if (it.success) {
                 var redEnvelopePrize = it.redEnvelopePrize
-                activity?.supportFragmentManager?.let {
-                    RedEnvelopeSuccessDialog.newInstance(
-                        redEnvelopePrize?.grabMoney
-                    ).show(it, null)
+                if (redEnvelopePrize?.grabMoney?.toDouble()!! > 0) {
+                    var edEnvelopeSuccessDialog = RedEnvelopeSuccessDialog.newInstance(
+                        redEnvelopePrize.grabMoney
+                    )
+                    activity?.supportFragmentManager?.let {
+                        if (edEnvelopeSuccessDialog.dialog?.isShowing == false) {
+                            edEnvelopeSuccessDialog.show(it, null)
+                        }
+
+                    }
+
+                } else {
+                    activity?.supportFragmentManager?.let {
+                        RedEnvelopeFailDialog.newInstance().show(it, null)
+                    }
                 }
+
             } else {
+
+                var redEnvelopeFailDialog =   RedEnvelopeFailDialog.newInstance(
+
+                )
+
                 activity?.supportFragmentManager?.let {
-                    RedEnvelopeFailDialog.newInstance().show(it, null)
+                    redEnvelopeFailDialog.show(it, null)
                 }
+
             }
 
-            dismiss()
+//            parentFragmentManager.findFragmentByTag(GameActivity::class.java.simpleName)?.let {
+//                (it as DialogFragment).dismiss()
+//            }
+
+            //dialog?.dismiss()
+
+
             iv_radiance.clearAnimation()
         }
 
@@ -98,21 +126,10 @@ class RedEnvelopeReceiveDialog(
         p = Point()
         activity?.windowManager?.defaultDisplay?.getSize(p);
 
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        dialog?.window?.setBackgroundDrawable(
-            InsetDrawable(
-                ColorDrawable(Color.TRANSPARENT),
-                26.dp
-            )
-        )
         setContentView()
 
 
     }
-
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {
         dialog?.setCanceledOnTouchOutside(boolean)
@@ -161,6 +178,8 @@ class RedEnvelopeReceiveDialog(
                     startAnimation(image, 0f)
                     image!!.setOnClickListener {
                         viewModel.getRedEnvelopePrize(redenpId)
+                        redenpId = 0
+                        dismiss()
                     }
                     image = null
                 }
@@ -189,13 +208,17 @@ class RedEnvelopeReceiveDialog(
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         image = null
         mHandler.removeMessages(0)
-    }
-
-    fun dismissDialog() {
-        dismiss()
     }
 }
