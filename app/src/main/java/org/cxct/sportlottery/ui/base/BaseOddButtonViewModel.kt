@@ -100,7 +100,10 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun getMoney() {
-        if (isLogin.value == false) return
+        if (isLogin.value == false) {
+            mUserMoney.postValue(0.0)
+            return
+        }
 
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {

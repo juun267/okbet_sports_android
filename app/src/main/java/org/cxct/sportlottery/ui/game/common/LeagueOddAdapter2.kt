@@ -516,6 +516,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                         setImageResource(
                             when {
                                 item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                                item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_0_0
                                 item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
                                 item.matchInfo?.firstBaseBag == 0 && item.matchInfo.secBaseBag == 0 && item.matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
                                 item.matchInfo?.firstBaseBag == 1 && item.matchInfo.secBaseBag == 1 && item.matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0

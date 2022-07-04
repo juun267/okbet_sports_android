@@ -472,6 +472,7 @@ class Vp2GameTable4Adapter(
                                     setImageResource(
                                         when {
                                             data?.firstBaseBag == 0 && data.secBaseBag == 0 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                                            data?.firstBaseBag == 1 && data.secBaseBag == 0 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_0_0
                                             data?.firstBaseBag == 0 && data.secBaseBag == 1 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
                                             data?.firstBaseBag == 0 && data.secBaseBag == 0 && data.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
                                             data?.firstBaseBag == 1 && data.secBaseBag == 1 && data.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
