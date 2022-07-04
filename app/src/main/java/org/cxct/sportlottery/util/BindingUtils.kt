@@ -382,6 +382,7 @@ fun needCountStatus(status: Int?): Boolean {
             || status == GameMatchStatus.FOURTH_QUARTER.value
             || status == GameMatchStatus.OVERTIME_FIRST_HALF.value
             || status == GameMatchStatus.OVERTIME_SECOND_HALF.value
+            || status == GameMatchStatus.OVERTIME.value
 }
 
 fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
