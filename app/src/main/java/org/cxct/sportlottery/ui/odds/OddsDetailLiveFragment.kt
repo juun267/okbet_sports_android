@@ -867,6 +867,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         setImageResource(
             when {
                 event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 0 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                event.matchStatusCO?.firstBaseBag == 1 && event.matchStatusCO.secBaseBag == 0 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_0_0
                 event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 1 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
                 event.matchStatusCO?.firstBaseBag == 0 && event.matchStatusCO.secBaseBag == 0 && event.matchStatusCO.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
                 event.matchStatusCO?.firstBaseBag == 1 && event.matchStatusCO.secBaseBag == 1 && event.matchStatusCO.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
