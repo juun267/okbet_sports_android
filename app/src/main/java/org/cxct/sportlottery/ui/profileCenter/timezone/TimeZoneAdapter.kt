@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemTimezoneBinding
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.TimeZone.getTimeZone
 
@@ -59,7 +60,6 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                     binding.tvCountry.text=data.country_vi
                 }
             }
-            TimeUtil
             binding.tvDateWeek.text = getDateAndWeek(data.name.replace(" ",""))
 
             if (data.isSelected){
@@ -73,7 +73,10 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
 
         fun getDateAndWeek(timeZone:String):String{
             var cal=Calendar.getInstance(java.util.TimeZone.getTimeZone(timeZone))
-            return TimeUtil.dateToDateFormat(cal.time)+ "(" + TimeUtil.setupDayOfWeekVi(itemView.context,cal) + ")"
+            val newFormatter = SimpleDateFormat(TimeUtil.MD_FORMAT, Locale.getDefault())
+            newFormatter.timeZone=java.util.TimeZone.getTimeZone(timeZone)
+            var date=newFormatter.format(cal.time)
+            return date+ "(" + TimeUtil.setupDayOfWeekVi(itemView.context,cal) + ")"
         }
 
         companion object {
