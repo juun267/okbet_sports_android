@@ -414,7 +414,8 @@ object Constants {
 
     const val RED_ENVELOPE_CHECK = "/api/front/redenp/rain/info"    //10s一次
 
-    const val RED_ENVELOPE_PRIZE = "/api/front/redenp/rain/grab/{redEnpId}"
+    const val RED_ENVELOPE_PRIZE_BASE = "/api/front/redenp/rain/grab"
+    const val RED_ENVELOPE_PRIZE = "${RED_ENVELOPE_PRIZE_BASE}/{redEnpId}"
 
 
     //bettingStation

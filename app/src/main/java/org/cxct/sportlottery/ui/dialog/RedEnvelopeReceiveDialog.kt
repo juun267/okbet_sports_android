@@ -90,8 +90,9 @@ class RedEnvelopeReceiveDialog(
 
 
     private fun initObserve() {
-        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) {
-            redenpId = 0
+        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { it ->
+            if (redenpId == null) return@observe
+            redenpId = null
             if (it.success) {
                 var redEnvelopePrize = it.redEnvelopePrize
                 activity?.supportFragmentManager?.let {
@@ -104,7 +105,6 @@ class RedEnvelopeReceiveDialog(
                     RedEnvelopeFailDialog.newInstance().show(it, null)
                 }
             }
-            iv_radiance.clearAnimation()
             dismiss()
         }
 

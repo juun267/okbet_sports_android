@@ -413,38 +413,45 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private val timerTask: TimerTask by lazy {
         object : TimerTask() {
             override fun run() {
-                if (viewModel.getLoginBoolean()) {
-                    if (count % 10 == 0) {
-                        viewModel.getRain()
-                        count = 0
-                    }
-                    count++
+                if (!viewModel.getLoginBoolean()) {
+                    return
                 }
-                if (redenpStartTime != null && logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
+                if (count % 10 == 0) {
+                    viewModel.getRain()
+                    count = 0
+                }
+                count++
+
+                if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
                     val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
-                    if (startTimeDiff in 0..180) {
+                    if (startTimeDiff in 1..180) {
                         GlobalScope.launch(Dispatchers.Main) {
-                            btn_floating_red_envelope.setView(true)
+                            btn_floating_red_envelope?.setView(true)
                             //180s 倒计时
-                            btn_floating_red_envelope.setCountdown(startTimeDiff)
+                            btn_floating_red_envelope?.setCountdown(startTimeDiff)
                         }
-
-
-                    } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
+                    } else if (startTimeDiff <= 0 && endTimeDiff >= 0 && viewModel.getRainShowing() == -1) {
+                        viewModel.setRainShowing(redenpId)
+                        logRedEnvelopeReceiveDialog.redenpId = redenpId
                         logRedEnvelopeReceiveDialog.show(
                             supportFragmentManager,
-                            GameActivity::class.java.simpleName
+                            this::class.java.simpleName
                         )
                         GlobalScope.launch(Dispatchers.Main) {
-                            btn_floating_red_envelope.setView(false)
+                            btn_floating_red_envelope?.setView(false)
                         }
-
                     }
-                } else if (logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
+                    else if (endTimeDiff < 0) {
+                        viewModel.setRainShowing(-1)
+                    }
+                } else  {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (endTimeDiff < 0) {
-                        logRedEnvelopeReceiveDialog.dismiss()
+                        if (logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
+                            logRedEnvelopeReceiveDialog.dismiss()
+                        }
+                        viewModel.setRainShowing(-1)
                     }
                 }
             }
@@ -472,9 +479,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 val difference = serverTime - System.currentTimeMillis()
 
                 redenpId = redEnvelopeInfo.redenpId
-                if (logRedEnvelopeReceiveDialog.redenpId == 0) {
-                    logRedEnvelopeReceiveDialog.redenpId = redEnvelopeInfo.redenpId
-                }
                 redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
                 redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
             }
