@@ -21,13 +21,10 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Lifecycle
 import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -42,6 +39,19 @@ class RedEnvelopeReceiveDialog(
         BitmapFactory.decodeResource(context?.resources, R.drawable.packet_three),
         BitmapFactory.decodeResource(context?.resources, R.drawable.luck_packet),
     )
+    val map by lazy {
+        mapOf<Bitmap, Long>(
+        bitmap[0] to 1269,
+        bitmap[1] to 1486,
+        bitmap[2] to 1723,
+        bitmap[3] to 1255,
+    )
+    }
+//    按照 UI 動畫高度 896 換算，
+//    紅包51x66(大)速率:126.9/s
+//    紅包45x58(中)速率:148.59/s
+//    紅包38x48(小)速率:172.3/s
+//    福袋 40x54 速率:125.49/s
 
     init {
         setStyle(R.style.FullScreen)
@@ -68,7 +78,6 @@ class RedEnvelopeReceiveDialog(
         super.onViewCreated(view, savedInstanceState)
         initView()
         initObserve()
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,46 +86,24 @@ class RedEnvelopeReceiveDialog(
 
 
     private fun initObserve() {
-        viewModel.redEnvelopePrizeResult.observe(this) { it ->
+        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) {
+            redenpId = 0
             if (it.success) {
                 var redEnvelopePrize = it.redEnvelopePrize
-                if (redEnvelopePrize?.grabMoney?.toDouble()!! > 0) {
-                    var edEnvelopeSuccessDialog = RedEnvelopeSuccessDialog.newInstance(
-                        redEnvelopePrize.grabMoney
-                    )
-                    activity?.supportFragmentManager?.let {
-                        if (edEnvelopeSuccessDialog.dialog?.isShowing == false) {
-                            edEnvelopeSuccessDialog.show(it, null)
-                        }
-
-                    }
-
-                } else {
-                    activity?.supportFragmentManager?.let {
-                        RedEnvelopeFailDialog.newInstance().show(it, null)
-                    }
-                }
-
-            } else {
-
-                var redEnvelopeFailDialog =   RedEnvelopeFailDialog.newInstance(
-
-                )
-
                 activity?.supportFragmentManager?.let {
-                    redEnvelopeFailDialog.show(it, null)
+                    RedEnvelopeSuccessDialog.newInstance(
+                        redEnvelopePrize?.grabMoney
+                    ).show(it, null)
                 }
-
+            } else {
+                activity?.supportFragmentManager?.let {
+                    RedEnvelopeFailDialog.newInstance().show(it, null)
+                }
             }
-
-//            parentFragmentManager.findFragmentByTag(GameActivity::class.java.simpleName)?.let {
-//                (it as DialogFragment).dismiss()
-//            }
-
-            //dialog?.dismiss()
-
-
             iv_radiance.clearAnimation()
+            dismiss()
+
+
         }
 
     }
@@ -147,6 +134,7 @@ class RedEnvelopeReceiveDialog(
         operatingAnim.interpolator = lin
         iv_radiance.startAnimation(operatingAnim)
         iv_red_close.setOnClickListener {
+            iv_radiance.clearAnimation()
             dismiss()
         }
     }
@@ -175,11 +163,10 @@ class RedEnvelopeReceiveDialog(
                         (Random().nextInt((p!!.y * (0.2 + 0.05 * i)).toInt()) + image!!.height * 1.3).toInt()
                     layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
                     relative_layout.addView(image, layoutParams1)
-                    startAnimation(image, 0f)
+                    var duration = map[ bitmap1]
+                    startAnimation(image, 0f,duration)
                     image!!.setOnClickListener {
                         viewModel.getRedEnvelopePrize(redenpId)
-                        redenpId = 0
-                        dismiss()
                     }
                     image = null
                 }
@@ -190,14 +177,17 @@ class RedEnvelopeReceiveDialog(
             }
         }
 
-        fun startAnimation(imageView: View?, Y: Float) {
+        fun startAnimation(imageView: View?, Y: Float, duration: Long?) {
             val yAnimator: ObjectAnimator =
                 ObjectAnimator.ofFloat(imageView, "translationY", Y, (p!!.y + 300) * 1.2f)
             val YInterpolator: Interpolator = LinearInterpolator()
             yAnimator.interpolator = YInterpolator
             val animatorSet = AnimatorSet()
             animatorSet.play(yAnimator)
-            animatorSet.duration = (mRandom.nextInt(3000) + 4000).toLong()
+            //      animatorSet.duration = (mRandom.nextInt(3000) + 4000).toLong()
+            if (duration != null) {
+                animatorSet.duration = duration
+            }
             animatorSet.start()
             animatorSet.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(animation: Animator) {}
@@ -210,15 +200,17 @@ class RedEnvelopeReceiveDialog(
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+
+//        dialog?.window?.setLayout(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.MATCH_PARENT
+//        )
     }
 
     override fun onDestroy() {
         super.onDestroy()
         image = null
         mHandler.removeMessages(0)
+
     }
 }

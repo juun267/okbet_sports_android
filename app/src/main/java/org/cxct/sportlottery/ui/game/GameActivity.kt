@@ -173,10 +173,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initObserve()
         initServiceButton()
 
-        logRedEnvelopeReceiveDialog.show(
-            supportFragmentManager,
-            GameActivity::class.java.simpleName
-        )
         try {
             val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
             if (flag == "true") {
@@ -218,7 +214,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
                     }
 
-                    if (redenpStartTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HM_FORMAT))) {
+                    if ("$redenpStartTime:00".equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT))) {
                         logRedEnvelopeReceiveDialog.show(
                             supportFragmentManager,
                             GameActivity::class.java.simpleName
