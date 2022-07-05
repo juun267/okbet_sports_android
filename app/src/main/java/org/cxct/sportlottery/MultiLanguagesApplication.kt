@@ -56,6 +56,7 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.isCreditSystem
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
@@ -364,6 +365,7 @@ class MultiLanguagesApplication : Application() {
 
         //確認年齡彈窗
         fun showAgeVerifyDialog(activity: FragmentActivity) {
+            if (isCreditSystem()) return //信用盤不顯示彈窗
             if (getInstance()?.isAgeVerifyNeedShow() == false) return
             AgeVerifyDialog(
                 activity,
