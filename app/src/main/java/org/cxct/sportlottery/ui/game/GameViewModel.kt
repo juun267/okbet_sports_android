@@ -277,11 +277,6 @@ class GameViewModel(
     val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
         get() = _highlightMatchResult
 
-
-    private val _rainResult = MutableLiveData<RedEnvelopeResult>()
-      val rainResult: LiveData<RedEnvelopeResult>
-        get() = _rainResult
-
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
     val betInfoResult: LiveData<Event<BetInfoResult?>>
         get() = _betInfoResult
@@ -444,18 +439,6 @@ class GameViewModel(
         } else {
             curMatchType.value?.let {
                 getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
-            }
-        }
-    }
-
-
-
-    fun getRain() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getRainInfo()
-            }?.let { result ->
-                _rainResult.postValue(result)
             }
         }
     }
@@ -2870,10 +2853,6 @@ class GameViewModel(
 
     fun getIsFastBetOpened(): Boolean {
         return betInfoRepository.getIsFastBetOpened()
-    }
-
-    fun getLoginBoolean(): Boolean {
-        return loginRepository.isLogin.value ?: false
     }
 
     fun resetErrorDialogMsg() {

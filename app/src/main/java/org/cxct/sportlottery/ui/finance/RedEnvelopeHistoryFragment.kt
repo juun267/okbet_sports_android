@@ -72,7 +72,7 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
 
 
     private val redEnvelopeLogAdapter by lazy {
-        RedEnvelopeLogAdapter.apply {
+        RedEnvelopeLogAdapter().apply {
             var redEnvelopeLogLogListener = RedEnvelopeLogListener {
 
             }
@@ -162,7 +162,7 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
 
         viewModel.redEnvelopeListResult.observe(this.viewLifecycleOwner) {
             it?.let {
-                redEnvelopeLogAdapter.data = it
+//                redEnvelopeLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
             }
         }

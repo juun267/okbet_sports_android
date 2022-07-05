@@ -84,11 +84,6 @@ import kotlin.collections.ArrayList
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
-    private var mTimer: Timer? = null
-    private var redenpId: Int = 0
-    private var redenpStartTime: Long? = null
-    private var redenpEndTime: Long? = null
-    private var count = 0
 
     companion object {
         fun reStart(context: Context) {
@@ -184,51 +179,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         queryData()
         setupDataSourceChange()
-        mTimer = Timer()
-        mTimer?.schedule(object : TimerTask() {
-            override fun run() {
-                if (viewModel.getLoginBoolean()) {
-                    if (count % 10 == 0) {
-                        getRain()
-                        count = 0
-                    }
-                    count++
-                }
-                if (redenpStartTime != null && logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
-                    val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
-                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
-                    if ( startTimeDiff in 0..180) {
-                        GlobalScope.launch(Dispatchers.Main) {
-                            btn_floating_red_envelope.setView(true)
-                            //180s 倒计时
-                            btn_floating_red_envelope.setCountdown(startTimeDiff)
-                        }
-
-
-                    }
-                    else if ( startTimeDiff <= 0 && endTimeDiff >= 0) {
-                        logRedEnvelopeReceiveDialog.show(
-                            supportFragmentManager,
-                            GameActivity::class.java.simpleName
-                        )
-                        GlobalScope.launch(Dispatchers.Main) {
-                            btn_floating_red_envelope.setView(false)
-                        }
-
-                    }
-                }
-                else if(logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
-                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
-                    if (endTimeDiff < 0) {
-                        logRedEnvelopeReceiveDialog.dismiss()
-                    }
-                }
-            }
-        }, 1000, 1000)
-    }
-
-    private fun getRain() {
-        viewModel.getRain()
     }
 
     override fun onStart() {
@@ -1003,21 +953,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.navPublicityPage.observe(this) {
             GamePublicityActivity.reStart(this)
         }
-        viewModel.rainResult.observe(this) {
-            var redEnvelopeInfo = it.redEnvelopeInfo
-            if (redEnvelopeInfo != null) {
-                var serverTime = redEnvelopeInfo.serverTime
-                var difference = serverTime - System.currentTimeMillis()
-
-                redenpId = redEnvelopeInfo.redenpId
-                if (logRedEnvelopeReceiveDialog.redenpId == 0) {
-                    logRedEnvelopeReceiveDialog.redenpId = redEnvelopeInfo.redenpId
-                }
-                redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
-                redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
-            }
-
-        }
     }
 
     /**
@@ -1218,8 +1153,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onDestroy() {
         expandCheckList.clear()
         HomePageStatusManager.clear()
-        mTimer?.cancel()
-        mTimer = null
         super.onDestroy()
     }
 
@@ -1229,13 +1162,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
             )
         }
-    }
-
-    private val logRedEnvelopeReceiveDialog by lazy {
-        RedEnvelopeReceiveDialog(
-            this,
-            redenpId
-        )
     }
 
 }
