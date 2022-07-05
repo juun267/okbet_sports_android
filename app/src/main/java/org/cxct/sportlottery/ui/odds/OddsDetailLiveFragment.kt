@@ -62,6 +62,7 @@ import java.util.*
 /**
  * @app_destination 全部玩法(包含直播)
  */
+//TODO 即將開賽轉滾球時會短暫顯示完賽的狀態, 已通報後端進行溝通
 @Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 
@@ -98,32 +99,41 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override var timerHandler: Handler = Handler {
         var timeMillis = startTime * 1000L
 
-        if (!isGamePause) {
-            when (args.gameType) {
-                GameType.FT -> {
-                    timeMillis += 1000
+        when (matchType) {
+            //原滾球時間顯示邏輯
+            MatchType.IN_PLAY -> {
+                if (!isGamePause) {
+                    when (args.gameType) {
+                        GameType.FT -> {
+                            timeMillis += 1000
+                        }
+                        GameType.BK, GameType.RB, GameType.AFT -> {
+                            timeMillis -= 1000
+                        }
+                        else -> {
+                        }
+                    }
+
                 }
-                GameType.BK, GameType.RB, GameType.AFT -> {
-                    timeMillis -= 1000
-                }
-                else -> {
+                tv_time_bottom?.apply {
+                    if (needCountStatus(curStatus)) {
+                        if (timeMillis >= 1000) {
+                            text = TimeUtil.longToMmSs(timeMillis)
+                            startTime = timeMillis / 1000L
+                            isVisible = true
+                        } else {
+                            text = this.context.getString(R.string.time_null)
+                            isVisible = false
+                        }
+                    } else {
+                        text = this.context.getString(R.string.time_null)
+                        isVisible = false
+                    }
                 }
             }
+            else -> {
+                setupNotInPlayTime()
 
-        }
-        tv_time_bottom?.apply {
-            if (needCountStatus(curStatus)) {
-                if (timeMillis >= 1000) {
-                    text = TimeUtil.longToMmSs(timeMillis)
-                    startTime = timeMillis / 1000L
-                    isVisible = true
-                } else {
-                    text = this.context.getString(R.string.time_null)
-                    isVisible = false
-                }
-            } else {
-                text = this.context.getString(R.string.time_null)
-                isVisible = false
             }
         }
         return@Handler false
@@ -241,7 +251,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         matchOdd.matchInfo.awayCornerKicks = curAwayCornerKicks
 
                         val fastBetDataBean = FastBetDataBean(
-                            matchType = MatchType.IN_PLAY,
+                            matchType = matchType,
                             gameType = args.gameType,
                             playCateCode = oddsDetail?.gameType ?: "",
                             playCateName = oddsDetail?.name ?: "",
@@ -319,6 +329,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         }
 
                         result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
+                            //TODO 整理
                             if (matchInfo.status == GameStatus.POSTPONED.code
                                 && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
                             ) {
@@ -464,7 +475,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             it?.let { matchStatusChangeEvent ->
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
                     ?.apply {
-                        matchType = MatchType.IN_PLAY
+                        //從滾球以外的狀態轉變為滾球時, 重新獲取一次賽事資料, 看是否有新的直播或動畫url
+                        if (matchType != MatchType.IN_PLAY) {
+                            matchType = MatchType.IN_PLAY
+                            unsubscribeHallChannel(matchId)
+                            getData()
+                        }
 
                         tv_time_top?.let { tv ->
                             val statusValue =
@@ -497,9 +513,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
 
                 isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
 
-                updateTime?.let {
-                    startTime = updateTime
-                    setupStartTime()
+                updateTime?.let { time ->
+                    startTime = time
                 }
             }
         }
@@ -624,17 +639,10 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             tv_away_name.text = this.awayName ?: ""
 
             if (matchType != MatchType.IN_PLAY) {
-                val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
-                if (timeStr.isNotEmpty()) {
-                    tv_time_bottom.text = timeStr
-                } else {
-                    tv_time_bottom.text = getString(R.string.time_null)
-                }
-                tv_time_bottom.isVisible = timeStr.isNotEmpty()
-                tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
+                this@OddsDetailLiveFragment.startTime = startTime ?: 0
+                setupNotInPlayTime()
             } else {
-                // 不需要一直重置
-//                tv_time_bottom.text = getString(R.string.time_null)
+                //滾球狀態透過socket事件MATCH_CLOCK更新
             }
         }
     }
@@ -647,10 +655,21 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     private fun setupLiveView(liveVideo: Int?) {
-        live_view_tool_bar.setupToolBarListener(liveToolBarListener)
-        live_view_tool_bar.setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
-        live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
+        with (live_view_tool_bar) {
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    setupToolBarListener(liveToolBarListener)
+                    setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
+                    setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
+                    startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
+                }
+                else -> {
+                    setupToolBarListener(liveToolBarListener)
+                    setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
+                    setupPlayerControl(false)
+                }
+            }
+        }
     }
 
     private fun getData() {
@@ -907,6 +926,38 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             }
         }
         tv_status_right.text = statusBuilder
+    }
+
+
+    /**
+     * 配置滾球以外的時間格式 (即將開賽、今日、早盤 ...)
+     */
+    private fun setupNotInPlayTime() {
+        //賽事開始時間若為今天則日期部分顯示今日
+        tv_time_top.text =
+            if (TimeUtil.isTimeToday(startTime)) getString(R.string.home_tab_today) else TimeUtil.timeFormat(
+                startTime,
+                DM_FORMAT
+            )
+
+        if (TimeUtil.isTimeAtStart(startTime)) {
+            //即將開賽時間格式
+            tv_time_bottom.text =
+                String.format(getString(R.string.at_start_remain_minute), TimeUtil.getRemainMinute(startTime))
+            tv_time_top.visibility = View.GONE
+        } else {
+            //今日、早盤
+            val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
+            if (timeStr.isNotEmpty()) {
+                tv_time_bottom.text = timeStr
+            } else {
+                tv_time_bottom.text = getString(R.string.time_null)
+            }
+            //记分牌无法显示时间時，隱藏-:-
+            tv_time_bottom.isVisible = timeStr.isNotEmpty()
+
+            tv_time_top.visibility = View.VISIBLE
+        }
     }
 
     //作用於頁面轉場流暢性

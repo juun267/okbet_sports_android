@@ -46,6 +46,7 @@ import java.util.*
  * @app_destination 全部玩法
  */
 @Suppress("DEPRECATION")
+@Deprecated("Use OddsDetailLiveFragment", replaceWith = ReplaceWith("OddsDetailLiveFragment"))
 class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: OddsDetailFragmentArgs by navArgs()
