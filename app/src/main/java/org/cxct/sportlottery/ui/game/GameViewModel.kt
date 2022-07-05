@@ -6,9 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
@@ -1115,25 +1113,6 @@ class GameViewModel(
         }
     }
 
-    private fun checkOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.oddsService.getOddsList(
-                    OddsListRequest(
-                        gameType,
-                        matchType,
-                        leagueIdList = leagueIdList,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
-                    )
-                )
-            }?.let {
-                if (!it.oddsListData?.leagueOdds.isNullOrEmpty()) {
-                    _checkInListFromSocket.postValue(true)
-                }
-            }
-        }
-    }
-
     fun getGameHallList(
         matchType: MatchType,
         isReloadDate: Boolean,
@@ -1164,12 +1143,6 @@ class GameViewModel(
 
         //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間
         val reloadedTimeRange = reloadedDateRow?.find { it.isSelected }?.timeRangeParams
-
-        if (isLastSportType)
-            _sportMenuResult.value?.updateSportSelectState(
-                matchType,
-                lastSportTypeHashMap[matchType.postValue]
-            )
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
@@ -3054,13 +3027,18 @@ class GameViewModel(
             sportMenuRepository.getSportMenu(
                 TimeUtil.getNowTimeStamp().toString(),
                 TimeUtil.getTodayStartTimeStamp().toString()
-            )
+            ).apply {
+                if (isSuccessful && body()?.success == true) {
+                    // 每次執行必做
+                    body()?.sportMenuData?.sortSport()
+                }
+            }
         }
     }
 
     private suspend fun getMatchCategory(matchType: MatchType): MatchCategoryQueryResult? {
-        val gameType: String = getSportSelected(matchType)?.code ?: ""
         return doNetwork(androidContext) {
+            val gameType: String = getSportSelected(matchType)?.code ?: ""
             OneBoSportApi.matchCategoryService.getMatchCategoryQuery(
                 MatchCategoryQueryRequest(
                     gameType,
@@ -3068,7 +3046,12 @@ class GameViewModel(
                     TimeUtil.getNowTimeStamp().toString(),
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )
-            )
+            ).apply {
+                if (isSuccessful && body()?.success == true) {
+                    // 每次執行必做
+                    _matchCategoryQueryResult.postValue(Event(body()))
+                }
+            }
         }
     }
 
@@ -3080,7 +3063,13 @@ class GameViewModel(
                     TimeUtil.getTodayStartTimeStamp().toString(),
                     matchType.postValue
                 )
-            )
+            ).apply {
+                if (isSuccessful && body()?.success == true) {
+                    // 每次執行必做
+                    sportQueryData = body()?.sportQueryData
+                    checkLastSportType(matchType, sportQueryData)
+                }
+            }
         }
     }
 
@@ -3090,10 +3079,40 @@ class GameViewModel(
         }
     }
 
+    private suspend fun getOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null): OddsListResult? {
+        return doNetwork(androidContext) {
+            OneBoSportApi.oddsService.getOddsList(
+                OddsListRequest(
+                    gameType,
+                    matchType,
+                    leagueIdList = leagueIdList,
+                    playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
+                )
+            )
+        }
+    }
+
     private fun clearGameHallContent() {
-        _curChildMatchType.value = null // 清除今日、早盤、串關第二層match type (賽事、冠軍)
-        _oddsListGameHallResult.value = Event(null)
-        _oddsListResult.value = Event(null)
+        _curChildMatchType.postValue(null)           // 清除今日、早盤、串關第二層match type (賽事、冠軍)
+        _oddsListGameHallResult.postValue(Event(null))
+        _oddsListResult.postValue(Event(null))
+        filterLeague(listOf())
+    }
+
+    private fun clearGameHallContentBySwitchGameType() {
+        _playList.postValue(Event(listOf()))
+        _playCate.postValue(Event(null))
+
+        if (_curMatchType.value == MatchType.TODAY ||
+            _curMatchType.value == MatchType.EARLY ||
+            _curMatchType.value == MatchType.PARLAY
+        ) {
+            _curChildMatchType.postValue(_curMatchType.value)  // 清除今日、早盤、串關設定預設match type
+        } else {
+            _curChildMatchType.postValue(null)           // 清除今日、早盤、串關第二層match type (賽事、冠軍)
+        }
+        _oddsListGameHallResult.postValue(Event(null))
+        _oddsListResult.postValue(Event(null))
         filterLeague(listOf())
     }
 
@@ -3106,12 +3125,9 @@ class GameViewModel(
                 viewModelScope.launch {
                     getSportMenuAll()?.let {
                         if (it.success) {
-                            it.sportMenuData?.sortSport()      // 排序
                             it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
                             _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
                             postHomeCardCount(it)              // 更新主頁、左邊選單
-                        } else {
-                            return@launch
                         }
                     }
                 }
@@ -3133,7 +3149,6 @@ class GameViewModel(
                     val sportMenuResult = getSportMenuAll()
                     sportMenuResult?.let {
                         if (it.success) {
-                            it.sportMenuData?.sortSport()      // 排序
                             it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
                             _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
                         } else {
@@ -3142,16 +3157,13 @@ class GameViewModel(
                     }
 
                     getSportQuery(matchType)?.let {
-                        if (it.success) {
-                            sportQueryData = it.sportQueryData
-                            checkLastSportType(matchType, sportQueryData)
-                        } else {
-                            _showErrorDialogMsg.value = it.msg
+                        if (!it.success) {
+                            _showErrorDialogMsg.postValue(it.msg)
                             return@launch
                         }
                     }
 
-                    _curMatchType.value = matchType
+                    _curMatchType.postValue(matchType)
 
                     // 無數量直接顯示無資料UI
                     if (getMatchCount(matchType) < 1) {
@@ -3168,9 +3180,7 @@ class GameViewModel(
 
                     // 今日、串關頁面下賽事選擇 (今日、所有)
                     if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
-                        getMatchCategory(matchType)?.let {
-                            _matchCategoryQueryResult.postValue(Event(it))
-                        }
+                        getMatchCategory(matchType)
                     }
                 }
             }
@@ -3183,10 +3193,9 @@ class GameViewModel(
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
 
-        viewModelScope.launch {
+        jobSwitchGameType = viewModelScope.launch {
             getSportMenuAll()?.let {
                 if (it.success) {
-                    it.sportMenuData?.sortSport()      // 排序
                     postHomeCardCount(it)              // 更新主頁、左邊選單
                 } else {
                     return@launch
@@ -3201,11 +3210,8 @@ class GameViewModel(
             }
 
             getSportQuery(matchType)?.let {
-                if (it.success) {
-                    sportQueryData = it.sportQueryData
-                    checkLastSportType(matchType, sportQueryData)
-                } else {
-                    _showErrorDialogMsg.value = it.msg
+                if (!it.success) {
+                    _showErrorDialogMsg.postValue(it.msg)
                     return@launch
                 }
             }
@@ -3218,18 +3224,113 @@ class GameViewModel(
 
             // 今日、串關頁面下賽事選擇 (今日、所有)
             if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
-                getMatchCategory(matchType)?.let {
-                    _matchCategoryQueryResult.postValue(Event(it))
-                }
+                getMatchCategory(matchType)
             }
 
-            _playList.value = Event(listOf())
-            _playCate.value = Event(null)
-            clearGameHallContent()
+            clearGameHallContentBySwitchGameType()
 
             recordSportType(matchType, item.code)
 
             getGameHallList(matchType, true, isReloadPlayCate = true)
+        }
+    }
+
+    private var jobSwitchGameType: Job? = null
+
+    private fun checkOddsList(gameType: String, matchTypeString: String, leagueIdList: List<String>? = null) {
+        viewModelScope.launch {
+
+            // 如選擇球種的線程正在執行 則不需執行 league change 後的流程
+            if (jobSwitchGameType?.isActive == false) return@launch
+
+            val matchType = curMatchType.value ?: return@launch
+
+            /* 1. 刷新上方選單 */
+            val sportMenuResult = getSportMenuAll()
+            sportMenuResult?.let {
+                if (it.success) {
+                    it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
+                    _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+                } else {
+                    return@launch
+                }
+            }
+
+            getSportQuery(matchType)?.let {
+                if (!it.success) {
+                    _showErrorDialogMsg.postValue(it.msg)
+                    return@launch
+                }
+            }
+
+            // 無數量直接顯示無資料UI
+            if (getMatchCount(matchType) < 1) {
+                _isNoEvents.postValue(true)
+                return@launch
+            }
+
+            getSportCouponMenu()?.let {
+                _sportCouponMenuResult.postValue(Event(it))
+            }
+
+            // 更新主頁、左邊選單
+            postHomeCardCount(sportMenuResult)
+
+            // 今日、串關頁面下賽事選擇 (今日、所有)
+            if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
+                getMatchCategory(matchType)
+            }
+
+            /* 2. 確認 league change 聯賽列表有無 */
+            val oddsListResult = getOddsList(gameType, matchTypeString, leagueIdList = leagueIdList)?.apply {
+                let {
+                    if (!it.success) {
+                        return@launch
+                    }
+                }
+            } ?: return@launch
+
+            if (oddsListResult.oddsListData?.leagueOdds.isNullOrEmpty()) return@launch
+
+            _checkInListFromSocket.postValue(true)
+
+            //後續尚可優化
+//                    //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
+//                    val nowGameType =
+//                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+//
+//                    if(leagueAdapter.data.isNotEmpty()) {
+//                        val hasLeagueIdList =
+//                            leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == mLeagueChangeEvent?.leagueIdList?.firstOrNull() }
+//
+//                        if (nowGameType == mLeagueChangeEvent?.gameType) {
+//                            when {
+//                                !hasLeagueIdList || args.matchType == MatchType.AT_START -> {
+//                                    //全刷
+//                                    unSubscribeChannelHallAll()
+//                                    withContext(Dispatchers.Main) {
+//                                        if (args.matchType == MatchType.OTHER) {
+//                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+//                                        } else {
+//                                            viewModel.getGameHallList(args.matchType, false)
+//                                        }
+//                                    }
+//                                }
+//                                else -> {
+//                                    unSubscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
+//                                    subscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
+//                                    if (args.matchType == MatchType.OTHER) {
+//                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+//                                    }
+//                                }
+//                            }
+//                        } else if (args.matchType == MatchType.OTHER) {
+//                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+//                        }
+//                    }
+//                    isUpdatingLeague = false
+//                }
+//            }
         }
     }
 

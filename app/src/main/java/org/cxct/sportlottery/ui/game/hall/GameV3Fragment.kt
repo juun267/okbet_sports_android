@@ -101,6 +101,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 leagueAdapter.setPreloadItem()
                 countryAdapter.setPreloadItem()
+                outrightLeagueOddAdapter.setPreloadItem()
 
                 //切換球種後要重置位置
                 initMatchCategoryPagerPosition()
@@ -799,6 +800,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 leagueAdapter.removePreloadItem()
             } else {
                 leagueAdapter.setPreloadItem()
+                countryAdapter.setPreloadItem()
+                outrightLeagueOddAdapter.setPreloadItem()
             }
         }
         appbar_layout.addOffsetListenerForBottomNavBar {
@@ -1028,6 +1031,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 }
                 refreshToolBarUI()
+            } ?: run {
+                leagueAdapter.setPreloadItem()
+                countryAdapter.setPreloadItem()
+                outrightLeagueOddAdapter.setPreloadItem()
             }
             hideLoading()
         }
@@ -1208,6 +1215,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             game_toolbar_match_type.isVisible = !it
             game_toolbar_calendar.isVisible = args.matchType == MatchType.EARLY && !it
+            leagueAdapter.removePreloadItem()
             hideLoading()
         }
 
@@ -1319,26 +1327,18 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 CoroutineScope(Dispatchers.IO).launch {
                     if (!isUpdatingLeague) {
                         isUpdatingLeague = true
-                        //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-                        withContext(Dispatchers.Main) {
-                            if (args.matchType == MatchType.OTHER) {
-                                // 後面處理
-                            } else {
-                                viewModel.switchMatchType(args.matchType)
-                            }
-                        }
+
                         //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
                         val nowGameType =
                             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
 
-                        if(leagueAdapter.data.isNotEmpty()) {
+                        if (leagueAdapter.data.isNotEmpty()) {
                             val hasLeagueIdList =
                                 leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == mLeagueChangeEvent?.leagueIdList?.firstOrNull() }
 
                             if (nowGameType == mLeagueChangeEvent?.gameType) {
                                 when {
-                                    !hasLeagueIdList ||
-                                            args.matchType == MatchType.AT_START -> {
+                                    !hasLeagueIdList || args.matchType == MatchType.AT_START -> {
                                         //全刷
                                         unSubscribeChannelHallAll()
                                         withContext(Dispatchers.Main) {
@@ -1749,48 +1749,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
-        this.odds.let { oddTypeSocketMap ->
-            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value?.onEach { odd ->
-                    odd?.isSelected =
-                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                }
-            }
-        }
-
-        return this
-    }
-
-    /**
-     * 只有有下拉篩選玩法的才需要過濾odds
-     */
-    private fun OddsChangeEvent.filterMenuPlayCate() {
-        val playSelected = playCategoryAdapter.data.find { it.isSelected }
-
-        when (playSelected?.selectionType) {
-            SelectionType.SELECTABLE.code -> {
-                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
-                this.odds.entries.retainAll { oddMap -> oddMap.key == playCateMenuCode }
-            }
-        }
-    }
-
-    /**
-     * 賠率排序
-     */
-    private fun OddsChangeEvent.sortOddsMap() {
-        this.odds.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-
     private fun MutableList<LeagueOdd>.sortOddsMap() {
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { MatchOdd ->
@@ -1843,71 +1801,73 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
         gameTypeAdapter.dataSport = comingSoonList
 
-        //球種如果選過，下次回來也需要滑動置中
-        if (!gameTypeList.isNullOrEmpty()) {
-            (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
-                sport_type_list,
-                RecyclerView.State(),
-                comingSoonList.indexOfFirst { item -> item.isSelected }
-            )
-        }
+        //post待view繪製完成
+        sport_type_list.post {
+            //球種如果選過，下次回來也需要滑動置中
+            if (!gameTypeList.isNullOrEmpty()) {
+                (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
+                    sport_type_list,
+                    RecyclerView.State(),
+                    comingSoonList.indexOfFirst { item -> item.isSelected }
+                )
+            }
 
-        if (args.matchType != MatchType.OTHER) {
-            if (isRecommendOutright()) {
-                args.gameType?.let { gameType ->
-                    game_toolbar_sport_type.text = context?.let {
-                        getGameTypeString(it, gameType)
-                    } ?: resources.getString(
-                        GameType.FT.string
-                    ).toUpperCase(Locale.getDefault())
-                    updateSportBackground(gameType)
+            if (args.matchType != MatchType.OTHER) {
+                if (isRecommendOutright()) {
+                    args.gameType?.let { gameType ->
+                        game_toolbar_sport_type.text = context?.let {
+                            getGameTypeString(it, gameType)
+                        } ?: resources.getString(
+                            GameType.FT.string
+                        ).toUpperCase(Locale.getDefault())
+                        updateSportBackground(gameType)
+                    }
+                } else {
+                    comingSoonList.find { it.isSelected }.let { item ->
+                        game_toolbar_sport_type.text =
+                            context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
+                                GameType.FT.string
+                            )
+                                .toUpperCase(Locale.getDefault())
+                        updateSportBackground(item)
+                    }
                 }
             } else {
                 comingSoonList.find { it.isSelected }.let { item ->
-                    game_toolbar_sport_type.text =
-                        context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
-                            GameType.FT.string
-                        )
-                            .toUpperCase(Locale.getDefault())
-                    updateSportBackground(item)
+                    item?.let {
+                        setOtherOddTab(!it.hasPlay)
+                        updateSportBackground(it)
+                    }
                 }
-            }
-        } else {
-            comingSoonList.find { it.isSelected }.let { item ->
-                item?.let {
-                    setOtherOddTab(!it.hasPlay)
-                    updateSportBackground(it)
-                }
-            }
-        }
-
-        if (comingSoonList.isEmpty()) {
-            sport_type_list.visibility = View.GONE
-            game_toolbar_sport_type.visibility = View.GONE
-            game_toolbar_champion.visibility = View.GONE
-            game_toolbar_calendar.visibility = View.GONE
-            game_tab_odd_v4.visibility = View.GONE
-            game_match_category_pager.visibility = View.GONE
-            game_play_category.visibility = View.GONE
-            game_filter_type_list.visibility = View.GONE
-            return
-        } else {
-            sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
-            game_toolbar_sport_type.visibility = View.VISIBLE
-            game_toolbar_calendar.apply {
-                visibility = when (args.matchType) {
-                    MatchType.EARLY -> View.VISIBLE
-                    else -> View.GONE
-                }
-                isSelected = mCalendarSelected
             }
 
-            game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
-                (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
-            ) {
-                View.VISIBLE
+            if (comingSoonList.isEmpty()) {
+                sport_type_list.visibility = View.GONE
+                game_toolbar_sport_type.visibility = View.GONE
+                game_toolbar_champion.visibility = View.GONE
+                game_toolbar_calendar.visibility = View.GONE
+                game_tab_odd_v4.visibility = View.GONE
+                game_match_category_pager.visibility = View.GONE
+                game_play_category.visibility = View.GONE
+                game_filter_type_list.visibility = View.GONE
             } else {
-                View.GONE
+                sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
+                game_toolbar_sport_type.visibility = View.VISIBLE
+                game_toolbar_calendar.apply {
+                    visibility = when (args.matchType) {
+                        MatchType.EARLY -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    isSelected = mCalendarSelected
+                }
+
+                game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
+                    (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
+                ) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             }
         }
     }
