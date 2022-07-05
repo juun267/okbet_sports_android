@@ -30,19 +30,25 @@ class RedEnvelopeFloatingButton @JvmOverloads constructor(
         initClickEvent()
     }
 
+    var goneClose = true
     private fun initClickEvent() {
         iv_close.setOnClickListener {
             visibility = View.GONE
+            goneClose = false
         }
     }
 
 
     fun setView(gone: Boolean) {
         if (gone) {
-            visibility = View.VISIBLE
+            if (goneClose) {
+                visibility = View.VISIBLE
+            }
         } else {
             visibility = View.GONE
+            goneClose = true
         }
+
     }
 
     fun setCountdown(countdown: Long) {

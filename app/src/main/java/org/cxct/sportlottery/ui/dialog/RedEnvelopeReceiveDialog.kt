@@ -41,10 +41,10 @@ class RedEnvelopeReceiveDialog(
     )
     val map by lazy {
         mapOf<Bitmap, Long>(
-        bitmap[0] to 1269,
-        bitmap[1] to 1486,
-        bitmap[2] to 1723,
-        bitmap[3] to 1255,
+        bitmap[0] to 1269*2,
+        bitmap[1] to 1486*2,
+        bitmap[2] to 1723*2,
+        bitmap[3] to 1255*2,
     )
     }
 //    按照 UI 動畫高度 896 換算，

@@ -369,6 +369,7 @@ object Constants {
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
     const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
     const val WITHDRAW_UW_CHECK = "/api/front/userwithdraw/getUwCheck"
+    const val PACKET_LIST = "/api/front/user/userPacket/list"
 
     //feedback
     const val FEEDBACK_QUERYLIST = "/api/front/feedback/querylist"

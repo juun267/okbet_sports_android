@@ -51,4 +51,10 @@
         android:label="fragment_account_history_log"
         tools:layout="@layout/activity_account_history_log" />
 
+    <fragment
+        android:id="@+id/RedEnvelopeFragment"
+        android:name="org.cxct.sportlottery.ui.finance.RedEnvelopeHistoryFragment"
+        android:label="RedEnvelopeFragment"
+        tools:layout="@layout/activity_recharge_log" />
+
 </navigation>
