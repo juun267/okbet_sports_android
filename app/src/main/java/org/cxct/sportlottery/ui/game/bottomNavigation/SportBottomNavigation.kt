@@ -25,12 +25,12 @@ class SportBottomNavigation @JvmOverloads constructor(
     init {
         inflate(context, R.layout.sport_bottom_navigation, this)
         setupClickEvent()
-        selectItem(navigation_sport)
+        selectItem(navigation_home)
     }
 
     private fun setupClickEvent() {
+        setupNavigationItemClick(navigation_home)
         setupNavigationItemClick(navigation_sport)
-        setupNavigationItemClick(navigation_game)
         setupNavigationItemClick(navigation_account_history)
         setupNavigationItemClick(navigation_transaction_status)
         setupNavigationItemClick(navigation_my)
@@ -62,7 +62,7 @@ class SportBottomNavigation @JvmOverloads constructor(
     }
 
     private fun selectItem(item: BottomNavigationItem) {
-        if (selectedItem != item || item == navigation_sport) {
+        if (selectedItem != item || item == navigation_home) {
             selectedItem?.checked = false
             item.checked = true
             selectedItem = item

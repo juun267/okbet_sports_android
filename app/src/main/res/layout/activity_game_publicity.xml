@@ -51,6 +51,13 @@
             app:navGraph="@navigation/publicity_navigation"
             tools:layout="@layout/fragment_publicity" />
 
+        <include
+            android:id="@+id/game_Bottom_Navigation"
+            layout="@layout/view_bottom_navigation_sport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/viewBottom"
             android:layout_width="match_parent"
@@ -97,13 +104,6 @@
                 app:layout_constraintStart_toEndOf="@id/tvRegister"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <include
-            android:id="@+id/game_Bottom_Navigation"
-            layout="@layout/view_bottom_navigation_sport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <!-- 投注單 & 快捷投注單 -->
         <FrameLayout

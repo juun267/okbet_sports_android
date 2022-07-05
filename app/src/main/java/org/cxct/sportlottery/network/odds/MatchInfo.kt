@@ -81,8 +81,8 @@ data class MatchInfo(
     override var awayTotalScore: Int? = null
 
     //TN
-    override var homePoints: Int? = null
-    override var awayPoints: Int? = null
+    override var homePoints: String? = null
+    override var awayPoints: String? = null
 
     //FT
     override var homeCards: Int? = null

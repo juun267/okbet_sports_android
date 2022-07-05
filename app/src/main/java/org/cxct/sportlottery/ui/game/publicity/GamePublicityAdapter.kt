@@ -15,9 +15,7 @@ import com.youth.banner.holder.BannerImageHolder
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -26,6 +24,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 
 class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapterListener) :
@@ -532,39 +531,6 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
             matchId: String?,
             matchInfoList: List<MatchInfo>
         ) = onClickAnimationIconListener.invoke(gameType, matchType, matchId, matchInfoList)
-    }
-}
-
-private fun Map<String, List<Odd?>?>.sortOdds(oddsSort: String?): Map<String, List<Odd?>?> {
-    val oddsMap: MutableMap<String, List<Odd?>?>
-    val sortOrder = oddsSort?.split(",")
-    val filterOdds = this.filter { sortOrder?.contains(it.key.split(":")[0]) == true }
-    oddsMap = filterOdds.toSortedMap(compareBy<String> {
-        val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
-        oddsIndex
-    }.thenBy { it })
-    return if (oddsSort.isNullOrEmpty()) this else oddsMap
-}
-
-private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String): Map<String, List<Odd?>?> {
-    return this.mapValues { map ->
-        val playCateNum =
-            when { //根據IOS給的規則判斷顯示數量
-                map.value?.size ?: 0 < 3 -> 2
-
-                (gameType == GameType.TT.key || gameType == GameType.BM.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
-
-                map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
-                    PlayCate.CORNER_OU.value
-                ) -> 2
-
-                map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
-
-                else -> 3
-            }
-        map.value?.filterIndexed { index, _ ->
-            index < playCateNum
-        }
     }
 }
 
