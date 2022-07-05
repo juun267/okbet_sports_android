@@ -143,6 +143,11 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         sport_bottom_navigation.apply {
             setNavigationItemClickListener {
                 when (it) {
+                    R.id.navigation_home -> {
+                        viewModel.navHome()
+                        finish()
+                        false
+                    }
                     R.id.navigation_sport -> {
                         viewModel.navGame()
                         finish()

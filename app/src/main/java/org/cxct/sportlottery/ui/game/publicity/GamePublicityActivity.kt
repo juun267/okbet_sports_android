@@ -375,31 +375,34 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     override fun initBottomNavigation() {
-        binding.gameBottomNavigation.sportBottomNavigation.clearSelectedStatus()
-        binding.gameBottomNavigation.sportBottomNavigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    viewModel.navGame()
-                    false
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        binding.gameBottomNavigation.sportBottomNavigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_home -> {
+                        true
+                    }
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        viewModel.navAccountHistory()
+                        false
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        false
+                    }
+                    R.id.navigation_my -> {
+                        viewModel.navMy()
+                        false
+                    }
+                    else -> false
                 }
-                R.id.navigation_game -> {
-                    viewModel.navMyFavorite()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    viewModel.navAccountHistory()
-                    false
-                }
-                R.id.navigation_transaction_status -> {
-                    viewModel.navTranStatus()
-                    false
-                }
-                R.id.navigation_my -> {
-                    viewModel.navMy()
-                    false
-                }
-                else -> false
             }
+            setSelected(R.id.navigation_home)
         }
     }
 
