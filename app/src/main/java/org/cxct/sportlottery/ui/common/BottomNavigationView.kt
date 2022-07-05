@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RelativeLayout(context, attrs, defStyle) {
 
@@ -119,6 +120,7 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         //常見問題
+        txv_faq.setVisibilityByCreditSystem()
         txv_faq.setOnClickListener {
             JumpUtil.toInternalWeb(
                 context,
@@ -128,6 +130,7 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         //在線客服 (取代原有的客服懸浮按鈕)
+        txv_chat.setVisibilityByCreditSystem()
         txv_chat.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
@@ -163,6 +166,8 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
             JumpUtil.toExternalWeb(context, "https://pagcor.ph/regulatory/index.php")
         }
 
+        //信用盤開啟，要隱藏底部Pagcor文案與logo
+        ll_pagcor_container.setVisibilityByCreditSystem()
     }
 
     private fun goSwitchLanguagePage() {

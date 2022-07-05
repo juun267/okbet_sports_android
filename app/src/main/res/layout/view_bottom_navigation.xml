@@ -113,7 +113,13 @@
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_mpbl_ogo"
         app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
-        app:layout_constraintTop_toBottomOf="@+id/txv_help" />
+        app:layout_constraintTop_toBottomOf="@+id/txv_partner" />
+
+    <View
+        android:id="@+id/view_space"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/img_partner"/>
 
     <ImageView
         android:id="@+id/img_flag"
@@ -144,6 +150,7 @@
         android:text="@string/faqs"
         android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/txv_help"
         app:layout_constraintTop_toBottomOf="@+id/txv_help" />
 
@@ -155,6 +162,7 @@
         android:text="@string/live_chat"
         android:textColor="@color/color_7F7F7F_999999"
         android:textSize="14dp"
+        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/txv_faq"
         app:layout_constraintTop_toBottomOf="@+id/txv_faq" />
 
@@ -178,12 +186,22 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@color/color_141414_F3F4F5"
-        app:layout_constraintBottom_toBottomOf="@+id/BottomNavBarPaddingView"
+        app:layout_constraintBottom_toBottomOf="@+id/bottomNavBarPaddingView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txv_btm_hint" />
+        app:layout_constraintTop_toTopOf="@+id/ll_pagcor_container" />
 
+    <LinearLayout
+        android:id="@+id/ll_pagcor_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_space"
+        tools:visibility="gone"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/txv_btm_hint"
         android:layout_width="match_parent"
@@ -197,9 +215,6 @@
         android:textColor="@color/color_7F7F7F_999999"
         android:textSize="12dp"
         android:lineSpacingExtra="6dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txv_contact"
         tools:visibility="visible" />
 
     <ImageView
@@ -208,9 +223,6 @@
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_pagcor_mark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txv_btm_hint"
         tools:visibility="visible" />
 
     <TextView
@@ -222,21 +234,21 @@
         android:paddingBottom="12dp"
         android:text="@string/btm_navigation_copyright"
         android:textColor="@color/color_7F7F7F_999999"
-        android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_pagcor_mark" />
+        android:textSize="12dp" />
+    </LinearLayout>
 
     <View
         android:id="@+id/betListBarPaddingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bet_list_bar_height"
-        app:layout_constraintTop_toBottomOf="@+id/txv_copyright"
-        app:layout_constraintBottom_toTopOf="@+id/BottomNavBarPaddingView"/>
+        android:background="@color/color_191919_FCFCFC"
+        app:layout_constraintTop_toBottomOf="@+id/ll_pagcor_container"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavBarPaddingView"/>
     <View
-        android:id="@+id/BottomNavBarPaddingView"
+        android:id="@+id/bottomNavBarPaddingView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_nav_bar_height"
+        android:background="@color/color_191919_FCFCFC"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
