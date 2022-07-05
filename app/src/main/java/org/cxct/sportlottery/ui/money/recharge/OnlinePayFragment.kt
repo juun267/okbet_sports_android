@@ -145,6 +145,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
             OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
             OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
+            OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
             else -> R.drawable.ic_online_pay_type
         }
         return this
@@ -390,7 +391,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun needPayerField(): Boolean = when (mMoneyPayWay?.onlineType) {
-        OnlineType.GCASH.type, OnlineType.PAYMAYA.type -> true
+        OnlineType.GCASH.type, OnlineType.PAYMAYA.type, OnlineType.DRAGON_PAY.type  -> true
         else -> false
     }
 }

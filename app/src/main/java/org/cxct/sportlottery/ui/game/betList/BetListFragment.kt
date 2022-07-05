@@ -291,6 +291,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.betTypeTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                betListRefactorAdapter?.closeAllKeyboard()
                 when (tab?.position) {
                     //單項投注
                     0 -> {
@@ -451,6 +452,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val adapterItemClickListener = object : BetListRefactorAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                     isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size ?: 0 <= 1
+                    betListRefactorAdapter?.closeAllKeyboard()
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
@@ -723,8 +725,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     //單一注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
                     //上方tabBar betTypeTabLayout隱藏，下方可贏金額 clTotalInfo要顯示
+                    binding.betTypeTabLayout.selectTab(binding.betTypeTabLayout.getTabAt(0))
                     binding.betTypeTabLayout.visibility = View.GONE
-                    betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     isMultiBet = false
                 } else if (!isAutoCloseWhenNoData) {
                     //多筆注單 or 空注單

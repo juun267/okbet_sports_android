@@ -613,7 +613,6 @@ class MoneyRechViewModel(
         }
     }
 
-    //TODO Bill 等名稱統一
     //在線充值帳戶選單名稱
     fun getOnlinePayTypeName(onlineType: Int?): String {
         return when (onlineType) {//在线充值类型：1-网银在线充值、2-支付宝在线充值、3-微信在线充值、4-qq在线充值、5-出款、6、信用卡在线充值、7-百度钱包、8-京东钱包
@@ -629,6 +628,7 @@ class MoneyRechViewModel(
             OnlineType.GRABPAY.type -> androidContext.resources.getString(R.string.online_grab)
             OnlineType.PAYMAYA.type -> androidContext.resources.getString(R.string.online_maya)
             OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
+            OnlineType.DRAGON_PAY.type -> androidContext.resources.getString(R.string.online_gragon_pay)
             else -> ""
         }
     }

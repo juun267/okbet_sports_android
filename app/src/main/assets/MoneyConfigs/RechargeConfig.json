@@ -178,6 +178,17 @@
   },
   {
     "titleNameMap": {
+      "zh": "Gragon Pay",
+      "en": "Gragon Pay",
+      "vi": "Gragon Pay"
+    },
+    "subtitle": "Gragon Pay",
+    "image": "ic_gragon_pay",
+    "rechType": "onlinePayment",
+    "onlineType": "211"
+  },
+  {
+    "titleNameMap": {
       "zh": "GrabPay",
       "en": "GrabPay",
       "vi": "GrabPay"

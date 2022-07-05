@@ -181,7 +181,17 @@ class OddsButton @JvmOverloads constructor(
                 }
 
                 text = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
+                    playCateCode.isOUType() -> {
+                        //越南語大小顯示又要特殊處理(用O/U)
+                        val language =
+                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        (odds?.nameMap?.get(
+                            language
+                        ) ?: odds?.name)?.abridgeOddsName()
+                    }
+                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
                         (odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(
                                 context

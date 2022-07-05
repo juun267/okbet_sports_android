@@ -64,6 +64,7 @@ object MoneyManager {
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
             MoneyType.PAYPAL.code -> R.drawable.ic_paypal
+            MoneyType.DRAGONPAY.code -> R.drawable.ic_gragon_pay
 
             else -> R.drawable.ic_bank_atm
         }
