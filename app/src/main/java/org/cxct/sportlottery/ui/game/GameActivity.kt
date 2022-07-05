@@ -86,8 +86,8 @@ import kotlin.collections.ArrayList
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
     private var mTimer: Timer? = null
     private var redenpId: Int = 0
-    private var redenpStartTime: String? = null
-    private var redenpEndTime: String? = null
+    private var redenpStartTime: Long? = null
+    private var redenpEndTime: Long? = null
     private var count = 0
 
     companion object {
@@ -187,34 +187,26 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         mTimer = Timer()
         mTimer?.schedule(object : TimerTask() {
             override fun run() {
-                count++
-                if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
-                    if (count % 10 == 0 && viewModel.getLoginBoolean()) {
+                if (viewModel.getLoginBoolean()) {
+                    if (count % 10 == 0) {
                         getRain()
                         count = 0
                     }
-
-                    if (redenpStartTime != null && TimeUtil.dateDiffDay(
-                            TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT), "$redenpStartTime:00",
-                            TimeUtil.YMD_HMS_FORMAT
-                        ) in 0..180
-                    ) {
+                    count++
+                }
+                if (redenpStartTime != null && logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
+                    val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
+                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
+                    if ( startTimeDiff in 0..180) {
                         GlobalScope.launch(Dispatchers.Main) {
                             btn_floating_red_envelope.setView(true)
                             //180s 倒计时
-                            btn_floating_red_envelope.setCountdown(
-                                TimeUtil.dateDiffDay(
-                                    TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT),
-                                    "$redenpStartTime:00",
-                                    TimeUtil.YMD_HMS_FORMAT
-                                )
-                            )
+                            btn_floating_red_envelope.setCountdown(startTimeDiff)
                         }
 
 
                     }
-
-                    if ("$redenpStartTime:00".equals(TimeUtil.nowTime(TimeUtil.YMD_HMS_FORMAT))) {
+                    else if ( startTimeDiff <= 0 && endTimeDiff >= 0) {
                         logRedEnvelopeReceiveDialog.show(
                             supportFragmentManager,
                             GameActivity::class.java.simpleName
@@ -224,15 +216,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         }
 
                     }
-
                 }
-                if (redenpEndTime.equals(TimeUtil.nowTime(TimeUtil.YMD_HM_FORMAT)) && logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
-                    logRedEnvelopeReceiveDialog.dismiss()
+                else if(logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
+                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
+                    if (endTimeDiff < 0) {
+                        logRedEnvelopeReceiveDialog.dismiss()
+                    }
                 }
-
             }
-
-
         }, 1000, 1000)
     }
 
@@ -1015,31 +1006,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.rainResult.observe(this) {
             var redEnvelopeInfo = it.redEnvelopeInfo
             if (redEnvelopeInfo != null) {
-                var serverTime =
-                    TimeUtil.timeFormat(redEnvelopeInfo.serverTime, TimeUtil.YMD_HM_FORMAT)
-
-                var difference = TimeUtil.dateDiffDay(
-                    serverTime,
-                    TimeUtil.nowTime(TimeUtil.YMD_HM_FORMAT),
-                    TimeUtil.YMD_HM_FORMAT
-                )
+                var serverTime = redEnvelopeInfo.serverTime
+                var difference = serverTime - System.currentTimeMillis()
 
                 redenpId = redEnvelopeInfo.redenpId
                 if (logRedEnvelopeReceiveDialog.redenpId == 0) {
                     logRedEnvelopeReceiveDialog.redenpId = redEnvelopeInfo.redenpId
                 }
-                redenpStartTime = TimeUtil.getPreTime(
-                    TimeUtil.timeFormat(
-                        (redEnvelopeInfo.redenpStartTime),
-                        TimeUtil.YMD_HM_FORMAT
-                    ), difference, TimeUtil.YMD_HM_FORMAT
-                )
-                redenpEndTime = TimeUtil.getPreTime(
-                    TimeUtil.timeFormat(
-                        (redEnvelopeInfo.redenpEndTime),
-                        TimeUtil.YMD_HM_FORMAT
-                    ), difference, TimeUtil.YMD_HM_FORMAT
-                )
+                redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
+                redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
             }
 
         }

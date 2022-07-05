@@ -41,10 +41,10 @@ class RedEnvelopeReceiveDialog(
     )
     val map by lazy {
         mapOf<Bitmap, Long>(
-        bitmap[0] to 1269*2,
-        bitmap[1] to 1486*2,
-        bitmap[2] to 1723*2,
-        bitmap[3] to 1255*2,
+        bitmap[0] to 7060,
+        bitmap[1] to 6003,
+        bitmap[2] to 5200,
+        bitmap[3] to 7140,
     )
     }
 //    按照 UI 動畫高度 896 換算，
@@ -52,6 +52,10 @@ class RedEnvelopeReceiveDialog(
 //    紅包45x58(中)速率:148.59/s
 //    紅包38x48(小)速率:172.3/s
 //    福袋 40x54 速率:125.49/s
+//    紅包51x66(大)速率:07s06
+//    紅包45x58(中)速率:06s03
+//    紅包38x48(小)速率:05s20
+//    福袋 40x54 速率:07s14
 
     init {
         setStyle(R.style.FullScreen)
@@ -102,8 +106,6 @@ class RedEnvelopeReceiveDialog(
             }
             iv_radiance.clearAnimation()
             dismiss()
-
-
         }
 
     }
@@ -164,7 +166,7 @@ class RedEnvelopeReceiveDialog(
                     layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
                     relative_layout.addView(image, layoutParams1)
                     var duration = map[ bitmap1]
-                    startAnimation(image, 0f,duration)
+                    startAnimation(image, 0f, duration)
                     image!!.setOnClickListener {
                         viewModel.getRedEnvelopePrize(redenpId)
                     }
