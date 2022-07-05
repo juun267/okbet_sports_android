@@ -24,4 +24,6 @@ enum class MoneyType(val code: String) {
     GRABPAY("ic_grab_pay"),//205:GrabPay
     PAYMAYA("ic_pay_maya"),//206:PayMaya
     PAYPAL("ic_paypal"),//210 Paypal okBet要用
+    DRAGONPAY("ic_gragon_pay"),//211:DragonPay
+    DRAGONPAY_TYPE("gragon"),//211:DragonPay
 }

@@ -1061,6 +1061,7 @@
     <string name="e_address">Address</string>
     <string name="brackets">(%1$s)</string>
     <string name="online_paypal">Paypal</string>
+    <string name="online_gragon_pay">Dragon Pay</string>
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="hint_e_address">(Please enter a contact address)</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s %2$s.</string>
