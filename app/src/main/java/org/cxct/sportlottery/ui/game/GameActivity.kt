@@ -48,7 +48,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.dialo.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
