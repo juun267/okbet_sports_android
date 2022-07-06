@@ -69,7 +69,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 }
                 it.isSelected = true
                 adapter.notifyDataSetChanged()
-                var zone= java.util.TimeZone.getTimeZone(it.name.replace(" ",""))
+                var zone= java.util.TimeZone.getTimeZone(it.name)
                 zone.id=it.country_en+"/"+it.city_en
                 java.util.TimeZone.setDefault(zone)
             MultiLanguagesApplication.timeZone=zone
@@ -88,7 +88,7 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         val displayName=curTimeZone.getDisplayName(false,java.util.TimeZone.SHORT)
         val id=curTimeZone.id
         var selecItem=items.find {
-             displayName.contains(it.name.replace(" ",""),true)
+             displayName.contains(it.name,true)
                      &&id.contains(it.city_en,true)
         }
         selecItem?.let {
