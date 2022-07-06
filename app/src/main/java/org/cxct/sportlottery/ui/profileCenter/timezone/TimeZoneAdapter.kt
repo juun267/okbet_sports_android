@@ -76,7 +76,7 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
             val newFormatter = SimpleDateFormat(TimeUtil.MD_FORMAT, Locale.getDefault())
             newFormatter.timeZone=java.util.TimeZone.getTimeZone(timeZone)
             var date=newFormatter.format(cal.time)
-            return date+ "(" + TimeUtil.setupDayOfWeekVi(itemView.context,cal) + ")"
+            return date+ "(" + TimeUtil.setupDayOfWeekByCal(itemView.context,cal) + ")"
         }
 
         companion object {
