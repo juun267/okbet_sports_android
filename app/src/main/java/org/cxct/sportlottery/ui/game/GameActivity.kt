@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -27,6 +29,10 @@ import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -72,6 +78,8 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.parceler.Parcels
 import timber.log.Timber
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -81,8 +89,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val intent = Intent(context, GameActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
-            if(context is Activity){
-                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+            if (context is Activity) {
+                context.overridePendingTransition(
+                    R.anim.push_right_to_left_enter,
+                    R.anim.push_right_to_left_exit
+                )
             }
         }
 
@@ -135,11 +146,12 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 btn_floating_service.setView(this)
             }
             else -> {
-                btn_floating_service.visibility=View.GONE
+                btn_floating_service.visibility = View.GONE
             }
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -154,6 +166,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initTabLayout()
         initObserve()
         initServiceButton()
+
         try {
             val flag = intent.getStringExtra(ARGS_SWITCH_LANGUAGE)
             if (flag == "true") {
@@ -1112,4 +1125,5 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             )
         }
     }
+
 }

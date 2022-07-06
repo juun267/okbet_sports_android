@@ -31,6 +31,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -2750,10 +2751,6 @@ class GameViewModel(
 
     fun getIsFastBetOpened(): Boolean {
         return betInfoRepository.getIsFastBetOpened()
-    }
-
-    fun getLoginBoolean(): Boolean {
-        return loginRepository.isLogin.value ?: false
     }
 
     fun resetErrorDialogMsg() {

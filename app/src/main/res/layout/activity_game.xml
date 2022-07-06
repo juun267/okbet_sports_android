@@ -90,14 +90,14 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
-<!--                &lt;!&ndash; 快捷投注單 &ndash;&gt;-->
-<!--                &lt;!&ndash; 因左邊選單需在快捷注單上層 故在此將快捷注單獨立顯示&ndash;&gt;-->
-<!--                <FrameLayout-->
-<!--                    android:id="@+id/fl_fast_bet"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    tools:visibility="gone" />-->
+                <!--                &lt;!&ndash; 快捷投注單 &ndash;&gt;-->
+                <!--                &lt;!&ndash; 因左邊選單需在快捷注單上層 故在此將快捷注單獨立顯示&ndash;&gt;-->
+                <!--                <FrameLayout-->
+                <!--                    android:id="@+id/fl_fast_bet"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    tools:visibility="gone" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,5 +130,12 @@
 
     <!-- 右側導覽列 -->
     <include layout="@layout/view_nav_right" />
+
+    <org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
+        android:id="@+id/btn_floating_red_envelope"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

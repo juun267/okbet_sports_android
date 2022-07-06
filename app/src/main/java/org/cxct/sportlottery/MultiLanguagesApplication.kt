@@ -18,6 +18,7 @@ import kotlinx.coroutines.*
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
+import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
@@ -79,6 +80,7 @@ class MultiLanguagesApplication : Application() {
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
     private var isAgeVerifyNeedShow = true
+    var showedRedenpId = -1 //顯示過的紅包id
 
     val mOddsType = MutableLiveData<OddsType>()
 
@@ -128,6 +130,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { GooglePermissionViewModel(get(), get(), get()) }
         viewModel { TestViewModel(get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

@@ -95,7 +95,7 @@ data class ConfigData(
     val perBetMaxAmount: String?,
     val perBetMinAmount: String?,
     val selfRestraintVerified: String?,
-    val customerFloating: String? = "0",//在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
+    val customerFloating: String? = "1",//在线客服悬浮按钮开关 (1：开启，0：关闭 默认是null:关闭)
     val enableKYCVerify: String? = "1", //KYC认证开关(1：开启，0：关闭)
     val supportLanguage: String = "",
     val wsHost: String = "",

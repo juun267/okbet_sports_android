@@ -1218,6 +1218,10 @@
 
     <!--region 大廳賠率按鈕-->
     <string name="none">None</string>
+    <string name="red_envelope_congratulations">Congratulations</string>
+    <string name="pls_check_amount">Please check the amount in account</string>
+    <string name="redenvelope_fail">Unfortunately</string>
+    <string name="redenvelope_fail_desp">Unfortunately, you didn\'t get the red envelope</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>
@@ -1225,4 +1229,15 @@
     <string name="register_identity_photo_hint_front">Click to add an image of the front of Valid ID.</string>
     <string name="register_identity_photo_back">Upload Valid ID of the back</string>
     <string name="register_identity_photo_hint_back">Click to add an image of the back of  Valid ID.</string>
+    <string name="redenvelope_trantype_send">Give red envelopes</string>
+    <string name="redenvelope_trantype_received">Receive red envelopes</string>
+    <string name="tran_order_no">Order ID</string>
+    <string name="tran_time">Transaction time</string>
+    <string name="redenvelope_amount">Lucky Money Amount</string>
+    <string name="tran_type">Type</string>
+    <string name="redenvelope_record">Lucky Money Records</string>
+    <string name="tran_time_sub">Transaction time：</string>
+    <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
+    <string name="tran_type_sub">Type：</string>
+
 </resources>

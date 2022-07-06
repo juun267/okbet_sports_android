@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_financeFragment_to_accountHistoryFragment"
             app:destination="@id/accountHistoryFragment" />
+        <action
+            android:id="@+id/action_financeFragment_to_redEnvelopeFragment"
+            app:destination="@id/redEnvelopeFragment" />
 
     </fragment>
 
@@ -50,5 +53,11 @@
         android:name="org.cxct.sportlottery.ui.finance.AccountHistoryLogFragment"
         android:label="fragment_account_history_log"
         tools:layout="@layout/activity_account_history_log" />
+
+    <fragment
+        android:id="@+id/redEnvelopeFragment"
+        android:name="org.cxct.sportlottery.ui.finance.RedEnvelopeHistoryFragment"
+        android:label="RedEnvelopeFragment"
+        tools:layout="@layout/activity_recharge_log" />
 
 </navigation>

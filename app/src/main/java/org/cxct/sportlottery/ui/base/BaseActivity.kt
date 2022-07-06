@@ -18,24 +18,27 @@ import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
 import me.jessyan.autosize.AutoSizeCompat
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.lang.Runnable
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
@@ -69,6 +72,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
+        initRedEnvelope()
     }
 
     private fun onTokenStateChanged() {
@@ -207,7 +211,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     setCanceledOnTouchOutside(false)
                     isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
                 }
-                if(!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
+                if (!supportFragmentManager.isDestroyed) mTokenPromptDialog?.show(supportFragmentManager, null)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -389,6 +393,98 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
         }
         return super.getResources()
+    }
+
+
+    /*以下紅包相關功能(尚須重構)*/
+    private var redenpId: Int = 0
+    private var redenpStartTime: Long? = null
+    private var redenpEndTime: Long? = null
+    private var count = 0
+    private var countdownTimer: Timer? = null
+
+    private val logRedEnvelopeReceiveDialog by lazy {
+        RedEnvelopeReceiveDialog(this, redenpId)
+    }
+
+    private fun initTimerTask():TimerTask {
+        return object : TimerTask() {
+            override fun run() {
+                if (!viewModel.getLoginBoolean()) {
+                    return
+                }
+                if (count % 10 == 0) {
+                    viewModel.getRain()
+                    count = 0
+                }
+                count++
+
+                if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
+                    val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
+                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
+                    if (startTimeDiff in 1..180) {
+                        GlobalScope.launch(Dispatchers.Main) {
+                            btn_floating_red_envelope?.setView(true)
+                            //180s 倒计时
+                            btn_floating_red_envelope?.setCountdown(startTimeDiff)
+                        }
+                    } else if (startTimeDiff <= 0 && endTimeDiff >= 0 && viewModel.getRainShowing() == -1) {
+                        if (MultiLanguagesApplication.mInstance.showedRedenpId != redenpId) {
+                            MultiLanguagesApplication.mInstance.showedRedenpId = redenpId
+                            viewModel.setRainShowing(redenpId)
+                            logRedEnvelopeReceiveDialog.redenpId = redenpId
+                            logRedEnvelopeReceiveDialog.show(
+                                supportFragmentManager,
+                                this::class.java.simpleName
+                            )
+                        }
+                        GlobalScope.launch(Dispatchers.Main) {
+                            btn_floating_red_envelope?.setView(false)
+                        }
+                    }
+                    else if (endTimeDiff < 0) {
+                        viewModel.setRainShowing(-1)
+                    }
+                } else  {
+                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
+                    if (endTimeDiff < 0) {
+                        if (logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
+                            logRedEnvelopeReceiveDialog.dismiss()
+                        }
+                        viewModel.setRainShowing(-1)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        countdownTimer?.cancel()
+        countdownTimer = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (this@BaseActivity.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return
+        countdownTimer = Timer()
+        countdownTimer?.schedule(initTimerTask(), 1000, 1000)
+    }
+
+    private fun initRedEnvelope() {
+        viewModel.rainResult.observe(this) {
+            it?.getContentIfNotHandled()?.let { result ->
+                val redEnvelopeInfo = result.redEnvelopeInfo
+                if (redEnvelopeInfo != null) {
+                    val serverTime = redEnvelopeInfo.serverTime
+                    val difference = serverTime - System.currentTimeMillis()
+
+                    redenpId = redEnvelopeInfo.redenpId
+                    redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
+                    redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
+                }
+            }
+        }
     }
 
 }

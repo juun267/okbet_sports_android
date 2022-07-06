@@ -7,17 +7,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.money.list.RechargeListRequest
-import org.cxct.sportlottery.network.money.list.Row
-import org.cxct.sportlottery.network.money.list.SportBillListRequest
-import org.cxct.sportlottery.network.money.list.SportBillResult
+import org.cxct.sportlottery.network.money.list.*
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.finance.df.CheckStatus
-import org.cxct.sportlottery.ui.finance.df.RechType
-import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.ui.finance.df.*
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -62,6 +56,9 @@ class FinanceViewModel(
     val rechargeLogDetail: LiveData<Event<Row>>
         get() = _rechargeLogDetail
 
+    val redEnvelopeLogDetail: LiveData<Event<RedEnvelopeRow>>
+        get() = _redEnvelopeLogDetail
+
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
@@ -70,18 +67,30 @@ class FinanceViewModel(
 
     private val _isLoading = MutableLiveData<Boolean>()
     private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
-    private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
+    private val _userWithdrawResult =
+        MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
     private val _userSportBillListResult = MutableLiveData<SportBillResult>()
 
     private val _recordType = MutableLiveData<String>()
 
-    private val _withdrawLogDetail = MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
+    private val _withdrawLogDetail =
+        MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
+
     private val _rechargeLogDetail = MutableLiveData<Event<Row>>()
+
+    private val _redEnvelopeLogDetail = MutableLiveData<Event<RedEnvelopeRow>>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
 
     private val _accountHistoryList = MutableLiveData<List<SportBillResult.Row>>()
+
+
+
+    private val _redEnvelopeListResult = MutableLiveData<MutableList<RedEnvelopeRow>?>()
+    val redEnvelopeListResult: LiveData<MutableList<RedEnvelopeRow>?>
+        get() = _redEnvelopeListResult
+
 
 
     fun setRecordType(recordType: String) {
@@ -190,7 +199,7 @@ class FinanceViewModel(
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
         tranTypeGroup: String? = "bet",
     ) {
-        if (isFinalPage.value == true && !isFirstFetch){
+        if (isFinalPage.value == true && !isFirstFetch) {
             return
         }
 
@@ -237,7 +246,7 @@ class FinanceViewModel(
                     )
 
                     _userSportBillListResult.postValue(result)
-                }else{
+                } else {
                     ToastUtil.showToastInCenter(
                         androidContext,
                         result.msg
@@ -306,13 +315,15 @@ class FinanceViewModel(
                 }
 
                 it.applyTime?.let { nonNullApTime ->
-                    it.withdrawDateAndTime = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd HH:mm:ss")
+                    it.withdrawDateAndTime =
+                        TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd HH:mm:ss")
                     it.withdrawDate = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd")
                     it.withdrawTime = TimeUtil.timeFormat(nonNullApTime, "HH:mm:ss")
                 }
 
                 it.operatorTime?.let { nonNullOpTime ->
-                    it.operatorDateAndTime = TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
+                    it.operatorDateAndTime =
+                        TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
                 it.displayMoney = TextUtil.formatMoney(it.applyMoney ?: 0.0)
@@ -337,11 +348,84 @@ class FinanceViewModel(
         }
     }
 
-    fun setLogDetail(row: Event<Row>) {
-        _rechargeLogDetail.postValue(row)
-    }
+    private val redEnvelopeLogList = mutableListOf<RedEnvelopeRow>()
 
-    fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
-        _withdrawLogDetail.postValue(row)
-    }
+    fun getRedEnvelopeHistoryList(
+        isFirstFetch: Boolean,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+    ) {
+        if (!isFirstFetch && isFinalPage.value == true) return
+
+        loading()
+
+        val filter = { item: String? -> if (item == allTag || item.isNullOrBlank()) null else item }
+
+        when {
+            isFirstFetch -> {
+                redEnvelopeLogList.clear()
+                _isFinalPage.postValue(false)
+                page = 1
+            }
+            else -> {
+                if (isFinalPage.value == false) {
+                    page++
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.moneyService.getRedEnvelopeHistoryList(
+                    RedEnvelopeListRequest(
+                        startTime = startTime,
+                        endTime = endTime,
+                        page = page,
+                        pageSize = pageSize
+                    )
+                )
+            }
+
+            result?.rows?.map {
+
+                it.tranTypeDisplay = when (it.tranType) {
+                    TranType.ENVELOPE_SEND.type -> androidContext.getString(R.string.redenvelope_trantype_send)
+                    TranType.ENVELOPE_RECEIVE.type -> androidContext.getString(R.string.redenvelope_trantype_received)
+                    else -> ""
+                }
+
+                it.rechDateAndTime = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd HH:mm:ss")
+                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
+                it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
+                it.displayMoney = TextUtil.formatMoney(it.money)
+            }
+
+            result?.rows?.let {
+                redEnvelopeLogList.addAll(it)
+            }
+
+            result?.total?.let {
+                _isFinalPage.postValue(page * pageSize >= it)
+            }
+
+            if (result?.success == true) {
+                _redEnvelopeListResult.postValue(redEnvelopeLogList)
+            }
+
+            hideLoading()
+        }
+
+}
+
+fun setLogDetail(row: Event<Row>) {
+    _rechargeLogDetail.postValue(row)
+}
+
+fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
+    _withdrawLogDetail.postValue(row)
+}
+fun setRedEnvelopeLogDetail(row: Event<RedEnvelopeRow>) {
+    _redEnvelopeLogDetail.postValue(row)
+}
+
 }

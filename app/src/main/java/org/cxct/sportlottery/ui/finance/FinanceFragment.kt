@@ -83,6 +83,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
         val recordHideStrList = context?.resources?.getStringArray(R.array.finance_hide_array)
         val recordImgList = context?.resources?.obtainTypedArray(R.array.finance_img_array)
 
+
         val recordList = recordStrList?.filter {
             if (sConfigData?.thirdOpen == FLAG_OPEN)
                 true

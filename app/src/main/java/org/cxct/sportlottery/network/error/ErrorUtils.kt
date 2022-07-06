@@ -101,6 +101,9 @@ import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlResponse
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
+import org.cxct.sportlottery.network.money.RedEnvelopeInfo
+import org.cxct.sportlottery.network.money.RedEnvelopePrizeResult
+import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.money.list.SportBillResult
@@ -154,7 +157,8 @@ object ErrorUtils {
 
         response.errorBody()?.let {
             try {
-                error = converter.convert(it) // TODO com.squareup.moshi.JsonEncodingException: Use JsonReader.setLenient(true) to accept malformed JSON at path $
+                error =
+                    converter.convert(it) // TODO com.squareup.moshi.JsonEncodingException: Use JsonReader.setLenient(true) to accept malformed JSON at path $
             } catch (e: IOException) {
                 Timber.e("parseError: $e")
                 throw e
@@ -167,11 +171,11 @@ object ErrorUtils {
                 when {
                     (url.contains(INDEX_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return LoginResult(it.code, it.msg, it.success,null) as T
+                        return LoginResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(INDEX_REGISTER)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return LoginResult(it.code, it.msg, it.success,null) as T
+                        return LoginResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(INDEX_CHECK_TOKEN)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -497,7 +501,15 @@ object ErrorUtils {
                     }
                     (url.contains(Constants.USER_BILL_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return SportBillResult(it.code, it.msg, listOf(),it.success,0) as T
+                        return SportBillResult(it.code, it.msg, listOf(), it.success, 0) as T
+                    }
+                    (url.contains(Constants.RED_ENVELOPE_CHECK)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return RedEnvelopeResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.RED_ENVELOPE_PRIZE_BASE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return RedEnvelopePrizeResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(USER_CREDIT_CIRCLE_HISTORY)) -> {
                         @Suppress("UNCHECKED_CAST")

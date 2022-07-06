@@ -27,7 +27,6 @@ import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
@@ -60,6 +59,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setUpLoginForGuestButton()
         initObserve()
         setLetterSpace()
+
     }
 
     private fun setLetterSpace() {

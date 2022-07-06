@@ -2,12 +2,13 @@ package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.provider.Settings
 import android.util.Log
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -125,6 +126,7 @@ object TimeUtil {
             "-"
         }
     }
+
     /**
      * 時間(TimeInMillis) 轉換成 minute 格式 (倒數)
      * @param time: TimeInMillis
@@ -166,12 +168,12 @@ object TimeUtil {
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
         dateFormatPattern: String = YMD_HMS_FORMAT,
-        timeZone:TimeZone?=TimeZone.getDefault(),
+        timeZone: TimeZone? = TimeZone.getDefault(),
         locale: Locale = Locale.getDefault()
     ): Long? {
         if (date.isNullOrEmpty()) return null
         val formatter = SimpleDateFormat("$dateFormatPattern S", locale)
-        formatter.timeZone =timeZone
+        formatter.timeZone = timeZone
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
@@ -306,11 +308,14 @@ object TimeUtil {
         }
     }
 
-    fun getDefaultTimeStamp(minusDays: Int? = 6,timeZone:TimeZone?=TimeZone.getDefault()): TimeRangeParams {
+    fun getDefaultTimeStamp(
+        minusDays: Int? = 6,
+        timeZone: TimeZone? = TimeZone.getDefault()
+    ): TimeRangeParams {
         val cPair = getCalendarForDates(minusDays)
 
-        val minusDayTimeStamp = cPair.first.apply { this.timeZone=timeZone }.timeInMillis
-        val todayTimeStamp = cPair.second.apply { this.timeZone=timeZone }.timeInMillis
+        val minusDayTimeStamp = cPair.first.apply { this.timeZone = timeZone }.timeInMillis
+        val todayTimeStamp = cPair.second.apply { this.timeZone = timeZone }.timeInMillis
         return object : TimeRangeParams {
             //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
             override val startTime: String
@@ -449,7 +454,7 @@ object TimeUtil {
         startTimeCalendar.timeZone = eUSTimeZone
         startTimeCalendar.add(Calendar.DATE, -7)
 
-        return object: TimeRangeParams {
+        return object : TimeRangeParams {
             override val startTime: String
                 get() = startTimeCalendar.timeInMillis.toString()
             override val endTime: String
@@ -570,6 +575,7 @@ object TimeUtil {
         }
         return remainTime
     }
+
     //[Martin] 這會回傳剩餘幾天
     fun getRemainDay(timeStamp: Long?): Int {
         var remainTime = 0L
@@ -577,7 +583,7 @@ object TimeUtil {
         try {
             timeStamp?.apply {
                 remainTime = timeStamp - System.currentTimeMillis()
-                day = (remainTime/ (1000*60*60*24)).toInt()+1
+                day = (remainTime / (1000 * 60 * 60 * 24)).toInt() + 1
             }
         } catch (e: Exception) {
             Timber.e("時間計算失敗!!! \n$e")
@@ -585,13 +591,14 @@ object TimeUtil {
         }
         return day
     }
+
     fun getRemainMinute(timeStamp: Long?): Int {
         var remainTime = 0L
         var minute = 0
         try {
             timeStamp?.apply {
                 remainTime = timeStamp - System.currentTimeMillis()
-                minute = (remainTime / (1000*60)).toInt()
+                minute = (remainTime / (1000 * 60)).toInt()
             }
         } catch (e: Exception) {
             Timber.e("時間計算失敗!!! \n$e")
@@ -630,4 +637,61 @@ object TimeUtil {
         return timeFormat(time, VI_MD_FORMAT)
     }
 
+    /**
+     * 当前时间
+     */
+
+    fun nowTime(format: String?): String {
+        return SimpleDateFormat(format).format(Date(System.currentTimeMillis()))
+    }
+
+    /**
+     * 比较2个时间
+     */
+    fun dateDiffDay(startTime: String?, endTime: String?, format: String?): Long {
+        if (startTime == null || endTime == null) {
+            return 0
+        }
+        // 按照传入的格式生成一个simpledateformate对象
+        val sd = SimpleDateFormat(format)
+        val nd = (1000 * 24 * 60 * 60).toLong() // 一天的毫秒数
+        val nh = (1000 * 60 * 60).toLong() // 一小时的毫秒数
+        val nm = (1000 * 60).toLong() // 一分钟的毫秒数
+        val ns: Long = 1000 // 一秒钟的毫秒数
+        val diff: Long
+        var day: Long = 0
+        try {
+            // 获得两个时间的毫秒时间差异
+            diff = (sd.parse(endTime).time
+                    - sd.parse(startTime).time)
+            day = diff / nd // 计算差多少天
+            val hour = diff % nd / nh // 计算差多少小时
+            val min = diff % nd % nh / nm // 计算差多少分钟
+            val sec = diff % nd % nh % nm / ns // 计算差多少秒
+            // 输出结果
+            return (day * 24 * 60 * 60) + (hour * 60 * 60) + (min * 60) + sec
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        return 0
+
+    }
+
+    /**
+     * 时间前推或后推秒,
+     */
+
+    fun getPreTime(nowTime: String, postponeTime: Long, format: String?): String {
+        var format = SimpleDateFormat(format);
+        var mydate1 = "";
+        try {
+            var date = format.parse(nowTime);
+            var time = (date.getTime() / 1000) + postponeTime
+            date.setTime(time * 1000);
+            mydate1 = format.format(date);
+        } catch (e: ParseException) {
+        }
+        return mydate1;
+    }
 }

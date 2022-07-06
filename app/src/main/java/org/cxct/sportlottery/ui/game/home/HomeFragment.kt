@@ -8,10 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +33,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
+import org.cxct.sportlottery.network.money.RedEnvelopeInfo
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -46,6 +50,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
+import org.cxct.sportlottery.ui.infoCenter.InfoCenterDetailDialog
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -93,7 +98,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private var mSubscribeAtStartGameID: MutableList<String> = mutableListOf()
     private var mSubscribeRecommendGameID: MutableList<String> = mutableListOf()
     private var mSubscribeHighlightGameID: MutableList<String> = mutableListOf()
-
     private val mOnClickOddListener = object : OnClickOddListener {
         override fun onClickBet(
             matchOdd: MatchOdd,
@@ -128,6 +132,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             gameViewModel = this@HomeFragment.viewModel
             lifecycleOwner = this@HomeFragment
         }
+//        showDialog();
         return homeBinding.root
     }
 
@@ -157,9 +162,14 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     lifecycleScope.launch {
                         with(mHomeListAdapter) {
                             notifyTimeChanged(1)
+
                         }
                     }
+
+
                 }
+
+
             }, 1000L, 1000L)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -224,32 +234,33 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initGameTableBar() {
-        mHomeListAdapter.onGameTableBarViewHolderListener = object : GameTableBarViewHolder.Listener {
-            override fun onGameTableSelect(matchType: MatchType) {
-                when (matchType) {
-                    MatchType.IN_PLAY -> {
-                        if (mSelectMatchType == MatchType.IN_PLAY) return
-                        mSelectMatchType = MatchType.IN_PLAY
-                        refreshTable(mHomeGameTableBarItemData.inPlayResult)
+        mHomeListAdapter.onGameTableBarViewHolderListener =
+            object : GameTableBarViewHolder.Listener {
+                override fun onGameTableSelect(matchType: MatchType) {
+                    when (matchType) {
+                        MatchType.IN_PLAY -> {
+                            if (mSelectMatchType == MatchType.IN_PLAY) return
+                            mSelectMatchType = MatchType.IN_PLAY
+                            refreshTable(mHomeGameTableBarItemData.inPlayResult)
 
-                        if (mSelectMatchType != MatchType.MAIN) {
-                            unsubscribeUnSelectMatchTypeHallChannel()
-                            viewModel.getMatchPreloadInPlay()
+                            if (mSelectMatchType != MatchType.MAIN) {
+                                unsubscribeUnSelectMatchTypeHallChannel()
+                                viewModel.getMatchPreloadInPlay()
+                            }
                         }
-                    }
-                    MatchType.AT_START -> {
-                        if (mSelectMatchType == MatchType.AT_START) return
-                        mSelectMatchType = MatchType.AT_START
-                        refreshTable(mHomeGameTableBarItemData.atStartResult)
+                        MatchType.AT_START -> {
+                            if (mSelectMatchType == MatchType.AT_START) return
+                            mSelectMatchType = MatchType.AT_START
+                            refreshTable(mHomeGameTableBarItemData.atStartResult)
 
-                        if (mSelectMatchType != MatchType.MAIN) {
-                            unsubscribeUnSelectMatchTypeHallChannel()
-                            viewModel.getMatchPreloadAtStart()
+                            if (mSelectMatchType != MatchType.MAIN) {
+                                unsubscribeUnSelectMatchTypeHallChannel()
+                                viewModel.getMatchPreloadAtStart()
+                            }
                         }
                     }
                 }
             }
-        }
     }
 
     private fun initMenu() {
@@ -261,8 +272,22 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 onPoker = { navThirdGame(ThirdGameCategory.QP) },
                 onSlot = { navThirdGame(ThirdGameCategory.DZ) },
                 onFishing = { navThirdGame(ThirdGameCategory.BY) },
-                onGameResult = { startActivity(Intent(activity, ResultsSettlementActivity::class.java)) },
-                onUpdate = { startActivity(Intent(activity, VersionUpdateActivity::class.java)) },
+                onGameResult = {
+                    startActivity(
+                        Intent(
+                            activity,
+                            ResultsSettlementActivity::class.java
+                        )
+                    )
+                },
+                onUpdate = {
+                    startActivity(
+                        Intent(
+                            activity,
+                            VersionUpdateActivity::class.java
+                        )
+                    )
+                },
                 onFirstGame = { sportMenu ->
                     if (sportMenu.entranceType != null) {
                         sportMenu.entranceType?.let {
@@ -272,7 +297,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             )
                         }
                     } else {
-                        viewModel.setSportClosePromptMessage(MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string))
+                        viewModel.setSportClosePromptMessage(
+                            MultiLanguagesApplication.appContext.getString(
+                                sportMenu.gameType.string
+                            )
+                        )
                     }
                 },
                 onSecondGame = { sportMenu ->
@@ -281,7 +310,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             viewModel.navSpecialEntrance(it, sportMenu.gameType)
                         }
                     } else {
-                        viewModel.setSportClosePromptMessage(MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string))
+                        viewModel.setSportClosePromptMessage(
+                            MultiLanguagesApplication.appContext.getString(
+                                sportMenu.gameType.string
+                            )
+                        )
                     }
                 },
                 onHomeCard = { sportMenu ->
@@ -290,7 +323,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                             viewModel.navSpecialEntrance(it, sportMenu.gameType)
                         }
                     } else {
-                        viewModel.setSportClosePromptMessage(MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string))
+                        viewModel.setSportClosePromptMessage(
+                            MultiLanguagesApplication.appContext.getString(
+                                sportMenu.gameType.string
+                            )
+                        )
                     }
                 },
                 onCouponCard = { sportCouponMenuData ->
@@ -330,7 +367,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         mHomeListAdapter.onClickLiveListener = object : OnSelectItemListener<MatchInfo> {
             override fun onClick(select: MatchInfo) {
-                if (viewModel.checkLoginStatus()){
+                if (viewModel.checkLoginStatus()) {
                     val code = select.gameType
                     val matchId = select.id
                     navOddsDetailFragment(code, matchId, mSelectMatchType)
@@ -340,7 +377,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
         mHomeListAdapter.onClickAnimationListener = object : OnSelectItemListener<MatchInfo> {
             override fun onClick(select: MatchInfo) {
-                if (viewModel.checkLoginStatus()){
+                if (viewModel.checkLoginStatus()) {
                     val code = select.gameType
                     val matchId = select.id
                     navOddsDetailFragment(code, matchId, mSelectMatchType)
@@ -414,36 +451,38 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         //TODO review 看是不是直接改成和點擊標題同行為
         mHomeListAdapter.onRecommendClickMoreListener = object : OnClickMoreListener {
             override fun onClickMore(oddsKey: String, matchOdd: MatchOdd) {
-                val action = HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
-                    oddsKey,
-                    org.cxct.sportlottery.network.outright.odds.MatchOdd(
-                        matchInfo = matchOdd.matchInfo,
-                        oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
-                        dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
-                        oddsList = listOf(),
-                        quickPlayCateList = matchOdd.quickPlayCateList,
-                        betPlayCateNameMap = matchOdd.betPlayCateNameMap,
-                        playCateNameMap = matchOdd.playCateNameMap
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
+                        oddsKey,
+                        org.cxct.sportlottery.network.outright.odds.MatchOdd(
+                            matchInfo = matchOdd.matchInfo,
+                            oddsMap = matchOdd.oddsMap ?: mutableMapOf(),
+                            dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
+                            oddsList = listOf(),
+                            quickPlayCateList = matchOdd.quickPlayCateList,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            playCateNameMap = matchOdd.playCateNameMap
+                        )
                     )
-                )
                 findNavController().navigate(action)
             }
         }
 
-        mHomeListAdapter.onRecommendClickMatchListener = object : OnSelectItemListener<RecommendGameEntity> {
-            override fun onClick(select: RecommendGameEntity) {
+        mHomeListAdapter.onRecommendClickMatchListener =
+            object : OnSelectItemListener<RecommendGameEntity> {
+                override fun onClick(select: RecommendGameEntity) {
 //                scroll_view.smoothScrollTo(0, 0)
-                val code = select.code
-                val matchId = select.matchInfo?.id
+                    val code = select.code
+                    val matchId = select.matchInfo?.id
 
-                if (select.isOutright == RECOMMEND_OUTRIGHT) {
-                    navGameOutright(select.code, select.leagueId)
-                } else {
-                    //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
-                    navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    if (select.isOutright == RECOMMEND_OUTRIGHT) {
+                        navGameOutright(select.code, select.leagueId)
+                    } else {
+                        //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
+                        navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    }
                 }
             }
-        }
     }
 
     private fun initHighlight() {
@@ -458,15 +497,16 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
 
         mHomeListAdapter.onHighLightClickOddListener = mOnClickOddListener
-        mHomeListAdapter.onHighLightClickMatchListener = object : OnSelectItemListener<MatchOdd> {
-            override fun onClick(select: MatchOdd) {
-                val code = select.matchInfo?.gameType
-                val matchId = select.matchInfo?.id
+        mHomeListAdapter.onHighLightClickMatchListener =
+            object : OnSelectItemListener<MatchOdd> {
+                override fun onClick(select: MatchOdd) {
+                    val code = select.matchInfo?.gameType
+                    val matchId = select.matchInfo?.id
 
-                //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY
-                navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY
+                    navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                }
             }
-        }
 
         mHomeListAdapter.onHighLightClickFavoriteListener = object : OnClickFavoriteListener {
             override fun onClickFavorite(matchId: String?) {
@@ -474,11 +514,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             }
         }
 
-        mHomeListAdapter.onHighLightClickStatisticsListener = object : OnClickStatisticsListener {
-            override fun onClickStatistics(matchId: String?) {
-                navStatisticsPage(matchId)
+        mHomeListAdapter.onHighLightClickStatisticsListener =
+            object : OnClickStatisticsListener {
+                override fun onClickStatistics(matchId: String?) {
+                    navStatisticsPage(matchId)
+                }
             }
-        }
     }
 
     private fun setupTableSelected() {
@@ -514,13 +555,16 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                 data.matchOdds.find {
                                     it.matchInfo?.id == curMatchOdd.matchInfo?.id
                                 }?.apply {
-                                    matchInfo?.homeTotalScore = curMatchOdd.matchInfo?.homeTotalScore
-                                    matchInfo?.awayTotalScore = curMatchOdd.matchInfo?.awayTotalScore
+                                    matchInfo?.homeTotalScore =
+                                        curMatchOdd.matchInfo?.homeTotalScore
+                                    matchInfo?.awayTotalScore =
+                                        curMatchOdd.matchInfo?.awayTotalScore
                                     matchInfo?.homeScore = curMatchOdd.matchInfo?.homeScore
                                     matchInfo?.awayScore = curMatchOdd.matchInfo?.awayScore
                                     matchInfo?.homePoints = curMatchOdd.matchInfo?.homePoints
                                     matchInfo?.awayPoints = curMatchOdd.matchInfo?.awayPoints
-                                    matchInfo?.statusName18n = curMatchOdd.matchInfo?.statusName18n
+                                    matchInfo?.statusName18n =
+                                        curMatchOdd.matchInfo?.statusName18n
                                     matchInfo?.homeCards = curMatchOdd.matchInfo?.homeCards
                                     matchInfo?.awayCards = curMatchOdd.matchInfo?.awayCards
                                     matchInfo?.scoreStatus = curMatchOdd.matchInfo?.status
@@ -625,13 +669,19 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
 
     private fun unsubscribeTableHallChannel() {
         mSubscribeInPlayGameID.forEach {
-            if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
+            if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(
+                    it
+                )
+            ) {
                 unsubscribeHallChannel(it)
             }
         }
         mSubscribeInPlayGameID.clear()
         mSubscribeAtStartGameID.forEach {
-            if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(it)) {
+            if (!mSubscribeRecommendGameID.contains(it) && !mSubscribeHighlightGameID.contains(
+                    it
+                )
+            ) {
                 unsubscribeHallChannel(it)
 
             }
@@ -860,7 +910,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             val gameEntityData = mHomeListAdapter.getGameEntityData()
             gameEntityData.forEachIndexed { index, it ->
                 it.matchOdds.forEachIndexed { adapterIndex, matchOdd ->
-                    matchOdd.matchInfo?.isFavorite = favorMatchList.contains(matchOdd.matchInfo?.id)
+                    matchOdd.matchInfo?.isFavorite =
+                        favorMatchList.contains(matchOdd.matchInfo?.id)
                     mHomeListAdapter.notifySubItemChanged(index, adapterIndex)
                 }
             }
@@ -878,6 +929,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         viewModel.isLogin.observe(viewLifecycleOwner) {
             mHomeListAdapter.isLogin = it
         }
+
+
     }
 
     private fun setGameTableBar() {
@@ -1043,7 +1096,12 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     highlightDataList.highlightSortOddsMap()
                     var isUpdate = false
                     highlightDataList.forEach { updateMatchOdd ->
-                        if (SocketUpdateUtil.updateMatchOdds(context, updateMatchOdd, oddsChangeEvent)) {
+                        if (SocketUpdateUtil.updateMatchOdds(
+                                context,
+                                updateMatchOdd,
+                                oddsChangeEvent
+                            )
+                        ) {
                             val playCateCode = PlayCateMenuFilterUtils.filterOddsSort(
                                 updateMatchOdd.matchInfo?.gameType,
                                 "SPECIAL_MATCH_MOBILE"
@@ -1093,8 +1151,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     tableInPlayMap.clear()
                     //滾球盤
                     viewModel.getMatchPreloadInPlay()
-                }
-                else {
+                } else {
                     tableSoonMap.clear()
                     //即將開賽盤
                     viewModel.getMatchPreloadAtStart()
@@ -1253,9 +1310,9 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     private fun updateThirdGameCard() {
         mHomeListAdapter.updateThirdGameCard(
             lotteryVisible = isShowThirdGame && lotteryCount > 0,
-            liveVisible = isShowThirdGame && liveCount > 0 ,
-            pokerVisible = isShowThirdGame && pokerCount > 0 ,
-            slotVisible = isShowThirdGame && slotCount > 0 ,
+            liveVisible = isShowThirdGame && liveCount > 0,
+            pokerVisible = isShowThirdGame && pokerCount > 0,
+            slotVisible = isShowThirdGame && slotCount > 0,
             fishingVisible = isShowThirdGame && fishingCount > 0
         )
     }
@@ -1312,7 +1369,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
     }
 
     private fun refreshRecommend(result: MatchRecommendResult) {
-        mHomeListAdapter.setRecommendData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+        mHomeListAdapter.setRecommendData(
+            result,
+            viewModel.betIDList.value?.peekContent() ?: mutableListOf()
+        )
     }
 
     private fun refreshHighlightMenu(result: MatchCategoryResult) {
@@ -1385,5 +1445,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
             oddMap.key == playCateCode?.split(",")?.get(0) ?: "HDP"
         }
     }
+
 
 }

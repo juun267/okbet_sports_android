@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class LoginViewModel(

@@ -40,6 +40,9 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
                 getString(R.string.record_history) -> {
                     navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToAccountHistoryFragment())
                 }
+                getString(R.string.redenvelope_record) -> {
+                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToRedEnvelopeFragment())
+                }
             }
         })
 
