@@ -72,5 +72,12 @@
         <!-- 右側導覽列 -->
         <include layout="@layout/view_nav_right" />
 
+        <org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
+            android:id="@+id/btn_floating_red_envelope"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
