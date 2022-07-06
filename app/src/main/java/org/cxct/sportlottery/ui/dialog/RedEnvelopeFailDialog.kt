@@ -6,20 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
-import kotlinx.android.synthetic.main.dialog_redenvelope_success.*
-import org.cxct.sportlottery.BuildConfig
+import kotlinx.android.synthetic.main.dialog_redenvelope_fail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.TextUtil
 
 class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     init {
         setStyle(R.style.FullScreen)
     }
     companion object {
+        const val ERROR_DESC = "ERROR_DESC"
+
         @JvmStatic
-        fun newInstance() = RedEnvelopeFailDialog()
+        fun newInstance(errorDesc: String? = "") = RedEnvelopeFailDialog().apply {
+            arguments = Bundle().apply {
+                putString(ERROR_DESC, errorDesc)
+            }
+        }
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,5 +43,7 @@ class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
         iv_close.setOnClickListener {
             dismiss()
         }
+        val errorDesc = arguments?.getString(ERROR_DESC).orEmpty()
+        if (errorDesc.isNotEmpty()) tv_error_desc.text = errorDesc
     }
 }

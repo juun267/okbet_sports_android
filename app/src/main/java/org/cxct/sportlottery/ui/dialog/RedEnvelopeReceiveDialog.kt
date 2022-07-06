@@ -90,19 +90,26 @@ class RedEnvelopeReceiveDialog(
 
 
     private fun initObserve() {
-        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { it ->
-            if (redenpId == null) return@observe
+        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { result ->
+            if (redenpId == null) {
+                dismiss()
+                return@observe
+            }
             redenpId = null
-            if (it.success) {
-                var redEnvelopePrize = it.redEnvelopePrize
-                activity?.supportFragmentManager?.let {
-                    RedEnvelopeSuccessDialog.newInstance(
-                        redEnvelopePrize?.grabMoney
-                    ).show(it, null)
+            if (result.success) {
+                val grabMoney = result.redEnvelopePrize?.grabMoney ?: "0"
+                if (grabMoney != "0") {
+                    activity?.supportFragmentManager?.let {
+                        RedEnvelopeSuccessDialog.newInstance(grabMoney).show(it, null)
+                    }
+                } else {
+                    activity?.supportFragmentManager?.let {
+                        RedEnvelopeFailDialog.newInstance().show(it, null)
+                    }
                 }
             } else {
                 activity?.supportFragmentManager?.let {
-                    RedEnvelopeFailDialog.newInstance().show(it, null)
+                    RedEnvelopeFailDialog.newInstance(result.msg).show(it, null)
                 }
             }
             dismiss()
