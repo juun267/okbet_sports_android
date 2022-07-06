@@ -51,7 +51,11 @@ class PromotionPopupDialog(val activity: FragmentActivity, private val promotion
         with(binding.banner) {
             addBannerLifecycleObserver(activity)
                 .setAdapter(PromotionAdapter(promotionList))
-                .indicator = CircleIndicator(context)
+
+            //若只有一項仍然配置indicator會造成banner拉伸
+            if (promotionList.size > 1) {
+                indicator = CircleIndicator(context)
+            }
 
             setOnBannerListener { _, _ -> //data, position
                 promotionPopupListener.onClickImageListener()
