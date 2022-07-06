@@ -34,12 +34,6 @@ class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val operatingAnim = AnimationUtils.loadAnimation(
-            activity, R.anim.red_envelope_rotate
-        )
-        val lin = LinearInterpolator()
-        operatingAnim.interpolator = lin
-        iv_shinne.startAnimation(operatingAnim)
         iv_close.setOnClickListener {
             dismiss()
         }
