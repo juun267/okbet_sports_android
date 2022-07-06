@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.*
 import me.jessyan.autosize.AutoSizeCompat
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
@@ -397,7 +398,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     /*以下紅包相關功能(尚須重構)*/
     private var redenpId: Int = 0
-    private var showedRedenpId = -1 //顯示過的紅包id
     private var redenpStartTime: Long? = null
     private var redenpEndTime: Long? = null
     private var count = 0
@@ -429,8 +429,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                             btn_floating_red_envelope?.setCountdown(startTimeDiff)
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0 && viewModel.getRainShowing() == -1) {
-                        if (showedRedenpId != redenpId) {
-                            showedRedenpId = redenpId
+                        if (MultiLanguagesApplication.mInstance.showedRedenpId != redenpId) {
+                            MultiLanguagesApplication.mInstance.showedRedenpId = redenpId
                             viewModel.setRainShowing(redenpId)
                             logRedEnvelopeReceiveDialog.redenpId = redenpId
                             logRedEnvelopeReceiveDialog.show(
