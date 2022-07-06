@@ -1,0 +1,63 @@
+package org.cxct.sportlottery.ui.dialog.promotion
+
+import android.app.AlertDialog
+import android.os.Bundle
+import android.view.Gravity
+import android.view.WindowManager
+import androidx.fragment.app.FragmentActivity
+import com.youth.banner.indicator.CircleIndicator
+import org.cxct.sportlottery.databinding.DialogPromotionPopupBinding
+import org.cxct.sportlottery.repository.ImageType
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
+
+class PromotionPopupDialog(val activity: FragmentActivity, private val promotionPopupListener: PromotionPopupListener) :
+    AlertDialog(activity) {
+    private var _binding: DialogPromotionPopupBinding? = null
+    private val binding get() = _binding!!
+
+    open class PromotionPopupListener(private val onClickImageListener: () -> Unit) {
+        fun onClickImageListener() = onClickImageListener.invoke()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        _binding = DialogPromotionPopupBinding.inflate(activity.layoutInflater)
+        setContentView(binding.root)
+        window?.setLayout(
+            ScreenUtil.getScreenWidth(context) - 40.dp,
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+        window?.setGravity(Gravity.CENTER)
+        window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        initView()
+    }
+
+    private fun initView() {
+        binding.ivClose.setOnClickListener { dismiss() }
+        val promotionList = mutableListOf<PromotionData>()
+        sConfigData?.imageList?.map { imageData ->
+            if (imageData.imageType == ImageType.PROMOTION.code) {
+                promotionList.add(
+                    PromotionData(
+                        imgUrl = "${sConfigData?.resServerHost}${imageData.imageName3}",
+                        title = imageData.imageText3
+                    )
+                )
+            }
+        }
+
+        with(binding.banner) {
+            addBannerLifecycleObserver(activity)
+                .setAdapter(PromotionAdapter(promotionList))
+                .indicator = CircleIndicator(context)
+
+            setOnBannerListener { _, _ -> //data, position
+                promotionPopupListener.onClickImageListener()
+                dismiss()
+            }
+        }
+    }
+
+}

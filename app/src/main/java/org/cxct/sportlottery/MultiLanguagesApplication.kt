@@ -13,14 +13,15 @@ import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.dialog_change_appearance.view.*
 import kotlinx.coroutines.*
 import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.dialog.AgeVerifyDialog
+import org.cxct.sportlottery.ui.dialog.promotion.PromotionPopupDialog
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
@@ -53,16 +54,13 @@ import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
-import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
-import java.util.*
 
 /**
  * App 內部切換語系
@@ -301,6 +299,10 @@ class MultiLanguagesApplication : Application() {
         private var instance: MultiLanguagesApplication? = null
         lateinit var mInstance: MultiLanguagesApplication
 
+        private val loginSharedPref: SharedPreferences by lazy {
+            mInstance.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+        }
+
         fun saveSearchHistory(searchHistory: MutableList<String>?) {
             this.searchHistory = searchHistory
         }
@@ -361,6 +363,22 @@ class MultiLanguagesApplication : Application() {
                     override fun onConfirm() {
                         //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
                         getInstance()?.setIsAgeVerifyShow(false)
+                        val token = loginSharedPref.getString(KEY_TOKEN, "")
+
+                        if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code } == true)
+                            PromotionPopupDialog(
+                                activity,
+                                PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
+                                    JumpUtil.toInternalWeb(
+                                        activity,
+                                        Constants.getPromotionUrl(
+                                            token,
+                                            LanguageManager.getSelectLanguage(activity)
+                                        ),
+                                        activity.getString(R.string.promotion)
+                                    )
+                                })
+                            ).show()
                     }
 
                     override fun onExit() {
