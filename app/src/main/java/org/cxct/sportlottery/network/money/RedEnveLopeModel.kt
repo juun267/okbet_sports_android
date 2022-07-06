@@ -25,8 +25,8 @@ class RedEnveLopeModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-    private val _redEnvelopePrizeResult = MutableLiveData<RedEnvelopePrizeResult>()
-    val redEnvelopePrizeResult: LiveData<RedEnvelopePrizeResult>
+    private val _redEnvelopePrizeResult = MutableLiveData<Event<RedEnvelopePrizeResult?>>()
+    val redEnvelopePrizeResult: LiveData<Event<RedEnvelopePrizeResult?>>
         get() = _redEnvelopePrizeResult
 
     fun getRedEnvelopePrize(redEnpId: Int?) {
@@ -34,7 +34,7 @@ class RedEnveLopeModel(
             doNetwork(androidContext) {
                 OneBoSportApi.moneyService.getRedEnvelopePrize(redEnpId)
             }?.let { result ->
-                _redEnvelopePrizeResult.postValue(result)
+                _redEnvelopePrizeResult.postValue(Event(result))
             }
         }
     }

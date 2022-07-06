@@ -1,7 +1,5 @@
-package org.cxct.sportlottery.ui.dialo
+package org.cxct.sportlottery.ui.dialog
 
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeFailDialog
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeSuccessDialog
 import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -13,7 +11,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
@@ -71,6 +68,10 @@ class RedEnvelopeReceiveDialog(
     private var p: Point? = null
     private var randomX = 0
     private var randomY: Int = 0
+
+    private var successDialog: RedEnvelopeSuccessDialog? = null
+    private var failDialog: RedEnvelopeFailDialog? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -90,22 +91,29 @@ class RedEnvelopeReceiveDialog(
 
 
     private fun initObserve() {
-        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) {
-            redenpId = 0
-            if (it.success) {
-                var redEnvelopePrize = it.redEnvelopePrize
-                activity?.supportFragmentManager?.let {
-                    RedEnvelopeSuccessDialog.newInstance(
-                        redEnvelopePrize?.grabMoney
-                    ).show(it, null)
+        viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { evenResult ->
+            evenResult?.getContentIfNotHandled()?.let { result ->
+                if (result.success) {
+                    val grabMoney = result.redEnvelopePrize?.grabMoney ?: "0"
+                    if (grabMoney != "0") {
+                        activity?.supportFragmentManager?.let {
+                            successDialog = RedEnvelopeSuccessDialog.newInstance(grabMoney)
+                            successDialog?.show(it, null)
+                        }
+                    } else {
+                        activity?.supportFragmentManager?.let {
+                            failDialog = RedEnvelopeFailDialog.newInstance()
+                            failDialog?.show(it, null)
+                        }
+                    }
+                } else {
+                    activity?.supportFragmentManager?.let {
+                        failDialog = RedEnvelopeFailDialog.newInstance(result.msg)
+                        failDialog?.show(it, null)
+                    }
                 }
-            } else {
-                activity?.supportFragmentManager?.let {
-                    RedEnvelopeFailDialog.newInstance().show(it, null)
-                }
+                dismiss()
             }
-            iv_radiance.clearAnimation()
-            dismiss()
         }
 
     }
@@ -117,7 +125,8 @@ class RedEnvelopeReceiveDialog(
 
         setContentView()
 
-
+        if (successDialog?.isVisible == true) successDialog?.dismiss()
+        if (failDialog?.isVisible == true) failDialog?.dismiss()
     }
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {

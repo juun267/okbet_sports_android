@@ -176,10 +176,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun getRain() {
-        viewModel.getRain()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         unSubscribeChannelHallAll()

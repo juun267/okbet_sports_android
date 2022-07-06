@@ -145,7 +145,7 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
 
         viewModel.redEnvelopeListResult.observe(this.viewLifecycleOwner) {
             it?.let {
-                redEnvelopeLogAdapter.data = it
+//                redEnvelopeLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
             }
         }

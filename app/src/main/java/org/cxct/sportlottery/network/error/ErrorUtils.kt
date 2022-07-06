@@ -507,7 +507,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return RedEnvelopeResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(Constants.RED_ENVELOPE_PRIZE)) -> {
+                    (url.contains(Constants.RED_ENVELOPE_PRIZE_BASE)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return RedEnvelopePrizeResult(it.code, it.msg, it.success, null) as T
                     }

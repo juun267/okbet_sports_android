@@ -14,9 +14,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.exception.DoNoConnectException
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
+import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
@@ -33,6 +35,11 @@ abstract class BaseViewModel(
     val betInfoRepository: BetInfoRepository,
     val infoCenterRepository: InfoCenterRepository
 ) : ViewModel() {
+
+    private val _rainResult = MutableLiveData<Event<RedEnvelopeResult>>()
+    val rainResult: LiveData<Event<RedEnvelopeResult>>
+        get() = _rainResult
+
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
     }
@@ -159,5 +166,27 @@ abstract class BaseViewModel(
                 }
             }
         }
+    }
+
+    fun getRain() {
+        viewModelScope.launch {
+            doNetwork(MultiLanguagesApplication.appContext) {
+                OneBoSportApi.moneyService.getRainInfo()
+            }?.let { result ->
+                _rainResult.postValue(Event(result))
+            }
+        }
+    }
+
+    fun getRainShowing(): Int {
+        return loginRepository.isShowingRedenpId
+    }
+
+    fun setRainShowing(isShowingRedenpId: Int) {
+        loginRepository.isShowingRedenpId = isShowingRedenpId
+    }
+
+    fun getLoginBoolean(): Boolean {
+        return loginRepository.isLogin.value ?: false
     }
 }
