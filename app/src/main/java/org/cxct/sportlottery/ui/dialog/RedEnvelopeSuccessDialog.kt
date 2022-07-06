@@ -48,7 +48,7 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
         operatingAnim.interpolator = lin
         iv_shinne.startAnimation(operatingAnim)
         val amount = arguments?.getString(AMOUNT) ?: "0"
-        tv_amount.text = BuildConfig.SYSTEM_CURREMCY_SIGN + " " + amount
+        tv_amount.text = BuildConfig.SYSTEM_CURREMCY_SIGN + " " + TextUtil.format(amount)
         iv_close.setOnClickListener {
             dismiss()
         }
