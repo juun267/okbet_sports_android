@@ -100,13 +100,13 @@ abstract class BaseViewModel(
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
         /*特殊處理 需採用判斷 response code */
         val url = response.raw().request.url.toString()
-        if(response.code() == HttpError.GO_TO_SERVICE_PAGE.code && url.contains(Constants.INDEX_CONFIG)){
+        if (response.code() == HttpError.GO_TO_SERVICE_PAGE.code && url.contains(Constants.INDEX_CONFIG)) {
             _errorResultIndex.postValue(response.raw().request.url.host.httpFormat())
             return null
         }
 
         val errorResult = ErrorUtils.parseError(response)
-        if (response.code() == HttpError.UNAUTHORIZED.code || response.code() == HttpError.KICK_OUT_USER.code ) {
+        if (response.code() == HttpError.UNAUTHORIZED.code || response.code() == HttpError.KICK_OUT_USER.code) {
             errorResult?.let {
                 _errorResultToken.postValue(it)
             }
@@ -122,6 +122,9 @@ abstract class BaseViewModel(
         val localizedContext = context.createConfigurationContext(conf)
 
         when (exception) {
+            is kotlinx.coroutines.CancellationException -> {
+                // 取消線程不執行業務
+            }
             is DoNoConnectException -> {
                 _networkExceptionUnavailable.postValue(localizedContext.resources.getString(R.string.message_network_no_connect))
             }
@@ -152,9 +155,9 @@ abstract class BaseViewModel(
     fun checkIsUserAlive() {
         viewModelScope.launch {
             doNetwork(MultiLanguagesApplication.appContext) {
-               loginRepository.checkIsUserAlive()
-            }.let{ result ->
-                if (result?.success == false && loginRepository.isLogin.value == true){
+                loginRepository.checkIsUserAlive()
+            }.let { result ->
+                if (result?.success == false && loginRepository.isLogin.value == true) {
                     loginRepository._kickedOut.value = Event(result.msg)
                 }
             }
