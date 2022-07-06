@@ -3241,9 +3241,6 @@ class GameViewModel(
     private fun checkOddsList(gameType: String, matchTypeString: String, leagueIdList: List<String>? = null) {
         viewModelScope.launch {
 
-            // 如選擇球種的線程正在執行 則不需執行 league change 後的流程
-            if (jobSwitchGameType?.isActive == false) return@launch
-
             val matchType = curMatchType.value ?: return@launch
 
             /* 1. 刷新上方選單 */
@@ -3281,6 +3278,9 @@ class GameViewModel(
             if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
                 getMatchCategory(matchType)
             }
+            
+            // 如選擇球種的線程正在執行 則不需執行 league change 後的流程
+            if (jobSwitchGameType?.isActive == false) return@launch
 
             /* 2. 確認 league change 聯賽列表有無 */
             val oddsListResult = getOddsList(gameType, matchTypeString, leagueIdList = leagueIdList)?.apply {
