@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.webkit.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
@@ -21,11 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.cl_content
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_cat
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_detail
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.v_loading
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -174,10 +168,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         )
     }.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
@@ -320,47 +310,23 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                         result.setupPlayCateTab()
 
                         matchOdd = result.oddsDetailData?.matchOdd
-                        matchOdd?.matchInfo?.leagueName = result.oddsDetailData?.league?.name
-                        result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                            result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                                oddsDetailListAdapter?.homeName = home
-                                oddsDetailListAdapter?.awayName = away
-                            }
-                        }
 
                         result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
-                            //TODO 整理
-                            if (matchInfo.status == GameStatus.POSTPONED.code
-                                && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
-                            ) {
-                                tv_status_left.text = context?.getString(R.string.game_postponed)
-                                tv_status_left.setTextColor(
-                                    ContextCompat.getColor(
-                                        tv_status_left.context,
-                                        R.color.color_FFFFFF
-                                    )
-                                )
-                                tv_status_left.tag = GameStatus.POSTPONED.code
-                            } else {
-                                tv_status_left.tag = null
+                            //region 配置主客隊名稱給內部Item使用
+                            matchInfo.homeName?.let { home ->
+                                oddsDetailListAdapter?.homeName = home
                             }
+                            matchInfo.awayName.let { away ->
+                                oddsDetailListAdapter?.awayName = away
+                            }
+                            //endregion
+
+                            setupMatchInfo(matchInfo)
                         }
 
                         setupStartTime()
                         setupInitShowView(result.oddsDetailData?.matchOdd?.matchInfo)
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
-
-                        if (matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
-                            && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
-                        ) {
-                            tv_spt.visibility = View.VISIBLE
-                            tv_spt.text =
-                                " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
-                        } else {
-                            tv_spt.visibility = View.GONE
-                        }
-
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -460,6 +426,36 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 live_view_tool_bar.setupTrackerUrl(matchTrackerUrl)
             }
         }
+    }
+
+    /**
+     * 配置賽事資訊(隊伍名稱、是否延期、賽制)
+     */
+    private fun setupMatchInfo(matchInfo: MatchInfo) {
+        //region 隊伍名稱
+        tv_home_name.text = matchInfo.homeName ?: ""
+        tv_away_name.text = matchInfo.awayName ?: ""
+        //endregion
+
+        //region 比賽延期判斷
+        if (matchInfo.status == GameStatus.POSTPONED.code
+            && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
+        ) {
+            tv_status_left.text = context?.getString(R.string.game_postponed)
+        }
+        //endregion
+
+        //region 比賽賽制
+        if (matchType == MatchType.IN_PLAY &&
+            (args.gameType == GameType.TN || args.gameType == GameType.VB || args.gameType == GameType.TT || args.gameType == GameType.BM)
+            && (matchInfo.spt != null)
+        ) {
+            tv_spt.visibility = View.VISIBLE
+            tv_spt.text = " / ${(matchInfo.spt)}"
+        } else {
+            tv_spt.visibility = View.GONE
+        }
+        //endregion
     }
 
     private fun initSocketObserver() {
@@ -631,13 +627,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     private fun setupStartTime() {
-
         matchOdd?.matchInfo?.apply {
-
-            tv_home_name.text = this.homeName ?: ""
-
-            tv_away_name.text = this.awayName ?: ""
-
             if (matchType != MatchType.IN_PLAY) {
                 this@OddsDetailLiveFragment.startTime = startTime ?: 0
                 setupNotInPlayTime()
@@ -752,7 +742,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     GameType.TT -> {
                         setupBackScore(event)
                     }
-                    GameType.RB, GameType.AFT, GameType.BB -> {
+                    GameType.RB, GameType.AFT -> {
                         setupFrontScore(event)
                     }
                     GameType.BM -> {
