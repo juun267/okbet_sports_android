@@ -180,15 +180,6 @@ abstract class BaseViewModel(
             }
         }
     }
-
-    fun getRainShowing(): Int {
-        return loginRepository.isShowingRedenpId
-    }
-
-    fun setRainShowing(isShowingRedenpId: Int) {
-        loginRepository.isShowingRedenpId = isShowingRedenpId
-    }
-
     fun getLoginBoolean(): Boolean {
         return loginRepository.isLogin.value ?: false
     }

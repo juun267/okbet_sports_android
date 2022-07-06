@@ -1221,6 +1221,7 @@
     <string name="redenvelope_fail">很遗憾</string>
     <string name="redenvelope_fail_desp">很可惜没抢到红包</string>
     <string name="hint_enter_city">请输入所在城市</string>
+    <string name="redenvelope_close_hint">确定关闭红包倒数？\n关闭倒数则不進入搶红包</string>
     <!--endregion-->
 
     <string name="verification_status">身份证验证</string>

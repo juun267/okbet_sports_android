@@ -4,15 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import kotlinx.android.synthetic.main.motion_view_red_envelope_floating.view.*
-import kotlinx.android.synthetic.main.motion_view_service_floating.view.*
-import kotlinx.android.synthetic.main.motion_view_service_floating.view.movable_layout
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.Event
 
 class RedEnvelopeFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -30,29 +26,22 @@ class RedEnvelopeFloatingButton @JvmOverloads constructor(
         initClickEvent()
     }
 
-    var goneClose = true
     private fun initClickEvent() {
         iv_close.setOnClickListener {
-            visibility = View.GONE
-            goneClose = false
+            MultiLanguagesApplication.mInstance.isRedenpClose.value = Event(true)
         }
     }
 
 
-    fun setView(gone: Boolean) {
-        if (gone) {
-            if (goneClose) {
-                visibility = View.VISIBLE
-            }
+    fun setView(show: Boolean) {
+        visibility = if (show) {
+            View.VISIBLE
         } else {
-            visibility = View.GONE
-            goneClose = true
+            View.GONE
         }
-
     }
 
     fun setCountdown(countdown: Long) {
         tv_countdown.text = countdown.toString()
     }
-
 }

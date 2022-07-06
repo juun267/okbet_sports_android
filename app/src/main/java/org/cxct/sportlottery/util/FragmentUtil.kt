@@ -83,6 +83,45 @@ fun commonCheckDialog(
     }.show(fm, errorMessage)
 }
 
+fun commonTwoButtonDialog(
+    context: Context,
+    fm: FragmentManager,
+    isError: Boolean,
+    isShowDivider: Boolean?,
+    title: String?,
+    errorMessage: String? = "",
+    buttonText: String?,
+    cancelText: String?,
+    positiveClickListener: () -> Unit?,
+    negativeClickListener: () -> Unit?
+) {
+    if (checkDialogIsShowing(fm, errorMessage ?: "")) {
+        return
+    }
+
+    CustomAlertDialog(context).apply {
+        if (isError) {
+            setTextColor(R.color.color_E44438_e44438)
+        }
+        setShowDivider(isShowDivider)
+        setTitle(title)
+        setMessage(errorMessage)
+        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_determine))
+        setNegativeButtonText(cancelText ?: context.getString(R.string.btn_cancel))
+        setPositiveClickListener {
+            positiveClickListener()
+            this.dismiss()
+        }
+        setNegativeClickListener {
+            negativeClickListener()
+            this.dismiss()
+        }
+
+        setCanceledOnTouchOutside(false)
+        isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
+    }.show(fm, errorMessage)
+}
+
 
 fun phoneNumCheckDialog(context: Context, fm: FragmentManager) {
     val errorMsg = context.getString(R.string.dialog_security_need_phone)
