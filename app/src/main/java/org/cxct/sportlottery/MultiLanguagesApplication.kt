@@ -79,6 +79,7 @@ class MultiLanguagesApplication : Application() {
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
     private var isAgeVerifyNeedShow = true
+    var showedRedenpId = -1 //顯示過的紅包id
 
     val mOddsType = MutableLiveData<OddsType>()
 
