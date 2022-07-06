@@ -3,9 +3,9 @@
     <string-array name="finance_array">
         <item>@string/record_recharge</item>
         <item>@string/record_withdrawal</item>
-        <item>@string/redenvelope_record</item>
         <item>@string/record_conversion</item>
         <item>@string/record_history</item>
+        <item>@string/redenvelope_record</item>
         <!--        <item>@string/record_red_envelope</item>-->
         <!--        <item>@string/record_conversion</item>-->
         <!--        <item>@string/record_reward</item>-->
@@ -18,9 +18,9 @@
     <integer-array name="finance_img_array">
         <item>@drawable/ic_icondrawrechargerecord</item>
         <item>@drawable/ic_icondrawwithdrawrecord</item>
-        <item>@drawable/ic_redenvelope_record</item>
         <item>@drawable/ic_icondrawtransfer</item>
         <item>@drawable/ic_icon_draw_bonus_record</item>
+        <item>@drawable/ic_redenvelope_record</item>
         <!--        <item>@drawable/ic_icondrawredenvelope</item>-->
         <!--        <item>@drawable/ic_icondrawtransfer</item>-->
         <!--        <item>@drawable/ic_icondrawbonusrecord</item>-->
