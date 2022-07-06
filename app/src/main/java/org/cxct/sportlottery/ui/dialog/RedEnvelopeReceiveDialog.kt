@@ -93,8 +93,6 @@ class RedEnvelopeReceiveDialog(
     private fun initObserve() {
         viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { evenResult ->
             evenResult?.getContentIfNotHandled()?.let { result ->
-                if (successDialog?.isVisible == true) successDialog?.dismiss()
-                if (failDialog?.isVisible == true) failDialog?.dismiss()
                 if (result.success) {
                     val grabMoney = result.redEnvelopePrize?.grabMoney ?: "0"
                     if (grabMoney != "0") {
@@ -127,7 +125,8 @@ class RedEnvelopeReceiveDialog(
 
         setContentView()
 
-
+        if (successDialog?.isVisible == true) successDialog?.dismiss()
+        if (failDialog?.isVisible == true) failDialog?.dismiss()
     }
 
     fun setCanceledOnTouchOutside(boolean: Boolean) {

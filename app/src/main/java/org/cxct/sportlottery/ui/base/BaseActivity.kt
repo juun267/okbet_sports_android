@@ -397,6 +397,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     /*以下紅包相關功能(尚須重構)*/
     private var redenpId: Int = 0
+    private var showedRedenpId = -1 //顯示過的紅包id
     private var redenpStartTime: Long? = null
     private var redenpEndTime: Long? = null
     private var count = 0
@@ -406,8 +407,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         RedEnvelopeReceiveDialog(this, redenpId)
     }
 
-    private val timerTask: TimerTask by lazy {
-        object : TimerTask() {
+    private fun initTimerTask():TimerTask {
+        return object : TimerTask() {
             override fun run() {
                 if (!viewModel.getLoginBoolean()) {
                     return
@@ -428,12 +429,15 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                             btn_floating_red_envelope?.setCountdown(startTimeDiff)
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0 && viewModel.getRainShowing() == -1) {
-                        viewModel.setRainShowing(redenpId)
-                        logRedEnvelopeReceiveDialog.redenpId = redenpId
-                        logRedEnvelopeReceiveDialog.show(
-                            supportFragmentManager,
-                            this::class.java.simpleName
-                        )
+                        if (showedRedenpId != redenpId) {
+                            showedRedenpId = redenpId
+                            viewModel.setRainShowing(redenpId)
+                            logRedEnvelopeReceiveDialog.redenpId = redenpId
+                            logRedEnvelopeReceiveDialog.show(
+                                supportFragmentManager,
+                                this::class.java.simpleName
+                            )
+                        }
                         GlobalScope.launch(Dispatchers.Main) {
                             btn_floating_red_envelope?.setView(false)
                         }
@@ -464,23 +468,21 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         super.onResume()
         if (this@BaseActivity.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return
         countdownTimer = Timer()
-        try {
-            countdownTimer?.schedule(timerTask, 1000, 1000)
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        }
+        countdownTimer?.schedule(initTimerTask(), 1000, 1000)
     }
 
     private fun initRedEnvelope() {
         viewModel.rainResult.observe(this) {
-            val redEnvelopeInfo = it.redEnvelopeInfo
-            if (redEnvelopeInfo != null) {
-                val serverTime = redEnvelopeInfo.serverTime
-                val difference = serverTime - System.currentTimeMillis()
+            it?.getContentIfNotHandled()?.let { result ->
+                val redEnvelopeInfo = result.redEnvelopeInfo
+                if (redEnvelopeInfo != null) {
+                    val serverTime = redEnvelopeInfo.serverTime
+                    val difference = serverTime - System.currentTimeMillis()
 
-                redenpId = redEnvelopeInfo.redenpId
-                redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
-                redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
+                    redenpId = redEnvelopeInfo.redenpId
+                    redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
+                    redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
+                }
             }
         }
     }

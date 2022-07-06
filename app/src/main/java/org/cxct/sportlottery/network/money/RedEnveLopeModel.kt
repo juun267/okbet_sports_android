@@ -25,8 +25,8 @@ class RedEnveLopeModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-    private val _redEnvelopePrizeResult = MutableLiveData<Event<RedEnvelopePrizeResult>>()
-    val redEnvelopePrizeResult: LiveData<Event<RedEnvelopePrizeResult>>
+    private val _redEnvelopePrizeResult = MutableLiveData<Event<RedEnvelopePrizeResult?>>()
+    val redEnvelopePrizeResult: LiveData<Event<RedEnvelopePrizeResult?>>
         get() = _redEnvelopePrizeResult
 
     fun getRedEnvelopePrize(redEnpId: Int?) {

@@ -36,8 +36,8 @@ abstract class BaseViewModel(
     val infoCenterRepository: InfoCenterRepository
 ) : ViewModel() {
 
-    private val _rainResult = MutableLiveData<RedEnvelopeResult>()
-    val rainResult: LiveData<RedEnvelopeResult>
+    private val _rainResult = MutableLiveData<Event<RedEnvelopeResult>>()
+    val rainResult: LiveData<Event<RedEnvelopeResult>>
         get() = _rainResult
 
     val isLogin: LiveData<Boolean> by lazy {
@@ -173,7 +173,7 @@ abstract class BaseViewModel(
             doNetwork(MultiLanguagesApplication.appContext) {
                 OneBoSportApi.moneyService.getRainInfo()
             }?.let { result ->
-                _rainResult.postValue(result)
+                _rainResult.postValue(Event(result))
             }
         }
     }
