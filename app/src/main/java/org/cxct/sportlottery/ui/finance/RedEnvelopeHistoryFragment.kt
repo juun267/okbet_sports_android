@@ -92,7 +92,7 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
         }
 
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserWithdrawList(
+            viewModel.getRedEnvelopeHistoryList(
                 true, date_range_selector.startTime.toString(),
                 date_range_selector.endTime.toString(),
             )
@@ -145,7 +145,7 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
 
         viewModel.redEnvelopeListResult.observe(this.viewLifecycleOwner) {
             it?.let {
-//                redEnvelopeLogAdapter.data = it
+                redEnvelopeLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
             }
         }
