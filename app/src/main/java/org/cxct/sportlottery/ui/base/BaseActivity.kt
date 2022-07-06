@@ -25,15 +25,11 @@ import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.dialo.RedEnvelopeReceiveDialog
-import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.commonCheckDialog
@@ -468,7 +464,11 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         super.onResume()
         if (this@BaseActivity.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return
         countdownTimer = Timer()
-        countdownTimer?.schedule(timerTask, 1000, 1000)
+        try {
+            countdownTimer?.schedule(timerTask, 1000, 1000)
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
     }
 
     private fun initRedEnvelope() {
