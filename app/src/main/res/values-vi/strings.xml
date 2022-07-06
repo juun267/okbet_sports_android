@@ -1212,4 +1212,14 @@
     <string name="register_identity_photo_hint_front">Click to add an image of the front of Valid ID.</string>
     <string name="register_identity_photo_back">Upload Valid ID of the back</string>
     <string name="register_identity_photo_hint_back">Click to add an image of the back of  Valid ID.</string>
+    <string name="redenvelope_trantype_send">Đưa phong bì đỏ</string>
+    <string name="redenvelope_trantype_received">Nhận phong bì đỏ</string>
+    <string name="tran_order_no">Số giao dịch</string>
+    <string name="tran_time">Giờ giao dịch</string>
+    <string name="redenvelope_amount">Số tiền nhận thực tế</string>
+    <string name="tran_type">Loại giao dịch</string>
+    <string name="redenvelope_record">lịch Sử  Tiền lì xì</string>
+    <string name="tran_time_sub">Giờ giao dịch :</string>
+    <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
+    <string name="tran_type_sub">Loại giao dịch：</string>
 </resources>

@@ -11,10 +11,7 @@ import org.cxct.sportlottery.network.money.list.*
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.finance.df.CheckStatus
-import org.cxct.sportlottery.ui.finance.df.RechType
-import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.ui.finance.df.*
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -59,6 +56,9 @@ class FinanceViewModel(
     val rechargeLogDetail: LiveData<Event<Row>>
         get() = _rechargeLogDetail
 
+    val redEnvelopeLogDetail: LiveData<Event<RedEnvelopeRow>>
+        get() = _redEnvelopeLogDetail
+
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
@@ -75,7 +75,10 @@ class FinanceViewModel(
 
     private val _withdrawLogDetail =
         MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
+
     private val _rechargeLogDetail = MutableLiveData<Event<Row>>()
+
+    private val _redEnvelopeLogDetail = MutableLiveData<Event<RedEnvelopeRow>>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -84,8 +87,8 @@ class FinanceViewModel(
 
 
 
-    private val _redEnvelopeListResult = MutableLiveData<MutableList<Row>?>()
-    val redEnvelopeListResult: LiveData<MutableList<Row>?>
+    private val _redEnvelopeListResult = MutableLiveData<MutableList<RedEnvelopeRow>?>()
+    val redEnvelopeListResult: LiveData<MutableList<RedEnvelopeRow>?>
         get() = _redEnvelopeListResult
 
 
@@ -345,13 +348,12 @@ class FinanceViewModel(
         }
     }
 
+    private val redEnvelopeLogList = mutableListOf<RedEnvelopeRow>()
 
     fun getRedEnvelopeHistoryList(
         isFirstFetch: Boolean,
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
-        status: String? = null,
-        rechType: String? = null,
     ) {
         if (!isFirstFetch && isFinalPage.value == true) return
 
@@ -361,7 +363,7 @@ class FinanceViewModel(
 
         when {
             isFirstFetch -> {
-                rechargeLogList.clear()
+                redEnvelopeLogList.clear()
                 _isFinalPage.postValue(false)
                 page = 1
             }
@@ -376,8 +378,6 @@ class FinanceViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.moneyService.getRedEnvelopeHistoryList(
                     RedEnvelopeListRequest(
-                        rechType = filter(rechType),
-                        status = filter(status)?.toIntOrNull(),
                         startTime = startTime,
                         endTime = endTime,
                         page = page,
@@ -387,36 +387,21 @@ class FinanceViewModel(
             }
 
             result?.rows?.map {
-                it.rechState = when (it.status) {
-                    Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
-                    Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
-                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_processing)
-                    else -> ""
-                }
 
-                it.rechTypeDisplay = when (it.rechType) {
-                    RechType.ONLINE_PAYMENT.type -> androidContext.getString(R.string.recharge_channel_online)
-                    RechType.ADMIN_ADD_MONEY.type -> androidContext.getString(R.string.recharge_channel_admin)
-                    RechType.CFT.type -> androidContext.getString(R.string.recharge_channel_cft)
-                    RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
-                    RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
-                    RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
-                    RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
-                    RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
-                    RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
-                    RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
+                it.tranTypeDisplay = when (it.tranType) {
+                    TranType.ENVELOPE_SEND.type -> androidContext.getString(R.string.redenvelope_trantype_send)
+                    TranType.ENVELOPE_RECEIVE.type -> androidContext.getString(R.string.redenvelope_trantype_received)
                     else -> ""
                 }
 
                 it.rechDateAndTime = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd HH:mm:ss")
                 it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
                 it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
-
-                it.displayMoney = TextUtil.formatMoney(it.rechMoney)
+                it.displayMoney = TextUtil.formatMoney(it.money)
             }
 
             result?.rows?.let {
-                rechargeLogList.addAll(it)
+                redEnvelopeLogList.addAll(it)
             }
 
             result?.total?.let {
@@ -424,7 +409,7 @@ class FinanceViewModel(
             }
 
             if (result?.success == true) {
-                _redEnvelopeListResult.postValue(rechargeLogList)
+                _redEnvelopeListResult.postValue(redEnvelopeLogList)
             }
 
             hideLoading()
@@ -439,4 +424,8 @@ fun setLogDetail(row: Event<Row>) {
 fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
     _withdrawLogDetail.postValue(row)
 }
+fun setRedEnvelopeLogDetail(row: Event<RedEnvelopeRow>) {
+    _redEnvelopeLogDetail.postValue(row)
+}
+
 }

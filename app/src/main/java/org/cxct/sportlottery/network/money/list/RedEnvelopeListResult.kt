@@ -14,7 +14,7 @@ class RedEnvelopeListResult(
     override val msg: String,
 
     @Json(name = "rows")
-    val rows: List<Row>?,
+    val rows: List<RedEnvelopeRow>?,
 
     @Json(name = "success")
     override val success: Boolean,

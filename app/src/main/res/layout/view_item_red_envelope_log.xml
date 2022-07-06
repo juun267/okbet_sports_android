@@ -36,6 +36,18 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/rech_log_order_no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:minWidth="52dp"
+        android:textColor="@color/color_BBBBBB_333333"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="@string/recharge_state_processing" />
+
+
+    <TextView
         android:id="@+id/rech_log_amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,16 +68,5 @@
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize12sp"
         tools:text="@string/recharge_channel_alipay" />
-
-    <TextView
-        android:id="@+id/rech_log_state"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:minWidth="52dp"
-        android:textColor="@color/color_BBBBBB_333333"
-        android:textSize="@dimen/textSize12sp"
-        tools:text="@string/recharge_state_processing" />
 
 </LinearLayout>
