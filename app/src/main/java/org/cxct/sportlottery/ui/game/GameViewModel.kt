@@ -3188,6 +3188,10 @@ class GameViewModel(
     }
 
     fun switchGameType(item: Item) {
+        if(jobSwitchGameType?.isActive == true){
+            jobSwitchGameType?.cancel()
+        }
+
         val matchType = curMatchType.value ?: return
 
         //視覺上需要優先跳轉 tab
