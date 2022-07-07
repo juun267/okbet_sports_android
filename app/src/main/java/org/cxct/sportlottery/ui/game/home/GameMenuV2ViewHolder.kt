@@ -80,9 +80,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         with(itemView) {
 
             val filteredSportMenuList = sportMenuList.filter {
-                it.gameCount > 0 || it.gameType.key == "BB_COMING_SOON"
-                        //OkBet 正式＆測試環境皆不使用
-//                       || it.gameType.key == "ES_COMING_SOON"
+                it.gameCount > 0
             }
 
             if (block_game.size != filteredSportMenuList.size) {
@@ -91,10 +89,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 filteredSportMenuList.forEachIndexed { index, sportMenu ->
                     when (index) {
                         else -> {
-                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON"
-                            //OkBet 正式＆測試環境皆不使用
-//                               || sportMenu.gameType.key == "ES_COMING_SOON"
-                            ) {
+                            if (sportMenu.gameCount > 0) {
                                 block_game.addView(
                                     HomeGameCardV2(
                                         itemView.context
@@ -110,10 +105,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 filteredSportMenuList.forEachIndexed { index, sportMenu ->
                     when (index) {
                         else -> {
-                            if (sportMenu.gameCount > 0 || sportMenu.gameType.key == "BB_COMING_SOON"
-                                //OkBet 正式＆測試環境皆不使用
-//                                || sportMenu.gameType.key == "ES_COMING_SOON"
-                            ) {
+                            if (sportMenu.gameCount > 0) {
                                 val homeGameCardV2 = (block_game.getChildAt(index) as HomeGameCardV2)
                                 setupHomeCard(
                                     homeGameCardV2,
@@ -154,11 +146,7 @@ class GameMenuV2ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             setCount(sportMenu.gameCount)
 
             setOnClickListener {
-                if (sportMenu.gameType.key != "BB_COMING_SOON"
-                //OkBet 正式＆測試環境皆不使用
-//                    && sportMenu.gameType.key != "ES_COMING_SOON"
-                )
-                    mOnClickMenuListener?.onHomeCard(sportMenu)
+                mOnClickMenuListener?.onHomeCard(sportMenu)
             }
         }
     }

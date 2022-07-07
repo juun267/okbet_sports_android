@@ -504,33 +504,6 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     }
                 }
-                //coming soon start
-                GameType.BB_COMING_SOON -> {
-                    unselectedList.add(
-                        MenuItemData(
-                            R.drawable.img_baseball,
-                            getString(R.string.baseball),
-                            GameType.BB_COMING_SOON.key,
-                            0,
-                            -1,
-                            false
-                        )
-                    )
-                }
-                //OkBet 正式＆測試環境皆不使用
-//                GameType.ES_COMING_SOON -> {
-//                    unselectedList.add(
-//                        MenuItemData(
-//                            R.drawable.img_esports,
-//                            getString(R.string.esports),
-//                            GameType.ES_COMING_SOON.key,
-//                            0,
-//                            -1,
-//                            false
-//                        )
-//                    )
-//                }
-                //coming soon end
                 else -> {
                 }
             }

@@ -1790,15 +1790,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
-        //add coming soon
-        val comingSoonList = mutableListOf<Item>()
-        comingSoonList.addAll(gameTypeList)
-        if (viewModel.getMatchCount(args.matchType) > 0) {
-            comingSoonList.add(Item(code = GameType.BB_COMING_SOON.key, "", -1, null, 99))
-            //OkBet 正式＆測試環境皆不使用
-//            comingSoonList.add(Item(code = GameType.ES_COMING_SOON.key, "", -1, null, 100))
-        }
-        gameTypeAdapter.dataSport = comingSoonList
+        gameTypeAdapter.dataSport = gameTypeList
 
         //post待view繪製完成
         sport_type_list.post {
@@ -1807,7 +1799,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
                     sport_type_list,
                     RecyclerView.State(),
-                    comingSoonList.indexOfFirst { item -> item.isSelected }
+                    gameTypeList.indexOfFirst { item -> item.isSelected }
                 )
             }
 
@@ -1822,7 +1814,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         updateSportBackground(gameType)
                     }
                 } else {
-                    comingSoonList.find { it.isSelected }.let { item ->
+                    gameTypeList.find { it.isSelected }.let { item ->
                         game_toolbar_sport_type.text =
                             context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
                                 GameType.FT.string
@@ -1832,7 +1824,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             } else {
-                comingSoonList.find { it.isSelected }.let { item ->
+                gameTypeList.find { it.isSelected }.let { item ->
                     item?.let {
                         setOtherOddTab(!it.hasPlay)
                         updateSportBackground(it)
@@ -1840,7 +1832,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 }
             }
 
-            if (comingSoonList.isEmpty()) {
+            if (gameTypeList.isEmpty()) {
                 sport_type_list.visibility = View.GONE
                 game_toolbar_sport_type.visibility = View.GONE
                 game_toolbar_champion.visibility = View.GONE
