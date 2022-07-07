@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import com.youth.banner.indicator.CircleIndicator
 import org.cxct.sportlottery.databinding.DialogPromotionPopupBinding
@@ -57,9 +58,17 @@ class PromotionPopupDialog(val activity: FragmentActivity, private val promotion
             addBannerLifecycleObserver(activity)
                 .setAdapter(PromotionAdapter(promotionList))
 
+            val bannerLayoutParams = binding.banner.layoutParams as ConstraintLayout.LayoutParams
+
             //若只有一項仍然配置indicator會造成banner拉伸
             if (promotionList.size > 1) {
                 indicator = CircleIndicator(context)
+
+                //指示器與底部的距離
+                bannerLayoutParams.setMargins(0, 0, 0, 12.dp)
+            } else {
+                //指示器不顯示 底部距離移除
+                bannerLayoutParams.setMargins(0, 0, 0, 0)
             }
 
             setOnBannerListener { _, _ -> //data, position

@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:background="@color/color_191919_FCFCFC"
         android:ellipsize="end"
         android:gravity="center"
@@ -28,6 +28,6 @@
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
         tools:ignore="SpUsage"
-        tools:text="100% FIRST BET WELCOME BONUS" />
+        tools:text="Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up." />
 
 </LinearLayout>
