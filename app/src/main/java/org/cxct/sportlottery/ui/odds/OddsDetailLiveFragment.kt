@@ -838,7 +838,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     private fun setupStatusBB(event: MatchStatusChangeEvent) {
-        tv_status_left.visibility = View.GONE
+        tv_status_left.visibility = View.INVISIBLE
         tv_spt.visibility = View.GONE
         tv_status_right.visibility = View.GONE
         ll_time.visibility = View.GONE
