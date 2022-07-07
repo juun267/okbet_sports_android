@@ -466,9 +466,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     override fun onResume() {
         super.onResume()
-        if (this@BaseActivity.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return
-        countdownTimer = Timer()
-        countdownTimer?.schedule(initTimerTask(), 1000, 1000)
+        // Todo: 紅包雨暫時關閉 by Bee 2022.07.07
+//        if (this@BaseActivity.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return
+//        countdownTimer = Timer()
+//        countdownTimer?.schedule(initTimerTask(), 1000, 1000)
     }
 
     private fun initRedEnvelope() {
