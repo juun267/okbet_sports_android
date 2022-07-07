@@ -85,10 +85,17 @@ class RedEnvelopeReceiveDialog(
         initObserve()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private fun showSuccessOrFailDialog(isSuccess: Boolean, msg: String) {
+        activity?.supportFragmentManager?.let {
+            if (isSuccess) {
+                successDialog = RedEnvelopeSuccessDialog.newInstance(msg)
+                successDialog?.show(it, null)
+            } else {
+                failDialog = RedEnvelopeFailDialog.newInstance(msg)
+                failDialog?.show(it, null)
+            }
+        }
     }
-
 
     private fun initObserve() {
         viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { evenResult ->
@@ -96,26 +103,16 @@ class RedEnvelopeReceiveDialog(
                 if (result.success) {
                     val grabMoney = result.redEnvelopePrize?.grabMoney ?: "0"
                     if (grabMoney != "0") {
-                        activity?.supportFragmentManager?.let {
-                            successDialog = RedEnvelopeSuccessDialog.newInstance(grabMoney)
-                            successDialog?.show(it, null)
-                        }
+                        showSuccessOrFailDialog(true, grabMoney)
                     } else {
-                        activity?.supportFragmentManager?.let {
-                            failDialog = RedEnvelopeFailDialog.newInstance()
-                            failDialog?.show(it, null)
-                        }
+                        showSuccessOrFailDialog(false, result.msg)
                     }
                 } else {
-                    activity?.supportFragmentManager?.let {
-                        failDialog = RedEnvelopeFailDialog.newInstance(result.msg)
-                        failDialog?.show(it, null)
-                    }
+                    showSuccessOrFailDialog(false, result.msg)
                 }
                 dismiss()
             }
         }
-
     }
 
     private fun initView() {
