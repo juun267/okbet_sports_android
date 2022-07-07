@@ -106,6 +106,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initServiceButton()
         initRegionViewBtn()
         initOnClickListener()
+        RedEnvelopeManager.instance.bindViewModel(viewModel)
     }
 
     private fun initBaseFun() {

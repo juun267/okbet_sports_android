@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.motion_view_red_envelope_floating.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.RedEnvelopeManager
 
 class RedEnvelopeFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -28,7 +29,7 @@ class RedEnvelopeFloatingButton @JvmOverloads constructor(
 
     private fun initClickEvent() {
         iv_close.setOnClickListener {
-            MultiLanguagesApplication.mInstance.isRedenpClose.value = Event(true)
+            RedEnvelopeManager.instance.clickCloseFloatBtn()
         }
     }
 

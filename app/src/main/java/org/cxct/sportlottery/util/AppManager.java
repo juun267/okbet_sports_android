@@ -185,6 +185,7 @@ public class AppManager {
 
     public static void AppExit() {
         try {
+            RedEnvelopeManager.Companion.getInstance().removeRedEnvelopeBtn();
             finishAllActivity();
             Process.killProcess(Process.myPid());
         } catch (Exception var1) {

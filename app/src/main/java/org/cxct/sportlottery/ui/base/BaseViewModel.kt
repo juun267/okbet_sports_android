@@ -171,15 +171,6 @@ abstract class BaseViewModel(
         }
     }
 
-    fun getRain() {
-        viewModelScope.launch {
-            doNetwork(MultiLanguagesApplication.appContext) {
-                OneBoSportApi.moneyService.getRainInfo()
-            }?.let { result ->
-                _rainResult.postValue(Event(result))
-            }
-        }
-    }
     fun getLoginBoolean(): Boolean {
         return loginRepository.isLogin.value ?: false
     }
