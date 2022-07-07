@@ -389,24 +389,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, liveVideo: Int) {
-        when (args.matchType) {
-            MatchType.IN_PLAY -> {
-                matchId?.let {
-                    navOddsDetailLive(it, liveVideo)
-                }
-            }
-            MatchType.AT_START -> {
-                matchId?.let {
-                    navOddsDetail(it, matchInfoList)
-                }
-            }
-            MatchType.OTHER -> {
-                matchId?.let {
-                    navOddsDetail(it, matchInfoList)
-                }
-            }
-            else -> {
-            }
+        matchId?.let {
+            navOddsDetailLive(it, liveVideo)
         }
     }
 
@@ -2065,21 +2049,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 gameType,
                 matchId,
                 liveVideo
-            )
-
-            findNavController().navigate(action)
-        }
-    }
-
-    private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-        gameType?.let {
-            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                args.matchType,
-                gameType,
-                matchId,
-                matchInfoList.toTypedArray()
             )
 
             findNavController().navigate(action)

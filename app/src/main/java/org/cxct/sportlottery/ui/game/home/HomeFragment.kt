@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -42,7 +41,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
@@ -1283,23 +1281,11 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         val gameType = GameType.getGameType(gameTypeCode)
         if (gameType != null && matchId != null) {
             findNavController().navigate(
-                when (matchType) {
-                    MatchType.IN_PLAY -> {
-                        HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
-                            matchType,
-                            gameType,
-                            matchId
-                        )
-                    }
-                    else -> {
-                        HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                            matchType,
-                            gameType,
-                            matchId,
-                            emptyArray() //TODO 現在沒有在詳情頁切換賽事的功能, 先補空array
-                        )
-                    }
-                }
+                HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    matchType,
+                    gameType,
+                    matchId
+                )
             )
         }
     }

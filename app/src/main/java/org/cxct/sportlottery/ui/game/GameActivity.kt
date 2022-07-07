@@ -65,7 +65,6 @@ import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
-import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -110,14 +109,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 R.id.gameLeagueFragment -> {
                     updateSelectTabState(arguments?.get("matchType") as MatchType)
                 }
-
-                R.id.oddsDetailFragment -> {
-                    //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
-                    /*updateSelectTabState(arguments?.let {
-                        it.get("matchType") as MatchType
-                    })*/
-                }
-
                 R.id.oddsDetailLiveFragment -> {
                     //20220504 跟進h5進賽事詳情時不切換至對應的賽事類別
                     // updateSelectTabState(MatchType.IN_PLAY)
@@ -177,7 +168,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val matchList =
                 intent.getParcelableArrayListExtra<MatchInfo>(GamePublicityActivity.PUBLICITY_MATCH_LIST)
             matchId?.let {
-                navDeatilFragment(
+                navDetailLiveFragment(
                     matchID = matchId, gameType = gameType, matchType = matchType, matchList = matchList
                 )
             }
@@ -554,63 +545,36 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun navDeatilFragment(
+    private fun navDetailLiveFragment(
         matchID: String,
         gameType: GameType,
         matchType: MatchType? = null,
         matchList: ArrayList<MatchInfo>? = null
     ) {
         val detailMatchType = matchType ?: MatchType.DETAIL
-        val detailMatchList = matchList?.toTypedArray() ?: emptyArray()
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
-                val action =
-                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
-                        detailMatchType, gameType, matchID
-                    ) else HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                        detailMatchType, gameType, matchID,
-                        detailMatchList
-                    )
+                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    detailMatchType,
+                    gameType,
+                    matchID
+                )
                 mNavController.navigate(action)
             }
             R.id.gameV3Fragment -> {
-                val action =
-                    if (detailMatchType == MatchType.IN_PLAY) GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
-                        detailMatchType, gameType, matchID
-                    ) else GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                        detailMatchType, gameType, matchID,
-                        detailMatchList
-                    )
-                mNavController.navigate(action)
-            }
-            R.id.oddsDetailFragment -> {
-                val action =
-                    if (detailMatchType == MatchType.IN_PLAY) OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                        detailMatchType, gameType, matchID
-                    ) else OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(
-                        gameType,
-                        matchID,
-                        detailMatchType,
-                        detailMatchList
-                    )
-                mNavController.navigate(action)
-            }
-            R.id.oddsDetailLiveFragment -> {
-                val action = OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToOddsDetailFragment(
-                    detailMatchType, gameType, matchID,
-                    detailMatchList
+                val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
+                    detailMatchType,
+                    gameType,
+                    matchID
                 )
-                val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
-                mNavController.navigate(action, navOptions)
+                mNavController.navigate(action)
             }
             R.id.gameLeagueFragment -> {
-                val action =
-                    if (detailMatchType == MatchType.IN_PLAY) HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
-                        detailMatchType, gameType, matchID
-                    ) else GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                        detailMatchType, gameType, matchID,
-                        detailMatchList
-                    )
+                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    detailMatchType,
+                    gameType,
+                    matchID
+                )
                 mNavController.navigate(action)
             }
         }
@@ -645,11 +609,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToGameV3Fragment(
                         matchType
                     )
-                mNavController.navigate(action)
-            }
-            R.id.oddsDetailFragment -> {
-                val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
@@ -688,12 +647,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             R.id.gameOutrightMoreFragment -> {
                 val action =
                     GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToHomeFragment()
-                mNavController.navigate(action)
-            }
-
-            R.id.oddsDetailFragment -> {
-                val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentToHomeFragment()
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
@@ -824,7 +777,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
                     MatchType.DETAIL -> {
                         it.matchID?.let { matchId ->
-                            navDeatilFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
+                            navDetailLiveFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
                         }
                     }
                     else -> {
