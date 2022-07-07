@@ -723,6 +723,9 @@ object SocketUpdateUtil {
                                     odd?.malayOdds = oddSocket?.malayOdds
                                     odd?.indoOdds = oddSocket?.indoOdds
 
+                                    //更新是不是只有歐洲盤 (因為棒球socket有機會一開始全部賠率推0.0)，跟後端(How)確認過目前只有棒球會這樣。
+                                    odd?.isOnlyEUType = oddSocket?.odds == oddSocket?.hkOdds && oddSocket?.odds == oddSocket?.malayOdds && oddSocket?.odds == oddSocket?.indoOdds
+
                                     if (odd?.status != oddSocket?.status) {
                                         odd?.status = oddSocket?.status
 
