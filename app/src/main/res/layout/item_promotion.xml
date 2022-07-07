@@ -9,14 +9,14 @@
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:scaleType="centerInside"
+        android:layout_height="251dp"
+        android:scaleType="centerCrop"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="@color/color_191919_FCFCFC"
         android:ellipsize="end"
         android:gravity="center"
