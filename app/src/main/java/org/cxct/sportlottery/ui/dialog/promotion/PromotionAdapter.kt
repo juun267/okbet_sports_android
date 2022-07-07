@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.dialog.promotion
 
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,11 +9,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerAdapter
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.DialogPromotionPopupBinding
 import org.cxct.sportlottery.databinding.ItemPromotionBinding
-import timber.log.Timber
+import org.cxct.sportlottery.util.LanguageManager
+import java.util.*
 
-class PromotionAdapter(val promotionList: List<PromotionData>) :
+class PromotionAdapter(private val promotionList: List<PromotionData>) :
     BannerAdapter<PromotionData, RecyclerView.ViewHolder>(promotionList) {
     val requestOptions = RequestOptions()
         .placeholder(R.drawable.ic_image_load)
@@ -41,8 +42,20 @@ class PromotionAdapter(val promotionList: List<PromotionData>) :
 
     inner class PromotionViewHolder(val binding: ItemPromotionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(itemData: PromotionData) {
-            Timber.e("Dean, url = ${itemData.imgUrl}")
             binding.tvTitle.text = itemData.title
+
+            //判斷若是中文、越南語系的話行高縮減, 因為套用字型後行高變高
+            binding.tvTitle.setLineSpacing(
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    when (LanguageManager.getSetLanguageLocale(binding.root.context)) {
+                        Locale.ENGLISH -> 0f
+                        else -> -6.0f
+                    },
+                    binding.root.resources.displayMetrics
+                ), 1.0f
+            )
+
             Glide.with(binding.ivImage)
                 .load(itemData.imgUrl)
                 .apply(requestOptions)
@@ -50,35 +63,3 @@ class PromotionAdapter(val promotionList: List<PromotionData>) :
         }
     }
 }
-
-/*
-*//**
- * 自定义布局，下面是常见的图片样式，更多实现可以看demo，可以自己随意发挥
- *//*
-class ImageAdapter(mDatas: List<DataBean?>?) :
-    BannerAdapter<DataBean?, ImageAdapter.BannerViewHolder?>(mDatas) {
-    //创建ViewHolder，可以用viewType这个字段来区分不同的ViewHolder
-    override fun onCreateHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-        val imageView = ImageView(parent.getContext())
-        //注意，必须设置为match_parent，这个是viewpager2强制要求的
-        imageView.setLayoutParams(
-            LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        )
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP)
-        return BannerViewHolder(imageView)
-    }
-
-    override fun onBindView(holder: BannerViewHolder, data: DataBean, position: Int, size: Int) {
-        holder.imageView.setImageResource(data.imageRes)
-    }
-
-    inner class BannerViewHolder(@NonNull view: ImageView) : RecyclerView.ViewHolder(view) {
-        var imageView: ImageView
-
-        init {
-            imageView = view
-        }
-    }*/
