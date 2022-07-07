@@ -113,7 +113,11 @@ abstract class BaseViewModel(
         }
 
         val errorResult = ErrorUtils.parseError(response)
-        if (response.code() == HttpError.UNAUTHORIZED.code || response.code() == HttpError.KICK_OUT_USER.code) {
+        if (
+            response.code() == HttpError.UNAUTHORIZED.code ||
+            response.code() == HttpError.KICK_OUT_USER.code ||
+            response.code() == HttpError.MAINTENANCE.code
+        ) {
             errorResult?.let {
                 _errorResultToken.postValue(it)
             }
@@ -180,6 +184,7 @@ abstract class BaseViewModel(
             }
         }
     }
+
     fun getLoginBoolean(): Boolean {
         return loginRepository.isLogin.value ?: false
     }
