@@ -83,7 +83,8 @@ data class Odd(
 
     var playCateExpand = false //玩法是否展開
 
-    val isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds
+    //odds有機會一開始推null回來
+    var isOnlyEUType = odds == hkOdds && odds == malayOdds && odds == indoOdds && odds != null && hkOdds != null && malayOdds != null && indoOdds!= null
 
     var belongMatchOdd: MatchOdd? = null //紀錄所屬的MatchOdd
 
