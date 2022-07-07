@@ -42,9 +42,14 @@ class PromotionPopupDialog(val activity: FragmentActivity, private val promotion
                 promotionList.add(
                     PromotionData(
                         imgUrl = "${sConfigData?.resServerHost}${imageData.imageName3}",
-                        title = imageData.imageText3
+                        title = imageData.imageText1
                     )
                 )
+            }
+
+            //最多顯示9筆
+            if (promotionList.size >= 9) {
+                return@map
             }
         }
 
