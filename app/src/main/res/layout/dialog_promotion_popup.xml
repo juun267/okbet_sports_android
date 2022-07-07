@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             app:banner_indicator_height="8dp"
+            app:banner_indicator_marginTop="5dp"
             app:banner_indicator_normal_color="@color/color_303030_dddddd"
             app:banner_indicator_normal_width="8dp"
             app:banner_indicator_selected_color="@color/color_317FFF_0760D4"
