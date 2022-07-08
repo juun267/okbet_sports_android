@@ -3,12 +3,9 @@ package org.cxct.sportlottery.ui.common
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import kotlinx.android.synthetic.main.motion_view_red_envelope_floating.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.RedEnvelopeManager
 
 class RedEnvelopeFloatingButton @JvmOverloads constructor(
@@ -32,16 +29,6 @@ class RedEnvelopeFloatingButton @JvmOverloads constructor(
             RedEnvelopeManager.instance.clickCloseFloatBtn()
         }
     }
-
-
-    fun setView(show: Boolean) {
-        visibility = if (show) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }
-
     fun setCountdown(countdown: Long) {
         tv_countdown.text = countdown.toString()
     }

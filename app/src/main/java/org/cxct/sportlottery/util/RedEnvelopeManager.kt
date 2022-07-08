@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
@@ -56,21 +55,20 @@ class RedEnvelopeManager() {
                     count = 0
                 }
                 count++
-
                 if (logRedEnvelopeReceiveDialog.dialog==null||logRedEnvelopeReceiveDialog.dialog?.isShowing == false) {
+                    if (showedRedenpId == redenpId) return
                     val startTimeDiff =
                         ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (startTimeDiff in 1..180) {
                         GlobalScope.launch(Dispatchers.Main) {
                             if (showedRedenpId != redenpId) {
-                                floatRootView?.setView(true)
+                                showRedEnvelopeBtn(startTimeDiff)
                             }
                             //180s 倒计时
                             showRedEnvelopeBtn(startTimeDiff)
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
-                        if (showedRedenpId != redenpId) {
                             showedRedenpId = redenpId
                             logRedEnvelopeReceiveDialog.redenpId=redenpId
                             logRedEnvelopeReceiveDialog.show(
@@ -78,9 +76,8 @@ class RedEnvelopeManager() {
                                 AppManager.currentActivity()::class.java.simpleName
                             )
                             GlobalScope.launch(Dispatchers.Main) {
-                                floatRootView?.setView(false)
+                                removeRedEnvelopeBtn()
                             }
-                        }
                     }
                 } else  {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
@@ -151,10 +148,12 @@ class RedEnvelopeManager() {
     fun clickCloseFloatBtn(){
         val positiveClickListener = {
             //點選關閉，更新顯示過的紅包id
+            showedRedenpId = redenpId
             removeRedEnvelopeBtn()
+
         }
         val negativeClickListener = {
-            floatRootView?.setView(true)
+
         }
         commonTwoButtonDialog(
             context = AppManager.currentActivity(),
