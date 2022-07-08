@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
@@ -67,8 +68,9 @@ class RedEnvelopeReceiveDialog(
 //            }
 //        }
 //    }
-    private val BARRAGE_GAP_MIN_DURATION: Long = 1000 //两个弹幕的最小间隔时间
-    private val BARRAGE_GAP_MAX_DURATION: Long = 3000 //两个弹幕的最大间隔时间
+    private val BARRAGE_GAP_MIN_DURATION: Int = 1000 //两个红包的最小间隔时间
+    private val BARRAGE_GAP_MAX_DURATION:Int = 1100 //两个红包的最大间隔时间
+    private val BARRAGE_GAP_START_DURATION:Long = 100
 
     var bitmap1: Bitmap? = null
     var image: ImageView? = null
@@ -141,9 +143,7 @@ class RedEnvelopeReceiveDialog(
 
 
     private fun setContentView() {
-        val duration: Int =
-            ((BARRAGE_GAP_MAX_DURATION - BARRAGE_GAP_MIN_DURATION) * Math.random()).toInt()
-        mHandler.sendEmptyMessageDelayed(0, duration.toLong())
+        mHandler.sendEmptyMessageDelayed(0, BARRAGE_GAP_START_DURATION)
         val operatingAnim = AnimationUtils.loadAnimation(
             activity, R.anim.red_envelope_rotate
         )
@@ -188,8 +188,7 @@ class RedEnvelopeReceiveDialog(
                     image = null
                 }
 
-                val duration: Int =
-                    ((BARRAGE_GAP_MAX_DURATION - BARRAGE_GAP_MIN_DURATION) * Math.random()).toInt()
+                val duration: Int =  mRandom.nextInt(BARRAGE_GAP_MAX_DURATION)+BARRAGE_GAP_MIN_DURATION
                 sendEmptyMessageDelayed(0, duration.toLong())
             }
         }
