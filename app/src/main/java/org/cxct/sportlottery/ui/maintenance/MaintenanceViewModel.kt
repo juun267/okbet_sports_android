@@ -10,7 +10,7 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.updateDefaultHandicapType
+import org.cxct.sportlottery.util.setupDefaultHandicapType
 
 
 class MaintenanceViewModel(
@@ -54,8 +54,8 @@ class MaintenanceViewModel(
 
     private fun setConfig(result: ConfigResult?) {
         sConfigData = result?.configData
+        setupDefaultHandicapType()
         _configResult.postValue(result)
-        updateDefaultHandicapType()
     }
 
 }

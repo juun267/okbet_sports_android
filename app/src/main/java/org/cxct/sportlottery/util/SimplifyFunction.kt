@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.HandicapType
+import org.cxct.sportlottery.repository.gotConfigData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -530,15 +531,18 @@ fun View.setSpinnerView(
  * 判斷盤口類型是否有開放
  * 若sConfigData?.handicapShow為空或null則開放預設的四項(EU,HK,MY,ID)
  */
-fun isOddsTypeDisplay(handicapType: HandicapType): Boolean {
-    return sConfigData?.handicapShow?.isEmpty() == true || sConfigData?.handicapShow?.contains(handicapType.name) == true
+fun isOddsTypeEnable(handicapType: HandicapType): Boolean {
+    return isOddsTypeEnable(handicapType.name)
 }
 
+fun isOddsTypeEnable(handicapTypeCode: String): Boolean {
+    return sConfigData?.handicapShow?.isEmpty() == true || sConfigData?.handicapShow?.contains(handicapTypeCode) == true
+}
 /**
  * 根據盤口類型是否有開放顯示或隱藏View
  */
 fun View.setupOddsTypeVisibility(handicapType: HandicapType) {
-    visibility = if (isOddsTypeDisplay(handicapType)) View.VISIBLE else View.GONE
+    visibility = if (isOddsTypeEnable(handicapType)) View.VISIBLE else View.GONE
 }
 
 /**
@@ -571,16 +575,38 @@ fun getDefaultHandicapType(): HandicapType {
     }
 }
 
-
+var updatingDefaultHandicapType = false
 /**
  * 僅作為獲取config後更新預設盤口使用
  */
+fun setupDefaultHandicapType() {
+    //若處於更新中則不再更新
+    if (!updatingDefaultHandicapType) {
+        updatingDefaultHandicapType = true
+        //若當前盤口尚未配置預設盤口
+        if (MultiLanguagesApplication.mInstance.sOddsType == HandicapType.NULL.name) {
+            OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+                ?.let { defaultOddsType ->
+                    MultiLanguagesApplication.saveOddsType(defaultOddsType)
+                }
+        } else {
+            MultiLanguagesApplication.mInstance.getOddsType()
+        }
+        updatingDefaultHandicapType = false
+    }
+}
+
+/**
+ * @since 原先儲存的盤口配置檢查發現當前不可用時, 需要重新配置預設盤口
+ */
 fun updateDefaultHandicapType() {
-    //若當前盤口尚未配置預設盤口
-    if (MultiLanguagesApplication.mInstance.sOddsType == HandicapType.NULL.name) {
+    //若config尚未取得或處於更新中則不再更新
+    if (gotConfigData && !updatingDefaultHandicapType) {
+        updatingDefaultHandicapType = true
         OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
-            ?.let { defalutOddsType ->
-                MultiLanguagesApplication.saveOddsType(defalutOddsType)
+            ?.let { defaultOddsType ->
+                MultiLanguagesApplication.saveOddsType(defaultOddsType)
             }
+        updatingDefaultHandicapType = false
     }
 }

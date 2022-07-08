@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.index.playquotacom.PlayQuotaComResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.updateDefaultHandicapType
+import org.cxct.sportlottery.util.setupDefaultHandicapType
 import retrofit2.Retrofit
 import timber.log.Timber
 import kotlin.random.Random
@@ -186,8 +186,8 @@ class SplashViewModel(
     private fun setConfig(result: ConfigResult?) {
         hostRepository.platformId = result?.configData?.platformId ?: -1
         sConfigData = result?.configData
+        setupDefaultHandicapType()
         _configResult.postValue(result)
-        updateDefaultHandicapType()
     }
 
     private fun setBaseUrl(baseUrl: String, retrofit: Retrofit) {
