@@ -4,18 +4,19 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.content.Context;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Process;
-import android.os.Build.VERSION;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
 
 public class AppManager {
     private static int actAccount = 0;
@@ -185,6 +186,7 @@ public class AppManager {
 
     public static void AppExit() {
         try {
+            RedEnvelopeManager.Companion.getInstance().stop();
             finishAllActivity();
             Process.killProcess(Process.myPid());
         } catch (Exception var1) {

@@ -1234,7 +1234,7 @@
     <string name="redenvelope_trantype_received">Receive red envelopes</string>
     <string name="tran_order_no">Order ID</string>
     <string name="tran_time">Transaction time</string>
-    <string name="redenvelope_amount">Lucky Money Amount</string>
+    <string name="redenvelope_amount">Amount</string>
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Lucky Money Records</string>
     <string name="tran_time_sub">Transaction time：</string>

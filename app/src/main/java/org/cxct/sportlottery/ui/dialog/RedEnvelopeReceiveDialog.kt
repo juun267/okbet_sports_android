@@ -11,7 +11,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
@@ -57,7 +59,6 @@ class RedEnvelopeReceiveDialog(
     init {
         setStyle(R.style.FullScreen)
     }
-
     private val BARRAGE_GAP_MIN_DURATION: Long = 1000 //两个弹幕的最小间隔时间
     private val BARRAGE_GAP_MAX_DURATION: Long = 3000 //两个弹幕的最大间隔时间
 
@@ -85,10 +86,17 @@ class RedEnvelopeReceiveDialog(
         initObserve()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private fun showSuccessOrFailDialog(isSuccess: Boolean, msg: String) {
+        activity?.supportFragmentManager?.let {
+            if (isSuccess) {
+                successDialog = RedEnvelopeSuccessDialog.newInstance(msg)
+                successDialog?.show(it, null)
+            } else {
+                failDialog = RedEnvelopeFailDialog.newInstance(msg)
+                failDialog?.show(it, null)
+            }
+        }
     }
-
 
     private fun initObserve() {
         viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { evenResult ->
@@ -96,26 +104,16 @@ class RedEnvelopeReceiveDialog(
                 if (result.success) {
                     val grabMoney = result.redEnvelopePrize?.grabMoney ?: "0"
                     if (grabMoney != "0") {
-                        activity?.supportFragmentManager?.let {
-                            successDialog = RedEnvelopeSuccessDialog.newInstance(grabMoney)
-                            successDialog?.show(it, null)
-                        }
+                        showSuccessOrFailDialog(true, grabMoney)
                     } else {
-                        activity?.supportFragmentManager?.let {
-                            failDialog = RedEnvelopeFailDialog.newInstance()
-                            failDialog?.show(it, null)
-                        }
+                        showSuccessOrFailDialog(false, result.msg)
                     }
                 } else {
-                    activity?.supportFragmentManager?.let {
-                        failDialog = RedEnvelopeFailDialog.newInstance(result.msg)
-                        failDialog?.show(it, null)
-                    }
+                    showSuccessOrFailDialog(false, result.msg)
                 }
                 dismiss()
             }
         }
-
     }
 
     private fun initView() {
