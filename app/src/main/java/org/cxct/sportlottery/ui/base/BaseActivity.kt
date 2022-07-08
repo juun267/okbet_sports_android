@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.cxct.sportlottery.util.commonTwoButtonDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -74,6 +75,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
+        RedEnvelopeManager.instance.bindViewModel(viewModel)
     }
 
     private fun onTokenStateChanged() {

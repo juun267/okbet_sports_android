@@ -57,7 +57,16 @@ class RedEnvelopeReceiveDialog(
     init {
         setStyle(R.style.FullScreen)
     }
-
+//    companion object {
+//        const val REDNPID = "redenpId"
+//
+//        @JvmStatic
+//        fun newInstance(redenpId: Int) = RedEnvelopeReceiveDialog().apply {
+//            arguments = Bundle().apply {
+//                putInt(REDNPID, redenpId)
+//            }
+//        }
+//    }
     private val BARRAGE_GAP_MIN_DURATION: Long = 1000 //两个弹幕的最小间隔时间
     private val BARRAGE_GAP_MAX_DURATION: Long = 3000 //两个弹幕的最大间隔时间
 

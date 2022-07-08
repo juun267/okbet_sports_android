@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
@@ -27,10 +28,8 @@ class RedEnvelopeManager() {
     private var redenpEndTime: Long? = null
     private var count = 0
     private var countdownTimer: Timer? = null
-    private var loginRepository:LoginRepository= LoginRepository(MultiLanguagesApplication.appContext)
 
     var showedRedenpId = -1 //顯示過的紅包id
-    var currentRedenpId = 0 //當前的紅包id
     private var viewModel:BaseViewModel?=null
 
 
@@ -58,8 +57,7 @@ class RedEnvelopeManager() {
                 }
                 count++
 
-                if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
-                    val redenpId = currentRedenpId
+                if (logRedEnvelopeReceiveDialog.dialog==null||logRedEnvelopeReceiveDialog.dialog?.isShowing == false) {
                     val startTimeDiff =
                         ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
@@ -74,7 +72,7 @@ class RedEnvelopeManager() {
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
                         if (showedRedenpId != redenpId) {
                             showedRedenpId = redenpId
-                            logRedEnvelopeReceiveDialog.redenpId = redenpId
+                            logRedEnvelopeReceiveDialog.redenpId=redenpId
                             logRedEnvelopeReceiveDialog.show(
                                 (AppManager.currentActivity() as AppCompatActivity).supportFragmentManager,
                                 AppManager.currentActivity()::class.java.simpleName
@@ -125,13 +123,6 @@ class RedEnvelopeManager() {
 
     }
 
-    fun getRainShowing(): Int {
-        return loginRepository.isShowingRedenpId
-    }
-
-    fun setRainShowing(isShowingRedenpId: Int) {
-        loginRepository.isShowingRedenpId = isShowingRedenpId
-    }
     var floatRootView: RedEnvelopeFloatingButton? = null
 
     fun showRedEnvelopeBtn(countTime:Long){

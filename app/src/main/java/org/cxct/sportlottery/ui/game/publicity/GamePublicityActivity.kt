@@ -76,7 +76,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
 //        if (sConfigData?.thirdOpen != FLAG_OPEN)
-            MultiLanguagesApplication.showAgeVerifyDialog(this)
     }
 
     override fun onAttachedToWindow() {
