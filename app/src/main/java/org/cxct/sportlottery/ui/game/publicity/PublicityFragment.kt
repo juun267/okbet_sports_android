@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
@@ -20,9 +19,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -31,20 +27,9 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
-import org.cxct.sportlottery.ui.main.entity.GameItemData
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.ui.withdraw.BankActivity
-import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
-import org.cxct.sportlottery.util.isCreditSystem
-import timber.log.Timber
 
 /**
  * @app_destination 宣傳頁
@@ -555,24 +540,11 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         val navMatchType = matchType ?: MatchType.DETAIL
         if (gameType != null && matchId != null) {
             findNavController().navigate(
-                when (navMatchType == MatchType.IN_PLAY) {
-                    true -> {
-                        PublicityFragmentDirections.actionPublicityFragmentToOddsDetailLiveFragment(
-                            navMatchType,
-                            gameType,
-                            matchId
-                        )
-                    }
-                    else -> {
-                        PublicityFragmentDirections.actionPublicityFragmentToOddsDetailFragment(
-                            navMatchType,
-                            gameType,
-                            matchId,
-                            matchInfoList.toTypedArray()
-                        )
-                    }
-                }
-
+                PublicityFragmentDirections.actionPublicityFragmentToOddsDetailLiveFragment(
+                    navMatchType,
+                    gameType,
+                    matchId
+                )
             )
         }
     }
