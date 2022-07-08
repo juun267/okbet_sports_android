@@ -1438,6 +1438,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isExpand = oddsDetail.isExpand
                 isMoreExpand = oddsDetail.isMoreExpand
                 gameTypeFgLgSelect = oddsDetail.gameTypeFgLgSelect
+                needShowItem = oddArrayList
             }
         }
 
