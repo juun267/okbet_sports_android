@@ -1,14 +1,18 @@
 package org.cxct.sportlottery.ui.menu
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_change_odd_type_full_screen.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.setupOddsTypeVisibility
 
 /**
  * @app_destination 盤口設定
@@ -27,11 +31,22 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
+
+        initOddsTypeView(view)
         initEvent(view)
         initObserver()
         getOddsType()
     }
 
+
+    private fun initOddsTypeView(rootView: View?) {
+        rootView?.apply {
+            rb_eu?.setupOddsTypeVisibility(HandicapType.EU)
+            rb_hk?.setupOddsTypeVisibility(HandicapType.HK)
+            rb_mys?.setupOddsTypeVisibility(HandicapType.MY)
+            rb_idn?.setupOddsTypeVisibility(HandicapType.ID)
+        }
+    }
 
     private fun initEvent(rootView: View?) {
         rootView?.apply {

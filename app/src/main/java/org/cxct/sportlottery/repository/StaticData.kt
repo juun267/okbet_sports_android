@@ -24,6 +24,13 @@ enum class TestFlag(val index: Long) { NORMAL(0), GUEST(1), TEST(2) } //是否�
  */
 enum class ImageType(val code: Int) { PROMOTION(5) }
 
+/**
+ * config 前端展示的盘口(handicapShow)類型
+ */
+enum class HandicapType() {
+    EU, HK, MY, ID
+}
+
 const val LOGIN_SRC: Long = 2 //登录来源，WEB(0), MOBILE_BROWSER(1), ANDROID(2), IOS(3);
 
 const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼

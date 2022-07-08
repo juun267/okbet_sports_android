@@ -7,7 +7,6 @@ import android.graphics.Rect
 import android.text.SpannableString
 import android.text.Spanned
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
@@ -25,6 +24,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -523,4 +523,19 @@ fun View.setSpinnerView(
         editText.clearFocus()
         popupWindowDismissListener()
     }
+}
+
+/**
+ * 判斷盤口類型是否有開放
+ * 若sConfigData?.handicapShow為空或null則開放預設的四項(EU,HK,MY,ID)
+ */
+fun isOddsTypeDisplay(handicapType: HandicapType): Boolean {
+    return sConfigData?.handicapShow?.isEmpty() == true || sConfigData?.handicapShow?.contains(handicapType.name) == true
+}
+
+/**
+ * 根據盤口類型是否有開放顯示或隱藏View
+ */
+fun View.setupOddsTypeVisibility(handicapType: HandicapType) {
+    visibility = if (isOddsTypeDisplay(handicapType)) View.VISIBLE else View.GONE
 }
