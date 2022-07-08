@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -163,14 +162,8 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) {
-        if (gameMatchType == MatchType.IN_PLAY) {
-            matchId?.let {
-                navOddsDetailLive(matchId, gameMatchType)
-            }
-        } else {
-            matchId?.let {
-                navOddsDetail(matchId, matchInfoList)
-            }
+        matchId?.let {
+            navOddsDetailLive(matchId, gameMatchType)
         }
     }
 
@@ -684,18 +677,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 else -> true
             }
         }
-    }
-
-    private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
-        val action =
-            GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                args.matchType,
-                args.gameType,
-                matchId,
-                matchInfoList.toTypedArray()
-            )
-
-        findNavController().navigate(action)
     }
 
     private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {

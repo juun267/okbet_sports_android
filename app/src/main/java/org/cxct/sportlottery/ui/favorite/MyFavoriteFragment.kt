@@ -29,7 +29,6 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
@@ -43,7 +42,6 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
 
 /**
  * @app_destination 我的賽事
@@ -114,8 +112,8 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
             }
 
             leagueOddListener = LeagueOddListener(
-                clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
-                    navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                clickListenerPlayType = { matchId, _, gameMatchType, _ ->
+                    navMatchDetailPage(matchId, gameMatchType)
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -142,14 +140,14 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     navStatistics(matchId)
                 },
                 refreshListener = {},
-                clickLiveIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                clickLiveIconListener = { matchId, _, gameMatchType, _ ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                        navMatchDetailPage(matchId, gameMatchType)
                     }
                 },
-                clickAnimationIconListener = { matchId, matchInfoList, gameMatchType, _ ->
+                clickAnimationIconListener = { matchId, _, gameMatchType, _ ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, matchInfoList, gameMatchType)
+                        navMatchDetailPage(matchId, gameMatchType)
                     }
                 }
             )
@@ -157,17 +155,9 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
     }
 
 
-    private fun navMatchDetailPage(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType) {
-        if (gameMatchType == MatchType.IN_PLAY) {
-            matchId?.let {
-                navOddsDetailLive(matchId, gameMatchType)
-                Timber.e("navOddsDetailLive")
-            }
-        } else {
-            matchId?.let {
-                navOddsDetail(matchId, matchInfoList)
-                Timber.e("navOddsDetail")
-            }
+    private fun navMatchDetailPage(matchId: String?, gameMatchType: MatchType) {
+        matchId?.let {
+            navOddsDetailLive(matchId, gameMatchType)
         }
     }
 
@@ -770,23 +760,6 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
      * */
     private fun getPlaySelectedCodeSelectionType(): Int? {
         return playCategoryAdapter.data.find { it.isSelected }?.selectionType
-    }
-
-    private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        gameType?.let {
-            val action =
-                MyFavoriteFragmentDirections.actionMyFavoriteFragmentToOddsDetailFragment(
-                    MatchType.MY_EVENT,
-                    gameType,
-                    matchId,
-                    matchInfoList.toTypedArray()
-                )
-
-            findNavController().navigate(action)
-        }
     }
 
     private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
