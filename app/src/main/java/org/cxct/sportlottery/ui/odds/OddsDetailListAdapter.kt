@@ -1100,11 +1100,41 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun oneList(oddsDetail: OddsDetailListData) {
+            val moreClickListener =
+                if (oddsDetail.oddArrayList.size > 5)
+                    object : TypeOneListAdapter.OnMoreClickListener {
+                        override fun click() {
+                            oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
+                            this@OddsDetailListAdapter.notifyItemChanged(bindingAdapterPosition)
+                        }
+                    } else null
+
+            oddsDetail.needShowItem = oddsDetail.oddArrayList
+
+            val detail = if (moreClickListener == null) {
+                oddsDetail
+            } else {
+                if (oddsDetail.isMoreExpand) {
+                    oddsDetail.apply {
+                        needShowItem = oddsDetail.oddArrayList
+                    }
+                } else {
+                    if (oddsDetail.oddArrayList.size > 5) {
+                        oddsDetail.apply {
+                            needShowItem = oddArrayList.take(5).toMutableList()
+                        }
+                    } else {
+                        oddsDetail
+                    }
+                }
+            }
+
             rvBet?.apply {
                 adapter = TypeOneListAdapter(
-                    oddsDetail,
+                    detail,
                     onOddClickListener,
-                    oddsType
+                    oddsType,
+                    onMoreClickListener = moreClickListener
                 )
                 layoutManager = LinearLayoutManager(itemView.context)
             }

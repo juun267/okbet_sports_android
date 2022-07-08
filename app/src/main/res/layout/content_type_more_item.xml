@@ -15,7 +15,7 @@
         android:textColor="@color/color_909090_666666"
         android:textSize="@dimen/textSize15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,6 @@
         android:layout_marginStart="10dp"
         android:src="@drawable/ic_arrow_down_gray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_expand_control"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/color_909090_666666" />

@@ -22,6 +22,8 @@ data class OddsDetailListData(
     var scoItem = HashMap<String, List<Odd?>>() // 當前選中
     var homeMap = HashMap<String, List<Odd?>>() // 球員玩法主隊
     var awayMap = HashMap<String, List<Odd?>>() // 球員玩法客隊
+
+    var needShowItem: MutableList<Odd?> = mutableListOf() // 目前作用在單列表情況
 }
 
 enum class FGLGType {
