@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.json.JSONArray
@@ -538,4 +539,48 @@ fun isOddsTypeDisplay(handicapType: HandicapType): Boolean {
  */
 fun View.setupOddsTypeVisibility(handicapType: HandicapType) {
     visibility = if (isOddsTypeDisplay(handicapType)) View.VISIBLE else View.GONE
+}
+
+/**
+ * 獲取盤口類型預設盤口, 若未配置預設為原先的HK
+ */
+fun getDefaultHandicapType(): HandicapType {
+    return when (sConfigData) {
+        //config尚未取得
+        null -> HandicapType.NULL
+        else -> {
+            when {
+                //region 若sConfigData?.handicapShow為空或null則開放預設為HK
+                sConfigData?.handicapShow?.isEmpty() == true -> {
+                    HandicapType.HK
+                }
+                //endregion
+                //region 第一個盤口作為預設盤口
+                else -> {
+                    when (sConfigData?.handicapShow?.split(",")?.first { type -> type.isNotEmpty() }) {
+                        HandicapType.EU.name -> HandicapType.EU
+                        HandicapType.HK.name -> HandicapType.HK
+                        HandicapType.MY.name -> HandicapType.MY
+                        HandicapType.ID.name -> HandicapType.ID
+                        else -> HandicapType.HK
+                    }
+                }
+                //endregion
+            }
+        }
+    }
+}
+
+
+/**
+ * 僅作為獲取config後更新預設盤口使用
+ */
+fun updateDefaultHandicapType() {
+    //若當前盤口尚未配置預設盤口
+    if (MultiLanguagesApplication.mInstance.sOddsType == HandicapType.NULL.name) {
+        OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+            ?.let { defalutOddsType ->
+                MultiLanguagesApplication.saveOddsType(defalutOddsType)
+            }
+    }
 }

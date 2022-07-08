@@ -88,8 +88,11 @@ class MultiLanguagesApplication : Application() {
 
     val mOddsType = MutableLiveData<OddsType>()
 
+    /**
+     * HandicapType.NULL.name為尚未配置後端設置的預設盤口
+     */
     var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
+        get() = sharedPref.getString(KEY_ODDS_TYPE, HandicapType.NULL.name)
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_ODDS_TYPE, value)
@@ -290,15 +293,13 @@ class MultiLanguagesApplication : Application() {
     }
 
     fun getOddsType() {
-        mInstance.mOddsType.postValue(
-            when (mInstance.sOddsType) {
-                OddsType.EU.code -> OddsType.EU
-                OddsType.HK.code -> OddsType.HK
-                OddsType.MYS.code -> OddsType.MYS
-                OddsType.IDN.code -> OddsType.IDN
-                else -> OddsType.HK
-            }
-        )
+        //若為HandicapType.NULL是為尚未配置, 無需更新View
+        when (mInstance.sOddsType) {
+            OddsType.EU.code -> mInstance.mOddsType.postValue(OddsType.EU)
+            OddsType.HK.code -> mInstance.mOddsType.postValue(OddsType.HK)
+            OddsType.MYS.code -> mInstance.mOddsType.postValue(OddsType.MYS)
+            OddsType.IDN.code -> mInstance.mOddsType.postValue(OddsType.IDN)
+        }
     }
 
     companion object {
@@ -408,6 +409,11 @@ class MultiLanguagesApplication : Application() {
                     }
 
                 }).show()
+        }
+
+        fun saveOddsType(oddsType: OddsType) {
+            mInstance.sOddsType = oddsType.code
+            mInstance.mOddsType.postValue(oddsType)
         }
     }
 }

@@ -26,9 +26,10 @@ enum class ImageType(val code: Int) { PROMOTION(5) }
 
 /**
  * config 前端展示的盘口(handicapShow)類型
+ * @property NULL 預設盤口尚未設置, 獲取預設盤口時config尚未取得
  */
 enum class HandicapType() {
-    EU, HK, MY, ID
+    EU, HK, MY, ID, NULL
 }
 
 const val LOGIN_SRC: Long = 2 //登录来源，WEB(0), MOBILE_BROWSER(1), ANDROID(2), IOS(3);
