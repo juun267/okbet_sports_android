@@ -34,11 +34,4 @@
         app:layout_constraintTop_toBottomOf="@id/custom_tab_layout"
         app:navGraph="@navigation/feedback_navigation" />
 
-    <org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
-        android:id="@+id/btn_floating_red_envelope"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
