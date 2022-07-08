@@ -4,10 +4,11 @@ package org.cxct.sportlottery.ui.menu
 import android.os.Bundle
 import android.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogChangeOddTypeBinding
+import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.setupOddsTypeVisibility
 
 
 class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
@@ -23,9 +24,20 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initOddsTypeView()
         initEvent(view)
         initObserver()
         getOddsType()
+    }
+
+
+    private fun initOddsTypeView() {
+        with(viewBinding) {
+            rbEu.setupOddsTypeVisibility(HandicapType.EU)
+            rbHk.setupOddsTypeVisibility(HandicapType.HK)
+            rbMys.setupOddsTypeVisibility(HandicapType.MY)
+            rbIdn.setupOddsTypeVisibility(HandicapType.ID)
+        }
     }
 
 
