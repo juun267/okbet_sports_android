@@ -68,8 +68,8 @@ class RedEnvelopeReceiveDialog(
 //            }
 //        }
 //    }
-    private val BARRAGE_GAP_MIN_DURATION: Int = 1000 //两个红包的最小间隔时间
-    private val BARRAGE_GAP_MAX_DURATION:Int = 1100 //两个红包的最大间隔时间
+  //  private val BARRAGE_GAP_MIN_DURATION: Int = 1200
+    private val BARRAGE_GAP_DURATION:Long = 1200
     private val BARRAGE_GAP_START_DURATION:Long = 100
 
     var bitmap1: Bitmap? = null
@@ -188,8 +188,8 @@ class RedEnvelopeReceiveDialog(
                     image = null
                 }
 
-                val duration: Int =  mRandom.nextInt(BARRAGE_GAP_MAX_DURATION)+BARRAGE_GAP_MIN_DURATION
-                sendEmptyMessageDelayed(0, duration.toLong())
+               // val duration: Int =  mRandom.nextInt(BARRAGE_GAP_MAX_DURATION)+BARRAGE_GAP_MIN_DURATION
+                sendEmptyMessageDelayed(0, BARRAGE_GAP_DURATION)
             }
         }
 
