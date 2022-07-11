@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
 import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -23,7 +24,6 @@ class RedEnvelopeManager {
         val instance by lazy(LazyThreadSafetyMode.NONE) {
             RedEnvelopeManager()
         }
-
     }
 
     private var redenpId: Int = 0
@@ -35,6 +35,8 @@ class RedEnvelopeManager {
     var showedRedenpId = -1 //顯示過的紅包id
     private var viewModel: BaseViewModel? = null
     private var activity: BaseActivity<BaseViewModel>? = null
+    private var closeDialog: CustomAlertDialog? = null
+    private var redEnvelopeReceiveDialog: RedEnvelopeReceiveDialog? = null
 
     /**
      * 绑定activity和viewmodel
@@ -50,17 +52,13 @@ class RedEnvelopeManager {
     }
 
     /**
-     * 限定默写页面不能显示红包相关的
+     * 限定指定页面不能显示红包相关的
      */
     fun allowdShowRedEnvelope(): Boolean = when (activity!!::class) {
         SplashActivity::class -> false
         MaintenanceActivity::class -> false
         ThirdGameActivity::class -> false
         else -> true
-    }
-
-    private val logRedEnvelopeReceiveDialog by lazy {
-        RedEnvelopeReceiveDialog(MultiLanguagesApplication.appContext, redenpId)
     }
 
     private fun startTimer() {
@@ -79,7 +77,7 @@ class RedEnvelopeManager {
                     count = 0
                 }
                 count++
-                if (logRedEnvelopeReceiveDialog.dialog == null || logRedEnvelopeReceiveDialog.dialog?.isShowing == false) {
+                if (redEnvelopeReceiveDialog == null) {
                     if (showedRedenpId == redenpId) return
                     val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
@@ -88,22 +86,22 @@ class RedEnvelopeManager {
                             showRedEnvelopeBtn(startTimeDiff)
                         }
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
-                            showedRedenpId = redenpId
-                            logRedEnvelopeReceiveDialog.redenpId=redenpId
-                            logRedEnvelopeReceiveDialog.show(
-                                activity!!.supportFragmentManager,
-                                activity!!::class.java.simpleName
-                            )
-                            GlobalScope.launch(Dispatchers.Main) {
-                                removeRedEnvelopeBtn()
-                            }
+                        showedRedenpId = redenpId
+                        redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(activity, redenpId)
+                        redEnvelopeReceiveDialog?.show(
+                            activity!!.supportFragmentManager,
+                            activity!!::class.java.simpleName
+                        )
+                        GlobalScope.launch(Dispatchers.Main) {
+                            removeRedEnvelopeBtn()
+                            closeDialog?.dismiss()
+                        }
                     }
                 } else  {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (endTimeDiff < 0) {
-                        if (logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
-                            logRedEnvelopeReceiveDialog.dismiss()
-                        }
+                        redEnvelopeReceiveDialog?.dismiss()
+                        redEnvelopeReceiveDialog = null
                     }
                 }
             }
@@ -175,13 +173,13 @@ class RedEnvelopeManager {
         val negativeClickListener = {
 
         }
-        commonTwoButtonDialog(
+        closeDialog = commonTwoButtonDialog(
             context = activity!!,
             fm = activity!!.supportFragmentManager,
             isError = false,
             isShowDivider = true,
-            buttonText = LocalUtils.getString(R.string.btn_cancel_new),
-            cancelText = LocalUtils.getString(R.string.btn_sure),
+            buttonText = LocalUtils.getString(R.string.btn_sure),
+            cancelText = LocalUtils.getString(R.string.btn_cancel_new),
             positiveClickListener = positiveClickListener,
             negativeClickListener = negativeClickListener,
             title = LocalUtils.getString(R.string.prompt),
