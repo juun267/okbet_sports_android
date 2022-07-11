@@ -720,7 +720,7 @@
     <string name="log_detail_handle_fee">Fee：</string>
     <string name="log_detail_rebate_money">Return amount：</string>
     <string name="log_detail_review_time">Checking time：</string>
-    <string name="log_detail_reason">Remark：</string>
+    <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">To</string>
     <string name="finance_list_no_record">No content available at the moment</string>
     <string name="feedback_detail">Feedback details</string>
