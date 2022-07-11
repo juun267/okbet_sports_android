@@ -1239,4 +1239,5 @@
     <string name="tran_time_sub">交易时间：</string>
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="tran_type_sub">交易类型：</string>
+    <string name="btn_sure">确定</string>
 </resources>

@@ -1237,4 +1237,5 @@
     <string name="tran_time_sub">Transaction time：</string>
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="tran_type_sub">Type：</string>
+    <string name="btn_sure">Confirm</string>
 </resources>

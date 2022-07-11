@@ -23,6 +23,7 @@ class RedEnvelopeManager {
         val instance by lazy(LazyThreadSafetyMode.NONE) {
             RedEnvelopeManager()
         }
+
     }
 
     private var redenpId: Int = 0
@@ -69,13 +70,16 @@ class RedEnvelopeManager {
         countdownTimer = Timer()
         countdownTimer?.schedule(object : TimerTask() {
             override fun run() {
-                if (!isLogin() || !allowdShowRedEnvelope()) return
+                if (!isLogin() || !allowdShowRedEnvelope()) {
+                    removeRedEnvelopeBtn()
+                    return
+                }
                 if (count % 10 == 0) {
                     getRain()
                     count = 0
                 }
                 count++
-                if (logRedEnvelopeReceiveDialog.dialog==null||logRedEnvelopeReceiveDialog.dialog?.isShowing == false) {
+                if (logRedEnvelopeReceiveDialog.dialog == null || logRedEnvelopeReceiveDialog.dialog?.isShowing == false) {
                     if (showedRedenpId == redenpId) return
                     val startTimeDiff = ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
@@ -176,8 +180,8 @@ class RedEnvelopeManager {
             fm = activity!!.supportFragmentManager,
             isError = false,
             isShowDivider = true,
-            buttonText = null,
-            cancelText = null,
+            buttonText = LocalUtils.getString(R.string.btn_cancel_new),
+            cancelText = LocalUtils.getString(R.string.btn_sure),
             positiveClickListener = positiveClickListener,
             negativeClickListener = negativeClickListener,
             title = LocalUtils.getString(R.string.prompt),
