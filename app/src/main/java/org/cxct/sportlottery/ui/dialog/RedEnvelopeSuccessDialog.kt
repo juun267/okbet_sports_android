@@ -42,7 +42,7 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val operatingAnim = AnimationUtils.loadAnimation(
-            activity, R.anim.red_envelope_rotate
+            activity, R.anim.red_envelope_rotate_clockwise
         )
         val lin = LinearInterpolator()
         operatingAnim.interpolator = lin
