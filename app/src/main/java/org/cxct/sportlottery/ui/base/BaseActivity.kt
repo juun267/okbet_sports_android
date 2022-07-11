@@ -18,30 +18,21 @@ import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
-import org.cxct.sportlottery.util.commonTwoButtonDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.lang.Runnable
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
@@ -75,7 +66,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
-        RedEnvelopeManager.instance.bindViewModel(viewModel)
+        RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
     private fun onTokenStateChanged() {

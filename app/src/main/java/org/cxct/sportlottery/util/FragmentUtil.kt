@@ -2,7 +2,6 @@ package org.cxct.sportlottery.util
 
 
 import android.content.Context
-import android.text.SpannableStringBuilder
 import android.text.Spanned
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -94,12 +93,14 @@ fun commonTwoButtonDialog(
     cancelText: String?,
     positiveClickListener: () -> Unit?,
     negativeClickListener: () -> Unit?
-) {
+): CustomAlertDialog? {
+    var dialog: CustomAlertDialog? = null
     if (checkDialogIsShowing(fm, errorMessage ?: "")) {
-        return
+        return dialog
     }
 
     CustomAlertDialog(context).apply {
+        dialog = this
         if (isError) {
             setTextColor(R.color.color_E44438_e44438)
         }
@@ -120,6 +121,7 @@ fun commonTwoButtonDialog(
         setCanceledOnTouchOutside(false)
         isCancelable = false //不能用系統 BACK 按鈕關閉 dialog
     }.show(fm, errorMessage)
+    return dialog
 }
 
 
