@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_191919_FCFCFC"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical"
     tools:context=".ui.menu.ChangeOddsTypeFullScreenDialog"
     tools:ignore="SpUsage,RtlSymmetry">
@@ -74,7 +76,7 @@
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:paddingStart="20dp">
