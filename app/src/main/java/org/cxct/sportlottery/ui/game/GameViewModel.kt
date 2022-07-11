@@ -291,8 +291,8 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
-    private val _checkInListFromSocket = MutableLiveData<Boolean>()
-    val checkInListFromSocket: LiveData<Boolean>
+    private val _checkInListFromSocket = MutableLiveData<LeagueChangeEvent?>()
+    val checkInListFromSocket: LiveData<LeagueChangeEvent?>
         get() = _checkInListFromSocket
 
     //賽事直播網址
@@ -1075,7 +1075,7 @@ class GameViewModel(
         getGameHallList(matchType, false, date.date)
     }
 
-    fun checkGameInList(matchType: MatchType, leagueIdList: List<String>? = null) {
+    fun checkGameInList(matchType: MatchType, leagueChangeEvent: LeagueChangeEvent?) {
         val nowMatchType = curMatchType.value ?: matchType
         val nowChildMatchType = curChildMatchType.value ?: matchType
         val sportCode = getSportSelectedCode(nowMatchType)
@@ -1085,21 +1085,21 @@ class GameViewModel(
                     checkOddsList(
                         code,
                         nowChildMatchType.postValue,
-                        leagueIdList = leagueIdList,
+                        leagueChangeEvent = leagueChangeEvent,
                     )
                 }
                 MatchType.AT_START -> {
                     checkOddsList(
                         code,
                         nowChildMatchType.postValue,
-                        leagueIdList = leagueIdList,
+                        leagueChangeEvent = leagueChangeEvent,
                     )
                 }
                 MatchType.OTHER -> {
                     checkOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        leagueIdList = leagueIdList,
+                        leagueChangeEvent = leagueChangeEvent,
                     )
                 }
                 else -> {
@@ -1573,7 +1573,7 @@ class GameViewModel(
                             }
                     }
 
-                    if (isIncrement)
+                    if (isIncrement) {
                         _oddsListGameHallIncrementResult.postValue(
                             Event(
                                 OddsListIncrementResult(
@@ -1582,7 +1582,7 @@ class GameViewModel(
                                 )
                             )
                         )
-                    else {
+                    } else {
                         _oddsListGameHallResult.postValue(Event(result))
                         //_quickOddsListGameHallResult.postValue(Event(result))
                     }
@@ -3073,7 +3073,7 @@ class GameViewModel(
         }
     }
 
-    private suspend fun getOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null): OddsListResult? {
+    suspend fun getOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null): OddsListResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.oddsService.getOddsList(
                 OddsListRequest(
@@ -3235,7 +3235,7 @@ class GameViewModel(
 
     private var jobSwitchGameType: Job? = null
 
-    private fun checkOddsList(gameType: String, matchTypeString: String, leagueIdList: List<String>? = null) {
+    private fun checkOddsList(gameType: String, matchTypeString: String, leagueChangeEvent: LeagueChangeEvent?) {
         viewModelScope.launch {
 
             val matchType = curMatchType.value ?: return@launch
@@ -3275,12 +3275,12 @@ class GameViewModel(
             if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
                 getMatchCategory(matchType)
             }
-            
+
             // 如選擇球種的線程正在執行 則不需執行 league change 後的流程
-            if (jobSwitchGameType?.isActive == false) return@launch
+            if (jobSwitchGameType?.isActive == true) return@launch
 
             /* 2. 確認 league change 聯賽列表有無 */
-            val oddsListResult = getOddsList(gameType, matchTypeString, leagueIdList = leagueIdList)?.apply {
+            val oddsListResult = getOddsList(gameType, matchTypeString, leagueIdList = leagueChangeEvent?.leagueIdList)?.apply {
                 let {
                     if (!it.success) {
                         return@launch
@@ -3290,7 +3290,7 @@ class GameViewModel(
 
             if (oddsListResult.oddsListData?.leagueOdds.isNullOrEmpty()) return@launch
 
-            _checkInListFromSocket.postValue(true)
+            _checkInListFromSocket.postValue(leagueChangeEvent)
 
             //後續尚可優化
 //                    //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
