@@ -1045,14 +1045,18 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     this.gameType = targetLeagueOdd.gameType
                                     this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
                                 }
+                                //更新快捷玩法
+                                changedLeagueOdd.matchOdds.forEachIndexed { _, matchOdd ->
+                                    mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] =
+                                        matchOdd.quickPlayCateList ?: mutableListOf()
+                                }
                                 subscribeChannelHall(leagueAdapter.data[targetIndex])
+                                Log.d("Hewie", "更新聯賽：${targetLeagueOdd.league.name}")
                             } ?: run {
+                                Log.d("Hewie", "移除聯賽：${leagueAdapter.data[targetIndex].league.name}")
+                                unSubscribeChannelHall(leagueAdapter.data[targetIndex])
                                 leagueAdapter.data.removeAt(targetIndex)
                                 leagueAdapter.notifyItemRemoved(targetIndex)
-                                Log.d(
-                                    "Hewie",
-                                    "移除聯賽：${leagueAdapter.data[targetIndex].league.name}"
-                                )
                             }
                         } ?: run {
                         //不在畫面上的League
@@ -1063,6 +1067,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 GameType.getGameType(leagueListIncrement.oddsListData.sport.code)
                             val insertLeagueOdd = changedLeagueOdd.apply {
                                 this.gameType = gameType
+                            }
+                            //更新快捷玩法
+                            changedLeagueOdd.matchOdds.forEachIndexed { _, matchOdd ->
+                                mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] =
+                                    matchOdd.quickPlayCateList ?: mutableListOf()
                             }
                             leagueAdapter.data.add(insertLeagueOdd)
                             leagueAdapter.notifyItemInserted(leagueAdapter.data.size - 1)
@@ -1306,8 +1315,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
         }
 
-        viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) {
-            if (it) {
+        viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) { leagueChangeEvent ->
+            if (leagueChangeEvent != null) {
                 CoroutineScope(Dispatchers.IO).launch {
                     if (!isUpdatingLeague) {
                         isUpdatingLeague = true
@@ -1317,28 +1326,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
 
                         if (leagueAdapter.data.isNotEmpty()) {
-                            val hasLeagueIdList =
-                                leagueAdapter.data.any { leagueOdd -> leagueOdd.league.id == mLeagueChangeEvent?.leagueIdList?.firstOrNull() }
-
-                            if (nowGameType == mLeagueChangeEvent?.gameType) {
-                                when {
-                                    !hasLeagueIdList || args.matchType == MatchType.AT_START -> {
-                                        //全刷
-                                        unSubscribeChannelHallAll()
-                                        withContext(Dispatchers.Main) {
-                                            if (args.matchType == MatchType.OTHER) {
-                                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                            } else {
-                                                viewModel.getGameHallList(args.matchType, false)
-                                            }
-                                        }
-                                    }
-                                    else -> {
-                                        unSubscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
-                                        subscribeChannelHall(nowGameType ?: GameType.FT.key, mLeagueChangeEvent?.matchIdList?.firstOrNull())
-                                        if (args.matchType == MatchType.OTHER) {
-                                            viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                        }
+                            if (nowGameType == leagueChangeEvent.gameType && leagueChangeEvent.leagueIdList?.isNotEmpty() == true) {
+                                //不管是否相同聯賽，也要確認是否要更新賽事資訊
+                                withContext(Dispatchers.Main) {
+                                    if (args.matchType == MatchType.OTHER) {
+                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
+                                    } else {
+                                        viewModel.getGameHallList(args.matchType, leagueIdList = leagueChangeEvent.leagueIdList,
+                                            isReloadDate = false,
+                                            isIncrement = true
+                                        )
                                     }
                                 }
                             } else if (args.matchType == MatchType.OTHER) {
@@ -1418,7 +1415,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private val leagueOddMap = HashMap<String, LeagueOdd>()
-    private var mLeagueChangeEvent: LeagueChangeEvent? = null
     private fun initSocketObserver() {
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
@@ -1459,6 +1455,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     if (leagueOdd.matchOdds.size > 0) {
                                         leagueAdapter.notifyItemChanged(index)
                                     } else {
+                                        unSubscribeChannelHall(leagueOdd)
                                         leagueAdapter.data.remove(leagueOdd)
                                         leagueAdapter.notifyItemRemoved(index)
                                     }
@@ -1478,6 +1475,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
+                                    unSubscribeChannelHall(leagueOdd)
                                     leagueAdapter.data.remove(leagueOdd)
                                     leagueAdapter.notifyItemRemoved(index)
                                 }
@@ -1672,13 +1670,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-        receiver.leagueChange.observe(this.viewLifecycleOwner) {
+        //distinctUntilChanged -> 短時間內收到相同leagueChangeEvent僅會執行一次
+        receiver.leagueChange.distinctUntilChanged().observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-                mLeagueChangeEvent = leagueChangeEvent
                 viewModel.checkGameInList(
                     matchType = args.matchType,
-                    leagueIdList = leagueChangeEvent.leagueIdList,
+                    leagueChangeEvent = leagueChangeEvent,
                 )
+                //待優化: 應有個暫存leagueChangeEvent的機制，確認後續流程更新完畢，再處理下一筆leagueChangeEvent，不過目前後續操作並非都是suspend，需重構後續流程
             }
         }
     }
