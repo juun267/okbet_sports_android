@@ -69,7 +69,9 @@ class RedEnvelopeManager {
         countdownTimer?.schedule(object : TimerTask() {
             override fun run() {
                 if (!isLogin() || !allowdShowRedEnvelope()) {
-                    removeRedEnvelopeBtn()
+                    GlobalScope.launch(Dispatchers.Main) {
+                        removeRedEnvelopeBtn()
+                    }
                     return
                 }
                 if (count % 10 == 0) {
@@ -88,11 +90,11 @@ class RedEnvelopeManager {
                     } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
                         showedRedenpId = redenpId
                         redEnvelopeReceiveDialog = RedEnvelopeReceiveDialog(activity, redenpId)
-                        redEnvelopeReceiveDialog?.show(
-                            activity!!.supportFragmentManager,
-                            activity!!::class.java.simpleName
-                        )
                         GlobalScope.launch(Dispatchers.Main) {
+                            redEnvelopeReceiveDialog?.show(
+                                activity!!.supportFragmentManager,
+                                activity!!::class.java.simpleName
+                            )
                             removeRedEnvelopeBtn()
                             closeDialog?.dismiss()
                         }
@@ -100,8 +102,10 @@ class RedEnvelopeManager {
                 } else  {
                     val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
                     if (endTimeDiff < 0) {
-                        redEnvelopeReceiveDialog?.dismiss()
-                        redEnvelopeReceiveDialog = null
+                        GlobalScope.launch(Dispatchers.Main) {
+                            redEnvelopeReceiveDialog?.dismiss()
+                            redEnvelopeReceiveDialog = null
+                        }
                     }
                 }
             }
