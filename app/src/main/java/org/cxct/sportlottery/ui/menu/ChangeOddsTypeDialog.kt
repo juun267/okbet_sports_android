@@ -10,7 +10,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.util.setupOddsTypeVisibility
 
-
+//TODO 此頁目前沒有使用, 若有需要使用時請參照ChangeOddsTypeFullScreenDialog配置盤口相關行為
 class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
 
     private lateinit var viewBinding: DialogChangeOddTypeBinding
@@ -32,6 +32,7 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
 
     private fun initOddsTypeView() {
+        //TODO 此頁目前沒有使用, 若有需要使用時請參照ChangeOddsTypeFullScreenDialog配置盤口相關行為
         with(viewBinding) {
             rbEu.setupOddsTypeVisibility(HandicapType.EU)
             rbHk.setupOddsTypeVisibility(HandicapType.HK)

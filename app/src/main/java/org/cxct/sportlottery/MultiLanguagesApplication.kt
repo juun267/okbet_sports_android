@@ -88,8 +88,16 @@ class MultiLanguagesApplication : Application() {
     /**
      * HandicapType.NULL.name為尚未配置後端設置的預設盤口
      */
-    var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, HandicapType.NULL.name)
+    var sOddsType: String?
+        get() {
+            val handicapType = sharedPref.getString(KEY_ODDS_TYPE, HandicapType.NULL.name)
+            if(handicapType != HandicapType.NULL.name && !isOddsTypeEnable(handicapType ?: "")) {
+                updateDefaultHandicapType()
+                return HandicapType.NULL.name
+            }
+
+            return handicapType
+        }
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_ODDS_TYPE, value)
@@ -179,7 +187,6 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
         AppManager.init(this)
         myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        getOddsType()
 
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
