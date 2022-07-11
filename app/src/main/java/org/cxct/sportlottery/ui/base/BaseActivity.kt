@@ -59,6 +59,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onStart() {
         super.onStart()
         startCheckToken()
+        RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +67,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
-        RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
     private fun onTokenStateChanged() {
