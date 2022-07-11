@@ -16,7 +16,6 @@ import org.cxct.sportlottery.databinding.ActivityGamePublicityBinding
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -35,9 +34,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.parceler.Parcels
-import timber.log.Timber
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
@@ -105,7 +102,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         initServiceButton()
         initRegionViewBtn()
         initOnClickListener()
-        RedEnvelopeManager.instance.bindViewModel(viewModel)
     }
 
     private fun initBaseFun() {
