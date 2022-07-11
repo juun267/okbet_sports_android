@@ -601,7 +601,7 @@ fun setupDefaultHandicapType() {
  */
 fun updateDefaultHandicapType() {
     //若config尚未取得或處於更新中則不再更新
-    if (gotConfigData && !updatingDefaultHandicapType) {
+    if (!updatingDefaultHandicapType) {
         updatingDefaultHandicapType = true
         OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
             ?.let { defaultOddsType ->

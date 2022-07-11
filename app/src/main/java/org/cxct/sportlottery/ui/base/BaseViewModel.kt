@@ -160,9 +160,9 @@ abstract class BaseViewModel(
             betInfoRepository.clear()
             infoCenterRepository.clear()
             loginRepository.logout()
-            finishFunction.invoke()
             //退出登入後盤口回到預設
             updateDefaultHandicapType()
+            finishFunction.invoke()
         }
     }
 
