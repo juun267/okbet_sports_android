@@ -25,7 +25,6 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.HandicapType
-import org.cxct.sportlottery.repository.gotConfigData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -528,6 +527,14 @@ fun View.setSpinnerView(
 }
 
 /**
+ * 判斷盤口啟用參數是否有配置
+ * @return true: 有配置, false: 沒有配置(為空或null)
+ */
+fun isHandicapShowSetup(): Boolean {
+    return sConfigData?.handicapShow?.isEmpty() == false
+}
+
+/**
  * 判斷盤口類型是否有開放
  * 若sConfigData?.handicapShow為空或null則開放預設的四項(EU,HK,MY,ID)
  */
@@ -536,7 +543,7 @@ fun isOddsTypeEnable(handicapType: HandicapType): Boolean {
 }
 
 fun isOddsTypeEnable(handicapTypeCode: String): Boolean {
-    return sConfigData?.handicapShow?.isEmpty() == true || sConfigData?.handicapShow?.contains(handicapTypeCode) == true
+    return !isHandicapShowSetup() || sConfigData?.handicapShow?.contains(handicapTypeCode) == true
 }
 /**
  * 根據盤口類型是否有開放顯示或隱藏View
@@ -555,7 +562,7 @@ fun getDefaultHandicapType(): HandicapType {
         else -> {
             when {
                 //region 若sConfigData?.handicapShow為空或null則開放預設為HK
-                sConfigData?.handicapShow?.isEmpty() == true -> {
+                !isHandicapShowSetup() -> {
                     HandicapType.HK
                 }
                 //endregion

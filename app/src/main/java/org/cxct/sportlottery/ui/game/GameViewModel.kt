@@ -2925,6 +2925,7 @@ class GameViewModel(
             }?.let { configResult ->
                 if (configResult.success) {
                     sConfigData = configResult.configData
+                    setupDefaultHandicapType()
                     _gotConfig.postValue(Event(true))
                 }
             }
