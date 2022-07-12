@@ -19,7 +19,7 @@ open class TextInputAutoCompleteTextView : AppCompatAutoCompleteTextView {
     ) {
     }
 
-    override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection {
+    override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
         val ic = super.onCreateInputConnection(outAttrs)
         if (ic != null && outAttrs.hintText == null) {
             // If we don't have a hint and our parent is a TextInputLayout, use it's hint for the

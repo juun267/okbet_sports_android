@@ -827,8 +827,11 @@
                     android:id="@+id/eetSecurityPbType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
+                    android:layout_marginEnd="10dp"
+                    android:editable="false"
                     android:ellipsize="end"
+                    android:imeOptions="actionNext"
+                    android:inputType="none"
                     android:singleLine="true"
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
