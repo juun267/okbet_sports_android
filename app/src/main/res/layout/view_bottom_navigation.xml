@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    android:paddingTop="100dp">
+    android:orientation="vertical"
+    android:paddingTop="100dp"
+    tools:ignore="SpUsage">
 
-    <View
-        android:id="@+id/bg_top"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/color_191919_FCFCFC"
-        app:layout_constraintBottom_toTopOf="@+id/bg_bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_top_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_191919_FCFCFC" >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vrt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5152" />
 
     <TextView
         android:id="@+id/txv_other"
@@ -178,29 +183,15 @@
         app:layout_constraintStart_toStartOf="@+id/txv_chat"
         app:layout_constraintTop_toBottomOf="@+id/txv_chat" />
 
-    <!--    android:background="#fff3f4f5"-->
-
-
-    <View
-        android:id="@+id/bg_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/color_141414_F3F4F5"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomNavBarPaddingView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ll_pagcor_container" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/ll_pagcor_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_space"
-        tools:visibility="gone"
+        android:background="@color/color_141414_F3F4F5"
+        tools:visibility="visible"
         android:orientation="vertical">
     <TextView
         android:id="@+id/txv_btm_hint"
@@ -234,28 +225,27 @@
         android:paddingBottom="12dp"
         android:text="@string/btm_navigation_copyright"
         android:textColor="@color/color_7F7F7F_999999"
-        android:textSize="12dp" />
+        android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/betListBarPaddingView"
+    <LinearLayout
+        android:id="@+id/bottomPaddingViewLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bet_list_bar_height"
-        android:background="@color/color_191919_FCFCFC"
-        app:layout_constraintTop_toBottomOf="@+id/ll_pagcor_container"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavBarPaddingView"/>
-    <View
-        android:id="@+id/bottomNavBarPaddingView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/bottom_nav_bar_height"
-        android:background="@color/color_191919_FCFCFC"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vrt"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5152" />
+        android:background="@color/color_141414_F3F4F5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_pagcor_container">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/betListBarPaddingView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bet_list_bar_height" />
+
+        <View
+            android:id="@+id/bottomNavBarPaddingView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_nav_bar_height" />
+    </LinearLayout>
+
+</LinearLayout>

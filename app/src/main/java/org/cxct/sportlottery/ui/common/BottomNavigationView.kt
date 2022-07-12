@@ -3,13 +3,11 @@ package org.cxct.sportlottery.ui.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.view_bottom_navigation.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -18,9 +16,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RelativeLayout(context, attrs, defStyle) {
@@ -168,6 +165,27 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
 
         //信用盤開啟，要隱藏底部Pagcor文案與logo
         ll_pagcor_container.setVisibilityByCreditSystem()
+
+        //分開處理PUBLICITY和其他頁面的背景色
+        if (mNowPage == Page.PUBLICITY) {
+            val topResId = R.color.color_141414_F3F4F5
+            val pagcorResId = R.color.color_191919_EEEFF0
+
+            cl_top_container.setBackgroundResource(topResId)
+            ll_pagcor_container.setBackgroundResource(pagcorResId)
+
+            if (isCreditSystem()) bottomPaddingViewLayout.setBackgroundResource(topResId)
+            else bottomPaddingViewLayout.setBackgroundResource(pagcorResId)
+        } else {
+            val topResId = R.color.color_191919_FCFCFC
+            val pagcorResId = R.color.color_141414_F3F4F5
+
+            cl_top_container.setBackgroundResource(topResId)
+            ll_pagcor_container.setBackgroundResource(pagcorResId)
+
+            if (isCreditSystem()) bottomPaddingViewLayout.setBackgroundResource(topResId)
+            else bottomPaddingViewLayout.setBackgroundResource(pagcorResId)
+        }
     }
 
     private fun goSwitchLanguagePage() {
@@ -175,14 +193,6 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
             putExtra(SwitchLanguageActivity.FROM_ACTIVITY, mNowPage ?: Page.GAME)
         }
         context?.startActivity(intent)
-    }
-
-    fun setTopBackground(background: Drawable) {
-        bg_top.background = background
-    }
-
-    fun setBottomBackground(background: Drawable) {
-        bg_bottom.background = background
     }
 
     fun setNowPage(page: Page) {
