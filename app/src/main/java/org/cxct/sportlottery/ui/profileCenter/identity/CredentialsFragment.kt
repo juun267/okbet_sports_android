@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
@@ -17,8 +15,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
-import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.getCompressFile
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 import java.io.File
@@ -45,9 +43,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                     else -> media?.path
                 }
 
-                val file = File(path!!)
-                if (file.exists())
-                    selectedDocImg(file)
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedDocImg(compressFile)
                 else
                     throw FileNotFoundException()
             } catch (e: Exception) {
@@ -77,9 +75,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                     else -> media?.path
                 }
 
-                val file = File(path!!)
-                if (file.exists())
-                    selectedPhotoImg(file)
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedPhotoImg(compressFile)
                 else
                     throw FileNotFoundException()
             } catch (e: Exception) {
