@@ -658,6 +658,7 @@ class RegisterViewModel(
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPbTypeCode: String?,
         securityPb: String,
         smsCode: String,
         validCode: String,
@@ -718,6 +719,7 @@ class RegisterViewModel(
                     facebook,
                     whatsApp,
                     telegram,
+                    securityPbTypeCode,
                     securityPb,
                     smsCode,
                     validCode,
@@ -753,6 +755,7 @@ class RegisterViewModel(
         facebook: String,
         whatsApp: String,
         telegram: String,
+        securityPbTypeCode: String?,
         securityPb: String,
         smsCode: String,
         validCode: String,
@@ -800,8 +803,10 @@ class RegisterViewModel(
                 this.whatsapp = whatsApp
             if (sConfigData?.enableTelegram == FLAG_OPEN)
                 this.telegram = telegram
-            if (sConfigData?.enableSafeQuestion == FLAG_OPEN)
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) {
+                this.safeQuestionType = securityPbTypeCode
                 this.safeQuestion = securityPb
+            }
             if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
                 this.securityCode = smsCode
             if (sConfigData?.enableRegValidCode == FLAG_OPEN) {

@@ -104,7 +104,8 @@
     <string name="hint_telegram">(Vui lòng nhập tài khoản Telegram)</string>
     <string name="error_telegram">lỗi định dạng tài khoản Telegram không hợp lệ</string>
     <string name="security_pb">Câu hỏi an toàn</string>
-    <string name="hint_security_pb">(Vui lòng nhập quốc gia yêu thích)</string>
+    <string name="security_answer">Câu trả lời</string>
+    <string name="hint_security_answer">(Hãy nhập câu trả lời)</string>
     <string name="real_name">Họ tên thật</string>
     <string name="income_source">Source Of Income</string>
     <string name="identity_type">Valid ID Type</string>
