@@ -341,10 +341,18 @@ open class ServiceBroadcastReceiver(
                 if (oddsList.playCateCode != PlayCate.LCS.value) {
                     oddsList.oddsList?.forEach { odd ->
                         if (odd?.playCode != PlayCate.LCS.value) {
+                            val oddsDiscount = odd?.odds?.applyDiscount(discount)
                             odd?.odds = odd?.odds?.applyDiscount(discount)
-                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-                            odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
-                            odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
+
+                            if (odd?.odds == odd?.hkOdds && odd?.odds == odd?.malayOdds && odd?.odds == odd?.indoOdds) {
+                                odd?.hkOdds = oddsDiscount
+                                odd?.malayOdds = oddsDiscount
+                                odd?.indoOdds = oddsDiscount
+                            } else {
+                                odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                                odd?.malayOdds = odd?.hkOdds?.convertToMYOdds()
+                                odd?.indoOdds = odd?.hkOdds?.convertToIndoOdds()
+                            }
 
                             if (oddsList.playCateCode == PlayCate.EPS.value) {
                                 odd?.extInfo =

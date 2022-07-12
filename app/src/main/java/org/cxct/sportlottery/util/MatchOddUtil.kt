@@ -77,7 +77,21 @@ object MatchOddUtil {
     }
 
     fun Odd.updateDiscount(discount: Float, newDiscount: Float) {
-        this.odds = this.odds?.updateDiscount(discount, newDiscount)
+        val oddsDiscount = this.hkOdds?.updateHKDiscount(discount, newDiscount)
+        this.odds = oddsDiscount
+
+        if (isOnlyEUType) {
+            this.hkOdds = oddsDiscount
+            this.malayOdds = oddsDiscount
+            this.indoOdds = oddsDiscount
+        } else {
+            this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
+            if (this.malayOdds != this.odds) {
+                this.malayOdds = this.hkOdds?.convertToMYOdds()
+                this.indoOdds = this.hkOdds?.convertToIndoOdds()
+            }
+        }
+
         this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
         if(this.malayOdds != this.odds){
             this.malayOdds = this.hkOdds?.convertToMYOdds()
