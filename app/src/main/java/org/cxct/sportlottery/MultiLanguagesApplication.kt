@@ -13,7 +13,10 @@ import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
@@ -55,10 +58,6 @@ import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
-import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -307,7 +306,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     companion object {
-        private var myPref: SharedPreferences? = null
+        var myPref: SharedPreferences? = null
         lateinit var appContext: Context
         const val UUID_DEVICE_CODE = "uuidDeviceCode"
         const val UUID = "uuid"

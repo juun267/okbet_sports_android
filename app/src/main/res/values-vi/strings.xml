@@ -1207,7 +1207,7 @@
     <string name="redenvelope_fail">Thật không may</string>
     <string name="redenvelope_fail_desp">Rất tiếc không giật được lì xì</string>
     <string name="hint_enter_city">Vui lòng nhập thành phố</string>
-    <string name="redenvelope_close_hint">Close countdown ?\nClose countdown won\'t awarded luck money.</string>
+    <string name="redenvelope_close_hint">Muốn đóng đếm ngược của mưa bao lì xì?\nĐóng đếm ngược nếu không sẽ tiến hành giật bao lì xì</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>

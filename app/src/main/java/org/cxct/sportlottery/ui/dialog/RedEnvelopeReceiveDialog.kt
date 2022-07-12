@@ -98,6 +98,11 @@ class RedEnvelopeReceiveDialog(
         }
     }
 
+    fun closeDialog() {
+        successDialog?.dismiss()
+        failDialog?.dismiss()
+    }
+
     private fun initObserve() {
         viewModel.redEnvelopePrizeResult.observe(viewLifecycleOwner) { evenResult ->
             evenResult?.getContentIfNotHandled()?.let { result ->

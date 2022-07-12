@@ -31,12 +31,19 @@ class RedEnvelopeManager {
     private var redenpEndTime: Long? = null
     private var count = 0
     private var countdownTimer: Timer? = null
-
-    var showedRedenpId = -1 //顯示過的紅包id
+    private var showedRedenpId  //顯示過的紅包id
+        get() = MultiLanguagesApplication.myPref!!.getInt("redenId", -1)
+        set(value) {
+            with(MultiLanguagesApplication.myPref!!.edit()) {
+                putInt("redenId", value)
+                apply()
+            }
+        }
     private var viewModel: BaseViewModel? = null
     private var activity: BaseActivity<BaseViewModel>? = null
     private var closeDialog: CustomAlertDialog? = null
     private var redEnvelopeReceiveDialog: RedEnvelopeReceiveDialog? = null
+    private var floatRootView: RedEnvelopeFloatingButton? = null
 
     /**
      * 绑定activity和viewmodel
@@ -74,7 +81,7 @@ class RedEnvelopeManager {
                     }
                     return
                 }
-                if (count % 10 == 0) {
+                if (count % 20 == 0) {
                     getRain()
                     count = 0
                 }
@@ -104,6 +111,7 @@ class RedEnvelopeManager {
                     if (endTimeDiff < 0) {
                         GlobalScope.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.dismiss()
+                            redEnvelopeReceiveDialog?.closeDialog()
                             redEnvelopeReceiveDialog = null
                         }
                     }
@@ -141,8 +149,6 @@ class RedEnvelopeManager {
             }
 
     }
-
-    var floatRootView: RedEnvelopeFloatingButton? = null
 
     fun showRedEnvelopeBtn(countTime:Long){
         var viewGroup = activity!!.findViewById<ViewGroup>(android.R.id.content)
