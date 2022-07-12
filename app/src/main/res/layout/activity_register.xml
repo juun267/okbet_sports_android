@@ -852,7 +852,7 @@
                 android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_arrow_gray"
                 app:hintText="@string/hint_security_answer"
-                app:iconSignifier="@drawable/ic_security_pb"
+                app:iconSignifier="@drawable/ic_safe_answer"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/security_answer"
                 app:labelTextStyle="normal"
