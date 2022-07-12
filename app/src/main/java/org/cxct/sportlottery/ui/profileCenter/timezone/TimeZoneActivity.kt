@@ -2,9 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.timezone
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_timezone.*
-import kotlinx.android.synthetic.main.bottom_navigation_item.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -21,10 +18,6 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
-import org.cxct.sportlottery.util.toJson
-import java.time.ZoneId
-import java.time.format.TextStyle
-import java.util.*
 
 /**
  * @app_destination 外觀(日間/夜間)切換
@@ -64,15 +57,19 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         rv_list.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.divider_color_gray_light2)))
         adapter= TimeZoneAdapter(ItemClickListener {
-                items.forEach { item->
-                    item.isSelected= false
+                items.forEach { item ->
+                    item.isSelected = false
                 }
-                it.isSelected = true
-                adapter.notifyDataSetChanged()
-                var zone= java.util.TimeZone.getTimeZone(it.name)
-                zone.id=it.country_en+"/"+it.city_en
-                java.util.TimeZone.setDefault(zone)
-            MultiLanguagesApplication.timeZone=zone
+            it.isSelected = true
+            var mutableList = items.toMutableList()
+            mutableList.remove(it)
+            mutableList.add(0, it)
+            items = mutableList.toList()
+            adapter.notifyDataSetChanged()
+            var zone = java.util.TimeZone.getTimeZone(it.name)
+            zone.id = it.country_en + "/" + it.city_en
+            java.util.TimeZone.setDefault(zone)
+            MultiLanguagesApplication.timeZone = zone
         })
 
         items=Gson().fromJson(
