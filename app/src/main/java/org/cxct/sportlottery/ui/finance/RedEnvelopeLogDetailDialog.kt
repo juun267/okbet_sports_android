@@ -5,17 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_redenvelope_log_detail.*
-import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.*
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.*
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_amount
-import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_reason
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_time
 import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_trans_num
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
-import org.cxct.sportlottery.util.TextUtil
-import kotlin.math.abs
 
 class RedEnvelopeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
@@ -47,7 +43,6 @@ class RedEnvelopeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel
                 wd_log_detail_time.text = it.rechDateAndTime ?: ""
                 wd_log_detail_amount.text = "${sConfigData?.systemCurrencySign} ${it.money}"
                 wd_log_detail_type.text = it.tranTypeDisplay ?: ""
-                wd_log_detail_reason.text = it.remark?: ""
 
             }
         }
