@@ -81,7 +81,7 @@ class RedEnvelopeManager {
                     }
                     return
                 }
-                if (count % 10 == 0) {
+                if (count % 20 == 0) {
                     getRain()
                     count = 0
                 }
@@ -111,6 +111,7 @@ class RedEnvelopeManager {
                     if (endTimeDiff < 0) {
                         GlobalScope.launch(Dispatchers.Main) {
                             redEnvelopeReceiveDialog?.dismiss()
+                            redEnvelopeReceiveDialog?.closeDialog()
                             redEnvelopeReceiveDialog = null
                         }
                     }
