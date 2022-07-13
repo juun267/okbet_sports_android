@@ -579,6 +579,23 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                 subscribeChannelEvent(matchId)
             }
         }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (args.gameType.key != it.gameType) return@observe
+                oddsDetailListAdapter?.oddsDetailDataList?.apply {
+                    indexOf(
+                        find { date ->
+                            date.gameType == it.playCateCode //命名待優化 此處gameType並非球種 而為玩法code
+                        }
+                    ).let { index ->
+                        if (index < 0) return@observe
+                        removeAt(index)
+                        oddsDetailListAdapter?.notifyItemRemoved(index)
+                    }
+                }
+            }
+        }
     }
 
     /**

@@ -415,6 +415,14 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                 }
             }
         }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
+                leagueAdapter.data.closePlayCate(it)
+                leagueAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     /**

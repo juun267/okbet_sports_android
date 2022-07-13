@@ -3,6 +3,7 @@ package org.cxct.sportlottery.service
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
+import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -123,6 +124,11 @@ object ServiceMessage {
 
     fun getUserInfoChange(messageStr: String): UserLevelConfigListEvent? {
         val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
+    fun getClosePlayCate(messageStr: String): ClosePlayCateEvent? {
+        val adapter = moshi.adapter(ClosePlayCateEvent::class.java)
         return adapter.fromJson(messageStr)
     }
 
