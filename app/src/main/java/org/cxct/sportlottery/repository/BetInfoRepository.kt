@@ -536,8 +536,8 @@ class BetInfoRepository(val androidContext: Context) {
         parlayBetLimit: ParlayBetLimit,
         max: Int?,
     ): Int {
-        var tempMax = max?.times(parlayBetLimit.num)
-        return tempMax?.div(parlayBetLimit.hdOdds.toDouble())!!.toInt()
+        val tempMax = (max ?: 1).times(parlayBetLimit.num)
+        return tempMax.div(parlayBetLimit.hdOdds.toDouble()).toInt()
     }
 
 
