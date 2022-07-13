@@ -121,7 +121,7 @@ open class ServiceBroadcastReceiver(
     val userInfoChange: LiveData<Boolean?>
         get() = _userInfoChange
 
-    val closePlayCate: LiveData<ClosePlayCateEvent?>
+    val closePlayCate: LiveData<Event<ClosePlayCateEvent?>>
         get() = _closePlayCate
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
@@ -145,7 +145,7 @@ open class ServiceBroadcastReceiver(
     private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
-    private val _closePlayCate = MutableLiveData<ClosePlayCateEvent?>()
+    private val _closePlayCate = MutableLiveData<Event<ClosePlayCateEvent?>>()
 
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
@@ -218,7 +218,7 @@ open class ServiceBroadcastReceiver(
                 _dataSourceChange.value = true
             }
             EventType.CLOSE_PLAY_CATE -> {
-                _closePlayCate.value = ServiceMessage.getClosePlayCate(jObjStr)
+                _closePlayCate.value = Event(ServiceMessage.getClosePlayCate(jObjStr))
             }
 
             //用户私人频道

@@ -17,11 +17,13 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -517,5 +519,19 @@ fun View.setSpinnerView(
         textFieldBoxes.hasFocus = false
         editText.clearFocus()
         popupWindowDismissListener()
+    }
+}
+
+fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent) {
+    forEach { leagueOdd ->
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            matchOdd.oddsMap?.forEach { map ->
+                if (map.key == closePlayCateEvent.playCateCode) {
+                    map.value?.forEach { odd ->
+                        odd?.status = BetStatus.DEACTIVATED.code
+                    }
+                }
+            }
+        }
     }
 }
