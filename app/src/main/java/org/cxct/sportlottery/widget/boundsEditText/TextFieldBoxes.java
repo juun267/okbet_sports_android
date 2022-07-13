@@ -1367,6 +1367,32 @@ public class TextFieldBoxes extends FrameLayout {
         }
     }
 
+    /**
+     * only gain or lose focus at TextFieldBoxes or not by params focusEditText
+     * @param hasFocus gain focus if true, lose if false
+     * @param focusEditText only focus TextFieldBoxes if false, both TextFieldBoxes and EditText if true
+     */
+    public void setHasFocus(boolean hasFocus, boolean focusEditText) {
+
+        this.hasFocus = hasFocus;
+        if (this.hasFocus) {
+            activate(true);
+            if (focusEditText) {
+                this.editText.requestFocus();
+            }
+            makeCursorBlink();
+
+            /* if there's an error, keep the error color */
+            if (!this.onError && this.enabled) setHighlightColor(this.primaryColor);
+
+        } else {
+            deactivate();
+
+            /* if there's an error, keep the error color */
+            if (!this.onError && this.enabled) setHighlightColor(this.secondaryColor);
+        }
+    }
+
     public void setAlwaysShowHint(boolean alwaysShowHint) {
         this.alwaysShowHint = alwaysShowHint;
     }

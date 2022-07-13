@@ -12,7 +12,6 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.webkit.WebView
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -472,15 +471,12 @@ fun View.setSpinnerView(
     itemSelectedListener: (data: StatusSheetData?) -> Unit,
     popupWindowDismissListener: () -> Unit
 ) {
-    var spinnerAdapter: StatusSpinnerAdapter? = null
+    val spinnerAdapter: StatusSpinnerAdapter?
 
-    var selectItem: StatusSheetData? = null
+    var selectItem: StatusSheetData?
     var mListPop = ListPopupWindow(context)
 
     setOnClickListener {
-        //隱藏鍵盤
-        val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 
         if (mListPop.isShowing) {
             mListPop.dismiss()
@@ -489,8 +485,8 @@ fun View.setSpinnerView(
         }
 
         if (!editText.isFocused) {
-            //設置TextFieldBoxes為選中狀態
-            textFieldBoxes.hasFocus = true
+            //設置TextFieldBoxes為選中狀態, 但EditText不給予focus(不給予focus以不觸發系統鍵盤出現)
+            textFieldBoxes.setHasFocus(true, false)
         }
         //隱藏光標
         editText.isCursorVisible = false
