@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 
+@Deprecated("需求上無須展示")
 class RedEnvelopeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
         setStyle(R.style.CustomDialogStyle)
@@ -31,20 +32,6 @@ class RedEnvelopeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel
     private fun setupConfirmButton(view: View) {
         view.log_detail_confirm.setOnClickListener {
             dismiss()
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.redEnvelopeLogDetail.observe(this.viewLifecycleOwner) { event ->
-            event.peekContent().let {
-                wd_log_detail_trans_num.text = it.orderNo ?: ""
-                wd_log_detail_time.text = it.rechDateAndTime ?: ""
-                wd_log_detail_amount.text = "${sConfigData?.systemCurrencySign} ${it.money}"
-                wd_log_detail_type.text = it.tranTypeDisplay ?: ""
-
-            }
         }
     }
 }

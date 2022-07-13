@@ -56,9 +56,6 @@ class FinanceViewModel(
     val rechargeLogDetail: LiveData<Event<Row>>
         get() = _rechargeLogDetail
 
-    val redEnvelopeLogDetail: LiveData<Event<RedEnvelopeRow>>
-        get() = _redEnvelopeLogDetail
-
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
@@ -78,19 +75,15 @@ class FinanceViewModel(
 
     private val _rechargeLogDetail = MutableLiveData<Event<Row>>()
 
-    private val _redEnvelopeLogDetail = MutableLiveData<Event<RedEnvelopeRow>>()
-
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
 
     private val _accountHistoryList = MutableLiveData<List<SportBillResult.Row>>()
 
 
-
     private val _redEnvelopeListResult = MutableLiveData<MutableList<RedEnvelopeRow>?>()
     val redEnvelopeListResult: LiveData<MutableList<RedEnvelopeRow>?>
         get() = _redEnvelopeListResult
-
 
 
     fun setRecordType(recordType: String) {
@@ -415,17 +408,14 @@ class FinanceViewModel(
             hideLoading()
         }
 
-}
+    }
 
-fun setLogDetail(row: Event<Row>) {
-    _rechargeLogDetail.postValue(row)
-}
+    fun setLogDetail(row: Event<Row>) {
+        _rechargeLogDetail.postValue(row)
+    }
 
-fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
-    _withdrawLogDetail.postValue(row)
-}
-fun setRedEnvelopeLogDetail(row: Event<RedEnvelopeRow>) {
-    _redEnvelopeLogDetail.postValue(row)
-}
+    fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
+        _withdrawLogDetail.postValue(row)
+    }
 
 }
