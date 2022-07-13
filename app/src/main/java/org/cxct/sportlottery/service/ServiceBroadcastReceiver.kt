@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
+import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -120,6 +121,8 @@ open class ServiceBroadcastReceiver(
     val userInfoChange: LiveData<Boolean?>
         get() = _userInfoChange
 
+    val closePlayCate: LiveData<ClosePlayCateEvent?>
+        get() = _closePlayCate
 
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
@@ -142,7 +145,7 @@ open class ServiceBroadcastReceiver(
     private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
     private val _dataSourceChange = MutableLiveData<Boolean?>()
     private val _userInfoChange = MutableLiveData<Boolean?>()
-
+    private val _closePlayCate = MutableLiveData<ClosePlayCateEvent?>()
 
     override fun onReceive(context: Context?, intent: Intent) {
         val bundle = intent.extras
@@ -213,6 +216,9 @@ open class ServiceBroadcastReceiver(
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
                 _dataSourceChange.value = true
+            }
+            EventType.CLOSE_PLAY_CATE -> {
+                _closePlayCate.value = ServiceMessage.getClosePlayCate(jObjStr)
             }
 
             //用户私人频道
