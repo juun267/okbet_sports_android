@@ -58,19 +58,7 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
             }
         }
 
-    private val logDetailDialog by lazy {
-        RedEnvelopeLogDetailDialog()
-    }
-
-
-    private val redEnvelopeLogAdapter by lazy {
-        RedEnvelopeLogAdapter().apply {
-            redEnvelopeLogListener = RedEnvelopeLogListener {
-                viewModel.setRedEnvelopeLogDetail(it)
-            }
-        }
-    }
-
+    private val redEnvelopeLogAdapter by lazy { RedEnvelopeLogAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -149,17 +137,6 @@ class RedEnvelopeHistoryFragment : BaseFragment<FinanceViewModel>(FinanceViewMod
                 setupNoRecordView(it.isNullOrEmpty())
             }
         }
-
-        viewModel.redEnvelopeLogDetail.observe(this.viewLifecycleOwner, {
-            if (it.getContentIfNotHandled() == null) return@observe
-
-            if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(
-                    parentFragmentManager,
-                    RedEnvelopeHistoryFragment ::class.java.simpleName
-                )
-            }
-        })
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
             redEnvelopeLogAdapter.isFinalPage = it
