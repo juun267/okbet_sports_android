@@ -59,6 +59,10 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             if (it) loading() else hideLoading()
         }
 
+        viewModel.sportCodeList.observe(viewLifecycleOwner) {
+            rvAdapter.setSportCodeSpinner(it)
+        }
+
         viewModel.betDetailResult.observe(viewLifecycleOwner) {
             if (it.success) {
                 rvAdapter.addFooterAndSubmitList(

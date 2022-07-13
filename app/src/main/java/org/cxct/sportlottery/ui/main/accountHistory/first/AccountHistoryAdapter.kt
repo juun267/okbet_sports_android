@@ -8,21 +8,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_title_bar.view.*
-import kotlinx.android.synthetic.main.view_status_selector.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
 import org.cxct.sportlottery.network.bet.settledList.Row
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setTextWithStrokeWidth
+import timber.log.Timber
 
 class AccountHistoryAdapter(
     private val clickListener: ItemClickListener,
@@ -34,20 +32,45 @@ class AccountHistoryAdapter(
         TITLE_BAR, ITEM, FOOTER, NO_DATA
     }
 
+    private var mRowList: List<Row?> = listOf() //資料清單
+    private var mIsLastPage: Boolean = false //是否最後一頁資料
+    private var mSportTypeList: List<StatusSheetData> = listOf() //球種篩選清單
+
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
         adapterScope.launch {
-            val reverseList = list.reversed()
-            val items = listOf(DataItem.TitleBar) + when {
-                reverseList.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> reverseList.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                else -> reverseList.map { DataItem.Item(it) }
-            }
+            mRowList = list
+            mIsLastPage = isLastPage
 
-            withContext(Dispatchers.Main) { //update in main ui thread
-                submitList(items)
-            }
+            updateData()
+        }
+    }
+
+    /**
+     * 配置當前可用球種代號
+     */
+    fun setSportCodeSpinner(sportCodeList: List<StatusSheetData>) {
+        mSportTypeList = sportCodeList
+
+        updateData()
+    }
+
+    /**
+     * 更新 球種篩選清單、資料清單
+     *
+     * 根據原邏輯提取為function
+     */
+    private fun updateData() {
+        val reverseList = mRowList.reversed()
+        val items = listOf(DataItem.TitleBar(mSportTypeList)) + when {
+            reverseList.isEmpty() -> listOf(DataItem.NoData)
+            mIsLastPage -> reverseList.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+            else -> reverseList.map { DataItem.Item(it) }
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            submitList(items)
         }
     }
 
@@ -63,7 +86,15 @@ class AccountHistoryAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is TitleBarViewHolder -> {
-                holder.bind(backClickListener, sportSelectListener)
+                when (val data = getItem(position)) {
+                    is DataItem.TitleBar -> {
+                        holder.bind(data, backClickListener, sportSelectListener)
+                    }
+                    else -> {
+                        Timber.e("data of TitleBar no match")
+                    }
+                }
+
             }
 
             is ItemViewHolder -> {
@@ -115,18 +146,8 @@ class AccountHistoryAdapter(
 
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(backClickListener: BackClickListener, sportSelectListener: SportSelectListener) {
+        fun bind(data: DataItem.TitleBar, backClickListener: BackClickListener, sportSelectListener: SportSelectListener) {
             itemView.apply {
-                val sportStatusList = mutableListOf<StatusSheetData>().apply {
-
-                    this.add(StatusSheetData("", context?.getString(R.string.all_sport)))
-
-                    val itemList = GameType.values()
-                    itemList.forEach { gameType ->
-                        if (gameType != GameType.OTHER) this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(context, gameType.key)))
-                    }
-                }
-
                 iv_back.setOnClickListener {
                     backClickListener.onClick()
                 }
@@ -136,7 +157,7 @@ class AccountHistoryAdapter(
                 sportSelectListener.onSelect("")
                 status_spinner.cl_root.layoutParams.height = 40.dp
                 status_spinner.tv_name.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-                status_spinner.setItemData(sportStatusList)
+                status_spinner.setItemData(data.spinnerList.toMutableList())
                 status_spinner.setOnItemSelectedListener {
                     sportSelectListener.onSelect(it.code)
                 }
@@ -194,7 +215,7 @@ sealed class DataItem {
         override val rowItem = row
     }
 
-    object TitleBar : DataItem() {
+    data class TitleBar(val spinnerList: List<StatusSheetData>) : DataItem() {
         override val rowItem: Row? = null
     }
 

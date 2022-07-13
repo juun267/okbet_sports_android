@@ -4,18 +4,24 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListRequest
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListRequest
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.bet.settledList.Row
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -57,6 +63,9 @@ class AccountHistoryViewModel(
     val betDetailResult: LiveData<BetSettledDetailListResult>
         get() = _betDetailResult
 
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
+
     private val _loading = MutableLiveData<Boolean>()
     private val _selectedSport = MutableLiveData<Event<String?>>()
     private val _selectedDate = MutableLiveData<Event<String?>>()
@@ -65,6 +74,7 @@ class AccountHistoryViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
+    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
 
     val emptyFilter = { item: String? ->
         if (item.isNullOrEmpty()) null else item
@@ -228,6 +238,36 @@ class AccountHistoryViewModel(
             }
         }
 
+    }
+
+    /**
+     * 獲取當前可用球種清單
+     */
+    fun getSportList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList()
+            }?.let { sportListResponse ->
+                if (sportListResponse.success) {
+                    val sportCodeList = mutableListOf<StatusSheetData>()
+                    //第一項為全部球種
+                    sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
+                    //根據api回傳的球類添加進當前啟用球種篩選清單
+                    sportListResponse.rows.sortedBy { it.sortNum }.map {
+                        sportCodeList.add(
+                            StatusSheetData(
+                                it.code,
+                                GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.code)
+                            )
+                        )
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _sportCodeSpinnerList.value = sportCodeList
+                    }
+                }
+            }
+        }
     }
 
     fun setSelectedDate(date: String?) {
