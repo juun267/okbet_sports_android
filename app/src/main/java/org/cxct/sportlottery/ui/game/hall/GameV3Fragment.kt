@@ -978,6 +978,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 }
                             }
                             leagueOdd.gameType = gameType
+                            leagueOdd.matchOdds.onEach { matchOdd ->
+                                matchOdd.playCateNameMap = PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get("MAIN")?.playCateNameMap
+                            }
                         }.toMutableList()
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
