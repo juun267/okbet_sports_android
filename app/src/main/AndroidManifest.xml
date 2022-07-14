@@ -22,6 +22,7 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup">
         <activity
             android:name=".ui.news.NewsActivity"

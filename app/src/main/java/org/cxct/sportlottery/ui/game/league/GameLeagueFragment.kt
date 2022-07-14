@@ -336,6 +336,9 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                                         mMatchOdd.oddsMap = leagueOddFromMap.matchOdds.find { matchOdd -> mMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
                                     }
                                 }
+                                leagueOdd.matchOdds.forEach { matchOdd ->
+                                    matchOdd.playCateNameMap = PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get("MAIN")?.playCateNameMap
+                                }
                             }.toMutableList()
                         }
                     }
@@ -589,6 +592,14 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     unSubscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                     subscribeChannelHall(args.gameType.key, leagueChangeEvent.matchIdList?.firstOrNull())
                 }
+            }
+        }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (args.gameType.key != it.gameType) return@observe
+                leagueAdapter.data.closePlayCate(it)
+                leagueAdapter.notifyDataSetChanged()
             }
         }
     }

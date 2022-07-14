@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
-import android.content.Context
-import android.content.res.Configuration
 import android.graphics.Paint
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
-import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentBinding
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentOutrightBinding
@@ -39,8 +31,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import timber.log.Timber
 
 class AccountHistoryNextAdapter(
     private val itemClickListener: ItemClickListener,
@@ -74,20 +66,52 @@ class AccountHistoryNextAdapter(
             notifyItemChanged(0)
         }
 
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
+    private var mRowList: List<Row>? = listOf() //資料清單
+    private var mIsLastPage: Boolean = false //是否最後一頁資料
+    private var mSportTypeList: List<StatusSheetData> = listOf() //球種篩選清單
+
+    /**
+     * 配置當前可用球種代號
+     */
+    fun setSportCodeSpinner(sportCodeList: List<StatusSheetData>) {
+        mSportTypeList = sportCodeList
+
+        updateData()
+    }
 
     fun addFooterAndSubmitList(other: Other?, list: List<Row>?, isLastPage: Boolean) {
         mOther = other
-        adapterScope.launch {
-            val items = listOf(DataItem.TitleBar) + when {
-                list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
-                else -> list.map { DataItem.Item(it) }
-            }
+        mRowList = list
+        mIsLastPage = isLastPage
 
-            withContext(Dispatchers.Main) { //update in main ui thread
-                submitList(items)
+        updateData()
+    }
+
+    /**
+     * 更新 球種篩選清單、資料清單
+     *
+     * 根據原邏輯提取為function
+     */
+    private fun updateData() {
+
+        val items = listOf(DataItem.TitleBar(mSportTypeList)) + when {
+            mRowList.isNullOrEmpty() -> listOf(DataItem.NoData)
+            mIsLastPage -> mutableListOf<DataItem>().apply {
+                mRowList?.map { DataItem.Item(it) }?.forEach {
+                    add(it)
+                }
+                add(DataItem.Footer)
+                add(DataItem.BackToTop)
             }
+            else -> mutableListOf<DataItem>().apply {
+                mRowList?.map { DataItem.Item(it) }?.forEach {
+                    add(it)
+                }
+            }
+        }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            submitList(items)
         }
     }
 
@@ -107,13 +131,21 @@ class AccountHistoryNextAdapter(
         when (holder) {
 
             is TitleBarViewHolder -> {
-                holder.bind(
-                    nowSelectedDate,
-                    nowSelectedSport,
-                    backClickListener,
-                    sportSelectListener,
-                    dateSelectListener
-                )
+                when (val data = getItem(position)) {
+                    is DataItem.TitleBar -> {
+                        holder.bind(
+                            data.spinnerList,
+                            nowSelectedDate,
+                            nowSelectedSport,
+                            backClickListener,
+                            sportSelectListener,
+                            dateSelectListener
+                        )
+                    }
+                    else -> {
+                        Timber.e("data of TitleBar no match")
+                    }
+                }
             }
 
             is ItemViewHolder -> {
@@ -354,16 +386,6 @@ class AccountHistoryNextAdapter(
     }
 
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        private val sportStatusList = mutableListOf<StatusSheetData>().apply {
-            this.add(StatusSheetData("", itemView.context.getString(R.string.all_sport)))
-
-            val itemList = GameType.values()
-            itemList.forEach { gameType ->
-                if (gameType != GameType.OTHER) this.add(StatusSheetData(gameType.key, GameType.getGameTypeString(itemView.context, gameType.key)))
-            }
-        }
-
         private val dateString by lazy {
             { minusDate: Int ->
                 "${TimeUtil.getMinusDate(minusDate)} ${
@@ -383,6 +405,7 @@ class AccountHistoryNextAdapter(
         }
 
         fun bind(
+            sportSpinnerList: List<StatusSheetData>,
             nowSelectedDate: String?,
             nowSelectedSport: String?,
             backClickListener: BackClickListener,
@@ -401,7 +424,7 @@ class AccountHistoryNextAdapter(
                 sport_selector.cl_root.layoutParams.height = 40.dp
 
                 //sport
-                sport_selector.setItemData(sportStatusList)
+                sport_selector.setItemData(sportSpinnerList.toMutableList())
 
                 sport_selector.setSelectCode(nowSelectedSport)
 
@@ -499,7 +522,7 @@ sealed class DataItem {
         override val parlayType = row.parlayType
     }
 
-    object TitleBar : DataItem() {
+    data class TitleBar(val spinnerList: List<StatusSheetData>) : DataItem() {
         override val orderNum: String = ""
         override val parlayType = ""
     }

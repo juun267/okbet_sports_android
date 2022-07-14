@@ -123,8 +123,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun saveOddsType(oddsType: OddsType) {
-        MultiLanguagesApplication.mInstance.sOddsType = oddsType.code
-        MultiLanguagesApplication.mInstance.mOddsType.postValue(oddsType)
+        MultiLanguagesApplication.saveOddsType(oddsType)
     }
 
     fun updateMatchBetList(

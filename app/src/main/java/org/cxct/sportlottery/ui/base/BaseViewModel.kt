@@ -25,6 +25,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.NetworkUtil
+import org.cxct.sportlottery.util.updateDefaultHandicapType
 import retrofit2.Response
 import timber.log.Timber
 import java.net.SocketTimeoutException
@@ -114,11 +115,11 @@ abstract class BaseViewModel(
 
         val errorResult = ErrorUtils.parseError(response)
         if (
-            response.code() == HttpError.UNAUTHORIZED.code ||
-            response.code() == HttpError.KICK_OUT_USER.code ||
-            response.code() == HttpError.MAINTENANCE.code
+            errorResult?.code == HttpError.UNAUTHORIZED.code ||
+            errorResult?.code == HttpError.KICK_OUT_USER.code ||
+            errorResult?.code == HttpError.MAINTENANCE.code
         ) {
-            errorResult?.let {
+            errorResult.let {
                 _errorResultToken.postValue(it)
             }
         }
@@ -159,6 +160,8 @@ abstract class BaseViewModel(
             betInfoRepository.clear()
             infoCenterRepository.clear()
             loginRepository.logout()
+            //退出登入後盤口回到預設
+            updateDefaultHandicapType()
             finishFunction.invoke()
         }
     }
