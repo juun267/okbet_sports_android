@@ -148,6 +148,20 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+        spcd {
+            buildConfigField "String", "CHANNEL_NAME", "\"spcd\""
+            resValue "string", "app_name", "OkBet"
+            applicationId "com.okbet.spcd"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "0cf211236261e69cc4bf682e", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
     }
 
     sourceSets {
