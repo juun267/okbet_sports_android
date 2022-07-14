@@ -18,29 +18,21 @@ import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.common.RedEnvelopeFloatingButton
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
-import org.cxct.sportlottery.util.commonTwoButtonDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.lang.Runnable
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.reflect.KClass
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
@@ -67,6 +59,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onStart() {
         super.onStart()
         startCheckToken()
+        RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +67,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
-        initRedEnvelope()
     }
 
     private fun onTokenStateChanged() {
@@ -396,121 +388,4 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
         return super.getResources()
     }
-
-
-    /*以下紅包相關功能(尚須重構)*/
-    private var redenpStartTime: Long? = null
-    private var redenpEndTime: Long? = null
-    private var count = 0
-    private var countdownTimer: Timer? = null
-
-    private val logRedEnvelopeReceiveDialog by lazy {
-        RedEnvelopeReceiveDialog(this, MultiLanguagesApplication.mInstance.currentRedenpId)
-    }
-
-    private fun initTimerTask():TimerTask {
-        return object : TimerTask() {
-            override fun run() {
-                if (!viewModel.getLoginBoolean()) {
-                    return
-                }
-                if (count % 10 == 0) {
-                    viewModel.getRain()
-                    count = 0
-                }
-                count++
-
-                if (logRedEnvelopeReceiveDialog.dialog?.isShowing != true) {
-                    val redenpId = MultiLanguagesApplication.mInstance.currentRedenpId
-                    val startTimeDiff =
-                        ((redenpStartTime ?: 0) - System.currentTimeMillis()) / 1000
-                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
-                    if (startTimeDiff in 1..180) {
-                        GlobalScope.launch(Dispatchers.Main) {
-                            if (MultiLanguagesApplication.mInstance.showedRedenpId != redenpId) {
-                                btn_floating_red_envelope?.setView(true)
-                            }
-                            //180s 倒计时
-                            btn_floating_red_envelope?.setCountdown(startTimeDiff)
-                        }
-                    } else if (startTimeDiff <= 0 && endTimeDiff >= 0) {
-                        if (MultiLanguagesApplication.mInstance.showedRedenpId != redenpId) {
-                            MultiLanguagesApplication.mInstance.showedRedenpId = redenpId
-                            logRedEnvelopeReceiveDialog.redenpId = redenpId
-                            logRedEnvelopeReceiveDialog.show(
-                                supportFragmentManager,
-                                this::class.java.simpleName
-                            )
-                            GlobalScope.launch(Dispatchers.Main) {
-                                btn_floating_red_envelope?.setView(false)
-                            }
-                        }
-                    }
-                } else  {
-                    val endTimeDiff = ((redenpEndTime ?: 0) - System.currentTimeMillis()) / 1000
-                    if (endTimeDiff < 0) {
-                        if (logRedEnvelopeReceiveDialog.dialog?.isShowing == true) {
-                            logRedEnvelopeReceiveDialog.dismiss()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        countdownTimer?.cancel()
-        countdownTimer = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Todo: 紅包雨暫時關閉 by Bee 2022.07.07
-//        if (this@BaseActivity.javaClass.simpleName == ThirdGameActivity::class.java.simpleName) return
-//        countdownTimer = Timer()
-//        countdownTimer?.schedule(initTimerTask(), 1000, 1000)
-    }
-
-    private fun initRedEnvelope() {
-        viewModel.rainResult.observe(this) {
-            it?.getContentIfNotHandled()?.let { result ->
-                val redEnvelopeInfo = result.redEnvelopeInfo
-                if (redEnvelopeInfo != null) {
-                    val serverTime = redEnvelopeInfo.serverTime
-                    val difference = serverTime - System.currentTimeMillis()
-
-                    MultiLanguagesApplication.mInstance.currentRedenpId = redEnvelopeInfo.redenpId
-                    redenpStartTime = redEnvelopeInfo.redenpStartTime - difference
-                    redenpEndTime = redEnvelopeInfo.redenpEndTime - difference
-                }
-            }
-        }
-        MultiLanguagesApplication.mInstance.isRedenpClose.observe(this) {
-            it?.getContentIfNotHandled()?.let {
-                val positiveClickListener = {
-                    //點選關閉，更新顯示過的紅包id
-                    MultiLanguagesApplication.mInstance.showedRedenpId =
-                        MultiLanguagesApplication.mInstance.currentRedenpId
-                    btn_floating_red_envelope.setView(false)
-                }
-                val negativeClickListener = {
-                    btn_floating_red_envelope.setView(true)
-                }
-                commonTwoButtonDialog(
-                    context = this,
-                    fm = supportFragmentManager,
-                    isError = false,
-                    isShowDivider = true,
-                    buttonText = null,
-                    cancelText = null,
-                    positiveClickListener = positiveClickListener,
-                    negativeClickListener = negativeClickListener,
-                    title = this@BaseActivity.getString(R.string.prompt),
-                    errorMessage = this@BaseActivity.getString(R.string.redenvelope_close_hint)
-                )
-            }
-        }
-    }
-
 }

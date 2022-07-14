@@ -14,7 +14,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.results.GameTypeItemData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.setTextWithStrokeWidth
 
@@ -47,6 +46,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         super.onViewCreated(view, savedInstanceState)
         initButton()
         initRecyclerView()
+        initData()
         initFilter()
         viewModel.getBetList(true)
 
@@ -70,17 +70,13 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         scroll_view.setOnScrollChangeListener(nestedScrollViewListener)
     }
 
+    private fun initData() {
+        viewModel.getSportList()
+    }
+
     private fun initFilter() {
         bet_type_selector.cl_root.layoutParams.height = 40.dp
         game_type_selector.cl_root.layoutParams.height = 40.dp
-
-        val gameTypeStatusSheetData =
-            mutableListOf<StatusSheetData>().apply {
-                add(StatusSheetData(null, getString(R.string.all_sport)))
-                GameType.values().toList().forEach { gameType ->
-                    if (gameType != GameType.OTHER) add(StatusSheetData(gameType.key, getString(gameType.string)))
-                }
-            }
 
         bet_type_selector.apply {
             var betTypeStatusSheetData= mutableListOf(StatusSheetData("0,1", context.getString(R.string.label_all)),StatusSheetData("0", context.getString(R.string.waiting)), StatusSheetData("1", context.getString(R.string.not_settled_order)))
@@ -100,13 +96,19 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         }
 
         game_type_selector.apply {
-            setItemData(gameTypeStatusSheetData)
-            setSelectCode(gameTypeStatusSheetData.get(0).code)
             itemSelectedListener = { statusSheetData ->
                 statusSheetData.code.let { selectedCode ->
                     viewModel.gameType = GameType.values().find { gameType -> gameType.key == selectedCode }?.key
                 }
             }
+        }
+    }
+
+    private fun updateGameTypeSpinnerData(gameTypeSpinnerList: MutableList<StatusSheetData>) {
+        with(game_type_selector) {
+            setItemData(gameTypeSpinnerList)
+            if (gameTypeSpinnerList.isNotEmpty())
+                setSelectCode(gameTypeSpinnerList[0].code)
         }
     }
 
@@ -125,6 +127,10 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
                     viewModel.getBetList(true)
                 }, 1000)
             }
+        }
+
+        viewModel.sportCodeList.observe(viewLifecycleOwner) {
+            updateGameTypeSpinnerData(it.toMutableList())
         }
 
     }

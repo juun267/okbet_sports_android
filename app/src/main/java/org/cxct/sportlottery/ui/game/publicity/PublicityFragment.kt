@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
@@ -377,6 +378,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                             isNewestDataFromApi = false
                     }
                 }
+                mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
             }
         })
 
@@ -424,6 +426,23 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 subscribeQueryData(mPublicityAdapter.getRecommendData())
             }
         })
+
+        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                mPublicityAdapter.getRecommendData().forEach { recommend ->
+                    if(recommend.gameType == it.gameType){
+                        recommend.oddsMap?.forEach { map ->
+                            if (map.key == it.playCateCode) {
+                                map.value?.forEach { odd ->
+                                    odd?.status = BetStatus.DEACTIVATED.code
+                                }
+                            }
+                        }
+                    }
+                }
+                mPublicityAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     /**

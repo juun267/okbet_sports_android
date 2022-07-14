@@ -13,13 +13,10 @@ import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
@@ -57,6 +54,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private var salarySourceSelectedData: StatusSheetData? = null
     private var bettingShopSelectedData: StatusSheetData? = null
     private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
+    private var securityPbTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
     private var isUploaded = false
@@ -316,8 +314,62 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupSecurityPb() {
-        binding.etSecurityPb.visibility =
-            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) View.VISIBLE else View.GONE
+        //TODO etSecurityPbType 預設選中第一項故沒有補上未填入的錯誤提示
+        with(binding) {
+            //顯示隱藏該選項
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) {
+                etSecurityPbType.visibility = View.VISIBLE
+                etSecurityPb.visibility = View.VISIBLE
+            } else {
+                etSecurityPbType.visibility = View.GONE
+                etSecurityPb.visibility = View.GONE
+            }
+
+            //根據config配置薪資來源選項
+            val securityPbTypeList = mutableListOf<StatusSheetData>()
+            sConfigData?.safeQuestionList?.map { securityPbType ->
+                securityPbTypeList.add(StatusSheetData(securityPbType.id.toString(), securityPbType.name))
+            }
+
+            //預設顯示第一項
+            securityPbTypeSelectedData = securityPbTypeList.firstOrNull()
+            eetSecurityPbType.setText(securityPbTypeList.firstOrNull()?.showName)
+            //設置預設文字後會變成選中狀態, 需清除focus
+            etSecurityPbType.hasFocus = false
+            viewModel.checkIdentityType(eetSecurityPbType.text.toString())
+
+            //配置點擊展開選項選單
+            etSecurityPbType.post {
+                securityPbTypeSpinner.setSpinnerView(
+                    eetSecurityPbType,
+                    etSecurityPbType,
+                    securityPbTypeList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etSecurityPbType.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        securityPbTypeSelectedData = it
+                        eetSecurityPbType.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etSecurityPbType.endIconImageButton.rotation = 0F
+                    })
+            }
+
+            eetSecurityPbType.post {
+                //TODO 可重構 不需要蓋一層View
+                /**
+                 * 若eetSecurityPb取得focus的話點擊securityPbSpinner
+                 */
+                eetSecurityPbType.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        securityPbTypeSpinner.performClick()
+                    }
+                }
+            }
+        }
     }
 
     private fun setupBirthday() {
@@ -641,7 +693,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     eetFacebook.text.toString(),
                     eetWhatsApp.text.toString(),
                     eetTelegram.text.toString(),
-                    eetSecurityPb.text.toString(),
+                    securityPbTypeCode = securityPbTypeSelectedData?.code,
+                    securityPb = eetSecurityPb.text.toString(),
                     eetSmsValidCode.text.toString(),
                     eetVerificationCode.text.toString(),
                     cbAgreeAll.isChecked,

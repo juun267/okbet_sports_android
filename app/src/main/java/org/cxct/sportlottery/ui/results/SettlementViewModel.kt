@@ -5,7 +5,10 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
@@ -16,6 +19,8 @@ import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayListRes
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.LocalUtils
 
 
 class SettlementViewModel(
@@ -59,6 +64,10 @@ class SettlementViewModel(
     //filter condition
     private var gameLeagueSet = mutableSetOf<String>()
     private var gameKeyWord = ""
+
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
+    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
@@ -392,6 +401,34 @@ class SettlementViewModel(
             return true
 
         return false
+    }
+
+    /**
+     * 獲取當前可用球種清單
+     */
+    fun getSportList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList()
+            }?.let { sportListResponse ->
+                if (sportListResponse.success) {
+                    val sportCodeList = mutableListOf<StatusSheetData>()
+                    //根據api回傳的球類添加進當前啟用球種篩選清單
+                    sportListResponse.rows.sortedBy { it.sortNum }.map {
+                        sportCodeList.add(
+                            StatusSheetData(
+                                it.code,
+                                GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.code)
+                            )
+                        )
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _sportCodeSpinnerList.value = sportCodeList
+                    }
+                }
+            }
+        }
     }
 
 }

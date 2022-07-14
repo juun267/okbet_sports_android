@@ -1263,6 +1263,50 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                 subscribeHighlightHallChannel()
             }
         }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                mHomeListAdapter.getGameEntityData().forEach { gameEntity ->
+                    gameEntity.matchOdds.forEach { matchOdd ->
+                        if (matchOdd.matchInfo?.gameType == it.gameType) {
+                            matchOdd.oddsMap?.forEach { map ->
+                                if (map.key == it.playCateCode) {
+                                    map.value?.forEach { odd ->
+                                        odd?.status = BetStatus.DEACTIVATED.code
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                mHomeListAdapter.getRecommendData().forEach { recommendGameEntity ->
+                    if (recommendGameEntity.matchInfo?.gameType == it.gameType) {
+                        recommendGameEntity.oddBeans.forEach { oddBean ->
+                            if (oddBean.playTypeCode == it.playCateCode) {
+                                oddBean.oddList.forEach { odd ->
+                                    odd?.status = BetStatus.DEACTIVATED.code
+                                }
+                            }
+                        }
+                    }
+                }
+
+                mHomeListAdapter.getMatchOdd().forEach { matchOdd ->
+                    if (matchOdd.matchInfo?.gameType == it.gameType) {
+                        matchOdd.oddsMap?.forEach { map ->
+                            if (map.key == it.playCateCode) {
+                                map.value?.forEach { odd ->
+                                    odd?.status = BetStatus.DEACTIVATED.code
+                                }
+                            }
+                        }
+                    }
+                }
+
+                mHomeListAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun queryData(gameType: String = "") {

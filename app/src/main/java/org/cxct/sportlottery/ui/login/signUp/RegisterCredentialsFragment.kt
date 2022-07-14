@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.getCompressFile
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 import java.io.File
@@ -59,9 +60,9 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
                     else -> media?.path
                 }
 
-                val file = File(path!!)
-                if (file.exists())
-                    selectedDocImg(file)
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedDocImg(compressFile)
                 else
                     throw FileNotFoundException()
             } catch (e: Exception) {
@@ -91,11 +92,12 @@ class RegisterCredentialsFragment : BaseSocketFragment<RegisterViewModel>(Regist
                     else -> media?.path
                 }
 
-                val file = File(path!!)
-                if (file.exists())
-                    selectedPhotoImg(file)
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedPhotoImg(compressFile)
                 else
                     throw FileNotFoundException()
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))

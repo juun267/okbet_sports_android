@@ -2,8 +2,6 @@ package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.provider.Settings
-import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -466,14 +464,14 @@ object TimeUtil {
 
     fun getEarlyAllTimeRangeParams(): TimeRangeParams {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        calendar.add(Calendar.DAY_OF_MONTH, 0)
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
         val startTimeStamp = calendar.timeInMillis
 
-        calendar.add(Calendar.DAY_OF_MONTH, 28)
+        calendar.add(Calendar.DAY_OF_MONTH, 30)
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
@@ -557,7 +555,11 @@ object TimeUtil {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
         repeat(day) {
-            calendar.add(Calendar.DATE, 1)
+            if (it == 0)
+                calendar.add(Calendar.DATE, 0)
+            else
+                calendar.add(Calendar.DATE, 1)
+            
             weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))
         }
         return weekDateList

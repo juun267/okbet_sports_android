@@ -24,7 +24,8 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
         AccountHistoryAdapter(ItemClickListener {
             it.let { data ->
                 viewModel.setSelectedDate(data.statDate)
-                val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
+                val action =
+                    AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
                 findNavController().navigate(action)
                 isFirstTime = true
             }
@@ -57,14 +58,23 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initData()
         initRv()
         initObserver()
+    }
+
+    private fun initData() {
+        viewModel.getSportList()
     }
 
     private fun initObserver() {
 
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) loading() else hideLoading()
+        }
+
+        viewModel.sportCodeList.observe(viewLifecycleOwner) {
+            rvAdapter.setSportCodeSpinner(it)
         }
 
         viewModel.betRecordResult.observe(viewLifecycleOwner) {

@@ -415,6 +415,14 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                 }
             }
         }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
+                leagueAdapter.data.closePlayCate(it)
+                leagueAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     /**
@@ -510,14 +518,22 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                 )
 
                 //檢查是否有取得我的賽事資料, 對介面進行調整
-                when{
+                when {
                     leagueData.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1 -> {
                         unSubscribeChannelHallAll()
                         viewModel.getSportQuery(getLastPick = false, isReloadPlayCate = true, getFavoriteMatch = true)
                         return@observe
                     }
                     leagueData.isNullOrEmpty() -> noFavoriteMatchViewState()
-                    else -> showFavoriteMatchViewState()
+                    else -> {
+                        showFavoriteMatchViewState()
+                        leagueData.onEach { LeagueOdd ->
+                            LeagueOdd.matchOdds.onEach { matchOdd ->
+                                matchOdd.playCateNameMap =
+                                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get("MAIN")?.playCateNameMap
+                            }
+                        }
+                    }
                 }
 
                 leagueAdapter.data = leagueData

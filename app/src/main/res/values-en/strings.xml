@@ -104,8 +104,9 @@
     <string name="telegram">Telegram</string>
     <string name="hint_telegram">(Telegram Account)</string>
     <string name="error_telegram">Telegram account formatted incorrectly</string>
-    <string name="security_pb">Security question</string>
-    <string name="hint_security_pb">(Please enter the favorite country)</string>
+    <string name="security_pb">Security Question</string>
+    <string name="security_answer">Answer</string>
+    <string name="hint_security_answer">(Please enter your answer)</string>
     <string name="real_name">Full name</string>
     <string name="income_source">Source Of Income</string>
     <string name="identity_type">Valid ID Type</string>
@@ -647,7 +648,7 @@
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Game play you selected can not apply to game play of parlay rules, will automatically be cancelled by system\',</string>
     <string name="bet_info_list_clean">Clear all</string>
-    <string name="bet_info_bet_balance_insufficient">not enough balance</string>
+    <string name="bet_info_bet_balance_insufficient">Not enough balance</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
     <string name="bet_info_input_quota">Enter Stake</string>
     <string name="bet_info_check_maximum_limit">MAX BET</string>
@@ -720,7 +721,7 @@
     <string name="log_detail_handle_fee">Fee：</string>
     <string name="log_detail_rebate_money">Return amount：</string>
     <string name="log_detail_review_time">Checking time：</string>
-    <string name="log_detail_reason">Remark：</string>
+    <string name="log_detail_reason">Remarks：</string>
     <string name="finance_log_selector_until">To</string>
     <string name="finance_list_no_record">No content available at the moment</string>
     <string name="feedback_detail">Feedback details</string>
@@ -1231,10 +1232,11 @@
     <string name="redenvelope_trantype_received">Receive red envelopes</string>
     <string name="tran_order_no">Order ID</string>
     <string name="tran_time">Transaction time</string>
-    <string name="redenvelope_amount">Lucky Money Amount</string>
+    <string name="redenvelope_amount">Amount</string>
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Lucky Money Records</string>
     <string name="tran_time_sub">Transaction time：</string>
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="tran_type_sub">Type：</string>
+    <string name="btn_sure">Confirm</string>
 </resources>
