@@ -1779,10 +1779,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         gameTypeAdapter.dataSport = gameTypeList
 
         //post待view繪製完成
-        sport_type_list.post {
+        sport_type_list?.post {
             //球種如果選過，下次回來也需要滑動置中
             if (!gameTypeList.isNullOrEmpty()) {
-                (sport_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
+                (sport_type_list?.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
                     sport_type_list,
                     RecyclerView.State(),
                     gameTypeList.indexOfFirst { item -> item.isSelected }
@@ -1819,7 +1819,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
 
             if (gameTypeList.isEmpty()) {
-                sport_type_list.visibility = View.GONE
+                sport_type_list?.visibility = View.GONE
                 game_toolbar_sport_type.visibility = View.GONE
                 game_toolbar_champion.visibility = View.GONE
                 game_toolbar_calendar.visibility = View.GONE
@@ -1828,7 +1828,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 game_play_category.visibility = View.GONE
                 game_filter_type_list.visibility = View.GONE
             } else {
-                sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
+                sport_type_list?.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
                 game_toolbar_sport_type.visibility = View.VISIBLE
                 game_toolbar_calendar.apply {
                     visibility = when (args.matchType) {
