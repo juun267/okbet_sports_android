@@ -168,6 +168,7 @@ android {
         fastlane.res.srcDirs = ["${fastlane_res_src_dir}"]
         forqa.res.srcDirs = ['src/okbet_ph/res']
         OkbetPH.res.srcDirs = ['src/okbet_ph/res']
+        spcd.res.srcDirs = ['src/okbet_ph/res']
         WinbetCN.res.srcDirs = ['src/winbet_cn/res']
         spnew1.res.srcDirs = ['src/okbet_ph/res']
         credit.res.srcDirs = ['src/okbet_ph/res']
