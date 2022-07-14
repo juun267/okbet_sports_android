@@ -115,11 +115,11 @@ abstract class BaseViewModel(
 
         val errorResult = ErrorUtils.parseError(response)
         if (
-            response.code() == HttpError.UNAUTHORIZED.code ||
-            response.code() == HttpError.KICK_OUT_USER.code ||
-            response.code() == HttpError.MAINTENANCE.code
+            errorResult?.code == HttpError.UNAUTHORIZED.code ||
+            errorResult?.code == HttpError.KICK_OUT_USER.code ||
+            errorResult?.code == HttpError.MAINTENANCE.code
         ) {
-            errorResult?.let {
+            errorResult.let {
                 _errorResultToken.postValue(it)
             }
         }
