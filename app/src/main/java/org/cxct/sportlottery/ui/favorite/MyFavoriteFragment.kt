@@ -530,7 +530,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                         leagueData.onEach { LeagueOdd ->
                             LeagueOdd.matchOdds.onEach { matchOdd ->
                                 matchOdd.playCateNameMap =
-                                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get("MAIN")?.playCateNameMap
+                                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get(MenuCode.MAIN.code)?.playCateNameMap
                             }
                         }
                     }

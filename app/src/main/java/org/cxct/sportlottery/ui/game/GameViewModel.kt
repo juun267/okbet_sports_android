@@ -1527,7 +1527,7 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = startTime,
                         endTime = endTime,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
+                        playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
                     )
                 )
             }?.updateMatchType()
@@ -3081,7 +3081,7 @@ class GameViewModel(
                     gameType,
                     matchType,
                     leagueIdList = leagueIdList,
-                    playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
+                    playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
                 )
             )
         }
