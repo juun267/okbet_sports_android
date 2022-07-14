@@ -527,12 +527,6 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     leagueData.isNullOrEmpty() -> noFavoriteMatchViewState()
                     else -> {
                         showFavoriteMatchViewState()
-                        leagueData.onEach { LeagueOdd ->
-                            LeagueOdd.matchOdds.onEach { matchOdd ->
-                                matchOdd.playCateNameMap =
-                                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get(MenuCode.MAIN.code)?.playCateNameMap
-                            }
-                        }
                     }
                 }
 

@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -120,6 +122,7 @@ abstract class BaseFavoriteViewModel(
             result?.sortOdds()
 
             result?.rows?.let {
+                it.getPlayCateNameMap()
                 it.forEach { leagueOdd ->
                     leagueOdd.apply {
                         this.gameType = GameType.getGameType(gameType)
@@ -332,4 +335,18 @@ abstract class BaseFavoriteViewModel(
             true
         }
     }
+
+    /**
+     * 更新翻譯
+     */
+    private fun List<LeagueOdd>.getPlayCateNameMap() {
+        this.onEach { LeagueOdd ->
+            LeagueOdd.matchOdds.onEach { matchOdd ->
+                matchOdd.playCateNameMap =
+                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)
+                        ?.get(MenuCode.MAIN.code)?.playCateNameMap
+            }
+        }
+    }
+
 }
