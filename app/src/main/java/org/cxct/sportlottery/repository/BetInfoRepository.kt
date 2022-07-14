@@ -471,6 +471,7 @@ class BetInfoRepository(val androidContext: Context) {
                         .toInt()
 
                 //region parlayBetLimit(球類賽事類型投注額上限), matchTypeMaxBetMoney(會員層級賽事類型投注額上限), userSelfLimit(自我禁制投注額上限), hdOddsPayout(風控投注額上限) 取最小值作為投注額上限
+                //20220711 新增 betInfoLimit風控給的限額 (/api/front/match/bet/info給的限額)
                 listOf(
                     parlayBetLimit,
                     matchTypeMaxBetMoney,
