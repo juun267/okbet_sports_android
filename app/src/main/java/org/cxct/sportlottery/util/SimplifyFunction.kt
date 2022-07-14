@@ -3,7 +3,11 @@ package org.cxct.sportlottery.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.Rect
+import android.os.Environment
 import android.text.SpannableString
 import android.text.Spanned
 import android.util.Log
@@ -17,12 +21,15 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -31,9 +38,13 @@ import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.json.JSONArray
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * @author kevin
@@ -517,5 +528,208 @@ fun View.setSpinnerView(
         textFieldBoxes.hasFocus = false
         editText.clearFocus()
         popupWindowDismissListener()
+    }
+}
+
+/**
+ * 判斷盤口啟用參數是否有配置
+ * @return true: 有配置, false: 沒有配置(為空或null)
+ */
+fun isHandicapShowSetup(): Boolean {
+    return sConfigData?.handicapShow?.isEmpty() == false
+}
+
+/**
+ * 判斷盤口類型是否有開放
+ * 若sConfigData?.handicapShow為空或null則開放預設的四項(EU,HK,MY,ID)
+ */
+fun isOddsTypeEnable(handicapType: HandicapType): Boolean {
+    return isOddsTypeEnable(handicapType.name)
+}
+
+fun isOddsTypeEnable(handicapTypeCode: String): Boolean {
+    return !isHandicapShowSetup() || sConfigData?.handicapShow?.contains(handicapTypeCode) == true
+}
+/**
+ * 根據盤口類型是否有開放顯示或隱藏View
+ */
+fun View.setupOddsTypeVisibility(handicapType: HandicapType) {
+    visibility = if (isOddsTypeEnable(handicapType)) View.VISIBLE else View.GONE
+}
+
+/**
+ * 獲取盤口類型預設盤口, 若未配置預設為原先的HK
+ */
+fun getDefaultHandicapType(): HandicapType {
+    return when (sConfigData) {
+        //config尚未取得
+        null -> HandicapType.NULL
+        else -> {
+            when {
+                //region 若sConfigData?.handicapShow為空或null則開放預設為HK
+                !isHandicapShowSetup() -> {
+                    HandicapType.HK
+                }
+                //endregion
+                //region 第一個盤口作為預設盤口
+                else -> {
+                    when (sConfigData?.handicapShow?.split(",")?.first { type -> type.isNotEmpty() }) {
+                        HandicapType.EU.name -> HandicapType.EU
+                        HandicapType.HK.name -> HandicapType.HK
+                        HandicapType.MY.name -> HandicapType.MY
+                        HandicapType.ID.name -> HandicapType.ID
+                        else -> HandicapType.HK
+                    }
+                }
+                //endregion
+            }
+        }
+    }
+}
+
+var updatingDefaultHandicapType = false
+/**
+ * 僅作為獲取config後更新預設盤口使用
+ */
+fun setupDefaultHandicapType() {
+    //若處於更新中則不再更新
+    if (!updatingDefaultHandicapType) {
+        updatingDefaultHandicapType = true
+        //若當前盤口尚未配置預設盤口
+        if (MultiLanguagesApplication.mInstance.sOddsType == HandicapType.NULL.name) {
+            OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+                ?.let { defaultOddsType ->
+                    MultiLanguagesApplication.saveOddsType(defaultOddsType)
+                }
+        } else {
+            MultiLanguagesApplication.mInstance.getOddsType()
+        }
+        updatingDefaultHandicapType = false
+    }
+}
+
+/**
+ * @since 原先儲存的盤口配置檢查發現當前不可用時, 需要重新配置預設盤口
+ */
+fun updateDefaultHandicapType() {
+    //若config尚未取得或處於更新中則不再更新
+    if (!updatingDefaultHandicapType) {
+        updatingDefaultHandicapType = true
+        OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+            ?.let { defaultOddsType ->
+                MultiLanguagesApplication.saveOddsType(defaultOddsType)
+            }
+        updatingDefaultHandicapType = false
+    }
+}
+
+/**
+ * 對Bitmap進行壓縮並回傳File型態
+ * @param image 壓縮對象
+ * @param sizeLimit 欲壓縮後大小(kb)
+ */
+private fun compressImageToFile(image: Bitmap, sizeLimit: Int): File? {
+    val baos = ByteArrayOutputStream()
+    image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+    var options = 90
+    //循环判断如果压缩后图片是否大于sizeLimit,大于继续压缩
+    while ((baos.toByteArray().size / 1024) > sizeLimit && options >= 0) {
+        //重置baos即清空baos
+        baos.reset()
+        //这里压缩options%，把压缩后的数据存放到baos中
+        image.compress(Bitmap.CompressFormat.JPEG, options, baos)
+        //每次都减少10
+        options -= 10
+    }
+
+    val path = MultiLanguagesApplication.appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+    val file = File.createTempFile(Math.random().toString(), ".png", path)
+    val os = FileOutputStream(file)
+    os.write(baos.toByteArray())
+    os.close()
+
+    return file
+}
+
+/**
+ * 對Bitmap尺寸進行等比縮放
+ * @param bitmap 縮放對象
+ * @param sizeLimit 長或寬的最大尺寸
+ * @return 縮放後Bitmap
+ */
+private fun resizeBitmap(bitmap: Bitmap, sizeLimit: Int): Bitmap? { //拍照的圖片太大，設定格式大小
+    //獲取原來圖片的寬高
+    val width = bitmap.width
+    val height = bitmap.height
+    //計算原來圖片的高寬之比
+    val temp = height.toFloat() / width.toFloat()
+
+    //以較大的寬或高進行計算至sizeLimit
+    val scaleWidth: Float
+    val scaleHeight: Float
+    when {
+        width > sizeLimit || height > sizeLimit -> {
+            when {
+                height > width -> {
+                    //根據傳入的新圖片的高度計算新圖片的寬度
+                    val newWidth = (sizeLimit / temp).toInt()
+                    scaleWidth = newWidth.toFloat() / width
+                    scaleHeight = sizeLimit.toFloat() / height
+                }
+                else -> {
+                    //根據傳入的新圖片的寬度計算新圖片的高度
+                    val newHeight = (sizeLimit * temp).toInt()
+                    scaleWidth = sizeLimit.toFloat() / width
+                    scaleHeight = newHeight.toFloat() / height
+                }
+            }
+        }
+        else -> {
+            return bitmap
+        }
+    }
+    //Bitmap 通過matrix 矩陣變換生成新的Bitmap
+    val matrix = Matrix()
+    matrix.postScale(scaleWidth, scaleHeight)
+    val resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
+    bitmap.recycle()
+    return resizedBitmap
+}
+
+/**
+ * 進行尺寸及質量的壓縮
+ * @param path 圖片的路徑
+ */
+fun getCompressFile(path: String?): File? {
+    if (path != null) {
+
+        val image = File(path)
+        val bmOptions: BitmapFactory.Options = BitmapFactory.Options()
+        var bitmap: Bitmap = BitmapFactory.decodeFile(image.absolutePath, bmOptions)
+        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width, bitmap.height, true)
+
+        //對寬高進行等比縮小 任一邊不超過1024
+        resizeBitmap(bitmap, 1024)?.let { resizeImage ->
+            //對質量進行一次壓縮
+            compressImageToFile(resizeImage, 1024)?.let { compressFile ->
+                if (compressFile.exists())
+                    return compressFile
+            }
+        }
+    }
+    return null
+}
+
+fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent) {
+    forEach { leagueOdd ->
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            matchOdd.oddsMap?.forEach { map ->
+                if (map.key == closePlayCateEvent.playCateCode) {
+                    map.value?.forEach { odd ->
+                        odd?.status = BetStatus.DEACTIVATED.code
+                    }
+                }
+            }
+        }
     }
 }

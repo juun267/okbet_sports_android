@@ -4,12 +4,13 @@ package org.cxct.sportlottery.ui.menu
 import android.os.Bundle
 import android.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogChangeOddTypeBinding
+import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.setupOddsTypeVisibility
 
-
+//TODO 此頁目前沒有使用, 若有需要使用時請參照ChangeOddsTypeFullScreenDialog配置盤口相關行為
 class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
 
     private lateinit var viewBinding: DialogChangeOddTypeBinding
@@ -23,9 +24,21 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initOddsTypeView()
         initEvent(view)
         initObserver()
         getOddsType()
+    }
+
+
+    private fun initOddsTypeView() {
+        //TODO 此頁目前沒有使用, 若有需要使用時請參照ChangeOddsTypeFullScreenDialog配置盤口相關行為
+        with(viewBinding) {
+            rbEu.setupOddsTypeVisibility(HandicapType.EU)
+            rbHk.setupOddsTypeVisibility(HandicapType.HK)
+            rbMys.setupOddsTypeVisibility(HandicapType.MY)
+            rbIdn.setupOddsTypeVisibility(HandicapType.ID)
+        }
     }
 
 

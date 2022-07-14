@@ -105,7 +105,8 @@
     <string name="hint_telegram">(请输入Telegram账号)</string>
     <string name="error_telegram">Telegram账号格式错误</string>
     <string name="security_pb">安全问题</string>
-    <string name="hint_security_pb">(请输入最爱的国家)</string>
+    <string name="security_answer">回答</string>
+    <string name="hint_security_answer">(请输入你的回答)</string>
     <string name="real_name">真实姓名</string>
     <string name="income_source">薪资来源</string>
     <string name="identity_type">证件类型</string>
@@ -1221,7 +1222,7 @@
     <string name="redenvelope_fail">很遗憾</string>
     <string name="redenvelope_fail_desp">很可惜没抢到红包</string>
     <string name="hint_enter_city">请输入所在城市</string>
-    <string name="redenvelope_close_hint">确定关闭红包倒数？\n关闭倒数则不進入搶红包</string>
+    <string name="redenvelope_close_hint">确定关闭红包倒数？\n关闭倒数则不进入抢红包</string>
     <!--endregion-->
 
     <string name="verification_status">身份证验证</string>
@@ -1239,4 +1240,5 @@
     <string name="tran_time_sub">交易时间：</string>
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="tran_type_sub">交易类型：</string>
+    <string name="btn_sure">确定</string>
 </resources>

@@ -130,7 +130,6 @@ class LoginRepository(private val androidContext: Context) {
         }
 
     var isCheckToken = false
-    var isShowingRedenpId = -1
 
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
         val loginResponse = OneBoSportApi.indexService.register(registerRequest)

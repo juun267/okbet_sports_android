@@ -13,7 +13,10 @@ import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
@@ -55,10 +58,6 @@ import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
-import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -82,14 +81,22 @@ class MultiLanguagesApplication : Application() {
     private var isNewsShowed = false
     private var isGameDetailAnimationNeedShow = false
     private var isAgeVerifyNeedShow = true
-    var showedRedenpId = -1 //顯示過的紅包id
-    var currentRedenpId = 0 //當前的紅包id
-    var isRedenpClose = MutableLiveData<Event<Boolean>>()
 
     val mOddsType = MutableLiveData<OddsType>()
 
-    var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
+    /**
+     * HandicapType.NULL.name為尚未配置後端設置的預設盤口
+     */
+    var sOddsType: String?
+        get() {
+            val handicapType = sharedPref.getString(KEY_ODDS_TYPE, HandicapType.NULL.name)
+            if(handicapType != HandicapType.NULL.name && !isOddsTypeEnable(handicapType ?: "")) {
+                updateDefaultHandicapType()
+                return HandicapType.NULL.name
+            }
+
+            return handicapType
+        }
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_ODDS_TYPE, value)
@@ -179,7 +186,6 @@ class MultiLanguagesApplication : Application() {
         mInstance = this
         AppManager.init(this)
         myPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        getOddsType()
 
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
@@ -290,19 +296,17 @@ class MultiLanguagesApplication : Application() {
     }
 
     fun getOddsType() {
-        mInstance.mOddsType.postValue(
-            when (mInstance.sOddsType) {
-                OddsType.EU.code -> OddsType.EU
-                OddsType.HK.code -> OddsType.HK
-                OddsType.MYS.code -> OddsType.MYS
-                OddsType.IDN.code -> OddsType.IDN
-                else -> OddsType.HK
-            }
-        )
+        //若為HandicapType.NULL是為尚未配置, 無需更新View
+        when (mInstance.sOddsType) {
+            OddsType.EU.code -> mInstance.mOddsType.postValue(OddsType.EU)
+            OddsType.HK.code -> mInstance.mOddsType.postValue(OddsType.HK)
+            OddsType.MYS.code -> mInstance.mOddsType.postValue(OddsType.MYS)
+            OddsType.IDN.code -> mInstance.mOddsType.postValue(OddsType.IDN)
+        }
     }
 
     companion object {
-        private var myPref: SharedPreferences? = null
+        var myPref: SharedPreferences? = null
         lateinit var appContext: Context
         const val UUID_DEVICE_CODE = "uuidDeviceCode"
         const val UUID = "uuid"
@@ -408,6 +412,11 @@ class MultiLanguagesApplication : Application() {
                     }
 
                 }).show()
+        }
+
+        fun saveOddsType(oddsType: OddsType) {
+            mInstance.sOddsType = oddsType.code
+            mInstance.mOddsType.postValue(oddsType)
         }
     }
 }

@@ -555,7 +555,11 @@ object TimeUtil {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
         repeat(day) {
-            calendar.add(Calendar.DATE, 1)
+            if (it == 0)
+                calendar.add(Calendar.DATE, 0)
+            else
+                calendar.add(Calendar.DATE, 1)
+            
             weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))
         }
         return weekDateList

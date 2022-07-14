@@ -25,6 +25,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.NetworkUtil
+import org.cxct.sportlottery.util.updateDefaultHandicapType
 import retrofit2.Response
 import timber.log.Timber
 import java.net.SocketTimeoutException
@@ -159,6 +160,8 @@ abstract class BaseViewModel(
             betInfoRepository.clear()
             infoCenterRepository.clear()
             loginRepository.logout()
+            //退出登入後盤口回到預設
+            updateDefaultHandicapType()
             finishFunction.invoke()
         }
     }

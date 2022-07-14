@@ -104,7 +104,8 @@
     <string name="hint_telegram">(Vui lòng nhập tài khoản Telegram)</string>
     <string name="error_telegram">lỗi định dạng tài khoản Telegram không hợp lệ</string>
     <string name="security_pb">Câu hỏi an toàn</string>
-    <string name="hint_security_pb">(Vui lòng nhập quốc gia yêu thích)</string>
+    <string name="security_answer">Câu trả lời</string>
+    <string name="hint_security_answer">(Hãy nhập câu trả lời)</string>
     <string name="real_name">Họ tên thật</string>
     <string name="income_source">Source Of Income</string>
     <string name="identity_type">Valid ID Type</string>
@@ -1207,7 +1208,7 @@
     <string name="redenvelope_fail">Thật không may</string>
     <string name="redenvelope_fail_desp">Rất tiếc không giật được lì xì</string>
     <string name="hint_enter_city">Vui lòng nhập thành phố</string>
-    <string name="redenvelope_close_hint">Close countdown ?\nClose countdown won\'t awarded luck money.</string>
+    <string name="redenvelope_close_hint">Muốn đóng đếm ngược của mưa bao lì xì?\nĐóng đếm ngược nếu không sẽ tiến hành giật bao lì xì</string>
     <!--endregion-->
 
     <string name="verification_status">Verification Status</string>
@@ -1219,10 +1220,11 @@
     <string name="redenvelope_trantype_received">Nhận phong bì đỏ</string>
     <string name="tran_order_no">Số giao dịch</string>
     <string name="tran_time">Giờ giao dịch</string>
-    <string name="redenvelope_amount">Số tiền nhận thực tế</string>
+    <string name="redenvelope_amount">Số tiền</string>
     <string name="tran_type">Loại giao dịch</string>
     <string name="redenvelope_record">lịch Sử  Tiền lì xì</string>
     <string name="tran_time_sub">Giờ giao dịch :</string>
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="tran_type_sub">Loại giao dịch：</string>
+    <string name="btn_sure">Xác nhận</string>
 </resources>

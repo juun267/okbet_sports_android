@@ -594,6 +594,14 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
             }
         }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (args.gameType.key != it.gameType) return@observe
+                leagueAdapter.data.closePlayCate(it)
+                leagueAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     /**

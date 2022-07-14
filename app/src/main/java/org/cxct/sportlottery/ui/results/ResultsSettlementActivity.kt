@@ -13,17 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
-import kotlinx.android.synthetic.main.activity_results_settlement.view.*
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_game_type.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
-import kotlinx.android.synthetic.main.item_listview_settlement_game_type.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import kotlinx.android.synthetic.main.view_status_spinner.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -76,6 +72,7 @@ class ResultsSettlementActivity :
 
         setContentView(R.layout.activity_results_settlement)
 
+        initData()
         setupToolbar()
         setupAdapter()
         initEvent()
@@ -83,6 +80,11 @@ class ResultsSettlementActivity :
         observeData()
         initTimeSelector()
 //        initServiceButton()
+    }
+
+    private fun initData() {
+        //獲取當前啟用的球種作為球種篩選清單
+        viewModel.getSportList()
     }
 
     private fun setupToolbar() {
@@ -124,12 +126,15 @@ class ResultsSettlementActivity :
     }
 
     private fun setupSpinnerGameType() {
-        initSettleGameTypeBottomSheet()
         setupSettleGameTypeBottomSheet()
     }
 
     private fun observeData() {
         viewModel.apply {
+            sportCodeList.observe(this@ResultsSettlementActivity) {
+                initSettleGameTypeBottomSheet(it.toMutableList())
+            }
+
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
                 matchResultDiffAdapter.gameType = gameType
@@ -203,18 +208,20 @@ class ResultsSettlementActivity :
         )
     }
 
-    private fun initSettleGameTypeBottomSheet() {
-        status_game_type.tv_name.text = getString(GameType.values()[0].string)
-        gameType = GameType.values()[0].key
+    /**
+     * 初始化球種篩選清單選項及當前選中第一項
+     */
+    private fun initSettleGameTypeBottomSheet(gameTypeSpinnerList: MutableList<StatusSheetData>) {
+        //初始化當前選中第一項
+        val initSpinnerItem = gameTypeSpinnerList.firstOrNull()
+        status_game_type.tv_name.text = initSpinnerItem?.showName
+        gameType = initSpinnerItem?.code ?: ""
         viewModel.getMatchResultList(gameType, null, timeRangeParams)
-    }
-    private fun setupSettleGameTypeBottomSheet() {
 
-        val gameTypeItem = mutableListOf<StatusSheetData>()
-        GameType.values().forEach { gameType ->
-            if (gameType != GameType.OTHER) gameTypeItem.add(StatusSheetData(gameType.key, getString(gameType.string)))
-        }
-        status_game_type.setItemData(gameTypeItem)
+        status_game_type.setItemData(gameTypeSpinnerList)
+    }
+
+    private fun setupSettleGameTypeBottomSheet() {
         status_game_type.setOnItemSelectedListener {
             gameType = it.code!!
             this@ResultsSettlementActivity.tv_name.text = it.showName

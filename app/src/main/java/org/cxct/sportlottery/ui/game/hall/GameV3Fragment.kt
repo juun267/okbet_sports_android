@@ -1683,6 +1683,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 //待優化: 應有個暫存leagueChangeEvent的機制，確認後續流程更新完畢，再處理下一筆leagueChangeEvent，不過目前後續操作並非都是suspend，需重構後續流程
             }
         }
+
+        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
+                leagueAdapter.data.closePlayCate(it)
+                leagueAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {

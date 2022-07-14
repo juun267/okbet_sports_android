@@ -23,6 +23,7 @@ data class RegisterRequest(
     var province: String? = null,
     var city: String? = null,
     var zipCode: String? = null,
+    var safeQuestionType: String? = null,
     var safeQuestion: String? = null,
     var loginEnvInfo:String? = null,
     var birthday: String? = null,

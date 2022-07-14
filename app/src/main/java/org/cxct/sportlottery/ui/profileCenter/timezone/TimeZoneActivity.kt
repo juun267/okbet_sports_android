@@ -25,7 +25,9 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     lateinit var adapter: TimeZoneAdapter
-    var items= listOf<TimeZone>()
+    private var originItems = listOf<TimeZone>()
+    private var currentItems = arrayListOf<TimeZone>()
+    private var selectItem: TimeZone? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,75 +53,72 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
             }
             override fun afterTextChanged(s: Editable?) {
-                filter(et_search.text.toString().trim())
+                sortList()
             }
         })
         rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
         rv_list.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.divider_color_gray_light2)))
         adapter= TimeZoneAdapter(ItemClickListener {
-                items.forEach { item ->
-                    item.isSelected = false
-                }
-            it.isSelected = true
-            var mutableList = items.toMutableList()
-            mutableList.remove(it)
-            mutableList.add(0, it)
-            items = mutableList.toList()
-            adapter.notifyDataSetChanged()
-            var zone = java.util.TimeZone.getTimeZone(it.name)
+            selectItem = it
+            sortList()
+            val zone = java.util.TimeZone.getTimeZone(it.name)
             zone.id = it.country_en + "/" + it.city_en
             java.util.TimeZone.setDefault(zone)
             MultiLanguagesApplication.timeZone = zone
+            rv_list.smoothScrollToPosition(0)
         })
 
-        items=Gson().fromJson(
+        originItems = Gson().fromJson(
             String(assets.open("timezone.json").readBytes()),
-            object :TypeToken<List<TimeZone>>(){}.type
+            object : TypeToken<ArrayList<TimeZone>>() {}.type
         )
-        initSelect()
-        adapter.setItems(items)
-        rv_list.adapter=adapter
+        selectItem = findCurrentZone()
+        rv_list.adapter = adapter
+        sortList()
     }
-    fun initSelect(){
-        val curTimeZone=java.util.TimeZone.getDefault()
-        val displayName=curTimeZone.getDisplayName(false,java.util.TimeZone.SHORT)
-        val id=curTimeZone.id
-        var selecItem=items.find {
-             displayName.contains(it.name,true)
-                     &&id.contains(it.city_en,true)
-        }
-        selecItem?.let {
-            it.isSelected=true
-            var mutableList=items.toMutableList()
-            mutableList.remove(selecItem)
-            mutableList.add(0,selecItem)
-            items=mutableList.toList()
+
+    private fun findCurrentZone(): TimeZone? {
+        val curTimeZone = java.util.TimeZone.getDefault()
+        val displayName = curTimeZone.getDisplayName(false, java.util.TimeZone.SHORT)
+        val id = curTimeZone.id
+        return originItems.find {
+            displayName.contains(it.name, true)
+                    && id.contains(it.city_en, true)
         }
     }
 
-    fun filter(key:String){
-        if (key.isNullOrBlank()){
-            adapter.setItems(items)
-            lin_empty.visibility = View.GONE
-        }else{
-            var filterData=items.filter {
-                when(LanguageManager.getSelectLanguage(this)){
-                    LanguageManager.Language.ZH->{
-                        it.city_zh.contains(key,true)
+    private fun sortList() {
+        val key = et_search.text.toString().trim()
+        currentItems.clear()
+        currentItems.addAll(originItems)
+        currentItems.forEach { item ->
+            item.isSelected = false
+        }
+        selectItem?.let {
+            currentItems.remove(it)
+            currentItems.add(0, it)
+            it.isSelected = true
+        }
+        if (key.isNotEmpty()) {
+            currentItems = currentItems.filter {
+                when (LanguageManager.getSelectLanguage(this)) {
+                    LanguageManager.Language.ZH -> {
+                        it.city_zh.contains(key, true)
                     }
-                    LanguageManager.Language.EN->{
-                        it.city_en.contains(key,true)
+                    LanguageManager.Language.EN -> {
+                        it.city_en.contains(key, true)
                     }
-                    LanguageManager.Language.VI->{
-                        it.city_en.contains(key,true)
+                    LanguageManager.Language.VI -> {
+                        it.city_vi.contains(key, true)
                     }
-                    else->{
-                        it.city_en.contains(key,true)
+                    else -> {
+                        it.city_en.contains(key, true)
                     }
                 }
-            }
-            adapter.setItems(filterData)
-            lin_empty.visibility =  if(filterData.isNullOrEmpty()) View.VISIBLE else View.GONE
+            } as ArrayList<TimeZone>
         }
+        adapter.setItems(currentItems)
+        adapter.notifyDataSetChanged()
+        lin_empty.visibility = if (currentItems.isNullOrEmpty()) View.VISIBLE else View.GONE
     }
 }

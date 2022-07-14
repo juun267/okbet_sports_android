@@ -4,14 +4,20 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LocalUtils
 
 
 class TransactionStatusViewModel(
@@ -59,6 +65,10 @@ class TransactionStatusViewModel(
     val responseFailed: LiveData<Boolean>
         get() = _responseFailed
     private val _responseFailed = MutableLiveData<Boolean>()
+
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
+    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
 
     //獲取系統公告
     fun getAnnouncement() {
@@ -142,5 +152,35 @@ class TransactionStatusViewModel(
 
     private fun hideLoading() {
         _loading.postValue(false)
+    }
+
+    /**
+     * 獲取當前可用球種清單
+     */
+    fun getSportList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList()
+            }?.let { sportListResponse ->
+                if (sportListResponse.success) {
+                    val sportCodeList = mutableListOf<StatusSheetData>()
+                    //第一項為全部球種
+                    sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
+                    //根據api回傳的球類添加進當前啟用球種篩選清單
+                    sportListResponse.rows.sortedBy { it.sortNum }.map {
+                        sportCodeList.add(
+                            StatusSheetData(
+                                it.code,
+                                GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.code)
+                            )
+                        )
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _sportCodeSpinnerList.value = sportCodeList
+                    }
+                }
+            }
+        }
     }
 }
