@@ -82,6 +82,7 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         //規則與條款
+        txv_terms.setVisibilityByCreditSystem()
         txv_terms.setOnClickListener {
             JumpUtil.toInternalWeb(
                 context,
