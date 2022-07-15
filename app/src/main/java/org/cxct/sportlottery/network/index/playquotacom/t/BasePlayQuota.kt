@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SingleBK(
+data class BasePlayQuota(
     @Json(name = "code")
     override val code: String,
     @Json(name = "gameType")

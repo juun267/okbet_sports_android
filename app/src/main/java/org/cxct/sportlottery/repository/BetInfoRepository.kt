@@ -13,8 +13,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.index.playquotacom.t.BasePlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
-import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
-import timber.log.Timber
 import kotlin.math.abs
 
 
@@ -77,7 +76,7 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _betParlaySuccess
 
 
-    var playQuotaComData: PlayQuotaComData? = null
+    var playQuotaComData: Map<String?, BasePlayQuota?>? = mapOf()
         set(value) {
             field = value
             field?.let {
@@ -360,70 +359,12 @@ class BetInfoRepository(val androidContext: Context) {
         matchOddList: MutableList<MatchOdd>,
         isParlayBet: Boolean = false
     ): List<ParlayOdd> {
-
-        val playQuota: PlayQuota? = when {
-            matchType == MatchType.OUTRIGHT -> {
-                when (gameType) {
-                    GameType.FT -> playQuotaComData?.oUTRIGHTFT
-                    GameType.BK -> playQuotaComData?.oUTRIGHTBK
-                    GameType.TN -> playQuotaComData?.oUTRIGHTTN
-                    GameType.VB -> playQuotaComData?.oUTRIGHTVB
-                    GameType.BM -> playQuotaComData?.oUTRIGHTBM
-                    GameType.TT -> playQuotaComData?.oUTRIGHTTT
-                    GameType.IH -> playQuotaComData?.oUTRIGHTIH
-                    GameType.BX -> playQuotaComData?.oUTRIGHTBX
-                    GameType.CB -> playQuotaComData?.oUTRIGHTCB
-                    GameType.CK -> playQuotaComData?.oUTRIGHTCK
-                    GameType.BB -> playQuotaComData?.oUTRIGHTBB
-                    GameType.RB -> playQuotaComData?.oUTRIGHTRB
-                    GameType.AFT -> playQuotaComData?.oUTRIGHTAFT
-                    GameType.MR -> playQuotaComData?.oUTRIGHTMR
-                    GameType.GF -> playQuotaComData?.oUTRIGHTGF
-                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
-                }
-            }
-
-            isParlayBet -> {
-                when (gameType) {
-                    GameType.FT -> playQuotaComData?.pARLAYFT
-                    GameType.BK -> playQuotaComData?.pARLAYBK
-                    GameType.TN -> playQuotaComData?.pARLAYTN
-                    GameType.VB -> playQuotaComData?.pARLAYVB
-                    GameType.BM -> playQuotaComData?.pARLAYBM
-                    GameType.TT -> playQuotaComData?.pARLAYTT
-                    GameType.IH -> playQuotaComData?.pARLAYIH
-                    GameType.BX -> playQuotaComData?.pARLAYBX
-                    GameType.CB -> playQuotaComData?.pARLAYCB
-                    GameType.CK -> playQuotaComData?.pARLAYCK
-                    GameType.BB -> playQuotaComData?.pARLAYBB
-                    GameType.RB -> playQuotaComData?.pARLAYRB
-                    GameType.AFT -> playQuotaComData?.pARLAYAFT
-                    GameType.MR -> playQuotaComData?.pARLAYMR
-                    GameType.GF -> playQuotaComData?.pARLAYGF
-                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
-                }
-            }
-            else -> {
-                when (gameType) {
-                    GameType.FT -> playQuotaComData?.sINGLEFT
-                    GameType.BK -> playQuotaComData?.sINGLEBK
-                    GameType.TN -> playQuotaComData?.sINGLETN
-                    GameType.VB -> playQuotaComData?.sINGLEVB
-                    GameType.BM -> playQuotaComData?.sINGLEBM
-                    GameType.TT -> playQuotaComData?.sINGLETT
-                    GameType.IH -> playQuotaComData?.sINGLEIH
-                    GameType.BX -> playQuotaComData?.sINGLEBX
-                    GameType.CB -> playQuotaComData?.sINGLECB
-                    GameType.CK -> playQuotaComData?.sINGLECK
-                    GameType.BB -> playQuotaComData?.sINGLEBB
-                    GameType.RB -> playQuotaComData?.sINGLERB
-                    GameType.AFT -> playQuotaComData?.sINGLEAFT
-                    GameType.MR -> playQuotaComData?.sINGLEMR
-                    GameType.GF -> playQuotaComData?.sINGLEGF
-                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
-                }
-            }
-        }
+        //playQuota取球種最大最小限額，目前後台只有足球、籃球、其他三種類別。
+        val key = "${matchType.postValue}@${gameType.key}"
+        val playQuota: PlayQuota? =
+            if (playQuotaComData?.get(key) != null) playQuotaComData?.get(key) else playQuotaComData?.get(
+                "${matchType.postValue}@${GameType.OTHER}"
+            )
 
         val oddsList = matchOddList.map {
             Pair(it.odds.toBigDecimal(), it.isOnlyEUType)
