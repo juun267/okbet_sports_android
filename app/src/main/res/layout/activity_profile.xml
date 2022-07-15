@@ -34,20 +34,12 @@
                 android:minHeight="48dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_head"
-                    app:tint="@color/color_666666_bcbcbc"/>
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:layout_marginStart="18dp"
                     android:text="@string/avatar"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
@@ -78,14 +70,7 @@
                 android:minHeight="48dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_nickname"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,6 +78,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/nickname"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -130,14 +116,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_pwd_setting"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="0dp"
@@ -146,6 +125,7 @@
                     android:layout_weight="1"
                     android:text="@string/password_setting"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -164,14 +144,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_account"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -179,6 +152,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/member_account_in_profile"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -203,20 +177,12 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_id"
-                    app:tint="@color/color_666666_bcbcbc" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/id"
+                    android:layout_marginStart="18dp"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize14sp" />
 
@@ -243,14 +209,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_profile_real_name"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -258,6 +217,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/real_name"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -295,14 +255,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_qq"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -310,6 +263,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/qq_number"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -347,14 +301,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_email"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -362,6 +309,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/e_mail"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -399,14 +347,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_mobile"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -414,6 +355,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/phone_number"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -451,14 +393,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_personal_info_wechat"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -466,6 +401,7 @@
                     android:layout_marginEnd="10dp"
                     android:text="@string/we_chat"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -502,14 +438,7 @@
                 android:minHeight="44dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="14dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_identity"
-                    app:tint="@color/color_666666_bcbcbc" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -517,6 +446,7 @@
                     android:layout_marginEnd="4dp"
                     android:text="@string/identity"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:layout_marginStart="18dp"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
