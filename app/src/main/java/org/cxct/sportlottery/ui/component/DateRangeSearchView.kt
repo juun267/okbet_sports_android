@@ -22,12 +22,21 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val calendarBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+    var timeZone: TimeZone = TimeZone.getDefault()
 
     val startTime: Long?
-        get() = TimeUtil.dateToTimeStamp(tv_start_date.text.toString(), TimeUtil.TimeType.START_OF_DAY)
+        get() = TimeUtil.dateToTimeStamp(
+            tv_start_date.text.toString(),
+            TimeUtil.TimeType.START_OF_DAY,
+            timeZone = timeZone
+        )
 
     val endTime: Long?
-        get() = TimeUtil.dateToTimeStamp(tv_end_date.text.toString(), TimeUtil.TimeType.END_OF_DAY)
+        get() = TimeUtil.dateToTimeStamp(
+            tv_end_date.text.toString(),
+            TimeUtil.TimeType.END_OF_DAY,
+            timeZone = timeZone
+        )
 
     val startDate: String
         get() = tv_start_date.text.toString()
