@@ -166,17 +166,13 @@ object Constants {
     //规则与条款
     fun getAgreementRuleUrl(context: Context): String? {
 
+        val checkCreditQuery = if (sConfigData?.creditSystem == 1) "credit=1" else context.getString(R.string.app_name)
+
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/terms-conditions?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/terms-conditions?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/terms-conditions?platform=" + context.getString(
-                    R.string.app_name
-                )
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/terms-conditions?" + checkCreditQuery
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/terms-conditions?" + checkCreditQuery
+                else -> getBaseUrl() + "sports-rule/#/us/terms-conditions?" + checkCreditQuery
             }
 
         } catch (e: UnsupportedEncodingException) {
