@@ -72,6 +72,7 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         //博彩責任
+        txv_gaming.setVisibilityByCreditSystem()
         txv_gaming.setOnClickListener {
             JumpUtil.toInternalWeb(
                 context,
@@ -95,6 +96,7 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         //代理加盟
+        txv_affiliate.setVisibilityByCreditSystem()
         txv_affiliate.setOnClickListener {
             JumpUtil.toInternalWeb(
                 context,
@@ -108,6 +110,7 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         }
 
         //隱私權條款
+        txv_policy.setVisibilityByCreditSystem()
         txv_policy.setOnClickListener {
             JumpUtil.toInternalWeb(
                 context,
