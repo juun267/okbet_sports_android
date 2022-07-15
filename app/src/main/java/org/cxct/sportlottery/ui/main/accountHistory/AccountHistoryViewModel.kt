@@ -246,7 +246,7 @@ class AccountHistoryViewModel(
     fun getSportList() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.sportService.getSportList()
+                OneBoSportApi.sportService.getSportList(type = 1)
             }?.let { sportListResponse ->
                 if (sportListResponse.success) {
                     val sportCodeList = mutableListOf<StatusSheetData>()
