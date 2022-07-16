@@ -80,7 +80,7 @@ android {
         }
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            resValue "string", "app_name", "OkBet"
+            resValue "string", "app_name", "OKbet"
             applicationId "com.happysport.sl.test"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
@@ -94,7 +94,7 @@ android {
         }
         OkbetPH {
             buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OkBet"
+            resValue "string", "app_name", "OKbet"
             applicationId "com.okbet.ph"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
@@ -122,7 +122,7 @@ android {
         }
         spnew1{
             buildConfigField "String", "CHANNEL_NAME", "\"spnew1\""
-            resValue "string", "app_name", "OkBet"
+            resValue "string", "app_name", "OKbet"
             applicationId "com.okbet.spnew1"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"RMB\""
@@ -136,7 +136,7 @@ android {
         }
         credit {
             buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
-            resValue "string", "app_name", "OkBet9"
+            resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.cdplat1"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
@@ -150,7 +150,7 @@ android {
         }
         spcd {
             buildConfigField "String", "CHANNEL_NAME", "\"spcd\""
-            resValue "string", "app_name", "OkBet9"
+            resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.spcd"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
