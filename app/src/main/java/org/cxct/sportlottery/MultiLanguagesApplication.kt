@@ -83,6 +83,7 @@ class MultiLanguagesApplication : Application() {
     private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
+    var doNotReStartPublicity = false
 
     /**
      * HandicapType.NULL.name為尚未配置後端設置的預設盤口

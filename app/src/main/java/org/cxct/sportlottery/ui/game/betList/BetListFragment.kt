@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
@@ -231,6 +232,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnEvent() {
         binding.btnBet.apply {
             tv_login.setOnClickListener {
+                MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
 

@@ -50,6 +50,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         const val PUBLICITY_MATCH_LIST = "publicityMatchList"
 
         fun reStart(context: Context) {
+            if (MultiLanguagesApplication.mInstance.doNotReStartPublicity) {
+                MultiLanguagesApplication.mInstance.doNotReStartPublicity = false
+                AppManager.currentActivity().finish()
+                return
+            }
             val intent = Intent(context, GamePublicityActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
