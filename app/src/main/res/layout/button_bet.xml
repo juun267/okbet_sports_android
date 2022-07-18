@@ -13,7 +13,6 @@
         android:id="@+id/cl_bet"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:layout_width="100dp"
         android:background="@drawable/selector_button_radius_5_bet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,91 +21,29 @@
             android:id="@+id/tv_bet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bet_info_list_bet"
+            android:text="@string/confirm_single_bets"
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize14sp"
-            android:includeFontPadding="false"
-            android:paddingTop="2dp"
-            android:paddingBottom="1dp"
-            tools:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/tv_quota"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <!-- tv_accept_odds_change移到cl_bet中 -->
-        <TextView
-            android:id="@+id/tv_accept_odds_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bet_info_accept_odds_change"
-            android:textColor="@color/color_FFFFFF_FFFFFF"
-            android:textSize="@dimen/textSize14sp"
-            android:includeFontPadding="false"
-            android:paddingTop="2dp"
-            android:paddingBottom="1dp"
-            android:visibility="gone"
+            android:textStyle="bold"
             tools:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_bet"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_bet"/>
-
-        <TextView
-            android:id="@+id/tv_quota"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:includeFontPadding="false"
-            android:text="0.000"
-            android:textColor="@color/color_FFFFFF_FFFFFF"
-            android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_currency_type"
-            app:layout_constraintTop_toBottomOf="@id/tv_bet" />
-
-        <TextView
-            android:id="@+id/tv_currency_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textColor="@color/color_FFFFFF_FFFFFF"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_quota"
-            app:layout_constraintEnd_toStartOf="@+id/tv_quota"
-            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_quota"
-            tools:text="PHP" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/tv_accept_odds_change"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@drawable/selector_button_radius_5_bet"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/bet_info_accept_odds_change"-->
-<!--        android:textColor="@color/color_FCFCFC"-->
-<!--        android:textSize="@dimen/textSize13sp"-->
-<!--        android:visibility="gone"/>-->
-
 
     <TextView
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/button_radius_4_0870f7_0659c4"
+        android:background="@drawable/button_radius_4_0065e9_3b78ff"
         android:gravity="center"
-        android:text="@string/btn_login"
-        android:textAllCaps="true"
-        android:textColor="@color/color_FCFCFC"
+        android:text="@string/btn_login_bet"
+        android:textColor="@color/color_FFFFFF_FFFFFF"
         android:textSize="@dimen/textSize14sp"
         android:visibility="visible"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

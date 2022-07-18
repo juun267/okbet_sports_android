@@ -64,6 +64,15 @@ class BetButton @JvmOverloads constructor(
             setupBetClickable()
         }
 
+    //是否為串關
+    var isParlay: Boolean = false
+
+    //注單有輸入金額的投注數量
+    var betCounts: Int = 0
+        set(value) {
+            field = value
+            setUpBetContent()
+        }
 
     init {
         init()
@@ -72,54 +81,52 @@ class BetButton @JvmOverloads constructor(
 
     private fun init() {
         inflate(context, R.layout.button_bet, this)
-        tv_currency_type.text = sConfigData?.systemCurrencySign
-        setupQuotaListener()
+        setUpBetContent()
+//        tv_currency_type.text = sConfigData?.systemCurrencySign
+//        setupQuotaListener()
+    }
+
+    private fun setUpBetContent() {
+        val betContent = if (isParlay) {
+            context.getString(R.string.confirm_multiple_bets, betCounts)
+        } else {
+            context.getString(R.string.confirm_single_bets, betCounts)
+        }
+        tv_bet.text = betContent
+        setupBetClickable()
     }
 
 
     private fun setupQuotaListener() {
-        tv_quota.doAfterTextChanged {
-            isCanSendOut = (it.toString().replace(",", "").toDoubleOrNull() ?: 0.0) != 0.0
-        }
+//        tv_quota.doAfterTextChanged {
+//            isCanSendOut = (it.toString().replace(",", "").toDoubleOrNull() ?: 0.0) != 0.0
+//        }
     }
 
 
     private fun setupLogin(isLogin: Boolean) {
         tv_login.visibility = if (isLogin) View.GONE else View.VISIBLE
-        tv_login.setText(
-            if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN)
-                R.string.btn_login_by_credit_system
-            else R.string.btn_login
-        )
+//        tv_login.setText(
+//            if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN)
+//                R.string.btn_login_by_credit_system
+//            else R.string.btn_login
+//        )
     }
 
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
         //20220616 賠率更變時，按鈕顯示文案修改 (不管有無輸入金額)
-        if (isOddsChanged) {
-            tv_accept_odds_change.visibility = View.VISIBLE
-            tv_bet.visibility = View.INVISIBLE
-        } else {
-            tv_accept_odds_change.visibility = View.GONE
-            tv_bet.visibility = View.VISIBLE
-        }
+//        if (isOddsChanged) {
+//            tv_accept_odds_change.visibility = View.VISIBLE
+//            tv_bet.visibility = View.INVISIBLE
+//        } else {
+//            tv_accept_odds_change.visibility = View.GONE
+//            tv_bet.visibility = View.VISIBLE
+//        }
     }
 
-
-//    private fun setupSendOutClickable(isCanSendOut: Boolean) {
-//        cl_bet.apply {
-//            isSelected = isCanSendOut
-//            isClickable = isCanSendOut
-//        }
-//
-//        tv_accept_odds_change.apply {
-//            isSelected = isCanSendOut
-//            isClickable = isCanSendOut
-//        }
-//    }
-
     private fun setupBetClickable() {
-        val betClickable = !(hasBetPlatClose == true || isCanSendOut == false || amountCanBet == false)
+        val betClickable = !(hasBetPlatClose == true || amountCanBet == false || betCounts == 0)
         cl_bet.apply {
             isSelected = betClickable
             isClickable = betClickable

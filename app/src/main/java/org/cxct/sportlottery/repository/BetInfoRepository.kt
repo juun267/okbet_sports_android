@@ -193,6 +193,7 @@ class BetInfoRepository(val androidContext: Context) {
                             inputBetAmountStr = parlayOdd.inputBetAmountStr
                             allSingleInput = parlayOdd.allSingleInput
                             amountError = parlayOdd.amountError
+                            isInputBet = parlayOdd.isInputBet
                         }
                     }
                 }
