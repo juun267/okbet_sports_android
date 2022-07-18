@@ -494,7 +494,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
             if (navController.currentDestination?.id != R.id.publicityFragment) {
                 navController.navigateUp()
             } else {
-                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+//                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+                //新版宣傳頁
+                navController.navigate(PublicityNewFragmentDirections.actionPublicityFragmentSelf())
             }
         }
     }
