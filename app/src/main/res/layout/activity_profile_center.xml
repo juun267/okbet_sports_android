@@ -131,7 +131,7 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <LinearLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/block_amount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -150,25 +150,28 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/helvetica_bold"
-                                android:gravity="center_vertical"
                                 android:textColor="@color/color_643C00"
                                 android:textSize="@dimen/textSize20sp"
                                 android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
                                 tools:text="P" />
 
                             <TextView
                                 android:id="@+id/tv_account_balance"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/margin_5"
                                 android:fontFamily="@font/roboto_medium_numbers"
                                 android:gravity="center_vertical"
-                                android:maxWidth="250dp"
                                 android:textColor="@color/color_643C00"
                                 android:textSize="@dimen/textSize20sp"
                                 android:textStyle="bold"
+                                app:layout_constraintEnd_toStartOf="@+id/ivNotice"
                                 app:autoSizeMaxTextSize="20dp"
                                 app:autoSizeMinTextSize="2dp"
+                                app:layout_constraintStart_toEndOf="@+id/tv_currency_type"
+                                app:layout_constraintTop_toTopOf="parent"
                                 tools:text="87,547,000.000" />
 
                             <ImageButton
@@ -180,13 +183,11 @@
                                 android:padding="6dp"
                                 android:src="@drawable/ic_info_white_inside"
                                 android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
+                                app:layout_constraintEnd_toStartOf="@+id/btn_refresh_money"
+                                app:layout_constraintTop_toTopOf="@+id/tv_account_balance"
                                 app:tint="@color/color_FFFFFF_FFFFFF"
                                 tools:visibility="visible" />
-
-                            <Space
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1" />
 
                             <ImageButton
                                 android:id="@+id/btn_refresh_money"
@@ -196,9 +197,12 @@
                                 android:contentDescription="@null"
                                 android:padding="@dimen/margin_4"
                                 android:scaleType="fitXY"
-                                android:src="@drawable/ic_refresh_brown" />
+                                android:src="@drawable/ic_refresh_brown"
+                                app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/tv_account_balance" />
 
-                        </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                         <LinearLayout
