@@ -360,11 +360,16 @@ class BetInfoRepository(val androidContext: Context) {
         isParlayBet: Boolean = false
     ): List<ParlayOdd> {
         //playQuota取球種最大最小限額，目前後台只有足球、籃球、其他三種類別。
+        //val key = "${matchType.postValue}@${gameType.key}"
+        //val playQuota: PlayQuota? = if (playQuotaComData?.get(key) != null) playQuotaComData?.get(key) else playQuotaComData?.get("${matchType.postValue}@${GameType.OTHER}")
+
+        //後台要求寫死足球、籃球、其他三種類別。如果之後需求更變，有擴充其他球種可考慮改成上方邏輯
         val key = "${matchType.postValue}@${gameType.key}"
-        val playQuota: PlayQuota? =
-            if (playQuotaComData?.get(key) != null) playQuotaComData?.get(key) else playQuotaComData?.get(
-                "${matchType.postValue}@${GameType.OTHER}"
-            )
+        val playQuota: PlayQuota? = when (gameType.key) {
+            GameType.BK.key -> playQuotaComData?.get(key)
+            GameType.FT.key -> playQuotaComData?.get(key)
+            else -> playQuotaComData?.get("${matchType.postValue}@${GameType.OTHER}")
+        }
 
         val oddsList = matchOddList.map {
             Pair(it.odds.toBigDecimal(), it.isOnlyEUType)
