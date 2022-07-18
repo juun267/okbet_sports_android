@@ -47,7 +47,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatInputMoney(any: Any): String {
-        return doNumberFormat(any, "0.##") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.FLOOR }
+        return doNumberFormat(any, "0.###") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatMoney(double: Double): String {
