@@ -279,21 +279,12 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            addScrollListenerForBottomNavBar(
-                onScrollDown = {
-                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-                }
-            )
         }
 
         rv_cat.apply {
             adapter = tabCateAdapter
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
-        }
-
-        app_bar_layout.addOffsetListenerForBottomNavBar {
-            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

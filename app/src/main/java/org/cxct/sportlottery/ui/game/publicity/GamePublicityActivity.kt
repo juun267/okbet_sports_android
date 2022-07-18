@@ -84,7 +84,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            MultiLanguagesApplication.mInstance.initBottomNavBar()
             when (destination.id) {
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
@@ -166,11 +165,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         viewModel.userMoney.observe(this) {
             it?.let { money ->
                 tv_balance.text = TextUtil.formatMoney(money)
-            }
-        }
-        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
-            it.getContentIfNotHandled()?.let { isScrollDown ->
-                setBottomNavBarVisibility(game_Bottom_Navigation, isScrollDown)
             }
         }
         viewModel.showBetUpperLimit.observe(this) {

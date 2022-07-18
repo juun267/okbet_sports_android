@@ -104,10 +104,6 @@ class MultiLanguagesApplication : Application() {
             }
         }
 
-    private val _isScrollDown = MutableLiveData<Event<Boolean>>()
-    val isScrollDown: LiveData<Event<Boolean>>
-        get() = _isScrollDown
-
 
     private val viewModelModule = module {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get()) }
@@ -284,15 +280,6 @@ class MultiLanguagesApplication : Application() {
 
     fun setIsAgeVerifyShow(show: Boolean) {
         this.isAgeVerifyNeedShow = show
-    }
-
-    fun setIsScrollDown(isScrollDown: Boolean) {
-        _isScrollDown.postValue(Event(isScrollDown))
-    }
-
-    //重新顯示bottomNavBar
-    fun initBottomNavBar() {
-        setIsScrollDown(false)
     }
 
     fun getOddsType() {
