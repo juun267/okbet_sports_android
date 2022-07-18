@@ -520,6 +520,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             inputMaxMoney = parlayMaxBet.toDouble()
         }
 
+        var isSingleBetFirstOpenKeyboard = true
+
         @SuppressLint("ClickableViewAccessibility")
         private fun setupBetAmountInput(
             itemData: BetInfoListData,
@@ -697,6 +699,19 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
                     }
                     false
+                }
+                //單筆注單展開時，預設開啟輸入本金的鍵盤
+                if (betListSize == 1 && isSingleBetFirstOpenKeyboard) {
+                    isSingleBetFirstOpenKeyboard = false
+                    et_bet.requestFocus()
+                    itemData.isInputBet = true
+                    layoutKeyBoard.showKeyboard(
+                        et_bet,
+                        position,
+                        inputMaxMoney,
+                        itemData.parlayOdds?.min?.toLong() ?: 0,
+                        mUserLogin
+                    )
                 }
                 et_bet.setOnFocusChangeListener { _, hasFocus ->
 //                    if (!hasFocus) layoutKeyBoard?.hideKeyboard() //兩個輸入匡會互搶focus不能這樣關閉鍵盤
