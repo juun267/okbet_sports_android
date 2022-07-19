@@ -21,8 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_10"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_26"
         app:cardCornerRadius="4dp"
         app:cardElevation="1dp">
 
@@ -92,28 +91,28 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/et_bet_height"
                 android:layout_marginHorizontal="@dimen/margin_8"
-                android:paddingTop="@dimen/margin_10"
+                android:layout_marginTop="@dimen/margin_10"
                 app:layout_constraintTop_toBottomOf="@+id/titleLayout">
 
                 <EditText
                     android:id="@+id/et_bet_single"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/et_bet_height"
-                    android:layout_marginEnd="@dimen/margin_6"
+                    android:layout_height="0dp"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"
                     android:gravity="end|center_vertical"
                     android:inputType="numberDecimal"
                     android:letterSpacing="0.05"
                     android:maxLength="7"
-                    android:paddingHorizontal="12dp"
+                    android:paddingHorizontal="15dp"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize16sp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toStartOf="@+id/et_win_single"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <TextView
                     android:id="@+id/tv_hint_single_default"
@@ -145,16 +144,17 @@
                     android:id="@+id/et_win_single"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/et_bet_height"
+                    android:layout_marginStart="@dimen/margin_6"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"
                     android:enabled="false"
                     android:gravity="end|center_vertical"
                     android:inputType="numberDecimal"
                     android:letterSpacing="0.05"
                     android:maxLength="7"
-                    android:paddingHorizontal="12dp"
+                    android:paddingHorizontal="15dp"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize16sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/et_bet_single"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/et_bet_single"

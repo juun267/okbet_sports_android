@@ -1271,17 +1271,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val initValue =
                     if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else ""
                 //init winnable amount
-                if (!initValue.isNullOrEmpty()) {
-                    et_win_single.setText(
-                        TextUtil.formatInputMoney(
-                            getAllSingleWinnableAmount(
-                                if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
-                                currentOddsType,
-                                betList
-                            )
-                        )
-                    )
-                }
+//                if (!initValue.isNullOrEmpty()) {
+//                    et_win_single.setText(
+//                        TextUtil.formatInputMoney(
+//                            getAllSingleWinnableAmount(
+//                                if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
+//                                currentOddsType,
+//                                betList
+//                            )
+//                        )
+//                    )
+//                }
 //                tv_winnable_amount.text = TextUtil.formatMoney(
 //                    getAllSingleWinnableAmount(
 //                        if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
@@ -1309,7 +1309,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 inputValue = 0.0
                                 itemData.allSingleInput = null
                                 //更新可贏額
-                                if (itemData.isInputBet) itemView.et_win_single.text.clear()
+//                                if (itemData.isInputBet) itemView.et_win_single.text.clear()
                             } else {
                                 inputValue = it.toString().toDouble()
                                 itemData.allSingleInput = it.toString()
@@ -1330,9 +1330,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 }
 
                                 //更新可贏額
-                                if (allWinnableAmount > 0) {
-                                    itemView.et_win_single.setText(TextUtil.formatInputMoney(allWinnableAmount))
-                                }
+//                                if (allWinnableAmount > 0) {
+//                                    itemView.et_win_single.setText(TextUtil.formatInputMoney(allWinnableAmount))
+//                                }
                             }
                             setEtBetSingleBackground(itemData)
 
@@ -1583,9 +1583,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 //更新win single editText hint
-                val etWinHasInput = !et_win_single.text.isNullOrEmpty()
-                tv_win_hint_single_default.isVisible = !etWinHasInput
-                tv_win_hint_single_amount.isVisible = etWinHasInput
+//                val etWinHasInput = !et_win_single.text.isNullOrEmpty()
+//                tv_win_hint_single_default.isVisible = !etWinHasInput
+//                tv_win_hint_single_amount.isVisible = etWinHasInput
             }
         }
     }
