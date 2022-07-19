@@ -1056,7 +1056,7 @@
     <string name="faqs">FAQs</string>
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
-    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_hint">%s is a Registered Trade Mark, brand and registered business name.</string>
     <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="brackets">(%1$s)</string>

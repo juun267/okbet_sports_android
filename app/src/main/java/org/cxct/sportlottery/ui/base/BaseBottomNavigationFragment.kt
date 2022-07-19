@@ -71,12 +71,7 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
 
         //語言切換
-        img_flag.setOnClickListener {
-            (activity as GameActivity).showSwitchLanguageFragment()
-            //ChangeLanguageDialog().show(parentFragmentManager, null)
-        }
-
-        txv_language.setOnClickListener {
+        ll_language.setOnClickListener {
             (activity as GameActivity).showSwitchLanguageFragment()
             //ChangeLanguageDialog().show(parentFragmentManager, null)
         }

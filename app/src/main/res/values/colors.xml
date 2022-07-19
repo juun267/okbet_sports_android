@@ -106,6 +106,7 @@
     <color name="color_DEE7F5">#DEE7F5</color>
     <color name="color_3A3C40">#3A3C40</color>
     <color name="color_FA0200">#FA0200</color>
+    <color name="color_F1F7FE">#F1F7FE</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
