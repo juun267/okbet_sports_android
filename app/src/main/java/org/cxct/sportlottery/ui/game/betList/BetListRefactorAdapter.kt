@@ -456,7 +456,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 //region 20220714 投注單版面調整
                 GameType.getGameType(itemData.matchOdd.gameType)?.let {
-                    ivSportLogo.setImageResource(GameType.getGameTypeIcon(it))
+                    ivSportLogo.setImageResource(GameType.getBetListGameTypeIcon(it))
                 }
 
                 //不支援串關
