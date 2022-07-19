@@ -306,6 +306,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
             }
 
+            GameType.ES -> {
+                when (viewType) {
+                    PlayCate.CS_5_MAP.ordinal -> LayoutType.SINGLE_2_CS.layout
+                    else -> LayoutType.SINGLE_2_ITEM.layout
+                }
+            }
+
             GameType.CB -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
@@ -828,6 +835,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         -> oneList(oddsDetail)
 
                         else -> oneList(oddsDetail)
+                    }
+                }
+                //PM 沒給版型文件，對照IOS版型
+                GameType.ES -> {
+                    when (viewType) {
+                        PlayCate.CS_5_MAP.ordinal -> forSingleCS(
+                            oddsDetail,
+                            2
+                        )
+                        else -> forSingle(oddsDetail, 2)
                     }
                 }
 
