@@ -615,7 +615,7 @@
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
     <string name="bet_info_list_title">Đơn cược</string>
-    <string name="bet_list_title">Đơn cược</string>
+    <string name="bet_list_title">Vé cược</string>
     <string name="bet_info_list_game_closed">Kèo chấp đã đóng</string>
     <string name="bet_info_list_game_odds_changed">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_info_list_bet_quota">Số tiền cược : </string>
