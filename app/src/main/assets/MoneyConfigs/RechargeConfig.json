@@ -178,11 +178,11 @@
   },
   {
     "titleNameMap": {
-      "zh": "Gragon Pay",
-      "en": "Gragon Pay",
-      "vi": "Gragon Pay"
+      "zh": "Dragon Pay",
+      "en": "Dragon Pay",
+      "vi": "Dragon Pay"
     },
-    "subtitle": "Gragon Pay",
+    "subtitle": "Dragon Pay",
     "image": "ic_gragon_pay",
     "rechType": "onlinePayment",
     "onlineType": "211"
