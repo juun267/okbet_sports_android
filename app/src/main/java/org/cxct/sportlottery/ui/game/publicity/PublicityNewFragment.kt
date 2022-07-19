@@ -70,7 +70,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     goGamePage()
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    if(mIsEnabled){
+                    if (mIsEnabled) {
                         avoidFastDoubleClick()
                         addOddsDialog(
                             gameType,
@@ -108,7 +108,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             )
         )
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPublicityBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -223,13 +223,13 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun initObservers() {
-        viewModel.isLogin.observe(viewLifecycleOwner, { isLogin ->
+        viewModel.isLogin.observe(viewLifecycleOwner) { isLogin ->
             mPublicityAdapter.isLogin = isLogin
-        })
+        }
 
-        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner, {
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
             mPublicityAdapter.hasNotice = it.isNotEmpty()
-        })
+        }
 
         viewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
             val newDiscount = userInfo?.discount ?: 1.0F
@@ -237,11 +237,11 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             mPublicityAdapter.discount = newDiscount
         }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             it?.let { oddsType ->
                 mPublicityAdapter.oddsType = oddsType
             }
-        })
+        }
 
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
@@ -249,7 +249,17 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 isNewestDataFromApi = true
                 mRecommendList = recommendList
                 mPublicityAdapter.removeData(GamePublicityNewAdapter.PreloadItem())
-//                mPublicityAdapter.addRecommend(recommendList)
+                val adapterRecommendListData = mPublicityAdapter.getRecommendListData()
+                recommendList.forEach { recommend ->
+                    adapterRecommendListData.firstOrNull { adapterRecommend -> adapterRecommend.id == recommend.id }
+                        ?.let { oldRecommend ->
+                            recommend.matchInfo?.status = oldRecommend.matchInfo?.status
+                            recommend.matchInfo?.statusName18n = oldRecommend.matchInfo?.statusName18n
+                            recommend.matchInfo?.socketMatchStatus = oldRecommend.matchInfo?.socketMatchStatus
+                            recommend.matchInfo?.leagueTime = oldRecommend.matchInfo?.leagueTime
+                            recommend.runningTime = oldRecommend.runningTime
+                        }
+                }
                 //新版宣傳頁
                 mPublicityAdapter.addRecommendList(recommendList)
                 //先解除全部賽事訂閱
@@ -304,7 +314,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             }
         }
 
-        viewModel.sportMenuFilterList.observe(viewLifecycleOwner){
+        viewModel.sportMenuFilterList.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
                 queryData()
             }
@@ -334,9 +344,10 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             }
         }
 
-        receiver.matchStatusChange.observe(viewLifecycleOwner, { event ->
+        receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
                 val targetList = getNewestRecommendData()
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
                     val matchList = listOf(recommend).toMutableList()
@@ -347,16 +358,21 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                             context
                         )
                     ) {
-                        updateRecommendList(index, recommend)
+                        needUpdate = true
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
-            }
-        })
 
-        receiver.matchClock.observe(viewLifecycleOwner, {
+                if (needUpdate) {
+                    updateRecommendListData(targetList)
+                }
+            }
+        }
+
+        receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 val targetList = getNewestRecommendData()
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
                     if (
@@ -365,16 +381,22 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                             matchClockEvent
                         )
                     ) {
-                        updateRecommendList(index, recommend)
+                        needUpdate = true
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
-            }
-        })
 
-        receiver.oddsChange.observe(viewLifecycleOwner, { event ->
+                if (needUpdate) {
+                    updateRecommendListData(targetList)
+                }
+            }
+        }
+
+        receiver.oddsChange.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { oddsChangeEvent ->
                 val targetList = getNewestRecommendData()
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
                         recommend.sortOddsMap()
@@ -390,7 +412,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
                             updateBetInfo(recommend, oddsChangeEvent)
-                            updateRecommendList(index, recommend)
+                            needUpdate = true
                         }
 
                         if (isNewestDataFromApi)
@@ -398,32 +420,41 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     }
                 }
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
+                if (needUpdate) {
+                    updateRecommendListData(targetList)
+                }
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 val targetList = getNewestRecommendData()
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        updateRecommendList(index, recommend)
+                        needUpdate = true
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
-            }
-        })
 
-        receiver.leagueChange.observe(viewLifecycleOwner, {
+                if (needUpdate) {
+                    updateRecommendListData(targetList)
+                }
+            }
+        }
+
+        receiver.leagueChange.observe(viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
                 viewModel.publicityLeagueChange(leagueChangeEvent)
             }
-        })
+        }
 
-        receiver.globalStop.observe(viewLifecycleOwner, {
+        receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 val targetList = getNewestRecommendData()
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(
@@ -431,25 +462,29 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                             globalStopEvent
                         )
                     ) {
-                        updateRecommendList(index, recommend)
+                        needUpdate = true
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
-            }
-        })
 
-        receiver.producerUp.observe(viewLifecycleOwner, {
+                if (needUpdate) {
+                    updateRecommendListData(targetList)
+                }
+            }
+        }
+
+        receiver.producerUp.observe(viewLifecycleOwner) {
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                subscribeQueryData(mPublicityAdapter.getRecommendData())
+                subscribeQueryData(mPublicityAdapter.getRecommendListData())
             }
-        })
+        }
 
         receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
-                mPublicityAdapter.getRecommendData().forEach { recommend ->
-                    if(recommend.gameType == it.gameType){
+                mPublicityAdapter.getRecommendListData().forEach { recommend ->
+                    if (recommend.gameType == it.gameType) {
                         recommend.oddsMap?.forEach { map ->
                             if (map.key == it.playCateCode) {
                                 map.value?.forEach { odd ->
@@ -483,7 +518,9 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
     private fun Recommend.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+            if ((value?.size
+                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
+            ) {
                 value?.sortBy {
                     it?.marketSort
                 }
@@ -496,7 +533,9 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
      */
     private fun OddsChangeEvent.sortOddsMap() {
         this.odds.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+            if ((value?.size
+                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
+            ) {
                 value?.sortBy {
                     it?.marketSort
                 }
@@ -527,7 +566,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun goGamePage() {
-        GameActivity.reStart(activity?:requireActivity())
+        GameActivity.reStart(activity ?: requireActivity())
         activity?.finish()
     }
 
@@ -606,13 +645,24 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun getNewestRecommendData(): List<Recommend> =
-        if (isNewestDataFromApi) mRecommendList else mPublicityAdapter.getRecommendData()
+        if (isNewestDataFromApi) mRecommendList else mPublicityAdapter.getRecommendListData()
 
 
     private fun updateRecommendList(index: Int, recommend: Recommend) {
         with(binding) {
             if (rvPublicity.scrollState == RecyclerView.SCROLL_STATE_IDLE && !rvPublicity.isComputingLayout) {
                 mPublicityAdapter.updateRecommendData(index, recommend)
+            }
+        }
+    }
+
+    /**
+     * 更新推薦賽事整個清單
+     */
+    private fun updateRecommendListData(recommendList: List<Recommend>) {
+        with(binding) {
+            if (rvPublicity.scrollState == RecyclerView.SCROLL_STATE_IDLE && !rvPublicity.isComputingLayout) {
+                mPublicityAdapter.updateRecommendListData(recommendList)
             }
         }
     }

@@ -22,7 +22,7 @@
             android:orientation="horizontal"
             android:showDividers="middle">
 
-<!--            <TextView
+            <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -31,10 +31,10 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingHorizontal="1dp"
-                android:textColor="@color/selector_button_odd_top_text_publicity"
+                android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="1"
-                tools:textColor="@color/color_7F7F7F_999999" />-->
+                tools:textColor="@color/color_7F7F7F_999999" />
 
             <TextView
                 android:id="@+id/tv_spread"

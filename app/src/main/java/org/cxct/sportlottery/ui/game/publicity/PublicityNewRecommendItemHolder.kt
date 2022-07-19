@@ -11,19 +11,18 @@ import org.cxct.sportlottery.databinding.PublicityRecommendItemBinding
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ViewHolderUtils
 import org.cxct.sportlottery.util.needCountStatus
-import timber.log.Timber
 
+//TODO 棒球比分狀態顯示
 class PublicityNewRecommendItemHolder(
     val binding: PublicityRecommendItemBinding,
     private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
@@ -42,7 +41,8 @@ class PublicityNewRecommendItemHolder(
         setupGameInfo(data)
 
         //設置賽事Bar
-        setupGameScoreBar(data)
+//        setupGameScoreBar(data)
+
         data.matchType?.let { matchType ->
             //配置比分及比賽制度
             setupMatchScore(data, matchType)
@@ -62,7 +62,7 @@ class PublicityNewRecommendItemHolder(
         setupGameInfo(data)
 
         //設置賽事Bar
-        setupGameScoreBar(data)
+//        setupGameScoreBar(data)
 
         //玩法Code
         var oddPlayCateCode = ""
@@ -88,7 +88,7 @@ class PublicityNewRecommendItemHolder(
         //玩法名稱
         val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
         binding.tvGamePlayCateCodeName.text = playCateName
-        Timber.e("oddList: $oddList")
+
         with(binding) {
             //配置賽事比分及機制
             data.matchType?.let { matchType ->
@@ -136,26 +136,6 @@ class PublicityNewRecommendItemHolder(
             }
             //endregion
 
-            //region 第3個按鈕
-            if (oddList.size > 2) {
-                val odd3 = oddList[2]
-                with(oddBtn3) {
-                    visibility = View.VISIBLE
-                    setupOddsButton(this, odd3)
-                    setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
-                    setButtonBetClick(
-                        data = data,
-                        odd = odd3,
-                        playCateCode = oddPlayCateCode,
-                        playCateName = playCateName,
-                        publicityAdapterListener = publicityAdapterListener
-                    )
-                }
-            } else {
-                oddBtn3.visibility = View.GONE
-            }
-            //endregion
-
             //region 比賽狀態(狀態、時間)
             val gameType = data.gameType
             val matchType = data.matchType
@@ -169,13 +149,12 @@ class PublicityNewRecommendItemHolder(
     }
 
     /**
-     * 設置背景、隊伍名稱、點擊事件
+     * 設置背景、隊伍名稱、點擊事件、玩法數量、聯賽名稱
      */
     private fun setupGameInfo(data: Recommend) {
         with(binding) {
-            //球類背景
-            //TODO 球類背景
-//            clSportsBackground.setBackgroundResource(GameType.getGameTypeBackground(data.gameType))
+            //聯賽名稱
+            tvLeagueName.text = data.leagueName
 
             //region 隊伍名稱
             tvHomeName.text = data.homeName
@@ -197,6 +176,9 @@ class PublicityNewRecommendItemHolder(
                 .error(R.color.transparent)
                 .into(ivAwayIcon)
             //endregion
+
+            //玩法數量
+            tvPlayCateCount.text = data.playCateNum.toString()
 
             //region 點擊進入賽事詳情
             val matchOddList = transferMatchOddList(data)
@@ -454,6 +436,7 @@ class PublicityNewRecommendItemHolder(
                             }
                             item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
                             //TODO 記錄時間?
+                            item.runningTime = binding.tvGamePlayTime.text.toString()
 //                            getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
                         }
                     }
@@ -493,6 +476,7 @@ class PublicityNewRecommendItemHolder(
                         item.matchInfo?.remainTime = timeMillis
                         binding.ivLiveIcon.visibility = View.VISIBLE
 //                        TODO 記錄時間?
+                        item.runningTime = binding.tvGamePlayTime.text.toString()
 //                        getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
                     }
                 }

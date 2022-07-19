@@ -97,7 +97,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     class PublicityAnnouncementData {
         var titleList: MutableList<String> = mutableListOf()
     }
-    class RecommendListData(val recommendList: List<Recommend>)
+
+    class RecommendListData(val  recommendList: List<Recommend>)
     class PublicitySubTitleImageData
     class PreloadItem
     class BottomNavigationItem
@@ -137,7 +138,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     }
 
     fun addRecommendList(recommendList: List<Recommend>) {
-        removeData(RecommendListData::class)
+        removeData(RecommendListData(recommendList))
         addDataWithSort(RecommendListData(recommendList))
     }
 
@@ -176,6 +177,16 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         mDataList.forEachIndexed { index, item -> if (item is Recommend) recommendIndexList.add(index) }
         if (recommendIndexList.isNotEmpty())
             notifyItemChanged(recommendIndexList[position], payload)
+    }
+
+    /**
+     * 更新 RecommendListData (推薦賽事清單)
+     */
+    fun updateRecommendListData(payload: List<Recommend>) {
+        notifyItemChanged(
+            mDataList.indexOfFirst { it is RecommendListData },
+            RecommendListData(recommendList = payload)
+        )
     }
     //endregion
 
@@ -284,22 +295,22 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         position: Int,
         payloads: MutableList<Any>
     ) {
-        if (payloads.isNullOrEmpty()) {
+        if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
         } else {
-            payloads.forEachIndexed { _, payload ->
-                when (payload) {
-//                    is Recommend -> {
-//                        (holder as PublicityRecommendViewHolder).update(payload, oddsType) { notifyItemChanged(position, payload) }
-//                    }
-                    //新版宣傳頁推薦賽事
-                    is Recommend -> {
-                        //TODO update data
-//                        (holder as PublicityNewRecommendViewHolder).update(payload, oddsType)
-                    }
-                    is PublicityTitleImageData -> {
-                        (holder as PublicityTitleViewHolder).updateToolbar(payload)
-                    }
+            val payload = payloads.first()
+            when {
+                //新版宣傳頁推薦賽事
+                payload is RecommendListData && holder is PublicityNewRecommendViewHolder -> {
+                    //TODO update data
+                    holder.update(payload.recommendList, oddsType)
+
+                }
+                payload is PublicityTitleImageData && holder is PublicityTitleViewHolder -> {
+                    holder.updateToolbar(payload)
+                }
+                else -> {
+                    onBindViewHolder(holder, position)
                 }
             }
         }
@@ -314,7 +325,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
                 }
             }*/
             is PublicityNewRecommendViewHolder -> {
-                when (data){
+                when (data) {
                     is RecommendListData -> {
                         holder.bind(data.recommendList, oddsType)
                     }
@@ -524,6 +535,10 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         mDataList.filterIsInstance<Recommend>().forEach { result.add(it) }
         return result
     }
+
+    fun getRecommendListData(): List<Recommend> {
+        return mDataList.filterIsInstance<RecommendListData>().firstOrNull()?.recommendList ?: listOf()
+    }
     //endregion
 
     // region private functions
@@ -549,13 +564,13 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         mDataList.forEachIndexed { index, target ->
             if (isPrev(src, target)) {
                 mDataList.add(index, src)
-                notifyItemChanged(index)
+                notifyItemChanged(index, target)
                 return
             }
             if (index == mDataList.size) return
         }
         mDataList.add(src)
-        notifyItemChanged(mDataList.size - 1)
+        notifyItemChanged(mDataList.size - 1, src)
     }
 
     private fun isPrev(src: Any, target: Any): Boolean {
@@ -564,19 +579,19 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     }
 
     private fun getSortPoint(item: Any): Int = sortMap[item::class] ?: 0
-        /*when (item) {
-        is List<*> -> {
-            val listItem = item.firstOrNull()
-            if (listItem != null) {
-                sortListMap[listItem::class] ?: 0
-            } else {
-                0
-            }
+    /*when (item) {
+    is List<*> -> {
+        val listItem = item.firstOrNull()
+        if (listItem != null) {
+            sortListMap[listItem::class] ?: 0
+        } else {
+            0
         }
-        else -> {
-            sortMap[item::class] ?: 0
-        }
-    }*/
+    }
+    else -> {
+        sortMap[item::class] ?: 0
+    }
+}*/
     // endregion
 
     class PublicityAdapterNewListener(

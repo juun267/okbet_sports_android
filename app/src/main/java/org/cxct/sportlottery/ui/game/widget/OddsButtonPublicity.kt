@@ -93,10 +93,10 @@ class OddsButtonPublicity @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage:Boolean? = false) {
+    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage: Boolean? = false) {
         mOdd = odd
         mOddsType = oddsType
-        /*tv_name.apply {
+        tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
@@ -108,7 +108,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
 
             visibility =
                 if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
-        }*/
+        }
 
         tv_spread.apply {
             text = odd?.spread
@@ -117,7 +117,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
                 if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
 
-        if(isOddPercentage == true) //反波膽顯示 %
+        if (isOddPercentage == true) //反波膽顯示 %
             tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
@@ -131,7 +131,13 @@ class OddsButtonPublicity @JvmOverloads constructor(
 
     }
 
-    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false) {
+    fun setupOdd4hall(
+        playCateCode: String,
+        odds: Odd?,
+        oddList: List<Odd?>?,
+        oddsType: OddsType,
+        isDrawBtn: Boolean? = false
+    ) {
         mOdd = odds
         mOddsType = oddsType
 
@@ -160,8 +166,8 @@ class OddsButtonPublicity @JvmOverloads constructor(
             }
         }
 
-        /*tv_name.apply {
-            if(isDrawBtn == true){
+        tv_name.apply {
+            if (isDrawBtn == true) {
                 visibility = View.VISIBLE
 
                 text = when {
@@ -206,7 +212,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
                 }
             }
             requestLayout()
-        }*/
+        }
 
         tv_spread.apply {
             visibility = when (!odds?.spread.isNullOrEmpty()) {
@@ -234,7 +240,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
     }
 
     //主頁精選oddsButton的判斷
-    /*fun setupOddName4Home(name: String?, gameType: String? = null) {
+    fun setupOddName4Home(name: String?, gameType: String? = null) {
         tv_name.apply {
             if (gameType?.contains(PlayCate.SINGLE.value) == true) {
                 isVisible = true
@@ -284,7 +290,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-    }*/
+    }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
@@ -408,7 +414,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
     /**
      * 足球：下個進球玩法會使用到
      */
-    private fun getOrdinalNumbers(number:String):String {
+    private fun getOrdinalNumbers(number: String): String {
         return when (number) {
             "1" -> "1st"
             "2" -> "2nd"

@@ -19,8 +19,15 @@ class PublicityNewRecommendViewHolder(
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
             }
-            adapter = mPublicityRecommendItemAdapter
+            if (adapter == null) {
+                adapter = mPublicityRecommendItemAdapter
+            }
         }
         mPublicityRecommendItemAdapter.setupRecommendItem(recommendList, oddsType)
+    }
+
+    fun update(recommendList: List<Recommend>, oddsType: OddsType) {
+        //TODO 單項Item更新
+        mPublicityRecommendItemAdapter.updateRecommendItem(recommendList, oddsType)
     }
 }
