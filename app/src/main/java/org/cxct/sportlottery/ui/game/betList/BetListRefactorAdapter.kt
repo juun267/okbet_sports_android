@@ -901,18 +901,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
 
-                //依照設計(比例 237:375)，最大寬度為螢幕寬的73%
-                tv_match.maxWidth = ScreenUtil.getScreenWidth(context) * 73 / 100
-                //隊伍名稱
-                tv_match.text = when {
-                    itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
-                    itemData.matchOdd.awayName?.length?.let {
-                        itemData.matchOdd.homeName?.length?.plus(
-                            it
-                        )
-                    } ?: 0 > 21 -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}\n${itemData.matchOdd.awayName}"
-                    else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
-                }
+                //隊伍名稱 (改為不主動換行)
+                tv_match.text = "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+//                    when {
+//                    itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
+//                    itemData.matchOdd.awayName?.length?.let {
+//                        itemData.matchOdd.homeName?.length?.plus(
+//                            it
+//                        )
+//                    } ?: 0 > 21 -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}\n${itemData.matchOdd.awayName}"
+//                    else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+//                }
 
                 //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
                 val nameOneLine = { inputStr: String ->
