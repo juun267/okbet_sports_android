@@ -586,13 +586,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             itemData.betAmount = quota
                             itemData.inputBetAmountStr = it.toString()
                             itemData.input = TextUtil.formatInputMoney(quota)
-                            inputMaxMoney.let { max ->
-                                if (quota > max) {
-                                    et_bet.apply {
-                                        setText(TextUtil.formatInputMoney(max))
-                                        setSelection(text.length)
+                            if (itemData.isInputBet) {
+                                inputMaxMoney.let { max ->
+                                    if (quota > max) {
+                                        et_bet.apply {
+                                            setText(TextUtil.formatInputMoney(max))
+                                            setSelection(text.length)
+                                        }
+                                        return@afterTextChanged
                                     }
-                                    return@afterTextChanged
                                 }
                             }
 
@@ -639,13 +641,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             itemData.betWin = quota
                             itemData.inputBetWinStr = it.toString()
                             itemData.inputWin = TextUtil.formatInputMoney(quota)
-                            inputWinMaxMoney.let { max ->
-                                if (quota > max) {
-                                    et_win.apply {
-                                        setText(TextUtil.formatInputMoney(max))
-                                        setSelection(text.length)
+                            if (itemData.isInputWin) {
+                                inputWinMaxMoney.let { max ->
+                                    if (quota > max) {
+                                        et_win.apply {
+                                            setText(TextUtil.formatInputMoney(max))
+                                            setSelection(text.length)
+                                        }
+                                        return@afterTextChanged
                                     }
-                                    return@afterTextChanged
                                 }
                             }
 
