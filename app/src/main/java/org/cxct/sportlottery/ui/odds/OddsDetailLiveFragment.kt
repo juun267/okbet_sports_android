@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -587,11 +588,14 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                     indexOf(
                         find { date ->
                             date.gameType == it.playCateCode //命名待優化 此處gameType並非球種 而為玩法code
+                        }?.apply {
+                            this.oddArrayList.forEach { odd ->
+                                odd?.status = BetStatus.DEACTIVATED.code
+                            }
                         }
                     ).let { index ->
                         if (index < 0) return@observe
-                        removeAt(index)
-                        oddsDetailListAdapter?.notifyItemRemoved(index)
+                        oddsDetailListAdapter?.notifyItemChanged(index)
                     }
                 }
             }
