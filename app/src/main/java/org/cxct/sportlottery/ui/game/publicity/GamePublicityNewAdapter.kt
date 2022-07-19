@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
+import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
@@ -38,12 +39,13 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 //        PublicitySubTitleImageData::class to 2,
         //跑馬燈
         PublicityAnnouncementData::class to 2,
-
-        PreloadItem::class to 3,
+        //優惠活動文字跑馬燈
+        PromotionAnnouncementData::class to 3,
+        PreloadItem::class to 4,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
-        Recommend::class to 4,
-        RecommendListData::class to 4,
-        BottomNavigationItem::class to 5
+        Recommend::class to 5,
+        RecommendListData::class to 5,
+        BottomNavigationItem::class to 6
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -76,6 +78,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         PUBLICITY_TITLE,
         PUBLICITY_ANNOUNCEMENT, //跑馬燈
         PUBLICITY_SUB_TITLE,
+        PROMOTION_ANNOUNCEMENT, //優惠活動跑馬燈
         PRELOAD,
         RECOMMEND,
         RECOMMEND_LIST, //新版宣傳頁推薦賽事
@@ -98,7 +101,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         var titleList: MutableList<String> = mutableListOf()
     }
 
-    class RecommendListData(val  recommendList: List<Recommend>)
+    class PromotionAnnouncementData(val promotionAnnouncementList: List<String>)
+    class RecommendListData(val recommendList: List<Recommend>)
     class PublicitySubTitleImageData
     class PreloadItem
     class BottomNavigationItem
@@ -140,6 +144,12 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     fun addRecommendList(recommendList: List<Recommend>) {
         removeData(RecommendListData(recommendList))
         addDataWithSort(RecommendListData(recommendList))
+    }
+
+    fun addPromotionAnnouncementList(promotionAnnouncementList: List<String>) {
+        val newData = PromotionAnnouncementData(promotionAnnouncementList = promotionAnnouncementList)
+        removeData(newData)
+        addDataWithSort(newData)
     }
 
     fun addBottomView() {
@@ -191,7 +201,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     //endregion
 
     override fun getItemViewType(position: Int): Int {
-        return when (val data = mDataList[position]) {
+        return when (mDataList[position]) {
             is PublicityTitleImageData -> {
                 ItemType.PUBLICITY_TITLE.ordinal
             }
@@ -200,6 +210,9 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             }
             is PublicitySubTitleImageData -> {
                 ItemType.PUBLICITY_SUB_TITLE.ordinal
+            }
+            is PromotionAnnouncementData -> {
+                ItemType.PROMOTION_ANNOUNCEMENT.ordinal
             }
             is PreloadItem -> {
                 ItemType.PRELOAD.ordinal
@@ -242,6 +255,15 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             ItemType.PUBLICITY_SUB_TITLE.ordinal -> {
                 PublicitySubTitleViewHolder(
                     PublicitySubTitleViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.PROMOTION_ANNOUNCEMENT.ordinal -> {
+                PromotionAnnouncementViewHolder(
+                    PublicityPromotionAnnouncementViewBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -343,6 +365,11 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             }
             is PublicitySubTitleViewHolder -> {
                 holder.bind()
+            }
+            is PromotionAnnouncementViewHolder -> {
+                if (data is PromotionAnnouncementData) {
+                    holder.bind(data)
+                }
             }
             is BottomNavigationViewHolder -> {
                 holder.bind()
@@ -508,6 +535,42 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 
         private fun View.setGoHomePageListener() {
             setOnClickListener { publicityAdapterListener.onGoHomePageListener() }
+        }
+    }
+
+    inner class PromotionAnnouncementViewHolder(val binding: PublicityPromotionAnnouncementViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private var publicityPromotionMarqueeAdapter = PublicityPromotionMarqueeAdapter()
+
+        fun bind(data: PromotionAnnouncementData) {
+            with(binding) {
+                root.setOnClickListener {
+                    publicityAdapterListener.onGoNewsPageListener()
+                }
+            }
+
+            //只有一筆時不做跑馬燈, 僅單純顯示
+            if (data.promotionAnnouncementList.size > 1) {
+                with(binding.rvMarquee) {
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = publicityPromotionMarqueeAdapter
+                    visibility = View.VISIBLE
+                    publicityPromotionMarqueeAdapter.setData(data.promotionAnnouncementList.toMutableList())
+                    startAuto(false) //啟動跑馬燈
+                }
+                binding.tvAnnouncement.visibility = View.GONE
+            } else {
+                with(binding.rvMarquee) {
+                    visibility = View.GONE
+                    stopAuto(true) //停止跑馬燈
+                }
+
+                with(binding.tvAnnouncement) {
+                    text = data.promotionAnnouncementList.firstOrNull()
+                    visibility = View.VISIBLE
+                }
+            }
         }
     }
 

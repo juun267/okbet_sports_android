@@ -330,6 +330,10 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 mPublicityAdapter.updateAnnouncementData(titleList)
             }
         }
+
+        viewModel.publicityPromotionAnnouncementList.observe(viewLifecycleOwner) {
+            mPublicityAdapter.addPromotionAnnouncementList(it)
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
@@ -545,6 +549,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
     private fun queryData() {
         viewModel.getAnnouncement()
+        viewModel.getPromotionAnnouncement()
         viewModel.getRecommend()
         viewModel.getThirdGame()
     }

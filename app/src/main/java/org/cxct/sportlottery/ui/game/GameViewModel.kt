@@ -338,6 +338,10 @@ class GameViewModel(
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
 
+    private val _publicityPromotionAnnouncementList = MutableLiveData<List<String>>()
+    val publicityPromotionAnnouncementList: LiveData<List<String>>
+        get() = _publicityPromotionAnnouncementList
+
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
     var allSearchData: List<SearchResponse.Row>? = null
@@ -2934,6 +2938,16 @@ class GameViewModel(
                 }
             }
         }
+    }
+    //endregion
+
+    //region 宣傳頁 優惠文字公告
+    fun getPromotionAnnouncement() {
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && it.viewType == 1 }
+            ?.filter { it.imageText3 != null && it.imageText3 != "" }
+            ?.mapNotNull { it.imageText3 }?.let {
+                _publicityPromotionAnnouncementList.postValue(it)
+            }
     }
     //endregion
 

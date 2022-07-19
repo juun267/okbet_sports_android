@@ -11,5 +11,6 @@ data class ImageData(
     val imageText2: String?, //内容文字
     val imageText3: String?, //優惠活動彈窗標題文字
     val imageType: Int?, //图类型:1PC轮播；2H5轮播；3App下载二维码；4.活动图
-    val imgUrl: String? //图片地址（相对地址，需要加上config的resServerHost）
+    val imgUrl: String?, //图片地址（相对地址，需要加上config的resServerHost）
+    val viewType: Int? //0 文字正常显示 1 文字上方显示
 )
