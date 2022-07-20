@@ -1229,4 +1229,7 @@
     <string name="btn_sure">Xác nhận</string>
 
     <string name="more_info">Hơn Thông Tin</string>
+    <string name="e_game">Cờ vua</string>
+    <string name="casino">Casino</string>
+    <string name="sabong">Sabong</string>
 </resources>

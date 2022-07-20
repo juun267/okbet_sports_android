@@ -1243,4 +1243,7 @@
     <string name="btn_sure">确定</string>
 
     <string name="more_info">更多資訊</string>
+    <string name="e_game">棋牌</string>
+    <string name="casino">真人</string>
+    <string name="sabong">斗鸡</string>
 </resources>

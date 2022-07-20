@@ -38,14 +38,15 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 //        PublicitySubTitleImageData::class to 2,
         //跑馬燈
         PublicityAnnouncementData::class to 2,
+        PublicityMenuData::class to 3,
         //優惠活動文字跑馬燈
-        PromotionAnnouncementData::class to 3,
-        PreloadItem::class to 4,
+        PromotionAnnouncementData::class to 4,
+        PreloadItem::class to 5,
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
-        Recommend::class to 5,
-        RecommendListData::class to 5,
-        PublicityPromotionData::class to 6,
-        BottomNavigationItem::class to 7
+        Recommend::class to 6,
+        RecommendListData::class to 6,
+        PublicityPromotionData::class to 7,
+        BottomNavigationItem::class to 8
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -78,6 +79,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         PUBLICITY_TITLE,
         PUBLICITY_NEW_TITLE, //新版宣傳頁標題圖片
         PUBLICITY_ANNOUNCEMENT, //跑馬燈
+        PUBLICITY_MENU, //遊戲菜單
         PUBLICITY_SUB_TITLE,
         PROMOTION_ANNOUNCEMENT, //優惠活動跑馬燈
         PRELOAD,
@@ -126,6 +128,11 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     fun addAnnouncement() {
         removeData(PublicityAnnouncementData())
         addDataWithSort(PublicityAnnouncementData())
+    }
+
+    fun addPublicityMenu(publicityMenuData: PublicityMenuData) {
+        removeData(publicityMenuData)
+        addDataWithSort(publicityMenuData)
     }
 
     fun addSubTitle() {
@@ -220,6 +227,9 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             is PublicityAnnouncementData -> {
                 ItemType.PUBLICITY_ANNOUNCEMENT.ordinal
             }
+            is PublicityMenuData -> {
+                ItemType.PUBLICITY_MENU.ordinal
+            }
             is PublicitySubTitleImageData -> {
                 ItemType.PUBLICITY_SUB_TITLE.ordinal
             }
@@ -270,6 +280,15 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             ItemType.PUBLICITY_ANNOUNCEMENT.ordinal -> {
                 PublicityAnnouncementViewHolder(
                     PublicityAnnouncementViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.PUBLICITY_MENU.ordinal -> {
+                PublicityMenuViewHolder(
+                    ViewPublicityMenuBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -411,6 +430,11 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             }
             is PromotionAnnouncementViewHolder -> {
                 if (data is PromotionAnnouncementData) {
+                    holder.bind(data)
+                }
+            }
+            is PublicityMenuViewHolder -> {
+                if (data is PublicityMenuData) {
                     holder.bind(data)
                 }
             }

@@ -213,6 +213,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     private fun initTitle() {
         with(mPublicityAdapter) {
             addTitle()
+            addPublicityMenu(PublicityMenuData())
             addAnnouncement()
 //            addSubTitle() //熱門推薦bar需常駐
             addPreload()
