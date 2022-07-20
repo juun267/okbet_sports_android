@@ -76,6 +76,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 
     enum class ItemType {
         PUBLICITY_TITLE,
+        PUBLICITY_NEW_TITLE, //新版宣傳頁標題圖片
         PUBLICITY_ANNOUNCEMENT, //跑馬燈
         PUBLICITY_SUB_TITLE,
         PROMOTION_ANNOUNCEMENT, //優惠活動跑馬燈
@@ -210,8 +211,11 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 
     override fun getItemViewType(position: Int): Int {
         return when (mDataList[position]) {
-            is PublicityTitleImageData -> {
+            /*is PublicityTitleImageData -> {
                 ItemType.PUBLICITY_TITLE.ordinal
+            }*/
+            is PublicityTitleImageData -> {
+                ItemType.PUBLICITY_NEW_TITLE.ordinal
             }
             is PublicityAnnouncementData -> {
                 ItemType.PUBLICITY_ANNOUNCEMENT.ordinal
@@ -248,6 +252,15 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             ItemType.PUBLICITY_TITLE.ordinal -> {
                 PublicityTitleViewHolder(
                     PublicityTitleViewBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
+            ItemType.PUBLICITY_NEW_TITLE.ordinal -> {
+                PublicityTitleNewViewHolder(
+                    PublicityTitleNewViewBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -348,7 +361,11 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
                     holder.update(payload.recommendList, oddsType)
 
                 }
-                payload is PublicityTitleImageData && holder is PublicityTitleViewHolder -> {
+                /*payload is PublicityTitleImageData && holder is PublicityTitleViewHolder -> {
+                    holder.updateToolbar(payload)
+                }*/
+                //新版宣傳頁標題圖片
+                payload is PublicityTitleImageData && holder is PublicityTitleNewViewHolder -> {
                     holder.updateToolbar(payload)
                 }
                 else -> {
@@ -378,7 +395,13 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
                     holder.bind(data)
                 }
             }
-            is PublicityTitleViewHolder -> {
+            /*is PublicityTitleViewHolder -> {
+                if (data is PublicityTitleImageData) {
+                    holder.bind(data)
+                }
+            }*/
+            //新版宣傳頁圖片標題
+            is PublicityTitleNewViewHolder -> {
                 if (data is PublicityTitleImageData) {
                     holder.bind(data)
                 }
@@ -499,6 +522,59 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
                     .dontTransform()
 
                 with(binding) {
+                    val imageList = sConfigData?.imageList?.filter {
+                        it.imageType == 2
+                    }
+                    banner.setAdapter(object :
+                        BannerImageAdapter<ImageData?>(imageList) {
+                        override fun onBindView(
+                            holder: BannerImageHolder,
+                            data: ImageData?,
+                            position: Int,
+                            size: Int
+                        ) {
+                            val url = sConfigData?.resServerHost + data?.imageName1
+                            Glide.with(holder.itemView)
+                                .load(url)
+                                .apply(requestOptions)
+                                .into(holder.imageView)
+                            holder.imageView.setOnClickListener {
+                                publicityAdapterListener.onGoHomePageListener()
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    inner class PublicityTitleNewViewHolder(val binding: PublicityTitleNewViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val context: Context = binding.root.context
+        fun bind(data: PublicityTitleImageData) {
+            setupBanner(data)
+        }
+
+        fun updateToolbar(data: PublicityTitleImageData) {
+            setupBanner(data)
+        }
+
+        private fun setupBanner(data: PublicityTitleImageData) {
+            if (data.reloadConfig) {
+                val requestOptions = RequestOptions()
+                    .placeholder(R.drawable.ic_image_load)
+                    .error(R.drawable.ic_image_broken)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .dontTransform()
+
+                with(binding) {
+                    root.setOnClickListener {
+                        publicityAdapterListener.onGoHomePageListener()
+                    }
+                    banner.setOnClickListener {
+                        publicityAdapterListener.onGoHomePageListener()
+                    }
+
                     val imageList = sConfigData?.imageList?.filter {
                         it.imageType == 2
                     }

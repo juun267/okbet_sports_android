@@ -86,8 +86,13 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         navController.addOnDestinationChangedListener { _, destination, _ ->
             MultiLanguagesApplication.mInstance.initBottomNavBar()
             when (destination.id) {
+                /*R.id.publicityFragment -> {
+                    binding.gameToolbar.toolBar.visibility = View.GONE
+                    setupNoticeButton(binding.publicityToolbar.ivNotice)
+                }*/
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
+                    binding.publicityToolbar.toolBar.visibility = View.VISIBLE
                     setupNoticeButton(binding.publicityToolbar.ivNotice)
                 }
                 else -> {
