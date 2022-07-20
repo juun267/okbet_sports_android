@@ -37,6 +37,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
+import timber.log.Timber
 import kotlin.math.abs
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -452,6 +453,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             setupInputMaxMoney(itemData)
             //設置可贏額上限
             inputWinMaxMoney = inputMaxMoney * getOddsAndSaveRealAmount(itemData, currentOddsType)
+//            Timber.e("inputMaxMoney: $inputMaxMoney")
+//            Timber.e("inputWinMaxMoney: $inputWinMaxMoney")
 
             itemView.apply {
                 //region 20220714 投注單版面調整
@@ -1074,7 +1077,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
 
             itemData.realAmount = realAmount
-//            Timber.d("odds: $odds")
+            odds = ArithUtil.toOddFormat(odds).toDouble()
+//            Timber.e("odds: $odds")
             return odds
         }
 
