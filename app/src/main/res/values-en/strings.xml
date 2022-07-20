@@ -1239,4 +1239,6 @@
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="tran_type_sub">Type：</string>
     <string name="btn_sure">Confirm</string>
+
+    <string name="more_info">MORE INFO</string>
 </resources>

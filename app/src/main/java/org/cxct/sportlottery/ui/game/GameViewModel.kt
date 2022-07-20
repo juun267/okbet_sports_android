@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
@@ -32,17 +35,18 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListRequest
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
 import org.cxct.sportlottery.network.odds.list.*
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
-import org.cxct.sportlottery.network.outright.odds.*
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
+import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -53,12 +57,8 @@ import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.network.sport.query.*
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.sport.query.SearchRequest
-import org.cxct.sportlottery.network.sport.query.SportQueryData
-import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
@@ -67,6 +67,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
+import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
@@ -79,7 +80,6 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -338,9 +338,15 @@ class GameViewModel(
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
 
+    //優惠活動文字跑馬燈
     private val _publicityPromotionAnnouncementList = MutableLiveData<List<String>>()
     val publicityPromotionAnnouncementList: LiveData<List<String>>
         get() = _publicityPromotionAnnouncementList
+
+    //優惠活動圖文公告
+    private val _publicityPromotionList = MutableLiveData<List<PublicityPromotionItemData>>()
+    val publicityPromotionList: LiveData<List<PublicityPromotionItemData>>
+        get() = _publicityPromotionList
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
@@ -2941,13 +2947,21 @@ class GameViewModel(
     }
     //endregion
 
-    //region 宣傳頁 優惠文字公告
-    fun getPromotionAnnouncement() {
-        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code && it.viewType == 1 }
-            ?.filter { it.imageText3 != null && it.imageText3 != "" }
-            ?.mapNotNull { it.imageText3 }?.let {
-                _publicityPromotionAnnouncementList.postValue(it)
-            }
+    //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
+    fun getPublicityPromotion() {
+
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }?.let { promotionList ->
+            //優惠活動文字跑馬燈
+            promotionList.filter { it.viewType == 1 && it.imageText3 != null && it.imageText3 != "" }
+                .mapNotNull { it.imageText3 }.let {
+                    _publicityPromotionAnnouncementList.postValue(it)
+                }
+
+            //優惠活動圖片公告清單
+            _publicityPromotionList.postValue(promotionList.map {
+                PublicityPromotionItemData.createData(it)
+            })
+        }
     }
     //endregion
 

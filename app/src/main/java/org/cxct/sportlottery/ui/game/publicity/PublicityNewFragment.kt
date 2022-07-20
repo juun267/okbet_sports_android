@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
+//TODO 推薦賽事點擊更新、優惠活動清單payloads更新
 /**
  * @app_destination 宣傳頁
  */
@@ -334,6 +335,10 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.publicityPromotionAnnouncementList.observe(viewLifecycleOwner) {
             mPublicityAdapter.addPromotionAnnouncementList(it)
         }
+
+        viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
+            mPublicityAdapter.addPublicityPromotionList(it)
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
@@ -549,7 +554,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
     private fun queryData() {
         viewModel.getAnnouncement()
-        viewModel.getPromotionAnnouncement()
+        viewModel.getPublicityPromotion()
         viewModel.getRecommend()
         viewModel.getThirdGame()
     }

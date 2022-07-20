@@ -13,7 +13,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
-import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
@@ -45,7 +44,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         //足球, 滾球, 數量, 聯賽名, 國旗, 賽事內容
         Recommend::class to 5,
         RecommendListData::class to 5,
-        BottomNavigationItem::class to 6
+        PublicityPromotionData::class to 6,
+        BottomNavigationItem::class to 7
     )
 
     var oddsType: OddsType = OddsType.EU
@@ -82,6 +82,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
         PRELOAD,
         RECOMMEND,
         RECOMMEND_LIST, //新版宣傳頁推薦賽事
+        PUBLICITY_PROMOTION, //新版宣傳頁優惠活動清單
         BOTTOM_NAVIGATION,
         NONE
     }
@@ -104,6 +105,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
     class PromotionAnnouncementData(val promotionAnnouncementList: List<String>)
     class RecommendListData(val recommendList: List<Recommend>)
     class PublicitySubTitleImageData
+    class PublicityPromotionData(val publicityPromotionDataList: List<PublicityPromotionItemData>)
     class PreloadItem
     class BottomNavigationItem
     // endregion
@@ -148,6 +150,12 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 
     fun addPromotionAnnouncementList(promotionAnnouncementList: List<String>) {
         val newData = PromotionAnnouncementData(promotionAnnouncementList = promotionAnnouncementList)
+        removeData(newData)
+        addDataWithSort(newData)
+    }
+
+    fun addPublicityPromotionList(promotionList: List<PublicityPromotionItemData>) {
+        val newData = PublicityPromotionData(publicityPromotionDataList = promotionList)
         removeData(newData)
         addDataWithSort(newData)
     }
@@ -226,6 +234,9 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             is RecommendListData -> {
                 ItemType.RECOMMEND_LIST.ordinal
             }
+            is PublicityPromotionData -> {
+                ItemType.PUBLICITY_PROMOTION.ordinal
+            }
             else -> {
                 ItemType.NONE.ordinal
             }
@@ -299,6 +310,15 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
                     publicityAdapterListener
                 )
             }
+            ItemType.PUBLICITY_PROMOTION.ordinal -> {
+                PublicityPromotionViewHolder(
+                    ViewPublicityPromotionBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
                 BottomNavigationViewHolder(
                     HomeBottomNavigationBinding.inflate(
@@ -369,6 +389,11 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
             is PromotionAnnouncementViewHolder -> {
                 if (data is PromotionAnnouncementData) {
                     holder.bind(data)
+                }
+            }
+            is PublicityPromotionViewHolder -> {
+                if (data is PublicityPromotionData) {
+                    holder.bind(data.publicityPromotionDataList)
                 }
             }
             is BottomNavigationViewHolder -> {

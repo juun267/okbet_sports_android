@@ -1227,4 +1227,6 @@
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="tran_type_sub">Loại giao dịch：</string>
     <string name="btn_sure">Xác nhận</string>
+
+    <string name="more_info">Hơn Thông Tin</string>
 </resources>

@@ -1241,4 +1241,6 @@
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="tran_type_sub">交易类型：</string>
     <string name="btn_sure">确定</string>
+
+    <string name="more_info">更多資訊</string>
 </resources>
