@@ -346,7 +346,7 @@ class BetInfoRepository(val androidContext: Context) {
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
-            if (betList.size == 1 && matchType != MatchType.PARLAY) {
+            if (betList.size == 1) {
                 _showBetInfoSingle.postValue(Event(true))
             }
         }
