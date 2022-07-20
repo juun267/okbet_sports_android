@@ -99,7 +99,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
         val list = recordList.toMutableList()
 
         //之後config api會提供參數判斷
-        if(BuildConfig.APPLICATION_ID == "com.happysport.sl.test" || BuildConfig.APPLICATION_ID == "com.okbet.ph"){
+        if (BuildConfig.APPLICATION_ID == "com.happysport.sl.test" || BuildConfig.APPLICATION_ID == "com.okbet.ph") {
             list.remove(
                 list.find { it.first == getString(R.string.redenvelope_record) }
             )
@@ -112,10 +112,15 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
             list.remove(
                 list.find { it.first == getString(R.string.record_withdrawal) }
             )
+
+        }
+
+        if (sConfigData?.thirdOpen == FLAG_OPEN) {
             list.remove(
                 list.find { it.first == getString(R.string.redenvelope_record) }
             )
         }
+
         recordAdapter.data = list
     }
 
