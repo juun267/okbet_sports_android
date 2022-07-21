@@ -176,6 +176,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         //優惠活動
         btn_promotion.setVisibilityByCreditSystem()
         btn_affiliate.setVisibilityByCreditSystem()
+        btn_feedback.setVisibilityByCreditSystem()
     }
 
     override fun onResume() {
