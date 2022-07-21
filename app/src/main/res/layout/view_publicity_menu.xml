@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:cvIcon="@drawable/ic_publicity_affiliate"
-            app:cvTitle="@string/affiliate" />
+            tools:cvTitle="@string/affiliate" />
 
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
             android:id="@+id/menuContact"
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:cvIcon="@drawable/ic_publicity_contact"
-            app:cvTitle="@string/contact" />
+            app:cvTitle="@string/publicity_contact" />
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2

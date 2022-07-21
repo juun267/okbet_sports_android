@@ -9,6 +9,8 @@ import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
 import org.cxct.sportlottery.databinding.ViewPublicityMenuBinding
+import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LocalUtils
 import timber.log.Timber
 
@@ -91,8 +93,28 @@ class PublicityMenuViewHolder(
             })
         }
 
-        //region SportMenu
+        //affiliate or faqs
+        with(binding.menuAffiliate) {
+            if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
+                setTitle(LocalUtils.getString(R.string.publicity_faqs))
+                setOnClickListener {
+                    publicityAdapterListener.onClickFAQsListener()
+                }
+            } else {
+                setTitle(LocalUtils.getString(R.string.affiliate))
+                setOnClickListener {
+                    publicityAdapterListener.onClickAffiliateListener()
+                }
+            }
+        }
 
+        //contact
+        binding.menuContact.setOnClickListener {
+            publicityAdapterListener.onClickContactListener()
+
+        }
+
+        //region SportMenu
         with(binding) {
             //view pager
             vpSports.adapter = mPublicitySportPagerAdapter

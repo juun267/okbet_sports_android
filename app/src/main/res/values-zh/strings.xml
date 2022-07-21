@@ -1242,6 +1242,8 @@
     <string name="tran_type_sub">交易类型：</string>
     <string name="btn_sure">确定</string>
 
+    <string name="publicity_contact">联络</string>
+    <string name="publicity_faqs">常见问题</string>
     <string name="more_info">更多資訊</string>
     <string name="e_game">棋牌</string>
     <string name="casino">真人</string>

@@ -804,7 +804,10 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         onClickAnimationIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
         private val onGoNewsPageListener: () -> Unit,
         private val onSportMenuListener: (sportMenu: SportMenu) -> Unit,
-        private val onGoThirdGamesListener: (thirdDictValues: ThirdDictValues) -> Unit
+        private val onGoThirdGamesListener: (thirdDictValues: ThirdDictValues) -> Unit,
+        private val onClickFAQsListener: () -> Unit,
+        private val onClickAffiliateListener: () -> Unit,
+        private val onClickContactListener: () -> Unit
     ) : GamePublicityAdapter.PublicityAdapterListener(
         onLogoClickListener = onLogoClickListener,
         onLanguageBlockClickListener = onLanguageBlockClickListener,
@@ -822,5 +825,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         fun onGoNewsPageListener() = onGoNewsPageListener.invoke()
         fun onSportMenuListener(sportMenu: SportMenu) = onSportMenuListener.invoke(sportMenu)
         fun onGoThirdGamesListener(thirdDictValues: ThirdDictValues) = onGoThirdGamesListener.invoke(thirdDictValues)
+        fun onClickFAQsListener() = onClickFAQsListener.invoke()
+        fun onClickAffiliateListener() = onClickAffiliateListener.invoke()
+        fun onClickContactListener() = onClickContactListener.invoke()
     }
 }

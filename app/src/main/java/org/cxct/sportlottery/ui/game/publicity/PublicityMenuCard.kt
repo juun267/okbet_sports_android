@@ -4,13 +4,16 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
 
 class PublicityMenuCard @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     LinearLayout(context, attrs, defStyle) {
+    private var _binding: PublicityMenuItemBinding
+    val binding get() = _binding
     init {
-        val binding = PublicityMenuItemBinding.inflate(LayoutInflater.from(context), this, false)
+        _binding = PublicityMenuItemBinding.inflate(LayoutInflater.from(context), this, false)
         addView(binding.root)
 
         val typedArray = context.theme
@@ -25,5 +28,9 @@ class PublicityMenuCard @JvmOverloads constructor(context: Context, attrs: Attri
         } finally {
             typedArray.recycle()
         }
+    }
+
+    fun setTitle(title: String) {
+        binding.ivName.text = title
     }
 }

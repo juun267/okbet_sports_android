@@ -12,6 +12,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
@@ -129,6 +131,33 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                         showLoginNotify()
                     } else {
                         viewModel.requestEnterThirdGame(it)
+                    }
+                },
+                onClickFAQsListener = {
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getFAQsUrl(it),
+                            resources.getString(R.string.faqs)
+                        )
+                    }
+                },
+                onClickAffiliateListener = {
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getAffiliateUrl(it),
+                            resources.getString(R.string.btm_navigation_affiliate)
+                        )
+                    }
+                },
+                onClickContactListener = {
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getContactUrl(it),
+                            resources.getString(R.string.contact)
+                        )
                     }
                 }
             )
