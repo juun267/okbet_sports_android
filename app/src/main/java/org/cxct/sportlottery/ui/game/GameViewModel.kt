@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIc
 import org.cxct.sportlottery.network.common.GameType.Companion.getSpecificLanguageString
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -37,10 +38,8 @@ import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListRequest
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
+import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.odds.list.OddsListIncrementResult
-import org.cxct.sportlottery.network.odds.list.OddsListRequest
-import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.outright.odds.*
@@ -1527,7 +1526,7 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = startTime,
                         endTime = endTime,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
+                        playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
                     )
                 )
             }?.updateMatchType()
@@ -1562,6 +1561,8 @@ class GameViewModel(
                     matchOdd.updateOddStatus()
                 }
             }
+
+            result?.oddsListData.getPlayCateNameMap()
 
             when (matchType) {
                 MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
@@ -3081,7 +3082,7 @@ class GameViewModel(
                     gameType,
                     matchType,
                     leagueIdList = leagueIdList,
-                    playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
+                    playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
                 )
             )
         }
@@ -3330,6 +3331,19 @@ class GameViewModel(
 //                    isUpdatingLeague = false
 //                }
 //            }
+        }
+    }
+
+    /**
+     * 更新翻譯
+     */
+    private fun OddsListData?.getPlayCateNameMap() {
+        this?.leagueOdds?.onEach { LeagueOdd ->
+            LeagueOdd.matchOdds.onEach { matchOdd ->
+                matchOdd.playCateNameMap =
+                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)
+                        ?.get(MenuCode.MAIN.code)?.playCateNameMap
+            }
         }
     }
 

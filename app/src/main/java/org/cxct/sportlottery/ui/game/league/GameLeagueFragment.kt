@@ -336,9 +336,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                                         mMatchOdd.oddsMap = leagueOddFromMap.matchOdds.find { matchOdd -> mMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
                                     }
                                 }
-                                leagueOdd.matchOdds.forEach { matchOdd ->
-                                    matchOdd.playCateNameMap = PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get("MAIN")?.playCateNameMap
-                                }
                             }.toMutableList()
                         }
                     }
