@@ -97,7 +97,7 @@
                 android:background="@null"
                 android:minWidth="135dp"
                 android:minHeight="36dp"
-                android:text="@string/btn_determine"
+                android:text="@string/btn_confirm"
                 android:textColor="@color/color_317FFF_1F4780"
                 android:textAllCaps="false"
                 android:textSize="@dimen/textSize14sp"

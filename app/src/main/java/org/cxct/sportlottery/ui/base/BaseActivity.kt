@@ -194,7 +194,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     setTextColor(R.color.color_E44438_e44438)
                     setTitle(this@BaseActivity.getString(R.string.prompt))
                     setMessage(errorMessage)
-                    setPositiveButtonText(this@BaseActivity.getString(R.string.btn_determine))
+                    setPositiveButtonText(this@BaseActivity.getString(R.string.btn_confirm))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()

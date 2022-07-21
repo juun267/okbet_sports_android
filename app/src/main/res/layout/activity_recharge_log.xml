@@ -36,7 +36,7 @@
             android:layout_height="44dp"
             android:layout_weight="1"
             android:background="@color/color_191919_FCFCFC"
-            app:defaultStatusText="@string/recharge_channel_all"
+            app:defaultStatusText="@string/log_type_all"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
     </LinearLayout>

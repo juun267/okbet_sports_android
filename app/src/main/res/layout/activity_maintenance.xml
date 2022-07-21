@@ -82,7 +82,7 @@
         android:minHeight="36dp"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
-        android:text="@string/btn_service_maintain"
+        android:text="@string/btn_service"
         android:textAllCaps="true"
         android:textColor="@color/color_FCFCFC"
         android:textSize="@dimen/textSize14sp"

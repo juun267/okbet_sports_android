@@ -145,7 +145,7 @@ class FinanceViewModel(
                 it.rechState = when (it.status) {
                     Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
                     Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
-                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_processing)
+                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.log_state_processing)
                     else -> ""
                 }
 
@@ -293,7 +293,7 @@ class FinanceViewModel(
 
             result?.rows?.map {
                 it.withdrawState = when (it.checkStatus) {
-                    CheckStatus.PROCESSING.code -> androidContext.getString(R.string.withdraw_log_state_processing)
+                    CheckStatus.PROCESSING.code -> androidContext.getString(R.string.log_state_processing)
                     CheckStatus.UN_PASS.code -> androidContext.getString(R.string.withdraw_log_state_un_pass)
                     CheckStatus.PASS.code -> androidContext.getString(R.string.withdraw_log_state_pass)
                     else -> ""

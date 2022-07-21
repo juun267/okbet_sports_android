@@ -66,6 +66,6 @@
         android:minWidth="52dp"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize12sp"
-        tools:text="@string/recharge_state_processing" />
+        tools:text="@string/log_state_processing" />
 
 </LinearLayout>

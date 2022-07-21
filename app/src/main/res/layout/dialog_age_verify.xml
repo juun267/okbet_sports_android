@@ -90,7 +90,7 @@
                         android:id="@+id/tv_statement_link"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/dialog_age_verify_hint_link"
+                        android:text="@string/terms_conditions"
                         android:textColor="@color/color_317FFF_0760D4"
                         android:textSize="@dimen/textSize12sp" />
 

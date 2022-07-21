@@ -263,7 +263,7 @@ fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
 fun TextView.setRecordStatus(status: Int?) {
     status?.let {
         text = when (it) {
-            1,4 -> context.getString(R.string.recharge_state_processing)
+            1,4 -> context.getString(R.string.log_state_processing)
             2 -> context.getString(R.string.recharge_state_success)
             3 -> context.getString(R.string.recharge_state_failed)
             else -> ""

@@ -10,7 +10,7 @@
         android:title="@string/label_sport_game" />
     <item
         android:id="@+id/bet_list"
-        android:title="@string/bet_info_list_title" />
+        android:title="@string/bet_slip" />
     <item
         android:id="@+id/account_history"
         android:icon="@drawable/ic_btm_account"

@@ -287,7 +287,7 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
         private fun setupMoreIcon(itemData: OutrightShowMoreItem) {
             when (itemData.isExpanded) {
                 false -> {
-                    viewBinding.tvMore.text = itemView.context.getString(R.string.odds_detail_more)
+                    viewBinding.tvMore.text = itemView.context.getString(R.string.display_more)
                     viewBinding.ivMoreIcon.animate().rotation(0f).setDuration(100).start()
                 }
                 true -> {

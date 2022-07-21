@@ -1549,8 +1549,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun group4ItemForOuTag(oddsDetail: OddsDetailListData) {
             rvBet?.apply {
                 adapter = group4AdapterSetup(oddsDetail).apply {
-                    leftName = context.getString(R.string.odds_detail_play_type_ou_o)
-                    rightName = context.getString(R.string.odds_detail_play_type_ou_u)
+                    leftName = context.getString(R.string.odd_button_ou_o)
+                    rightName = context.getString(R.string.odd_button_ou_u)
                     isShowSpreadWithName = true
                 }
                 layoutManager = LinearLayoutManager(itemView.context)

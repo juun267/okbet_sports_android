@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:firstTabText="@string/txv_transfer_pay"
-        app:secondTabText="@string/txv_online_pay"/>
+        app:secondTabText="@string/recharge_channel_online"/>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
