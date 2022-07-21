@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
@@ -292,7 +293,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    publicityAdapterListener
                 )
             }
             ItemType.PUBLICITY_SUB_TITLE.ordinal -> {
@@ -799,7 +801,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         onClickPlayTypeListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
         onClickLiveIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
         onClickAnimationIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-        private val onGoNewsPageListener: () -> Unit
+        private val onGoNewsPageListener: () -> Unit,
+        private val onGoThirdGamesListener: (thirdDictValues: ThirdDictValues) -> Unit
     ) : GamePublicityAdapter.PublicityAdapterListener(
         onLogoClickListener = onLogoClickListener,
         onLanguageBlockClickListener = onLanguageBlockClickListener,
@@ -815,15 +818,6 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         onClickAnimationIconListener = onClickAnimationIconListener
     ) {
         fun onGoNewsPageListener() = onGoNewsPageListener.invoke()
+        fun onGoThirdGamesListener(thirdDictValues: ThirdDictValues) = onGoThirdGamesListener.invoke(thirdDictValues)
     }
 }
-
-/*
-abstract class BaseItemListenerViewHolder(
-    val view: View,
-    private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
-) : RecyclerView.ViewHolder(view) {
-    open fun bind() {
-        view.rootView.setOnClickListener { publicityAdapterListener.onItemClickListener() }
-    }
-}*/

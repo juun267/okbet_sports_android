@@ -70,6 +70,8 @@ import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
 import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
@@ -81,6 +83,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -3051,18 +3054,71 @@ class GameViewModel(
         }
     }
 
+    fun getMenuThirdGame() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getThirdGameList()?.let { gameCateDataList ->
+                //棋牌
+                val eGameList = gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
+                //真人
+                val casinoList = gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
+                //TODO 鬥雞 當前還沒有接入這個分類
+                val sabongList = null
+
+                updatePublicityMenuLiveData(
+                    sportMenuDataList = null,
+                    eGameMenuDataList = eGameList,
+                    casinoMenuDataList = casinoList,
+                    sabongMenuDataList = sabongList
+                )
+            }
+        }
+    }
+
+    private suspend fun getThirdGameList(): MutableList<GameCateData>? {
+        doNetwork(androidContext) {
+            ThirdGameRepository.getThirdGameResponse()
+        }?.let { result ->
+            return if (result.success) {
+                ThirdGameRepository.createHomeGameList(result.t)
+            } else {
+                Timber.e("獲取第三方遊戲配置失敗")
+                null
+            }
+        }
+        return null
+    }
+
     /**
      * 更新publicityMenuData
      */
-    private fun updatePublicityMenuLiveData(sportMenuDataList: List<SportMenu>? = null) {
+    private fun updatePublicityMenuLiveData(
+        sportMenuDataList: List<SportMenu>? = null,
+        eGameMenuDataList: ThirdDictValues? = null,
+        casinoMenuDataList: ThirdDictValues? = null,
+        sabongMenuDataList: ThirdDictValues? = null
+    ) {
+
         viewModelScope.launch(Dispatchers.Main) {
             if (publicityMenuData.value == null) {
-                sportMenuDataList?.let {
-                    _publicityMenuData.value = PublicityMenuData(sportMenuDataList = it)
-                }
+                _publicityMenuData.value = PublicityMenuData(
+                    sportMenuDataList = sportMenuDataList,
+                    eGameMenuData = eGameMenuDataList,
+                    casinoMenuData = casinoMenuDataList,
+                    sabongMenuData = sabongMenuDataList
+                )
             } else {
+                val menuData = publicityMenuData.value
                 sportMenuDataList?.let {
-                    publicityMenuData.value?.sportMenuDataList = it
+                    menuData?.sportMenuDataList = it
+                }
+                eGameMenuDataList?.let {
+                    menuData?.eGameMenuData = it
+                }
+                casinoMenuDataList?.let {
+                    menuData?.casinoMenuData = it
+                }
+                sabongMenuDataList?.let {
+                    menuData?.sabongMenuData = it
                 }
                 _publicityMenuData.value = publicityMenuData.value
             }
@@ -3150,6 +3206,17 @@ class GameViewModel(
                 }
             }
         }
+    }
+
+    //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
+    fun clearThirdGame() {
+        _enterThirdGameResult.postValue(
+            EnterThirdGameResult(
+                resultType = EnterThirdGameResult.ResultType.NONE,
+                url = null,
+                errorMsg = null
+            )
+        )
     }
     //endregion
 

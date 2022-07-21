@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -28,7 +29,9 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
@@ -105,6 +108,15 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 //新版宣傳頁
                 onGoNewsPageListener = {
                     clickNews()
+                },
+                //第三方遊戲跳轉
+                onGoThirdGamesListener = {
+                    avoidFastDoubleClick()
+                    if (viewModel.isLogin.value != true) {
+                        showLoginNotify()
+                    } else {
+                        viewModel.requestEnterThirdGame(it)
+                    }
                 }
             )
         )
@@ -344,6 +356,11 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
             mPublicityAdapter.addPublicityMenu(it)
         }
+
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
+            if (isVisible)
+                enterThirdGame(it)
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
@@ -562,7 +579,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.getAnnouncement()
         viewModel.getPublicityPromotion()
         viewModel.getRecommend()
-        viewModel.getThirdGame()
+        viewModel.getMenuThirdGame()
     }
 
     private fun goLoginPage() {
@@ -689,5 +706,36 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
 
     private fun subscribeChannelHall(recommend: Recommend) {
         subscribeChannelHall(recommend.gameType, recommend.id)
+    }
+
+    private fun enterThirdGame(result: EnterThirdGameResult) {
+        hideLoading()
+        when (result.resultType) {
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+                JumpUtil.toThirdGameWeb(
+                    this,
+                    result.url ?: "",
+                    thirdGameCategoryCode = result.thirdGameCategoryCode
+                )
+            }
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
+                getString(R.string.error),
+                result.errorMsg ?: ""
+            ) {}
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
+                Intent(
+                    context,
+                    RegisterActivity::class.java
+                )
+            )
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
+                getString(R.string.error),
+                result.errorMsg ?: ""
+            ) {}
+            EnterThirdGameResult.ResultType.NONE -> {
+            }
+        }
+        if (result.resultType != EnterThirdGameResult.ResultType.NONE)
+            viewModel.clearThirdGame()
     }
 }

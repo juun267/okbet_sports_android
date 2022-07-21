@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    tools:ignore="ContentDescription">
 
     <LinearLayout
         android:id="@+id/tabBlock"
@@ -90,6 +92,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vpSports" />
+        app:layout_constraintTop_toBottomOf="@id/vpSports"
+        tools:listitem="@layout/item_publicity_sport_indicator" />
+
+    <ImageView
+        android:id="@+id/ivThirdGame"
+        android:layout_width="match_parent"
+        android:layout_height="122dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="7dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tabBlock"
+        tools:src="@drawable/image_e_game_coming_soon"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
