@@ -189,7 +189,7 @@ class TypeSCOAdapter(
                 setOnClickListener {
                     onMoreClickListener.click()
                 }
-                text = if (oddsDetail.isMoreExpand) context.getString(R.string.odds_detail_less) else context.getString(R.string.odds_detail_more)
+                text = if (oddsDetail.isMoreExpand) context.getString(R.string.odds_detail_less) else context.getString(R.string.display_more)
             }
         }
     }

@@ -103,13 +103,12 @@
         android:id="@+id/txv_partner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
         android:text="@string/official_partner"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="12dp"
         android:textAllCaps="true"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vrt"
-        app:layout_constraintTop_toBottomOf="@+id/txv_language" />
+        app:layout_constraintTop_toTopOf="@+id/txv_help"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vrt" />
 
     <ImageView
         android:id="@+id/img_partner"

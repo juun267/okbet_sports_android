@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dialog_security_hint"
+                android:text="@string/phone_verify_content"
                 android:textColor="@color/color_AEAEAE_404040"
                 android:textSize="@dimen/textSize12sp" />
 

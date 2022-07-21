@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/bg_rectangle_4dp_gray_dark"
-        android:text="@string/return_to_top"
+        android:text="@string/back_to_top"
         android:textColor="@color/color_909090_666666"
         android:textSize="@dimen/textSize14sp" />
 

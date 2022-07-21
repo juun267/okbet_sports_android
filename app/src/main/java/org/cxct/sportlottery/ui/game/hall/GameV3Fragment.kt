@@ -431,7 +431,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
-            MatchType.EPS -> getString(R.string.home_title_eps)
+            MatchType.EPS -> getString(R.string.premium_odds)
             MatchType.OTHER -> viewModel.specialEntrance.value?.couponName
             else -> ""
         }
@@ -978,9 +978,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 }
                             }
                             leagueOdd.gameType = gameType
-                            leagueOdd.matchOdds.onEach { matchOdd ->
-                                matchOdd.playCateNameMap = PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)?.get("MAIN")?.playCateNameMap
-                            }
                         }.toMutableList()
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()

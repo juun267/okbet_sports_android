@@ -172,7 +172,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(iv_head.context)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+            .apply(RequestOptions().placeholder(R.drawable.ic_avatar_default))
             .into(iv_head) //載入頭像
     }
 
@@ -369,7 +369,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_AEAEAE_404040))
+                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }

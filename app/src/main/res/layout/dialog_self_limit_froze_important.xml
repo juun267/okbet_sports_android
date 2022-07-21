@@ -242,7 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"
-                    android:text="@string/self_limit_bet_impotent"
+                    android:text="@string/self_limit_per_bet_limit_impotent"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="14dp" />
             </LinearLayout>

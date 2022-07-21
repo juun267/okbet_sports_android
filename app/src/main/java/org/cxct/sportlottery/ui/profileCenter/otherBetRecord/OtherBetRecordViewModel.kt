@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 
 class OtherBetRecordViewModel(
@@ -128,8 +129,13 @@ class OtherBetRecordViewModel(
     }
 
     fun querySecondOrders(firmType: String? = null, today: String? = null) {
-        val startTime = TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.START_OF_DAY).toString()
-        val endTime = TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.END_OF_DAY).toString()
+        val timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
+        val startTime =
+            TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.START_OF_DAY, timeZone = timeZone)
+                .toString()
+        val endTime =
+            TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.END_OF_DAY, timeZone = timeZone)
+                .toString()
         querySecondOrders(startTime = startTime, endTime = endTime, firmType = firmType)
     }
 

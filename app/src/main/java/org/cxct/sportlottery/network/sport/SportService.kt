@@ -7,6 +7,7 @@ import org.cxct.sportlottery.network.Constants.SPORT_MENU_FILTER
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.SPORT_SEARCH_ENGINE
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
+import org.cxct.sportlottery.network.sport.list.SportListResponse
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendResult
 import org.cxct.sportlottery.network.sport.query.SearchRequest
@@ -16,11 +17,16 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 
 interface SportService {
+
+    /**
+     * @param type 1 仅过滤平台球种开关 若不带此参数或不为1 则过滤风控球种开关与平台球种开关
+     */
     @GET(SPORT_LIST)
-    suspend fun getSportList(): Response<SportListResponse>
+    suspend fun getSportList(@Query("type") type: Int? = null): Response<SportListResponse>
 
     @POST(SPORT_MENU)
     suspend fun getMenu(

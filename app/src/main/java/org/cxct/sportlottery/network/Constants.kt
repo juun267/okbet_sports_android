@@ -166,17 +166,13 @@ object Constants {
     //规则与条款
     fun getAgreementRuleUrl(context: Context): String? {
 
+        val checkCreditQuery = if (sConfigData?.creditSystem == 1) "credit=1" else context.getString(R.string.app_name)
+
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/terms-conditions?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/terms-conditions?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/terms-conditions?platform=" + context.getString(
-                    R.string.app_name
-                )
+                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/terms-conditions?" + checkCreditQuery
+                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/terms-conditions?" + checkCreditQuery
+                else -> getBaseUrl() + "sports-rule/#/us/terms-conditions?" + checkCreditQuery
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -244,7 +240,7 @@ object Constants {
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/OkBet.apk"
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/OKbet.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {

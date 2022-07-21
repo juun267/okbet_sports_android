@@ -239,7 +239,7 @@ class RegisterViewModel(
     fun checkFundPwd(fundPwd: String?) {
         val msg = when {
             fundPwd.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPayPwd(fundPwd) -> LocalUtils.getString(R.string.error_withdrawal_pwd)
+            !VerifyConstUtil.verifyPayPwd(fundPwd) -> LocalUtils.getString(R.string.error_withdraw_password)
             else -> null
         }
         _fundPwdMsg.value = Pair(msg, msg == null)
