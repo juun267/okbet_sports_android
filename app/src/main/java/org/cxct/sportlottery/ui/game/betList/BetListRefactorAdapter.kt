@@ -896,7 +896,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 tvOdds.text = if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) tvOdd else {
                     resetOddsUI()
-                    "–"
+                    tvOdd
                 }
 
                 //特別處理playCode為SCO時, 此處不顯示
