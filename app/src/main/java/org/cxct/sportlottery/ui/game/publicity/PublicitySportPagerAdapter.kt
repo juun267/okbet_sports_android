@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.PublicitySportPageBinding
 import org.cxct.sportlottery.network.common.GameType
@@ -45,7 +46,16 @@ class PublicitySportPagerAdapter : RecyclerView.Adapter<PublicitySportPagerAdapt
             itemBindingView.forEachIndexed { index, publicitySportPageItemBinding ->
                 when (val itemData = data.getOrNull(index)) {
                     null -> {
-                        publicitySportPageItemBinding.root.visibility = View.GONE
+                        when {
+                            //為靠右的View時
+                            index % 2 != 0 -> {
+                                //判斷左側的View是否顯示, 若顯示需設為INVISIBLE避免左側View延展
+                                when(itemBindingView[index - 1].root.isVisible) {
+                                    true -> publicitySportPageItemBinding.root.visibility = View.INVISIBLE
+                                    false -> publicitySportPageItemBinding.root.visibility = View.GONE
+                                }
+                            }
+                        }
                     }
                     else -> {
                         with(publicitySportPageItemBinding) {
