@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.GameActivity.Companion.ARGS_PUBLICITY_SPORT_ENTRANCE
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -64,7 +65,6 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     clickNotice()
                 },
                 onMenuClickListener = {
-                    clickMenu()
                     clickMenu()
                 },
                 onItemClickListener = {
@@ -108,6 +108,19 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 //新版宣傳頁
                 onGoNewsPageListener = {
                     clickNews()
+                },
+                onSportMenuListener = { sportMenu ->
+                    if (sportMenu.entranceType != null) {
+                        sportMenu.entranceType?.let {
+                            jumpToTheSport(it, sportMenu.gameType)
+                        }
+                    } else {
+                        viewModel.setSportClosePromptMessage(
+                            MultiLanguagesApplication.appContext.getString(
+                                sportMenu.gameType.string
+                            )
+                        )
+                    }
                 },
                 //第三方遊戲跳轉
                 onGoThirdGamesListener = {
@@ -360,6 +373,11 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it)
+        }
+
+        viewModel.errorPromptMessage.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()
+                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
         }
     }
 
@@ -737,5 +755,17 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE)
             viewModel.clearThirdGame()
+    }
+
+    /**
+     * 跳轉至體育指定球種
+     */
+    private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
+        startActivity(
+            Intent(activity, GameActivity::class.java).putExtra(
+                ARGS_PUBLICITY_SPORT_ENTRANCE,
+                PublicitySportEntrance(matchType, gameType)
+            )
+        )
     }
 }

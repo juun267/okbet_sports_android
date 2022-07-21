@@ -4,12 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -23,16 +21,11 @@ import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_bet_list_count
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -60,6 +53,7 @@ import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -78,7 +72,6 @@ import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.parceler.Parcels
 import timber.log.Timber
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
@@ -97,6 +90,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         const val ARGS_SWITCH_LANGUAGE = "switch_language"
+        const val ARGS_PUBLICITY_SPORT_ENTRANCE = "publicity_sport_entrance"
     }
 
     private var betListFragment = BetListFragment()
@@ -169,6 +163,20 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         setupDataSourceChange()
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        mNavController.addOnDestinationChangedListener(navDestListener)
+
+        checkPublicityEntranceEvent()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        mNavController.removeOnDestinationChangedListener(navDestListener)
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -191,16 +199,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-
-        mNavController.addOnDestinationChangedListener(navDestListener)
-
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
-
-        mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
     override fun initToolBar() {
@@ -1068,6 +1071,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onDestroy() {
         expandCheckList.clear()
         HomePageStatusManager.clear()
+        mNavController.removeOnDestinationChangedListener(navDestListener)
         super.onDestroy()
     }
 
@@ -1076,6 +1080,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             viewModel.fetchDataFromDataSourceChange(
                 matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
             )
+        }
+    }
+
+    /**
+     * 檢查是否有從宣傳頁入口跳轉的事件
+     *
+     * @see org.cxct.sportlottery.ui.game.publicity.PublicityNewFragment.jumpToTheSport
+     */
+    private fun checkPublicityEntranceEvent() {
+        val publicitySportEntrance =
+            intent.getSerializableExtra(ARGS_PUBLICITY_SPORT_ENTRANCE) as? PublicitySportEntrance
+        publicitySportEntrance?.let {
+            viewModel.navSpecialEntrance(it.matchType, it.gameType)
         }
     }
 

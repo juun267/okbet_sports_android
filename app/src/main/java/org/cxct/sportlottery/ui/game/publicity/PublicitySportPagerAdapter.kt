@@ -13,7 +13,9 @@ import org.cxct.sportlottery.util.LocalUtils
 
 //一頁需要顯示的球種數量
 const val PublicitySportPageItemSize = 6
-class PublicitySportPagerAdapter : RecyclerView.Adapter<PublicitySportPagerAdapter.PublicitySportPageHolder>() {
+
+class PublicitySportPagerAdapter(private val publicityAdapterListener: GamePublicityNewAdapter.PublicityAdapterNewListener) :
+    RecyclerView.Adapter<PublicitySportPagerAdapter.PublicitySportPageHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setSportPageData(sportPageDataList: List<List<SportMenu>>) {
@@ -50,7 +52,7 @@ class PublicitySportPagerAdapter : RecyclerView.Adapter<PublicitySportPagerAdapt
                             //為靠右的View時
                             index % 2 != 0 -> {
                                 //判斷左側的View是否顯示, 若顯示需設為INVISIBLE避免左側View延展
-                                when(itemBindingView[index - 1].root.isVisible) {
+                                when (itemBindingView[index - 1].root.isVisible) {
                                     true -> publicitySportPageItemBinding.root.visibility = View.INVISIBLE
                                     false -> publicitySportPageItemBinding.root.visibility = View.GONE
                                 }
@@ -60,6 +62,9 @@ class PublicitySportPagerAdapter : RecyclerView.Adapter<PublicitySportPagerAdapt
                     else -> {
                         with(publicitySportPageItemBinding) {
                             root.visibility = View.VISIBLE
+                            root.setOnClickListener {
+                                publicityAdapterListener.onSportMenuListener(itemData)
+                            }
                             val title =
                                 GameType.getGameTypeString(LocalUtils.getLocalizedContext(), itemData.gameType.key)
                             root.setBackgroundResource(GameType.getGameTypePublicityItemBackground(itemData.gameType))

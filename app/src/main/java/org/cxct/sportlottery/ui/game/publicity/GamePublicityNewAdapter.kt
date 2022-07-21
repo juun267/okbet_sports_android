@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
@@ -802,6 +803,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         onClickLiveIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
         onClickAnimationIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
         private val onGoNewsPageListener: () -> Unit,
+        private val onSportMenuListener: (sportMenu: SportMenu) -> Unit,
         private val onGoThirdGamesListener: (thirdDictValues: ThirdDictValues) -> Unit
     ) : GamePublicityAdapter.PublicityAdapterListener(
         onLogoClickListener = onLogoClickListener,
@@ -818,6 +820,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         onClickAnimationIconListener = onClickAnimationIconListener
     ) {
         fun onGoNewsPageListener() = onGoNewsPageListener.invoke()
+        fun onSportMenuListener(sportMenu: SportMenu) = onSportMenuListener.invoke(sportMenu)
         fun onGoThirdGamesListener(thirdDictValues: ThirdDictValues) = onGoThirdGamesListener.invoke(thirdDictValues)
     }
 }

@@ -21,7 +21,7 @@ class PublicityMenuViewHolder(
     }
 
     private val mPublicitySportPagerAdapter by lazy {
-        PublicitySportPagerAdapter()
+        PublicitySportPagerAdapter(publicityAdapterListener)
     }
 
     private val mPublicitySportIndicatorAdapter by lazy {
