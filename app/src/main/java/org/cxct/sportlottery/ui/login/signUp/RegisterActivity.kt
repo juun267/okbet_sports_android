@@ -185,12 +185,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
         binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
-            LanguageManager.Language.VI -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules) + String.format(getString(R.string.register_rules_2nd_half), appName)
-            else -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules)
+            LanguageManager.Language.VI -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.terms_conditions) + String.format(getString(R.string.register_rules_2nd_half), appName)
+            else -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.terms_conditions)
         }
 
         binding.tvAgreement.makeLinks(
-            Pair(getString(R.string.register_rules), View.OnClickListener {
+            Pair(getString(R.string.terms_conditions), View.OnClickListener {
                 JumpUtil.toInternalWeb(
                     this,
                     Constants.getAgreementRuleUrl(this),

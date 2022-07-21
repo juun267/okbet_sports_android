@@ -29,7 +29,7 @@ import java.util.*
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
     private val statusList by lazy {
-        listOf(StatusSheetData(viewModel.allStatusTag, context?.getString(R.string.all_status)), StatusSheetData("0", context?.getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", context?.getString(R.string.feedback_already_reply)))
+        listOf(StatusSheetData(viewModel.allStatusTag, context?.getString(R.string.all_status)), StatusSheetData("0", context?.getString(R.string.feedback_not_reply_yet)), StatusSheetData("1", context?.getString(R.string.feedback_replied)))
     }
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

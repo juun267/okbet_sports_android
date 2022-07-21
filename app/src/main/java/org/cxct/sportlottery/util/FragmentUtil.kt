@@ -36,7 +36,7 @@ fun commonCheckDialog(
         setShowDivider(isShowDivider)
         setTitle(title)
         setMessage(errorMessageSpan)
-        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_determine))
+        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
         setNegativeButtonText(null)
         setPositiveClickListener {
             positiveClickListener()
@@ -70,7 +70,7 @@ fun commonCheckDialog(
         setShowDivider(isShowDivider)
         setTitle(title)
         setMessage(errorMessage)
-        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_determine))
+        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
         setNegativeButtonText(null)
         setPositiveClickListener {
             positiveClickListener()
@@ -107,7 +107,7 @@ fun commonTwoButtonDialog(
         setShowDivider(isShowDivider)
         setTitle(title)
         setMessage(errorMessage)
-        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_determine))
+        setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
         setNegativeButtonText(cancelText ?: context.getString(R.string.btn_cancel))
         setPositiveClickListener {
             positiveClickListener()

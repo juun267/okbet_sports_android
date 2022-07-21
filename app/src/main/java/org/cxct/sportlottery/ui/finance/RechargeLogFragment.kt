@@ -212,7 +212,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private val rechargeStateList by lazy {
         this.resources.getStringArray(R.array.recharge_state_array).map {
             when (it) {
-                getString(R.string.recharge_state_processing) -> {
+                getString(R.string.log_state_processing) -> {
                     StatusSheetData(Status.PROCESSING.code.toString(), it)
                 }
                 getString(R.string.recharge_state_success) -> {

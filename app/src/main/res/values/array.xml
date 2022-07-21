@@ -28,14 +28,14 @@
 
     <string-array name="transfer_state_array">
         <item>@string/all_status</item>
-        <item>@string/recharge_state_processing</item>
+        <item>@string/log_state_processing</item>
         <item>@string/recharge_state_success</item>
         <item>@string/recharge_state_failed</item>
     </string-array>
 
     <string-array name="recharge_state_array">
         <item>@string/all_order_status</item>
-        <item>@string/recharge_state_processing</item>
+        <item>@string/log_state_processing</item>
         <item>@string/recharge_state_success</item>
         <item>@string/recharge_state_failed</item>
     </string-array>
@@ -54,7 +54,7 @@
     </string-array>
 
     <string-array name="recharge_channel_array">
-        <item>@string/recharge_channel_all</item>
+        <item>@string/log_type_all</item>
         <item>@string/recharge_channel_online</item>
         <item>@string/recharge_channel_bank</item>
         <item>@string/recharge_channel_weixin</item>
@@ -69,13 +69,13 @@
 
     <string-array name="withdraw_state_array">
         <item>@string/all_order_status</item>
-        <item>@string/withdraw_log_state_processing</item>
+        <item>@string/log_state_processing</item>
         <item>@string/withdraw_log_state_pass</item>
         <item>@string/withdraw_log_state_un_pass</item>
     </string-array>
 
     <string-array name="withdraw_type_array">
-        <item>@string/withdraw_log_type_all</item>
+        <item>@string/log_type_all</item>
         <item>@string/withdraw_log_type_bank_trans</item>
         <item>@string/withdraw_log_type_admin</item>
         <item>@string/withdraw_log_crypto_transfer</item>

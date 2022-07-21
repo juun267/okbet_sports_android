@@ -191,7 +191,7 @@ class OutrightOddAdapter :
             }
             when(!data.filterIsInstance<Odd>().last().isExpand) {
                 true -> {
-                    tvMore.text = itemView.context.getString(R.string.odds_detail_more)
+                    tvMore.text = itemView.context.getString(R.string.display_more)
                     ivMoreIcon.animate().rotation(0f).setDuration(100).start()
                 }
                 false -> {

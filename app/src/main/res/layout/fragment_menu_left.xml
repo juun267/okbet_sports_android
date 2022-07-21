@@ -157,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvIcon="@drawable/ic_menu_left_slot_game"
-            app:cvTitle="@string/slot_game" />
+            app:cvTitle="@string/esports" />
 
         <org.cxct.sportlottery.ui.menu.MenuLeftItem
             android:id="@+id/menu_fish_game"

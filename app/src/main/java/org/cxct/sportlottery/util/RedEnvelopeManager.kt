@@ -189,7 +189,7 @@ class RedEnvelopeManager {
             isError = false,
             isShowDivider = true,
             buttonText = LocalUtils.getString(R.string.btn_sure),
-            cancelText = LocalUtils.getString(R.string.btn_cancel_new),
+            cancelText = LocalUtils.getString(R.string.btn_cancel),
             positiveClickListener = positiveClickListener,
             negativeClickListener = negativeClickListener,
             title = LocalUtils.getString(R.string.prompt),
