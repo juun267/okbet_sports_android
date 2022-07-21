@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.game.publicity
 
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
 import org.cxct.sportlottery.databinding.ViewPublicityMenuBinding
@@ -10,6 +12,14 @@ import org.cxct.sportlottery.util.LocalUtils
 class PublicityMenuViewHolder(val binding: ViewPublicityMenuBinding) : RecyclerView.ViewHolder(binding.root) {
     enum class MenuType {
         SPORTS, EGAMES, CASINO, SABONG, AFFILIATE, CONTACT
+    }
+
+    private val mPublicitySportPagerAdapter by lazy {
+        PublicitySportPagerAdapter()
+    }
+
+    private val mPublicitySportIndicatorAdapter by lazy {
+        PublicitySportIndicatorAdapter()
     }
 
     fun bind(data: PublicityMenuData) {
@@ -50,6 +60,38 @@ class PublicityMenuViewHolder(val binding: ViewPublicityMenuBinding) : RecyclerV
             }
             //endregion
         }
+
+        //region SportMenu
+
+        with(binding) {
+            //view pager
+            vpSports.adapter = mPublicitySportPagerAdapter
+
+            val sportPageList = data.sportMenuDataList?.chunked(PublicitySportPageItemSize)
+
+            sportPageList?.let {
+                mPublicitySportPagerAdapter.setSportPageData(it)
+            }
+
+            vpSports.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    mPublicitySportIndicatorAdapter.setupSportSelectedList(sportPageList, position)
+                }
+            })
+
+            //indicator
+            rvIndicator.layoutManager = LinearLayoutManager(root.context, LinearLayoutManager.HORIZONTAL, false)
+            rvIndicator.adapter = mPublicitySportIndicatorAdapter
+            if ((sportPageList?.size ?: 0) > 1) {
+                rvIndicator.visibility = View.VISIBLE
+                //預設第一項
+                mPublicitySportIndicatorAdapter.setupSportSelectedList(sportPageList, 0)
+            } else {
+                rvIndicator.visibility = View.GONE
+            }
+        }
+        //endregion
     }
 
     private fun getTabViewBinding(view: View): PublicityMenuItemBinding = PublicityMenuItemBinding.bind(view)

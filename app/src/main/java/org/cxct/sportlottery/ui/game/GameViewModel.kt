@@ -67,6 +67,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
+import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
 import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -347,6 +348,11 @@ class GameViewModel(
     private val _publicityPromotionList = MutableLiveData<List<PublicityPromotionItemData>>()
     val publicityPromotionList: LiveData<List<PublicityPromotionItemData>>
         get() = _publicityPromotionList
+
+    //新版宣傳頁菜單資料
+    private val _publicityMenuData = MutableLiveData<PublicityMenuData>()
+    val publicityMenuData: LiveData<PublicityMenuData>
+        get() = _publicityMenuData
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
@@ -2963,6 +2969,108 @@ class GameViewModel(
             })
         }
     }
+    //endregion
+
+    //region 新版宣傳頁Menu
+
+    fun getPublicitySportMenu() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getSportListAtPublicityPage()
+            postPublicitySportMenu()
+        }
+    }
+
+    private suspend fun getSportListAtPublicityPage() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList()
+            }
+            result?.let { sportList ->
+                val sportCardList = sportList.rows.sortedBy { it.sortNum }
+                    .mapNotNull { row ->
+                        GameType.getGameType(row.code)
+                            ?.let { gameType ->
+                                SportMenu(
+                                    gameType,
+                                    row.name,
+                                    getSpecificLanguageString(androidContext, gameType.key, LanguageManager.Language.EN.key),
+                                    getGameTypeMenuIcon(gameType)
+                                )
+                            }
+                    }
+                _sportSortList.postValue(Event(sportCardList))
+            }
+        }
+    }
+
+    private suspend fun postPublicitySportMenu() {
+        getSportMenuAll()?.let { sportMenuResult ->
+            _sportSortList.value?.peekContent()?.let { list ->
+                val sportMenuDataList = mutableListOf<SportMenu>()
+                list.forEach { sportMenu ->
+                    sportMenu.apply {
+                        gameCount =
+                            getSportCount(MatchType.IN_PLAY, gameType, sportMenuResult) + getSportCount(
+                                MatchType.TODAY,
+                                gameType,
+                                sportMenuResult
+                            ) + getSportCount(MatchType.EARLY, gameType, sportMenuResult) +
+                                    getSportCount(
+                                        MatchType.PARLAY,
+                                        gameType,
+                                        sportMenuResult
+                                    ) + getSportCount(
+                                MatchType.OUTRIGHT,
+                                gameType,
+                                sportMenuResult
+                            ) + getSportCount(MatchType.AT_START, gameType, sportMenuResult) +
+                                    getSportCount(MatchType.EPS, gameType, sportMenuResult)
+
+                        entranceType = when {
+                            getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.TODAY
+                            }
+                            getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.EARLY
+                            }
+                            getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.PARLAY
+                            }
+                            getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) != 0 -> {
+                                MatchType.OUTRIGHT
+                            }
+                            else -> null
+                        }
+                    }
+
+                    sportMenuDataList.add(sportMenu)
+                }
+
+                updatePublicityMenuLiveData(sportMenuDataList = sportMenuDataList)
+            }
+        }
+    }
+
+    /**
+     * 更新publicityMenuData
+     */
+    private fun updatePublicityMenuLiveData(sportMenuDataList: List<SportMenu>? = null) {
+        viewModelScope.launch(Dispatchers.Main) {
+            if (publicityMenuData.value == null) {
+                sportMenuDataList?.let {
+                    _publicityMenuData.value = PublicityMenuData(sportMenuDataList = it)
+                }
+            } else {
+                sportMenuDataList?.let {
+                    publicityMenuData.value?.sportMenuDataList = it
+                }
+                _publicityMenuData.value = publicityMenuData.value
+            }
+        }
+    }
+
+    //endregion
+
     //endregion
 
     //region 第三方遊戲

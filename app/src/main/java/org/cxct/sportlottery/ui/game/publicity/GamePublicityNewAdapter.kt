@@ -25,10 +25,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.LanguageManager
 
 
-class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicityNewAdapter.PublicityAdapterNewListener) :
+class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAdapterNewListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //排序對應表
     private val sortMap = mapOf<Any, Int>(
@@ -726,6 +726,10 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: GamePublicit
 
     fun getRecommendListData(): List<Recommend> {
         return mDataList.filterIsInstance<RecommendListData>().firstOrNull()?.recommendList ?: listOf()
+    }
+
+    fun getPublicityMenu(): PublicityMenuData? {
+        return mDataList.firstOrNull { it is PublicityMenuData } as? PublicityMenuData
     }
     //endregion
 
