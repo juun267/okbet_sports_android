@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RelativeLayout(context, attrs, defStyle) {
@@ -176,6 +177,15 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
 
         //信用盤開啟，要隱藏底部Pagcor文案與logo
         ll_pagcor_container.setVisibilityByCreditSystem()
+
+        //設定背景色
+        val topResId = R.color.color_212223_F1F7FE
+        val pagcorResId = R.color.color_242527_F1F7FE
+        cl_top_container.setBackgroundResource(topResId)
+        ll_pagcor_container.setBackgroundResource(pagcorResId)
+        //信用盤ll_pagcor_container會隱藏，bottomPaddingViewLayout要依照cl_top_container的色碼
+        if (isCreditSystem()) bottomPaddingViewLayout.setBackgroundResource(topResId)
+        else bottomPaddingViewLayout.setBackgroundResource(pagcorResId)
     }
 
     private fun goSwitchLanguagePage() {
