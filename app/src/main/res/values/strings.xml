@@ -1252,6 +1252,7 @@
     <string name="btn_login_bet">Log in to Bet</string>
     <string name="confirm_single_bets">Confirm %d Single Bets</string>
     <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
+    <string name="btn_remove_closed_selections">Remove closed selections</string>
     <!--endregion-->
 
 </resources>

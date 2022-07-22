@@ -237,6 +237,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             cl_bet.setOnClickListener { addBet() }
+
+            tv_remove_closed_selections.setOnClickListener { removeClosedPlat() }
         }
 
         /*ll_odds_close_warn.setOnClickListener {
@@ -828,6 +830,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //盤口關閉提示
         viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner) {
+            btn_bet.hasPlatClose = it
             showPlatCloseWarn = it
             showHideWarn()
         }

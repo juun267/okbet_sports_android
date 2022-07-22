@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import kotlinx.android.synthetic.main.button_bet.view.*
 import org.cxct.sportlottery.R
@@ -57,15 +58,26 @@ class BetButton @JvmOverloads constructor(
             setupBetClickable()
         }
 
-    //盤口是否有被關閉
+    //已下注盤口是否有被關閉
     var hasBetPlatClose: Boolean? = null
         set(value) {
             field = value
             setupBetClickable()
         }
 
+    //盤口是否有被關閉
+    var hasPlatClose: Boolean? = null
+        set(value) {
+            field = value
+            setupRemoveButtonVisible()
+        }
+
     //是否為串關
     var isParlay: Boolean = false
+        set(value) {
+            field = value
+            setupRemoveButtonVisible()
+        }
 
     //注單有輸入金額的投注數量
     var betCounts: Int = 0
@@ -123,6 +135,11 @@ class BetButton @JvmOverloads constructor(
 //            tv_accept_odds_change.visibility = View.GONE
 //            tv_bet.visibility = View.VISIBLE
 //        }
+    }
+
+    private fun setupRemoveButtonVisible() {
+        val showRemoveButton = isParlay && hasPlatClose == true
+        tv_remove_closed_selections.isVisible = showRemoveButton
     }
 
     private fun setupBetClickable() {
