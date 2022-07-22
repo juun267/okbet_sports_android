@@ -32,6 +32,9 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
         }, BackClickListener {
             activity?.finish()
         }, SportSelectListener {
+            if (it.isNullOrEmpty()) {
+                return@SportSelectListener
+            }
             if (isFirstTime) isFirstTime = false
             else viewModel.setSelectedSport(it)
         })
@@ -43,8 +46,15 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
             recyclerView.layoutManager?.let {
                 val visibleItemCount: Int = it.childCount
                 val totalItemCount: Int = it.itemCount
-                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
+                val firstVisibleItemPosition: Int =
+                    (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (firstVisibleItemPosition > 0) {
+                    viewModel.getNextPage(
+                        visibleItemCount,
+                        firstVisibleItemPosition,
+                        totalItemCount
+                    )
+                }
             }
         }
     }
