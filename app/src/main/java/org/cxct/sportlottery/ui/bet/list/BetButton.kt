@@ -138,7 +138,8 @@ class BetButton @JvmOverloads constructor(
     }
 
     private fun setupRemoveButtonVisible() {
-        val showRemoveButton = isParlay && hasPlatClose == true
+        //不管單項還是串關，當盤口關閉，會展示[移除已关闭的选项]
+        val showRemoveButton = hasPlatClose == true
         tv_remove_closed_selections.isVisible = showRemoveButton
     }
 
