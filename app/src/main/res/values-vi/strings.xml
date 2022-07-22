@@ -427,7 +427,6 @@
     <string name="title_payer">Tài khoản</string>
     <string name="edt_hint_deposit_money">Giới hạn %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
-    <string name="edt_hint_deposit_money_new">Giới hạn %1$s-%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
     <string name="edt_hint_real_name">Họ tên phải khớp với tài khoản ngân hàng</string>

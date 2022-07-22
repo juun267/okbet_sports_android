@@ -474,14 +474,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun getLimitHint(context: Context, min: Int, max: Int): String {
-        return String.format(
-            "${context.getString(R.string.edt_hint_deposit_money_new)}",
-            TextUtil.formatBetQuota(min),
-            TextUtil.formatBetQuota(max)
-        )
-    }
-
     private fun checkMinQuota(quota: Double) {
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {

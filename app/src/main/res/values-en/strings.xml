@@ -439,7 +439,6 @@
     <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
     <string name="edt_hint_deposit_money">Limit %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">Please enter your account</string>
-    <string name="edt_hint_deposit_money_new">Limit %1$s-%2$s</string>
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
     <string name="edt_hint_real_name">match the bank account name</string>

@@ -426,7 +426,6 @@
     <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额 %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">请输入您的账号</string>
-    <string name="edt_hint_deposit_money_new">限额 %1$s-%2$s</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>
