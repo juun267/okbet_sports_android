@@ -350,7 +350,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                         }
                     }
                     if (needUpdate) {
-                        mPublicityAdapter.updateRecommendData(index, recommend)
+                        mPublicityAdapter.updateRecommendListData(targetList)
                     }
                 }
             }
