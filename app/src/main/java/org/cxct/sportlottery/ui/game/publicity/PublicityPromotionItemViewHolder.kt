@@ -7,7 +7,10 @@ import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityPromotionItemBinding
 
-class PublicityPromotionItemViewHolder(val binding: PublicityPromotionItemBinding) :
+class PublicityPromotionItemViewHolder(
+    val binding: PublicityPromotionItemBinding,
+    private val publicityAdapterListener: GamePublicityNewAdapter.PublicityAdapterNewListener
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     val requestOptions = RequestOptions()
@@ -19,6 +22,9 @@ class PublicityPromotionItemViewHolder(val binding: PublicityPromotionItemBindin
     fun bind(data: PublicityPromotionItemData) {
         binding.tvPromotionTitle.text = data.title
         binding.tvPromotionContent.text = data.content
+        binding.tvMore.setOnClickListener {
+            publicityAdapterListener.onClickPromotionListener()
+        }
 
         Glide.with(binding.ivPromotionImage)
             .load(data.imageUrl)

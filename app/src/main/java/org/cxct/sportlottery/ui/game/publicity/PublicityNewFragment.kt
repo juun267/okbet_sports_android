@@ -33,10 +33,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
+import org.cxct.sportlottery.util.*
 
 //TODO 推薦賽事點擊更新、優惠活動清單payloads更新
 /**
@@ -157,6 +154,18 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                             it,
                             Constants.getContactUrl(it),
                             resources.getString(R.string.contact)
+                        )
+                    }
+                },
+                onClickPromotionListener = {
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getPromotionUrl(
+                                viewModel.token,
+                                LanguageManager.getSelectLanguage(it)
+                            ),
+                            getString(R.string.promotion)
                         )
                     }
                 }
@@ -388,11 +397,15 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         }
 
         viewModel.publicityPromotionAnnouncementList.observe(viewLifecycleOwner) {
-            mPublicityAdapter.addPromotionAnnouncementList(it)
+            //非信用盤才顯示優惠活動跑馬燈
+            if (!isCreditSystem())
+                mPublicityAdapter.addPromotionAnnouncementList(it)
         }
 
         viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
-            mPublicityAdapter.addPublicityPromotionList(it)
+            //非信用盤才顯示優惠活動
+            if (!isCreditSystem())
+                mPublicityAdapter.addPublicityPromotionList(it)
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {

@@ -351,7 +351,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ), publicityAdapterListener
                 )
             }
             ItemType.BOTTOM_NAVIGATION.ordinal -> {
@@ -673,7 +673,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         fun bind(data: PromotionAnnouncementData) {
             with(binding) {
                 root.setOnClickListener {
-                    publicityAdapterListener.onGoNewsPageListener()
+                    publicityAdapterListener.onClickPromotionListener()
                 }
             }
 
@@ -807,7 +807,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         private val onGoThirdGamesListener: (thirdDictValues: ThirdDictValues) -> Unit,
         private val onClickFAQsListener: () -> Unit,
         private val onClickAffiliateListener: () -> Unit,
-        private val onClickContactListener: () -> Unit
+        private val onClickContactListener: () -> Unit,
+        private val onClickPromotionListener: () -> Unit
     ) : GamePublicityAdapter.PublicityAdapterListener(
         onLogoClickListener = onLogoClickListener,
         onLanguageBlockClickListener = onLanguageBlockClickListener,
@@ -828,5 +829,6 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         fun onClickFAQsListener() = onClickFAQsListener.invoke()
         fun onClickAffiliateListener() = onClickAffiliateListener.invoke()
         fun onClickContactListener() = onClickContactListener.invoke()
+        fun onClickPromotionListener() = onClickPromotionListener.invoke()
     }
 }

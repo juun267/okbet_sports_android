@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.databinding.PublicityPromotionItemBinding
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class PublicityPromotionItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PublicityPromotionItemAdapter(private val publicityAdapterListener: GamePublicityNewAdapter.PublicityAdapterNewListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mPromotionList: List<PublicityPromotionItemData> = listOf()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -22,7 +23,7 @@ class PublicityPromotionItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHold
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ), publicityAdapterListener
         )
     }
 

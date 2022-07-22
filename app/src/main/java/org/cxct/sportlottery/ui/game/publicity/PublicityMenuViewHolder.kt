@@ -12,6 +12,7 @@ import org.cxct.sportlottery.databinding.ViewPublicityMenuBinding
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.isCreditSystem
 import timber.log.Timber
 
 class PublicityMenuViewHolder(
@@ -95,7 +96,7 @@ class PublicityMenuViewHolder(
 
         //affiliate or faqs
         with(binding.menuAffiliate) {
-            if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
+            if (isCreditSystem()) {
                 setTitle(LocalUtils.getString(R.string.publicity_faqs))
                 setOnClickListener {
                     publicityAdapterListener.onClickFAQsListener()
