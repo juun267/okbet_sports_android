@@ -299,7 +299,8 @@ class BetInfoRepository(val androidContext: Context) {
         subscribeChannelType: ChannelType,
         playCateMenuCode: String? = null,
         oddsType: OddsType?,
-        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playMaxBetSingleBet: Long? = 0
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
         oddsType?.let {
@@ -327,7 +328,7 @@ class BetInfoRepository(val androidContext: Context) {
         betInfoMatchOdd?.let {
             val data = BetInfoListData(
                 betInfoMatchOdd,
-                getParlayOdd(matchType, gameType, mutableListOf(it)).first(),
+                getParlayOdd(matchType, gameType, mutableListOf(it), playMaxBetSingleBet = playMaxBetSingleBet ?: 0).first(),//TODO Bill 3.設定最大值
                 betPlayCateNameMap
             ).apply {
                 this.matchType = matchType
@@ -356,12 +357,14 @@ class BetInfoRepository(val androidContext: Context) {
 
     /**
      * @param isParlayBet 2021/10/29新增, gameType為GameType.PARLAY時不代表該投注為串關投注, 僅由組合後產生的投注才是PARLAY
+     * @param playMaxBetSingleBet 2022/7/12新增，加入注單前要先 call:/api/front/match/bet/info 獲取玩法的最大限額(需求單說是風控後台調整)
      */
     fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
         matchOddList: MutableList<MatchOdd>,
-        isParlayBet: Boolean = false
+        isParlayBet: Boolean = false,
+        playMaxBetSingleBet: Long = 0
     ): List<ParlayOdd> {
 
         val playQuota: PlayQuota? = when {
@@ -471,11 +474,13 @@ class BetInfoRepository(val androidContext: Context) {
                         .toInt()
 
                 //region parlayBetLimit(球類賽事類型投注額上限), matchTypeMaxBetMoney(會員層級賽事類型投注額上限), userSelfLimit(自我禁制投注額上限), hdOddsPayout(風控投注額上限) 取最小值作為投注額上限
+                //20220711 新增 betInfoLimit風控給的限額 (/api/front/match/bet/info給的限額)
                 listOf(
                     parlayBetLimit,
                     matchTypeMaxBetMoney,
                     userSelfLimit ?: 0,
-                    hdOddsPayout
+                    hdOddsPayout,
+                    playMaxBetSingleBet.toInt()
                 ).filter { limit -> limit > 0 }.minOrNull()?.let { minLimit ->
                     maxBet = minLimit
                 }
