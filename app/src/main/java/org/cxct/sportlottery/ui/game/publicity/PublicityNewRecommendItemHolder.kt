@@ -29,7 +29,7 @@ class PublicityNewRecommendItemHolder(
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) { }
+            override fun refreshOddButton(odd: Odd) {}
         }
 
     private val mRequestOptions = RequestOptions()
@@ -86,7 +86,9 @@ class PublicityNewRecommendItemHolder(
             return
 
         //玩法名稱
-        val playCateName = data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
+        val playCateName =
+            data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key)
+                ?: ""
         binding.tvGamePlayCateCodeName.text = playCateName
 
         with(binding) {
@@ -122,7 +124,7 @@ class PublicityNewRecommendItemHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd2)
                     setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
-                    if (oddList.size > 2)  setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType, true)
+                    if (oddList.size > 2) setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType, true)
                     setButtonBetClick(
                         data = data,
                         odd = odd2,
@@ -285,7 +287,7 @@ class PublicityNewRecommendItemHolder(
             GameType.BK.key -> setBkScoreText(item)
             GameType.TT.key -> setVbScoreText(item)
             GameType.BM.key -> setBmScoreText(item)
-            GameType.BB.key -> setBbScoreText() //TODO 20220629 本週上版沒有棒球,棒球晚點處理 setBbScoreText(item)
+            GameType.BB.key -> setBbScoreText(item)
             else -> setBkScoreText(item)
         }
     }
@@ -338,8 +340,11 @@ class PublicityNewRecommendItemHolder(
     /**
      * 設置羽球類型比分及比賽制度
      */
-    private fun setBbScoreText() {
-
+    private fun setBbScoreText(item: Recommend) {
+        with(binding) {
+            setScoreText(item)
+            setBBSptText(item)
+        }
     }
 
     /**
@@ -396,6 +401,43 @@ class PublicityNewRecommendItemHolder(
             }
         }
     }
+
+    private fun PublicityRecommendItemBinding.setBBSptText(item: Recommend) {
+        with(contentBaseballStatus.leagueOddMatchBbStatus) {
+            text = item.matchInfo?.statusName18n
+            visibility = View.VISIBLE
+        }
+
+        with(contentBaseballStatus.txvOut) {
+            text = this.context.getString(R.string.game_out, item.matchInfo?.outNumber ?: "")
+            visibility = View.VISIBLE
+        }
+
+        with(contentBaseballStatus.leagueOddMatchHalfStatus) {
+            setImageResource(if (item.matchInfo?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
+            visibility = View.VISIBLE
+        }
+
+        with(contentBaseballStatus.leagueOddMatchBasebag) {
+            item.matchInfo?.apply {
+                this@with.setImageResource(
+                    when {
+                        firstBaseBag == 0 && secBaseBag == 0 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                        firstBaseBag == 1 && secBaseBag == 0 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_0_0
+                        firstBaseBag == 0 && secBaseBag == 1 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
+                        firstBaseBag == 0 && secBaseBag == 0 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
+                        firstBaseBag == 1 && secBaseBag == 1 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
+                        firstBaseBag == 1 && secBaseBag == 0 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
+                        firstBaseBag == 0 && secBaseBag == 1 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
+                        firstBaseBag == 1 && secBaseBag == 1 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
+                        else -> R.drawable.ic_bb_base_bag_0_0_0
+                    }
+                )
+            }
+
+            visibility = View.VISIBLE
+        }
+    }
     //endregion
 
     //region 賽事時間狀態Method
@@ -405,6 +447,7 @@ class PublicityNewRecommendItemHolder(
         isTimerPause: Boolean
     ) {
         setupMatchTime(item, isTimerEnable, isTimerPause)
+        setupGameStatusBlockVisibility(item)
         setStatusText(item)
         setTextViewStatus(item)
     }
@@ -538,6 +581,25 @@ class PublicityNewRecommendItemHolder(
             }
         }
     }
+
+    /**
+     * 設置當前球種使用的賽事狀態區塊
+     * 棒球獨立使用不同區塊
+     */
+    private fun setupGameStatusBlockVisibility(item: Recommend) {
+        with(binding) {
+            when {
+                item.matchInfo?.gameType == GameType.BB.key && TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
+                    blockNormalGame.visibility = View.GONE
+                    contentBaseballStatus.root.visibility = View.VISIBLE
+                }
+                else -> {
+                    blockNormalGame.visibility = View.VISIBLE
+                    contentBaseballStatus.root.visibility = View.GONE
+                }
+            }
+        }
+    }
     //endregion
 
     private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
@@ -583,11 +645,15 @@ class PublicityNewRecommendItemHolder(
 
                     (gameType == GameType.TT.key || gameType == GameType.BM.key) && map.key.contains(PlayCate.SINGLE.value) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
 
-                    map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(PlayCate.SINGLE_OU.value)) || map.key.contains(
+                    map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(
+                        PlayCate.SINGLE_OU.value
+                    )) || map.key.contains(
                         PlayCate.CORNER_OU.value
                     ) -> 2
 
-                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(PlayCate.NGOAL_OT.value) -> 3
+                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(
+                        PlayCate.NGOAL_OT.value
+                    ) -> 3
 
                     else -> 3
                 }

@@ -11,9 +11,9 @@
         android:layout_width="285dp"
         android:layout_height="136dp"
         android:layout_marginVertical="@dimen/margin_10"
+        app:cardBackgroundColor="@color/color_202020_FCFCFC"
         app:cardCornerRadius="@dimen/margin_6"
         app:cardElevation="@dimen/margin_3"
-        app:cardBackgroundColor="@color/color_202020_FCFCFC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,52 +130,71 @@
                 android:paddingStart="8dp"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/ivLiveIcon"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockNormalGame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tvGameStatus"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/ivLiveIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tvGameStatus"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvGameStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@color/color_999999_999999"
+                        android:textSize="@dimen/textSize12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="2ND" />
+
+                    <TextView
+                        android:id="@+id/tv_game_play_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:textColor="@color/color_999999_999999"
+                        android:textSize="@dimen/textSize12sp"
+                        app:layout_constraintStart_toEndOf="@id/tvGameStatus"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="09:15" />
+
+                    <TextView
+                        android:id="@+id/tvGameSpt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="6dp"
+                        android:textColor="@color/color_999999_999999"
+                        android:textSize="@dimen/textSize12sp"
+                        app:layout_constraintStart_toEndOf="@id/tv_game_play_time"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="/5" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <include
+                    android:id="@+id/contentBaseballStatus"
+                    layout="@layout/content_baseball_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvGameStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="4dp"
-                    android:textColor="@color/color_999999_999999"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="2ND" />
-
-                <TextView
-                    android:id="@+id/tv_game_play_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="4dp"
-                    android:textColor="@color/color_999999_999999"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintStart_toEndOf="@id/tvGameStatus"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="09:15" />
-
-                <TextView
-                    android:id="@+id/tvGameSpt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="6dp"
-                    android:textColor="@color/color_999999_999999"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintStart_toEndOf="@id/tv_game_play_time"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="/5" />
 
                 <TextView
                     android:id="@+id/tvLeagueName"
