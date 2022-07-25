@@ -667,7 +667,7 @@
     <string name="bet_list_single_type">Singles</string>
     <string name="bet_list_parlay_type">Parlay</string>
     <string name="bet_list_view_more_options">More options</string>
-    <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
+    <string name="bet_list_cant_parlay_warn">Remind that if the same event, different ball types, outright and other betting items cannot be parlayed</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
     <string name="parlay_rule_nc1">%1$s string 1 is a single bet of %1$s options \n must win all options to be returned \n</string>

@@ -657,7 +657,7 @@
     <string name="bet_list_single_type">单项</string>
     <string name="bet_list_parlay_type">串关</string>
     <string name="bet_list_view_more_options">更多投注选项</string>
-    <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
     <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n</string>
