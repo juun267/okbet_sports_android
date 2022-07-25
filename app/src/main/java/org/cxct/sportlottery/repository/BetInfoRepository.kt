@@ -189,8 +189,10 @@ class BetInfoRepository(val androidContext: Context) {
                 if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
                         newParlayList[index].apply {
+                            input = parlayOdd.input
                             betAmount = parlayOdd.betAmount
                             inputBetAmountStr = parlayOdd.inputBetAmountStr
+                            singleInput = parlayOdd.singleInput
                             allSingleInput = parlayOdd.allSingleInput
                             amountError = parlayOdd.amountError
                             isInputBet = parlayOdd.isInputBet

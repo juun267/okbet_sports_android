@@ -345,7 +345,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_8"
-                        android:paddingTop="@dimen/margin_6"
+                        android:includeFontPadding="false"
+                        android:paddingTop="@dimen/margin_8"
                         android:text="@string/bet_info_bet_balance_insufficient"
                         android:textColor="@color/color_E44438_e44438"
                         android:textSize="@dimen/textSize13sp"
@@ -357,13 +358,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_8"
-                        android:paddingTop="@dimen/margin_6"
+                        android:includeFontPadding="false"
+                        android:paddingTop="@dimen/margin_8"
                         android:text="@string/bet_info_list_minimum_limit_amount"
                         android:textColor="@color/color_E44438_e44438"
                         android:textSize="@dimen/textSize13sp"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toTopOf="@id/tv_odd_content_changed"
-                        app:layout_constraintStart_toStartOf="@id/et_bet"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tvPleaseEnterCorrectAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_8"
+                        android:includeFontPadding="false"
+                        android:paddingTop="@dimen/margin_8"
+                        android:text="@string/please_enter_correct_amount"
+                        android:textColor="@color/color_E44438_e44438"
+                        android:textSize="@dimen/textSize13sp"
+                        android:visibility="gone"
                         tools:visibility="visible" />
 
                 </LinearLayout>

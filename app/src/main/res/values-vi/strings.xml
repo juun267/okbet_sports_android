@@ -1237,6 +1237,7 @@
     <string name="confirm_single_bets">Xác nhận %d Cược đơn</string>
     <string name="confirm_multiple_bets">Xác nhận %d Cược xâu</string>
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
+    <string name="please_enter_correct_amount">Vui lòng nhập số tiền đặt cược chính xác</string>
     <!--endregion-->
 
 </resources>

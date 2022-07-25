@@ -554,11 +554,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 //設定editText內容
                 et_bet.apply {
-                    if (itemData.betAmount > 0) setText(itemData.inputBetAmountStr) else text.clear()
+                    if (itemData.input != null) setText(itemData.inputBetAmountStr) else text.clear()
                     setSelection(text.length)
                 }
                 et_win.apply {
-                    if (itemData.betAmount > 0) {
+                    if (itemData.input != null){
                         val win = itemData.betAmount * getOddsAndSaveRealAmount(itemData, currentOddsType)
                         setText(TextUtil.formatInputMoney(win))
                     } else text.clear()
@@ -578,7 +578,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         if (it.isNullOrEmpty()) {
                             itemData.betAmount = 0.000
                             itemData.inputBetAmountStr = ""
-                            itemData.input = ""
+                            itemData.input = null
 
                             itemData.realAmount = 0.0
                             //更新可贏額
@@ -588,7 +588,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             val quota = it.toString().toDouble()
                             itemData.betAmount = quota
                             itemData.inputBetAmountStr = it.toString()
-                            itemData.input = TextUtil.formatInputMoney(quota)
+                            itemData.input = it.toString()
                             if (itemData.isInputBet) {
                                 inputMaxMoney.let { max ->
                                     if (quota > max) {
@@ -1128,13 +1128,27 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val betAmount = itemData.betAmount
                 var amountError = true
                 val balanceError: Boolean
-                itemData.parlayOdds?.min?.let { min ->
-                    tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
-                        amountError = true
-                        View.VISIBLE
-                    } else {
-                        amountError = false
-                        View.GONE
+                if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+                    tvErrorMessage.isVisible = false
+                    //請輸入正確投注額
+                    tvPleaseEnterCorrectAmount.visibility =
+                        if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+                            amountError = true
+                            View.VISIBLE
+                        } else {
+                            amountError = false
+                            View.GONE
+                        }
+                } else {
+                    tvPleaseEnterCorrectAmount.isVisible = false
+                    itemData.parlayOdds?.min?.let { min ->
+                        tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
+                            amountError = true
+                            View.VISIBLE
+                        } else {
+                            amountError = false
+                            View.GONE
+                        }
                     }
                 }
                 tvBalanceInsufficientMessage.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
@@ -1275,8 +1289,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 tv_single_count.text = betList.size.toString()
 
-                val initValue =
-                    if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else ""
+                val initValue = if (itemData.singleInput != null) itemData.allSingleInput else ""
                 //init winnable amount
 //                if (!initValue.isNullOrEmpty()) {
 //                    et_win_single.setText(
@@ -1298,7 +1311,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                )
                 et_bet_single.apply {
 
-                    setText(initValue)
+                    if (!initValue.isNullOrEmpty()) setText(initValue) else text.clear()
                     et_bet_single.setSelection(et_bet_single.text.length)
                     setEtBetSingleBackground(itemData)
 
@@ -1315,11 +1328,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             if (it.isNullOrEmpty()) {
                                 inputValue = 0.0
                                 itemData.allSingleInput = null
+                                itemData.singleInput = null
                                 //更新可贏額
 //                                if (itemData.isInputBet) itemView.et_win_single.text.clear()
                             } else {
                                 inputValue = it.toString().toDouble()
                                 itemData.allSingleInput = it.toString()
+                                itemData.singleInput = it.toString()
 
                                 val allWinnableAmount =
                                     getAllSingleWinnableAmount(inputValue, currentOddsType, betList)
@@ -1353,10 +1368,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 ) {
                                     data.betAmount = inputValue
                                     data.inputBetAmountStr = it.toString()
+                                    data.input = it.toString()
                                 } else {
                                     data.betAmount = (data.parlayOdds?.max ?: 0).toDouble()
                                     data.inputBetAmountStr = (data.parlayOdds?.max ?: 0).toString()
+                                    data.input = (data.parlayOdds?.max ?: 0).toString()
                                 }
+
+                                if (itemData.allSingleInput == null) data.input = null
 
                                 var dataOddsType = currentOddsType
                                 data.apply {
@@ -1679,27 +1698,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupOddInfo(data: ParlayOdd, currentOddsType: OddsType) {
-            itemView.apply {
-                if (data.betAmount > 0) {
-                    et_bet_parlay.setText(data.inputBetAmountStr)
-                } else {
-//                    et_bet_parlay.setText("")
-                }
-                et_bet_parlay.setSelection(et_bet_parlay.text.length)
-                checkMinimumLimit(data)
-
-//                //item_bet_list_batch_control_connect_v3 無 content_bet_info_item_quota_detail_v2
-//                val quota = data.betAmount
-//                //比照以往計算
-//                var win = quota * getOdds(data, currentOddsType)
-//                if (currentOddsType == OddsType.EU) {
-//                    win -= (quota * data.num)
-//                }
-//                tv_win_quota.text = TextUtil.format(win)
-            }
-        }
-
         @SuppressLint("ClickableViewAccessibility")
         private fun setupBetAmountInput(
             data: ParlayOdd,
@@ -1718,12 +1716,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     //第2步：移除TextWatcher之後，設置EditText的value
-                    setText(if (data.betAmount > 0.0) data.inputBetAmountStr else "")
+                    if (data.input != null) setText(data.inputBetAmountStr) else text.clear()
                     setSelection(text.length)
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(data, currentOddsType)
+                checkMinimumLimit(data)
 
                 if (et_bet_parlay.isFocusable) {
                     layoutKeyBoard?.setMaxBetMoney(inputMaxMoney)
@@ -1737,10 +1735,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             if (it.isNullOrEmpty()) {
                                 data.betAmount = 0.000
                                 data.inputBetAmountStr = ""
+                                data.input = null
                             } else {
                                 val quota = it.toString().toDouble()
                                 data.betAmount = quota
                                 data.inputBetAmountStr = it.toString()
+                                data.input = it.toString()
 
                                 inputMaxMoney.let { max ->
                                     if (quota > max) {
@@ -1835,13 +1835,27 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 var amountError: Boolean
                 val balanceError: Boolean
-                itemData.min.let { min ->
-                    tvErrorMessageParlay.visibility = if (betAmount != 0.0 && betAmount < min) {
-                        amountError = true
-                        View.VISIBLE
-                    } else {
-                        amountError = false
-                        View.GONE
+                if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+                    tvErrorMessageParlay.isVisible = false
+                    //請輸入正確投注額
+                    tvPleaseEnterCorrectAmountParlay.visibility =
+                        if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+                            amountError = true
+                            View.VISIBLE
+                        } else {
+                            amountError = false
+                            View.GONE
+                        }
+                } else {
+                    tvPleaseEnterCorrectAmountParlay.isVisible = false
+                    itemData.min.let { min ->
+                        tvErrorMessageParlay.visibility = if (betAmount != 0.0 && betAmount < min) {
+                            amountError = true
+                            View.VISIBLE
+                        } else {
+                            amountError = false
+                            View.GONE
+                        }
                     }
                 }
                 tvBalanceInsufficientMessageParlay.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
