@@ -213,8 +213,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT -> R.drawable.bg_publicity_sport_item_amfootball
                 MR -> R.drawable.bg_publicity_sport_item_racing
                 GF -> R.drawable.bg_publicity_sport_item_golf
-                //TODO 缺金融投注的圖
-//                FB -> R.drawable.bg_publicity_sport_item_piechart
+                FB -> R.drawable.bg_publicity_sport_item_piechart
                 BB_COMING_SOON -> R.drawable.bg_publicity_sport_item_baseball
                 ES_COMING_SOON -> R.drawable.bg_publicity_sport_item_e_sport
                 else -> R.drawable.bg_publicity_sport_item_football
