@@ -139,6 +139,7 @@ object GameConfigManager {
                 GameType.AFT.key -> R.drawable.img_home_title_aft_background
                 GameType.MR.key -> R.drawable.img_home_title_mr_background
                 GameType.GF.key -> R.drawable.img_home_title_gf_background
+                GameType.ES.key -> R.drawable.img_home_title_es_background
                 else -> null
             }
         }
@@ -165,6 +166,7 @@ object GameConfigManager {
                 GameType.AFT.key -> R.drawable.amfootball_100
                 GameType.MR.key -> R.drawable.rancing_100
                 GameType.GF.key -> R.drawable.golf_108
+                GameType.ES.key -> R.drawable.esport_100
                 else -> null
             }
         }

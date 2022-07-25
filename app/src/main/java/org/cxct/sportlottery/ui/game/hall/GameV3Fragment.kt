@@ -1970,6 +1970,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 else -> null
                             }
                         }
+                        GameType.ES.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.esport_100
+                                game_bg_layer3.isVisible -> R.drawable.esport_132
+                                else -> null
+                            }
+                        }
                         GameType.IH.key -> {
                             when {
                                 game_bg_layer2.isVisible -> R.drawable.icehockey_100

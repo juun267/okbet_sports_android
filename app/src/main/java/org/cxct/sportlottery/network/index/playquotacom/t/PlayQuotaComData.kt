@@ -35,6 +35,8 @@ data class PlayQuotaComData(
     val oUTRIGHTMR: OutrightGame?,
     @Json(name = "OUTRIGHT@GF")
     val oUTRIGHTGF: OutrightGame?,
+    @Json(name = "OUTRIGHT@ES")
+    val oUTRIGHTES: OutrightGame?,
     @Json(name = "PARLAY@BK")
     val pARLAYBK: ParlayBK?,
     @Json(name = "PARLAY@FT")
@@ -65,6 +67,8 @@ data class PlayQuotaComData(
     val pARLAYMR: ParlayGame?,
     @Json(name = "PARLAY@GF")
     val pARLAYGF: ParlayGame?,
+    @Json(name = "PARLAY@ES")
+    val pARLAYES: ParlayGame?,
     @Json(name = "SINGLE@BK")
     val sINGLEBK: SingleBK?,
     @Json(name = "SINGLE@FT")
@@ -94,6 +98,8 @@ data class PlayQuotaComData(
     @Json(name = "SINGLE@MR")
     val sINGLEMR: SingleGame?,
     @Json(name = "SINGLE@GF")
-    val sINGLEGF: SingleGame?
+    val sINGLEGF: SingleGame?,
+    @Json(name = "SINGLE@ES")
+    val sINGLEES: SingleGame?
 
 )

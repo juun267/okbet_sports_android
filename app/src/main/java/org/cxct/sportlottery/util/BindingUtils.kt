@@ -69,6 +69,7 @@ fun TextView.setGameTypeWithPlayCate(gameType: String?, playCateName: String?) {
             GameType.AFT.key -> context.getString(GameType.AFT.string)
             GameType.MR.key -> context.getString(GameType.MR.string)
             GameType.GF.key -> context.getString(GameType.GF.string)
+            GameType.ES.key -> context.getString(GameType.ES.string)
             else -> ""
         }
     } $playCateName"
