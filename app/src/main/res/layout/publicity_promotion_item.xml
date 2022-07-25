@@ -6,6 +6,7 @@
     android:layout_width="285dp"
     android:layout_height="168dp"
     android:layout_marginVertical="@dimen/margin_4"
+    app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="@dimen/margin_6"
     app:cardElevation="@dimen/margin_2"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -54,7 +55,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:textColor="@color/color_7F7F7F_999999"
+            android:textColor="@color/color_8F8F8F_999999"
             android:textSize="@dimen/textSize12sp"
             tools:text="Welcome OKBET sport! We have a Welcome OKBET sport! We have a …" />
 

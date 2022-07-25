@@ -117,6 +117,9 @@
     <color name="color_3b3b3b">#3b3b3b</color>
     <color name="color_212223">#212223</color>
     <color name="color_242527">#242527</color>
+    <color name="color_CAD3DE">#CAD3DE</color>
+    <color name="color_2D2F31">#2D2F31</color>
+    <color name="color_A8AFB8">#A8AFB8</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -234,6 +237,16 @@
     <color name="color_1A000000_1A000000">#1A000000</color>
     <color name="color_0D000000_0D000000">#0D000000</color>
     <color name="color_141414_FCFCFC">@color/color_FCFCFC</color>
+    <color name="color_CAD3DE_8B9199">@color/color_8B9199</color>
+    <color name="color_202020_FCFCFC">@color/color_FCFCFC</color>
+    <color name="color_141414_F5F5F5">@color/color_F5F5F5</color>
+    <color name="color_317FFF_3A81E5">@color/color_3A81E5</color>
+    <color name="color_2D2F31_EDF1F5">@color/color_EDF1F5</color>
+    <color name="color_A8AFB8_A8AFB8">@color/color_A8AFB8</color>
+    <color name="color_212121_F7F7F7">@color/color_F7F7F7</color>
+    <color name="color_242424_EBEBEB">@color/color_EBEBEB</color>
+    <color name="color_242424_FAFAFA">@color/color_FAFAFA</color>
+    <color name="color_2a2a2a_f3f3f3">@color/color_f3f3f3</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#40FFFFFF</color>

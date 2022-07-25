@@ -630,7 +630,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
 
     inner class PublicityAnnouncementViewHolder(val binding: PublicityAnnouncementViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private var marqueeAdapter = MarqueeAdapter()
+        private var marqueeAdapter = PublicityAnnouncementMarqueeAdapter()
 
         fun bind(data: PublicityAnnouncementData) {
             with(binding) {
@@ -675,6 +675,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
                 root.setOnClickListener {
                     publicityAdapterListener.onClickPromotionListener()
                 }
+
+                ivArrow.setImageResource(if (MultiLanguagesApplication.isNightMode) R.drawable.ic_arrow_right_666666 else R.drawable.ic_arrow_right_gray)
             }
 
             //只有一筆時不做跑馬燈, 僅單純顯示

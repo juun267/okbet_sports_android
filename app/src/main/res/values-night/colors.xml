@@ -116,6 +116,16 @@
     <color name="color_BCBCBC_666666">@color/color_bcbcbc</color>
     <color name="color_E2E2E2_D8D8D8">@color/color_E2E2E2</color>
     <color name="color_141414_FCFCFC">@color/color_141414</color>
+    <color name="color_CAD3DE_8B9199">@color/color_CAD3DE</color>
+    <color name="color_202020_FCFCFC">@color/color_202020</color>
+    <color name="color_141414_F5F5F5">@color/color_141414</color>
+    <color name="color_317FFF_3A81E5">@color/color_317FFF</color>
+    <color name="color_2D2F31_EDF1F5">@color/color_2D2F31</color>
+    <color name="color_A8AFB8_A8AFB8">@color/color_A8AFB8</color>
+    <color name="color_212121_F7F7F7">@color/color_212121</color>
+    <color name="color_242424_EBEBEB">@color/color_242424</color>
+    <color name="color_242424_FAFAFA">@color/color_242424</color>
+    <color name="color_2a2a2a_f3f3f3">@color/color_2a2a2a</color>
 
     <!--region 特殊處理顏色-->
     <color name="home_card_top_text_color">#1AFFFFFF</color>
