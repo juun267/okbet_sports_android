@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.game.widget
 
 
+import android.animation.Animator
+import android.animation.AnimatorInflater
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -10,7 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail_publicity.view.*
-
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -25,7 +26,6 @@ import org.cxct.sportlottery.util.LocalUtils.getString
 import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import timber.log.Timber
 
 
 /**
@@ -232,8 +232,6 @@ class OddsButtonPublicity @JvmOverloads constructor(
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
 
-        updateOddsTextColor()
-
 //        isSelected = odds?.isSelected ?: false
         isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
 
@@ -323,6 +321,11 @@ class OddsButtonPublicity @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
+
+        //隱藏賠率顯示箭頭
+        if (betStatus == BetStatus.LOCKED.code || betStatus == BetStatus.DEACTIVATED.code) {
+            ivOddsArrow.visibility = View.GONE
+        }
     }
 
     private fun setupOddState(oddState: Int) {
@@ -330,39 +333,42 @@ class OddsButtonPublicity @JvmOverloads constructor(
 
         when (oddState) {
             OddState.LARGER.state -> {
-                button_odd_detail.background =
-                    ContextCompat.getDrawable(
-                        context,
-                        if (mFillet) R.drawable.bg_radius_4_button_unselected_green
-                        else R.drawable.bg_radius_0_button_green
-                    )
+                //箭頭
+                ivOddsArrow.visibility = View.VISIBLE
+                ivOddsArrow.setImageResource(R.drawable.ic_arrow_up)
+                setAnimation(true)
+                //賠率顏色
+                tv_odds.setTextColor(ContextCompat.getColor(context, R.color.color_0C8A29))
 
                 isActivated = true
             }
             OddState.SMALLER.state -> {
-                button_odd_detail.background =
-                    ContextCompat.getDrawable(
-                        context,
-                        if (mFillet) R.drawable.bg_radius_4_button_unselected_red
-                        else R.drawable.bg_radius_0_button_red
-                    )
-                resources.getColor(R.color.color_E44438_e44438)
+                //箭頭
+                ivOddsArrow.visibility = View.VISIBLE
+                ivOddsArrow.setImageResource(R.drawable.ic_arrow_down)
+                setAnimation(false)
+                //賠率顏色
+                tv_odds.setTextColor(ContextCompat.getColor(context, R.color.color_ce3636_ce3636))
+
                 isActivated = true
             }
             else -> {
-                button_odd_detail.background =
-                    ContextCompat.getDrawable(
-                        context,
-                        if (mFillet) {
-                            if (MultiLanguagesApplication.isNightMode) R.drawable.selector_button_radius_4_odds_publicity_dark
-                            else R.drawable.selector_button_radius_4_odds_publicity
-                        } else R.drawable.selector_button_radius_0_odds
-                    )
+                //箭頭
+                ivOddsArrow.visibility = View.GONE
+                //賠率顏色
+                updateOddsTextColor()
 
                 isActivated = false
-
-                updateOddsTextColor()
             }
+        }
+    }
+
+    var animationSet: Animator? = null
+    private fun setAnimation(isUp: Boolean) {
+        animationSet?.cancel()
+        animationSet = AnimatorInflater.loadAnimator(context, if (isUp) R.animator.publicity_odd_arrow_up else R.animator.publicity_odd_arrow_down).apply {
+            setTarget(ivOddsArrow)
+            start()
         }
     }
 
