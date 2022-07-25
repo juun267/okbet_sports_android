@@ -13,13 +13,12 @@
         android:layout_height="24dp"
         android:layout_marginTop="8dp"
         android:scaleType="center"
-        android:src="@drawable/ic_soccer"
         app:layout_constraintBottom_toTopOf="@+id/item_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:tint="@color/selector_blue_gray_light" />
+        tools:src="@drawable/selector_ic_sports" />
 
     <TextView
         android:id="@+id/item_title"
@@ -28,7 +27,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:maxLines="1"
-        android:textColor="@color/selector_blue_gray_light"
+        android:textColor="@color/selector_bottom_nav_text"
         android:textSize="@dimen/textSize11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setProfitFormat
+import java.util.*
 
 class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
@@ -90,7 +91,7 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     }
 
     private fun initOnclick() {
-
+        date_search_bar.timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
         date_search_bar.setOnClickSearchListener {
             viewModel.queryFirstOrders(1, date_search_bar.startTime.toString(), date_search_bar.endTime.toString(), status_selector.selectedTag.toString())
         }
