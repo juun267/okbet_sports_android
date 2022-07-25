@@ -1100,7 +1100,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 )
 
                 //更新bet editText hint
-                val etBetHasInput = itemData.betAmount > 0
+                val etBetHasInput = !et_bet.text.isNullOrEmpty()
                 if (etBetHasInput) {
                     tv_hint_default.isVisible = !etBetHasInput
                     tv_hint_amount.isVisible = etBetHasInput
@@ -1110,7 +1110,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 //更新win editText hint
-                val etWinHasInput = itemData.betWin > 0
+                val etWinHasInput = !et_win.text.isNullOrEmpty()
                 if (etWinHasInput) {
                     tv_win_hint_default.isVisible = !etWinHasInput
                     tv_win_hint_amount.isVisible = etWinHasInput
