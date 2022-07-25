@@ -219,5 +219,30 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 ES_COMING_SOON -> R.drawable.img_esports
             }
         }
+
+        fun getGameTypePublicityItemBackground(gameType: GameType): Int {
+            return when (gameType) {
+                FT -> R.drawable.bg_publicity_sport_item_football
+                BK -> R.drawable.bg_publicity_sport_item_basketball
+                TN -> R.drawable.bg_publicity_sport_item_tennis
+                VB -> R.drawable.bg_publicity_sport_item_volleyball
+                BM -> R.drawable.bg_publicity_sport_item_badminton
+                TT -> R.drawable.bg_publicity_sport_item_pingpong
+                IH -> R.drawable.bg_publicity_sport_item_icehockey
+                BX -> R.drawable.bg_publicity_sport_item_boxing
+                CB -> R.drawable.bg_publicity_sport_item_snooker
+                CK -> R.drawable.bg_publicity_sport_item_cricket
+                BB -> R.drawable.bg_publicity_sport_item_baseball
+                RB -> R.drawable.bg_publicity_sport_item_rugby
+                AFT -> R.drawable.bg_publicity_sport_item_amfootball
+                MR -> R.drawable.bg_publicity_sport_item_racing
+                GF -> R.drawable.bg_publicity_sport_item_golf
+                FB -> R.drawable.bg_publicity_sport_item_piechart
+                BB_COMING_SOON -> R.drawable.bg_publicity_sport_item_baseball
+                ES_COMING_SOON -> R.drawable.bg_publicity_sport_item_e_sport
+                else -> R.drawable.bg_publicity_sport_item_football
+            }
+        }
+
     }
 }

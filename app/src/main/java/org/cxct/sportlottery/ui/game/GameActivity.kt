@@ -53,6 +53,7 @@ import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -89,6 +90,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         const val ARGS_SWITCH_LANGUAGE = "switch_language"
+        const val ARGS_PUBLICITY_SPORT_ENTRANCE = "publicity_sport_entrance"
     }
 
     private var betListFragment = BetListFragment()
@@ -160,6 +162,20 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         setupDataSourceChange()
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        mNavController.addOnDestinationChangedListener(navDestListener)
+
+        checkPublicityEntranceEvent()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        mNavController.removeOnDestinationChangedListener(navDestListener)
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -182,16 +198,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-
-        mNavController.addOnDestinationChangedListener(navDestListener)
-
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
-
-        mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
     override fun initToolBar() {
@@ -1054,6 +1065,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onDestroy() {
         expandCheckList.clear()
         HomePageStatusManager.clear()
+        mNavController.removeOnDestinationChangedListener(navDestListener)
         super.onDestroy()
     }
 
@@ -1062,6 +1074,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             viewModel.fetchDataFromDataSourceChange(
                 matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
             )
+        }
+    }
+
+    /**
+     * 檢查是否有從宣傳頁入口跳轉的事件
+     *
+     * @see org.cxct.sportlottery.ui.game.publicity.PublicityNewFragment.jumpToTheSport
+     */
+    private fun checkPublicityEntranceEvent() {
+        val publicitySportEntrance =
+            intent.getSerializableExtra(ARGS_PUBLICITY_SPORT_ENTRANCE) as? PublicitySportEntrance
+        publicitySportEntrance?.let {
+            viewModel.navSpecialEntrance(it.matchType, it.gameType)
         }
     }
 
