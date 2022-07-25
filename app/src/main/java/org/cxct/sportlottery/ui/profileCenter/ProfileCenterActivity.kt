@@ -337,7 +337,9 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
         //切换语言
         btn_language.setOnClickListener {
-            startActivity(Intent(this,SwitchLanguageActivity::class.java))
+            var intent = Intent(this, SwitchLanguageActivity::class.java);
+            intent.putExtra("type", 1)
+            startActivity(intent)
         }
         //外觀
         btn_appearance.setOnClickListener {
