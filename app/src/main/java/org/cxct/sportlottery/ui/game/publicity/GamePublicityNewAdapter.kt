@@ -810,7 +810,9 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         private val onClickFAQsListener: () -> Unit,
         private val onClickAffiliateListener: () -> Unit,
         private val onClickContactListener: () -> Unit,
-        private val onClickPromotionListener: () -> Unit
+        private val onClickPromotionListener: () -> Unit,
+        private val onClickVersionUpdateListener: () -> Unit,
+        private val onClickAppearanceListener: () -> Unit
     ) : GamePublicityAdapter.PublicityAdapterListener(
         onLogoClickListener = onLogoClickListener,
         onLanguageBlockClickListener = onLanguageBlockClickListener,
@@ -832,5 +834,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         fun onClickAffiliateListener() = onClickAffiliateListener.invoke()
         fun onClickContactListener() = onClickContactListener.invoke()
         fun onClickPromotionListener() = onClickPromotionListener.invoke()
+        fun onClickVersionUpdateListener() = onClickVersionUpdateListener.invoke()
+        fun onClickAppearanceListener() = onClickAppearanceListener.invoke()
     }
 }

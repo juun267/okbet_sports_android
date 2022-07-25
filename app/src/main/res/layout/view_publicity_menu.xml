@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    android:paddingBottom="10dp"
     tools:ignore="ContentDescription">
 
     <LinearLayout
@@ -22,7 +21,7 @@
             android:id="@+id/tlGames"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="2"
             android:orientation="horizontal"
             android:overScrollMode="never"
             app:tabGravity="fill"
@@ -44,7 +43,8 @@
                 android:layout_weight="1"
                 android:layout="@layout/publicity_menu_item" />
 
-            <com.google.android.material.tabs.TabItem
+            <!--20220725 PM-BiLL 暫時替換真人、鬥雞-->
+            <!--<com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -54,10 +54,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout="@layout/publicity_menu_item" />
+                android:layout="@layout/publicity_menu_item" />-->
 
         </com.google.android.material.tabs.TabLayout>
 
+        <!--版本更新-->
+        <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
+            android:id="@+id/menuVersionUpdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cvTitle="版本更新\n原型待補" />
+
+        <!--日夜間模式-->
+        <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
+            android:id="@+id/menuAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cvTitle="日夜外觀\n原型待補" />
+
+        <!--代理加盟(信用盤時:FAQs)-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
             android:id="@+id/menuAffiliate"
             android:layout_width="0dp"
@@ -66,6 +83,7 @@
             app:cvIcon="@drawable/ic_publicity_affiliate"
             tools:cvTitle="@string/affiliate" />
 
+        <!--客服聯絡-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
             android:id="@+id/menuContact"
             android:layout_width="0dp"
@@ -89,6 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,8 +121,10 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="7dp"
+        android:layout_marginBottom="4dp"
         android:scaleType="fitXY"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabBlock"
         tools:src="@drawable/image_e_game_coming_soon"
         tools:visibility="visible" />

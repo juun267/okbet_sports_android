@@ -32,6 +32,8 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.profileCenter.AppearanceActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 
@@ -168,6 +170,12 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                             getString(R.string.promotion)
                         )
                     }
+                },
+                onClickVersionUpdateListener = {
+                    startActivity(Intent(activity, VersionUpdateActivity::class.java))
+                },
+                onClickAppearanceListener = {
+                    startActivity(Intent(activity, AppearanceActivity::class.java))
                 }
             )
         )

@@ -51,7 +51,8 @@ class PublicityMenuViewHolder(
             }
             //endregion
 
-            //region Casino
+            //20220725 PM-BiLL 暫時替換真人、鬥雞
+            /*//region Casino
             getTabAt(MenuType.CASINO.ordinal)?.customView?.let {
                 val casinoBinding = getTabViewBinding(it)
 
@@ -67,7 +68,7 @@ class PublicityMenuViewHolder(
                 sabongBinding.ivIcon.setImageResource(R.drawable.selector_publicity_sabong)
                 sabongBinding.ivName.text = LocalUtils.getString(R.string.sabong)
             }
-            //endregion
+            //endregion*/
 
             clearOnTabSelectedListeners()
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -92,6 +93,18 @@ class PublicityMenuViewHolder(
                 }
 
             })
+        }
+
+        //version update
+        binding.menuVersionUpdate.setOnClickListener {
+            publicityAdapterListener.onClickVersionUpdateListener()
+
+        }
+
+        //appearance
+        binding.menuAppearance.setOnClickListener {
+            publicityAdapterListener.onClickAppearanceListener()
+
         }
 
         //affiliate or faqs
@@ -162,16 +175,27 @@ class PublicityMenuViewHolder(
     private fun setupThirdGameInfo(data: PublicityMenuData) {
         val selectedPosition = binding.tlGames.selectedTabPosition
         Timber.e("Dean, thirdGameInfo = ${data.eGameMenuData}")
-        when {
-            selectedPosition == MenuType.EGAMES.ordinal && data.eGameMenuData != null -> {
-                binding.ivThirdGame.setImageResource(R.drawable.image_e_game_coming_soon)
-                binding.ivThirdGame.setOnClickListener {
-                    data.eGameMenuData?.let { thirdDictValues ->
-                        publicityAdapterListener.onGoThirdGamesListener(thirdDictValues)
+        when (selectedPosition) {
+            MenuType.EGAMES.ordinal -> {
+                when {
+                    data.eGameMenuData != null -> {
+                        binding.ivThirdGame.setImageResource(R.drawable.image_e_game_play_now)
+                        binding.ivThirdGame.setOnClickListener {
+                            data.eGameMenuData?.let { thirdDictValues ->
+                                publicityAdapterListener.onGoThirdGamesListener(thirdDictValues)
+                            }
+                        }
+                    }
+                    else -> {
+                        binding.ivThirdGame.setImageResource(R.drawable.image_e_game_coming_soon)
+                        binding.ivThirdGame.setOnClickListener {
+                            //do nothing
+                        }
                     }
                 }
             }
-            selectedPosition == MenuType.CASINO.ordinal && data.casinoMenuData != null -> {
+            //20220725 PM-BiLL 暫時替換真人、鬥雞
+            /*selectedPosition == MenuType.CASINO.ordinal && data.casinoMenuData != null -> {
                 binding.ivThirdGame.setImageResource(R.drawable.image_casino_coming_soon)
                 binding.ivThirdGame.setOnClickListener {
                     //TODO 點擊第三方遊戲事件
@@ -182,10 +206,7 @@ class PublicityMenuViewHolder(
                 binding.ivThirdGame.setOnClickListener {
                     //TODO 點擊第三方遊戲事件
                 }
-            }
-            else -> {
-                binding.ivThirdGame.setImageResource(R.drawable.bg_recommend_game_default)
-            }
+            }*/
         }
     }
 
