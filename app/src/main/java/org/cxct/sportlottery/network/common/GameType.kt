@@ -224,6 +224,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 OTHER -> R.drawable.ic_bet_champ
                 BB_COMING_SOON -> R.drawable.img_baseball
                 ES_COMING_SOON -> R.drawable.img_esports
+                else -> 0
             }
         }
 
