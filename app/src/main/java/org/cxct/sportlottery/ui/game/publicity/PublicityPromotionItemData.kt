@@ -7,7 +7,7 @@ class PublicityPromotionItemData(val imageUrl: String, val title: String?, val c
     companion object {
         fun createData(data: ImageData): PublicityPromotionItemData {
             return PublicityPromotionItemData(
-                imageUrl = "${sConfigData?.resServerHost}${data.imageName3}",
+                imageUrl = "${sConfigData?.resServerHost}${data.imageName4}",
                 title = data.imageText1,
                 content = data.imageText3
             )

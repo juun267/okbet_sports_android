@@ -6,6 +6,7 @@ data class ImageData(
     val imageName1: String?, //(1,2,3)图片名称,4.标题图片
     val imageName2: String?, //内容图片
     val imageName3: String?, //優惠活動圖片地址
+    val imageName4: String?, //首页图片
     val imageSort: Int?, //排序
     val imageText1: String?, //标题文字
     val imageText2: String?, //内容文字
