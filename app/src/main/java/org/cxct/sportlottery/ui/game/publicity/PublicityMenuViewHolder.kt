@@ -9,11 +9,8 @@ import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
 import org.cxct.sportlottery.databinding.ViewPublicityMenuBinding
-import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.isCreditSystem
-import timber.log.Timber
 
 class PublicityMenuViewHolder(
     val binding: ViewPublicityMenuBinding,
@@ -110,11 +107,13 @@ class PublicityMenuViewHolder(
         //affiliate or faqs
         with(binding.menuAffiliate) {
             if (isCreditSystem()) {
+                setIconResource(R.drawable.ic_publicity_faqs)
                 setTitle(LocalUtils.getString(R.string.publicity_faqs))
                 setOnClickListener {
                     publicityAdapterListener.onClickFAQsListener()
                 }
             } else {
+                setIconResource(R.drawable.ic_publicity_affiliate)
                 setTitle(LocalUtils.getString(R.string.affiliate))
                 setOnClickListener {
                     publicityAdapterListener.onClickAffiliateListener()
@@ -173,9 +172,7 @@ class PublicityMenuViewHolder(
 
     //TODO 若無遊戲時該如何顯示尚待PM確認
     private fun setupThirdGameInfo(data: PublicityMenuData) {
-        val selectedPosition = binding.tlGames.selectedTabPosition
-        Timber.e("Dean, thirdGameInfo = ${data.eGameMenuData}")
-        when (selectedPosition) {
+        when (binding.tlGames.selectedTabPosition) {
             MenuType.EGAMES.ordinal -> {
                 when {
                     data.eGameMenuData != null -> {

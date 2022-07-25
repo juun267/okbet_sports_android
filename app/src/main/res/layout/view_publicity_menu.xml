@@ -64,7 +64,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:cvTitle="版本更新\n原型待補" />
+            app:cvIcon="@drawable/ic_publicity_version_update"
+            app:cvTitle="原型待補" />
 
         <!--日夜間模式-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
@@ -72,7 +73,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:cvTitle="日夜外觀\n原型待補" />
+            app:cvIcon="@drawable/ic_publicity_mode"
+            app:cvTitle="原型待補" />
 
         <!--代理加盟(信用盤時:FAQs)-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
@@ -80,7 +82,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:cvIcon="@drawable/ic_publicity_affiliate"
+            tools:cvIcon="@drawable/ic_publicity_faqs"
             tools:cvTitle="@string/affiliate" />
 
         <!--客服聯絡-->

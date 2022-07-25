@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
@@ -12,6 +13,7 @@ class PublicityMenuCard @JvmOverloads constructor(context: Context, attrs: Attri
     LinearLayout(context, attrs, defStyle) {
     private var _binding: PublicityMenuItemBinding
     val binding get() = _binding
+
     init {
         _binding = PublicityMenuItemBinding.inflate(LayoutInflater.from(context), this, false)
         addView(binding.root)
@@ -32,5 +34,9 @@ class PublicityMenuCard @JvmOverloads constructor(context: Context, attrs: Attri
 
     fun setTitle(title: String) {
         binding.ivName.text = title
+    }
+
+    fun setIconResource(@DrawableRes drawableRes: Int) {
+        binding.ivIcon.setImageResource(drawableRes)
     }
 }
