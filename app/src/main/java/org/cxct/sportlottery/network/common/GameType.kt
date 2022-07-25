@@ -196,5 +196,28 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
+        fun getBetListGameTypeIcon(gameType: GameType): Int {
+            return when (gameType) {
+                FT -> R.drawable.img_soccer
+                BK -> R.drawable.img_basketball
+                TN -> R.drawable.img_tennis
+                VB -> R.drawable.img_volleyball
+                BM -> R.drawable.img_badminton
+                TT -> R.drawable.img_pingpong
+                IH -> R.drawable.img_ice_hockey
+                BX -> R.drawable.img_boxing
+                CB -> R.drawable.img_snooker
+                CK -> R.drawable.img_cricket
+                BB -> R.drawable.img_baseball
+                RB -> R.drawable.img_rugby
+                AFT -> R.drawable.img_amfootball
+                MR -> R.drawable.img_racing
+                GF -> R.drawable.img_golf
+                FB -> R.drawable.img_finance
+                OTHER -> R.drawable.ic_bet_champ
+                BB_COMING_SOON -> R.drawable.img_baseball
+                ES_COMING_SOON -> R.drawable.img_esports
+            }
+        }
     }
 }

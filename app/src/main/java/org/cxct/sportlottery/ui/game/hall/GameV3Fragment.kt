@@ -50,17 +50,21 @@ import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
 import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.*
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.common.*
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueListener
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightOddListener
@@ -69,7 +73,6 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -777,9 +780,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             )
-            addScrollListenerForBottomNavBar {
-                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-            }
             if (viewModel.getMatchCount(args.matchType) < 1) {
                 leagueAdapter.removePreloadItem()
             } else {
@@ -787,9 +787,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 countryAdapter.setPreloadItem()
                 outrightLeagueOddAdapter.setPreloadItem()
             }
-        }
-        appbar_layout.addOffsetListenerForBottomNavBar {
-            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

@@ -13,12 +13,24 @@ class BetInfoListData(
     var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) {
     var matchType: MatchType? = null
+    var isInputBet = false //是否輸入本金
+    var isInputWin = false //是否輸入可贏
     var input: String? = null
     var betAmount: Double = 0.0
     var inputBetAmountStr: String? = betAmount.toString()
         set(value) {
             field = if (value.isNullOrEmpty()) {
                 betAmount.toString()
+            } else {
+                value
+            }
+        }
+    var inputWin: String? = null
+    var betWin: Double = 0.0
+    var inputBetWinStr: String? = betWin.toString()
+        set(value) {
+            field = if (value.isNullOrEmpty()) {
+                betWin.toString()
             } else {
                 value
             }

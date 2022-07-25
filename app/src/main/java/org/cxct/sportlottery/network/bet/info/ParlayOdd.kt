@@ -25,11 +25,16 @@ data class ParlayOdd(
 ) {
     //以下新增參數時, 需至BaseOddButtonViewModel.updateBetOrderParlay將舊物件的參數賦予新物件, 否則數值會遺失
     var sendOutStatus: Boolean = true
+    var isInputBet = false
+    var input: String? = null
     var betAmount: Double = 0.0
     var inputBetAmountStr: String?= betAmount.toString()
         set(value) {
             field = if (value.isNullOrEmpty()) betAmount.toString() else value
         }
     var amountError: Boolean = false
+    //region填充單注使用
     var allSingleInput: String? = null //僅給投注單填充所有單注使用
+    var singleInput: String? = null
+    //endregion
 }

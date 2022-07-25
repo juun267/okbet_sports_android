@@ -628,7 +628,7 @@
     <string name="bet_info_accept_odds_change">Accept changes</string>
     <string name="bet_info_add_to_bet_info">Add to bet slip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
-    <string name="bet_info_odd_content_changed2">The odds have changed, %1$s to %1$s </string>
+    <string name="bet_info_odd_content_changed2">The odds have changed, %1$s to %2$s </string>
 
     <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
@@ -1196,4 +1196,17 @@
     <string name="tran_time_sub">Transaction time：</string>
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
+
+    <!--region 20220714 新版投注單-->
+    <string name="bet_stake">Stake</string>
+    <string name="total_capital">Total Stake</string>
+    <string name="total_win_amount">Total Win</string>
+    <string name="delete_bet">Delete</string>
+    <string name="btn_login_bet">Log in to Bet</string>
+    <string name="confirm_single_bets">Confirm %d Single Bets</string>
+    <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
+    <string name="btn_remove_closed_selections">Remove closed selections</string>
+    <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
+    <!--endregion-->
+
 </resources>
