@@ -14,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:btiIcon="@drawable/ic_home"
+        app:btiIcon="@drawable/selector_ic_home"
         app:btiTitle="@string/bottom_nav_home" />
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:btiIcon="@drawable/ic_soccer"
+        app:btiIcon="@drawable/selector_ic_sports"
         app:btiTitle="@string/sport_game" />
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
@@ -31,7 +31,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:visibility="gone"
-        app:btiIcon="@drawable/ic_navigation_star"
+        app:btiIcon="@drawable/selector_ic_star"
         app:btiTitle="@string/my_favorite" />
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
@@ -39,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:btiIcon="@drawable/ic_btm_account"
+        app:btiIcon="@drawable/selector_ic_btm_account"
         app:btiTitle="@string/label_account_history" />
 
     <FrameLayout
@@ -51,7 +51,7 @@
             android:id="@+id/navigation_transaction_status"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:btiIcon="@drawable/ic_btm_deal"
+            app:btiIcon="@drawable/selector_ic_btm_deal"
             app:btiTitle="@string/label_transaction_status" />
 
     </FrameLayout>
@@ -61,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:btiIcon="@drawable/ic_btm_my"
+        app:btiIcon="@drawable/selector_ic_btm_my"
         app:btiTitle="@string/bottom_nav_my_account" />
 
 </LinearLayout>

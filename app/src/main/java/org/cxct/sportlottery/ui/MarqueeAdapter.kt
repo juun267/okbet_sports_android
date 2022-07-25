@@ -10,8 +10,8 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 
 
-class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
-    private enum class Type { ITEM, BLANK }
+open class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
+    protected enum class Type { ITEM, BLANK }
 
     private var mDataList: MutableList<String> = mutableListOf()
 
@@ -58,8 +58,8 @@ class MarqueeAdapter : RecyclerView.Adapter<MarqueeAdapter.DetailViewHolder>() {
     }
 
 
-    class DetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var detail: TextView = itemView.findViewById(R.id.tv_marquee)
+    open class DetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        open var detail: TextView = itemView.findViewById(R.id.tv_marquee)
     }
 
 }
