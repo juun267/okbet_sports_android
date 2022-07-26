@@ -1186,4 +1186,13 @@
     <string name="tran_time_sub">Giờ giao dịch :</string>
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="btn_sure">Xác nhận</string>
+    <string name="Outlets_Reserve">Trang web đặt hẹn</string>
+    <string name="current_balance">Sự cân bằng</string>
+    <string name="select_area">Chọn vùng</string>
+    <string name="select_city">Chọn thành phố</string>
+    <string name="outlets_address">Địa chỉ</string>
+    <string name="appointment_time">Hẹn thời gian</string>
+    <string name="select_date">ngày tháng</string>
+    <string name="select_time">Thời gian</string>
+    <string name="current_time">Thời gian</string>
 </resources>

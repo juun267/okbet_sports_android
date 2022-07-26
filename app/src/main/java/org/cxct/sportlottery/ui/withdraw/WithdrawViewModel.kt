@@ -4,8 +4,9 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddRequest
@@ -14,19 +15,19 @@ import org.cxct.sportlottery.network.bank.delete.BankDeleteRequest
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
-import org.cxct.sportlottery.network.money.config.MoneyRechCfg
-import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
-import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.network.money.config.Detail
-import org.cxct.sportlottery.network.money.config.UwType
+import org.cxct.sportlottery.network.bettingStation.AreaAll
+import org.cxct.sportlottery.network.bettingStation.BettingStation
+import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.MD5Util
+import org.cxct.sportlottery.util.VerifyConstUtil
 import java.math.RoundingMode
-import java.util.*
 import kotlin.math.min
 
 
@@ -104,6 +105,12 @@ class WithdrawViewModel(
         get() = _withdrawPasswordMsg
     private var _withdrawPasswordMsg = MutableLiveData<String>()
 
+    //提款预约日期錯誤訊息
+    val WithdrawAppointmentMsg: LiveData<String>
+        get() = _withdrawAppointmentMsg
+    private var _withdrawAppointmentMsg = MutableLiveData<String>()
+
+
     //提款金額錯誤訊息
     val withdrawAmountMsg: LiveData<String>
         get() = _withdrawAmountMsg
@@ -140,7 +147,7 @@ class WithdrawViewModel(
     private var _withdrawAmountHint = MutableLiveData<String>()
 
     //所有的提款卡
-    private var myWithdrawCardList: List<BankCardList>? = null
+    var myWithdrawCardList: List<BankCardList>? = null
 
     //資金卡片是否可以繼續增加(銀行卡、虛擬幣)
     val addMoneyCardSwitch: LiveData<TransferTypeAddSwitch>
@@ -176,6 +183,14 @@ class WithdrawViewModel(
     val deductMoney: LiveData<Double>
         get() = _deductMoney
 
+    private val _bettingStationList = MutableLiveData<List<BettingStation>>()
+    val bettingStationList: LiveData<List<BettingStation>>
+        get() = _bettingStationList
+
+    private val _areaList = MutableLiveData<AreaAll>()
+    val areaList: LiveData<AreaAll>
+        get() = _areaList
+
     private var uwBankType: UwType? = null
 
     //資金卡片config
@@ -194,16 +209,31 @@ class WithdrawViewModel(
         transferTypeMoneyCardList()
     }
 
-    fun addWithdraw(withdrawCard: BankCardList?, applyMoney: String, withdrawPwd: String) {
+    fun addWithdraw(
+        withdrawCard: BankCardList?,
+        applyMoney: String,
+        withdrawPwd: String,
+        bettingStationId: Int?,
+        appointmentDate: String?,
+        appointmentHour: String?
+    ) {
         checkWithdrawAmount(withdrawCard, applyMoney)
         checkWithdrawPassword(withdrawPwd)
+        if (bettingStationId != null) {
+            checkWithdrawAppointment(appointmentDate ?: "", appointmentHour ?: "")
+        }
         if (checkWithdrawData()) {
             loading()
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     OneBoSportApi.withdrawService.addWithdraw(
                         getWithdrawAddRequest(
-                            withdrawCard?.id?.toLong() ?: 0, applyMoney, withdrawPwd
+                            withdrawCard?.id?.toLong() ?: 0,
+                            applyMoney,
+                            withdrawPwd,
+                            bettingStationId,
+                            appointmentDate,
+                            appointmentHour
                         )
                     )
                 }?.let { result ->
@@ -218,12 +248,18 @@ class WithdrawViewModel(
     private fun getWithdrawAddRequest(
         bankCardId: Long,
         applyMoney: String,
-        withdrawPwd: String
+        withdrawPwd: String,
+        bettingStationId: Int?,
+        appointmentDate: String?,
+        appointmentHour: String?
     ): WithdrawAddRequest {
         return WithdrawAddRequest(
             id = bankCardId,
             applyMoney = applyMoney.toDouble(),
-            withdrawPwd = MD5Util.MD5Encode(withdrawPwd)
+            withdrawPwd = MD5Util.MD5Encode(withdrawPwd),
+            bettingStationId = bettingStationId,
+            appointmentDate = appointmentDate,
+            appointmentHour = appointmentHour
         )
     }
 
@@ -231,6 +267,8 @@ class WithdrawViewModel(
         if (withdrawAmountMsg.value != "")
             return false
         if (withdrawPasswordMsg.value != "")
+            return false
+        if (WithdrawAppointmentMsg.value != "")
             return false
         return true
     }
@@ -433,6 +471,9 @@ class WithdrawViewModel(
                     if (withdrawConfig.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(
                         TransferType.E_WALLET.type
                     )
+                    if (withdrawConfig.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                        TransferType.STATION.type
+                    )
                     _withdrawTabIsShow.postValue(tabList)
 
                     checkBankCardCount()
@@ -534,6 +575,16 @@ class WithdrawViewModel(
         }
     }
 
+    fun checkWithdrawAppointment(appointmentDate: String, appointmentHour: String) {
+        if (appointmentDate.isNullOrBlank()) {
+            _withdrawAppointmentMsg.value = androidContext.getString(R.string.select_date)
+        } else if (appointmentHour.isNullOrBlank()) {
+            _withdrawAppointmentMsg.value = androidContext.getString(R.string.select_time)
+        } else {
+            _withdrawAppointmentMsg.value = ""
+        }
+    }
+
     fun checkWithdrawAmount(withdrawCard: BankCardList?, inputAmount: String) {
         var withdrawAmount = inputAmount
         val amountLimit = getWithdrawAmountLimit()
@@ -554,6 +605,7 @@ class WithdrawViewModel(
                     TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
                     TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
                     TransferType.E_WALLET -> androidContext.getString(R.string.error_withdraw_amount_bank)
+                    TransferType.STATION -> androidContext.getString(R.string.error_withdraw_amount_crypto)
                 }
             }
             else -> {
@@ -609,6 +661,12 @@ class WithdrawViewModel(
                 cardConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
             )
             TransferType.E_WALLET -> ArithUtil.div(
+                (userMoney.value ?: 0.0),
+                ((cardConfig?.feeRate?.plus(1) ?: 1.0)),
+                0,
+                RoundingMode.FLOOR
+            )
+            TransferType.STATION -> ArithUtil.div(
                 (userMoney.value ?: 0.0),
                 ((cardConfig?.feeRate?.plus(1) ?: 1.0)),
                 0,
@@ -690,6 +748,8 @@ class WithdrawViewModel(
 
                 }
             }
+            TransferType.STATION -> {
+            }
         }
     }
 
@@ -709,6 +769,9 @@ class WithdrawViewModel(
             }
             TransferType.E_WALLET -> {
                 rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.E_WALLET.type }?.detailList?.first()
+            }
+            TransferType.STATION -> {
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.STATION.type }?.detailList?.first()
             }
         }
     }
@@ -865,6 +928,7 @@ class WithdrawViewModel(
     fun resetWithdrawPage() {
         _withdrawAmountMsg.value = ""
         _withdrawPasswordMsg.value = ""
+        _withdrawAppointmentMsg.value = ""
     }
 
     private fun loading() {
@@ -873,5 +937,35 @@ class WithdrawViewModel(
 
     private fun hideLoading() {
         _loading.postValue(false)
+    }
+
+    fun bettingStationQuery(platformId: Long, countryId: Int, provinceId: Int, cityId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.bettingStationsQueryUwStation(
+                    platformId,
+                    countryId,
+                    provinceId,
+                    cityId
+                )
+            }?.let { result ->
+                val bettingStationSheetList = mutableListOf<StatusSheetData>()
+                withContext(Dispatchers.Main) {
+                    _bettingStationList.value = result.bettingStationList
+                }
+            }
+        }
+    }
+
+    fun queryArea() {
+        viewModelScope.launch(Dispatchers.IO) {
+            doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.areaAll()
+            }?.let { result ->
+                withContext(Dispatchers.Main) {
+                    _areaList.value = result.areaAll
+                }
+            }
+        }
     }
 }

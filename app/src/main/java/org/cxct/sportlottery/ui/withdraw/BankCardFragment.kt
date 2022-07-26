@@ -13,11 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_bank_card.view.*
-import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.money.config.*
@@ -116,7 +114,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             }
             TransferType.E_WALLET -> {
                 when (LanguageManager.getSelectLanguage(context)) {
-                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps = false
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
+                        false
+                    else -> btn_delete_bank.isAllCaps = true
+                }
+                getString(R.string.delete_e_wallet)
+            }
+            TransferType.STATION -> {
+                when (LanguageManager.getSelectLanguage(context)) {
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
+                        false
                     else -> btn_delete_bank.isAllCaps = true
                 }
                 getString(R.string.delete_e_wallet)
@@ -460,6 +467,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_modify_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_modify_success)
+                        TransferType.STATION -> getString(R.string.text_e_wallet_modify_success)
                     }
                     ToastUtil.showToast(context, promptMessage)
                     mNavController.popBackStack()
@@ -469,6 +477,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_add_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_add_success)
+                        TransferType.STATION -> getString(R.string.text_e_wallet_add_success)
                     }
                     showPromptDialog(getString(R.string.prompt), promptMessage) {
                         mNavController.popBackStack()
@@ -485,6 +494,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
                     TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
                     TransferType.E_WALLET -> getString(R.string.text_e_wallet_delete_success)
+                    TransferType.STATION -> getString(R.string.text_e_wallet_delete_success)
                 }
                 showPromptDialog(
                     getString(R.string.prompt),
