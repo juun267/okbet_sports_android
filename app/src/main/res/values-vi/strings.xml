@@ -655,13 +655,12 @@
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">GrabPay</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
-    <string name="recharge_betting_station_type">Trang web đặt hẹn</string>
     <string name="recharge_channel_admin">Hệ thống gửi tiền</string>
     <string name="recharge_log_order_time">Thời gian đơn cược</string>
     <string name="recharge_log_recharge_amount">Số tiền đặt cọc</string>
     <string name="recharge_log_channel_type">Loại kênh</string>
     <string name="recharge_log_order_state">Trạng thái đơn cược</string>
-    <string name="withdraw_betting_station_type">Trang web đặt hẹn</string>
+    <string name="betting_station_type">Trang web đặt hẹn</string>
     <string name="withdraw_log_withdraw_amount">Số tiền rút</string>
     <string name="log_state_processing">Đang xử lý</string>
     <string name="withdraw_log_state_pass">Thông qua</string>

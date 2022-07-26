@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
+import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -35,7 +36,14 @@ class RegisterViewModel(
     infoCenterRepository: InfoCenterRepository,
     userInfoRepository: UserInfoRepository,
     favoriteRepository: MyFavoriteRepository
-) : BaseSocketViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository, favoriteRepository) {
+) : BaseSocketViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository,
+    favoriteRepository
+) {
     val registerResult: LiveData<LoginResult>
         get() = _registerResult
     val inviteCodeMsg: LiveData<String?>
@@ -96,6 +104,10 @@ class RegisterViewModel(
         get() = _registerEnable
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
+
+    val checkBettingResult: LiveData<CheckBettingResult?>
+        get() = _checkBettingResult
+
     val smsResult: LiveData<SmsResult?>
         get() = _smsResult
     val loginForGuestResult: LiveData<LoginResult>
@@ -147,6 +159,8 @@ class RegisterViewModel(
 
     private val _bettingStationList = MutableLiveData<List<StatusSheetData>>()
 
+    private val _checkBettingResult = MutableLiveData<CheckBettingResult?>()
+
     //region 證件照片
     val docUrlResult: LiveData<UploadImgResult?>
         get() = _docUrlResult
@@ -180,7 +194,7 @@ class RegisterViewModel(
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
-                    null
+                      null
                 else
                     LocalUtils.getString(R.string.error_input_empty)
             }
@@ -409,6 +423,17 @@ class RegisterViewModel(
         }
     }
 
+    fun queryPlatform(inviteCode: String) {
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
+            }
+            _checkBettingResult.postValue(result)
+        }
+
+    }
+
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked
@@ -508,7 +533,7 @@ class RegisterViewModel(
             checkPhone(phone)
         if (sConfigData?.enableEmail == FLAG_OPEN)
             checkEmail(email)
-        if (sConfigData?.enableAddress == FLAG_OPEN){
+        if (sConfigData?.enableAddress == FLAG_OPEN) {
             checkPostal(postalCode)
             checkProvince(province)
             checkCity(city)
@@ -524,7 +549,7 @@ class RegisterViewModel(
             checkWhatsApp(whatsApp)
         if (sConfigData?.enableTelegram == FLAG_OPEN)
             checkTelegram(telegram)
-        if(sConfigData?.enableSafeQuestion == FLAG_OPEN)
+        if (sConfigData?.enableSafeQuestion == FLAG_OPEN)
             checkSecurityPb(securityPb)
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
             checkSecurityCode(smsCode)
@@ -573,7 +598,10 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
             return false
-        if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(provinceMsg) || checkInputPair(cityMsg) || checkInputPair(addressMsg)))
+        if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(
+                provinceMsg
+            ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
+        )
             return false
         if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
             return false
@@ -630,9 +658,9 @@ class RegisterViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.indexService.checkAccountExist(account)
             }.let {
-                if(it?.success == true) {
+                if (it?.success == true) {
                     checkMemberAccount(account, it.isExist ?: false)
-                }else {
+                } else {
                     checkMemberAccount(account, false)
                 }
             }
@@ -699,7 +727,8 @@ class RegisterViewModel(
                 identityType,
                 salarySource,
                 bettingShop
-            )) {
+            )
+        ) {
             register(
                 createRegisterRequest(
                     inviteCode,
@@ -847,7 +876,12 @@ class RegisterViewModel(
             }?.let { result ->
                 val bettingStationSheetList = mutableListOf<StatusSheetData>()
                 result.bettingStationList.map { bettingStation ->
-                    bettingStationSheetList.add(StatusSheetData(bettingStation.id.toString(), bettingStation.name))
+                    bettingStationSheetList.add(
+                        StatusSheetData(
+                            bettingStation.id.toString(),
+                            bettingStation.name
+                        )
+                    )
                 }
 
                 withContext(Dispatchers.Main) {
@@ -905,7 +939,12 @@ class RegisterViewModel(
                         }
                         else -> {
                             val error =
-                                UploadImgResult(photoResponse.code, photoResponse.msg, photoResponse.success, null)
+                                UploadImgResult(
+                                    photoResponse.code,
+                                    photoResponse.msg,
+                                    photoResponse.success,
+                                    null
+                                )
                             _photoUrlResult.postValue(error)
                         }
                     }

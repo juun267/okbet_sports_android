@@ -160,7 +160,7 @@ class FinanceViewModel(
                     RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
                     RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
                     RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
-                    RechType.BETTING_STATION.type -> androidContext.getString(R.string.recharge_betting_station_type)
+                    RechType.BETTING_STATION.type -> androidContext.getString(R.string.betting_station_type)
                     else -> ""
                 }
 
@@ -305,7 +305,7 @@ class FinanceViewModel(
                     UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
                     UWType.CRYPTO.type -> androidContext.getString(R.string.withdraw_log_crypto_transfer)
                     UWType.E_WALLET.type -> androidContext.getString(R.string.ewallet)
-                    UWType.BETTING_STATION.type -> androidContext.getString(R.string.withdraw_betting_station_type)
+                    UWType.BETTING_STATION.type -> androidContext.getString(R.string.betting_station_type)
                     else -> ""
                 }
 

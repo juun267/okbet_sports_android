@@ -527,7 +527,7 @@
     <string name="bank_card">Bank card</string>
     <string name="crypto">USDT</string>
     <string name="ewallet">eWallet</string>
-    <string name="withdraw_betting_station_type">Outlets Reserve</string>
+    <string name="betting_station_type">Outlets Reserve</string>
 
     <string name="currency_protocol">agreement/currency</string>
     <string name="select_crypto_address">Address</string>
@@ -668,7 +668,6 @@
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">Grabpay</string>
     <string name="recharge_channel_paymaya">Maya</string>
-    <string name="recharge_betting_station_type">Outlets Reserve</string>
     <string name="recharge_channel_admin">Manual Deposit</string>
     <string name="recharge_log_order_time">Time</string>
     <string name="recharge_log_recharge_amount">Amount</string>

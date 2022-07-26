@@ -547,10 +547,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 }
             }
 
-
-
-
-
             eetIdentityType.post {
                 //TODO 可重構 不需要蓋一層View
                 /**
@@ -570,13 +566,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         with(binding) {
             val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
 
-            if (bettingStationVisibility) {
+//            if (bettingStationVisibility) {
                 etBettingShop.visibility = View.VISIBLE
-                //查詢投注站列表
-                viewModel.bettingStationQuery()
-            } else {
-                etBettingShop.visibility = View.GONE
-            }
+//                //查詢投注站列表
+               viewModel.bettingStationQuery()
+//            } else {
+//                etBettingShop.visibility = View.GONE
+//            }
         }
     }
 
@@ -623,6 +619,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener {
                     if (it != "") {
                         viewModel.checkInviteCode(it)
+                    } else {
+                        etBettingShopSelectTrue()
+                        eetBettingShop.setText(bettingShopSelectedData?.showName)
                     }
                 }
             }
@@ -826,26 +825,27 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     false
                 )
                 if (it == null) {
-                    etBettingShop.setEndIcon(null)
-                    bettingShopSpinner.isEnabled = false
-                    bettingShopSpinner.isClickable = false
-
-                    etBettingShop.isEnabled = false
-                    etBettingShop.isClickable = false
-
-                    etBettingShop.setHintText("(请选择投注站)")
-                    eetBettingShop.setText("")
-                    etBettingShop.hasFocus = false
+                    viewModel.queryPlatform(eet_recommend_code.text.toString())
                 } else {
-                    etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
-                    bettingShopSpinner.isEnabled = true
-                    bettingShopSpinner.isClickable = true
-                    etBettingShop.isEnabled = true
-                    etBettingShop.isClickable = true
-                    eetBettingShop.setText(bettingShopSelectedData?.showName)
+                    etBettingShopSelectFalse("没有该投注站")
                 }
 
             }
+
+            checkBettingResult.observe(this@RegisterActivity) {
+                if (it != null && it.success) {
+                    etBettingShopSelectFalse(it.checkBettingData?.code.toString())
+                } else {
+                    etBettingShopSelectFalse("没有该投注站")
+                    binding.etRecommendCode.setError(
+                        it?.msg,
+                        false
+                    )
+
+                }
+
+            }
+
             memberAccountMsg.observe(this@RegisterActivity) {
                 binding.etMemberAccount.setError(
                     it.first,
@@ -1208,6 +1208,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             .isDialog(false)
             .build() as TimePickerView
         return dateTimePicker
+    }
+
+    private fun etBettingShopSelectTrue() {
+        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        bettingShopSpinner.isEnabled = true
+        bettingShopSpinner.isClickable = true
+        etBettingShop.isEnabled = true
+        etBettingShop.isClickable = true
+    }
+
+    private fun etBettingShopSelectFalse(eetBetting:String) {
+        etBettingShop.setEndIcon(null)
+        bettingShopSpinner.isEnabled = false
+        bettingShopSpinner.isClickable = false
+
+        etBettingShop.isEnabled = false
+        etBettingShop.isClickable = false
+
+        etBettingShop.hasFocus = false
+        eetBettingShop.setText(eetBetting)
     }
 
     override fun onBackPressed() {

@@ -668,7 +668,6 @@
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">Grabpay</string>
     <string name="recharge_channel_paymaya">Maya</string>
-    <string name="recharge_betting_station_type">Outlets Reserve</string>
     <string name="recharge_channel_admin">Manual Deposit</string>
     <string name="recharge_log_order_time">Time</string>
     <string name="recharge_log_recharge_amount">Amount</string>
@@ -682,7 +681,7 @@
     <string name="withdraw_log_type_bank_trans">Bank</string>
     <string name="withdraw_log_type_admin">Manual</string>
     <string name="withdraw_log_crypto_transfer">USDT</string>
-    <string name="withdraw_betting_station_type">Outlets Reserve</string>
+    <string name="betting_station_type">Outlets Reserve</string>
     <string name="log_detail_title">Check details</string>
     <string name="log_detail_trans_num_sub">Order ID：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
