@@ -80,6 +80,9 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 RechType.GCASH.type -> itemView.context.getString(R.string.recharge_channel_gcash)
                 RechType.GRABPAY.type -> itemView.context.getString(R.string.recharge_channel_grabpay)
                 RechType.PAYMAYA.type -> itemView.context.getString(R.string.recharge_channel_paymaya)
+                RechType.BETTING_STATION.type ->itemView.context.getString(R.string.recharge_betting_station_type)
+
+
                 else -> ""
             }
             itemView.rech_log_state.setRecordStatus(item.status)

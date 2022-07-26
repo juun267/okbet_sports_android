@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="language_setting">语言</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
@@ -657,6 +657,7 @@
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">GrabPay</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
+    <string name="recharge_betting_station_type">网点预约</string>
     <string name="recharge_channel_admin">系统加钱</string>
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">存款金额</string>
@@ -670,6 +671,7 @@
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
     <string name="withdraw_log_crypto_transfer">虚拟币提款</string>
+    <string name="withdraw_betting_station_type" >网点预约</string>
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
     <string name="log_detail_trans_num_sub2">交易编号</string>

@@ -147,24 +147,27 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
-        viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner,  {
+        viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {
             it?.let {
                 withdrawLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
             }
-        })
+        }
 
-        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner,  {
+        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) {
             if (it.getContentIfNotHandled() == null) return@observe
 
             if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(parentFragmentManager, WithdrawLogFragment::class.java.simpleName)
+                logDetailDialog.show(
+                    parentFragmentManager,
+                    WithdrawLogFragment::class.java.simpleName
+                )
             }
-        })
+        }
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner,  {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
             withdrawLogAdapter.isFinalPage = it
-        })
+        }
 
         viewModel.getUserWithdrawList(true)
     }
@@ -211,6 +214,11 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.ewallet) -> {
                     StatusSheetData(UWType.E_WALLET.type, it)
                 }
+                getString(R.string.withdraw_betting_station_type) -> {
+                    StatusSheetData(UWType.BETTING_STATION.type, it)
+                }
+
+                //提款
                 else -> {
                     StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
                 }
