@@ -37,7 +37,7 @@
     <string name="sign_up_know">Đăng ký ngay</string>
     <string name="recommend_code">Mã giới thiệu</string>
     <string name="hint_recommend_code">(Vui lòng nhập Mã giới thiệu)</string>
-    <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
+    <string name="error_recommend_code">Not available the outlet, please confirm</string>
     <string name="member_account">Đăng nhập tài khoản</string>
     <string name="hint_member_account">(Độ dài từ 4-16 ký tự bao gồm cả chữ và số)</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>

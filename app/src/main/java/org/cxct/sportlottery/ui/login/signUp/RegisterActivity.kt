@@ -827,7 +827,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 if (it == null) {
                     viewModel.queryPlatform(eet_recommend_code.text.toString())
                 } else {
-                    etBettingShopSelectFalse("没有该投注站")
+                    etBettingShopSelectTrue()
+                    eetBettingShop.setText(bettingShopSelectedData?.showName)
                 }
 
             }
@@ -836,7 +837,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 if (it != null && it.success) {
                     etBettingShopSelectFalse(it.checkBettingData?.code.toString())
                 } else {
-                    etBettingShopSelectFalse("没有该投注站")
+                    etBettingShopSelectTrue()
+                    eetBettingShop.setText(bettingShopSelectedData?.showName)
                     binding.etRecommendCode.setError(
                         it?.msg,
                         false
