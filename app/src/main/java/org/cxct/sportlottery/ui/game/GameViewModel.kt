@@ -872,7 +872,6 @@ class GameViewModel(
                                     }
                             }
                         }
-                        oddData.playCateMappingList = playCateMappingList
                         oddData.setupOddDiscount()
                         oddData.updateOddStatus()
                     }
@@ -1544,8 +1543,6 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.playCateMappingList = playCateMappingList
-
                     matchOdd.oddsMap?.forEach { map ->
                         map.value?.updateOddSelectState()
                     }
@@ -1838,7 +1835,6 @@ class GameViewModel(
             result?.rows?.forEach {
                 it.leagueOdd.forEach { leagueOdds ->
                     leagueOdds?.matchOdds?.forEach { matchOddsItem ->
-                        matchOddsItem.playCateMappingList = playCateMappingList
                         matchOddsItem.setupOddDiscount()
                         matchOddsItem.updateOddStatus()
                     }
