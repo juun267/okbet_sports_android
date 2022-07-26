@@ -468,7 +468,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            anchorView = game_Bottom_Navigation
+            anchorView = if (viewBottom.isVisible) viewBottom else game_Bottom_Navigation
             show()
         }
     }

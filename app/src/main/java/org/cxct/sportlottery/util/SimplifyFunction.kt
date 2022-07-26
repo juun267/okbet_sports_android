@@ -18,6 +18,7 @@ import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
@@ -38,6 +39,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
@@ -697,6 +699,25 @@ fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent)
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * 點擊客服按鈕, 根據當前可用客服連結數量顯示客服選擇彈窗或直接跳轉
+ */
+fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
+    val serviceUrl = sConfigData?.customerServiceUrl
+    val serviceUrl2 = sConfigData?.customerServiceUrl2
+    when {
+        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            ServiceDialog().show(fragmentManager, null)
+        }
+        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl2)
+        }
+        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl)
         }
     }
 }
