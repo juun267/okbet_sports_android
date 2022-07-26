@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:cvIcon="@drawable/ic_publicity_mode"
-            app:cvTitle="原型待補" />
+            app:cvTitle="@string/appearance" />
 
         <!--代理加盟(信用盤時:FAQs)-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard

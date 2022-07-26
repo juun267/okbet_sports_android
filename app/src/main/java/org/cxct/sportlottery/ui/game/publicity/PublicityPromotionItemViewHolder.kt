@@ -14,8 +14,8 @@ class PublicityPromotionItemViewHolder(
     RecyclerView.ViewHolder(binding.root) {
 
     val requestOptions = RequestOptions()
-        .placeholder(R.drawable.ic_image_load)
-        .error(R.drawable.ic_image_broken)
+        .placeholder(null)
+        .error(null)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
