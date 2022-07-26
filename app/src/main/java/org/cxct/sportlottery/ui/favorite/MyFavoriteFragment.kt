@@ -621,6 +621,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
             GameType.IH.key -> getString(GameType.IH.string)
             GameType.MR.key -> getString(GameType.MR.string)
             GameType.GF.key -> getString(GameType.GF.string)
+            GameType.ES.key -> getString(GameType.ES.string)
             else -> ""
         }
         if (MultiLanguagesApplication.isNightMode) {
@@ -645,6 +646,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     GameType.IH.key -> R.drawable.icehockey_100
                     GameType.MR.key -> R.drawable.rancing_100
                     GameType.GF.key -> R.drawable.golf_108
+                    GameType.ES.key -> R.drawable.esport_100
                     else -> null
                 }
             ).into(favorite_bg_layer2)

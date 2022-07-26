@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
@@ -32,17 +35,18 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
 import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListRequest
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
 import org.cxct.sportlottery.network.odds.list.*
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
-import org.cxct.sportlottery.network.outright.odds.*
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
+import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
+import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -53,12 +57,8 @@ import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.sport.publicityRecommend.RecommendResult
 import org.cxct.sportlottery.network.sport.query.*
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.sport.query.SearchRequest
-import org.cxct.sportlottery.network.sport.query.SportQueryData
-import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
@@ -67,7 +67,11 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
+import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
+import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.main.entity.GameCateData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
@@ -337,6 +341,21 @@ class GameViewModel(
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
+
+    //優惠活動文字跑馬燈
+    private val _publicityPromotionAnnouncementList = MutableLiveData<List<String>>()
+    val publicityPromotionAnnouncementList: LiveData<List<String>>
+        get() = _publicityPromotionAnnouncementList
+
+    //優惠活動圖文公告
+    private val _publicityPromotionList = MutableLiveData<List<PublicityPromotionItemData>>()
+    val publicityPromotionList: LiveData<List<PublicityPromotionItemData>>
+        get() = _publicityPromotionList
+
+    //新版宣傳頁菜單資料
+    private val _publicityMenuData = MutableLiveData<PublicityMenuData>()
+    val publicityMenuData: LiveData<PublicityMenuData>
+        get() = _publicityMenuData
 
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
@@ -2937,6 +2956,179 @@ class GameViewModel(
     }
     //endregion
 
+    //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
+    fun getPublicityPromotion() {
+
+        sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }?.let { promotionList ->
+            //優惠活動文字跑馬燈
+            promotionList.filter { it.viewType == 1 && it.imageText3 != null && it.imageText3 != "" }
+                .mapNotNull { it.imageText3 }.let {
+                    _publicityPromotionAnnouncementList.postValue(it)
+                }
+
+            //優惠活動圖片公告清單
+            _publicityPromotionList.postValue(promotionList.map {
+                PublicityPromotionItemData.createData(it)
+            })
+        }
+    }
+    //endregion
+
+    //region 新版宣傳頁Menu
+
+    fun getPublicitySportMenu() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getSportListAtPublicityPage()
+            postPublicitySportMenu()
+        }
+    }
+
+    private suspend fun getSportListAtPublicityPage() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList()
+            }
+            result?.let { sportList ->
+                val sportCardList = sportList.rows.sortedBy { it.sortNum }
+                    .mapNotNull { row ->
+                        GameType.getGameType(row.code)
+                            ?.let { gameType ->
+                                SportMenu(
+                                    gameType,
+                                    row.name,
+                                    getSpecificLanguageString(androidContext, gameType.key, LanguageManager.Language.EN.key),
+                                    getGameTypeMenuIcon(gameType)
+                                )
+                            }
+                    }
+                _sportSortList.postValue(Event(sportCardList))
+            }
+        }
+    }
+
+    private suspend fun postPublicitySportMenu() {
+        getSportMenuAll()?.let { sportMenuResult ->
+            _sportSortList.value?.peekContent()?.let { list ->
+                val sportMenuDataList = mutableListOf<SportMenu>()
+                list.forEach { sportMenu ->
+                    sportMenu.apply {
+                        gameCount =
+                            getSportCount(MatchType.IN_PLAY, gameType, sportMenuResult) + getSportCount(
+                                MatchType.TODAY,
+                                gameType,
+                                sportMenuResult
+                            ) + getSportCount(MatchType.EARLY, gameType, sportMenuResult) +
+                                    getSportCount(
+                                        MatchType.PARLAY,
+                                        gameType,
+                                        sportMenuResult
+                                    ) + getSportCount(
+                                MatchType.OUTRIGHT,
+                                gameType,
+                                sportMenuResult
+                            ) + getSportCount(MatchType.AT_START, gameType, sportMenuResult) +
+                                    getSportCount(MatchType.EPS, gameType, sportMenuResult)
+
+                        entranceType = when {
+                            getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.TODAY
+                            }
+                            getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.EARLY
+                            }
+                            getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.PARLAY
+                            }
+                            getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) != 0 -> {
+                                MatchType.OUTRIGHT
+                            }
+                            else -> null
+                        }
+                    }
+
+                    sportMenuDataList.add(sportMenu)
+                }
+
+                updatePublicityMenuLiveData(sportMenuDataList = sportMenuDataList)
+            }
+        }
+    }
+
+    fun getMenuThirdGame() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getThirdGameList()?.let { gameCateDataList ->
+                //棋牌
+                val eGameList = gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
+                //真人
+                val casinoList = gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
+                //TODO 鬥雞 當前還沒有接入這個分類
+                val sabongList = null
+
+                updatePublicityMenuLiveData(
+                    sportMenuDataList = null,
+                    eGameMenuDataList = eGameList,
+                    casinoMenuDataList = casinoList,
+                    sabongMenuDataList = sabongList
+                )
+            }
+        }
+    }
+
+    private suspend fun getThirdGameList(): MutableList<GameCateData>? {
+        doNetwork(androidContext) {
+            ThirdGameRepository.getThirdGameResponse()
+        }?.let { result ->
+            return if (result.success) {
+                ThirdGameRepository.createHomeGameList(result.t)
+            } else {
+                Timber.e("獲取第三方遊戲配置失敗")
+                null
+            }
+        }
+        return null
+    }
+
+    /**
+     * 更新publicityMenuData
+     */
+    private fun updatePublicityMenuLiveData(
+        sportMenuDataList: List<SportMenu>? = null,
+        eGameMenuDataList: ThirdDictValues? = null,
+        casinoMenuDataList: ThirdDictValues? = null,
+        sabongMenuDataList: ThirdDictValues? = null
+    ) {
+
+        viewModelScope.launch(Dispatchers.Main) {
+            if (publicityMenuData.value == null) {
+                _publicityMenuData.value = PublicityMenuData(
+                    sportMenuDataList = sportMenuDataList,
+                    eGameMenuData = eGameMenuDataList,
+                    casinoMenuData = casinoMenuDataList,
+                    sabongMenuData = sabongMenuDataList
+                )
+            } else {
+                val menuData = publicityMenuData.value
+                sportMenuDataList?.let {
+                    menuData?.sportMenuDataList = it
+                }
+                eGameMenuDataList?.let {
+                    menuData?.eGameMenuData = it
+                }
+                casinoMenuDataList?.let {
+                    menuData?.casinoMenuData = it
+                }
+                sabongMenuDataList?.let {
+                    menuData?.sabongMenuData = it
+                }
+                _publicityMenuData.value = publicityMenuData.value
+            }
+        }
+    }
+
+    //endregion
+
+    //endregion
+
     //region 第三方遊戲
     fun getThirdGame() {
         viewModelScope.launch {
@@ -3014,6 +3206,17 @@ class GameViewModel(
                 }
             }
         }
+    }
+
+    //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲
+    fun clearThirdGame() {
+        _enterThirdGameResult.postValue(
+            EnterThirdGameResult(
+                resultType = EnterThirdGameResult.ResultType.NONE,
+                url = null,
+                errorMsg = null
+            )
+        )
     }
     //endregion
 

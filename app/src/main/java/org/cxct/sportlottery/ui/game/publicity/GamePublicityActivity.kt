@@ -90,8 +90,13 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
+                /*R.id.publicityFragment -> {
+                    binding.gameToolbar.toolBar.visibility = View.GONE
+                    setupNoticeButton(binding.publicityToolbar.ivNotice)
+                }*/
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
+                    binding.publicityToolbar.toolBar.visibility = View.VISIBLE
                     setupNoticeButton(binding.publicityToolbar.ivNotice)
                 }
                 else -> {
@@ -493,7 +498,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
             if (navController.currentDestination?.id != R.id.publicityFragment) {
                 navController.navigateUp()
             } else {
-                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+//                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+                //新版宣傳頁
+                navController.navigate(PublicityNewFragmentDirections.actionPublicityFragmentSelf())
             }
         }
     }

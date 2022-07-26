@@ -13,8 +13,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.index.playquotacom.t.BasePlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
-import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayBetLimit
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
-import timber.log.Timber
 import kotlin.math.abs
 
 
@@ -77,7 +76,7 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _betParlaySuccess
 
 
-    var playQuotaComData: PlayQuotaComData? = null
+    var playQuotaComData: Map<String?, BasePlayQuota?>? = mapOf()
         set(value) {
             field = value
             field?.let {
@@ -299,7 +298,8 @@ class BetInfoRepository(val androidContext: Context) {
         subscribeChannelType: ChannelType,
         playCateMenuCode: String? = null,
         oddsType: OddsType?,
-        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playMaxBetSingleBet: Long? = 0
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
         oddsType?.let {
@@ -327,7 +327,7 @@ class BetInfoRepository(val androidContext: Context) {
         betInfoMatchOdd?.let {
             val data = BetInfoListData(
                 betInfoMatchOdd,
-                getParlayOdd(matchType, gameType, mutableListOf(it)).first(),
+                getParlayOdd(matchType, gameType, mutableListOf(it), playMaxBetSingleBet = playMaxBetSingleBet ?: 0).first(),//TODO Bill 3.設定最大值
                 betPlayCateNameMap
             ).apply {
                 this.matchType = matchType
@@ -356,76 +356,29 @@ class BetInfoRepository(val androidContext: Context) {
 
     /**
      * @param isParlayBet 2021/10/29新增, gameType為GameType.PARLAY時不代表該投注為串關投注, 僅由組合後產生的投注才是PARLAY
+     * @param playMaxBetSingleBet 2022/7/12新增，加入注單前要先 call:/api/front/match/bet/info 獲取玩法的最大限額(需求單說是風控後台調整)
      */
     fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
         matchOddList: MutableList<MatchOdd>,
-        isParlayBet: Boolean = false
+        isParlayBet: Boolean = false,
+        playMaxBetSingleBet: Long = 0
     ): List<ParlayOdd> {
+        //playQuota取球種最大最小限額，目前後台只有足球、籃球、其他三種類別。
+        val betType = when {
+            matchType == MatchType.OUTRIGHT -> MatchType.OUTRIGHT.postValue
+            isParlayBet -> MatchType.PARLAY.postValue
+            else -> MatchType.SINGLE.postValue
+        }
+        val key = "${betType}@${gameType.key}"
+//        val playQuota: PlayQuota? = if (playQuotaComData?.get(key) != null) playQuotaComData?.get(key) else playQuotaComData?.get("${betType}@${GameType.OTHER.key}")
 
-        val playQuota: PlayQuota? = when {
-            matchType == MatchType.OUTRIGHT -> {
-                when (gameType) {
-                    GameType.FT -> playQuotaComData?.oUTRIGHTFT
-                    GameType.BK -> playQuotaComData?.oUTRIGHTBK
-                    GameType.TN -> playQuotaComData?.oUTRIGHTTN
-                    GameType.VB -> playQuotaComData?.oUTRIGHTVB
-                    GameType.BM -> playQuotaComData?.oUTRIGHTBM
-                    GameType.TT -> playQuotaComData?.oUTRIGHTTT
-                    GameType.IH -> playQuotaComData?.oUTRIGHTIH
-                    GameType.BX -> playQuotaComData?.oUTRIGHTBX
-                    GameType.CB -> playQuotaComData?.oUTRIGHTCB
-                    GameType.CK -> playQuotaComData?.oUTRIGHTCK
-                    GameType.BB -> playQuotaComData?.oUTRIGHTBB
-                    GameType.RB -> playQuotaComData?.oUTRIGHTRB
-                    GameType.AFT -> playQuotaComData?.oUTRIGHTAFT
-                    GameType.MR -> playQuotaComData?.oUTRIGHTMR
-                    GameType.GF -> playQuotaComData?.oUTRIGHTGF
-                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
-                }
-            }
-
-            isParlayBet -> {
-                when (gameType) {
-                    GameType.FT -> playQuotaComData?.pARLAYFT
-                    GameType.BK -> playQuotaComData?.pARLAYBK
-                    GameType.TN -> playQuotaComData?.pARLAYTN
-                    GameType.VB -> playQuotaComData?.pARLAYVB
-                    GameType.BM -> playQuotaComData?.pARLAYBM
-                    GameType.TT -> playQuotaComData?.pARLAYTT
-                    GameType.IH -> playQuotaComData?.pARLAYIH
-                    GameType.BX -> playQuotaComData?.pARLAYBX
-                    GameType.CB -> playQuotaComData?.pARLAYCB
-                    GameType.CK -> playQuotaComData?.pARLAYCK
-                    GameType.BB -> playQuotaComData?.pARLAYBB
-                    GameType.RB -> playQuotaComData?.pARLAYRB
-                    GameType.AFT -> playQuotaComData?.pARLAYAFT
-                    GameType.MR -> playQuotaComData?.pARLAYMR
-                    GameType.GF -> playQuotaComData?.pARLAYGF
-                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
-                }
-            }
-            else -> {
-                when (gameType) {
-                    GameType.FT -> playQuotaComData?.sINGLEFT
-                    GameType.BK -> playQuotaComData?.sINGLEBK
-                    GameType.TN -> playQuotaComData?.sINGLETN
-                    GameType.VB -> playQuotaComData?.sINGLEVB
-                    GameType.BM -> playQuotaComData?.sINGLEBM
-                    GameType.TT -> playQuotaComData?.sINGLETT
-                    GameType.IH -> playQuotaComData?.sINGLEIH
-                    GameType.BX -> playQuotaComData?.sINGLEBX
-                    GameType.CB -> playQuotaComData?.sINGLECB
-                    GameType.CK -> playQuotaComData?.sINGLECK
-                    GameType.BB -> playQuotaComData?.sINGLEBB
-                    GameType.RB -> playQuotaComData?.sINGLERB
-                    GameType.AFT -> playQuotaComData?.sINGLEAFT
-                    GameType.MR -> playQuotaComData?.sINGLEMR
-                    GameType.GF -> playQuotaComData?.sINGLEGF
-                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
-                }
-            }
+        //後台要求寫死足球、籃球、其他三種類別。如果之後需求更變，有擴充其他球種可考慮改成上方邏輯
+        val playQuota: PlayQuota? = when (gameType.key) {
+            GameType.BK.key -> playQuotaComData?.get(key)
+            GameType.FT.key -> playQuotaComData?.get(key)
+            else -> playQuotaComData?.get("${betType}@${GameType.OTHER.key}")
         }
 
         val oddsList = matchOddList.map {
@@ -471,11 +424,13 @@ class BetInfoRepository(val androidContext: Context) {
                         .toInt()
 
                 //region parlayBetLimit(球類賽事類型投注額上限), matchTypeMaxBetMoney(會員層級賽事類型投注額上限), userSelfLimit(自我禁制投注額上限), hdOddsPayout(風控投注額上限) 取最小值作為投注額上限
+                //20220711 新增 betInfoLimit風控給的限額 (/api/front/match/bet/info給的限額)
                 listOf(
                     parlayBetLimit,
                     matchTypeMaxBetMoney,
                     userSelfLimit ?: 0,
-                    hdOddsPayout
+                    hdOddsPayout,
+                    playMaxBetSingleBet.toInt()
                 ).filter { limit -> limit > 0 }.minOrNull()?.let { minLimit ->
                     maxBet = minLimit
                 }

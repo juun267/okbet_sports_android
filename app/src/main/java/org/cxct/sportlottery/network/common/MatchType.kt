@@ -16,5 +16,6 @@ enum class MatchType(val postValue: String, @StringRes val resId: Int) {
     OTHER("TODAY", R.string.my_favorite),
     OTHER_OUTRIGHT("OTHER_OUTRIGHT", R.string.my_favorite),
     OTHER_EPS("OTHER_EPS", R.string.my_favorite),
-    DETAIL("DETAIL", R.string.my_favorite)
+    DETAIL("DETAIL", R.string.my_favorite),
+    SINGLE("SINGLE",R.string.ou_hdp_1x2_title)
 }

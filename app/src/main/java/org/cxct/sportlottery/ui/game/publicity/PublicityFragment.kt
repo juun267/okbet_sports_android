@@ -19,6 +19,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -501,6 +503,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goGamePage() {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN && viewModel.isLogin.value != true) {
+            showLoginNotify()
+            return
+        }
         GameActivity.reStart(activity?:requireActivity())
         activity?.finish()
     }
@@ -538,6 +544,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun showStatistics(matchId: String?) {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN && viewModel.isLogin.value != true) {
+            showLoginNotify()
+            return
+        }
         StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
@@ -548,6 +558,11 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         matchId: String?,
         matchInfoList: List<MatchInfo>
     ) {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN && viewModel.isLogin.value != true) {
+            showLoginNotify()
+            return
+        }
+
         val gameType = GameType.getGameType(gameTypeCode)
         val navMatchType = matchType ?: MatchType.DETAIL
         if (gameType != null && matchId != null) {

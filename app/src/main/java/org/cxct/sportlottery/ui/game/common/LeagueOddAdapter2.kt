@@ -398,6 +398,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 GameType.AFT.key -> setImageResource(R.drawable.ic_live_football_small)
                 GameType.MR.key -> setImageResource(R.drawable.ic_live_racing_small)
                 GameType.GF.key -> setImageResource(R.drawable.ic_live_golf_small)
+                GameType.ES.key -> setImageResource(R.drawable.ic_live_esport_small)
             }
         }
 
