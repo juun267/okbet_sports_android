@@ -1198,6 +1198,15 @@
     <string name="tran_time_sub">交易时间：</string>
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="btn_sure">确定</string>
+    <string name="Outlets_Reserve">网点预约</string>
+    <string name="current_balance">当前余额</string>
+    <string name="select_area">选择地区</string>
+    <string name="select_city">选择城市</string>
+    <string name="outlets_address">投注站地址</string>
+    <string name="appointment_time">预约时间</string>
+    <string name="select_date">请选择日期</string>
+    <string name="select_time">请选择时间</string>
+    <string name="current_time">当前时间</string>
 
     <!--region 20220714 新版投注單-->
     <string name="bet_stake">本金</string>

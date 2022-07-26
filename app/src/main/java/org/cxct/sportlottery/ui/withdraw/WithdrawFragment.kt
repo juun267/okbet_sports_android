@@ -8,21 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
-import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
-import kotlinx.android.synthetic.main.fragment_withdraw.et_withdrawal_password
-import kotlinx.android.synthetic.main.fragment_withdraw.ll_tab_layout
-import kotlinx.android.synthetic.main.fragment_withdraw.tab_layout
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
-import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
@@ -46,6 +41,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: WithdrawBankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
+    private lateinit var betStationFragment: BetStationFragment
     private val zero = 0.0
 
     override fun onCreateView(
@@ -158,15 +154,23 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> {
+                        selectBetStationTab(false)
                         selectDealType(TransferType.BANK)
                         clearEvent()
                     }
                     1 -> {
+                        selectBetStationTab(false)
                         selectDealType(TransferType.CRYPTO)
                         clearEvent()
                     }
                     2 -> {
+                        selectBetStationTab(false)
                         selectDealType(TransferType.E_WALLET)
+                        clearEvent()
+                    }
+                    3 -> {
+                        selectBetStationTab(true)
+//                        viewModel.setDealType(TransferType.STATION)
                         clearEvent()
                     }
                 }
@@ -210,7 +214,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 viewModel.addWithdraw(
                     withdrawBankCardData,
                     et_withdrawal_amount.getText(),
-                    et_withdrawal_password.getText()
+                    et_withdrawal_password.getText(),
+                    null,
+                    null,
+                    null,
                 )
             }
         }
@@ -320,6 +327,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
             val eWalletCardExist =
                 moneyCardSet.find { it.transferType == TransferType.E_WALLET }?.exist
+            val stationExit =
+                moneyCardSet.find { it.transferType == TransferType.STATION }?.exist
 
             when {
                 bankCardExist == true -> {
@@ -336,6 +345,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 //                    tab_e_wallet.isChecked = true
                     tab_layout.getTabAt(2)?.select()
                     viewModel.setDealType(TransferType.E_WALLET)
+                }
+                stationExit == true -> {
+//                    tab_e_wallet.isChecked = true
+                    tab_layout.getTabAt(3)?.select()
+                    viewModel.setDealType(TransferType.STATION)
                 }
                 else -> {
                     jumpToMoneyCardSetting()
@@ -358,18 +372,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
                 tab_layout.getTabAt(2)?.view?.visibility =
                     if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
-//                tab_bank_card.visibility =
-//                    if (list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
-//                tab_crypto.visibility =
-//                    if (list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
-//                tab_wallet.visibility =
-//                    if (list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
 
-//                when(list.first()){
-//                    TransferType.CRYPTO.type -> tab_crypto.performClick()
-//                    TransferType.E_WALLET.type -> tab_wallet.performClick()
-//                    else -> tab_bank_card.performClick()
-//                }
+                if (list.contains(TransferType.STATION.type)) {
+                    betStationFragment = BetStationFragment()
+                    tab_layout.getTabAt(3)?.view?.visibility = View.VISIBLE
+                } else {
+                    tab_layout.getTabAt(3)?.view?.visibility = View.GONE
+                }
             }
         })
 
@@ -429,15 +438,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         //提款
         viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
-            if (it.success) {
-                clearEvent()
-                showPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.text_money_get_success)
-                ) { viewModel.getMoney() }
-            } else {
-                showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
-            }
+            if (lin_withdraw.isVisible)
+                if (it.success) {
+                    clearEvent()
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.text_money_get_success)
+                    ) { viewModel.getMoney() }
+                } else {
+                    showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
+                }
         })
     }
 
@@ -489,6 +499,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                             TransferType.BANK -> getBankIconByBankName(it.bankName)
                             TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
                             TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
+                            TransferType.STATION -> getBankIconByBankName(it.bankName)
                         }
                         view.iv_bank_card_icon.setImageResource(cardIcon)
 
@@ -527,8 +538,26 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         )
     }
 
-    private fun showCommissionDialog() {
-
+    private fun selectBetStationTab(select: Boolean) {
+        if (select) {
+            lin_withdraw.visibility = View.GONE
+            fl_bet_station.visibility = View.VISIBLE
+            if (betStationFragment != null) {
+                betStationFragment = BetStationFragment()
+            }
+            if (betStationFragment.isAdded) {
+                childFragmentManager.beginTransaction().show(betStationFragment).commit()
+            } else {
+                childFragmentManager.beginTransaction().add(R.id.fl_bet_station, betStationFragment)
+                    .commit()
+            }
+        } else {
+            lin_withdraw.visibility = View.VISIBLE
+            fl_bet_station.visibility = View.GONE
+            if (betStationFragment != null && betStationFragment.isAdded) {
+                childFragmentManager.beginTransaction().hide(betStationFragment).commit()
+            }
+        }
     }
 }
 
@@ -592,6 +621,7 @@ class WithdrawBankCardAdapter(
                         TransferType.BANK -> getBankIconByBankName(bankCard.bankName)
                         TransferType.CRYPTO -> getCryptoIconByCryptoName(bankCard.transferType.type)
                         TransferType.E_WALLET -> getBankIconByBankName(bankCard.bankName)
+                        TransferType.STATION -> getBankIconByBankName(bankCard.bankName)
                     }
                 )
 
@@ -623,6 +653,7 @@ class WithdrawBankCardAdapter(
             notifyItemChanged(bankPosition)
         }
     }
+
 }
 
 class BankCardAdapterListener(val listener: (bankCard: BankCardList) -> Unit) {

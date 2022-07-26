@@ -1196,6 +1196,15 @@
     <string name="tran_time_sub">Transaction time：</string>
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
+    <string name="Outlets_Reserve">Outlets  Reserve</string>
+    <string name="current_balance">Balance</string>
+    <string name="select_area">Select Area</string>
+    <string name="select_city">Select City</string>
+    <string name="outlets_address">Outlets Address</string>
+    <string name="appointment_time">Appointment</string>
+    <string name="select_date">Date</string>
+    <string name="select_time">Time</string>
+    <string name="current_time">Time</string>
 
     <!--region 20220714 新版投注單-->
     <string name="bet_stake">Stake</string>
