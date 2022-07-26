@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="language_setting">语言</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
@@ -669,6 +669,7 @@
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
     <string name="withdraw_log_crypto_transfer">虚拟币提款</string>
+    <string name="betting_station_type" >网点预约</string>
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
     <string name="log_detail_trans_num_sub2">交易编号</string>
@@ -1159,6 +1160,7 @@
     <string name="dialog_age_verify_hint">我接受并同意OKbet</string>
     <string name="dialog_age_verify_confirm">我已年满21岁</string>
     <string name="dialog_age_verify_exit">离开</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKbet规则与条款</string>
     <!--endregion-->
 
     <string name="esports">电子竞技</string>

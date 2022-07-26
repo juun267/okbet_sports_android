@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -72,7 +73,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     goLoginPage()
                 },
                 onGoHomePageListener = {
-                    goGamePage()
+                    checkCreditSystemLogin { goGamePage() }
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if (mIsEnabled) {
@@ -95,7 +96,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 onClickStatisticsListener = { matchId ->
                     showStatistics(matchId)
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
-                    navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                    checkCreditSystemLogin { navOddsDetailFragment(gameType, matchType, matchId, matchInfoList) }
                 }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
                     if (viewModel.checkLoginStatus()) {
                         navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
@@ -111,17 +112,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     clickNews()
                 },
                 onSportMenuListener = { sportMenu ->
-                    if (sportMenu.entranceType != null) {
-                        sportMenu.entranceType?.let {
-                            jumpToTheSport(it, sportMenu.gameType)
-                        }
-                    } else {
-                        viewModel.setSportClosePromptMessage(
-                            MultiLanguagesApplication.appContext.getString(
-                                sportMenu.gameType.string
-                            )
-                        )
-                    }
+                    checkCreditSystemLogin { enterTheSport(sportMenu) }
                 },
                 //第三方遊戲跳轉
                 onGoThirdGamesListener = {
@@ -152,11 +143,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 },
                 onClickContactListener = {
                     context?.let {
-                        JumpUtil.toInternalWeb(
-                            it,
-                            Constants.getContactUrl(it),
-                            resources.getString(R.string.contact)
-                        )
+                        clickCustomService(it, parentFragmentManager)
                     }
                 },
                 onClickPromotionListener = {
@@ -800,6 +787,37 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         }
         if (result.resultType != EnterThirdGameResult.ResultType.NONE)
             viewModel.clearThirdGame()
+    }
+
+    /**
+     * 檢查信用盤狀態下是否已登入
+     * @param eventFun 處於信用盤時若已登入則執行該function, 若非信用盤則直接執行
+     */
+    private fun checkCreditSystemLogin(eventFun: () -> Unit) {
+        if (isCreditSystem()) {
+            if (viewModel.checkLoginStatus()) {
+                eventFun()
+            }
+        } else {
+            eventFun()
+        }
+    }
+
+    /**
+     * 點擊準備進入指定球種
+     */
+    private fun enterTheSport(sportMenu: SportMenu) {
+        if (sportMenu.entranceType != null) {
+            sportMenu.entranceType?.let {
+                jumpToTheSport(it, sportMenu.gameType)
+            }
+        } else {
+            viewModel.setSportClosePromptMessage(
+                MultiLanguagesApplication.appContext.getString(
+                    sportMenu.gameType.string
+                )
+            )
+        }
     }
 
     /**

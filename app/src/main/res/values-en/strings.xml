@@ -526,6 +526,8 @@
     <string name="bank_card">Bank card</string>
     <string name="crypto">USDT</string>
     <string name="ewallet">eWallet</string>
+    <string name="betting_station_type">Outlets Reserve</string>
+
     <string name="currency_protocol">agreement/currency</string>
     <string name="select_crypto_address">Address</string>
     <string name="withdraw_number">Withdraw</string>
@@ -1157,6 +1159,7 @@
     <string name="dialog_age_verify_hint">I agree to the OKbet</string>
     <string name="dialog_age_verify_confirm">I AM OVER 21 YEARS OLD</string>
     <string name="dialog_age_verify_exit">EXIT</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKbet Terms &amp; Conditions</string>
     <!--endregion-->
 
     <string name="coming_soon">Soon</string>

@@ -414,4 +414,6 @@ object Constants {
     const val BETTING_STATION_QUERY = "/api/front/bettingStation/query"
     const val BETTING_STATION_QUERY_UWSTATION = "/api/front/bettingStation/queryUwStation"
     const val AREA_ALL = "/api/front/area/all"
+    const val BETTING_STATION_QUERY_INVITE = "/api/front/bettingStation/queryByInvite"
+
 }

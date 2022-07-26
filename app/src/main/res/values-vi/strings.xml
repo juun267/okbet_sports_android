@@ -662,6 +662,7 @@
     <string name="recharge_log_recharge_amount">Số tiền đặt cọc</string>
     <string name="recharge_log_channel_type">Loại kênh</string>
     <string name="recharge_log_order_state">Trạng thái đơn cược</string>
+    <string name="betting_station_type">Trang web đặt hẹn</string>
     <string name="withdraw_log_withdraw_amount">Số tiền rút</string>
     <string name="log_state_processing">Đang xử lý</string>
     <string name="withdraw_log_state_pass">Thông qua</string>
@@ -1149,6 +1150,7 @@
     <string name="dialog_age_verify_hint">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này</string>
     <string name="dialog_age_verify_confirm">TÔI HƠN 21 TUỔI</string>
     <string name="dialog_age_verify_exit">LỐI RA</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này Điều Khoản &amp; Điều Kiện</string>
     <!--endregion-->
 
     <string name="coming_soon">Sắp có</string>
