@@ -398,14 +398,6 @@ fun getLevelName(context: Context, level: Int): String {
     return jsonObject.getString(LanguageManager.getSelectLanguage(context).key)
 }
 
-val playCateMappingList by lazy {
-    val json = LocalJsonUtil.getLocalJson(
-        MultiLanguagesApplication.appContext,
-        "localJson/PlayCateMapping.json"
-    )
-    json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-}
-
 /**
  * 設置WebView的日、夜間模式背景色, 避免還在讀取時出現與日夜模式不符的顏色區塊
  * @since 夜間模式時, WebView尚未讀取完成時會顯示其預設背景(白色)

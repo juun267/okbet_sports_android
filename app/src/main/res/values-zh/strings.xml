@@ -1160,6 +1160,7 @@
     <string name="dialog_age_verify_hint">我接受并同意OKbet</string>
     <string name="dialog_age_verify_confirm">我已年满21岁</string>
     <string name="dialog_age_verify_exit">离开</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKbet规则与条款</string>
     <!--endregion-->
 
     <string name="esports">电子竞技</string>

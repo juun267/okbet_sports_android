@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.dialog
 
 import android.os.Bundle
-import android.view.Gravity
-import android.view.WindowManager
-import android.webkit.*
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -18,6 +16,8 @@ class AgeVerifyDialog(
     val activity: FragmentActivity,
     private val onAgeVerifyCallBack: OnAgeVerifyCallBack
 ) : AlertDialog(activity) {
+
+    private var isCbChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,14 @@ class AgeVerifyDialog(
             dismiss()
         }
 
+        //讓checkBox可點擊的範圍增加
+        cbClickableView.setOnClickListener {
+            isCbChecked = !isCbChecked
+            cb_agree_statement.isChecked = isCbChecked
+        }
+
         cb_agree_statement.setOnCheckedChangeListener { _, isChecked ->
+            isCbChecked = isChecked
             btn_confirm.apply {
                 setBackgroundResource(
                     if (isChecked) R.drawable.bg_radius_4_button_1053af else R.drawable.bg_rectangle_4dp_gray_dark
@@ -60,7 +67,7 @@ class AgeVerifyDialog(
         }
         cb_agree_statement.isChecked = false
 
-        tv_statement_link.setOnClickListener {
+        tv_statement_link.setHighlightClickListener {
             JumpUtil.toInternalWeb(
                 context,
                 Constants.getAgreementRuleUrl(context),
