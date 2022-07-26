@@ -10,5 +10,6 @@ enum class RechType(val type: String) {
     CRYPTO("cryptoPay"), //虛擬幣轉帳
     GCASH("gcash"),
     GRABPAY("grabPay"),
-    PAYMAYA("payMaya")
+    PAYMAYA("payMaya"),
+    BETTING_STATION("bettingStation")
 }

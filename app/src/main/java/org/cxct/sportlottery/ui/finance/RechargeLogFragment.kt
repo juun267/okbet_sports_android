@@ -132,32 +132,35 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         selector_method_status.setItemData(rechargeChannelList as MutableList<StatusSheetData>)
         selector_order_status.setItemData(rechargeStateList as MutableList<StatusSheetData>)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner, {
+        viewModel.isLoading.observe(this.viewLifecycleOwner) {
             if (it) {
                 loading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner, {
+        viewModel.userRechargeListResult.observe(this.viewLifecycleOwner) {
             it?.apply {
                 rechargeLogAdapter.data = it
                 setupNoRecordView(it.isEmpty())
             }
-        })
+        }
 
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, { event ->
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 if (logDetailDialog.dialog?.isShowing != true) {
-                    logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
+                    logDetailDialog.show(
+                        parentFragmentManager,
+                        RechargeLogFragment::class.java.simpleName
+                    )
                 }
             }
-        })
+        }
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
             rechargeLogAdapter.isFinalPage = it
-        })
+        }
 
         viewModel.getUserRechargeList(true)
     }
@@ -202,6 +205,10 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             getString(R.string.recharge_channel_paymaya) -> {
                 StatusSheetData(RechType.PAYMAYA.type, it)
             }
+            getString(R.string.betting_station_type) -> {
+                StatusSheetData(RechType.BETTING_STATION.type, it)
+            }
+            //全部渠道类型
             else -> {
                 StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
             }
