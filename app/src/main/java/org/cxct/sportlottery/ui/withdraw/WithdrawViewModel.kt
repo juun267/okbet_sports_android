@@ -612,8 +612,11 @@ class WithdrawViewModel(
                 ""
             }
         }
-        getWithdrawRate(withdrawCard, withdrawAmount.toDouble())
+        if (dealType != TransferType.STATION) {
+            getWithdrawRate(withdrawCard, withdrawAmount.toDouble())
+        }
     }
+
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
@@ -625,6 +628,8 @@ class WithdrawViewModel(
     }
 
     fun getWithdrawAmountLimit(): WithdrawAmountLimit {
+        //{"countLimit":5,"contract":"RMB","currency":"RMB","exchangeRate":1,"feeVal":0,"feeRate":0,"minWithdrawMoney":1,"maxWithdrawMoney":10000}
+//        {"contract":"RMB","countLimit":5,"currency":"RMB","exchangeRate":1.0,"feeRate":0.0,"feeVal":0.0,"maxWithdrawMoney":10000.0,"minWithdrawMoney":1.0}
         //用戶可提取最小金額
         val minLimit = cardConfig?.minWithdrawMoney ?: 0.0
         //提取金額不得超過 餘額-手續費
