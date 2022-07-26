@@ -1159,6 +1159,7 @@
     <string name="dialog_age_verify_hint">I agree to the OKbet</string>
     <string name="dialog_age_verify_confirm">I AM OVER 21 YEARS OLD</string>
     <string name="dialog_age_verify_exit">EXIT</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKbet Terms &amp; Conditions</string>
     <!--endregion-->
 
     <!--region coming soon-->
