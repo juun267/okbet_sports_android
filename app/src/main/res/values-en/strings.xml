@@ -903,7 +903,7 @@
     <string name="identity_sex">Sex</string>
     <string name="identity_work">Occupation</string>
     <string name="message_source_change">The system receives new data, click confirm button to refresh</string>
-    <string name="appearance">Appearance</string>
+    <string name="appearance">Mode</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">Details</string>
