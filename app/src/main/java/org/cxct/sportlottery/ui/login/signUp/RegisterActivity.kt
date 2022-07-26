@@ -566,13 +566,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         with(binding) {
             val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
 
-//            if (bettingStationVisibility) {
+            if (bettingStationVisibility) {
                 etBettingShop.visibility = View.VISIBLE
 //                //查詢投注站列表
                viewModel.bettingStationQuery()
-//            } else {
-//                etBettingShop.visibility = View.GONE
-//            }
+            } else {
+                etBettingShop.visibility = View.GONE
+            }
         }
     }
 
