@@ -621,7 +621,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         viewModel.checkInviteCode(it)
                     } else {
                         etBettingShopSelectTrue()
-                        eetBettingShop.setText(bettingShopSelectedData?.showName)
+
                     }
                 }
             }
@@ -828,7 +828,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     viewModel.queryPlatform(eet_recommend_code.text.toString())
                 } else {
                     etBettingShopSelectTrue()
-                    eetBettingShop.setText(bettingShopSelectedData?.showName)
                 }
 
             }
@@ -838,7 +837,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     etBettingShopSelectFalse(it.checkBettingData?.code.toString())
                 } else {
                     etBettingShopSelectTrue()
-                    eetBettingShop.setText(bettingShopSelectedData?.showName)
                     binding.etRecommendCode.setError(
                         it?.msg,
                         false
@@ -1218,6 +1216,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         bettingShopSpinner.isClickable = true
         etBettingShop.isEnabled = true
         etBettingShop.isClickable = true
+        eetBettingShop.setText(bettingShopSelectedData?.showName)
     }
 
     private fun etBettingShopSelectFalse(eetBetting:String) {
