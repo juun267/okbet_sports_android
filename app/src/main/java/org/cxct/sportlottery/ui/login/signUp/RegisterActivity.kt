@@ -510,8 +510,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupIdentityType() {
         with(binding) {
             //顯示隱藏該選項
-             etIdentityType.visibility =
-               if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+            etIdentityType.visibility =
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
@@ -654,12 +654,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
 
             eetIdentityType.checkRegisterListener {
-                if (it != "") {
-                    viewModel.checkIdentityType(it)
-                }
+                viewModel.checkIdentityType(it)
             }
             eetBettingShop.apply {
-                checkRegisterListener { viewModel.checkBettingShop(it) }
+                checkRegisterListener {
+                    if (it != "") {
+                        viewModel.checkBettingShop(it)
+                    }
+                }
             }
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
@@ -824,23 +826,23 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     false
                 )
                 if (it == null) {
-                   etIdentityType.setEndIcon(null)
-                    identityTypeSpinner.isEnabled = false
-                    identityTypeSpinner.isClickable = false
+                    etBettingShop.setEndIcon(null)
+                    bettingShopSpinner.isEnabled = false
+                    bettingShopSpinner.isClickable = false
 
-                    etIdentityType.isEnabled = false
-                    etIdentityType.isClickable = false
+                    etBettingShop.isEnabled = false
+                    etBettingShop.isClickable = false
 
-                  etIdentityType.setHintText("(请选择投注站)")
-                    eetIdentityType.setText("")
-                    etIdentityType.hasFocus = false
+                    etBettingShop.setHintText("(请选择投注站)")
+                    eetBettingShop.setText("")
+                    etBettingShop.hasFocus = false
                 } else {
-                    etIdentityType.setEndIcon(R.drawable.ic_arrow_gray)
-                    identityTypeSpinner.isEnabled = true
-                    identityTypeSpinner.isClickable = true
-                    etIdentityType.isEnabled = true
-                    etIdentityType.isClickable = true
-                    eetIdentityType.setText(identityTypeSelectedData?.showName)
+                    etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+                    bettingShopSpinner.isEnabled = true
+                    bettingShopSpinner.isClickable = true
+                    etBettingShop.isEnabled = true
+                    etBettingShop.isClickable = true
+                    eetBettingShop.setText(bettingShopSelectedData?.showName)
                 }
 
             }
