@@ -76,7 +76,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view" />
 
-                <org.cxct.sportlottery.widget.highLightTextView.HighlightTextView
+                <TextView
                     android:id="@+id/tv_statement_link"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -85,22 +85,11 @@
                     android:gravity="start"
                     android:text="@string/dialog_age_verify_hint_and_terms_conditions"
                     android:textColor="@color/color_5d5d5d_888888"
+                    android:textColorLink="@color/color_317FFF_0760D4"
                     android:textSize="@dimen/textSize12sp"
-                    app:highlightColor="@color/transparent"
-                    app:highlightRadius="0dp"
-                    app:highlightText="@string/terms_conditions"
-                    app:highlightTextColor="@color/color_317FFF_0760D4"
                     app:layout_constraintBottom_toBottomOf="@+id/cb_agree_statement"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cb_agree_statement"
-                    app:layout_constraintTop_toTopOf="@+id/cb_agree_statement" />
-
-                <View
-                    android:id="@+id/cbClickableView"
-                    android:layout_width="66dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cb_agree_statement"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/cb_agree_statement" />
 
                 <TextView

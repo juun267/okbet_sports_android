@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ScreenUtil
+import org.cxct.sportlottery.util.makeLinks
 
 class AgeVerifyDialog(
     val activity: FragmentActivity,
@@ -45,12 +46,6 @@ class AgeVerifyDialog(
             dismiss()
         }
 
-        //讓checkBox可點擊的範圍增加
-        cbClickableView.setOnClickListener {
-            isCbChecked = !isCbChecked
-            cb_agree_statement.isChecked = isCbChecked
-        }
-
         cb_agree_statement.setOnCheckedChangeListener { _, isChecked ->
             isCbChecked = isChecked
             btn_confirm.apply {
@@ -67,13 +62,25 @@ class AgeVerifyDialog(
         }
         cb_agree_statement.isChecked = false
 
-        tv_statement_link.setHighlightClickListener {
-            JumpUtil.toInternalWeb(
-                context,
-                Constants.getAgreementRuleUrl(context),
-                context.getString(R.string.terms_conditions)
-            )
-        }
+        tv_statement_link.makeLinks(
+            //讓checkBox可點擊的範圍延伸到未變色的文字上
+            Pair(
+                context.getString(R.string.dialog_age_verify_hint),
+                View.OnClickListener {
+                    isCbChecked = !isCbChecked
+                    cb_agree_statement.isChecked = isCbChecked
+                }),
+            //有色文字的點擊事件
+            Pair(
+                context.getString(R.string.terms_conditions),
+                View.OnClickListener {
+                    JumpUtil.toInternalWeb(
+                        context,
+                        Constants.getAgreementRuleUrl(context),
+                        context.getString(R.string.terms_conditions)
+                    )
+                })
+        )
     }
 
     interface OnAgeVerifyCallBack {

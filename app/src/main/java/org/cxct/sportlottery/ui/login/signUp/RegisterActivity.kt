@@ -1024,35 +1024,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         dialog.show(supportFragmentManager, null)
     }
 
-
-    fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
-        val spannableString = SpannableString(this.text)
-        var startIndexOfLink = -1
-        for (link in links) {
-            val clickableSpan = object : ClickableSpan() {
-                override fun updateDrawState(textPaint: TextPaint) {
-                    textPaint.color = textPaint.linkColor
-                    textPaint.isUnderlineText = false
-                }
-
-                override fun onClick(view: View) {
-                    Selection.setSelection((view as TextView).text as Spannable, 0)
-                    view.invalidate()
-                    link.second.onClick(view)
-                }
-            }
-            startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
-            if (startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
-            spannableString.setSpan(
-                clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-        this.movementMethod =
-            LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click
-        this.setText(spannableString, TextView.BufferType.SPANNABLE)
-    }
-
     /**
      * 創建生日用日期選擇器
      * 日期範圍: ~今天
