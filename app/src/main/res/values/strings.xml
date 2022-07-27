@@ -683,6 +683,7 @@
     <string name="withdraw_log_crypto_transfer">USDT</string>
     <string name="betting_station_reserve">Outlets Reserve</string>
     <string name="betting_station_withdraw">Outlets Withdraw</string>
+    <string name="betting_station_deposit">Outlets Deposit</string>
     <string name="log_detail_title">Check details</string>
     <string name="log_detail_trans_num_sub">Order ID：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>

@@ -529,6 +529,7 @@
     <string name="ewallet">eWallet</string>
     <string name="betting_station_reserve">Outlets Reserve</string>
     <string name="betting_station_withdraw">Outlets Withdraw</string>
+    <string name="betting_station_deposit" >Outlets Deposit</string>
     <string name="currency_protocol">agreement/currency</string>
     <string name="select_crypto_address">Address</string>
     <string name="withdraw_number">Withdraw</string>

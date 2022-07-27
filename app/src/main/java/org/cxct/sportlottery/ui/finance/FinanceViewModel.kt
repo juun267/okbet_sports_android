@@ -164,7 +164,7 @@ class FinanceViewModel(
                     RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
                     RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
                     RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
-                    RechType.BETTING_STATION.type -> androidContext.getString(R.string.betting_station_reserve)
+                    RechType.BETTING_STATION.type -> androidContext.getString(R.string.betting_station_deposit)
                     else -> ""
                 }
 
