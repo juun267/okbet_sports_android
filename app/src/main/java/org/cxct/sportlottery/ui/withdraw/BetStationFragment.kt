@@ -77,13 +77,16 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
-            checkPermissionGranted();
             initView()
             setupEvent()
             setupObserve()
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkPermissionGranted()
+    }
 
     private fun initView() {
         et_amount.setTitle(sConfigData?.systemCurrency)
@@ -130,16 +133,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                         lin_empty.visibility = View.GONE
                         tv_station_name.text = it.name
                         tv_station_address.text = it.addr
-                        var desloc = Location("").apply {
-                            latitude = it.lat
-                            longitude = it.lon
-                        }
-                        var distance = location?.distanceTo(desloc)
-                        tv_station_distance.text = ArithUtil.round(
-                            distance?.div(1000)?.toDouble(),
-                            2,
-                            RoundingMode.HALF_UP
-                        ) + " KM"
+                        setupStationDistance()
                     }
                 })
 
@@ -156,6 +150,21 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             adapter = stationAdapter
         }
 
+    }
+
+    private fun setupStationDistance() {
+        selectBettingStation?.let {
+            var desloc = Location("").apply {
+                latitude = it.lat
+                longitude = it.lon
+            }
+            var distance = location?.distanceTo(desloc)
+            tv_station_distance.text = ArithUtil.round(
+                distance?.div(1000)?.toDouble(),
+                2,
+                RoundingMode.HALF_UP
+            ) + " KM"
+        }
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -415,6 +424,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
             location = p0.lastLocation
+            setupStationDistance()
 //            Timber.e("locationCallback location: $location")
             if (location != null) removeLocationUpdates()
         }
@@ -435,6 +445,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
             fusedLocationClient?.lastLocation?.addOnSuccessListener {
                 location = it
+                setupStationDistance()
 //                Timber.e("lastLocation location: $location")
 
                 //拿不到lastLocation時，要利用requestLocationUpdates取得location
