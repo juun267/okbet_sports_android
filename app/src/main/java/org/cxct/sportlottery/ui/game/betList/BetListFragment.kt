@@ -96,12 +96,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 BET_CONFIRM_TIPS -> {
                     val spannableStringBuilder = SpannableStringBuilder()
                     val text1 = SpannableString(getString(R.string.text_bet_not_success))
-                    val text2 = SpannableString(getString(R.string.text_bet_not_success2))
+                    val text2 = SpannableString(getString(R.string.waiting))
                     val foregroundSpan =
                         ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     val text3 = SpannableString(getString(R.string.text_bet_not_success3))
-                    val text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                    val text4 = SpannableString(getString(R.string.label_transaction_status))
                     val foregroundSpan2 =
                         ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
                     text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

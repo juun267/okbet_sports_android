@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:text="@string/versus"
+                android:text="@string/verse"
                 android:textColor="@color/color_0C2040_a9bedf"
                 android:textSize="@dimen/textSize14sp" />
 

@@ -165,7 +165,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvEditable="false"
-            app:cvTitle="@string/identity_birth" />
+            app:cvTitle="@string/birth_date" />
 
         <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_expire_date"

@@ -134,7 +134,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                     val spannableStringBuilder = SpannableStringBuilder()
                     val text1 = SpannableString(getString(R.string.text_bet_not_success))
-                    val text2 = SpannableString(getString(R.string.text_bet_not_success2))
+                    val text2 = SpannableString(getString(R.string.waiting))
                     val foregroundSpan =
                         ForegroundColorSpan(
                             ContextCompat.getColor(
@@ -144,7 +144,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         )
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     val text3 = SpannableString(getString(R.string.text_bet_not_success3))
-                    val text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                    val text4 = SpannableString(getString(R.string.label_transaction_status))
                     val foregroundSpan2 =
                         ForegroundColorSpan(
                             ContextCompat.getColor(

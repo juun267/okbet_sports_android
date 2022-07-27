@@ -105,7 +105,7 @@
     <string name="betting_shop">Outlet</string>
     <string name="register_identity">Valid ID</string>
     <string name="hint_register_identity">(Please enter Valid ID)</string>
-    <string name="birth_date">Birth Date</string>
+    <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">(YYYY/MM/DD)</string>
     <string name="hint_real_name">(match the bank account name)</string>
     <string name="verification_code">Verification code</string>
@@ -154,7 +154,6 @@
     <string name="label_highlight">Select</string>
     <string name="display_all">Show all</string>
     <string name="display_more">Show more</string>
-    <string name="versus">v</string>
     <string name="label_sport_game">Schedule</string>
     <string name="label_account_history">Statement</string>
     <string name="label_transaction_status">Bet List</string>
@@ -364,7 +363,6 @@
     <string name="not_start_yet">Has not started</string>
     <string name="game_playing">In the macth</string>
     <string name="ended">Finished</string>
-    <string name="suspend">Delay</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Running</string>
     <string name="settled">Settled bets</string>
@@ -376,7 +374,6 @@
     <string name="canceled">Canceled</string>
     <string name="odds_change">Odds had changed</string>
     <string name="pending">Waiting %1$s s</string>
-    <string name="bet_canceled">Betting fails</string>
     <string name="confirmed">Confirmed</string>
     <string name="bet_detail">Bets details</string>
     <string name="bet_time">Betting time</string>
@@ -386,11 +383,9 @@
     <string name="play_type">Betting method</string>
     <string name="game_odds">Odds</string>
     <string name="match_names">(Home) %1$s vs %1$s (Away)</string>
-    <string name="match_names_2">Home %1$s vs %1$s Away</string>
     <string name="match_names_3">Home %1$s V.S %1$s Away</string>
     <string name="bet_item">Betting items -</string>
     <string name="match_type_row_in_play">IN-PLAY</string>
-    <string name="match_type_row_at_start">SOON</string>
     <string name="at_start_remain_minute">%1$s Minute</string>
     <string name="match_type_row_btn_bs">Concede goals &amp; over/under</string>
     <string name="game_filter_row_search_hint">Please enter league name</string>
@@ -415,7 +410,6 @@
     <string name="game_tab_price_boosts_odd">Price boosts</string>
     <string name="button_league_submit">Submit (%d)</string>
     <string name="login_notify">Please log in to use this feature</string>
-    <string name="total_bet_amount">Total bet amount</string>
     <string name="league_filter_all">SHOW ALL MATCHES</string>
     <string name="odds_detail_less">Show less</string>
     <string name="odds_detail_cs_other">Other score</string>
@@ -458,7 +452,6 @@
     <string name="title_fee_amount">・Transaction Fee Amount：</string>
     <string name="title_rebate_rate">・Rebate：</string>
     <string name="title_rebate_amount">・Rebate amount：</string>
-    <string name="title_tips">・Remark：</string>
     <string name="wx_recharge_hint">Please log in the member to check whether the wechat account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="ali_recharge_hint">Please log in the member to check whether the Alipay account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
     <string name="cft_recharge_hint">Please log in the member to check whether the Tenpay account is used before each payment. The company is not responsible for failing to check the overdue account.</string>
@@ -558,10 +551,8 @@
     <string name="withdraw_password">Withdraw Password</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">· Transaction Fee: %1$S %% Transaction Fee to be paid: %2$s%3$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">· Exchange rate：%1$s</string>
     <string name="withdraw_crypto_amount_hint">· Withdraw：%1$s%2$s</string>
     <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee：%1$s%2$s</string>
-    <string name="hint_please_enter_withdraw_amount">Limit %1$s%2$s~%3$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
@@ -603,7 +594,6 @@
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
     <string name="bet_info_list_game_closed">Trading be closed</string>
     <string name="bet_info_list_game_odds_changed">The odds have changed</string>
-    <string name="bet_info_list_bet_quota">Betting amount: </string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win: </string>
     <string name="bet_list_win_quota">EST Winning：</string>
@@ -641,7 +631,6 @@
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
     <string name="parlay_rule_nc1">%1$s string 1 is a single bet of %1$s options \n must win all options to be returned \n</string>
-    <string name="parlay_rule_at_least">At least 2 options win to make sure the lottery</string>
     <string name="parlay_rule_cant_warn">Different types of sport and champion gameplay can not be linked for parlay</string>
     <string name="parlay_rule_ncm">The %1$S string %2$s is a %2$s bet made up of %1$S different races</string>
     <string name="parlay_rule_list_nc1">%1$S a %2$s string</string>
@@ -670,7 +659,6 @@
     <string name="recharge_log_recharge_amount">Amount</string>
     <string name="recharge_log_channel_type">Method</string>
     <string name="recharge_log_order_state">Status</string>
-    <string name="withdraw_log_withdraw_amount">Amount</string>
     <string name="log_state_processing">Processing</string>
     <string name="withdraw_log_state_pass">Completed</string>
     <string name="withdraw_log_state_un_pass">Failed</string>
@@ -682,8 +670,6 @@
     <string name="log_detail_trans_num_sub">Order ID：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
     <string name="log_detail_time_sub">Time：</string>
-    <string name="log_detail_type_sub">Type：</string>
-    <string name="log_detail_amount_sub">Amount：</string>
     <string name="log_detail_status_sub">Status：</string>
     <string name="log_detail_handle_fee">Fee：</string>
     <string name="log_detail_rebate_money">Return amount：</string>
@@ -722,11 +708,7 @@
     <string name="third_game_cgcp">CX lottery</string>
     <string name="third_game_ogplus">OG+live</string>
     <string name="third_game_cr">Crown E-sports</string>
-    <string name="out_account_">Transfer out of account：</string>
-    <string name="in_account_">Transfer into the account：</string>
-    <string name="transfer_amount">Transfer amount：</string>
     <string name="transfer_state">Transfer status：</string>
-    <string name="remarks">Remark：</string>
     <string name="transfer_info">Transfer information</string>
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
@@ -789,7 +771,6 @@
     <string name="verse">v</string>
     <string name="keyboard_done">Collapse</string>
     <string name="keyboard_max">Max</string>
-    <string name="no_game_description">Select the icon above，add to My Matches. You can group them and easily watch all the match that interest you.</string>
     <string name="odds_button_name_first">First</string>
     <string name="odds_button_name_ant">Any</string>
     <string name="odds_button_name_last">Last</string>
@@ -804,7 +785,6 @@
     <string name="credit_record_quota">Settlement amount</string>
     <string name="credit_record_day">%1$s Date</string>
     <string name="credit_record_status_unsettle">The settlement date has not yet been reached</string>
-    <string name="parlay_rule_nc1_ex">When there are more options, %1$s string 1 can be combined into a double sequence, for example, %2$s matches can be combined into %2$s matches %1$s string 1</string>
     <string name="game_play_type">Game category</string>
     <string name="spt_number_3_2">Best of 3</string>
     <string name="spt_number_5_3">Best of 5</string>
@@ -896,7 +876,6 @@
     <string name="identity_first_name">Given Name</string>
     <string name="identity_other_name">Other Name</string>
     <string name="identity_country">Citizenship</string>
-    <string name="identity_birth">Date of Birth</string>
     <string name="identity_marital_status">Civil Status</string>
     <string name="identity_sex">Sex</string>
     <string name="identity_work">Occupation</string>
@@ -951,7 +930,9 @@
     <string name="take_id_photo">take ID photo</string>
     <string name="take_id_gallery">Select a photo</string>
     <string name="prepare_your_id_photo">Prepare your ID photo</string>
-    <string name="id_description">·Please make sure your ID photo is facing up\n· Make sure your ID photo is clearly visible\n·Avoid flashes or reflections</string>
+    <string name="id_description1">・Please make sure your ID photo is facing up</string>
+    <string name="id_description2">・Make sure your ID photo is clearly visible</string>
+    <string name="id_description3">・Avoid flashes or reflections</string>
     <string name="identity_card">Identity Card</string>
     <string name="passport">Passport</string>
     <string name="face_scan_result">face scan result</string>
@@ -966,9 +947,7 @@
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
-    <string name="text_bet_not_success2">waiting</string>
     <string name="text_bet_not_success3">&#160;Your bet slip is processing, please check &#160;</string>
-    <string name="text_bet_not_success4">Record.</string>
     <string name="text_security_money">Security deposit: %1$s</string>
     <string name="text_security_money2">%1$s days left</string>
     <string name="customer_service_title">Customer</string>
@@ -988,7 +967,6 @@
     <string name="self_limit_froze_content">In order to protect your rights, you can apply for \"self-exclusion\" at any time. After you apply for self-exclusion, you will not be able to log in to enjoy the services during the self-exclusion period. The options are as follows:</string>
     <string name="self_limit_froze_days">Days</string>
     <string name="self_limit_froze_input_days">Please enter number of days</string>
-    <string name="self_limit_froze_impotent">"· Self-exclusion takes effect immediately after setting\n·We will keep your balance during the set period of self-exclusion.\n·If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.\n·During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.\n·During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.\n·After the self-exclusion expires, your account will be automatically reactivated."</string>
     <string name="self_limit_per_bet_limit">Limit Bet</string>
     <string name="self_limit_per_bet_limit_content">You can apply for a \"limit bet\" to limit your bet amount each time. After applying for a limit bet, your total bet will not exceed your set value:</string>
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
@@ -1004,10 +982,6 @@
     <!--自我禁制-->
 
     <!--登入手機驗證-->
-    <string name="login_phone_verify">Enter the verification code.</string>
-    <string name="login_phone_verify_get_code">Send code</string>
-    <string name="login_phone_verify_error">You have entered a wrong verification code.</string>
-    <!--登入手機驗證-->
     <string name="other_link">OTHER USEFUL LINKS</string>
     <string name="about_us">About Us</string>
     <string name="responsible">Responsible Gaming</string>
@@ -1021,7 +995,6 @@
     <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
     <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
-    <string name="brackets">(%1$s)</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
     <string name="bank_list_e_wallet">eWallet</string>
@@ -1041,8 +1014,8 @@
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="text_chose_language">Select your language</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint"><font size="12">(your login password)</font></string>
-    <string name="account_hint"><font size="12">(your member account)</font></string>
+    <string name="password_hint">(your login password)</string>
+    <string name="account_hint">(your member account)</string>
     <string name="submit_success">submitted successfully</string>
     <!-- 搜尋 -->
     <string name="text_search">Search</string>
@@ -1189,11 +1162,9 @@
     <string name="register_identity_photo_hint_back">Click to add an image of the back of  Valid ID.</string>
     <string name="redenvelope_trantype_send">Give red envelopes</string>
     <string name="redenvelope_trantype_received">Receive red envelopes</string>
-    <string name="tran_order_no">Order ID</string>
     <string name="redenvelope_amount">Amount</string>
     <string name="tran_type">Type</string>
     <string name="redenvelope_record">Lucky Money Records</string>
-    <string name="tran_time_sub">Transaction time：</string>
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
 </resources>

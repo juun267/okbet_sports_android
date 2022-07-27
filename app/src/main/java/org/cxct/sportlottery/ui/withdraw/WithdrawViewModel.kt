@@ -566,7 +566,7 @@ class WithdrawViewModel(
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.hint_please_enter_withdraw_amount),
+            androidContext.getString(R.string.edt_hint_deposit_money),
             sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()
         )
@@ -672,7 +672,7 @@ class WithdrawViewModel(
 
                     )
                     _withdrawRateHint.value = String.format(
-                        androidContext.getString(R.string.withdraw_crypto_exchange_rate_hint),
+                        androidContext.getString(R.string.hint_rate),
                         ArithUtil.toMoneyFormat(cardConfig?.exchangeRate)
                     )
                     if (withdrawAmount != null && withdrawAmount.toDouble() > 0) {

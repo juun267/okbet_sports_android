@@ -84,7 +84,7 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
     }
 
     private fun initView() {
-        layout_total.tv_total.text = getString(R.string.total_bet_amount)
+        layout_total.tv_total.text = getString(R.string.total_bet_money_colon)
         status_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
         status_selector.dataList = betStatusList
     }

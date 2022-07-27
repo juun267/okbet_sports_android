@@ -96,11 +96,7 @@ class ContentParlayMatchAdapter(val status: Int) :
                 } else {
                     tv_count_down_parley.visibility = View.GONE
                 }
-                if (data.rtScore?.isNotEmpty() == true)
-                    tv_score_parlay.text = String.format(
-                        context.getString(R.string.brackets),
-                        data.rtScore
-                    )
+                if (data.rtScore?.isNotEmpty() == true) tv_score_parlay.text = "(${data.rtScore})"
 
             }
         }

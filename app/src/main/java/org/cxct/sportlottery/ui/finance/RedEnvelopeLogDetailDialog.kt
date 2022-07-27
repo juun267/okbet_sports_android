@@ -1,16 +1,13 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_redenvelope_log_detail.*
-import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.*
-import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_amount
-import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_time
-import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.wd_log_detail_trans_num
+import kotlinx.android.synthetic.main.dialog_redenvelope_log_detail.view.*
+import kotlinx.android.synthetic.main.dialog_withdraw_log_detail.view.log_detail_confirm
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 
 @Deprecated("需求上無須展示")
@@ -19,6 +16,7 @@ class RedEnvelopeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel
         setStyle(R.style.CustomDialogStyle)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,8 +24,11 @@ class RedEnvelopeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel
     ): View? {
         return inflater.inflate(R.layout.dialog_redenvelope_log_detail, container, false).apply {
             setupConfirmButton(this)
+            this.wd_log_detail_type_title.text = "${getString(R.string.tran_type)}："
+            this.wd_log_detail_time_subtitle.text = "${getString(R.string.text_account_history_time)}："
         }
     }
+
 
     private fun setupConfirmButton(view: View) {
         view.log_detail_confirm.setOnClickListener {

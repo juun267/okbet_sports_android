@@ -96,18 +96,6 @@ fun TextView.setWeekDay(date: String?) {
     text = context.getString(TimeUtil.setupDayOfWeek(date))
 }
 
-@BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
-fun TextView.setGameStatus(status: Int?) {
-    text = when (status) {
-        0 -> context.getString(R.string.not_start_yet)
-        1 -> context.getString(R.string.game_playing)
-        2 -> context.getString(R.string.ended)
-        3 -> context.getString(R.string.suspend)
-        4 -> context.getString(R.string.canceled)
-        else -> ""
-    }
-}
-
 @BindingAdapter("betMaximumLimit")
 fun TextView.setBetMaximumLimit(max: Int) {
     text = TextUtil.formatBetQuota(max)

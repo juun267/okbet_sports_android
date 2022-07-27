@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,10 +27,14 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
 
     var data :Row? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         data?.apply {
+            log_detail_status_subtitle.text = "${getString(R.string.transfer_money)}："
+            log_detail_amount_subtitle.text = "${getString(R.string.in_account)}："
+            log_detail_type_subtitle.text = "${getString(R.string.out_account)}："
             tv_order_number.text = orderNo
             tv_datetime.setDateTime(addTime)
             tv_out_account.setPlatName(firmTypeOut)

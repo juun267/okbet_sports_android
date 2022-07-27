@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,11 +35,16 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.peekContent().let {
+
+                log_detail_type_subtitle.text = "${getString(R.string.tran_type)}："
+                log_detail_amount_subtitle.text = "${getString(R.string.text_account_history_amount)}："
+
                 log_detail_trans_num.text = it.orderNo
                 log_detail_time.text = it.rechDateAndTime ?: ""
                 log_detail_type.text = it.rechTypeDisplay ?: ""

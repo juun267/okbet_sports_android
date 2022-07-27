@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:text="@string/out_account_"
+            android:text="@string/out_account"
             android:textColor="@color/color_AEAEAE_404040"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/log_detail_time_subtitle" />
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:text="@string/in_account_"
+            android:text="@string/in_account"
             android:textColor="@color/color_AEAEAE_404040"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/log_detail_type_subtitle" />
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="10dp"
-            android:text="@string/transfer_amount"
+            android:text="@string/transfer_money"
             android:textColor="@color/color_AEAEAE_404040"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/log_detail_amount_subtitle" />
@@ -164,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/remarks"
+            android:text="@string/log_detail_reason"
             android:textColor="@color/color_AEAEAE_404040"
             app:layout_constraintEnd_toStartOf="@+id/tv_state"
             app:layout_constraintHorizontal_bias="1.0"
