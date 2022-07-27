@@ -3,10 +3,9 @@ package org.cxct.sportlottery.ui.withdraw
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
@@ -75,13 +76,16 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
-            checkPermissionGranted();
             initView()
             setupEvent()
             setupObserve()
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkPermissionGranted()
+    }
 
     private fun initView() {
         et_amount.setTitle(sConfigData?.systemCurrency)
@@ -345,6 +349,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearBankCardFragmentStatus()
+        removeLocationUpdates()
     }
 
     private fun showDatePicker() {
@@ -411,16 +416,31 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             })
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "CheckResult")
     private fun checkPermissionGranted() {
         RxPermissions(requireActivity())
             .request(Manifest.permission.ACCESS_FINE_LOCATION)
             .subscribe { aBoolean ->
                 if (aBoolean) {
-                    val locationManager: LocationManager? =
-                        requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
-                    location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                    updateStation()
+                    fusedLocationClient =
+                        LocationServices.getFusedLocationProviderClient(requireActivity())
+                    fusedLocationClient?.lastLocation?.addOnSuccessListener {
+                        location = it
+                        updateStation()
+                        Timber.e("lastLocation location: $location")
+
+                        //拿不到lastLocation時，要利用requestLocationUpdates取得location
+                        if (location == null) {
+                            val locationRequest = LocationRequest.create().apply {
+                                interval = 10000
+                                fastestInterval = 5000
+                                priority = Priority.PRIORITY_HIGH_ACCURACY
+                            }
+                            fusedLocationClient?.requestLocationUpdates(
+                                locationRequest, locationCallback, Looper.myLooper()
+                            )
+                        }
+                    }
                 } else {
                     ToastUtil.showToast(
                         requireContext(),
@@ -428,6 +448,21 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     )
                 }
             }
+    }
+
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            super.onLocationResult(p0)
+            location = p0.lastLocation
+            updateStation()
+//            Timber.e("locationCallback location: $location")
+            if (location != null) removeLocationUpdates()
+        }
+    }
+
+    private fun removeLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
 
 }
