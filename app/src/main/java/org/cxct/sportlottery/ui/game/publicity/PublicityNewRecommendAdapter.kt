@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.databinding.PublicityRecommendItemBinding
+import org.cxct.sportlottery.databinding.PublicityNewRecommendItemBinding
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -15,7 +15,7 @@ class PublicityNewRecommendAdapter(private val publicityAdapterListener: GamePub
     RecyclerView.Adapter<PublicityNewRecommendItemHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicityNewRecommendItemHolder {
         return PublicityNewRecommendItemHolder(
-            PublicityRecommendItemBinding.inflate(
+            PublicityNewRecommendItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.PublicityRecommendItemBinding
+import org.cxct.sportlottery.databinding.PublicityNewRecommendItemBinding
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.needCountStatus
 
 //TODO 棒球比分狀態顯示
 class PublicityNewRecommendItemHolder(
-    val binding: PublicityRecommendItemBinding,
+    val binding: PublicityNewRecommendItemBinding,
     private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
     override val oddStateChangeListener: OddStateChangeListener
@@ -37,11 +37,11 @@ class PublicityNewRecommendItemHolder(
         .dontTransform()
 
     fun bind(data: Recommend, oddsType: OddsType) {
+        //設置賽事資訊是否顯示
+        setupGameInfoVisibility(data)
+
         //設置背景、隊伍名稱、點擊事件
         setupGameInfo(data)
-
-        //設置賽事Bar
-//        setupGameScoreBar(data)
 
         data.matchType?.let { matchType ->
             //配置比分及比賽制度
@@ -58,11 +58,11 @@ class PublicityNewRecommendItemHolder(
     }
 
     fun update(data: Recommend, oddsType: OddsType) {
+        //設置賽事資訊是否顯示
+        setupGameInfoVisibility(data)
+
         //設置背景、隊伍名稱、點擊事件
         setupGameInfo(data)
-
-        //設置賽事Bar
-//        setupGameScoreBar(data)
 
         //玩法Code
         var oddPlayCateCode = ""
@@ -236,20 +236,18 @@ class PublicityNewRecommendItemHolder(
     }
 
     /**
-     * 設置賽事Bar
-     * 滾球: 顯示比分, 非滾球: 顯示聯賽名稱
+     * 設置賽事顯示VS或比分
      */
-    private fun setupGameScoreBar(item: Recommend) {
+    private fun setupGameInfoVisibility(item: Recommend) {
         if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
             with(binding) {
-                clVsBar.visibility = View.VISIBLE
-                clNoVsBar.visibility = View.GONE
+                blockScore.visibility = View.VISIBLE
+                tvVs.visibility = View.GONE
             }
         } else {
             with(binding) {
-                clVsBar.visibility = View.GONE
-                clNoVsBar.visibility = View.VISIBLE
-                tvLeagueName.text = item.leagueName
+                blockScore.visibility = View.GONE
+                tvVs.visibility = View.VISIBLE
             }
         }
     }
@@ -350,7 +348,7 @@ class PublicityNewRecommendItemHolder(
     /**
      * 設置盤類型比分
      */
-    private fun PublicityRecommendItemBinding.setAllScoreTextAtBottom(item: Recommend) {
+    private fun PublicityNewRecommendItemBinding.setAllScoreTextAtBottom(item: Recommend) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -366,7 +364,7 @@ class PublicityNewRecommendItemHolder(
     /**
      * 設置局類型比分
      */
-    private fun PublicityRecommendItemBinding.setScoreText(item: Recommend) {
+    private fun PublicityNewRecommendItemBinding.setScoreText(item: Recommend) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -380,7 +378,7 @@ class PublicityNewRecommendItemHolder(
 
     //賽制(5盤3勝 or /int)
     @SuppressLint("SetTextI18n")
-    private fun PublicityRecommendItemBinding.setSptText(item: Recommend) {
+    private fun PublicityNewRecommendItemBinding.setSptText(item: Recommend) {
         item.matchInfo?.spt?.let { spt ->
             when {
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> { //除0以外顯示
@@ -402,7 +400,7 @@ class PublicityNewRecommendItemHolder(
         }
     }
 
-    private fun PublicityRecommendItemBinding.setBBSptText(item: Recommend) {
+    private fun PublicityNewRecommendItemBinding.setBBSptText(item: Recommend) {
         with(contentBaseballStatus.leagueOddMatchBbStatus) {
             text = item.matchInfo?.statusName18n
             visibility = View.VISIBLE
