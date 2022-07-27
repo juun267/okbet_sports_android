@@ -934,6 +934,7 @@ class WithdrawViewModel(
         _withdrawAmountMsg.value = ""
         _withdrawPasswordMsg.value = ""
         _withdrawAppointmentMsg.value = ""
+        _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
     }
 
     private fun loading() {
