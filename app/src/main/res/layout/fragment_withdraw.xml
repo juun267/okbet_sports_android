@@ -186,7 +186,7 @@
                     android:id="@+id/tv_hint_withdraw_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/withdraw_handling_fee_hint"
+                    tools:text="@string/withdraw_handling_fee_hint"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
                 <!-- 提款虛擬幣所需餘提示 -->
@@ -195,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/withdraw_crypto_amount_hint"
+                    tools:text="@string/withdraw_crypto_amount_hint"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
                 <!-- 提款虛擬幣手續費提示 -->
@@ -204,7 +204,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/withdraw_crypto_fee_hint"
+                    tools:text="@string/withdraw_crypto_fee_hint"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp" />
                 <!-- 扣除金额 -->
@@ -367,7 +367,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:paddingBottom="5dp"
-                        android:text="@string/initial_withdrawal_needs_credited"
+                        tools:text="@string/initial_withdrawal_needs_credited"
                         android:textColor="@color/color_E44438_e44438"
                         android:textSize="12dp"
                         android:visibility="gone"
@@ -394,7 +394,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:text="@string/make_sure_valid_account"
+                        tools:text="@string/make_sure_valid_account"
                         android:textColor="@color/color_E44438_e44438"
                         android:textSize="12dp"
                         android:visibility="gone"
