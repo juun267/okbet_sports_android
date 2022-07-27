@@ -5,5 +5,6 @@ enum class UWType(val type: String) {
     ADMIN_SUB_MONEY("adminSubMoney"),
     CRYPTO("cryptoTransfer"),
     E_WALLET("eWalletTransfer"),
-    BETTING_STATION("bettingStation")
+    BETTING_STATION("bettingStation"),
+    BETTING_STATION_ADMIN("bettingStationAdmin")
 }
