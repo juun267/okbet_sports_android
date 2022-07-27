@@ -73,6 +73,7 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.AppVersionState
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.px
 import org.cxct.sportlottery.util.DisplayUtil.pxToDp
@@ -2957,10 +2958,9 @@ class GameViewModel(
 
         sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }?.let { promotionList ->
             //優惠活動文字跑馬燈
-            promotionList.filter { it.viewType == 1 && it.imageText3 != null && it.imageText3 != "" }
-                .mapNotNull { it.imageText3 }.let {
-                    _publicityPromotionAnnouncementList.postValue(it)
-                }
+            promotionList.filter { it.viewType == 1 }.mapNotNull { it.imageText1 }.let {
+                _publicityPromotionAnnouncementList.postValue(it)
+            }
 
             //優惠活動圖片公告清單
             _publicityPromotionList.postValue(promotionList.map {
@@ -3084,6 +3084,11 @@ class GameViewModel(
         return null
     }
 
+    fun updateMenuVersionUpdatedStatus(appVersionState: AppVersionState) {
+        //appVersionState.isNewVersion代表有無新版本
+        updatePublicityMenuLiveData(isNewestVersion = !appVersionState.isNewVersion)
+    }
+
     /**
      * 更新publicityMenuData
      */
@@ -3091,7 +3096,8 @@ class GameViewModel(
         sportMenuDataList: List<SportMenu>? = null,
         eGameMenuDataList: ThirdDictValues? = null,
         casinoMenuDataList: ThirdDictValues? = null,
-        sabongMenuDataList: ThirdDictValues? = null
+        sabongMenuDataList: ThirdDictValues? = null,
+        isNewestVersion: Boolean? = null
     ) {
 
         viewModelScope.launch(Dispatchers.Main) {
@@ -3100,7 +3106,8 @@ class GameViewModel(
                     sportMenuDataList = sportMenuDataList,
                     eGameMenuData = eGameMenuDataList,
                     casinoMenuData = casinoMenuDataList,
-                    sabongMenuData = sabongMenuDataList
+                    sabongMenuData = sabongMenuDataList,
+                    isNewestVersion = isNewestVersion ?: true
                 )
             } else {
                 val menuData = publicityMenuData.value
@@ -3115,6 +3122,9 @@ class GameViewModel(
                 }
                 sabongMenuDataList?.let {
                     menuData?.sabongMenuData = it
+                }
+                menuData?.isNewestVersion?.let {
+                    menuData?.isNewestVersion = it
                 }
                 _publicityMenuData.value = publicityMenuData.value
             }

@@ -7,6 +7,7 @@ class PublicityMenuData(
     var sportMenuDataList: List<SportMenu>? = null,
     var eGameMenuData: ThirdDictValues? = null,
     var casinoMenuData: ThirdDictValues? = null,
-    var sabongMenuData: ThirdDictValues? = null
+    var sabongMenuData: ThirdDictValues? = null,
+    var isNewestVersion: Boolean = true //app版本是否為最新
 ) {
 }
