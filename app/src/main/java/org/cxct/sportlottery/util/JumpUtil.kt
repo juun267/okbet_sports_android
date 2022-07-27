@@ -7,19 +7,31 @@ import android.net.Uri
 import android.webkit.URLUtil
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import timber.log.Timber
 
 object JumpUtil {
 
-    fun toInternalWeb(context: Context, href: String?, title: String?, toolbarVisibility: Boolean = true, backEvent: Boolean = true) {
+    fun toInternalWeb(
+        context: Context,
+        href: String?,
+        title: String?,
+        toolbarVisibility: Boolean = true,
+        backEvent: Boolean = true,
+        bettingStation: BettingStation? = null
+    ) {
         context.startActivity(
-            Intent(context, WebActivity::class.java)
-                .putExtra(WebActivity.KEY_URL, Constants.appendMode(href))
-                .putExtra(WebActivity.KEY_TITLE, title)
-                .putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
-                .putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+            Intent(context, WebActivity::class.java).apply {
+                putExtra(WebActivity.KEY_URL, Constants.appendMode(href))
+                putExtra(WebActivity.KEY_TITLE, title)
+                putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, toolbarVisibility)
+                putExtra(WebActivity.KEY_BACK_EVENT, backEvent)
+                if (bettingStation != null) {
+                    putExtra(WebActivity.BET_STATION, bettingStation)
+                }
+            }
         )
     }
 

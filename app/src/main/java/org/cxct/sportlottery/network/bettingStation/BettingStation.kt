@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.bettingStation
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class BettingStation(
@@ -36,6 +37,7 @@ data class BettingStation(
     val type: Int,
     @Json(name = "addr")
     val addr: String
-) {
+) : Serializable {
     var isSelected = false
+    val appointmentTime: String = ""
 }

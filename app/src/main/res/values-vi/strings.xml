@@ -1218,4 +1218,7 @@
     <string name="e_game">Cờ vua</string>
     <string name="casino">Casino</string>
     <string name="sabong">Sabong</string>
+    <string name="work_time_">Giờ làm việc：</string>
+    <string name="appointment_">Hẹn thời gian：</string>
+    <string name="outlets_address_">Địa chỉ：</string>
 </resources>

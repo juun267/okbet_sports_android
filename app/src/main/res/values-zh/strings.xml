@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="language_setting">语言</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
@@ -1228,4 +1228,8 @@
     <string name="e_game">棋牌</string>
     <string name="casino">真人</string>
     <string name="sabong">斗鸡</string>
+    <string name="work_time_">营业时间：</string>
+    <string name="phone_">电话：</string>
+    <string name="appointment_">预约时间：</string>
+    <string name="outlets_address_">投注站地址：</string>
 </resources>

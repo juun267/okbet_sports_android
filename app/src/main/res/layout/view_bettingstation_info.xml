@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_radius_6_white_top"
+    android:padding="@dimen/margin_8"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BCBCBC_666666"
+            android:textSize="12sp"
+            android:text="@string/outlets_address_" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:textColor="@color/color_BCBCBC_666666"
+            android:textSize="12sp"
+            tools:text="Makati 55T 001" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BCBCBC_666666"
+            android:textSize="12sp"
+            android:text="@string/work_time_" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:textColor="@color/color_0760D4_0760D4"
+            android:textSize="12sp"
+            tools:text="02:00-16:00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BCBCBC_666666"
+            android:textSize="12sp"
+            android:text="@string/phone_" />
+
+        <TextView
+            android:id="@+id/tv_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:textColor="@color/color_0760D4_0760D4"
+            android:textSize="12sp"
+            tools:text="48414777444112" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_appointment_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_BCBCBC_666666"
+            android:textSize="12sp"
+            android:text="@string/appointment_" />
+
+        <TextView
+            android:id="@+id/tv_appointment_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:textColor="@color/color_0760D4_0760D4"
+            android:textSize="12sp"
+            tools:text="2022-06-31 15:00-16:00" />
+    </LinearLayout>
+
+
+</LinearLayout>

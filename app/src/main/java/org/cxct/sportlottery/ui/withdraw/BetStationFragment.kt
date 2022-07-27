@@ -1,10 +1,9 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -33,7 +33,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import java.math.RoundingMode
@@ -121,25 +120,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     selectBettingStation = it
                     appointmentDate = ""
                     appointmentTime = ""
-                    if (it == null) {
-                        lin_station.visibility = View.GONE
-                        lin_empty.visibility = View.VISIBLE
-                    } else {
-                        lin_station_detail.visibility = View.VISIBLE
-                        lin_empty.visibility = View.GONE
-                        tv_station_name.text = it.name
-                        tv_station_address.text = it.addr
-                        var desloc = Location("").apply {
-                            latitude = it.lat
-                            longitude = it.lon
-                        }
-                        var distance = location?.distanceTo(desloc)
-                        tv_station_distance.text = ArithUtil.round(
-                            distance?.div(1000)?.toDouble(),
-                            2,
-                            RoundingMode.HALF_UP
-                        ) + " KM"
-                    }
+                    updateStation()
                 })
 
         with(rv_station) {
@@ -163,6 +144,27 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         }
     }
 
+    private fun updateStation() {
+        if (selectBettingStation == null) {
+            lin_station.visibility = View.GONE
+            lin_empty.visibility = View.VISIBLE
+        } else {
+            lin_station_detail.visibility = View.VISIBLE
+            lin_empty.visibility = View.GONE
+            tv_station_name.text = selectBettingStation!!.name
+            tv_station_address.text = selectBettingStation!!.addr
+            var desloc = Location("").apply {
+                latitude = selectBettingStation!!.lat
+                longitude = selectBettingStation!!.lon
+            }
+            var distance = location?.distanceTo(desloc)
+            tv_station_distance.text = ArithUtil.round(
+                distance?.div(1000)?.toDouble(),
+                2,
+                RoundingMode.HALF_UP
+            ) + " KM"
+        }
+    }
 
     private fun setupEvent() {
         setupClickEvent()
@@ -239,7 +241,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     "https://maps.google.com/?q=@" + it.lon + "," + it.lat,
                     getString(R.string.outlets_address),
                     true,
-                    true
+                    true,
+                    it
                 )
             }
         }
@@ -408,20 +411,25 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             })
     }
 
-
+    @SuppressLint("MissingPermission")
     private fun checkPermissionGranted() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            startActivity(Intent(activity, GooglePermissionActivity::class.java))
-        } else {
-            val locationManager: LocationManager? =
-                requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
-            location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        }
+        RxPermissions(requireActivity())
+            .request(Manifest.permission.ACCESS_FINE_LOCATION)
+            .subscribe { aBoolean ->
+                if (aBoolean) {
+                    val locationManager: LocationManager? =
+                        requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
+                    location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    updateStation()
+                } else {
+                    ToastUtil.showToast(
+                        requireContext(),
+                        getString(R.string.allow_location_permission)
+                    )
+                }
+            }
     }
+
 }
 
 class BetStationAdapter(

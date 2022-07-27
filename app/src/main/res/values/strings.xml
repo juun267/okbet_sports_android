@@ -1232,5 +1232,9 @@
     <string name="e_game">E-game</string>
     <string name="casino">Casino</string>
     <string name="sabong">Sabong</string>
+    <string name="work_time_">Hours：</string>
+    <string name="phone_">Phone：</string>
+    <string name="appointment_">Appointment：</string>
+    <string name="outlets_address_">Outlets Address：</string>
 
 </resources>

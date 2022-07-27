@@ -11,10 +11,13 @@ import android.view.View
 import android.webkit.*
 import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.android.synthetic.main.activity_web.*
+import kotlinx.android.synthetic.main.view_bettingstation_info.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
@@ -30,12 +33,16 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         const val KEY_TOOLBAR_VISIBILITY = "key-toolbar-visibility"
         const val KEY_BACK_EVENT = "key-back-event"
         const val GAME_CATEGORY_CODE = "game-category-code"
+        const val BET_STATION = "betstation"
     }
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
     private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
     private val mToolbarVisibility: Boolean by lazy { intent?.getBooleanExtra(KEY_TOOLBAR_VISIBILITY, true) ?: true }
-    private val mBackEvent: Boolean by lazy { intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true }
+    private val mBackEvent: Boolean by lazy {
+        intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true
+    }
+    private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as BettingStation }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 
@@ -57,6 +64,9 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             onBackPressed()
         }
         custom_tool_bar.titleText = mTitle
+        bettingStation?.let {
+            addBetStationInfo()
+        }
     }
 
     fun setCookie() {
@@ -204,4 +214,39 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    private fun addBetStationInfo() {
+        lin_betstation.visibility = View.VISIBLE
+        bettingStation?.let {
+            with(lin_betstation) {
+                tv_address.text = it.addr
+                tv_mobile.text = it.telephone
+                var startTime = if (it.officeStartTime.isNotBlank()) it.officeStartTime else "00:00"
+                var endTime = if (it.officeEndTime.isNotBlank()) it.officeEndTime else "00:00"
+                tv_time.text = startTime + "-" + endTime
+                tv_appointment_time.text = it.appointmentTime
+                tv_appointment_time.visibility =
+                    if (it.appointmentTime.isNullOrBlank()) View.VISIBLE else View.GONE
+                tv_appointment_time.text = it.addr
+                tv_mobile.setOnClickListener {
+                    tv_mobile.text.toString().let {
+                        if (it.isNotBlank()) {
+                            val intent = Intent();
+                            intent.action = Intent.ACTION_DIAL
+                            intent.data = Uri.parse("tel:" + it)
+                            try {
+                                startActivity(intent)
+                            } catch (e: java.lang.Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+                tv_address.setOnClickListener {
+                    var url =
+                        "https://maps.google.com/?q=@" + bettingStation!!.lon + "," + bettingStation!!.lat
+                    JumpUtil.toExternalWeb(this@WebActivity, url)
+                }
+            }
+        }
+    }
 }
