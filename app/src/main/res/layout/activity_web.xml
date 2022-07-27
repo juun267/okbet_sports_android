@@ -11,12 +11,26 @@
         android:id="@+id/custom_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topTitleText="@string/app_name"/>
+        app:topTitleText="@string/app_name" />
 
-    <WebView
-        android:id="@+id/web_view"
+    <FrameLayout
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"/>
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+
+        <include
+            android:id="@+id/lin_betstation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="gone"
+            layout="@layout/view_bettingstation_info" />
+    </FrameLayout>
 
 </LinearLayout>

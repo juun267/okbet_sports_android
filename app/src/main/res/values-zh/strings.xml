@@ -1201,4 +1201,36 @@
     <string name="tran_time_sub">交易时间：</string>
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="btn_sure">确定</string>
+    <string name="Outlets_Reserve">网点预约</string>
+    <string name="current_balance">当前余额</string>
+    <string name="select_area">选择地区</string>
+    <string name="select_city">选择城市</string>
+    <string name="outlets_address">投注站地址</string>
+    <string name="appointment_time">预约时间</string>
+    <string name="select_date">请选择日期</string>
+    <string name="select_time">请选择时间</string>
+    <string name="current_time">当前时间</string>
+
+    <!--region 20220714 新版投注單-->
+    <string name="bet_stake">本金</string>
+    <string name="total_capital">本金总额</string>
+    <string name="total_win_amount">可赢总额</string>
+    <string name="delete_bet">删除</string>
+    <string name="btn_login_bet">登录并投注</string>
+    <string name="confirm_single_bets">确认%d单注投注</string>
+    <string name="confirm_multiple_bets">确认%d串关投注</string>
+    <string name="btn_remove_closed_selections">移除已关闭的选项</string>
+    <string name="please_enter_correct_amount">请输入正确投注额</string>
+    <!--endregion-->
+
+    <string name="publicity_contact">联络</string>
+    <string name="publicity_faqs">常见问题</string>
+    <string name="more_info">更多資訊</string>
+    <string name="e_game">棋牌</string>
+    <string name="casino">真人</string>
+    <string name="sabong">斗鸡</string>
+    <string name="work_time_">营业时间：</string>
+    <string name="phone_">电话：</string>
+    <string name="appointment_">预约时间：</string>
+    <string name="outlets_address_">投注站地址：</string>
 </resources>

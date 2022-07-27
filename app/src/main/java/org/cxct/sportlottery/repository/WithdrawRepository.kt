@@ -74,7 +74,8 @@ object WithdrawRepository {
     data class SystemOperation(
         val bankSystem: Boolean,
         val cryptoSystem: Boolean,
-        val eWalletSystem: Boolean
+        val eWalletSystem: Boolean,
+        val stationSystem: Boolean
     )
 
     //顯示驗證過了之後要繼續驗證前的邏輯
@@ -100,15 +101,18 @@ object WithdrawRepository {
                 withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
             val eWalletWithdrawSystemOperation =
                 withdrawConfig?.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN
+            val statiomWithdrawSystemOperation =
+                withdrawConfig?.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN
 
             mWithdrawOperation = SystemOperation(
                 bankWithdrawSystemOperation,
                 cryptoWithdrawSystemOperation,
-                eWalletWithdrawSystemOperation
+                eWalletWithdrawSystemOperation,
+                statiomWithdrawSystemOperation
             )
 
             val operation =
-                bankWithdrawSystemOperation || cryptoWithdrawSystemOperation || eWalletWithdrawSystemOperation
+                bankWithdrawSystemOperation || cryptoWithdrawSystemOperation || eWalletWithdrawSystemOperation || statiomWithdrawSystemOperation
             mWithdrawSystemOperation.value = Event(operation)
 
             if (operation) {
