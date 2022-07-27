@@ -78,6 +78,63 @@
                     app:cvInputType="number"
                     app:cvTitle="@string/withdraw_amount" />
 
+                <!-- 扣除金额 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/color_BBBBBB_333333"
+                    android:text="@string/commission_deducted_amount" />
+
+                <LinearLayout
+                    android:id="@+id/ll_commission"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/effect_edittext_bg_gray"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="12dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_commission"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/color_F75452_b73a20"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/selector_commission_detail_button"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/commission_detail"
+                        android:textColor="@color/selector_blue_light_gray"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:id="@+id/btn_info"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="@null"
+                        android:gravity="center"
+                        android:src="@drawable/icon_info" />
+
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,7 +206,7 @@
                         android:layout_width="0dp"
                         android:layout_height="44dp"
                         android:layout_weight="1"
-                        android:background="@color/color_191919_FCFCFC"
+                        android:background="@color/color_2B2B2B_FCFCFC"
                         app:defaultStatusText="@string/waiting" />
 
                     <org.cxct.sportlottery.ui.component.StatusSpinnerView
@@ -158,7 +215,7 @@
                         android:layout_height="44dp"
                         android:layout_weight="1"
                         android:layout_marginLeft="7dp"
-                        android:background="@color/color_191919_FCFCFC"
+                        android:background="@color/color_2B2B2B_FCFCFC"
                         app:defaultStatusText="@string/waiting" />
                 </LinearLayout>
 

@@ -11,5 +11,6 @@ enum class RechType(val type: String) {
     GCASH("gcash"),
     GRABPAY("grabPay"),
     PAYMAYA("payMaya"),
-    BETTING_STATION("bettingStation")
+    BETTING_STATION("bettingStation"),
+
 }

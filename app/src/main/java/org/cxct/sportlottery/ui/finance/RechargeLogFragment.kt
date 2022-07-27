@@ -205,7 +205,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             getString(R.string.recharge_channel_paymaya) -> {
                 StatusSheetData(RechType.PAYMAYA.type, it)
             }
-            getString(R.string.betting_station_type) -> {
+            getString(R.string.betting_station_deposit) -> {
                 StatusSheetData(RechType.BETTING_STATION.type, it)
             }
             //全部渠道类型

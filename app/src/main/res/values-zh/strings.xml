@@ -669,7 +669,9 @@
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
     <string name="withdraw_log_crypto_transfer">虚拟币提款</string>
-    <string name="betting_station_type" >网点预约</string>
+    <string name="betting_station_reserve" >网点预约</string>
+    <string name="betting_station_withdraw" >网点提款</string>
+    <string name="betting_station_deposit" >网点存款</string>
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
     <string name="log_detail_trans_num_sub2">交易编号</string>

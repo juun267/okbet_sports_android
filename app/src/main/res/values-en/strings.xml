@@ -526,8 +526,9 @@
     <string name="bank_card">Bank card</string>
     <string name="crypto">USDT</string>
     <string name="ewallet">eWallet</string>
-    <string name="betting_station_type">Outlets Reserve</string>
-
+    <string name="betting_station_reserve">Outlets Reserve</string>
+    <string name="betting_station_withdraw">Outlets Withdraw</string>
+    <string name="betting_station_deposit" >Outlets Deposit</string>
     <string name="currency_protocol">agreement/currency</string>
     <string name="select_crypto_address">Address</string>
     <string name="withdraw_number">Withdraw</string>
@@ -1201,7 +1202,7 @@
     <string name="btn_sure">Confirm</string>
     <string name="Outlets_Reserve">Outlets  Reserve</string>
     <string name="current_balance">Balance</string>
-    <string name="select_area">Select Area</string>
+    <string name="select_area">Select Region</string>
     <string name="select_city">Select City</string>
     <string name="outlets_address">Outlets Address</string>
     <string name="appointment_time">Appointment</string>

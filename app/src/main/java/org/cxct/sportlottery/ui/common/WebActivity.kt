@@ -38,11 +38,16 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
     private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
-    private val mToolbarVisibility: Boolean by lazy { intent?.getBooleanExtra(KEY_TOOLBAR_VISIBILITY, true) ?: true }
+    private val mToolbarVisibility: Boolean by lazy {
+        intent?.getBooleanExtra(
+            KEY_TOOLBAR_VISIBILITY,
+            true
+        ) ?: true
+    }
     private val mBackEvent: Boolean by lazy {
         intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true
     }
-    private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as BettingStation }
+    private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as? BettingStation }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 

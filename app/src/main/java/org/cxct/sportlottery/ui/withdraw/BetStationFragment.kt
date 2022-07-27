@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.text.TextUtils
@@ -18,6 +19,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.google.android.gms.location.*
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -35,7 +37,6 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import timber.log.Timber
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,16 +77,13 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
+            checkPermissionGranted();
             initView()
             setupEvent()
             setupObserve()
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        checkPermissionGranted()
-    }
 
     private fun initView() {
         et_amount.setTitle(sConfigData?.systemCurrency)
@@ -140,6 +138,13 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             adapter = stationAdapter
         }
 
+        tv_detail.setOnClickListener {
+            startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
+        }
+
+        btn_info.setOnClickListener {
+            CommissionInfoDialog().show(childFragmentManager, null)
+        }
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -149,24 +154,26 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun updateStation() {
-        if (selectBettingStation == null) {
-            lin_station.visibility = View.GONE
-            lin_empty.visibility = View.VISIBLE
-        } else {
-            lin_station_detail.visibility = View.VISIBLE
-            lin_empty.visibility = View.GONE
-            tv_station_name.text = selectBettingStation!!.name
-            tv_station_address.text = selectBettingStation!!.addr
-            var desloc = Location("").apply {
-                latitude = selectBettingStation!!.lat
-                longitude = selectBettingStation!!.lon
+        selectBettingStation.let {
+            if (it == null) {
+                lin_station.visibility = View.GONE
+                lin_empty.visibility = View.VISIBLE
+            } else {
+                lin_station_detail.visibility = View.VISIBLE
+                lin_empty.visibility = View.GONE
+                tv_station_name.text = it.name
+                tv_station_address.text = it.addr
+                var desloc = Location("").apply {
+                    latitude = it.lat
+                    longitude = it.lon
+                }
+                var distance = location?.distanceTo(desloc)
+                tv_station_distance.text = ArithUtil.round(
+                    distance?.div(1000)?.toDouble(),
+                    2,
+                    RoundingMode.HALF_UP
+                ) + " KM"
             }
-            var distance = location?.distanceTo(desloc)
-            tv_station_distance.text = ArithUtil.round(
-                distance?.div(1000)?.toDouble(),
-                2,
-                RoundingMode.HALF_UP
-            ) + " KM"
         }
     }
 
@@ -336,7 +343,37 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
             }
         })
+
+        viewModel.needCheck.observe(this.viewLifecycleOwner) {
+            ll_commission.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
+            tv_detail.apply {
+                isEnabled = it.isNotEmpty()
+                isSelected = it.isNotEmpty()
+            }
+        }
+
+        viewModel.deductMoney.observe(this.viewLifecycleOwner) {
+            val zero = 0.0
+            tv_commission.apply {
+                text = if (it.isNaN()) "0" else TextUtil.formatMoney(zero.minus(it ?: 0.0))
+                setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (zero.minus(
+                                it ?: 0.0
+                            ) > 0
+                        ) R.color.color_08dc6e_08dc6e else R.color.color_E44438_e44438
+                    )
+                )
+            }
+        }
+
         viewModel.queryArea()
+
+        viewModel.getUwCheck()
     }
 
     private fun clearEvent() {
@@ -416,7 +453,21 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             })
     }
 
-    @SuppressLint("MissingPermission", "CheckResult")
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            super.onLocationResult(p0)
+            location = p0.lastLocation
+            updateStation()
+            if (location != null) removeLocationUpdates()
+        }
+    }
+
+    private fun removeLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+    }
+
+    @SuppressLint("CheckResult", "MissingPermission")
     private fun checkPermissionGranted() {
         RxPermissions(requireActivity())
             .request(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -427,7 +478,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     fusedLocationClient?.lastLocation?.addOnSuccessListener {
                         location = it
                         updateStation()
-                        Timber.e("lastLocation location: $location")
 
                         //拿不到lastLocation時，要利用requestLocationUpdates取得location
                         if (location == null) {
@@ -448,21 +498,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     )
                 }
             }
-    }
-
-    private var fusedLocationClient: FusedLocationProviderClient? = null
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(p0: LocationResult) {
-            super.onLocationResult(p0)
-            location = p0.lastLocation
-            updateStation()
-//            Timber.e("locationCallback location: $location")
-            if (location != null) removeLocationUpdates()
-        }
-    }
-
-    private fun removeLocationUpdates() {
-        fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
 
 }
