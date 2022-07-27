@@ -1,9 +1,8 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -17,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
@@ -33,7 +33,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -77,13 +76,16 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
-            checkPermissionGranted();
             initView()
             setupEvent()
             setupObserve()
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkPermissionGranted()
+    }
 
     private fun initView() {
         et_amount.setTitle(sConfigData?.systemCurrency)
@@ -122,25 +124,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     selectBettingStation = it
                     appointmentDate = ""
                     appointmentTime = ""
-                    if (it == null) {
-                        lin_station.visibility = View.GONE
-                        lin_empty.visibility = View.VISIBLE
-                    } else {
-                        lin_station_detail.visibility = View.VISIBLE
-                        lin_empty.visibility = View.GONE
-                        tv_station_name.text = it.name
-                        tv_station_address.text = it.addr
-                        var desloc = Location("").apply {
-                            latitude = it.lat
-                            longitude = it.lon
-                        }
-                        var distance = location?.distanceTo(desloc)
-                        tv_station_distance.text = ArithUtil.round(
-                            distance?.div(1000)?.toDouble(),
-                            2,
-                            RoundingMode.HALF_UP
-                        ) + " KM"
-                    }
+                    updateStation()
                 })
 
         with(rv_station) {
@@ -156,6 +140,30 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             adapter = stationAdapter
         }
 
+    }
+
+    private fun updateStation() {
+        selectBettingStation.let {
+            if (it == null) {
+                lin_station.visibility = View.GONE
+                lin_empty.visibility = View.VISIBLE
+            } else {
+                lin_station_detail.visibility = View.VISIBLE
+                lin_empty.visibility = View.GONE
+                tv_station_name.text = it.name
+                tv_station_address.text = it.addr
+                var desloc = Location("").apply {
+                    latitude = it.lat
+                    longitude = it.lon
+                }
+                var distance = location?.distanceTo(desloc)
+                tv_station_distance.text = ArithUtil.round(
+                    distance?.div(1000)?.toDouble(),
+                    2,
+                    RoundingMode.HALF_UP
+                ) + " KM"
+            }
+        }
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -410,11 +418,46 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             })
     }
 
+    @SuppressLint("MissingPermission", "CheckResult")
+    private fun checkPermissionGranted() {
+        RxPermissions(requireActivity())
+            .request(Manifest.permission.ACCESS_FINE_LOCATION)
+            .subscribe { aBoolean ->
+                if (aBoolean) {
+                    fusedLocationClient =
+                        LocationServices.getFusedLocationProviderClient(requireActivity())
+                    fusedLocationClient?.lastLocation?.addOnSuccessListener {
+                        location = it
+                        updateStation()
+//                        Timber.e("lastLocation location: $location")
+
+                        //拿不到lastLocation時，要利用requestLocationUpdates取得location
+                        if (location == null) {
+                            val locationRequest = LocationRequest.create().apply {
+                                interval = 10000
+                                fastestInterval = 5000
+                                priority = Priority.PRIORITY_HIGH_ACCURACY
+                            }
+                            fusedLocationClient?.requestLocationUpdates(
+                                locationRequest, locationCallback, Looper.myLooper()
+                            )
+                        }
+                    }
+                } else {
+                    ToastUtil.showToast(
+                        requireContext(),
+                        getString(R.string.allow_location_permission)
+                    )
+                }
+            }
+    }
+
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
             location = p0.lastLocation
+            updateStation()
 //            Timber.e("locationCallback location: $location")
             if (location != null) removeLocationUpdates()
         }
@@ -423,34 +466,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     private fun removeLocationUpdates() {
         fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
-
-    private fun checkPermissionGranted() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            startActivity(Intent(activity, GooglePermissionActivity::class.java))
-        } else {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-            fusedLocationClient?.lastLocation?.addOnSuccessListener {
-                location = it
-//                Timber.e("lastLocation location: $location")
-
-                //拿不到lastLocation時，要利用requestLocationUpdates取得location
-                if (location == null) {
-                    val locationRequest = LocationRequest.create().apply {
-                        interval = 10000
-                        fastestInterval = 5000
-                        priority = Priority.PRIORITY_HIGH_ACCURACY
-                    }
-                    fusedLocationClient?.requestLocationUpdates(
-                        locationRequest, locationCallback, Looper.myLooper()
-                    )
-                }
-            }
-        }
-    }
+    
 }
 
 class BetStationAdapter(
