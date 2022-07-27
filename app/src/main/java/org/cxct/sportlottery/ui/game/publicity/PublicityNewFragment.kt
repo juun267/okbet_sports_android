@@ -35,14 +35,19 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.profileCenter.AppearanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 //TODO 推薦賽事點擊更新、優惠活動清單payloads更新
 /**
  * @app_destination 宣傳頁
  */
 class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), View.OnClickListener {
+    //TODO 新首頁的版本更新為暫時顯示於此處代替真人遊戲, 待往後需求有真人遊戲時會將版本更新移除, 故先暫時直接使用VersionUpdateViewModel不將其重構為Rpository
+    private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
+
     // This property is only valid between onCreateView and onDestroyView.
     private var _binding: FragmentPublicityBinding? = null
 
@@ -416,6 +421,10 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             it.getContentIfNotHandled()
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
         }
+
+        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
+            viewModel.updateMenuVersionUpdatedStatus(it)
+        }
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
@@ -630,6 +639,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun queryData() {
+        mPublicityVersionUpdateViewModel.checkAppVersion()
         viewModel.getPublicitySportMenu()
         viewModel.getAnnouncement()
         viewModel.getPublicityPromotion()

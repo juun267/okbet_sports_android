@@ -93,15 +93,16 @@ class PublicityMenuViewHolder(
         }
 
         //version update
-        binding.menuVersionUpdate.setOnClickListener {
-            publicityAdapterListener.onClickVersionUpdateListener()
-
+        with(binding.menuVersionUpdate) {
+            setIconResource(if (data.isNewestVersion) R.drawable.ic_publicity_version_update else R.drawable.ic_publicity_version_update_new)
+            setOnClickListener {
+                publicityAdapterListener.onClickVersionUpdateListener()
+            }
         }
 
         //appearance
         binding.menuAppearance.setOnClickListener {
             publicityAdapterListener.onClickAppearanceListener()
-
         }
 
         //affiliate or faqs
