@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.withdraw
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -19,7 +20,6 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.tbruyelle.rxpermissions2.RxPermissions
 import com.google.android.gms.location.*
-import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
