@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ViewHolderUtils
 import org.cxct.sportlottery.util.needCountStatus
+import timber.log.Timber
 
 //TODO 棒球比分狀態顯示
 class PublicityNewRecommendItemHolder(
@@ -571,7 +572,6 @@ class PublicityNewRecommendItemHolder(
             TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                 if (item.matchInfo?.statusName18n != null) {
                     binding.tvGameStatus.visibility = View.VISIBLE
-                } else {
                 }
             }
             TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
