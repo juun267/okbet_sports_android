@@ -21,6 +21,8 @@ import com.bigkoo.pickerview.view.TimePickerView
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_balance
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_detail
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
 import org.cxct.sportlottery.network.bettingStation.AreaAll
@@ -155,6 +157,13 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             adapter = stationAdapter
         }
 
+        tv_detail.setOnClickListener {
+            startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
+        }
+
+        btn_info.setOnClickListener {
+            CommissionInfoDialog().show(childFragmentManager, null)
+        }
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -329,7 +338,37 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
             }
         })
+
+        viewModel.needCheck.observe(this.viewLifecycleOwner) {
+            ll_commission.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+        viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
+            tv_detail.apply {
+                isEnabled = it.isNotEmpty()
+                isSelected = it.isNotEmpty()
+            }
+        }
+
+        viewModel.deductMoney.observe(this.viewLifecycleOwner) {
+            val zero = 0.0
+            tv_commission.apply {
+                text = if (it.isNaN()) "0" else TextUtil.formatMoney(zero.minus(it ?: 0.0))
+                setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (zero.minus(
+                                it ?: 0.0
+                            ) > 0
+                        ) R.color.color_08dc6e_08dc6e else R.color.color_E44438_e44438
+                    )
+                )
+            }
+        }
+
         viewModel.queryArea()
+
+        viewModel.getUwCheck()
     }
 
     private fun clearEvent() {
