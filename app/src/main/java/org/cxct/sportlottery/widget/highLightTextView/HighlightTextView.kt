@@ -2,14 +2,9 @@ package org.cxct.sportlottery.widget.highLightTextView
 
 import android.content.Context
 import android.graphics.*
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
+import android.text.*
 import android.text.style.*
 import android.util.AttributeSet
-import android.view.View
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
@@ -98,48 +93,6 @@ class HighlightTextView @JvmOverloads constructor(
     fun setRadius(dp: Float) {
         highlightRadius = dp
         invalidate()
-    }
-
-    fun setHighlightClickListener(onHighlightClickListener: OnClickListener) {
-        stringBuilder.clear()
-        stringBuilder.append(textWithoutHighlight)
-        stringBuilder.append(divider)
-
-        val highlightClickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                onHighlightClickListener.onClick(widget)
-            }
-
-            override fun updateDrawState(ds: TextPaint) {
-                ds.isUnderlineText = false
-            }
-        }
-        getSortedTargetTexts(targetText).forEach {
-            val start = it.first
-            val end = it.first + it.second
-
-            spannableText.setSpan(
-                highlightColorSpan,
-                start,
-                end,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            spannableText.setSpan(
-                highlightTextColorSpan,
-                start,
-                end,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            spannableText.setSpan(
-                highlightClickableSpan,
-                start,
-                end,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-        stringBuilder.append(spannableText)
-        text = stringBuilder
-        movementMethod = LinkMovementMethod.getInstance()
     }
 
     init {
