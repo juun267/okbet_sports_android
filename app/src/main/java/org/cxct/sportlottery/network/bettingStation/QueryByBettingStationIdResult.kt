@@ -13,5 +13,5 @@ data class QueryByBettingStationIdResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "t")
-    val data: QueryByBettingStationIdData,
+    val data: BettingStation,
 ) : BaseResult()
