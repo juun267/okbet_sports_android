@@ -2,12 +2,11 @@ package org.cxct.sportlottery.ui.withdraw
 
 import android.Manifest
 import android.content.Context
-import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
+import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
@@ -342,6 +343,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearBankCardFragmentStatus()
+        removeLocationUpdates()
     }
 
     private fun showDatePicker() {
@@ -408,6 +410,19 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             })
     }
 
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            super.onLocationResult(p0)
+            location = p0.lastLocation
+//            Timber.e("locationCallback location: $location")
+            if (location != null) removeLocationUpdates()
+        }
+    }
+
+    private fun removeLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+    }
 
     private fun checkPermissionGranted() {
         if (ContextCompat.checkSelfPermission(
@@ -417,9 +432,23 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         ) {
             startActivity(Intent(activity, GooglePermissionActivity::class.java))
         } else {
-            val locationManager: LocationManager? =
-                requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
-            location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            fusedLocationClient?.lastLocation?.addOnSuccessListener {
+                location = it
+//                Timber.e("lastLocation location: $location")
+
+                //拿不到lastLocation時，要利用requestLocationUpdates取得location
+                if (location == null) {
+                    val locationRequest = LocationRequest.create().apply {
+                        interval = 10000
+                        fastestInterval = 5000
+                        priority = Priority.PRIORITY_HIGH_ACCURACY
+                    }
+                    fusedLocationClient?.requestLocationUpdates(
+                        locationRequest, locationCallback, Looper.myLooper()
+                    )
+                }
+            }
         }
     }
 }
