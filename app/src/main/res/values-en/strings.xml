@@ -1199,11 +1199,34 @@
     <string name="btn_sure">Confirm</string>
     <string name="Outlets_Reserve">Outlets  Reserve</string>
     <string name="current_balance">Balance</string>
-    <string name="select_area">Select Area</string>
+    <string name="select_area">Select Region</string>
     <string name="select_city">Select City</string>
     <string name="outlets_address">Outlets Address</string>
     <string name="appointment_time">Appointment</string>
     <string name="select_date">Date</string>
     <string name="select_time">Time</string>
     <string name="current_time">Time</string>
+
+    <!--region 20220714 新版投注單-->
+    <string name="bet_stake">Stake</string>
+    <string name="total_capital">Total Stake</string>
+    <string name="total_win_amount">Total Win</string>
+    <string name="delete_bet">Delete</string>
+    <string name="btn_login_bet">Log in to Bet</string>
+    <string name="confirm_single_bets">Confirm %d Single Bets</string>
+    <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
+    <string name="btn_remove_closed_selections">Remove closed selections</string>
+    <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
+    <!--endregion-->
+
+    <string name="publicity_contact">Contact</string>
+    <string name="publicity_faqs">FAQs</string>
+    <string name="more_info">MORE INFO</string>
+    <string name="e_game">E-game</string>
+    <string name="casino">Casino</string>
+    <string name="sabong">Sabong</string>
+    <string name="work_time_">Hours：</string>
+    <string name="phone_">Phone：</string>
+    <string name="appointment_">Appointment：</string>
+    <string name="outlets_address_">Outlets Address：</string>
 </resources>

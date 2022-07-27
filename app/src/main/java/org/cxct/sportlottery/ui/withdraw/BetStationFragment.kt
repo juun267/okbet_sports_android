@@ -3,11 +3,10 @@ package org.cxct.sportlottery.ui.withdraw
 import android.Manifest
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
+import com.google.android.gms.location.*
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -35,7 +36,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import java.math.RoundingMode
@@ -123,25 +123,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     selectBettingStation = it
                     appointmentDate = ""
                     appointmentTime = ""
-                    if (it == null) {
-                        lin_station.visibility = View.GONE
-                        lin_empty.visibility = View.VISIBLE
-                    } else {
-                        lin_station_detail.visibility = View.VISIBLE
-                        lin_empty.visibility = View.GONE
-                        tv_station_name.text = it.name
-                        tv_station_address.text = it.addr
-                        var desloc = Location("").apply {
-                            latitude = it.lat
-                            longitude = it.lon
-                        }
-                        var distance = location?.distanceTo(desloc)
-                        tv_station_distance.text = ArithUtil.round(
-                            distance?.div(1000)?.toDouble(),
-                            2,
-                            RoundingMode.HALF_UP
-                        ) + " KM"
-                    }
+                    updateStation()
                 })
 
         with(rv_station) {
@@ -172,6 +154,27 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         }
     }
 
+    private fun updateStation() {
+        if (selectBettingStation == null) {
+            lin_station.visibility = View.GONE
+            lin_empty.visibility = View.VISIBLE
+        } else {
+            lin_station_detail.visibility = View.VISIBLE
+            lin_empty.visibility = View.GONE
+            tv_station_name.text = selectBettingStation!!.name
+            tv_station_address.text = selectBettingStation!!.addr
+            var desloc = Location("").apply {
+                latitude = selectBettingStation!!.lat
+                longitude = selectBettingStation!!.lon
+            }
+            var distance = location?.distanceTo(desloc)
+            tv_station_distance.text = ArithUtil.round(
+                distance?.div(1000)?.toDouble(),
+                2,
+                RoundingMode.HALF_UP
+            ) + " KM"
+        }
+    }
 
     private fun setupEvent() {
         setupClickEvent()
@@ -248,7 +251,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     "https://maps.google.com/?q=@" + it.lon + "," + it.lat,
                     getString(R.string.outlets_address),
                     true,
-                    true
+                    true,
+                    it
                 )
             }
         }
@@ -381,6 +385,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearBankCardFragmentStatus()
+        removeLocationUpdates()
     }
 
     private fun showDatePicker() {
@@ -447,20 +452,52 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             })
     }
 
-
-    private fun checkPermissionGranted() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            startActivity(Intent(activity, GooglePermissionActivity::class.java))
-        } else {
-            val locationManager: LocationManager? =
-                requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
-            location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult) {
+            super.onLocationResult(p0)
+            location = p0.lastLocation
+//            Timber.e("locationCallback location: $location")
+            if (location != null) removeLocationUpdates()
         }
     }
+
+    private fun removeLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+    }
+
+    private fun checkPermissionGranted() {
+        RxPermissions(requireActivity())
+            .request(Manifest.permission.ACCESS_FINE_LOCATION)
+            .subscribe { aBoolean ->
+                if (aBoolean) {
+                    val locationManager: LocationManager? =
+                        requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
+                    location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    updateStation()
+                } else {
+                    fusedLocationClient =
+                        LocationServices.getFusedLocationProviderClient(requireActivity())
+                    fusedLocationClient?.lastLocation?.addOnSuccessListener {
+                        location = it
+//                Timber.e("lastLocation location: $location")
+
+                        //拿不到lastLocation時，要利用requestLocationUpdates取得location
+                        if (location == null) {
+                            val locationRequest = LocationRequest.create().apply {
+                                interval = 10000
+                                fastestInterval = 5000
+                                priority = Priority.PRIORITY_HIGH_ACCURACY
+                            }
+                            fusedLocationClient?.requestLocationUpdates(
+                                locationRequest, locationCallback, Looper.myLooper()
+                            )
+                        }
+                    }
+                }
+            }
+    }
+
 }
 
 class BetStationAdapter(

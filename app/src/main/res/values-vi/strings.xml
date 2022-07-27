@@ -1195,4 +1195,26 @@
     <string name="select_date">ngày tháng</string>
     <string name="select_time">Thời gian</string>
     <string name="current_time">Thời gian</string>
+
+    <!--region 20220714 新版投注單-->
+    <string name="bet_stake">Tiền Cược</string>
+    <string name="total_capital">Tổng tiền đặt cược</string>
+    <string name="total_win_amount">Tổng Số tiền có thể thắng</string>
+    <string name="delete_bet">Xóa bỏ</string>
+    <string name="btn_login_bet">Đăng nhập để đặt cược</string>
+    <string name="confirm_single_bets">Xác nhận %d Cược đơn</string>
+    <string name="confirm_multiple_bets">Xác nhận %d Cược xâu</string>
+    <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
+    <string name="please_enter_correct_amount">Vui lòng nhập số tiền đặt cược chính xác</string>
+    <!--endregion-->
+
+    <string name="publicity_contact">lLiên hệ</string>
+    <string name="publicity_faqs">FAQs</string>
+    <string name="more_info">Hơn Thông Tin</string>
+    <string name="e_game">Cờ vua</string>
+    <string name="casino">Casino</string>
+    <string name="sabong">Sabong</string>
+    <string name="work_time_">Giờ làm việc：</string>
+    <string name="appointment_">Hẹn thời gian：</string>
+    <string name="outlets_address_">Địa chỉ：</string>
 </resources>
