@@ -47,7 +47,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val mBackEvent: Boolean by lazy {
         intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true
     }
-    private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as BettingStation }
+    private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as? BettingStation }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 
