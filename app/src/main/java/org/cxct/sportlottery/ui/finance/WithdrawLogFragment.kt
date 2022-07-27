@@ -69,9 +69,14 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
-            withdrawLogListener = WithdrawLogListener {
-                viewModel.setWithdrawLogDetail(it)
-            }
+            withdrawLogListener = WithdrawLogListener(
+                clickListener = {
+                    viewModel.setWithdrawLogDetail(it)
+                },
+                bettingStationClick = {
+                    viewModel.getQueryByBettingStationId(it.channel)
+                }
+            )
         }
     }
 

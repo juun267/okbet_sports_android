@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bettingStation.QueryByBettingStationIdResult
 import org.cxct.sportlottery.network.money.list.*
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
 import org.cxct.sportlottery.repository.*
@@ -85,6 +86,9 @@ class FinanceViewModel(
     val redEnvelopeListResult: LiveData<MutableList<RedEnvelopeRow>?>
         get() = _redEnvelopeListResult
 
+    private val _queryByBettingStationIdResult = MutableLiveData<QueryByBettingStationIdResult>()
+    val queryByBettingStationIdResult: LiveData<QueryByBettingStationIdResult>
+        get() = _queryByBettingStationIdResult
 
     fun setRecordType(recordType: String) {
         _recordType.postValue(recordType)
@@ -294,6 +298,7 @@ class FinanceViewModel(
 
             result?.rows?.map {
                 it.withdrawState = when (it.checkStatus) {
+                    CheckStatus.BetStation.code,
                     CheckStatus.PROCESSING.code -> androidContext.getString(R.string.log_state_processing)
                     CheckStatus.UN_PASS.code -> androidContext.getString(R.string.withdraw_log_state_un_pass)
                     CheckStatus.PASS.code -> androidContext.getString(R.string.withdraw_log_state_pass)
@@ -418,6 +423,16 @@ class FinanceViewModel(
 
     fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
         _withdrawLogDetail.postValue(row)
+    }
+
+    fun getQueryByBettingStationId(bettingStationId: Int?){
+        viewModelScope.launch {
+            doNetwork(androidContext){
+                OneBoSportApi.bettingStationService.queryByBettingStationId(bettingStationId = bettingStationId)
+            }?.let {
+                _queryByBettingStationIdResult.value = it
+            }
+        }
     }
 
 }
