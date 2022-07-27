@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:cvIcon="@drawable/ic_publicity_version_update"
-            app:cvTitle="原型待補" />
+            app:cvTitle="@string/app" />
 
         <!--日夜間模式-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard

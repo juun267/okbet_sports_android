@@ -566,13 +566,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         with(binding) {
             val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
 
-//            if (bettingStationVisibility) {
+            if (bettingStationVisibility) {
                 etBettingShop.visibility = View.VISIBLE
 //                //查詢投注站列表
                viewModel.bettingStationQuery()
-//            } else {
-//                etBettingShop.visibility = View.GONE
-//            }
+            } else {
+                etBettingShop.visibility = View.GONE
+            }
         }
     }
 
@@ -621,7 +621,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         viewModel.checkInviteCode(it)
                     } else {
                         etBettingShopSelectTrue()
-                        eetBettingShop.setText(bettingShopSelectedData?.showName)
+
                     }
                 }
             }
@@ -827,7 +827,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 if (it == null) {
                     viewModel.queryPlatform(eet_recommend_code.text.toString())
                 } else {
-                    etBettingShopSelectFalse("没有该投注站")
+                    etBettingShopSelectTrue()
                 }
 
             }
@@ -836,7 +836,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 if (it != null && it.success) {
                     etBettingShopSelectFalse(it.checkBettingData?.code.toString())
                 } else {
-                    etBettingShopSelectFalse("没有该投注站")
+                    etBettingShopSelectTrue()
                     binding.etRecommendCode.setError(
                         it?.msg,
                         false
@@ -1216,6 +1216,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         bettingShopSpinner.isClickable = true
         etBettingShop.isEnabled = true
         etBettingShop.isClickable = true
+        eetBettingShop.setText(bettingShopSelectedData?.showName)
     }
 
     private fun etBettingShopSelectFalse(eetBetting:String) {
