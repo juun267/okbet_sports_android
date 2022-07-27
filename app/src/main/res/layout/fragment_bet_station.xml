@@ -206,7 +206,7 @@
                         android:layout_width="0dp"
                         android:layout_height="44dp"
                         android:layout_weight="1"
-                        android:background="@color/color_191919_FCFCFC"
+                        android:background="@color/color_2B2B2B_FCFCFC"
                         app:defaultStatusText="@string/waiting" />
 
                     <org.cxct.sportlottery.ui.component.StatusSpinnerView
@@ -215,7 +215,7 @@
                         android:layout_height="44dp"
                         android:layout_weight="1"
                         android:layout_marginLeft="7dp"
-                        android:background="@color/color_191919_FCFCFC"
+                        android:background="@color/color_2B2B2B_FCFCFC"
                         app:defaultStatusText="@string/waiting" />
                 </LinearLayout>
 
