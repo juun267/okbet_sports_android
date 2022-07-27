@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -154,24 +155,26 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun updateStation() {
-        if (selectBettingStation == null) {
-            lin_station.visibility = View.GONE
-            lin_empty.visibility = View.VISIBLE
-        } else {
-            lin_station_detail.visibility = View.VISIBLE
-            lin_empty.visibility = View.GONE
-            tv_station_name.text = selectBettingStation!!.name
-            tv_station_address.text = selectBettingStation!!.addr
-            var desloc = Location("").apply {
-                latitude = selectBettingStation!!.lat
-                longitude = selectBettingStation!!.lon
+        selectBettingStation.let {
+            if (it == null) {
+                lin_station.visibility = View.GONE
+                lin_empty.visibility = View.VISIBLE
+            } else {
+                lin_station_detail.visibility = View.VISIBLE
+                lin_empty.visibility = View.GONE
+                tv_station_name.text = it.name
+                tv_station_address.text = it.addr
+                var desloc = Location("").apply {
+                    latitude = it.lat
+                    longitude = it.lon
+                }
+                var distance = location?.distanceTo(desloc)
+                tv_station_distance.text = ArithUtil.round(
+                    distance?.div(1000)?.toDouble(),
+                    2,
+                    RoundingMode.HALF_UP
+                ) + " KM"
             }
-            var distance = location?.distanceTo(desloc)
-            tv_station_distance.text = ArithUtil.round(
-                distance?.div(1000)?.toDouble(),
-                2,
-                RoundingMode.HALF_UP
-            ) + " KM"
         }
     }
 
@@ -456,7 +459,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
             location = p0.lastLocation
-//            Timber.e("locationCallback location: $location")
+            updateStation()
             if (location != null) removeLocationUpdates()
         }
     }
@@ -465,21 +468,17 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
 
+    @SuppressLint("CheckResult", "MissingPermission")
     private fun checkPermissionGranted() {
         RxPermissions(requireActivity())
             .request(Manifest.permission.ACCESS_FINE_LOCATION)
             .subscribe { aBoolean ->
                 if (aBoolean) {
-                    val locationManager: LocationManager? =
-                        requireActivity().getSystemService(LOCATION_SERVICE) as LocationManager?
-                    location = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                    updateStation()
-                } else {
                     fusedLocationClient =
                         LocationServices.getFusedLocationProviderClient(requireActivity())
                     fusedLocationClient?.lastLocation?.addOnSuccessListener {
                         location = it
-//                Timber.e("lastLocation location: $location")
+                        updateStation()
 
                         //拿不到lastLocation時，要利用requestLocationUpdates取得location
                         if (location == null) {
@@ -493,6 +492,11 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                             )
                         }
                     }
+                } else {
+                    ToastUtil.showToast(
+                        requireContext(),
+                        getString(R.string.allow_location_permission)
+                    )
                 }
             }
     }
