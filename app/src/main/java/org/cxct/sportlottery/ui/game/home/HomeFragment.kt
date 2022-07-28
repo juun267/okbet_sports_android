@@ -1309,7 +1309,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         changeTime = System.currentTimeMillis()
         tableInPlayMap.clear()
         tableSoonMap.clear()
-        viewModel.getSportListAtHomePage()
+        viewModel.getSportListAtHomePage(null)
 
         //滾球盤、即將開賽盤
         viewModel.getMatchPreloadInPlay()

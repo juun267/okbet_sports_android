@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/game_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/gameV3Fragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -72,11 +72,12 @@
         tools:layout="@layout/fragment_game_v3">
         <argument
             android:name="matchType"
+            android:defaultValue="IN_PLAY"
             app:argType="org.cxct.sportlottery.network.common.MatchType" />
 
         <argument
             android:name="gameType"
-            android:defaultValue="@null"
+            android:defaultValue="FT"
             app:argType="string"
             app:nullable="true" />
 

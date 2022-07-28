@@ -500,8 +500,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     init {
         afterAnimateListener = AfterAnimateListener {
             try {
-                initObserve()
-                initSocketObserver()
+//                initObserve()
+//                initSocketObserver()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -515,6 +515,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.resetOtherSeelectedGameType()
         mView = inflater.inflate(R.layout.fragment_game_v3, container, false)
         return mView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //若為起始fragment不會有轉場動畫, 故無法透過afterAnimateListener動作
+            initObserve()
+            initSocketObserver()
     }
 
     private fun setupSportTypeList() {
@@ -1416,6 +1424,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
+                    viewModel.getSportListAtHomePage(matchType = args.matchType)
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else if (!args.gameType.isNullOrEmpty() && args.matchType == MatchType.OUTRIGHT && isRecommendOutright()) {

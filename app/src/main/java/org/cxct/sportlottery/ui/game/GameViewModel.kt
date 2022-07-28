@@ -564,7 +564,7 @@ class GameViewModel(
         }
     }
 
-    fun getSportListAtHomePage() {
+    fun getSportListAtHomePage(matchType: MatchType?) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getSportList()
@@ -583,7 +583,7 @@ class GameViewModel(
                             }
                     }
                 _sportSortList.postValue(Event(sportCardList))
-                switchMatchType(null)
+                switchMatchType(matchType)
             }
         }
     }
