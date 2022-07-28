@@ -834,7 +834,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
             checkBettingResult.observe(this@RegisterActivity) {
                 if (it != null && it.success) {
-                    etBettingShopSelectFalse(it.checkBettingData?.code.toString())
+                    etBettingShopSelectFalse(it.checkBettingData?.name.toString())
                 } else {
                     etBettingShopSelectTrue()
                     binding.etRecommendCode.setError(
