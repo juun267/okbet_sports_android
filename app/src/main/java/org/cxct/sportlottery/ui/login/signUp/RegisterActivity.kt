@@ -569,7 +569,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (bettingStationVisibility) {
                 etBettingShop.visibility = View.VISIBLE
 //                //查詢投注站列表
-               viewModel.bettingStationQuery()
+                viewModel.bettingStationQuery()
             } else {
                 etBettingShop.visibility = View.GONE
             }
@@ -912,6 +912,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     it.first,
                     false
                 )
+
             }
             weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it.first, false) }
             zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it.first, false) }
@@ -967,6 +968,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     itemSelectedListener = {
                         bettingShopSelectedData = it
                         eetBettingShop.setText(it?.showName)
+
+                        eet_recommend_code.setText("")
+                        et_recommend_code.hasFocus = false
+
                     }
                 ) {
                     //旋轉箭頭
@@ -1219,7 +1224,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         eetBettingShop.setText(bettingShopSelectedData?.showName)
     }
 
-    private fun etBettingShopSelectFalse(eetBetting:String) {
+    private fun etBettingShopSelectFalse(eetBetting: String) {
         etBettingShop.setEndIcon(null)
         bettingShopSpinner.isEnabled = false
         bettingShopSpinner.isClickable = false
