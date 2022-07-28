@@ -178,7 +178,6 @@
                     android:id="@+id/et_withdrawal_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvHint="@string/hint_please_enter_withdraw_amount"
                     app:cvInputType="number"
                     app:cvTitle="@string/withdraw_amount" />
                 <!-- 提款提示 -->
