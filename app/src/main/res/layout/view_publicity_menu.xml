@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_191919_FCFCFC"
-    tools:ignore="ContentDescription">
+    tools:ignore="ContentDescription, SpUsage">
 
     <LinearLayout
         android:id="@+id/tabBlock"
@@ -58,24 +58,6 @@
 
         </com.google.android.material.tabs.TabLayout>
 
-        <!--版本更新-->
-        <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
-            android:id="@+id/menuVersionUpdate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cvIcon="@drawable/ic_publicity_version_update"
-            app:cvTitle="@string/app" />
-
-        <!--日夜間模式-->
-        <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
-            android:id="@+id/menuAppearance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cvIcon="@drawable/ic_publicity_mode"
-            app:cvTitle="@string/appearance" />
-
         <!--代理加盟(信用盤時:FAQs)-->
         <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
             android:id="@+id/menuAffiliate"
@@ -93,6 +75,24 @@
             android:layout_weight="1"
             app:cvIcon="@drawable/ic_publicity_contact"
             app:cvTitle="@string/publicity_contact" />
+
+        <!--版本更新-->
+        <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
+            android:id="@+id/menuVersionUpdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cvIcon="@drawable/ic_publicity_version_update"
+            app:cvTitle="@string/app" />
+
+        <!--日夜間模式-->
+        <org.cxct.sportlottery.ui.game.publicity.PublicityMenuCard
+            android:id="@+id/menuAppearance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:cvIcon="@drawable/ic_publicity_mode"
+            app:cvTitle="@string/appearance" />
     </LinearLayout>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -119,7 +119,7 @@
     <ImageView
         android:id="@+id/ivThirdGame"
         android:layout_width="match_parent"
-        android:layout_height="122dp"
+        android:layout_height="128dp"
         android:layout_marginStart="7dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="7dp"
@@ -128,7 +128,91 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabBlock"
-        tools:src="@drawable/image_e_game_coming_soon"
+        tools:src="@drawable/image_e_game_empty"
         tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <LinearLayout
+        android:id="@+id/llThirdGamePlayNowContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/ivThirdGame"
+        app:layout_constraintEnd_toEndOf="@+id/ivThirdGame"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/ivThirdGame">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_ok_games" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/ic_e_games" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            android:text="@string/new_games_beta"
+            android:textColor="@color/color_317FFF_0760D4"
+            android:textSize="@dimen/textSize10sp"
+            tools:ignore="SpUsage" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play_btn" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llThirdGameComingSoonContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/ivThirdGame"
+        app:layout_constraintEnd_toEndOf="@+id/ivThirdGame"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/ivThirdGame">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:src="@drawable/ic_ok_games" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/ic_e_games" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_coming_soon" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

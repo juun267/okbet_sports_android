@@ -177,7 +177,9 @@ class PublicityMenuViewHolder(
             MenuType.EGAMES.ordinal -> {
                 when {
                     data.eGameMenuData != null -> {
-                        binding.ivThirdGame.setImageResource(R.drawable.image_e_game_play_now)
+                        binding.llThirdGamePlayNowContainer.isVisible = true
+                        binding.llThirdGameComingSoonContainer.isVisible = false
+                        binding.ivThirdGame.setImageResource(R.drawable.image_e_game_empty)
                         binding.ivThirdGame.setOnClickListener {
                             data.eGameMenuData?.let { thirdDictValues ->
                                 publicityAdapterListener.onGoThirdGamesListener(thirdDictValues)
@@ -185,7 +187,9 @@ class PublicityMenuViewHolder(
                         }
                     }
                     else -> {
-                        binding.ivThirdGame.setImageResource(R.drawable.image_e_game_coming_soon)
+                        binding.llThirdGamePlayNowContainer.isVisible = false
+                        binding.llThirdGameComingSoonContainer.isVisible = true
+                        binding.ivThirdGame.setImageResource(R.drawable.image_e_game_empty)
                         binding.ivThirdGame.setOnClickListener {
                             //do nothing
                         }

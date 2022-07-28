@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/banner"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="135dp"
     app:banner_loop_time="3000"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintDimensionRatio="375:130"
