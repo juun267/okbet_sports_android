@@ -326,6 +326,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                         }
                 }
                 //新版宣傳頁
+                if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
                 mPublicityAdapter.addRecommendList(recommendList)
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
