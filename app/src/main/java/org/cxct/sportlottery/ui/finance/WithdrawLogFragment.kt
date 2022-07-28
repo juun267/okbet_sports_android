@@ -28,7 +28,7 @@ import org.cxct.sportlottery.util.JumpUtil
  * @app_destination 提款記錄
  */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
-
+    private var reserveTime: String = ""
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
 
@@ -79,6 +79,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     viewModel.setWithdrawLogDetail(it)
                 },
                 bettingStationClick = {
+                    reserveTime= it.withdrawDateAndTime.toString()
                     viewModel.getQueryByBettingStationId(it.channel)
                 }
             )
@@ -159,7 +160,8 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
 
         viewModel.queryByBettingStationIdResult.observe(this.viewLifecycleOwner) {
-            if (it.success){
+            if (it.success) {
+                it.data.appointmentTime = reserveTime
                 JumpUtil.toInternalWeb(
                     requireContext(),
                     "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,

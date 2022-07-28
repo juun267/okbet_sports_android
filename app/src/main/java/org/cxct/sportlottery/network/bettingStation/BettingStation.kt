@@ -39,5 +39,5 @@ data class BettingStation(
     val addr: String
 ) : Serializable {
     var isSelected = false
-    val appointmentTime: String = ""
+    var appointmentTime: String = ""
 }
