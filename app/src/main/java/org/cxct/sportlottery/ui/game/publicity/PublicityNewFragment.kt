@@ -395,7 +395,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.publicityPromotionAnnouncementList.observe(viewLifecycleOwner) {
             //非信用盤才顯示優惠活動跑馬燈
             if (!isCreditSystem())
-                mPublicityAdapter.addPromotionAnnouncementList(it)
+                if (it.isNotEmpty()) mPublicityAdapter.addPromotionAnnouncementList(it)
         }
 
         viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
