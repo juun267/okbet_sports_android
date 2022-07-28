@@ -40,10 +40,12 @@ class AccountHistoryAdapter(
 
     fun addFooterAndSubmitList(list: MutableList<Row?>, isLastPage: Boolean) {
         adapterScope.launch {
+            //之前数据为空，并且现在数据也为空，就可以不用刷新空数据界面，都是一样的
+            var noNeedUpdate = mRowList.isEmpty() && mRowList.isEmpty()
             mRowList = list
             mIsLastPage = isLastPage
-
-            updateData()
+            if (!noNeedUpdate)
+                updateData()
         }
     }
 
