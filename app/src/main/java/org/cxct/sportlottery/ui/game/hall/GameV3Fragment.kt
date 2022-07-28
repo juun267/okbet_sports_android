@@ -594,6 +594,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
+        if (args.matchType == MatchType.IN_PLAY) {
+            game_toolbar_back.visibility = View.INVISIBLE
+        }
         game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }

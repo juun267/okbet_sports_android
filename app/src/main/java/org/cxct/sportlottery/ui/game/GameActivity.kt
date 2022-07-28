@@ -716,8 +716,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.OTHER -> {
                         goTab(tabLayout.selectedTabPosition)
                     }
+                    MatchType.IN_PLAY -> {
+                        //當前為滾球時，點back返回宣傳頁
+                        GamePublicityActivity.reStart(this)
+                    }
                     else -> {
-                        mNavController.navigateUp()
+                        matchTypeTabPositionMap[MatchType.IN_PLAY]?.let {
+                            goTab(it)
+                        }
                     }
                 }
             }
