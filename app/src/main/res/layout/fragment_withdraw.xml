@@ -22,9 +22,9 @@
             android:layout_height="48dp"
             app:tabIndicator="@drawable/custom_tab_indicator"
             app:tabIndicatorFullWidth="false"
-            app:tabMode="fixed"
-            app:tabPaddingEnd="10dp"
-            app:tabPaddingStart="10dp"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="@dimen/margin_15"
+            app:tabPaddingStart="@dimen/margin_15"
             app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/color_BBBBBB_333333"
             app:tabTextColor="@color/color_909090_666666">
