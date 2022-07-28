@@ -321,6 +321,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                         }
                 }
                 //新版宣傳頁
+                if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
                 mPublicityAdapter.addRecommendList(recommendList)
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
@@ -400,7 +401,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
             //非信用盤才顯示優惠活動
             if (!isCreditSystem())
-                mPublicityAdapter.addPublicityPromotionList(it)
+                if (it.isNotEmpty()) mPublicityAdapter.addPublicityPromotionList(it)
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
