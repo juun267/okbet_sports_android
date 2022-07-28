@@ -3044,9 +3044,10 @@ class GameViewModel(
                             }
                             else -> null
                         }
-                    }
 
-                    sportMenuDataList.add(sportMenu)
+                        if (entranceType != null)
+                            sportMenuDataList.add(sportMenu)
+                    }
                 }
 
                 updatePublicityMenuLiveData(sportMenuDataList = sportMenuDataList)
