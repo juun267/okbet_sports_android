@@ -132,6 +132,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_submit.setTitleLetterSpacing()
         btn_delete_bank.setTitleLetterSpacing()
 
+        setupTabLayout(args.transferTypeAddSwitch)
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -269,6 +270,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             })
             passwordDialog.show(childFragmentManager, null)
 
+        }
+    }
+
+    private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) {
+        transferTypeAddSwitch?.apply {
+            tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
+            tab_layout.getTabAt(1)?.view?.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
+            tab_layout.getTabAt(2)?.view?.visibility = if (walletTransfer) View.VISIBLE else View.GONE
+            ll_tab_layout.visibility =
+                if ((!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) || mBankCardStatus) View.GONE else View.VISIBLE
         }
     }
 
@@ -435,15 +446,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             viewModel.getCryptoBindList(args.editBankCard)
         })
 
-        viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, {
-            it?.apply {
-                tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
-                tab_layout.getTabAt(1)?.view?.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
-                tab_layout.getTabAt(2)?.view?.visibility = if (walletTransfer) View.VISIBLE else View.GONE
-                ll_tab_layout.visibility =
-                    if ((!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) || mBankCardStatus) View.GONE else View.VISIBLE
-            }
-        })
+        viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner) {
+            setupTabLayout(it)
+        }
 
         viewModel.addCryptoCardList.observe(this.viewLifecycleOwner) {
 
