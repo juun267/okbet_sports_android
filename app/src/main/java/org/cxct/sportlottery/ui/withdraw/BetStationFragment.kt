@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.text.TextUtils
@@ -100,6 +99,12 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         et_password.setTitle(null)
         initEditTextStatus(et_amount)
         initEditTextStatus(et_password)
+        View.OnClickListener { hideKeyboard() }.let {
+            spinner_area.setOnClickListener(it)
+            spinner_city.setOnClickListener(it)
+            tv_calendar.setOnClickListener(it)
+            tv_calendar.setOnClickListener(it)
+        }
         spinner_area.setOnItemSelectedListener {
             selectProvince = areaAll?.provinces?.find { province ->
                 TextUtils.equals(it.code, province.id.toString())
@@ -400,7 +405,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(true, true, true, false, false, false))
-            .setCancelText(" ")
+            .setCancelText("")
             .setSubmitText(requireContext().getString(R.string.picker_submit))
             .setTitleColor(ContextCompat.getColor(requireContext(), R.color.color_CCCCCC_000000))
             .setTitleBgColor(ContextCompat.getColor(requireContext(), R.color.color_2B2B2B_e2e2e2))

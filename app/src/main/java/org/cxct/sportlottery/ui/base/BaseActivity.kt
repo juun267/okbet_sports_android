@@ -312,8 +312,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             itemClickListener.onChecked(true, dataList[options1])
         }
             .setItemVisibleCount(4)
-            .setBgColor(resources.getColor(R.color.color_666666_bcbcbc))
-            .setCancelColor(resources.getColor(R.color.color_BBBBBB_333333))//取消按钮文字颜色
+            .setTitleBgColor(resources.getColor(R.color.color_2B2B2B_e2e2e2))
+            .setBgColor(resources.getColor(R.color.color_191919_FCFCFC))
+            .setCancelColor(resources.getColor(R.color.color_7F7F7F_999999))//取消按钮文字颜色
+            .setSubmitColor(resources.getColor(R.color.color_0760D4))//取消按钮文字颜色
             .setSubmitText(resources.getString(R.string.complete))
             .setCancelText(resources.getString(R.string.btn_cancel))
             .build()
