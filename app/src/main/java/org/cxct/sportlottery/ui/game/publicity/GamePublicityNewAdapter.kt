@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -158,20 +159,15 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
     }
 
     fun addPromotionAnnouncementList(promotionAnnouncementList: List<String>) {
-        val newData =
-            PromotionAnnouncementData(promotionAnnouncementList = promotionAnnouncementList)
+        val newData = PromotionAnnouncementData(promotionAnnouncementList = promotionAnnouncementList)
         removeData(newData)
-        if (promotionAnnouncementList.isNotEmpty()) {
-            addDataWithSort(newData)
-        }
+        addDataWithSort(newData)
     }
 
     fun addPublicityPromotionList(promotionList: List<PublicityPromotionItemData>) {
         val newData = PublicityPromotionData(publicityPromotionDataList = promotionList)
         removeData(newData)
-        if (promotionList.isNotEmpty()) {
-            addDataWithSort(newData)
-        }
+        addDataWithSort(newData)
     }
 
     fun addBottomView() {
