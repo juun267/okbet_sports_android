@@ -1248,4 +1248,5 @@
     <string name="e_game">棋牌</string>
     <string name="casino">真人</string>
     <string name="sabong">斗鸡</string>
+    <string name="new_games_beta">新游戏，测试版</string>
 </resources>
