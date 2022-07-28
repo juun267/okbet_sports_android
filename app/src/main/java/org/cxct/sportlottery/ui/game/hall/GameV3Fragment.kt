@@ -1806,7 +1806,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             if (args.matchType != MatchType.OTHER) {
                 if (isRecommendOutright()) {
                     args.gameType?.let { gameType ->
-                        game_toolbar_sport_type.text = context?.let {
+                        game_toolbar_sport_type?.text = context?.let {
                             getGameTypeString(it, gameType)
                         } ?: resources.getString(
                             GameType.FT.string
@@ -1815,7 +1815,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 } else {
                     gameTypeList.find { it.isSelected }.let { item ->
-                        game_toolbar_sport_type.text =
+                        game_toolbar_sport_type?.text =
                             context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
                                 GameType.FT.string
                             )
