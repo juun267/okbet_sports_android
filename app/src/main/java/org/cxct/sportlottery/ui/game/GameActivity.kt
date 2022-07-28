@@ -719,7 +719,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         GamePublicityActivity.reStart(this)
                     }
                     else -> {
-                        mNavController.navigateUp()
+                        matchTypeTabPositionMap[MatchType.IN_PLAY]?.let {
+                            goTab(it)
+                        }
                     }
                 }
             }
