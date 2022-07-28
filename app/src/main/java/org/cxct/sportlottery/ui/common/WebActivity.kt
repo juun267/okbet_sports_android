@@ -229,7 +229,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 var endTime = if (it.officeEndTime.isNotBlank()) it.officeEndTime else "00:00"
                 tv_time.text = startTime + "-" + endTime
                 tv_appointment_time.text = it.appointmentTime
-                tv_appointment_time.visibility =
+                lin_appointment_time.visibility =
                     if (it.appointmentTime.isNullOrBlank()) View.GONE else View.VISIBLE
                 tv_mobile.setOnClickListener {
                     tv_mobile.text.toString().let {
