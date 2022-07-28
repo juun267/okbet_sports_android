@@ -22,7 +22,7 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
 
         setupToolbarBack()
 
-        setupToolbarTitle(getString(R.string.finance))
+        setupToolbarTitle(getString(R.string.fund_detail))
 
         viewModel.recordType.observe(this, {
             setupToolbarTitle(it)
@@ -71,7 +71,7 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
         custom_tool_bar.setOnBackPressListener {
             if (financeFragment.childFragmentManager.backStackEntryCount > 0) {
                 navController.navigateUp()
-                if (!financeFragment.isHidden) setupToolbarTitle(getString(R.string.finance))
+                if (!financeFragment.isHidden) setupToolbarTitle(getString(R.string.fund_detail))
 
             } else finish()
         }
