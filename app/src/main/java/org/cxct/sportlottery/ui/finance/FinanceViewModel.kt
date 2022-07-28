@@ -298,13 +298,14 @@ class FinanceViewModel(
 
             result?.rows?.map {
                 it.withdrawState = when (it.checkStatus) {
+                    CheckStatus.PROCESSING_TWO.code,
                     CheckStatus.BetStation.code,
                     CheckStatus.PROCESSING.code -> androidContext.getString(R.string.log_state_processing)
                     CheckStatus.UN_PASS.code -> androidContext.getString(R.string.withdraw_log_state_un_pass)
                     CheckStatus.PASS.code -> androidContext.getString(R.string.withdraw_log_state_pass)
                     else -> ""
                 }
-              //
+
                 it.withdrawType = when (it.uwType) {
                     UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
                     UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
