@@ -131,6 +131,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <View
+        android:id="@+id/line_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/bg_gradient_bottom_sheet_shadow_light"
+        app:layout_constraintBottom_toTopOf="@id/viewBottom" />
+
     <org.cxct.sportlottery.ui.game.bottomNavigation.SportBottomNavigation
         android:id="@+id/sport_bottom_navigation"
         android:layout_width="match_parent"

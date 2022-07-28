@@ -271,7 +271,7 @@
                     android:layout_marginEnd="@dimen/margin_6"
                     android:background="@drawable/bg_publicity_recommend_count"
                     android:drawablePadding="1dp"
-                    android:gravity="start"
+                    android:gravity="center"
                     android:minWidth="37dp"
                     android:padding="0dp"
                     android:paddingStart="4dp"
