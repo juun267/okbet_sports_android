@@ -650,7 +650,6 @@
     <string name="bet_list_receipt">Bet receipts</string>
     <string name="complete">Completed</string>
     <string name="winnable_amount_colon">To Win：</string>
-    <string name="finance">Funds Details</string>
     <string name="record_recharge">Deposit Records</string>
     <string name="record_withdrawal">Withdrawal Records</string>
     <string name="record_conversion">Conversion Record</string>

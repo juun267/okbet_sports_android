@@ -637,7 +637,6 @@
     <string name="bet_list_receipt">Biên lai đặt cược</string>
     <string name="complete">Hoàn thành</string>
     <string name="winnable_amount_colon">Số tiền có thể thắng : </string>
-    <string name="finance">Chi tiết quỹ</string>
     <string name="record_recharge">Hồ sơ tiền gửi</string>
     <string name="record_withdrawal">Lịch sử rút tiền</string>
     <string name="record_conversion">Lịch sử chuyển đổi</string>
