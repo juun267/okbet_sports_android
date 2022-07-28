@@ -405,7 +405,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
             //非信用盤才顯示優惠活動
             if (!isCreditSystem())
-                mPublicityAdapter.addPublicityPromotionList(it)
+                if (it.isNotEmpty()) mPublicityAdapter.addPublicityPromotionList(it)
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
