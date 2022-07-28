@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -82,6 +83,8 @@ import kotlin.collections.ArrayList
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
+
+    private val startMatchType = MatchType.IN_PLAY
 
     companion object {
         fun reStart(context: Context) {
@@ -299,15 +302,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         false
                     }
                     R.id.navigation_sport -> {
-                        if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(MatchType.MAIN)) {
-                            getMatchTypeTabPosition(MatchType.MAIN)?.let { mainMatchTypePosition ->
+                        if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(startMatchType)) {
+                            getMatchTypeTabPosition(startMatchType)?.let { mainMatchTypePosition ->
                                 //賽事類別Tab不在主頁時, 切換至主頁
                                 tabLayout.selectTab(tabLayout.getTabAt(mainMatchTypePosition))
                             }
                         } else {
-                            if (mNavController.currentDestination?.id != R.id.homeFragment) {
-                                //若當前不在HomeFragment, 切換至HomeFragment
-                                selectTab(getMatchTypeTabPosition(MatchType.MAIN))
+                            if (mNavController.currentDestination?.id != mNavController.graph.startDestination) {
+                                //若當前不在起始fragment時, 切換至起始fragment
+                                selectTab(getMatchTypeTabPosition(startMatchType))
                             }
                         }
                         true
@@ -433,11 +436,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val countEps =
                 sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
+            //20220728 不要有主頁
+            /*tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.view?.visibility = View.GONE
             tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
+                visibility = View.GONE
+                *//*tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
                 tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
-                    .plus(countOutright).plus(countEps).toString()
-            }
+                    .plus(countOutright).plus(countEps).toString()*//*
+            }*/
 
             tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.IN_PLAY) ?: 1)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
@@ -488,14 +494,23 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private val matchTypeTabPositionMap = mapOf<MatchType, Int>(
-        MatchType.MAIN to 0,
+        //20220728 隱藏主頁
+        /*MatchType.MAIN to 0,
         MatchType.IN_PLAY to 1,
         MatchType.AT_START to 2,
         MatchType.TODAY to 3,
         MatchType.EARLY to 4,
         MatchType.OUTRIGHT to 5,
         MatchType.PARLAY to 6,
-        MatchType.EPS to 7
+        MatchType.EPS to 7*/
+        MatchType.IN_PLAY to 0,
+        MatchType.AT_START to 1,
+        MatchType.TODAY to 2,
+        MatchType.EARLY to 3,
+        MatchType.OUTRIGHT to 4,
+        MatchType.PARLAY to 5,
+        MatchType.EPS to 6,
+        MatchType.MAIN to 99
     )
 
     /**
@@ -807,7 +822,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        viewModel.curMatchType.observe(this) {
+        viewModel.curMatchType.distinctUntilChanged().observe(this) {
             it?.let {
                 val tabSelectedPosition = tabLayout.selectedTabPosition
                 when (it) {
@@ -1018,14 +1033,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun updateSelectTabState(matchType: MatchType?) {
-        when (matchType) {
-            MatchType.IN_PLAY -> updateSelectTabState(1)
-            MatchType.AT_START -> updateSelectTabState(2)
-            MatchType.TODAY -> updateSelectTabState(3)
-            MatchType.EARLY -> updateSelectTabState(4)
-            MatchType.OUTRIGHT -> updateSelectTabState(5)
-            MatchType.PARLAY -> updateSelectTabState(6)
-            MatchType.EPS -> updateSelectTabState(7)
+        matchTypeTabPositionMap[matchType]?.let {
+            updateSelectTabState(it)
         }
     }
 
