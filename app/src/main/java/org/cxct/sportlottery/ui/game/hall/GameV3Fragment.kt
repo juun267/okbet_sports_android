@@ -645,7 +645,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             else -> View.GONE
         }
 
-        game_bg_layer3.visibility = when (args.matchType) {
+        game_bg_layer3?.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
@@ -1332,7 +1332,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     if (args.matchType == MatchType.OTHER) {
                                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                                     } else {
-                                        viewModel.getGameHallList(args.matchType, leagueIdList = leagueChangeEvent.leagueIdList,
+                                        viewModel.getGameHallList(
+                                            args.matchType, leagueIdList = leagueChangeEvent.leagueIdList,
                                             isReloadDate = false,
                                             isIncrement = true
                                         )
@@ -1802,7 +1803,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         } ?: resources.getString(
                             GameType.FT.string
                         ).toUpperCase(Locale.getDefault())
-                        updateSportBackground(gameType)
+                        if (game_bg_layer2 != null && game_bg_layer3 != null) updateSportBackground(gameType)
                     }
                 } else {
                     gameTypeList.find { it.isSelected }.let { item ->
@@ -1855,7 +1856,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportBackground(sport: Item?) {
-        updateSportBackground(sport?.code)
+        if (game_bg_layer2 != null && game_bg_layer3 != null) updateSportBackground(sport?.code)
     }
 
     private fun updateSportBackground(gameTypeKey: String?) {
