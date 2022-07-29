@@ -72,13 +72,13 @@ class PublicityNewRecommendAdapter(private val publicityAdapterListener: GamePub
         val cvBlockLayoutParams = (binding.cvBlock.layoutParams as ConstraintLayout.LayoutParams)
         when (recommend) {
             mRecommendList.firstOrNull() -> {
-                cvBlockLayoutParams.setMargins(10.dp, 10.dp, 0, 10.dp)
+                cvBlockLayoutParams.setMargins(10.dp, 10.dp, 4.dp, 10.dp)
             }
             mRecommendList.lastOrNull() -> {
-                cvBlockLayoutParams.setMargins(8.dp, 10.dp, 10.dp, 10.dp)
+                cvBlockLayoutParams.setMargins(4.dp, 10.dp, 10.dp, 10.dp)
             }
             else -> {
-                cvBlockLayoutParams.setMargins(8.dp, 10.dp, 0, 10.dp)
+                cvBlockLayoutParams.setMargins(4.dp, 10.dp, 4.dp, 10.dp)
             }
         }
     }
