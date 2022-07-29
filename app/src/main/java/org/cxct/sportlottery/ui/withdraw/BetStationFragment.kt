@@ -351,6 +351,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
         viewModel.needCheck.observe(this.viewLifecycleOwner) {
             ll_commission.visibility = if (it) View.VISIBLE else View.GONE
+            tv_commission_title.visibility = if (it) View.VISIBLE else View.GONE
+            rv_station.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
