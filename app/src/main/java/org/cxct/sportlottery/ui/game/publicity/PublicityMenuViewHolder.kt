@@ -9,6 +9,8 @@ import com.google.android.material.tabs.TabLayout
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
 import org.cxct.sportlottery.databinding.ViewPublicityMenuBinding
+import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.isCreditSystem
 
@@ -179,6 +181,12 @@ class PublicityMenuViewHolder(
                     data.eGameMenuData != null -> {
                         binding.llThirdGamePlayNowContainer.isVisible = true
                         binding.llThirdGameComingSoonContainer.isVisible = false
+                        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
+                            binding.tvNewGamesBeta.visibility = View.INVISIBLE
+                        }
+                        else {
+                            binding.tvNewGamesBeta.visibility = View.VISIBLE
+                        }
                         binding.ivThirdGame.setImageResource(R.drawable.image_e_game_empty)
                         binding.ivThirdGame.setOnClickListener {
                             data.eGameMenuData?.let { thirdDictValues ->
