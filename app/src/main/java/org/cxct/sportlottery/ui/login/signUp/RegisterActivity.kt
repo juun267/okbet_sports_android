@@ -968,7 +968,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     itemSelectedListener = {
                         bettingShopSelectedData = it
                         eetBettingShop.setText(it?.showName)
-
                         eet_recommend_code.setText("")
                         et_recommend_code.hasFocus = false
 
@@ -1222,6 +1221,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         etBettingShop.isEnabled = true
         etBettingShop.isClickable = true
         eetBettingShop.setText(bettingShopSelectedData?.showName)
+        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
     }
 
     private fun etBettingShopSelectFalse(eetBetting: String) {
@@ -1234,6 +1234,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
         etBettingShop.hasFocus = false
         eetBettingShop.setText(eetBetting)
+        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
     }
 
     override fun onBackPressed() {
