@@ -6,8 +6,36 @@
     app:startDestination="@id/publicityFragment">
 
     <fragment
-        android:id="@+id/publicityFragment"
+        android:id="@+id/publicityOldFragment"
         android:name="org.cxct.sportlottery.ui.game.publicity.PublicityFragment"
+        android:label="PublicityFragment"
+        tools:layout="@layout/fragment_publicity">
+
+        <action
+            android:id="@+id/action_publicityFragment_to_oddsDetailLiveFragment"
+            app:destination="@id/oddsDetailLiveFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string" />
+        </action>
+        <action
+            android:id="@+id/action_publicityFragment_self"
+            app:destination="@id/publicityFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/publicityFragment"
+        android:name="org.cxct.sportlottery.ui.game.publicity.PublicityNewFragment"
         android:label="PublicityFragment"
         tools:layout="@layout/fragment_publicity">
 

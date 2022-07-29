@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import timber.log.Timber
 
 /**
  * @app_destination 提款設置
@@ -14,6 +15,7 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
 
     companion object {
         const val ModifyBankTypeKey = "modify_bank_type_key"
+        const val TransferTypeAddSwitch = "TransferTypeAddSwitch"
     }
 
     private val mNavController by lazy {
@@ -37,18 +39,20 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
 
     private fun checkMode() {
         val modifyType = intent.getSerializableExtra(ModifyBankTypeKey)?.let { it as TransferType? }
+        val transferTypeAddSwitch = intent.getParcelableExtra<TransferTypeAddSwitch>(TransferTypeAddSwitch)
+//        Timber.e("BankActivity transferTypeAddSwitch: $transferTypeAddSwitch")
         modifyType?.let { type ->
             when (type) {
                 TransferType.BANK -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, null)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, transferTypeAddSwitch)
                     mNavController.navigate(action)
                 }
                 TransferType.CRYPTO -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, null)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, transferTypeAddSwitch)
                     mNavController.navigate(action)
                 }
                 TransferType.E_WALLET -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, null)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, transferTypeAddSwitch)
                     mNavController.navigate(action)
                 }
             }

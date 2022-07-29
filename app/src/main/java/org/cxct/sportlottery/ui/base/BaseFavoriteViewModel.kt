@@ -138,7 +138,6 @@ abstract class BaseFavoriteViewModel(
                                     matchOdd.oddsMap?.putAll(oddsMap)
                                 }
                             }
-                            matchOdd.playCateMappingList = playCateMappingList
                         }
                     }
 
@@ -165,7 +164,6 @@ abstract class BaseFavoriteViewModel(
                             matchInfo.homeScore = mInfo?.homeScore
                             matchInfo.awayScore = mInfo?.awayScore
                         }
-                        matchOdd.playCateMappingList = playCateMappingList
                     }
                 }
                 mFavorMatchOddList.postValue(Event(it.updateMatchType()))

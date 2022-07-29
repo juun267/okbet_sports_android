@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
@@ -59,6 +60,7 @@ class StatusSpinnerView @JvmOverloads constructor(
                 typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             tv_name.gravity = textGravity
             setOnClickListener {
+                this@StatusSpinnerView.callOnClick()
                 if (mListPop.isShowing) {
                     mListPop.dismiss()
                 } else {
@@ -107,6 +109,8 @@ class StatusSpinnerView @JvmOverloads constructor(
         spinnerAdapter?.notifyDataSetChanged()
         if (dataList.size > 8) {
             mListPop.height = ScreenUtils.getScreenHeight(context) / 2
+        } else {
+            mListPop.height = ViewGroup.LayoutParams.WRAP_CONTENT
         }
 
         dataList.firstOrNull()?.let { defaultData ->

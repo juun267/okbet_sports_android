@@ -83,6 +83,7 @@ class MultiLanguagesApplication : Application() {
     private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
+    var doNotReStartPublicity = false
 
     /**
      * HandicapType.NULL.name為尚未配置後端設置的預設盤口
@@ -103,10 +104,6 @@ class MultiLanguagesApplication : Application() {
                 commit()
             }
         }
-
-    private val _isScrollDown = MutableLiveData<Event<Boolean>>()
-    val isScrollDown: LiveData<Event<Boolean>>
-        get() = _isScrollDown
 
 
     private val viewModelModule = module {
@@ -284,15 +281,6 @@ class MultiLanguagesApplication : Application() {
 
     fun setIsAgeVerifyShow(show: Boolean) {
         this.isAgeVerifyNeedShow = show
-    }
-
-    fun setIsScrollDown(isScrollDown: Boolean) {
-        _isScrollDown.postValue(Event(isScrollDown))
-    }
-
-    //重新顯示bottomNavBar
-    fun initBottomNavBar() {
-        setIsScrollDown(false)
     }
 
     fun getOddsType() {

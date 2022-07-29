@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
-import kotlinx.android.synthetic.main.fragment_my_favorite.appbar_layout
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
-import kotlinx.android.synthetic.main.include_my_favorite_empty.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -38,8 +36,8 @@ import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 
@@ -252,16 +250,6 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     }
                 }
             )
-            addScrollListenerForBottomNavBar {
-                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-            }
-        }
-        view.appbar_layout.addOffsetListenerForBottomNavBar {
-            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-        }
-
-        view.scroll_view.addScrollListenerForBottomNavBar {
-            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 
@@ -633,6 +621,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
             GameType.IH.key -> getString(GameType.IH.string)
             GameType.MR.key -> getString(GameType.MR.string)
             GameType.GF.key -> getString(GameType.GF.string)
+            GameType.ES.key -> getString(GameType.ES.string)
             else -> ""
         }
         if (MultiLanguagesApplication.isNightMode) {
@@ -657,6 +646,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     GameType.IH.key -> R.drawable.icehockey_100
                     GameType.MR.key -> R.drawable.rancing_100
                     GameType.GF.key -> R.drawable.golf_108
+                    GameType.ES.key -> R.drawable.esport_100
                     else -> null
                 }
             ).into(favorite_bg_layer2)

@@ -339,7 +339,9 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
         //切换语言
         btn_language.setOnClickListener {
-            startActivity(Intent(this,SwitchLanguageActivity::class.java))
+            var intent = Intent(this, SwitchLanguageActivity::class.java);
+            intent.putExtra("type", 1)
+            startActivity(intent)
         }
         //外觀
         btn_appearance.setOnClickListener {
@@ -725,7 +727,13 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     private fun updateThirdOpenUI(){
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
-        btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        // 暫時隱藏入口 by Bee
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
+            btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        }
+        else {
+            btn_account_transfer.visibility = /*if (!thirdOpen)*/ View.GONE /*else View.VISIBLE*/
+        }
         btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
         bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE

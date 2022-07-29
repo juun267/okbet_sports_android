@@ -66,49 +66,45 @@
                     android:background="@color/color_313131_e2e2e2"
                     app:layout_constraintTop_toBottomOf="@+id/scroll_view" />
 
-                <LinearLayout
-                    android:id="@+id/ll_agree_statement"
-                    android:layout_width="match_parent"
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_agree_statement"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="26dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@+id/view">
+                    android:layout_marginHorizontal="20dp"
+                    android:button="@drawable/selector_statement_agree"
+                    android:paddingVertical="10dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view" />
 
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cb_agree_statement"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:button="@drawable/selector_statement_agree"
-                        android:paddingStart="6dp"
-                        android:paddingEnd="0dp"
-                        android:text="@string/dialog_age_verify_hint"
-                        android:textColor="@color/color_5d5d5d_888888"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <TextView
-                        android:id="@+id/tv_statement_link"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/terms_conditions"
-                        android:textColor="@color/color_317FFF_0760D4"
-                        android:textSize="@dimen/textSize12sp" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_statement_link"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="start"
+                    android:text="@string/dialog_age_verify_hint_and_terms_conditions"
+                    android:textColor="@color/color_5d5d5d_888888"
+                    android:textColorLink="@color/color_317FFF_0760D4"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cb_agree_statement"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cb_agree_statement"
+                    app:layout_constraintTop_toTopOf="@+id/cb_agree_statement" />
 
                 <TextView
                     android:id="@+id/btn_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="22dp"
-                    android:layout_marginTop="10dp"
                     android:background="@drawable/bg_rectangle_4dp_gray_dark"
                     android:gravity="center"
                     android:paddingVertical="13dp"
                     android:text="@string/dialog_age_verify_confirm"
                     android:textColor="@color/color_e5e5e5_666666"
                     android:textSize="@dimen/textSize14sp"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_agree_statement" />
+                    app:layout_constraintTop_toBottomOf="@+id/cb_agree_statement" />
 
                 <TextView
                     android:id="@+id/btn_exit"

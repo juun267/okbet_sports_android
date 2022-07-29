@@ -13,8 +13,12 @@ import android.text.Spanned
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
-import android.widget.*
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ListPopupWindow
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
@@ -35,6 +39,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
@@ -162,42 +167,6 @@ fun AppBarLayout.addOffsetListenerForBottomNavBar(
     })
 }
 
-fun ScrollView.addScrollListenerForBottomNavBar(
-    onScrollDown: (isScrollDown: Boolean) -> Unit
-) {
-    setOnScrollChangeListener(object :View.OnScrollChangeListener {
-        var needChangeBottomBar = true
-        var directionIsDown = true
-        override fun onScrollChange(
-            v: View?,
-            scrollX: Int,
-            scrollY: Int,
-            oldScrollX: Int,
-            oldScrollY: Int
-        ) {
-            if (needChangeBottomBar) {
-                needChangeBottomBar = false
-                //更新記錄的方向
-                if (scrollY > oldScrollY) {
-                    directionIsDown = true
-                    MultiLanguagesApplication.mInstance.setIsScrollDown(true)
-                } else if (scrollY < oldScrollY) {
-                    directionIsDown = false
-                    MultiLanguagesApplication.mInstance.setIsScrollDown(false)
-                }
-            }
-            //Y軸移動的值和記錄的方向不同時, 重設狀態
-            if (scrollY > oldScrollY != directionIsDown) {
-                needChangeBottomBar = true
-            }
-
-            //滑到最底部時顯示
-            if (!canScrollVertically(1)) {
-                onScrollDown(false)
-            }
-        }
-    })
-}
 
 fun RecyclerView.getVisibleRangePosition(): List<Int> {
     return mutableListOf<Int>().apply {
@@ -427,14 +396,6 @@ fun getLevelName(context: Context, level: Int): String {
     val jsonArray = JSONArray(jsonString)
     val jsonObject = jsonArray.getJSONObject(level)
     return jsonObject.getString(LanguageManager.getSelectLanguage(context).key)
-}
-
-val playCateMappingList by lazy {
-    val json = LocalJsonUtil.getLocalJson(
-        MultiLanguagesApplication.appContext,
-        "localJson/PlayCateMapping.json"
-    )
-    json.fromJson<List<PlayCateMapItem>>() ?: listOf()
 }
 
 /**
@@ -730,6 +691,25 @@ fun MutableList<LeagueOdd>.closePlayCate(closePlayCateEvent: ClosePlayCateEvent)
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * 點擊客服按鈕, 根據當前可用客服連結數量顯示客服選擇彈窗或直接跳轉
+ */
+fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
+    val serviceUrl = sConfigData?.customerServiceUrl
+    val serviceUrl2 = sConfigData?.customerServiceUrl2
+    when {
+        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            ServiceDialog().show(fragmentManager, null)
+        }
+        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl2)
+        }
+        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+            JumpUtil.toExternalWeb(context, serviceUrl)
         }
     }
 }

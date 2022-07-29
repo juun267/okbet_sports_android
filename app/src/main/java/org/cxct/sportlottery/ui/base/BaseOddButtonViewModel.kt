@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoRequest
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -51,15 +52,6 @@ abstract class BaseOddButtonViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
 ) : BaseWithdrawViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
-    @Deprecated("之後API都會給翻譯")
-    protected val playCateMappingList by lazy {
-        val json = LocalJsonUtil.getLocalJson(
-            MultiLanguagesApplication.appContext,
-            "localJson/PlayCateMapping.json"
-        )
-        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-    }
 
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
@@ -146,25 +138,35 @@ abstract class BaseOddButtonViewModel(
             currentOddsType = OddsType.EU
         }
 
-        if (betItem == null) {
-            matchInfo.let {
-                betInfoRepository.addInBetInfo(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = otherPlayCateName ?: playCateName,
-                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
-                        ?: odd.name ?: "",
-                    matchInfo = it,
-                    odd = odd,
-                    subscribeChannelType = subscribeChannelType,
-                    playCateMenuCode = playCateMenuCode,
-                    oddsType = currentOddsType,
-                    betPlayCateNameMap = betPlayCateNameMap
-                )
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
+            }?.let { result ->
+                if (result.success) {
+                    val playMaxSingleBet = result.BetInfo?.playMaxBetSingleBet ?: 0
+                    if (betItem == null) {
+                        matchInfo.let {
+                            betInfoRepository.addInBetInfo(
+                                matchType,
+                                gameType,
+                                playCateCode,
+                                otherPlayCateName ?: playCateName,
+                                odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                                    ?: odd.name ?: "",
+                                it,
+                                odd,
+                                subscribeChannelType,
+                                playCateMenuCode,
+                                currentOddsType,
+                                betPlayCateNameMap,
+                                playMaxBetSingleBet = playMaxSingleBet
+                            )
+                        }
+                    } else {
+                        odd.id?.let { removeBetInfoItem(it) }
+                    }
+                }
             }
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
         }
     }
 

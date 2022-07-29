@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -20,6 +19,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -30,7 +31,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.addScrollListenerForBottomNavBar
 
 /**
  * @app_destination 宣傳頁
@@ -196,11 +196,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         with(binding.rvPublicity) {
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = mPublicityAdapter
-            addScrollListenerForBottomNavBar(
-                onScrollDown = {
-                    MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-                }
-            )
         }
     }
 
@@ -508,6 +503,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goGamePage() {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN && viewModel.isLogin.value != true) {
+            showLoginNotify()
+            return
+        }
         GameActivity.reStart(activity?:requireActivity())
         activity?.finish()
     }
@@ -545,6 +544,10 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun showStatistics(matchId: String?) {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN && viewModel.isLogin.value != true) {
+            showLoginNotify()
+            return
+        }
         StatisticsDialog.newInstance(matchId, StatisticsDialog.StatisticsClickListener { clickMenu() })
             .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
@@ -555,6 +558,11 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         matchId: String?,
         matchInfoList: List<MatchInfo>
     ) {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN && viewModel.isLogin.value != true) {
+            showLoginNotify()
+            return
+        }
+
         val gameType = GameType.getGameType(gameTypeCode)
         val navMatchType = matchType ?: MatchType.DETAIL
         if (gameType != null && matchId != null) {

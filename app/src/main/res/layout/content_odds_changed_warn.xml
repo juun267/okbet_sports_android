@@ -11,8 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/margin_24"
-        android:paddingStart="@dimen/margin_24"
+        android:paddingHorizontal="@dimen/margin_18"
         android:paddingTop="8dp"
         android:paddingBottom="2dp"
         android:text="@string/bet_info_odd_content_changed"

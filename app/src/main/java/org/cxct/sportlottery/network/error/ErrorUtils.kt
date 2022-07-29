@@ -6,6 +6,8 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
+import org.cxct.sportlottery.network.Constants.BETTING_STATION_QUERY
+import org.cxct.sportlottery.network.Constants.BETTING_STATION_QUERY_INVITE
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
@@ -85,6 +87,7 @@ import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
+import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
@@ -464,6 +467,10 @@ object ErrorUtils {
                     (url.contains(LOGIN_FOR_GUEST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(BETTING_STATION_QUERY_INVITE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return CheckBettingResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(THIRD_REBATES)) -> {
                         @Suppress("UNCHECKED_CAST")

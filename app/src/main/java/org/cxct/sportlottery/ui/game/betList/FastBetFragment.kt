@@ -307,10 +307,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 addBetSingle()
             }
 
-            tv_accept_odds_change.setOnClickListener {
-                addBetSingle()
-            }
-
             isCanSendOut = false
         }
 //        binding.tvAddToBetInfo.setOnClickListener {
@@ -375,11 +371,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         binding.etBet.afterTextChanged {
-            button_bet.tv_quota.text =
-                TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
-                button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
                 binding.tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
                 tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
@@ -455,7 +448,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                     }
                 }
-                button_bet.tv_quota.text = TextUtil.format(realAmount)
 
                 //比照以往計算
                 //var win = quota * getOdds(matchOdd, oddsType)
@@ -472,14 +464,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             checkMinQuota(if (it.isEmpty()) 0.0 else it.toDouble())
         }
-    }
-
-    private fun getLimitHint(context: Context, min: Int, max: Int): String {
-        return String.format(
-            "${context.getString(R.string.edt_hint_deposit_money_new)}",
-            TextUtil.formatBetQuota(min),
-            TextUtil.formatBetQuota(max)
-        )
     }
 
     private fun checkMinQuota(quota: Double) {

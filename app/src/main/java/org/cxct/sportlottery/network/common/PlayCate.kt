@@ -45,6 +45,7 @@ enum class PlayCate(val value: String) {
     CS_OT("CS-OT"),
     CS_SEG("CS-SEG"),
     CS_SEG1("CS-SEG1"),
+    CS_5_MAP("CS-5-MAP"),//正确比分 (電競的玩法)
     LCS("LCS"),//反波胆
     DC("DC"),//双重机会
     DC_BTS("DC-BTS"),//双重机会&双方球队进球
@@ -453,6 +454,7 @@ enum class PlayCate(val value: String) {
                 CS_SEG.value -> CS_SEG
                 CS_SEG1.value -> CS_SEG1
                 LCS.value -> LCS
+                CS_5_MAP.value -> CS_5_MAP
                 DC.value -> DC
                 DC_BTS.value -> DC_BTS
                 DC_FLG.value -> DC_FLG

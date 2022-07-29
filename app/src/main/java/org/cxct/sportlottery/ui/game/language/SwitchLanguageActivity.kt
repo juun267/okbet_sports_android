@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.language
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_switch_language.*
 import kotlinx.android.synthetic.main.activity_switch_language.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
@@ -21,7 +22,9 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.security.AccessController.getContext
 
 
-class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::class), View.OnClickListener {
+class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
+    View.OnClickListener {
+    private var type = 0
 
     companion object {
         const val FROM_ACTIVITY = "fromActivity"
@@ -43,23 +46,39 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
                 viewModel.betInfoRepository.clear()
                 selectLanguage(LanguageManager.Language.VI)
             }
+
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySwitchLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        type = intent.getIntExtra("type", 0)
         initToolbar();
         initView()
     }
+
     private fun initToolbar() {
         tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.language_setting)
         btn_toolbar_back.setOnClickListener {
-           finish()
+            finish()
+        }
+        ivBack.setOnClickListener {
+            finish()
         }
     }
-    private fun initView(){
+
+    private fun initView() {
+        if (type == 1) {
+            ll_select_language.visibility = View.GONE
+            image_logo.visibility = View.GONE
+        } else {
+            il_tool_bar.visibility = View.GONE
+        }
+
+
         val lngeList = sConfigData?.supportLanguage?.split(",")
 
         binding.llLanguageList.removeAllViews()
@@ -82,28 +101,43 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
         binding.llVietnam.setOnClickListener(this)
         when (LanguageManager.getSelectLanguage(applicationContext)) {
             LanguageManager.Language.ZH -> {
-                binding.tvChina.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))
+                binding.tvChina.setTextColor(
+                    ContextCompat.getColor(
+                        applicationContext,
+                        R.color.color_317FFF_0760D4
+                    )
+                )
             }
             LanguageManager.Language.EN -> {
-                binding.tvEnglish.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))
+                binding.tvEnglish.setTextColor(
+                    ContextCompat.getColor(
+                        applicationContext,
+                        R.color.color_317FFF_0760D4
+                    )
+                )
             }
             LanguageManager.Language.VI -> {
-                binding.tvVietnam.setTextColor(ContextCompat.getColor(applicationContext, R.color.color_317FFF_0760D4))
+                binding.tvVietnam.setTextColor(
+                    ContextCompat.getColor(
+                        applicationContext,
+                        R.color.color_317FFF_0760D4
+                    )
+                )
             }
         }
     }
 
     private fun selectLanguage(select: LanguageManager.Language) {
-        if(SPUtil.getInstance(applicationContext).getSelectLanguage() != select.key){
+        if (SPUtil.getInstance(applicationContext).getSelectLanguage() != select.key) {
             this?.run {
                 LanguageManager.saveSelectLanguage(this, select)
 //                if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                    MainActivity.reStart(this)
 //                else {
-                    when (intent.getSerializableExtra(FROM_ACTIVITY)) {
-                        Page.PUBLICITY -> goGamePublicityPage()
-                        else -> GamePublicityActivity.reStart(this)
-                    }
+                when (intent.getSerializableExtra(FROM_ACTIVITY)) {
+                    Page.PUBLICITY -> goGamePublicityPage()
+                    else -> GamePublicityActivity.reStart(this)
+                }
 //                }
             }
         }

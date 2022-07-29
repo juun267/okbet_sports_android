@@ -21,7 +21,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 5
-        versionName "1.0.195"
+        versionName "1.0.204"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -122,7 +122,7 @@ android {
         }
         spnew1{
             buildConfigField "String", "CHANNEL_NAME", "\"spnew1\""
-            resValue "string", "app_name", "OKbet"
+            resValue "string", "app_name", "ONbet"
             applicationId "com.okbet.spnew1"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
             buildConfigField "String", "SYSTEM_CURREMCY", "\"RMB\""
@@ -148,8 +148,8 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
-        spcd {
-            buildConfigField "String", "CHANNEL_NAME", "\"spcd\""
+        spk9 {
+            buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
             resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.spcd"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
@@ -162,16 +162,50 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+
+        //現金網預發布
+        sabaplat1 {
+            buildConfigField "String", "CHANNEL_NAME", "\"sabaplat1\""
+            resValue "string", "app_name", "OKbet"
+            applicationId "com.okbet.sabaplat1"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
+
+        //信用網預發布
+        uatcd1 {
+            buildConfigField "String", "CHANNEL_NAME", "\"uatcd1\""
+            resValue "string", "app_name", "OKbet9"
+            applicationId "com.okbet.uatcd1"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
     }
 
     sourceSets {
         fastlane.res.srcDirs = ["${fastlane_res_src_dir}"]
         forqa.res.srcDirs = ['src/okbet_ph/res']
         OkbetPH.res.srcDirs = ['src/okbet_ph/res']
-        spcd.res.srcDirs = ['src/okbet_ph/res']
+        spk9.res.srcDirs = ['src/okbet9_ph/res']
         WinbetCN.res.srcDirs = ['src/winbet_cn/res']
         spnew1.res.srcDirs = ['src/okbet_ph/res']
-        credit.res.srcDirs = ['src/okbet_ph/res']
+        credit.res.srcDirs = ['src/okbet9_ph/res']
+        uatcd1.res.srcDirs = ['src/okbet9_ph/res']
+        sabaplat1.res.srcDirs = ['src/okbet_ph/res']
         main {
             jniLibs.srcDirs = ['src/main/libs']
         }
@@ -245,6 +279,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
     implementation 'androidx.webkit:webkit:1.4.0'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

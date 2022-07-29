@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_cant_parlay_warn"
     android:layout_width="match_parent"
@@ -10,24 +11,23 @@
     android:showDividers="end"
     tools:ignore="SpUsage">
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_1"
-        android:layout_marginHorizontal="@dimen/margin_10"
-        android:background="@color/color_1F1F1F_e6e6e6" />
+<!--    <View-->
+<!--        android:id="@+id/line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/margin_1"-->
+<!--        android:layout_marginHorizontal="@dimen/margin_10"-->
+<!--        android:background="@color/color_1F1F1F_e6e6e6" />-->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_odds_change_tip"
         android:drawablePadding="@dimen/margin_6"
-        android:paddingHorizontal="@dimen/margin_24"
-        android:paddingStart="@dimen/margin_24"
-        android:paddingTop="@dimen/margin_12"
-        android:paddingBottom="@dimen/margin_18"
+        android:paddingHorizontal="@dimen/margin_14"
+        android:paddingTop="@dimen/margin_20"
+        android:paddingBottom="@dimen/margin_4"
         android:text="@string/bet_list_cant_parlay_warn"
         android:textColor="@color/color_E44438_e44438"
-        android:textSize="@dimen/textSize12sp" />
+        android:textSize="@dimen/textSize12sp"
+        app:drawableStartCompat="@drawable/ic_odds_change_tip" />
 
 </LinearLayout>

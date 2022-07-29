@@ -5,7 +5,7 @@ import android.text.Spanned
 
 class MoneyInputFilter : InputFilter {
     companion object {
-        val POINT_LENGTH = 2//保留小數點位數
+        val POINT_LENGTH = 3//保留小數點位數
     }
 
     override fun filter(

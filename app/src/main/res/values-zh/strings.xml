@@ -37,7 +37,7 @@
     <string name="sign_up_know">立即注册</string>
     <string name="recommend_code">推荐代码</string>
     <string name="hint_recommend_code">(请输入推荐代码)</string>
-    <string name="error_recommend_code">推荐码不存在</string>
+    <string name="error_recommend_code">没有该投注站，请确认代码</string>
     <string name="member_account">会员账号</string>
     <string name="hint_member_account">(长度需4–16个字符含英数)</string>
     <string name="error_member_account">账号为4~16位数字字母组合</string>
@@ -426,7 +426,6 @@
     <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额 %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">请输入您的账号</string>
-    <string name="edt_hint_deposit_money_new">限额 %1$s-%2$s</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>
@@ -621,15 +620,15 @@
     <string name="bet_info_accept_odds_change">接受变更</string>
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
-    <string name="bet_info_odd_content_changed2">赔率已变更，从 %s 至 %s 。</string>
+    <string name="bet_info_odd_content_changed2">赔率已变更，从 %1$s 至 %2$s 。</string>
     <string name="bet_info_all_bet">所有投注</string>
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
-    <string name="bet_list_single_type">单项投注</string>
-    <string name="bet_list_parlay_type">串关投注</string>
+    <string name="bet_list_single_type">单项</string>
+    <string name="bet_list_parlay_type">串关</string>
     <string name="bet_list_view_more_options">更多投注选项</string>
-    <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
     <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n</string>
@@ -670,6 +669,9 @@
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
     <string name="withdraw_log_crypto_transfer">虚拟币提款</string>
+    <string name="betting_station_reserve" >网点预约</string>
+    <string name="betting_station_withdraw" >网点提款</string>
+    <string name="betting_station_deposit" >网点存款</string>
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
     <string name="log_detail_trans_num_sub2">交易编号</string>
@@ -1027,7 +1029,7 @@
     <string name="faqs">常见问题</string>
     <string name="live_chat">在线客服</string>
     <string name="contact">联系我们</string>
-    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, Brand and Business Name Owned by Ekxinum Inc. Regulated &amp; Licensed by the Philippine Amusement and Gaming Corporation (PAGCOR).</string>
+    <string name="btm_navigation_hint">%s is a Registered Trade Mark, brand and registered business name.</string>
     <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="front_side_result">证件正面扫描结果</string>
     <string name="reverse_side_result">证件反面扫描结果</string>
@@ -1160,6 +1162,7 @@
     <string name="dialog_age_verify_hint">我接受并同意OKbet</string>
     <string name="dialog_age_verify_confirm">我已年满21岁</string>
     <string name="dialog_age_verify_exit">离开</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKbet规则与条款</string>
     <!--endregion-->
 
     <string name="esports">电子竞技</string>
@@ -1199,4 +1202,38 @@
     <string name="tran_time_sub">交易时间：</string>
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="btn_sure">确定</string>
+    <string name="Outlets_Reserve">网点预约</string>
+    <string name="current_balance">当前余额</string>
+    <string name="select_area">选择地区</string>
+    <string name="select_city">选择城市</string>
+    <string name="outlets_address">投注站地址</string>
+    <string name="appointment_time">预约时间</string>
+    <string name="select_date">请选择日期</string>
+    <string name="select_time">请选择时间</string>
+    <string name="current_time">当前时间</string>
+
+    <!--region 20220714 新版投注單-->
+    <string name="bet_stake">本金</string>
+    <string name="total_capital">本金总额</string>
+    <string name="total_win_amount">可赢总额</string>
+    <string name="delete_bet">删除</string>
+    <string name="btn_login_bet">登录并投注</string>
+    <string name="confirm_single_bets">确认%d单注投注</string>
+    <string name="confirm_multiple_bets">确认%d串关投注</string>
+    <string name="btn_remove_closed_selections">移除已关闭的选项</string>
+    <string name="please_enter_correct_amount">请输入正确投注额</string>
+    <!--endregion-->
+
+    <string name="publicity_contact">联络</string>
+    <string name="publicity_faqs">常见问题</string>
+    <string name="more_info">更多信息</string>
+    <string name="e_game">棋牌</string>
+    <string name="casino">真人</string>
+    <string name="sabong">斗鸡</string>
+    <string name="new_games_beta">新游戏，测试版</string>
+
+    <string name="work_time_">营业时间：</string>
+    <string name="phone_">电话：</string>
+    <string name="appointment_">预约时间：</string>
+    <string name="outlets_address_">投注站地址：</string>
 </resources>

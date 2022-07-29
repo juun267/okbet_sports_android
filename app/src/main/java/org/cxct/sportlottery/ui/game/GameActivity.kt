@@ -4,12 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -23,16 +22,11 @@ import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_bet_list_count
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -60,6 +54,7 @@ import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -78,10 +73,11 @@ import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.parceler.Parcels
 import timber.log.Timber
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
+
+    private val startMatchType = MatchType.IN_PLAY
 
     companion object {
         fun reStart(context: Context) {
@@ -97,6 +93,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
 
         const val ARGS_SWITCH_LANGUAGE = "switch_language"
+        const val ARGS_PUBLICITY_SPORT_ENTRANCE = "publicity_sport_entrance"
     }
 
     private var betListFragment = BetListFragment()
@@ -105,7 +102,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
         NavController.OnDestinationChangedListener { _, destination, arguments ->
-            MultiLanguagesApplication.mInstance.initBottomNavBar()
             updateServiceButtonVisibility(destinationId = destination.id)
             mOutrightLeagueId = arguments?.get("outrightLeagueId") as? String
             when (destination.id) {
@@ -169,6 +165,20 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         setupDataSourceChange()
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        mNavController.addOnDestinationChangedListener(navDestListener)
+
+        checkPublicityEntranceEvent()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+
+        mNavController.removeOnDestinationChangedListener(navDestListener)
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -191,16 +201,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-
-        mNavController.addOnDestinationChangedListener(navDestListener)
-
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
-
-        mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
     override fun initToolBar() {
@@ -299,15 +304,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         false
                     }
                     R.id.navigation_sport -> {
-                        if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(MatchType.MAIN)) {
-                            getMatchTypeTabPosition(MatchType.MAIN)?.let { mainMatchTypePosition ->
+                        if (tabLayout.selectedTabPosition != getMatchTypeTabPosition(startMatchType)) {
+                            getMatchTypeTabPosition(startMatchType)?.let { mainMatchTypePosition ->
                                 //賽事類別Tab不在主頁時, 切換至主頁
                                 tabLayout.selectTab(tabLayout.getTabAt(mainMatchTypePosition))
                             }
                         } else {
-                            if (mNavController.currentDestination?.id != R.id.homeFragment) {
-                                //若當前不在HomeFragment, 切換至HomeFragment
-                                selectTab(getMatchTypeTabPosition(MatchType.MAIN))
+                            if (mNavController.currentDestination?.id != mNavController.graph.startDestination) {
+                                //若當前不在起始fragment時, 切換至起始fragment
+                                selectTab(getMatchTypeTabPosition(startMatchType))
                             }
                         }
                         true
@@ -433,11 +438,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             val countEps =
                 sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
+            //20220728 不要有主頁
+            /*tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.view?.visibility = View.GONE
             tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
+                visibility = View.GONE
+                *//*tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
                 tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
-                    .plus(countOutright).plus(countEps).toString()
-            }
+                    .plus(countOutright).plus(countEps).toString()*//*
+            }*/
 
             tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.IN_PLAY) ?: 1)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
@@ -488,14 +496,23 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private val matchTypeTabPositionMap = mapOf<MatchType, Int>(
-        MatchType.MAIN to 0,
+        //20220728 隱藏主頁
+        /*MatchType.MAIN to 0,
         MatchType.IN_PLAY to 1,
         MatchType.AT_START to 2,
         MatchType.TODAY to 3,
         MatchType.EARLY to 4,
         MatchType.OUTRIGHT to 5,
         MatchType.PARLAY to 6,
-        MatchType.EPS to 7
+        MatchType.EPS to 7*/
+        MatchType.IN_PLAY to 0,
+        MatchType.AT_START to 1,
+        MatchType.TODAY to 2,
+        MatchType.EARLY to 3,
+        MatchType.OUTRIGHT to 4,
+        MatchType.PARLAY to 5,
+        MatchType.EPS to 6,
+        MatchType.MAIN to 99
     )
 
     /**
@@ -699,8 +716,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.OTHER -> {
                         goTab(tabLayout.selectedTabPosition)
                     }
+                    MatchType.IN_PLAY -> {
+                        //當前為滾球時，點back返回宣傳頁
+                        GamePublicityActivity.reStart(this)
+                    }
                     else -> {
-                        mNavController.navigateUp()
+                        matchTypeTabPositionMap[MatchType.IN_PLAY]?.let {
+                            goTab(it)
+                        }
                     }
                 }
             }
@@ -738,11 +761,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         viewModel.userMoney.observe(this) {
             it?.let { money ->
                 tv_balance.text = TextUtil.formatMoney(money)
-            }
-        }
-        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
-            it.getContentIfNotHandled()?.let { isScrollDown ->
-                setBottomNavBarVisibility(game_bottom_navigation, isScrollDown)
             }
         }
         viewModel.settlementNotificationMsg.observe(this) {
@@ -807,7 +825,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        viewModel.curMatchType.observe(this) {
+        viewModel.curMatchType.distinctUntilChanged().observe(this) {
             it?.let {
                 val tabSelectedPosition = tabLayout.selectedTabPosition
                 when (it) {
@@ -1018,14 +1036,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun updateSelectTabState(matchType: MatchType?) {
-        when (matchType) {
-            MatchType.IN_PLAY -> updateSelectTabState(1)
-            MatchType.AT_START -> updateSelectTabState(2)
-            MatchType.TODAY -> updateSelectTabState(3)
-            MatchType.EARLY -> updateSelectTabState(4)
-            MatchType.OUTRIGHT -> updateSelectTabState(5)
-            MatchType.PARLAY -> updateSelectTabState(6)
-            MatchType.EPS -> updateSelectTabState(7)
+        matchTypeTabPositionMap[matchType]?.let {
+            updateSelectTabState(it)
         }
     }
 
@@ -1068,6 +1080,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun onDestroy() {
         expandCheckList.clear()
         HomePageStatusManager.clear()
+        mNavController.removeOnDestinationChangedListener(navDestListener)
         super.onDestroy()
     }
 
@@ -1076,6 +1089,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             viewModel.fetchDataFromDataSourceChange(
                 matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
             )
+        }
+    }
+
+    /**
+     * 檢查是否有從宣傳頁入口跳轉的事件
+     *
+     * @see org.cxct.sportlottery.ui.game.publicity.PublicityNewFragment.jumpToTheSport
+     */
+    private fun checkPublicityEntranceEvent() {
+        val publicitySportEntrance =
+            intent.getSerializableExtra(ARGS_PUBLICITY_SPORT_ENTRANCE) as? PublicitySportEntrance
+        publicitySportEntrance?.let {
+            viewModel.navSpecialEntrance(it.matchType, it.gameType)
         }
     }
 

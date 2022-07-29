@@ -12,6 +12,9 @@
     <string name="percent">%</string>
     <string name="id">ID</string>
     <string name="at">\u0040</string>
+    <string name="verse_upper">VS</string>
+    <string name="app">APP</string>
+    <string name="colon">:</string>
 
 
     <!--  Member Level Page  -->
