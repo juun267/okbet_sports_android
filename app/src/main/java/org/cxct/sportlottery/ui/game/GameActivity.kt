@@ -371,6 +371,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
         cl_bet_list_bar.isVisible = num > 0
+        line_shadow.isVisible = !cl_bet_list_bar.isVisible
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
     }

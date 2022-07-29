@@ -54,7 +54,13 @@ import org.parceler.Parcels
 import kotlin.math.min
 
 /**
- * @app_destination 注單(單注，點擊賠率下方彈出)
+ * @app_destination 快捷注單
+ *
+ * 目前不會展示快捷注單，但傳遞資料的目前是沿用(data: FastBetDataBean)
+ * 更新viewModel.betInfoList，可參考BetInfoRepository.addInBetInfo
+ *
+ * 是否開啟快捷注單由這個參數控制viewModel.getIsFastBetOpened
+ * 目前已改為false，false的情況會開啟BetListFragment
  */
 const val INPLAY: Int = 1
 
