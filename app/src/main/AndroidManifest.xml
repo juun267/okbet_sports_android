@@ -12,6 +12,16 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.webkit.PermissionRequest" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.webkit.resource.VIDEO_CAPTURE"/>
+    <uses-permission android:name="android.webkit.resource.AUDIO_CAPTURE" />
+    <uses-permission android:name="android.permission.MICROPHONE" />
+    <uses-feature android:name="android.hardware.microphone" android:required="true"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true" /> <!-- 使用照相機權限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="true"/> <!-- 自動聚焦權限 -->
+
 
     <application
         android:name=".MultiLanguagesApplication"
