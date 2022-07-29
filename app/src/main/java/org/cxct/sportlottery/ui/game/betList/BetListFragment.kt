@@ -58,7 +58,10 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.*
 
 /**
- * @app_destination 注單列表
+ * @app_destination 滿版注單(點擊賠率彈出)
+ *
+ * 畫面會依照注單數量(viewModel.betInfoList)動態調整高度
+ * if (size == 1) { 單一注單 } else { 多筆注單 or 空注單 }
  */
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
