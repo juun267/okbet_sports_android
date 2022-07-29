@@ -115,15 +115,23 @@ Mock Request Data Instructions :
 3. build.gradle -> buildConfigField 修改參數
 
 
-## 投注單 (../ui/game/betList)
+## 投注單 (檔案路徑: ../ui/game/betList)
 
 注單的主要class：
-BetInfoRepository, BetListFragment, BetListRefactorAdapter
+BetInfoRepository, BetListFragment, BetListRefactorAdapter,
+BetButton, BetReceiptFragment
 
-有 `快捷注單(FastBetFragment)` 和 `滿版注單(BetListFragment)`
-兩種Fragment，目前主要使用BetListFragment，以下為投注單大致開啟流程：
+- 有 `快捷注單(FastBetFragment)` 和 `滿版注單(BetListFragment)` 兩種Fragment
+- 目前主要使用BetListFragment
 
+注單開啟流程：
 1. User點擊玩法賠率
 2. 透過BetInfoRepository.addInBetInfo，更新viewModel.betInfoList
 3. 通知viewModel.showBetInfoSingle，開啟BetListFragment
 4. 注單介面會利用betInfoList的資料更新畫面(BetListRefactorAdapter)
+
+注單下注流程：
+1. User輸入投注金額
+2. 點擊投注按鈕(BetButton)
+3. 利用viewModel.addBetList，取得betAddResult
+4. 投注結果展示在注單收據(BetReceiptFragment)
