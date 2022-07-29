@@ -13,7 +13,6 @@
     <string name="error">Nhắc nhở</string>
     <string name="error_input_amount">Số tiền bạn đã nhập sai hoặc giá trị không hợp lệ</string>
     <string name="error_input_empty">không thể để trống</string>
-    <string name="error_input_empty_new">Trường này là bắt buộc.</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
     <string name="error_wx_incompatible_format">lỗi định dạng Wechat ID không hợp lệ</string>
     <string name="error_identity_photo">Valid ID not uploaded</string>
@@ -21,9 +20,7 @@
     <string name="warning_cancel">Vui lòng chú ý đơn cược số đuôi: %s đã bị hủy</string>
     <string name="prompt">Nhắc nhở</string>
     <string name="btn_confirm">Xác nhận</string>
-    <string name="btn_determine">Xác nhận</string>
-    <string name="btn_cancel">Hủy bỏ</string>
-    <string name="btn_cancel_new">Hủy</string>
+    <string name="btn_cancel">Hủy</string>
     <string name="btn_retry">Vui lòng thử lại</string>
     <string name="loading_get_config">Đang lấy địa chỉ nhanh nhất</string>
     <string name="error_config_title">mạng không ổn định</string>
@@ -33,7 +30,6 @@
     <string name="btn_pass">bỏ qua</string>
     <string name="login_account">Đăng nhập tài khoản</string>
     <string name="please_input_account">(Vui lòng nhập tài khoản hội viên của bạn)</string>
-    <string name="please_input_password">(Vui lòng nhập mật khẩu đăng nhập của bạn)</string>
     <string name="login_password">Đăng nhập mật khẩu</string>
     <string name="remember_password">Nhớ mật khẩu</string>
     <string name="forget_password_question">Quên mật khẩu?</string>
@@ -43,7 +39,6 @@
     <string name="hint_recommend_code">(Vui lòng nhập Mã giới thiệu)</string>
     <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
     <string name="member_account">Đăng nhập tài khoản</string>
-    <string name="member_account_in_profile">Tài khoản hội viên</string>
     <string name="hint_member_account">(Độ dài từ 4-16 ký tự bao gồm cả chữ và số)</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="desc_register_checking_account">Đang kiểm tra tài khoản</string>
@@ -57,14 +52,12 @@
     <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
-    <string name="register_rules">&#160;Điều khoản &amp; Điều kiện</string>
     <string name="register_rules_2nd_half">&#160;của %s</string>
     <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
     <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
     <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OKbet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
     <string name="register_rule_agree_all">Tôi đồng ý với tất cả các điều khoản và điều kiện ở trên.</string>
     <string name="register_success">Đăng ký thành công</string>
-    <string name="register_watch_first">Khám phá trò chơi</string>
     <string name="register_jump">Trang sẽ chuyển sang %s 5 giây sau đó.</string>
     <string name="register_recharge_now">Gửi tiền ngay bây giờ</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
@@ -72,7 +65,6 @@
     <string name="error_confirm_password">Mật khẩu đăng nhập 2 lần không đồng nhất</string>
     <string name="withdrawal_pwd">Mật khẩu rút tiền</string>
     <string name="hint_withdrawal_pwd">(Mật khẩu gồm 4 chữ số)</string>
-    <string name="error_withdrawal_pwd">Mật khẩu bạn nhập không đúng</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="hint_phone_number">(Vui lòng nhập số điện thoại)</string>
     <string name="error_phone_number">lỗi định dạng số điện thoại không hợp lệ</string>
@@ -127,7 +119,7 @@
     <string name="get_valid_code_fail_point">yêu cầu nhận mã xác nhận thất bại, vui lòng nhấp để thử lại !</string>
     <string name="desc_agreement">Tôi đã đủ tuổi hợp pháp và hoàn toàn đồng ý</string>
     <string name="get_security_code">Gửi mã</string>
-    <string name="dialog_security_hint">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
+    <string name="phone_verify_content">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Nhập mã xác nhận.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
     <string name="hint_security_code"><font size="12">Nhập mã</font></string>
@@ -152,7 +144,6 @@
     <string name="home_tab_outright">CƯỢC CHUNG CUỘC</string>
     <string name="home_tab_at_start">SẮP DIỄN RA</string>
     <string name="home_tab_eps">CƯỢC ĐẶC BIỆT</string>
-    <string name="home_title_eps">CƯỢC ĐẶC BIỆT</string>
     <string name="title_eps_more">Tỷ lệ cược cao hơn</string>
     <string name="game_soon">Sắp Diễn Ra</string>
     <string name="label_in_play_games">kèo đang diễn ra</string>
@@ -161,15 +152,12 @@
     <string name="label_highlight">Đặc sắc</string>
     <string name="display_all">hiển thị tất cả</string>
     <string name="display_more">Hiển thị nhiều hơn</string>
-    <string name="return_to_top">Quay lại đầu trang</string>
     <string name="versus">v</string>
     <string name="label_sport_game">quá trình trận đấu</string>
     <string name="label_account_history">Lịch sử</string>
     <string name="label_transaction_status">Đã cược</string>
     <string name="label_title_parlay">Cược xiên tổng hợp</string>
     <string name="conspire">Xiên</string>
-    <string name="message_no_at_start">Hiện tại không có sự kiện sắp tới</string>
-    <string name="message_no_in_play">Hiện tại không có kết quả phù hợp</string>
     <string name="champion">CƯỢC CHUNG CUỘC</string>
     <string name="league">Giải đấu</string>
     <string name="monday">Thứ hai</string>
@@ -191,7 +179,6 @@
     <string name="cg_lottery">Xổ số CG</string>
     <string name="live_game">Live casino</string>
     <string name="poker_game">Games bài</string>
-    <string name="slot_game">Games</string>
     <string name="fish_game">Trò trời bắn cá</string>
     <string name="price">giá bán</string>
     <string name="menu">Danh sách</string>
@@ -205,7 +192,7 @@
     <string name="version_update">Tải xuống ứng dụng</string>
     <string name="odds_type">Kèo -%s</string>
     <string name="sign_out">Đăng xuất</string>
-    <string name="label_version">Phiên bản Ver %s</string>
+    <string name="label_version">Phiên bản</string>
     <string name="now_level">cấp độ hiện tại:</string>
     <string name="growth_requirement">Giá trị tăng trưởng yêu cầu：</string>
     <string name="no_value">không</string>
@@ -342,7 +329,6 @@
     <string name="unread_letters">Thư chưa đọc (%1$d)</string>
     <string name="index">Số thứ tự</string>
     <string name="title">Tiêu đề</string>
-    <string name="time">Thời gian</string>
     <string name="record_time">Thời gian chuyển đổi</string>
     <string name="choose_bet_state">Chọn trạng thái đơn cược</string>
     <string name="champion_play">Trò chơi vô địch</string>
@@ -355,7 +341,6 @@
     <string name="status">Trạng thái</string>
     <string name="status_colon">trạng thái</string>
     <string name="rebates">Hoàn lãi</string>
-    <string name="remarks">Ghi chú</string>
     <string name="remark_by_mts">Không được thiết lập do hệ thống kiểm duyệt</string>
     <string name="remark_by_own_source">Không thiết lập được do cơ chế kiểm duyệt</string>
     <string name="select_all">chọn tất cả</string>
@@ -421,7 +406,6 @@
     <string name="login_notify">Vui lòng đăng nhập để sử dụng tính năng này</string>
     <string name="total_bet_amount">Tổng tiền cược</string>
     <string name="league_filter_all">Hiển thị tất cả các sự kiện</string>
-    <string name="odds_detail_more">Hiển thị nhiều hơn</string>
     <string name="odds_detail_less">hiển thị ít hơn</string>
     <string name="odds_detail_cs_other">Các điểm số khác</string>
     <string name="odds_detail_play_type_fg">ghi bàn đầu tiên</string>
@@ -431,8 +415,6 @@
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="odds_detail_play_type_dc_12">44198</string>
-    <string name="odds_detail_play_type_ou_o">Trên</string>
-    <string name="odds_detail_play_type_ou_u">Dưới</string>
     <string name="bottom_sheet_close">Đóng</string>
     <string name="bottom_sheet_title_play_type">Thay đổi lối chơi</string>
     <string name="message_recharge_maintain">Hệ thống gửi tiền đang được nâng cấp, vui lòng chờ đợi</string>
@@ -445,7 +427,6 @@
     <string name="title_payer">Tài khoản</string>
     <string name="edt_hint_deposit_money">Giới hạn %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
-    <string name="edt_hint_deposit_money_new">Giới hạn %1$s-%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
     <string name="edt_hint_real_name">Họ tên phải khớp với tài khoản ngân hàng</string>
@@ -454,7 +435,7 @@
     <string name="title_wx_id">ID WeChat</string>
     <string name="edt_hint_wx_id">Vui lòng nhập ID WeChat</string>
     <string name="title_bank_account">Số thẻ ngân hàng</string>
-    <string name="edt_hint_bank_account">Vui lòng nhập số thẻ ngân hàng</string>
+    <string name="please_enter_bank_card_rule">Vui lòng nhập số thẻ ngân hàng</string>
     <string name="title_recharge_time">Thời gian gửi tiền</string>
     <string name="title_current_money">Số dư hiện tại</string>
     <string name="btn_submit">Nộp</string>
@@ -465,7 +446,6 @@
     <string name="title_fee_amount">・Số tiền phí xử lý：</string>
     <string name="title_rebate_rate">・Hoàn lại：</string>
     <string name="title_rebate_amount">・Số tiền hoàn lãi：</string>
-    <string name="title_remark">Ghi chú：</string>
     <string name="title_tips">・Ghi chú：</string>
     <string name="wx_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Wechat có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="ali_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Alipay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
@@ -487,9 +467,7 @@
     <string name="hint_pay2">2. Không có phản hồi trong một thời gian dài, Vui lòng Liên hệ CSKH.</string>
     <string name="btn_look_for">Xem giao dịch</string>
     <string name="btn_service">Liên hệ CSKH</string>
-    <string name="btn_service_maintain">Liên hệ CSKH</string>
     <string name="txv_transfer_pay">Thanh toán chuyển khoản</string>
-    <string name="txv_online_pay">Thanh toán trực tuyến</string>
     <string name="txv_crypto_pay">Chuyển khoản tiền ảo</string>
     <string name="error_recharge_amount">Định dạng hoặc giá trị số tiền nạp không đúng</string>
     <string name="error_first_recharge_amount">Lần nạp gửi tiền không được nhỏ hơn %s</string>
@@ -590,7 +568,6 @@
     <string name="edit_e_wallet">Chỉnh sửa eWallet</string>
     <string name="bank_card_number">Số thẻ ngân hàng</string>
     <string name="wallet_address">Địa chỉ ví</string>
-    <string name="please_enter_bank_card_rule">Vui lòng nhập số thẻ ngân hàng</string>
     <string name="please_enter_wallet_address">Vui lòng nhập địa chỉ ví</string>
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
@@ -614,8 +591,6 @@
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
-    <string name="bet_info_list_title">Đơn cược</string>
-    <string name="bet_list_title">Đơn cược</string>
     <string name="bet_info_list_game_closed">Kèo chấp đã đóng</string>
     <string name="bet_info_list_game_odds_changed">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_info_list_bet_quota">Số tiền cược : </string>
@@ -625,16 +600,12 @@
     <string name="bet_receipt_win_quota">Số tiền có thể thắng:</string>
     <string name="bet_info_list_add_more">Thêm nhiều lựa chọn</string>
     <string name="bet_info_list_bet">Cá cược</string>
-    <string name="bet_info_list_odds_change">Chấp nhận các thay đổi và đặt cược</string>
     <string name="bet_info_list_hint">hạn mức : %s</string>
     <string name="bet_info_list_bigger_than_zero">Số tiền đặt cược phải lớn hơn 0</string>
     <string name="bet_info_list_bigger_than_max_limit">số tiền đặt cược lớn hơn giới hạn đặt cược</string>
-    <string name="bet_info_list_less_than_minimum_limit">Số tiền đặt cược lớn hơn số dư tài khoản</string>
     <string name="bet_info_list">đơn cược</string>
     <string name="bet_info_parlay_list">cược xiên đôi</string>
-    <string name="bet_info_parlay_win_quota">số tiền có thể thắng</string>
     <string name="bet_info_add_bet_success">Đặt cược thành công</string>
-    <string name="bet_info_current_money">Số dư:%s</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">Bạn chọn cách chơi không phù hợp với luật chơi cược xiên, hệ thống đã tự động giúp bạn hủy bỏ</string>
     <string name="bet_info_list_clean">Xóa bằng một cú nhấp chuột</string>
@@ -664,19 +635,15 @@
     <string name="parlay_rule_list_nc1">%1$s %2$s chuỗi 1</string>
     <string name="parlay_rule_and">cũng như</string>
     <string name="bet_list_receipt">Biên lai đặt cược</string>
-    <string name="already_bet_complete">Bạn đã đặt cược thành công</string>
     <string name="complete">Hoàn thành</string>
     <string name="winnable_amount_colon">Số tiền có thể thắng : </string>
-    <string name="finance">Chi tiết quỹ</string>
     <string name="record_recharge">Hồ sơ tiền gửi</string>
     <string name="record_withdrawal">Lịch sử rút tiền</string>
     <string name="record_conversion">Lịch sử chuyển đổi</string>
     <string name="record_history">Lịch sử</string>
     <string name="recharge_state_success">Thành công</string>
     <string name="recharge_state_failed">Thất bại</string>
-    <string name="recharge_state_processing">Đang xử lý</string>
     <string name="all_order_status">Tất cả trạng thái đơn cược</string>
-    <string name="recharge_channel_all">Tất cả các loại kênh</string>
     <string name="recharge_channel_online">Thanh toán trực tuyến</string>
     <string name="recharge_channel_bank">Chuyển khoản qua thẻ ngân hàng</string>
     <string name="recharge_channel_alipay">Chuyển khoản Alipay</string>
@@ -692,10 +659,10 @@
     <string name="recharge_log_channel_type">Loại kênh</string>
     <string name="recharge_log_order_state">Trạng thái đơn cược</string>
     <string name="withdraw_log_withdraw_amount">Số tiền rút</string>
-    <string name="withdraw_log_state_processing">Đang xử lý</string>
+    <string name="log_state_processing">Đang xử lý</string>
     <string name="withdraw_log_state_pass">Thông qua</string>
     <string name="withdraw_log_state_un_pass">Chưa được duyệt</string>
-    <string name="withdraw_log_type_all">Tất cả các loại kênh</string>
+    <string name="log_type_all">Tất cả các loại kênh</string>
     <string name="withdraw_log_type_bank_trans">Rút tiền ngân hàng</string>
     <string name="withdraw_log_type_admin">Khấu trừ hậu đài</string>
     <string name="withdraw_log_crypto_transfer">Rút tiền ảo</string>
@@ -723,7 +690,6 @@
     <string name="feedback_content_description">Mô tả nội dung</string>
     <string name="feedback_replied">Đã phản hồi</string>
     <string name="feedback_not_reply_yet">Đang phản hồi</string>
-    <string name="feedback_already_reply">Đã phản hồi</string>
     <string name="one_key_recovery">Thu hồi bằng một cú nhấp chuột</string>
     <string name="platform_account_money">Số dư tài khoản kênh</string>
     <string name="one_button_click_will_recycle_all_money_into_account">・Thu hồi bằng một cú nhấp chuột đồng thời chuyển tất cả số dư tài khoản khác sang tài khoản kênh</string>
@@ -748,7 +714,7 @@
     <string name="in_account_">Chuyển vào tài khoản：</string>
     <string name="transfer_amount">số tiền chuyển đổi：</string>
     <string name="transfer_state">Trạng thái chuyển đổi：</string>
-    <string name="remark">ghi chú：</string>
+    <string name="remarks">Ghi chú：</string>
     <string name="transfer_info">chuyển đổi thông tin</string>
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
@@ -810,7 +776,6 @@
     <string name="back_to_top">Quay lại đầu trang</string>
     <string name="total">Tổng cộng</string>
     <string name="verse">v</string>
-    <string name="sum_pass">Cược xiên tổng hợp</string>
     <string name="keyboard_done">Tổng nhận</string>
     <string name="keyboard_max">Tối đa</string>
     <string name="no_game_description">Chọn biểu tượng ở trên để thêm nó vào "Sự kiện của tôi". Bạn có thể chia nhóm chúng và dễ dàng truy cập vào tất cả các sự kiện mà bạn quan tâm.</string>
@@ -1073,13 +1038,11 @@
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
     <string name="self_limit_input_password_for_confirm">Vui lòng nhập mật khẩu đăng nhập để xác nhận ứng dụng.</string>
     <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi.</string>
-    <string name="self_limit_submit_button">Xác nhận</string>
     <string name="self_limit_submit_input_password_hint">Hãy nhập mật khẩu</string>
     <!--自我禁制-->
 
     <!--登入手機驗證-->
     <string name="login_phone_verify">Đăng nhập</string>
-    <string name="login_phone_verify_content">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="login_phone_verify_get_code">Gửi mã</string>
     <string name="login_phone_verify_error">Bạn đã nhập một mã xác minh sai.</string>
     <!--登入手機驗證-->
@@ -1087,9 +1050,8 @@
     <string name="other_link">LIÊN KẾT HỮU DỤNG KHÁC</string>
     <string name="about_us">Về Chúng Tôi</string>
     <string name="responsible">Chơi Có Trách Nhiệm</string>
-    <string name="terms_conditions">Điều Khoản Và Điều Kiện</string>
+    <string name="terms_conditions">Điều Khoản &amp; Điều Kiện</string>
     <string name="privacy_policy">Chính Sách Bảo Mật</string>
-    <string name="affiliate">Chi nhánh</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
     <string name="official_partner">Đối tác chính thức</string>
     <string name="faqs">Câu Hỏi Thường Gặp</string>
@@ -1107,7 +1069,6 @@
     <string name="self_limit_froze_impotent_4">Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.</string>
     <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.</string>
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
-    <string name="self_limit_bet_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint"><font size="12">(Vui lòng nhập mật khẩu đăng nhập của bạn)</font></string>
@@ -1182,9 +1143,9 @@
     <string name="dialog_age_verify_statement">OKBet cam kết mang đến trải nghiệm chơi game an toàn, thoải mái cho tất cả khách hàng của chúng tôi.\n\nĐối với đại đa số mọi người, chơi game là một hoạt động giải trí thú vị. Tuy nhiên, chúng tôi nhận thấy rằng đôi khi chơi game không còn là niềm vui đối với một số khách hàng.\n\nChúng tôi đặc biệt khuyến khích bạn dành chút thời gian đọc đồ họa và tuyên bố TRÒ CHƠI TRÁCH NHIỆM của chúng tôi trước khi bạn tiếp tục. Người dùng từ 21 tuổi trở xuống hoàn toàn không được phép.\n\nTrách nhiệm của chúng tôi là giúp khách hàng đánh bạc một cách an toàn và có trách nhiệm, giảm nguy cơ thiệt hại và giúp những người cần điều trị có được điều đó.
 \n\nĐừng ngần ngại liên hệ với keepitfun@pagcor.ph nếu bạn hoặc thành viên gia đình của bạn đang gặp sự cố chơi game.</string>
     <string name="dialog_age_verify_hint">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này</string>
-    <string name="dialog_age_verify_hint_link"></string>
     <string name="dialog_age_verify_confirm">TÔI HƠN 21 TUỔI</string>
     <string name="dialog_age_verify_exit">LỐI RA</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">Vui lòng xác minh rằng bạn từ 21 tuổi trở lên để vào trang web này Điều Khoản &amp; Điều Kiện</string>
     <!--endregion-->
 
     <string name="coming_soon">Sắp có</string>
@@ -1202,7 +1163,6 @@
     <string name="sport_relative">Liên quan thể thao</string>
     <string name="setting">Cài đặt hệ thống</string>
     <string name="service">Phục vụ</string>
-    <string name="timezone_list_no_record">Không có kết quả nào</string>
     <string name="red_envelope_congratulations">Chúc mừng</string>
     <string name="pls_check_amount">Mời tra cứu số dư trong tài khoản</string>
     <string name="redenvelope_fail">Thật không may</string>
@@ -1219,13 +1179,11 @@
     <string name="redenvelope_trantype_send">Đưa phong bì đỏ</string>
     <string name="redenvelope_trantype_received">Nhận phong bì đỏ</string>
     <string name="tran_order_no">Số giao dịch</string>
-    <string name="tran_time">Giờ giao dịch</string>
     <string name="redenvelope_amount">Số tiền</string>
     <string name="tran_type">Loại giao dịch</string>
     <string name="redenvelope_record">lịch Sử  Tiền lì xì</string>
     <string name="tran_time_sub">Giờ giao dịch :</string>
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
-    <string name="tran_type_sub">Loại giao dịch：</string>
     <string name="btn_sure">Xác nhận</string>
 
     <string name="publicity_contact">lLiên hệ</string>

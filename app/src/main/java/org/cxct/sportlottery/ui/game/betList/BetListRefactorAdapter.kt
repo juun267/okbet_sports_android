@@ -1086,14 +1086,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
             }
         }
-
-        private fun getLimitHint(context: Context, min: Int, max: Int): String {
-            return String.format(
-                "${context.getString(R.string.edt_hint_deposit_money_new)}",
-                TextUtil.formatBetQuota(min),
-                TextUtil.formatBetQuota(max)
-            )
-        }
     }
 
     //填充所有單注、串關第一項、展開更多
@@ -1464,18 +1456,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 allWinnableAmount += win
             }
             return allWinnableAmount
-        }
-
-        private fun getAllSingleMinMaxHint(
-            context: Context,
-            maxAmount: Long,
-            minAmount: Long
-        ): String {
-            return String.format(
-                "${context.getString(R.string.edt_hint_deposit_money_new)}",
-                TextUtil.formatBetQuota(minAmount),
-                TextUtil.formatBetQuota(maxAmount)
-            )
         }
 
         private fun getMaxOrMinAmount(
@@ -2369,14 +2349,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                         ?: "")
             }
-        }
-
-        private fun getLimitHint(context: Context, min: Int, max: Int): String {
-            return String.format(
-                "${context.getString(R.string.edt_hint_deposit_money_new)}",
-                TextUtil.formatBetQuota(min),
-                TextUtil.formatBetQuota(max)
-            )
         }
     }
 

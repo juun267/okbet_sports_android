@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_finance.view.*
 import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.btn_refresh
 import kotlinx.android.synthetic.main.view_account_balance.view.tv_currency_type
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -95,18 +96,32 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
         recordImgList?.recycle()
 
+        val list = recordList.toMutableList()
+
+        //之後config api會提供參數判斷
+        if (BuildConfig.APPLICATION_ID == "com.happysport.sl.test" || BuildConfig.APPLICATION_ID == "com.okbet.ph") {
+            list.remove(
+                list.find { it.first == getString(R.string.redenvelope_record) }
+            )
+        }
+
         if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
-            val list = recordList.toMutableList()
             list.remove(
                 list.find { it.first == getString(R.string.record_recharge) }
             )
             list.remove(
                 list.find { it.first == getString(R.string.record_withdrawal) }
             )
-            recordAdapter.data = list
-        } else {
-            recordAdapter.data = recordList
+
         }
+
+        if (sConfigData?.thirdOpen == FLAG_OPEN) {
+            list.remove(
+                list.find { it.first == getString(R.string.redenvelope_record) }
+            )
+        }
+
+        recordAdapter.data = list
     }
 
     override fun onStart() {

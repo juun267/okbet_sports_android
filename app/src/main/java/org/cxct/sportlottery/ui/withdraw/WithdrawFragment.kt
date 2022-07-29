@@ -32,6 +32,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
+import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.TransferTypeAddSwitch
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
@@ -466,7 +467,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 Intent(
                     requireContext(),
                     BankActivity::class.java
-                ).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
+                ).apply {
+                    if (assignType) {
+                        putExtra(ModifyBankTypeKey, transferType)
+                        putExtra(TransferTypeAddSwitch, viewModel.addMoneyCardSwitch.value)
+                    }
+                })
         }
     }
 

@@ -2,12 +2,8 @@ package org.cxct.sportlottery.widget.highLightTextView
 
 import android.content.Context
 import android.graphics.*
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
+import android.text.*
+import android.text.style.*
 import android.util.AttributeSet
 import androidx.annotation.ColorRes
 import androidx.appcompat.widget.AppCompatTextView

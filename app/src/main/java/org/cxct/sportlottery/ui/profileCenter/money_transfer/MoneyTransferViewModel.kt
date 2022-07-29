@@ -49,7 +49,7 @@ class MoneyTransferViewModel(
 
     val statusList = LocalUtils.getStringArray(R.array.transfer_state_array).map {
         when (it) {
-            LocalUtils.getString(R.string.recharge_state_processing) -> {
+            LocalUtils.getString(R.string.log_state_processing) -> {
                 StatusSheetData(Status.PROCESSING.code.toString(), it)
             }
             LocalUtils.getString(R.string.recharge_state_success) -> {

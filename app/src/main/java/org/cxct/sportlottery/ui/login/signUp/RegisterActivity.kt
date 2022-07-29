@@ -185,12 +185,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
         binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
-            LanguageManager.Language.VI -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules) + String.format(getString(R.string.register_rules_2nd_half), appName)
-            else -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.register_rules)
+            LanguageManager.Language.VI -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.terms_conditions) + String.format(getString(R.string.register_rules_2nd_half), appName)
+            else -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.terms_conditions)
         }
 
         binding.tvAgreement.makeLinks(
-            Pair(getString(R.string.register_rules), View.OnClickListener {
+            Pair(getString(R.string.terms_conditions), View.OnClickListener {
                 JumpUtil.toInternalWeb(
                     this,
                     Constants.getAgreementRuleUrl(this),
@@ -1022,35 +1022,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show(supportFragmentManager, null)
-    }
-
-
-    fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
-        val spannableString = SpannableString(this.text)
-        var startIndexOfLink = -1
-        for (link in links) {
-            val clickableSpan = object : ClickableSpan() {
-                override fun updateDrawState(textPaint: TextPaint) {
-                    textPaint.color = textPaint.linkColor
-                    textPaint.isUnderlineText = false
-                }
-
-                override fun onClick(view: View) {
-                    Selection.setSelection((view as TextView).text as Spannable, 0)
-                    view.invalidate()
-                    link.second.onClick(view)
-                }
-            }
-            startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
-            if (startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
-            spannableString.setSpan(
-                clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
-        this.movementMethod =
-            LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click
-        this.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 
     /**

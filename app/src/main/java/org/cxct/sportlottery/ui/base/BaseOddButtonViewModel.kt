@@ -52,15 +52,6 @@ abstract class BaseOddButtonViewModel(
     infoCenterRepository: InfoCenterRepository,
 ) : BaseWithdrawViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    @Deprecated("之後API都會給翻譯")
-    protected val playCateMappingList by lazy {
-        val json = LocalJsonUtil.getLocalJson(
-            MultiLanguagesApplication.appContext,
-            "localJson/PlayCateMapping.json"
-        )
-        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-    }
-
     val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle

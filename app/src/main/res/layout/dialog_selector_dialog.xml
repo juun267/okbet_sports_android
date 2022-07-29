@@ -111,7 +111,7 @@
                 android:background="@null"
                 android:minWidth="135dp"
                 android:minHeight="36dp"
-                android:text="@string/btn_determine"
+                android:text="@string/btn_confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/color_317FFF_0760D4"
                 android:textSize="@dimen/textSize14sp"

@@ -351,7 +351,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupVersion() {
-        tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
+        tv_version.text = getString(R.string.label_version) + " v" + BuildConfig.VERSION_NAME
     }
 
     private fun updateUI(

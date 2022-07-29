@@ -265,7 +265,7 @@
                         android:id="@+id/title_remark"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_remark"
+                        android:text="@string/remarks"
                         android:textColor="@color/color_CCCCCC_000000"
                         android:textSize="@dimen/textSize13sp" />
 
@@ -364,7 +364,7 @@
             android:id="@+id/et_bank_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/edt_hint_bank_account"
+            app:cvHint="@string/please_enter_bank_card_rule"
             app:cvInputType="number"
             app:cvTitle="@string/title_bank_account" />
 
