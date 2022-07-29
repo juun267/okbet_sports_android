@@ -596,20 +596,19 @@ class WithdrawViewModel(
             amountLimit.isBalanceMax && withdrawAmount.toDouble() > getWithdrawAmountLimit().max -> {
                 androidContext.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
-            !VerifyConstUtil.verifyWithdrawAmount(
-                withdrawAmount,
-                amountLimit.min,
-                amountLimit.max
-            ) -> {
-                when (dealType) {
-                    TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
-                    TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
-                    TransferType.E_WALLET -> androidContext.getString(R.string.error_withdraw_amount_bank)
-                    TransferType.STATION -> androidContext.getString(R.string.error_withdraw_amount_crypto)
-                }
+            withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDouble().equals(0) -> {
+                androidContext.getString(R.string.error_recharge_amount_format)
             }
             else -> {
-                ""
+                when (VerifyConstUtil.verifyWithdrawAmount(
+                    withdrawAmount,
+                    amountLimit.min,
+                    amountLimit.max
+                )) {
+                    -1 -> androidContext.getString(R.string.error_recharge_amount_smaller)
+                    1 -> androidContext.getString(R.string.error_recharge_amount_bigger)
+                    else -> ""
+                }
             }
         }
         if (dealType != TransferType.STATION) {
