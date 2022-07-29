@@ -168,6 +168,13 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 },
                 onClickAppearanceListener = {
                     startActivity(Intent(activity, AppearanceActivity::class.java))
+                },
+                onClickNewBanner = {
+                    viewModel.getGoGamePageEntrance()?.let { pair ->
+                        GameType.getGameType(pair.second)?.let { gameType ->
+                            jumpToTheSport(pair.first, gameType)
+                        }
+                    }
                 }
             )
         )

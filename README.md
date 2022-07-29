@@ -4,8 +4,8 @@
 - [後台](https://sportsadmin.cxsport.net/pc.html#/dashboard)
 - [風控後台](https://sportsmts.cxsport.net/#/dashboard)
 - [H5 地址](https://sports.cxsport.net/mobile/)
-- [GitLab](https://gitlab.cxgi.org/Android/sport-android)
-
+- [投注站文案](https://2acsso.axshare.com/#id=7rrhqs&p=%E7%89%88%E6%9C%AC%E8%AE%B0%E5%BD%95&g=1)
+- [體育Terllo](https://trello.com/b/bDJBMbz0/%E9%AB%94%E8%82%B2android)
 
 ## Network
 

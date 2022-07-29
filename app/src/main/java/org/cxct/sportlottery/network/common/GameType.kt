@@ -247,7 +247,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 GF -> R.drawable.bg_publicity_sport_item_golf
                 FB -> R.drawable.bg_publicity_sport_item_piechart
                 BB_COMING_SOON -> R.drawable.bg_publicity_sport_item_baseball
-                ES_COMING_SOON -> R.drawable.bg_publicity_sport_item_e_sport
+                ES -> R.drawable.bg_publicity_sport_item_e_sport
                 else -> R.drawable.bg_publicity_sport_item_football
             }
         }
