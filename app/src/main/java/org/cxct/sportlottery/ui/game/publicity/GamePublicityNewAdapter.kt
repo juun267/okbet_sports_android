@@ -596,10 +596,10 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
 
                 with(binding) {
                     root.setOnClickListener {
-                        publicityAdapterListener.onGoHomePageListener()
+                        publicityAdapterListener.onClickNewBanner()
                     }
                     banner.setOnClickListener {
-                        publicityAdapterListener.onGoHomePageListener()
+                        publicityAdapterListener.onClickNewBanner()
                     }
 
                     val imageList = sConfigData?.imageList?.filter {
@@ -812,7 +812,8 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         private val onClickContactListener: () -> Unit,
         private val onClickPromotionListener: () -> Unit,
         private val onClickVersionUpdateListener: () -> Unit,
-        private val onClickAppearanceListener: () -> Unit
+        private val onClickAppearanceListener: () -> Unit,
+        private val onClickNewBanner: () -> Unit,
     ) : GamePublicityAdapter.PublicityAdapterListener(
         onLogoClickListener = onLogoClickListener,
         onLanguageBlockClickListener = onLanguageBlockClickListener,
@@ -836,5 +837,6 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
         fun onClickPromotionListener() = onClickPromotionListener.invoke()
         fun onClickVersionUpdateListener() = onClickVersionUpdateListener.invoke()
         fun onClickAppearanceListener() = onClickAppearanceListener.invoke()
+        fun onClickNewBanner() = onClickNewBanner.invoke()
     }
 }

@@ -166,8 +166,8 @@ class PublicityMenuViewHolder(
      */
     private fun setSportViewPagerBlockVisibility(isVisible: Boolean) {
         with(binding) {
-            vpSports.isVisible = isVisible
-            rvIndicator.isVisible = isVisible
+            vpSports.visibility = if (isVisible) View.VISIBLE else View.GONE
+            rvIndicator.visibility = if (isVisible) View.VISIBLE else View.GONE
         }
     }
 

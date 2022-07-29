@@ -362,6 +362,8 @@ class GameViewModel(
     var specialMenuData: SportQueryData? = null
     var allSearchData: List<SearchResponse.Row>? = null
 
+    private var sportMenuData: SportMenuData? = null //球種菜單資料
+
     private var outrightMatchDiscount = userInfo.value?.discount ?: 1.0F //當前冠軍頁面適配的折扣率
 
 
@@ -3030,6 +3032,9 @@ class GameViewModel(
                                     getSportCount(MatchType.EPS, gameType, sportMenuResult)
 
                         entranceType = when {
+                            getSportCount(MatchType.IN_PLAY, gameType, sportMenuResult) != 0 -> {
+                                MatchType.IN_PLAY
+                            }
                             getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> {
                                 MatchType.TODAY
                             }
@@ -3133,6 +3138,37 @@ class GameViewModel(
                 }
                 _publicityMenuData.value = publicityMenuData.value
             }
+        }
+    }
+
+    fun getGoGamePageEntrance(): Pair<MatchType, String>? {
+        return when {
+            (sportMenuData?.menu?.inPlay?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.inPlay?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.IN_PLAY, it)
+                }
+            }
+            (sportMenuData?.menu?.today?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.today?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.TODAY, it)
+                }
+            }
+            (sportMenuData?.menu?.early?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.early?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.EARLY, it)
+                }
+            }
+            (sportMenuData?.menu?.parlay?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.parlay?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.PARLAY, it)
+                }
+            }
+            (sportMenuData?.menu?.outright?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.outright?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.OUTRIGHT, it)
+                }
+            }
+            else -> null
         }
     }
 
@@ -3240,7 +3276,7 @@ class GameViewModel(
             ).apply {
                 if (isSuccessful && body()?.success == true) {
                     // 每次執行必做
-                    body()?.sportMenuData?.sortSport()
+                    body()?.sportMenuData?.sortSport().apply { sportMenuData = this }
                 }
             }
         }
