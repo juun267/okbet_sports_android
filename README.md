@@ -120,8 +120,8 @@ Mock Request Data Instructions :
 注單的主要class：
 BetInfoRepository, BetListFragment, BetListRefactorAdapter
 
-有 `快捷注單(FastBetFragment)`` 和 `滿版注單(BetListFragment)` 兩種Fragment
-目前主要使用BetListFragment，以下為投注單大致開啟流程：
+有 `快捷注單(FastBetFragment)` 和 `滿版注單(BetListFragment)`
+兩種Fragment，目前主要使用BetListFragment，以下為投注單大致開啟流程：
 
 1. User點擊玩法賠率
 2. 透過BetInfoRepository.addInBetInfo，更新viewModel.betInfoList
