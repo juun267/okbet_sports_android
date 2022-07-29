@@ -43,7 +43,7 @@
                         android:id="@+id/iv_home_icon"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginBottom="@dimen/margin_9"
+                        android:layout_marginBottom="@dimen/margin_5"
                         android:scaleType="centerInside"
                         tools:src="@drawable/bg_recommend_game_default" />
 
@@ -52,10 +52,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_10"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="4dp"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:includeFontPadding="false"
                         android:maxLines="1"
                         android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize12sp"
@@ -154,7 +153,7 @@
                         android:id="@+id/iv_away_icon"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginBottom="@dimen/margin_9"
+                        android:layout_marginBottom="@dimen/margin_5"
                         android:scaleType="centerInside"
                         tools:src="@drawable/bg_recommend_game_default" />
 
@@ -163,10 +162,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_10"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="4dp"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:includeFontPadding="false"
                         android:maxLines="1"
                         android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize12sp"
