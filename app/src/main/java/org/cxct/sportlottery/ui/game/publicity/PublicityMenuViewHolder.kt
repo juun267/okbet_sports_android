@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.publicity
 
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,7 @@ import org.cxct.sportlottery.databinding.PublicityMenuItemBinding
 import org.cxct.sportlottery.databinding.ViewPublicityMenuBinding
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.isCreditSystem
 
@@ -181,11 +183,13 @@ class PublicityMenuViewHolder(
                     data.eGameMenuData != null -> {
                         binding.llThirdGamePlayNowContainer.isVisible = true
                         binding.llThirdGameComingSoonContainer.isVisible = false
-                        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
-                            binding.tvNewGamesBeta.visibility = View.INVISIBLE
-                        }
-                        else {
+                        val ivPlayNowLayoutParams = binding.ivPlayNow.layoutParams as LinearLayout.LayoutParams
+                        if (isCreditSystem()) {
+                            binding.tvNewGamesBeta.visibility = View.GONE
+                            ivPlayNowLayoutParams.setMargins(0, 8.dp, 0, 0)
+                        } else {
                             binding.tvNewGamesBeta.visibility = View.VISIBLE
+                            ivPlayNowLayoutParams.setMargins(0, 0, 0, 0)
                         }
                         binding.ivThirdGame.setImageResource(R.drawable.image_e_game_empty)
                         binding.ivThirdGame.setOnClickListener {
