@@ -22,7 +22,6 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.FROM_ACTIVITY
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
@@ -187,13 +186,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
         viewModel.showBetInfoSingle.observe(this) { event ->
             event?.getContentIfNotHandled()?.let {
-                if (it) {
-                    if (viewModel.getIsFastBetOpened()) {
-//                        showFastBetFragment()
-                    } else {
-                        showBetListPage()
-                    }
-                }
+                showBetListPage()
             }
         }
     }
@@ -229,24 +222,8 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     //region 開啟(快捷)投注單
     //跟進GameActivity開啟投注單方式
-    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        val fastBetFragment = FastBetFragment()
-        val bundle = Bundle()
-        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean))
-        fastBetFragment.arguments = bundle
-
-        transaction
-            .add(binding.flBetList.id, fastBetFragment)
-            .addToBackStack(FastBetFragment::class.java.simpleName)
-            .commit()
+    fun setupBetData(fastBetDataBean: FastBetDataBean) {
+        viewModel.updateMatchBetListData(fastBetDataBean)
     }
 
     override fun showBetListPage() {

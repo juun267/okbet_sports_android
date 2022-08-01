@@ -2761,14 +2761,6 @@ class GameViewModel(
         _oddsDetailResult.postValue(null)
     }
 
-    fun setFastBetOpened(isOpen: Boolean) {
-        betInfoRepository.setFastBetOpened(isOpen)
-    }
-
-    fun getIsFastBetOpened(): Boolean {
-        return betInfoRepository.getIsFastBetOpened()
-    }
-
     fun resetErrorDialogMsg() {
         _showErrorDialogMsg.value = ""
     }

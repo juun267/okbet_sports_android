@@ -43,7 +43,6 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3Fragment
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
@@ -885,11 +884,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
-                if (viewModel.getIsFastBetOpened()) {
-                    //showFastBetFragment()
-                } else {
-                    showBetListPage()
-                }
+                showBetListPage()
             }
         }
 
@@ -911,24 +906,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        val fastBetFragment = FastBetFragment()
-        val bundle = Bundle()
-        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean));
-        fastBetFragment.arguments = bundle;
-
-        transaction
-            .add(R.id.fl_bet_list, fastBetFragment)
-            .addToBackStack(FastBetFragment::class.java.simpleName)
-            .commit()
+    fun setupBetData(fastBetDataBean: FastBetDataBean) {
+        viewModel.updateMatchBetListData(fastBetDataBean)
     }
 
     fun showSwitchLanguageFragment() {

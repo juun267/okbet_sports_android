@@ -279,11 +279,6 @@ class BetInfoRepository(val androidContext: Context) {
         _betInfoList.postValue(Event(betList))
     }
 
-
-    fun addInBetInfo() {
-        _showBetInfoSingle.postValue(Event(false))
-    }
-
     /**
      * 點擊賠率按鈕加入投注清單, 並產生串關注單
      */
@@ -624,17 +619,6 @@ class BetInfoRepository(val androidContext: Context) {
         }
         _showOddsCloseWarn.postValue(hasPlatClose)
         _hasBetPlatClose.postValue(hasBetPlatClose)
-    }
-
-    fun setFastBetOpened(isOpen: Boolean) {
-        val editor = gameFastBetOpenedSharedPreferences.edit()
-        editor.putBoolean("isOpen", isOpen).apply()
-    }
-
-    fun getIsFastBetOpened(): Boolean{
-//        return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
-        //20220608 改為只使用滿版注單開啟
-        return false
     }
 
     fun updateBetAmount(input: String) {

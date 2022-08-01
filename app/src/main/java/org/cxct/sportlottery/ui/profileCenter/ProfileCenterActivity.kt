@@ -35,7 +35,6 @@ import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
@@ -850,26 +849,6 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     override fun getBetListPageVisible(): Boolean {
         return betListFragment.isVisible
-    }
-
-    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        val betListFragment = FastBetFragment()
-        val bundle = Bundle()
-        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean));
-        betListFragment.arguments = bundle;
-
-        transaction
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
     }
 
     override fun updateBetListCount(num: Int) {

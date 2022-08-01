@@ -697,7 +697,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                     playCateMenuCode
                 )
                 when (val fragmentActivity = activity) {
-                    is GamePublicityActivity -> fragmentActivity.showFastBetFragment(fastBetDataBean)
+                    is GamePublicityActivity -> fragmentActivity.setupBetData(fastBetDataBean)
                 }
             }
         }
