@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -42,6 +43,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     enum class VerifiedType(val value: Int) {
         NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
@@ -202,7 +205,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value || sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
@@ -343,6 +346,24 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 if (!b) phoneNumCheckDialog(this, supportFragmentManager)
             }
         }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkRechargeSystem()
+            }
+        }
     }
 
     private fun setWithdrawInfo(userInfo: UserInfo) {
@@ -378,5 +399,13 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     private fun getUserInfo() {
         viewModel.getUserInfo()
+    }
+
+    private fun showKYCVerifyDialog() {
+        VerifyIdentityDialog().apply {
+            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            }
+        }.show(supportFragmentManager, null)
     }
 }

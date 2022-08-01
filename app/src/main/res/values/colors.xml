@@ -138,6 +138,7 @@
     <color name="color_F75452_b73a20">@color/color_b73a20</color>
     <color name="color_FFFFFF_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_191919_FCFCFC">@color/color_FCFCFC</color>
+    <color name="color_000000_FCFCFC">@color/color_FCFCFC</color>
     <color name="color_FCFCFC_191919">@color/color_191919</color>
     <color name="color_CAE0FF_FCFCFC">@color/color_FCFCFC</color>
     <color name="color_317FFF_666666">@color/color_666666</color>
@@ -241,6 +242,8 @@
     <color name="colorBlue5">#0066D1</color>
     <color name="colorBlue6">#0079FA</color>
     <color name="colorBlue7">#1053AF</color>
+    <color name="colorBlue8">#3B78FF</color>
+    <color name="colorBlue9">#0065E9</color>
 <!--    <color name="colorBlueDark">#1F4780</color>-->
 <!--    <color name="colorSilverBlue">#A9BEDF</color>-->
 

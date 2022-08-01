@@ -45,54 +45,58 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
 
     @Override
     protected void createWebSocketConnection() {
-        Request.Builder requestBuilder = new Request.Builder()
-                .url(mUri);
+        try {
+            Request.Builder requestBuilder = new Request.Builder()
+                    .url(mUri);
 
-        addConnectionHeadersToBuilder(requestBuilder, mConnectHttpHeaders);
+            addConnectionHeadersToBuilder(requestBuilder, mConnectHttpHeaders);
 
-        openSocket = mOkHttpClient.newWebSocket(requestBuilder.build(),
-                new WebSocketListener() {
-                    @Override
-                    public void onOpen(WebSocket webSocket, @NonNull Response response) {
-                        LifecycleEvent openEvent = new LifecycleEvent(LifecycleEvent.Type.OPENED);
+            openSocket = mOkHttpClient.newWebSocket(requestBuilder.build(),
+                    new WebSocketListener() {
+                        @Override
+                        public void onOpen(WebSocket webSocket, @NonNull Response response) {
+                            LifecycleEvent openEvent = new LifecycleEvent(LifecycleEvent.Type.OPENED);
 
-                        TreeMap<String, String> headersAsMap = headersAsMap(response);
+                            TreeMap<String, String> headersAsMap = headersAsMap(response);
 
-                        openEvent.setHandshakeResponseHeaders(headersAsMap);
-                        emitLifecycleEvent(openEvent);
+                            openEvent.setHandshakeResponseHeaders(headersAsMap);
+                            emitLifecycleEvent(openEvent);
+                        }
+
+                        @Override
+                        public void onMessage(WebSocket webSocket, String text) {
+                            emitMessage(text);
+                        }
+
+                        @Override
+                        public void onMessage(WebSocket webSocket, @NonNull ByteString bytes) {
+                            emitMessage(bytes.utf8());
+                        }
+
+                        @Override
+                        public void onClosed(WebSocket webSocket, int code, String reason) {
+                            openSocket = null;
+                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
+                        }
+
+                        @Override
+                        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+                            // in OkHttp, a Failure is equivalent to a JWS-Error *and* a JWS-Close
+                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new Exception(t)));
+                            openSocket = null;
+                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
+                        }
+
+                        @Override
+                        public void onClosing(final WebSocket webSocket, final int code, final String reason) {
+                            webSocket.close(code, reason);
+                        }
                     }
 
-                    @Override
-                    public void onMessage(WebSocket webSocket, String text) {
-                        emitMessage(text);
-                    }
-
-                    @Override
-                    public void onMessage(WebSocket webSocket, @NonNull ByteString bytes) {
-                        emitMessage(bytes.utf8());
-                    }
-
-                    @Override
-                    public void onClosed(WebSocket webSocket, int code, String reason) {
-                        openSocket = null;
-                        emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
-                    }
-
-                    @Override
-                    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-                        // in OkHttp, a Failure is equivalent to a JWS-Error *and* a JWS-Close
-                        emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new Exception(t)));
-                        openSocket = null;
-                        emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
-                    }
-
-                    @Override
-                    public void onClosing(final WebSocket webSocket, final int code, final String reason) {
-                        webSocket.close(code, reason);
-                    }
-                }
-
-        );
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
