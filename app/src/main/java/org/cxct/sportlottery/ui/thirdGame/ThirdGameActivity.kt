@@ -2,7 +2,9 @@ package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import androidx.lifecycle.viewModelScope
 import kotlinx.android.synthetic.main.activity_third_game.*
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -41,6 +43,13 @@ open class ThirdGameActivity : WebActivity() {
         initObserve()
     }
 
+    override fun onBackPressed() {
+        viewModel.viewModelScope.launch {
+            viewModel.allTransferOut()
+            super.onBackPressed()
+        }
+    }
+
     private fun setupActivityOrientation() {
         when (mGameCategoryCode) {
             ThirdGameCategory.QP.name -> {
@@ -52,7 +61,7 @@ open class ThirdGameActivity : WebActivity() {
     private fun setupMenu() {
         motion_menu.setOnMenuListener(object : MotionFloatingMenu.OnMenuListener {
             override fun onHome() {
-                finish()
+                onBackPressed()
             }
 
             override fun onCashSave() {
