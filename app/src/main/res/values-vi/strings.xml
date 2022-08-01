@@ -833,8 +833,6 @@
     <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
     <string name="message_source_change">Hệ thống nhận dữ liệu mới, bấm nút xác nhận để làm mới</string>
     <string name="appearance">Chế độ</string>
-    <string name="goal_buster">GOAL BUSTER</string>
-    <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">Chi tiết</string>
     <string name="commission_desc_1">Khi chưa đến số tiền hợp lệ, chúng ta cần trích một tỷ lệ nhất định trên số tiền nạp để làm phí rút tiền, tránh trường hợp gửi tiền bất thường.</string>
     <string name="commission_desc_2">Khi đạt đến số tiền hợp lệ, chúng tôi sẽ không tính phí chuyển nhượng.</string>

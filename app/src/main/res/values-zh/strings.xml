@@ -807,8 +807,6 @@
     <string name="appearance">外观</string>
     <string name="day_mode">日间模式</string>
     <string name="night_mode">夜间模式</string>
-    <string name="goal_buster">GOAL BUSTER</string>
-    <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">详情</string>
     <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除一定比例的存款金额，做为提前提款手续费。</string>
     <string name="commission_desc_2">当达成有效打码后，则不另收手续费。</string>

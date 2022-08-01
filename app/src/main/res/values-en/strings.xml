@@ -804,8 +804,6 @@
     <string name="identity_sex">Sex</string>
     <string name="message_source_change">The system receives new data, click confirm button to refresh</string>
     <string name="appearance">Mode</string>
-    <string name="goal_buster">GOAL BUSTER</string>
-    <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">Details</string>
     <string name="commission_desc_1">When the valid amount is not reached, we need to deduct a certain percentage of the deposit amount to be the withdrawal fee and avoid the abnormal deposit.</string>
     <string name="commission_desc_2">When the valid amount is reached, then we won\'t charge the handing fee.</string>
