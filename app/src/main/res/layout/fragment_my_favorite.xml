@@ -120,7 +120,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout android:id="@+id/gameContainer"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_191919_FCFCFC"

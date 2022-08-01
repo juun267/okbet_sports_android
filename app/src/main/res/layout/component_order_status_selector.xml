@@ -32,7 +32,6 @@
         tools:text="全部订单状态" />
 
     <ImageView
-        android:id="@+id/tv_start_date_arrow"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginStart="5dp"
@@ -76,7 +75,6 @@
         tools:text="全部渠道类型" />
 
     <ImageView
-        android:id="@+id/tv_end_date_arrow"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginStart="5dp"

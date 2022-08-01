@@ -6,7 +6,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
-import org.cxct.sportlottery.ui.game.betList.INPLAY
 import java.math.RoundingMode
 
 object MatchOddUtil {
@@ -26,7 +25,7 @@ object MatchOddUtil {
                         return MatchOdd(
                             awayName = matchInfo.awayName,
                             homeName = matchInfo.homeName,
-                            inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
+                            inplay = if (matchType == MatchType.IN_PLAY) 1 else 0,
                             leagueId = "",
                             leagueName = matchInfo.leagueName,
                             matchId = matchId,

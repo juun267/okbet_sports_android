@@ -719,7 +719,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 betPlayCateNameMap = betPlayCateNameMap,
                 getPlayCateMenuCode()
             )
-            (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+            (activity as GameActivity).setupBetData(fastBetDataBean)
         }
     }
 

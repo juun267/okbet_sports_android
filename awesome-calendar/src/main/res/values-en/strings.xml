@@ -18,7 +18,6 @@
         <item>@string/cdrp_sat</item>
     </string-array>
 
-    <string name="picker_cancel">Cancel</string>
     <string name="picker_submit">Confirm</string>
 
     <string name="year">year</string>

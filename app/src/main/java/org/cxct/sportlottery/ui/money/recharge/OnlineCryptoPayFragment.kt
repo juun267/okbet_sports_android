@@ -34,6 +34,7 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.ArrayList
 import kotlin.math.abs
 
+@SuppressLint("SetTextI18n")
 class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
@@ -124,6 +125,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
             tv_fee_amount.text = String.format(getString(R.string.hint_feeback_amount), sConfigData?.systemCurrencySign, "0.000")
         else
             tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), sConfigData?.systemCurrencySign, "0.000")
+
+        tv_remark.text = "・${getString(R.string.credit_bet_remark)}："
     }
 
     private fun initButton() {

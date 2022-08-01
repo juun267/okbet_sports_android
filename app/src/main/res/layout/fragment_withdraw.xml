@@ -334,7 +334,6 @@
                     android:textSize="@dimen/textSize16sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_notification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">

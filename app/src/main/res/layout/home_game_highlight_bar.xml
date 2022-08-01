@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/highlight_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -16,7 +15,6 @@
         android:background="@color/color_404040_cccccc" />
 
     <TextView
-        android:id="@+id/tv_highlight"
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:gravity="center"

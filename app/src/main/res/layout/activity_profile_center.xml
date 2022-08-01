@@ -20,7 +20,6 @@
             tools:context=".ui.profileCenter.ProfileCenterActivity">
 
             <include
-                android:id="@+id/my_profile_toolbar"
                 layout="@layout/view_toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />

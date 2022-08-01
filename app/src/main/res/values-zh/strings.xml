@@ -14,7 +14,6 @@
     <string name="error_input_amount">您输入的金额格式或数值错误</string>
     <string name="error_input_empty">此栏位为必填栏位</string>
     <string name="error_incompatible_format">您输入的字元不符</string>
-    <string name="error_wx_incompatible_format">微信ID格式错误</string>
     <string name="error_identity_photo">未上传证件照</string>
     <string name="congratulation_win">恭喜您 注单尾码:%1$s 中奖:%2$s</string>
     <string name="warning_cancel">提醒您 注单尾码:%s 已被取消</string>
@@ -22,9 +21,7 @@
     <string name="btn_confirm">确认</string>
     <string name="btn_cancel">取消</string>
     <string name="btn_retry">重新尝试</string>
-    <string name="loading_get_config">正在获取最快地址…</string>
     <string name="error_config_title">线路不畅通</string>
-    <string name="error_config">线路不畅通,请联繫客服反馈问题。</string>
     <string name="find_new_version">发现新版本</string>
     <string name="version_name">版本 %s</string>
     <string name="btn_pass">跳过</string>
@@ -41,7 +38,6 @@
     <string name="member_account">会员账号</string>
     <string name="hint_member_account">(长度需4–16个字符含英数)</string>
     <string name="error_member_account">账号为4~16位数字字母组合</string>
-    <string name="desc_register_checking_account">账号检查中</string>
     <string name="error_register_id_exist">已有此账户名</string>
     <string name="hint_register_password">(长度需6–20个字符含英数)</string>
     <string name="error_register_password">密码为6~20位数字字母组合</string>
@@ -83,7 +79,6 @@
     <string name="we_chat">微信</string>
     <string name="identity">实名验证</string>
     <string name="hint_we_chat_number">(请输入微信ID)</string>
-    <string name="error_we_chat_number">微信ID格式错误</string>
     <string name="zalo">Zalo</string>
     <string name="hint_zalo">(请输入Zalo账号)</string>
     <string name="error_zalo">Zalo账号格式错误</string>
@@ -110,15 +105,11 @@
     <string name="hint_real_name">(姓名须与银行户口一致)</string>
     <string name="verification_code">验证码</string>
     <string name="verification_code_by_sms">短信验证码</string>
-    <string name="hint_verification_code">(请输入验证码)</string>
     <string name="error_verification_code">注册验证码错误</string>
-    <string name="error_verification_code_by_login">登录验证码错误</string>
     <string name="hint_verification_code_by_sms">(请输入短信验证码)</string>
     <string name="error_verification_code_by_sms">短信验证码错误</string>
     <string name="get_verification_code">发送验证码</string>
-    <string name="send_timer">已发送(%d)</string>
     <string name="get_valid_code_fail_point">请求验证码失败，请点击重试！</string>
-    <string name="desc_agreement">我已经达到法定年龄，并且完全同意</string>
     <string name="get_security_code">获取验证码</string>
     <string name="phone_verify_content">欢迎再次回到游戏，为确保账号使用的安全性，请完成手机验证</string>
     <string name="dialog_security_title">输入验证码</string>
@@ -128,7 +119,6 @@
     <string name="btn_agreement">开户协议</string>
     <string name="have_account">已有账号?</string>
     <string name="btn_login">登录</string>
-    <string name="btn_login_by_credit_system">立即登录</string>
     <string name="btn_register">注册</string>
     <string name="no_announcement">暂无公告</string>
     <string name="lottery">彩票</string>
@@ -138,7 +128,6 @@
     <string name="more">更多</string>
     <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
-    <string name="home_tab_in_play2">滚球赛事</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
@@ -146,19 +135,14 @@
     <string name="home_tab_at_start">即将</string>
     <string name="home_tab_at_start_2">即将开赛</string>
     <string name="home_tab_eps">特优</string>
-    <string name="title_eps_more">更高赔率</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">全部</string>
     <string name="label_match_recommend">赛事推荐</string>
     <string name="label_highlight">精选</string>
-    <string name="display_all">显示全部</string>
     <string name="display_more">显示更多</string>
-    <string name="versus">v</string>
-    <string name="label_sport_game">赛程</string>
     <string name="label_account_history">账戶历史</string>
     <string name="label_transaction_status">交易状况</string>
-    <string name="label_title_parlay">综合过关</string>
     <string name="conspire">串</string>
     <string name="message_no_sport_game">目前没有%1$s的赛事</string>
     <string name="champion">冠军</string>
@@ -203,8 +187,6 @@
     <string name="live_game">真人娱乐</string>
     <string name="poker_game">棋牌游戏</string>
     <string name="fish_game">捕鱼游戏</string>
-    <string name="price">价格</string>
-    <string name="menu">菜单</string>
     <string name="premium_odds">特优赔率</string>
     <string name="infomation_center">信息中心</string>
     <string name="left_menu_odds_type_setting">盘口设定</string>
@@ -213,7 +195,6 @@
     <string name="member_level">会员层级</string>
     <string name="game_settlement">赛果结算</string>
     <string name="version_update">版本更新</string>
-    <string name="odds_type">盘口-%s</string>
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号</string>
     <string name="now_level">当前等级：</string>
@@ -230,16 +211,11 @@
     <string name="daily_rebates">单日最大返水</string>
     <string name="hint_recharge_growth">存款 %s %d 可获得 %d 点成长值</string>
     <string name="hint_bet_growth">投注 %s %d 可获得 %d 点成长值</string>
-    <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
     <string name="news">最新消息</string>
-    <string name="sport_bet_rule">体育投注规则</string>
-    <string name="common_sport_description">一般体育说明</string>
-    <string name="overview">概述</string>
     <string name="select_all_league">选择所有联赛</string>
     <string name="select_cancel">取消选择</string>
     <string name="search">搜寻</string>
-    <string name="game_type">球种</string>
     <string name="winner">胜方</string>
     <string name="first_half_game">上半场</string>
     <string name="second_half_game">下半场</string>
@@ -274,13 +250,11 @@
     <string name="second_session">第二节</string>
     <string name="third_session">第三节</string>
     <string name="fourth_session">第四节</string>
-    <string name="add_time">加时</string>
     <string name="add_time_first_half_game">加时赛上半场</string>
     <string name="add_time_second_half_game">加时赛下半场</string>
     <string name="account_balance">账户余额</string>
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">存款</string>
-    <string name="more_service">更多服务</string>
     <string name="account_transfer">额度转换</string>
     <string name="money_recycle_succeed">额度回收成功</string>
     <string name="news_center">消息中心</string>
@@ -299,7 +273,6 @@
     <string name="save_avatar_success">头像上传成功</string>
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–6字</string>
-    <string name="error_nickname">昵称为2~6个中英文组合</string>
     <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
     <string name="current_login_password">当前登录密码</string>
@@ -348,10 +321,6 @@
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="no_data">没有更多数据了</string>
-    <string name="not_start_yet">未开始</string>
-    <string name="game_playing">比赛中</string>
-    <string name="ended">已结束</string>
-    <string name="suspend">延期</string>
     <string name="uncheck">未确认</string>
     <string name="undone">进行中</string>
     <string name="settled">已结算</string>
@@ -363,7 +332,6 @@
     <string name="canceled">已取消</string>
     <string name="odds_change">赔率已改变</string>
     <string name="pending">待成立 %1$s 秒</string>
-    <string name="bet_canceled">下注失败</string>
     <string name="confirmed">已确认</string>
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
@@ -373,29 +341,17 @@
     <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s vs %s (客)</string>
-    <string name="match_names_2">主 %s vs %s 客</string>
     <string name="match_names_3">主 %s V.S %s 客</string>
-    <string name="brackets">(%s)</string>
     <string name="bet_item">投注项目 -</string>
     <string name="match_type_row_in_play">滚球赛事</string>
-    <string name="match_type_row_at_start">即将开赛</string>
     <string name="at_start_remain_minute">%s分钟</string>
     <string name="match_type_row_btn_bs">让球 ＆ 大小</string>
     <string name="game_filter_row_search_hint">请输入联赛名称</string>
-    <string name="game_filter_row_search_hint_league">请输入球队名</string>
-    <string name="date_row_league">赛事</string>
-    <string name="date_row_other">其他早盘</string>
     <string name="date_row_all">所有日期</string>
     <string name="date_row_live">滚球赛事</string>
     <string name="date_row_today">今日赛事</string>
-    <string name="outright_row_entrance">冠军盘口</string>
-    <string name="ou_hdp_ou_title">大/小</string>
     <string name="ou_hdp_hdp_title">让球</string>
-    <string name="ou_hdp_hdp_title_tennis">让盘</string>
-    <string name="ou_hdp_hdp_title_v_b">让分</string>
     <string name="ou_hdp_1x2_title">独赢盘</string>
-    <string name="x12_x_play_name">和局</string>
-    <string name="no_history_search">您搜寻或筛选项目查无对应资料</string>
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
     <string name="game_tab_league_odd">赛事</string>
@@ -403,10 +359,8 @@
     <string name="game_tab_price_boosts_odd">特优赔率</string>
     <string name="button_league_submit">提交 (%d)</string>
     <string name="login_notify">请登录以便使用此功能</string>
-    <string name="total_bet_amount">总投注额：</string>
     <string name="league_filter_all">显示所有赛事</string>
     <string name="odds_detail_less">显示更少</string>
-    <string name="odds_detail_cs_other">其他比分</string>
     <string name="odds_detail_play_type_fg">最先进球</string>
     <string name="odds_detail_play_type_lg">最后进球</string>
     <string name="odds_detail_play_type_bts_y">双方球队进球</string>
@@ -445,14 +399,12 @@
     <string name="title_fee_amount">・手续费金额：</string>
     <string name="title_rebate_rate">・返利：</string>
     <string name="title_rebate_amount">・返利金额：</string>
-    <string name="title_tips">・备注：</string>
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="gcash_recharge_hint">请每次入款前登录会员核对Gcash账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="grabpay_recharge_hint">请每次入款前登录会员核对GrabPay账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="paymaya_recharge_hint">请每次入款前登录会员核对PayMaya账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
-    <string name="paypal_recharge_hint">请每次入款前登录会员核对Paypal账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
@@ -471,9 +423,7 @@
     <string name="error_recharge_amount">存款金额格式或数值错误</string>
     <string name="error_first_recharge_amount">首次存款金额不能小于%s</string>
     <string name="error_recharge_account">存款个数或数值错误</string>
-    <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="error_hashcode">区块链交易ID格式错误</string>
-    <string name="error_name">您输入的姓名不正确</string>
     <string name="text_money_copy_success">复制成功</string>
     <string name="title_currency">协议/币种</string>
     <string name="title_choose_currency">选择协议/币种</string>
@@ -541,18 +491,14 @@
     <string name="withdraw_setting">提款设置</string>
     <string name="tail_number">尾号</string>
     <string name="bind_start_time">绑定</string>
-    <string name="bind_credit_card_not_yet">您尚未绑定银行卡/虚拟币</string>
     <string name="select_bank">选择银行</string>
     <string name="withdraw_amount">提款金额</string>
     <string name="withdraw_password">提款密码</string>
     <string name="total_withdrawal">提款总计</string>
-    <string name="withdraw_uw_check">扣除金额</string>
     <string name="withdraw_all">全部提取</string>
     <string name="withdraw_handling_fee_hint">· 手续费率：%1$s%% 须支付手续费：%2$s%3$s</string>
-    <string name="withdraw_crypto_exchange_rate_hint">· 汇率：%1$s</string>
     <string name="withdraw_crypto_amount_hint">· 提款金额：%1$s%2$s</string>
     <string name="withdraw_crypto_fee_hint">· 提款手续费：%1$s%2$s</string>
-    <string name="hint_please_enter_withdraw_amount">限额 %1$s%2$s~%3$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
@@ -560,7 +506,6 @@
     <string name="add_crypto_card">新增虚拟币</string>
     <string name="add_e_wallet">新增eWallet</string>
     <string name="add_credit_or_virtual">新增银行卡 / 虚拟币 / eWallet</string>
-    <string name="add_credit_or_e_wallet">新增银行卡 / eWallet</string>
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
@@ -578,9 +523,6 @@
     <string name="delete_crypto">刪除虚拟币</string>
     <string name="delete_e_wallet">刪除eWallet</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
-    <string name="error_create_name">姓名为2–20个中文组合</string>
-    <string name="error_bank_card_number">银行卡号格式有错误</string>
-    <string name="error_network_point">您输入的开户网点格式有错误</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
     <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
@@ -592,51 +534,25 @@
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
     <string name="text_crypto_modify_success">编辑虚拟币成功</string>
-    <string name="bet_info_list_game_closed">盘口已关闭</string>
-    <string name="bet_info_list_game_odds_changed">赔率已变更</string>
-    <string name="bet_info_list_bet_quota">投注金额：</string>
     <string name="bet_receipt_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
-    <string name="bet_list_win_quota">可赢金额：</string>
     <string name="bet_receipt_win_quota">可赢金额：</string>
-    <string name="bet_info_list_add_more">更多选择</string>
-    <string name="bet_info_list_bet">投注</string>
-    <string name="bet_info_list_hint">限额：%s</string>
-    <string name="bet_info_list_bigger_than_zero">投注额必须大于零</string>
-    <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
-    <string name="bet_info_list">注单</string>
 
-    <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
-    <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
-    <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
-    <string name="bet_info_different_game_type">不同球种不可进行串关</string>
     <string name="bet_info_input_quota">输入金额</string>
     <string name="bet_info_check_maximum_limit">查看最高下注</string>
     <string name="bet_info_bet_quota">投注额</string>
     <string name="bet_info_win_quota">可赢额</string>
-    <string name="bet_info_accept_odds_change">接受变更</string>
-    <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %1$s 至 %2$s 。</string>
-    <string name="bet_info_all_bet">所有投注</string>
-    <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
     <string name="bet_list_single_type">单项</string>
     <string name="bet_list_parlay_type">串关</string>
     <string name="bet_list_view_more_options">更多投注选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
-    <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
-    <string name="bet_info_remove_closed">移除已关闭的选项</string>
-    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n</string>
-    <string name="parlay_rule_at_least">至少2个选项获胜以确保派彩</string>
-    <string name="parlay_rule_cant_warn">不同球种及冠军玩法不能进行串关投注</string>
-    <string name="parlay_rule_ncm">%1$s串%2$s是由%1$s个不同赛事组成的%2$s个不同的投注</string>
-    <string name="parlay_rule_list_nc1">%1$s个%2$s串1</string>
-    <string name="parlay_rule_and">以及</string>
     <string name="bet_list_receipt">注单收据</string>
     <string name="complete">完成</string>
     <string name="winnable_amount_colon">可赢额：</string>
@@ -661,7 +577,6 @@
     <string name="recharge_log_recharge_amount">存款金额</string>
     <string name="recharge_log_channel_type">渠道类型</string>
     <string name="recharge_log_order_state">订单状态</string>
-    <string name="withdraw_log_withdraw_amount">提款金额</string>
     <string name="log_state_processing">处理中</string>
     <string name="withdraw_log_state_pass">通过</string>
     <string name="withdraw_log_state_un_pass">未通过</string>
@@ -676,8 +591,6 @@
     <string name="log_detail_trans_num_sub">交易编号：</string>
     <string name="log_detail_trans_num_sub2">交易编号</string>
     <string name="log_detail_time_sub">发起时间：</string>
-    <string name="log_detail_type_sub">交易类型：</string>
-    <string name="log_detail_amount_sub">交易金额：</string>
     <string name="log_detail_status_sub">交易状态：</string>
     <string name="log_detail_handle_fee">手续费用：</string>
     <string name="log_detail_rebate_money">返利金额：</string>
@@ -716,11 +629,7 @@
     <string name="third_game_cgcp">创信彩票</string>
     <string name="third_game_ogplus">OG+真人</string>
     <string name="third_game_cr">皇冠体育</string>
-    <string name="out_account_">转出账户：</string>
-    <string name="in_account_">转入账户：</string>
-    <string name="transfer_amount">转换金额：</string>
     <string name="transfer_state">转换状态：</string>
-    <string name="remarks">备注：</string>
     <string name="transfer_info">转换信息</string>
     <string name="sorry_website_is_now_maintenance">目前网站维护中</string>
     <string name="if_there_is_any_question_please_consult">若有疑问请咨询%1$s</string>
@@ -735,7 +644,6 @@
     <string name="sport_bet_record">体育投注记录</string>
     <string name="my_favorite">我的赛事</string>
     <string name="other_bet_record">其他投注记录</string>
-    <string name="credit_bet_record">周期历史纪录</string>
     <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">來去逛逛</string>
     <string name="bet_number">注数</string>
@@ -749,14 +657,11 @@
     <string name="write_suggestion">填写建议</string>
     <string name="can_input_1_to_500_word">可输入1–500字</string>
     <string name="third_game_ky">开元棋牌</string>
-    <string name="choose_title">选择状态</string>
     <string name="odd_type_title">盘口类型</string>
     <string name="odd_type_eu">欧洲盘</string>
     <string name="odd_type_hk">香港盘</string>
     <string name="odd_type_mys">马来盘</string>
     <string name="odd_type_idn">印尼盘</string>
-    <string name="choose_method">选择渠道</string>
-    <string name="choose_order">选择订单</string>
     <string name="submit_time">提交时间:</string>
     <string name="feedback_time">反馈时间:</string>
     <string name="not_reply_yet">尚未反馈</string>
@@ -780,9 +685,7 @@
     <string name="back_to_top">回到顶部</string>
     <string name="total">总共</string>
     <string name="verse">v</string>
-    <string name="keyboard_done">收起</string>
     <string name="keyboard_max">最大</string>
-    <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
     <string name="odds_button_name_last">最后</string>
@@ -797,7 +700,6 @@
     <string name="credit_record_quota">結算總額：</string>
     <string name="credit_record_day">%s 日</string>
     <string name="credit_record_status_unsettle">尚未到結算日期</string>
-    <string name="parlay_rule_nc1_ex">当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
     <string name="game_play_type">游戏类别</string>
     <string name="spt_number_3_2">3盘2胜</string>
     <string name="spt_number_5_3">5盘3胜</string>
@@ -837,7 +739,6 @@
     <string name="service_1">客服1</string>
     <string name="service_2">客服2</string>
     <string name="service_connect">联系</string>
-    <string name="top_game">世界顶级赛事</string>
     <string name="parlay_10_fold">10串1</string>
     <string name="parlay_10_block">10串1013</string>
     <string name="parlay_2_fold">2串1</string>
@@ -901,16 +802,11 @@
     <string name="identity_first_name">名</string>
     <string name="identity_other_name">别名</string>
     <string name="identity_country">国家地区</string>
-    <string name="identity_birth">生日</string>
-    <string name="identity_marital_status">婚姻状态</string>
     <string name="identity_sex">性别</string>
-    <string name="identity_work">工作</string>
     <string name="message_source_change">系统收到最新赛事数据，确认后将刷新页面</string>
     <string name="appearance">外观</string>
     <string name="day_mode">日间模式</string>
     <string name="night_mode">夜间模式</string>
-    <string name="goal_buster">GOAL BUSTER</string>
-    <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">详情</string>
     <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除一定比例的存款金额，做为提前提款手续费。</string>
     <string name="commission_desc_2">当达成有效打码后，则不另收手续费。</string>
@@ -957,13 +853,13 @@
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="type_of_certificate">证件类型</string>
     <string name="take_id_photo">拍摄证件照片</string>
-    <string name="take_id_gallery">从相簿中选择</string>
     <string name="prepare_your_id_photo">注备好您的证件照片</string>
-    <string name="id_description">·请确认您的证件照正确朝上\n·请确认您的证件照清晰可见\n·请避免闪光或是反射</string>
+    <string name="id_description1">・请确认您的证件照正确朝上</string>
+    <string name="id_description2">・请确认您的证件照清晰可见</string>
+    <string name="id_description3">・请避免闪光或是反射</string>
     <string name="identity_card">Identity Card</string>
     <string name="passport">Passport</string>
     <string name="face_scan_result">脸部扫描结果</string>
-    <string name="verified">(已验证)</string>
     <string name="verify_failed_please_retry">验证失败 请重新再试</string>
     <string name="not_verify">(未验证)</string>
     <string name="passed">(已通过)</string>
@@ -974,9 +870,7 @@
     <string name="text_us_east_time">以美东(UTC-4)时间计算</string>
     <string name="text_cant_play">发生错误,请稍后再试。</string>
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
-    <string name="text_bet_not_success2">待成立注单</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
-    <string name="text_bet_not_success4">交易状况</string>
     <string name="text_security_money">押金：%s</string>
     <string name="text_security_money2">还有%s天</string>
     <string name="customer_service_title">客服中心</string>
@@ -986,17 +880,12 @@
     <string name="self_limit_impotent">重要事项</string>
     <string name="self_limit_confirm">确认申请</string>
     <string name="self_limit_fix_confirm">确认修改</string>
-    <string name="self_limit_confirm_content">您确定要申请自我禁制吗？</string>
-    <string name="self_limit_fix_confirm_content">您确定要修改每次投注上限吗？</string>
     <string name="self_limit_confirm_done">申请已生效</string>
     <string name="self_limit_fix_confirm_done">修改已生效</string>
-    <string name="self_limit_confirm_alert">系统提示</string>
-    <string name="self_limit_confirm_alert_content">此账号已申请自我禁制，详情请洽我们的客户服务。</string>
     <string name="self_limit_account_login_limit">账号登入限制</string>
     <string name="self_limit_froze_content">为了保护您的权益，您可以随时申请\"自我禁制\"，当您申请自我禁制后，在自我禁制时间内您将无法登入游戏享受我们提供的服务，提供的选项如下：</string>
     <string name="self_limit_froze_days">天数</string>
     <string name="self_limit_froze_input_days">请输入天数</string>
-    <string name="self_limit_froze_impotent">·自我禁制设定后立即生效。\n·在自我禁制设定期间内，我们将保管您的余额。\n·若您在其他的博弈游戏中申请自我禁制，并不 会自动适用于本游戏中。\n·在自我禁制期间内，若您尝试开设新账号，在 系统检测后属实，该账号可能被冻结。\n·在自我禁制期间内，您可以联系客服解除自我禁制功能。\n·在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="self_limit_per_bet_limit">每次投注上限</string>
     <string name="self_limit_per_bet_limit_content">您可以申请\"每次投注上限\"来限制您每次的投注额。申请每次投注上限后，您每次的投注总额将不得超过您的设定值：</string>
     <string name="self_limit_per_bet_limit_highest">上限</string>
@@ -1016,9 +905,6 @@
     <string name="initial_withdrawal_needs_credited">初次提款需入账：%1$s %2$s</string>
     <string name="make_sure_valid_account">初次提款会暂时扣留 %1$s %2$s，以确保您是有效账户。此款项于 30 天后会返还。</string>
     <!--登入手機驗證-->
-    <string name="login_phone_verify">输入验证码</string>
-    <string name="login_phone_verify_get_code">获取验证码</string>
-    <string name="login_phone_verify_error">验证码输入错误</string>
     <string name="other_link">其它相关链接</string>
     <string name="about_us">关于我们</string>
     <string name="responsible">博彩责任</string>
@@ -1044,8 +930,8 @@
     <string name="self_limit_froze_impotent_6">在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="text_chose_language">请选择您的语言</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint"><font size="12">(请输入您的登录密码)</font></string>
-    <string name="account_hint"><font size="12">(请输入您的会员帐号)</font></string>
+    <string name="password_hint">(请输入您的登录密码)</string>
+    <string name="account_hint">(请输入您的会员帐号)</string>
     <string name="submit_success">提交成功</string>
     <!-- 搜尋 -->
     <string name="text_search">搜索</string>
@@ -1062,7 +948,6 @@
     <string name="sco_name_first">最先进球球员</string>
     <string name="sco_name_any">任何时间进球球员</string>
     <string name="sco_name_last">最后进球球员</string>
-    <string name="minus">-</string>
     <string name="plus">+</string>
 
     <!--google位置存取-->
@@ -1072,7 +957,6 @@
     <string name="google_location_permission_description">允许背景位置授权请求，您可以寻找您所在位置附近的赛事，并且可以跟踪这些赛事的情报。</string>
 
     <!--歷史紀錄start-->
-    <string name="text_account_history_type">项目类型</string>
     <string name="text_account_history_time">交易时间</string>
     <string name="text_account_history_number">订单号</string>
     <string name="text_account_history_amount">交易金额</string>
@@ -1195,11 +1079,9 @@
     <string name="register_identity_photo_hint_back">请点击上传身分证背面照</string>
     <string name="redenvelope_trantype_send">发红包</string>
     <string name="redenvelope_trantype_received">收红包</string>
-    <string name="tran_order_no">交易单号</string>
     <string name="redenvelope_amount">红包金额</string>
     <string name="tran_type">交易类型</string>
     <string name="redenvelope_record">红包纪录</string>
-    <string name="tran_time_sub">交易时间：</string>
     <string name="redenvelope_amount_sub">红包金额：</string>
     <string name="btn_sure">确定</string>
     <string name="Outlets_Reserve">网点预约</string>
@@ -1228,8 +1110,6 @@
     <string name="publicity_faqs">常见问题</string>
     <string name="more_info">更多信息</string>
     <string name="e_game">棋牌</string>
-    <string name="casino">真人</string>
-    <string name="sabong">斗鸡</string>
     <string name="new_games_beta">新游戏，测试版</string>
 
     <string name="work_time_">营业时间：</string>

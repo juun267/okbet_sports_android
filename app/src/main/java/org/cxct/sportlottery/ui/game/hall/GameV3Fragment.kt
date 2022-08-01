@@ -2095,7 +2095,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 subscribeChannelType = ChannelType.HALL,
                 betPlayCateNameMap = null,
             )
-            (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+            (activity as GameActivity).setupBetData(fastBetDataBean)
         }
 
     }
@@ -2124,7 +2124,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     betPlayCateNameMap = betPlayCateNameMap,
                     getPlayCateMenuCode()
                 )
-                (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                (activity as GameActivity).setupBetData(fastBetDataBean)
             }
         }
     }

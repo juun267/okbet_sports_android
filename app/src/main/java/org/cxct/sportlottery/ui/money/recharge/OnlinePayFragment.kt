@@ -23,6 +23,7 @@ import kotlin.math.abs
 /**
  * @app_destination 在線支付
  */
+@SuppressLint("SetTextI18n")
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
@@ -104,6 +105,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         setupFocusEvent()
 
         btn_submit.setTitleLetterSpacing()
+
+        tv_remark.text = "・${getString(R.string.credit_bet_remark)}："
+
     }
 
     private fun initButton() {

@@ -181,7 +181,6 @@
         tools:text="999" />
 
     <TextView
-        android:id="@+id/league_odd_match_score_set_home"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -297,7 +296,6 @@
         tools:text="999" />
 
     <TextView
-        android:id="@+id/league_odd_match_score_set_away"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
