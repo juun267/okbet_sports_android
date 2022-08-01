@@ -85,7 +85,6 @@
             android:src="@drawable/ic_close_dark" />
 
         <TextView
-            android:id="@+id/tvPlus4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"

@@ -20,7 +20,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.button_bet.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
+//import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item_v2.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
@@ -346,28 +346,28 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initQuota() {
-        tv_check_maximum_limit.setOnClickListener {
-            it.visibility = View.GONE
-            ll_bet_quota_detail.visibility = View.GONE
-        }
-
-        ll_bet_quota_detail.setOnClickListener {
-            it.visibility = View.GONE
-            ll_win_quota_detail.visibility = View.VISIBLE
-
-            binding.etBet.apply {
-                setText(TextUtil.formatInputMoney(parlayOdd?.max.toString()))
-                isFocusable = true
-                setSelection(text.length)
-            }
-            binding.layoutKeyBoard.showKeyboard(
-                binding.etBet, null,
-                getMaxBetMoney(),
-                betInfoListData?.parlayOdds?.min?.toLong() ?: 0,
-                isLogin == true
-            )
-            //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
-        }
+//        tv_check_maximum_limit.setOnClickListener {
+//            it.visibility = View.GONE
+//            ll_bet_quota_detail.visibility = View.GONE
+//        }
+//
+//        ll_bet_quota_detail.setOnClickListener {
+//            it.visibility = View.GONE
+//            ll_win_quota_detail.visibility = View.VISIBLE
+//
+//            binding.etBet.apply {
+//                setText(TextUtil.formatInputMoney(parlayOdd?.max.toString()))
+//                isFocusable = true
+//                setSelection(text.length)
+//            }
+//            binding.layoutKeyBoard.showKeyboard(
+//                binding.etBet, null,
+//                getMaxBetMoney(),
+//                betInfoListData?.parlayOdds?.min?.toLong() ?: 0,
+//                isLogin == true
+//            )
+//            //keyboard.showKeyboard(binding.etBet, null, betInfoListData?.parlayOdds?.max?.toLong() ?: GameConfigManager.maxBetMoney?.toLong() ?: 0)
+//        }
     }
 
 
@@ -380,16 +380,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             if (it.isEmpty()) {
                 binding.tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
-                tv_check_maximum_limit.visibility = View.GONE
-                ll_bet_quota_detail.visibility = View.GONE
-                ll_win_quota_detail.visibility = View.VISIBLE
+//                tv_check_maximum_limit.visibility = View.GONE
+//                ll_bet_quota_detail.visibility = View.GONE
+//                ll_win_quota_detail.visibility = View.VISIBLE
 
             } else {
 
                 //輸入時 直接顯示可贏額
-                tv_check_maximum_limit.visibility = View.GONE
-                ll_bet_quota_detail.visibility = View.GONE
-                ll_win_quota_detail.visibility = View.VISIBLE
+//                tv_check_maximum_limit.visibility = View.GONE
+//                ll_bet_quota_detail.visibility = View.GONE
+//                ll_win_quota_detail.visibility = View.VISIBLE
 
                 val quota = it.toDouble()
 
@@ -460,7 +460,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //                if (oddsType == OddsType.EU) {
 //                    win -= quota
 //                }
-                tv_win_quota.text = TextUtil.format(win)
+//                tv_win_quota.text = TextUtil.format(win)
 
 //                button_bet.isOddsChanged = false //輸入金額一樣顯示接受的文案
 
@@ -594,7 +594,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         }
                     }
 
-                    tv_win_quota.text = TextUtil.format(win)
+//                    tv_win_quota.text = TextUtil.format(win)
                 } else {
                     //dismiss()
                 }

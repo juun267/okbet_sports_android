@@ -90,7 +90,6 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
-                    android:id="@+id/iv_click_pay_gap"
                     android:layout_width="35dp"
                     android:layout_height="45dp"
                     android:contentDescription="@null"
@@ -153,7 +152,6 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
-                    android:id="@+id/iv_click_pay_bank"
                     android:layout_width="35dp"
                     android:layout_height="45dp"
                     android:contentDescription="@null"

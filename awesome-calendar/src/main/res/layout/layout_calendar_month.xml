@@ -24,37 +24,31 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/rlDayContainer1"
             layout="@layout/layout_calendar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/rlDayContainer2"
             layout="@layout/layout_calendar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/rlDayContainer3"
             layout="@layout/layout_calendar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/rlDayContainer4"
             layout="@layout/layout_calendar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/rlDayContainer5"
             layout="@layout/layout_calendar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <include
-            android:id="@+id/rlDayContainer6"
             layout="@layout/layout_calendar_week"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

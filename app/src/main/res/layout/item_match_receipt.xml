@@ -111,7 +111,6 @@
                     tools:text="日本奥运队 v 纽西兰奥运队" />
 
                 <include
-                    android:id="@+id/view_receipt_bet"
                     layout="@layout/view_match_receipt_bet"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="@dimen/margin_12"

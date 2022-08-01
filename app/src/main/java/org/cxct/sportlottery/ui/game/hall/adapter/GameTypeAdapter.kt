@@ -3,17 +3,9 @@ package org.cxct.sportlottery.ui.game.hall.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_play_spinner.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v4.view.*
-import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
-import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.sport_count_text
-import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.sport_type_img
-import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.sport_type_text
 import kotlinx.android.synthetic.main.itemview_sport_type_v6.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType

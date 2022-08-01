@@ -40,7 +40,6 @@
         tools:text="999999" />
 
     <TextView
-        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/total_profit_and_loss"
