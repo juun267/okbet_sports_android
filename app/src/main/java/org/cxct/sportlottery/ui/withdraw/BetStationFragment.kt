@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
-import com.tbruyelle.rxpermissions2.RxPermissions
 import com.google.android.gms.location.*
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -218,9 +218,10 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
     private fun setupTextChangeEvent() {
         viewModel.apply {
+
+            et_amount.afterTextChanged { checkWithdrawAmount(null, it) }
             //銀行卡號
             setupClearButtonVisibility(et_amount) { checkWithdrawAmount(null, it) }
-
             //提款密碼
             setupClearButtonVisibility(et_password) { checkNetWorkPoint(it) }
 

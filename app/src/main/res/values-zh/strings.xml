@@ -1236,7 +1236,6 @@
     <string name="phone_">电话：</string>
     <string name="appointment_">预约时间：</string>
     <string name="outlets_address_">投注站地址：</string>
-    <string name="error_recharge_amount_smaller">充值额小于最低限额</string>
-    <string name="error_recharge_amount_bigger">充值额超過最大限额</string>
     <string name="error_recharge_amount_format">充值额格式有誤</string>
+    <string name="error_amount_limit_exceeded">金額超過限額</string>
 </resources>

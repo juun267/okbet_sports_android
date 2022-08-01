@@ -97,6 +97,7 @@ object VerifyConstUtil {
     }
 
     //充值金額
+    //-1为低于限额，1为超过限额，
     fun verifyRechargeAmount(rechargeAmount: CharSequence, minAmount: Long, maxAmount: Long?): Int {
         val rechargeAmountLong = rechargeAmount.toString().toLong()
         if (rechargeAmountLong < minAmount) return -1

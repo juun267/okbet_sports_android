@@ -599,17 +599,14 @@ class WithdrawViewModel(
             withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDouble().equals(0) -> {
                 androidContext.getString(R.string.error_recharge_amount_format)
             }
-            else -> {
-                when (VerifyConstUtil.verifyWithdrawAmount(
-                    withdrawAmount,
-                    amountLimit.min,
-                    amountLimit.max
-                )) {
-                    -1 -> androidContext.getString(R.string.error_recharge_amount_smaller)
-                    1 -> androidContext.getString(R.string.error_recharge_amount_bigger)
-                    else -> ""
-                }
+            VerifyConstUtil.verifyWithdrawAmount(
+                withdrawAmount,
+                amountLimit.min,
+                amountLimit.max
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
+            else -> ""
         }
         if (dealType != TransferType.STATION) {
             getWithdrawRate(withdrawCard, withdrawAmount.toDouble())

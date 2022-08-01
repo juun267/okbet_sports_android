@@ -1224,7 +1224,6 @@
     <string name="work_time_">Giờ làm việc：</string>
     <string name="appointment_">Hẹn thời gian：</string>
     <string name="outlets_address_">Địa chỉ：</string>
-    <string name="error_recharge_amount_smaller">Số tiền nạp ít hơn hạn mức thấp nhất</string>
-    <string name="error_recharge_amount_bigger">Số tiền nạp lớn hơn hạn mức cao nhất</string>
     <string name="error_recharge_amount_format">Lỗi định dạng số tiền nạp</string>
+    <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
 </resources>

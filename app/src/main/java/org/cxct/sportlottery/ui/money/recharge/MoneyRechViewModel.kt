@@ -357,17 +357,14 @@ class MoneyRechViewModel(
             rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
                 androidContext.getString(R.string.error_recharge_amount_format)
             }
-            else -> {
-                when (VerifyConstUtil.verifyRechargeAmount(
-                    rechargeAmount,
-                    channelMinMoney,
-                    channelMaxMoney
-                )) {
-                    -1 -> androidContext.getString(R.string.error_recharge_amount_smaller)
-                    1 -> androidContext.getString(R.string.error_recharge_amount_bigger)
-                    else -> ""
-                }
+            VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
+            else -> ""
         }
     }
 
@@ -382,17 +379,14 @@ class MoneyRechViewModel(
             rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
                 androidContext.getString(R.string.error_recharge_amount_format)
             }
-            else -> {
-                when (VerifyConstUtil.verifyRechargeAmount(
-                    rechargeAmount,
-                    channelMinMoney,
-                    channelMaxMoney
-                )) {
-                    -1 -> androidContext.getString(R.string.error_recharge_amount_smaller)
-                    1 -> androidContext.getString(R.string.error_recharge_amount_bigger)
-                    else -> ""
-                }
+            VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
+            else -> ""
         }
     }
 
@@ -407,17 +401,14 @@ class MoneyRechViewModel(
             rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
                 androidContext.getString(R.string.error_recharge_amount_format)
             }
-            else -> {
-                when (VerifyConstUtil.verifyRechargeAmount(
-                    rechargeAmount,
-                    channelMinMoney,
-                    channelMaxMoney
-                )) {
-                    -1 -> androidContext.getString(R.string.error_recharge_amount_smaller)
-                    1 -> androidContext.getString(R.string.error_recharge_amount_bigger)
-                    else -> ""
-                }
+            VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
+            else -> ""
         }
     }
 
@@ -478,17 +469,14 @@ class MoneyRechViewModel(
             rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
                 androidContext.getString(R.string.error_recharge_amount_format)
             }
-            else -> {
-                when (VerifyConstUtil.verifyRechargeAmount(
-                    rechargeAmount,
-                    channelMinMoney,
-                    channelMaxMoney
-                )) {
-                    -1 -> androidContext.getString(R.string.error_recharge_amount_smaller)
-                    1 -> androidContext.getString(R.string.error_recharge_amount_bigger)
-                    else -> ""
-                }
+            VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
+            else -> ""
         }
     }
 
