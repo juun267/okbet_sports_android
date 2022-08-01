@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,47 +22,51 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.JumpUtil
 
 /**
  * @app_destination 提款記錄
  */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+    private var reserveTime: String = ""
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-
-        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-            iv_scroll_to_top.apply {
-                when {
-                    firstVisibleItemPosition > 0 && alpha == 0f -> {
-                        visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
-                            }
-                        })
+            private fun scrollToTopControl(firstVisibleItemPosition: Int) {
+                iv_scroll_to_top.apply {
+                    when {
+                        firstVisibleItemPosition > 0 && alpha == 0f -> {
+                            visibility = View.VISIBLE
+                            animate().alpha(1f).setDuration(300).setListener(null)
+                        }
+                        firstVisibleItemPosition <= 0 && alpha == 1f -> {
+                            animate().alpha(0f).setDuration(300)
+                                .setListener(object : AnimatorListenerAdapter() {
+                                    override fun onAnimationEnd(animation: Animator) {
+                                        visibility = View.GONE
+                                    }
+                                })
+                        }
                     }
                 }
             }
-        }
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getUserWithdrawList(
-                    false,
-                    date_range_selector.startTime.toString(),
-                    date_range_selector.endTime.toString(),
-                    selector_order_status.selectedTag,
-                    selector_method_status.selectedTag
-                )
-                scrollToTopControl(firstVisibleItemPosition)
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                recyclerView.layoutManager?.let {
+                    val firstVisibleItemPosition: Int =
+                        (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                    viewModel.getUserWithdrawList(
+                        false,
+                        date_range_selector.startTime.toString(),
+                        date_range_selector.endTime.toString(),
+                        selector_order_status.selectedTag,
+                        selector_method_status.selectedTag
+                    )
+                    scrollToTopControl(firstVisibleItemPosition)
+                }
             }
         }
-    }
 
     private val logDetailDialog by lazy {
         WithdrawLogDetailDialog()
@@ -69,9 +74,15 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
     private val withdrawLogAdapter by lazy {
         WithdrawLogAdapter().apply {
-            withdrawLogListener = WithdrawLogListener {
-                viewModel.setWithdrawLogDetail(it)
-            }
+            withdrawLogListener = WithdrawLogListener(
+                clickListener = {
+                    viewModel.setWithdrawLogDetail(it)
+                },
+                bettingStationClick = {
+                    reserveTime= it.withdrawDateAndTime.toString()
+                    viewModel.getQueryByBettingStationId(it.channel)
+                }
+            )
         }
     }
 
@@ -98,10 +109,11 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         }
 
         view.date_range_selector.setOnClickSearchListener {
-            viewModel.getUserWithdrawList(true, date_range_selector.startTime.toString(),
-                                          date_range_selector.endTime.toString(),
-                                          selector_order_status.selectedTag,
-                                          selector_method_status.selectedTag
+            viewModel.getUserWithdrawList(
+                true, date_range_selector.startTime.toString(),
+                date_range_selector.endTime.toString(),
+                selector_order_status.selectedTag,
+                selector_method_status.selectedTag
             )
         }
     }
@@ -126,7 +138,14 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
             addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = withdrawLogAdapter
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
+            addItemDecoration(
+                DividerItemDecorator(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.divider_gray
+                    )
+                )
+            )
         }
     }
 
@@ -139,32 +158,52 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner, {
+
+        viewModel.queryByBettingStationIdResult.observe(this.viewLifecycleOwner) {
+            if (it.success) {
+                it.data.appointmentTime = reserveTime
+                JumpUtil.toInternalWeb(
+                    requireContext(),
+                    "https://maps.google.com/?q=@" + it.data.lon + "," + it.data.lat,
+                    getString(R.string.outlets_address),
+                    true,
+                    true,
+                    it.data
+                )
+
+            }
+
+        }
+
+        viewModel.isLoading.observe(this.viewLifecycleOwner) {
             if (it) {
                 loading()
             } else {
                 hideLoading()
             }
-        })
+        }
 
-        viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner,  {
+        viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner) {
             it?.let {
                 withdrawLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
             }
-        })
+        }
 
-        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner,  {
+        viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) {
             if (it.getContentIfNotHandled() == null) return@observe
 
             if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(parentFragmentManager, WithdrawLogFragment::class.java.simpleName)
+                logDetailDialog.show(
+                    parentFragmentManager,
+                    WithdrawLogFragment::class.java.simpleName
+                )
             }
-        })
+        }
 
-        viewModel.isFinalPage.observe(this.viewLifecycleOwner,  {
+        viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
             withdrawLogAdapter.isFinalPage = it
-        })
+        }
 
         viewModel.getUserWithdrawList(true)
     }
@@ -211,6 +250,13 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.ewallet) -> {
                     StatusSheetData(UWType.E_WALLET.type, it)
                 }
+                getString(R.string.betting_station_reserve) -> {
+                    StatusSheetData(UWType.BETTING_STATION.type, it)
+                }
+                getString(R.string.betting_station_withdraw) -> {
+                    StatusSheetData(UWType.BETTING_STATION_ADMIN.type, it)
+                }
+                //提款
                 else -> {
                     StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
                 }

@@ -23,6 +23,8 @@ import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RelativeLayout(context, attrs, defStyle) {
 
     private var mNowPage: Page? = null
+    private var isOtherLinksExpand = true
+    private var isNeedHelpExpand = false
 
     init {
         addView(LayoutInflater.from(context).inflate(R.layout.view_bottom_navigation, this, false))
@@ -91,8 +93,22 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
             )
         }
 
+        //其他相關鍵接
+        setupOtherLinksUI(isOtherLinksExpand)
+        txv_other.setOnClickListener {
+            isOtherLinksExpand = !isOtherLinksExpand
+            setupOtherLinksUI(isOtherLinksExpand)
+        }
+
+        //是否需要幫助
+        setupNeedHelpUI(isNeedHelpExpand)
+        txv_help.setOnClickListener {
+            isNeedHelpExpand = !isNeedHelpExpand
+            setupNeedHelpUI(isNeedHelpExpand)
+        }
+
         //語言切換
-        img_flag.setOnClickListener {
+        ll_language.setOnClickListener {
             goSwitchLanguagePage()
         }
 
@@ -104,10 +120,6 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
                 Constants.getAffiliateUrl(context),
                 resources.getString(R.string.btm_navigation_affiliate)
             )
-        }
-
-        txv_language.setOnClickListener {
-            goSwitchLanguagePage()
         }
 
         //隱私權條款
@@ -170,26 +182,14 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
         //信用盤開啟，要隱藏底部Pagcor文案與logo
         ll_pagcor_container.setVisibilityByCreditSystem()
 
-        //分開處理PUBLICITY和其他頁面的背景色
-        if (mNowPage == Page.PUBLICITY) {
-            val topResId = R.color.color_141414_F3F4F5
-            val pagcorResId = R.color.color_191919_EEEFF0
-
-            cl_top_container.setBackgroundResource(topResId)
-            ll_pagcor_container.setBackgroundResource(pagcorResId)
-
-            if (isCreditSystem()) bottomPaddingViewLayout.setBackgroundResource(topResId)
-            else bottomPaddingViewLayout.setBackgroundResource(pagcorResId)
-        } else {
-            val topResId = R.color.color_191919_FCFCFC
-            val pagcorResId = R.color.color_141414_F3F4F5
-
-            cl_top_container.setBackgroundResource(topResId)
-            ll_pagcor_container.setBackgroundResource(pagcorResId)
-
-            if (isCreditSystem()) bottomPaddingViewLayout.setBackgroundResource(topResId)
-            else bottomPaddingViewLayout.setBackgroundResource(pagcorResId)
-        }
+        //設定背景色
+        val topResId = R.color.color_212223_F1F7FE
+        val pagcorResId = R.color.color_242527_F1F7FE
+        cl_top_container.setBackgroundResource(topResId)
+        ll_pagcor_container.setBackgroundResource(pagcorResId)
+        //信用盤ll_pagcor_container會隱藏，bottomPaddingViewLayout要依照cl_top_container的色碼
+        if (isCreditSystem()) bottomPaddingViewLayout.setBackgroundResource(topResId)
+        else bottomPaddingViewLayout.setBackgroundResource(pagcorResId)
     }
 
     private fun goSwitchLanguagePage() {
@@ -201,5 +201,19 @@ class BottomNavigationView @JvmOverloads constructor(context: Context, attrs: At
 
     fun setNowPage(page: Page) {
         mNowPage = page
+    }
+
+    private fun setupOtherLinksUI(isExpand: Boolean) {
+        ll_other.isVisible = isExpand
+        val resId =
+            if (isExpand) R.drawable.ic_bottom_nav_arrow_up else R.drawable.ic_bottom_nav_arrow_down
+        iv_other_arrow.setImageResource(resId)
+    }
+
+    private fun setupNeedHelpUI(isExpand: Boolean) {
+        ll_help.isVisible = isExpand
+        val resId =
+            if (isExpand) R.drawable.ic_bottom_nav_arrow_up else R.drawable.ic_bottom_nav_arrow_down
+        iv_help_arrow.setImageResource(resId)
     }
 }

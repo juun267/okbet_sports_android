@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,6 +81,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     TransferType.BANK -> CardType.EDIT.ordinal
                     TransferType.CRYPTO -> CardType.CRYPTO_EDIT.ordinal
                     TransferType.E_WALLET -> CardType.EDIT.ordinal
+                    TransferType.STATION -> CardType.EDIT.ordinal
                 }
             }
         }

@@ -372,6 +372,7 @@ class LiveViewToolbarNew @JvmOverloads constructor(
                 GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_selected)
                 GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_selected)
                 GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_selected)
+                GameType.ES -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_esport_selected)
             }
         } else {
             when (gameType) {
@@ -390,6 +391,7 @@ class LiveViewToolbarNew @JvmOverloads constructor(
                 GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
                 GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_unselected)
                 GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_unselected)
+                GameType.ES -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_esport_unselected)
             }
         }
     }

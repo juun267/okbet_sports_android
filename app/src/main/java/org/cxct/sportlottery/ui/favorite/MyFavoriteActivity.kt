@@ -10,13 +10,11 @@ import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_my_favorite.*
-import kotlinx.android.synthetic.main.activity_my_favorite.drawer_layout
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -58,10 +56,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            MultiLanguagesApplication.mInstance.initBottomNavBar()
-        }
     }
 
     override fun initToolBar() {
@@ -251,6 +245,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
         cl_bet_list_bar.isVisible = num > 0
+        line_shadow.isVisible = !cl_bet_list_bar.isVisible
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
     }
@@ -274,11 +269,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         viewModel.userMoney.observe(this) {
             it?.let { money ->
                 tv_balance.text = TextUtil.formatMoney(money)
-            }
-        }
-        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
-            it.getContentIfNotHandled()?.let { isScrollDown ->
-                setBottomNavBarVisibility(my_favorite_bottom_navigation, isScrollDown)
             }
         }
         viewModel.showBetUpperLimit.observe(this) {

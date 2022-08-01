@@ -19,7 +19,10 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.FoldState
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -38,8 +41,8 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 
@@ -243,13 +246,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                 }
             )
-            addScrollListenerForBottomNavBar {
-                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-            }
             leagueAdapter.setPreloadItem()
-        }
-        view.appbar_layout.addOffsetListenerForBottomNavBar {
-            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 

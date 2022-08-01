@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
@@ -57,7 +58,10 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.*
 
 /**
- * @app_destination 注單列表
+ * @app_destination 滿版注單(點擊賠率彈出)
+ *
+ * 畫面會依照注單數量(viewModel.betInfoList)動態調整高度
+ * if (size == 1) { 單一注單 } else { 多筆注單 or 空注單 }
  */
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
@@ -211,9 +215,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.bgDimMount.setOnClickListener {
             activity?.onBackPressed()
         }
-        binding.btnBet.apply {
-            tv_quota.text = TextUtil.formatBetQuota(0)
-        }
 
         binding.buttonFastBetSetting.apply {
             cl_fast_bet.setOnClickListener { _ ->
@@ -234,10 +235,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnEvent() {
         binding.btnBet.apply {
             tv_login.setOnClickListener {
+                MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
 
             cl_bet.setOnClickListener { addBet() }
+
+            tv_remove_closed_selections.setOnClickListener { removeClosedPlat() }
         }
 
         /*ll_odds_close_warn.setOnClickListener {
@@ -475,6 +479,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
                 override fun onHideKeyBoard() {
+                    betListRefactorAdapter?.betList?.forEach {
+                        it.isInputBet = false; it.isInputWin = false
+                    }
                     betListRefactorAdapter?.closeAllKeyboard()
                 }
 
@@ -582,11 +589,23 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         binding.apply {
+            tvTotalBetAmount.text =
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(totalBetAmount)}"
             tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(winnableAmount)}"
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount)}"
         }
 
-        setupBtnBetAmount(totalBetAmount)
+        val betCount = if (tabPosition == 0) {
+            list.count { it.betAmount > 0 }
+        } else {
+            parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
+        }
+        binding.btnBet.apply {
+            isParlay = tabPosition == 1
+            betCounts = betCount
+        }
+
+        betAllAmount = totalBetAmount
     }
 
     private fun getWinnable(betAmount: Double, odds: Double, oddsType: OddsType): Double {
@@ -622,21 +641,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         winnable = betAmount * odds
         winnable -= (betAmount * num)
         return winnable
-    }
-
-
-    private fun setupBtnBetAmount(totalBetAmount: Double?) {
-        try {
-            val totalBetAmountNotNull = totalBetAmount ?: 0.0
-            totalBetAmountNotNull.let {
-                binding.apply {
-                    btnBet.tv_quota.text = TextUtil.formatMoney(it)
-                    betAllAmount = it
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
     }
 
     private fun initDeleteAllOnClickEvent() {
@@ -724,14 +728,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (list.size == 1) {
                     //單一注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-                    //上方tabBar betTypeTabLayout隱藏，下方可贏金額 clTotalInfo要顯示
+                    //上方tabBar betTypeTabLayout隱藏，下方可贏金額 clTotalInfo也隱藏
                     binding.betTypeTabLayout.selectTab(binding.betTypeTabLayout.getTabAt(0))
-                    binding.betTypeTabLayout.visibility = View.GONE
+                    binding.betTypeTabLayout.isVisible = false
+                    binding.clTotalInfo.isVisible = false
+                    binding.lineShadow.isVisible = false
                     isMultiBet = false
                 } else if (!isAutoCloseWhenNoData) {
                     //多筆注單 or 空注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
-                    binding.betTypeTabLayout.visibility = View.VISIBLE
+                    binding.betTypeTabLayout.isVisible = true
+                    binding.clTotalInfo.isVisible = true
+                    binding.lineShadow.isVisible = true
                     isMultiBet = true
                 }
 
@@ -825,6 +833,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //盤口關閉提示
         viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner) {
+            btn_bet.hasPlatClose = it
             showPlatCloseWarn = it
             showHideWarn()
         }

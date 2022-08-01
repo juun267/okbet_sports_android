@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
+import org.cxct.sportlottery.network.index.playquotacom.t.BasePlayQuota
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
@@ -45,7 +45,7 @@ abstract class BaseSocketViewModel(
         }
     }
 
-    fun updatePlayQuota(playQuotaComData: PlayQuotaComData) {
+    fun updatePlayQuota(playQuotaComData: Map<String?, BasePlayQuota?>?) {
         betInfoRepository.playQuotaComData = playQuotaComData
     }
 

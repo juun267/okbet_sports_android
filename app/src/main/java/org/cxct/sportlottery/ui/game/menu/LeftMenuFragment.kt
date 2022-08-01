@@ -490,6 +490,20 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                         )
                     }
                 }
+                GameType.ES -> {
+                    if (it.gameCount > 0 && matchType != null) {
+                        unselectedList.add(
+                            MenuItemData(
+                                R.drawable.img_esports,
+                                getString(R.string.esports),
+                                GameType.ES.key,
+                                0,
+                                it.gameCount,
+                                game == GameType.ES.key
+                            )
+                        )
+                    }
+                }
                 GameType.FB -> {
                     if (it.gameCount > 0 && matchType != null) {
                         unselectedList.add(
@@ -580,7 +594,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
             }
         }
 
-        //TODO Bill 判斷使用者有沒有手機號碼
+        //判斷使用者有沒有手機號碼
         viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
@@ -946,6 +960,7 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
             GameType.RB.name -> GameType.RB
             GameType.MR.name -> GameType.MR
             GameType.GF.name -> GameType.GF
+            GameType.ES.name -> GameType.ES
             GameType.AFT.name -> GameType.AFT
             GameType.FB.name -> GameType.FB
             else -> GameType.FT

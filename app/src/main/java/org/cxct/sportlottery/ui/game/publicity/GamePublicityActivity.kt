@@ -50,6 +50,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         const val PUBLICITY_MATCH_LIST = "publicityMatchList"
 
         fun reStart(context: Context) {
+            if (MultiLanguagesApplication.mInstance.doNotReStartPublicity) {
+                MultiLanguagesApplication.mInstance.doNotReStartPublicity = false
+                AppManager.currentActivity().finish()
+                return
+            }
             val intent = Intent(context, GamePublicityActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
@@ -84,10 +89,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     private fun initDestination() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            MultiLanguagesApplication.mInstance.initBottomNavBar()
             when (destination.id) {
+                /*R.id.publicityFragment -> {
+                    binding.gameToolbar.toolBar.visibility = View.GONE
+                    setupNoticeButton(binding.publicityToolbar.ivNotice)
+                }*/
                 R.id.publicityFragment -> {
                     binding.gameToolbar.toolBar.visibility = View.GONE
+                    binding.publicityToolbar.toolBar.visibility = View.VISIBLE
                     setupNoticeButton(binding.publicityToolbar.ivNotice)
                 }
                 else -> {
@@ -166,11 +175,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         viewModel.userMoney.observe(this) {
             it?.let { money ->
                 tv_balance.text = TextUtil.formatMoney(money)
-            }
-        }
-        MultiLanguagesApplication.mInstance.isScrollDown.observe(this) {
-            it.getContentIfNotHandled()?.let { isScrollDown ->
-                setBottomNavBarVisibility(game_Bottom_Navigation, isScrollDown)
             }
         }
         viewModel.showBetUpperLimit.observe(this) {
@@ -458,13 +462,14 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     override fun updateBetListCount(num: Int) {
         binding.gameBottomNavigation.sportBottomNavigation.setBetCount(num)
         cl_bet_list_bar.isVisible = num > 0
+        binding.gameBottomNavigation.lineShadow.isVisible = !cl_bet_list_bar.isVisible
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            anchorView = game_Bottom_Navigation
+            anchorView = if (viewBottom.isVisible) viewBottom else game_Bottom_Navigation
             show()
         }
     }
@@ -494,7 +499,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
             if (navController.currentDestination?.id != R.id.publicityFragment) {
                 navController.navigateUp()
             } else {
-                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+//                navController.navigate(PublicityFragmentDirections.actionPublicityFragmentSelf())
+                //新版宣傳頁
+                navController.navigate(PublicityNewFragmentDirections.actionPublicityFragmentSelf())
             }
         }
     }

@@ -54,7 +54,13 @@ import org.parceler.Parcels
 import kotlin.math.min
 
 /**
- * @app_destination 注單(單注，點擊賠率下方彈出)
+ * @app_destination 快捷注單
+ *
+ * 目前不會展示快捷注單，但傳遞資料的目前是沿用(data: FastBetDataBean)
+ * 更新viewModel.betInfoList，可參考BetInfoRepository.addInBetInfo
+ *
+ * 是否開啟快捷注單由這個參數控制viewModel.getIsFastBetOpened
+ * 目前已改為false，false的情況會開啟BetListFragment
  */
 const val INPLAY: Int = 1
 
@@ -307,10 +313,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 addBetSingle()
             }
 
-            tv_accept_odds_change.setOnClickListener {
-                addBetSingle()
-            }
-
             isCanSendOut = false
         }
 //        binding.tvAddToBetInfo.setOnClickListener {
@@ -375,11 +377,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         binding.etBet.afterTextChanged {
-            button_bet.tv_quota.text =
-                TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
-                button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
                 binding.tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
                 tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
@@ -455,7 +454,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         binding.tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                     }
                 }
-                button_bet.tv_quota.text = TextUtil.format(realAmount)
 
                 //比照以往計算
                 //var win = quota * getOdds(matchOdd, oddsType)

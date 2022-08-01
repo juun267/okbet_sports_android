@@ -50,17 +50,21 @@ import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
 import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.*
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.common.*
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueListener
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightOddListener
@@ -69,7 +73,6 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
@@ -497,8 +500,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     init {
         afterAnimateListener = AfterAnimateListener {
             try {
-                initObserve()
-                initSocketObserver()
+//                initObserve()
+//                initSocketObserver()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -512,6 +515,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.resetOtherSeelectedGameType()
         mView = inflater.inflate(R.layout.fragment_game_v3, container, false)
         return mView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //若為起始fragment不會有轉場動畫, 故無法透過afterAnimateListener動作
+            initObserve()
+            initSocketObserver()
     }
 
     private fun setupSportTypeList() {
@@ -583,6 +594,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
+        if (args.matchType == MatchType.IN_PLAY) {
+            game_toolbar_back.visibility = View.INVISIBLE
+        }
         game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -645,7 +659,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             else -> View.GONE
         }
 
-        game_bg_layer3.visibility = when (args.matchType) {
+        game_bg_layer3?.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
@@ -777,9 +791,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     }
                 }
             )
-            addScrollListenerForBottomNavBar {
-                MultiLanguagesApplication.mInstance.setIsScrollDown(it)
-            }
             if (viewModel.getMatchCount(args.matchType) < 1) {
                 leagueAdapter.removePreloadItem()
             } else {
@@ -787,9 +798,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 countryAdapter.setPreloadItem()
                 outrightLeagueOddAdapter.setPreloadItem()
             }
-        }
-        appbar_layout.addOffsetListenerForBottomNavBar {
-            MultiLanguagesApplication.mInstance.setIsScrollDown(it)
         }
     }
 
@@ -1332,7 +1340,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     if (args.matchType == MatchType.OTHER) {
                                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                                     } else {
-                                        viewModel.getGameHallList(args.matchType, leagueIdList = leagueChangeEvent.leagueIdList,
+                                        viewModel.getGameHallList(
+                                            args.matchType, leagueIdList = leagueChangeEvent.leagueIdList,
                                             isReloadDate = false,
                                             isIncrement = true
                                         )
@@ -1419,6 +1428,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
+                    viewModel.getSportListAtHomePage(matchType = args.matchType)
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else if (!args.gameType.isNullOrEmpty() && args.matchType == MatchType.OUTRIGHT && isRecommendOutright()) {
@@ -1797,16 +1807,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             if (args.matchType != MatchType.OTHER) {
                 if (isRecommendOutright()) {
                     args.gameType?.let { gameType ->
-                        game_toolbar_sport_type.text = context?.let {
+                        game_toolbar_sport_type?.text = context?.let {
                             getGameTypeString(it, gameType)
                         } ?: resources.getString(
                             GameType.FT.string
                         ).toUpperCase(Locale.getDefault())
-                        updateSportBackground(gameType)
+                        if (game_bg_layer2 != null && game_bg_layer3 != null) updateSportBackground(gameType)
                     }
                 } else {
                     gameTypeList.find { it.isSelected }.let { item ->
-                        game_toolbar_sport_type.text =
+                        game_toolbar_sport_type?.text =
                             context?.let { getGameTypeString(it, item?.code) } ?: resources.getString(
                                 GameType.FT.string
                             )
@@ -1855,7 +1865,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportBackground(sport: Item?) {
-        updateSportBackground(sport?.code)
+        if (game_bg_layer2 != null && game_bg_layer3 != null) updateSportBackground(sport?.code)
     }
 
     private fun updateSportBackground(gameTypeKey: String?) {
@@ -1970,6 +1980,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             when {
                                 game_bg_layer2.isVisible -> R.drawable.golf_108
                                 game_bg_layer3.isVisible -> R.drawable.golf_132
+                                else -> null
+                            }
+                        }
+                        GameType.ES.key -> {
+                            when {
+                                game_bg_layer2.isVisible -> R.drawable.esport_100
+                                game_bg_layer3.isVisible -> R.drawable.esport_132
                                 else -> null
                             }
                         }

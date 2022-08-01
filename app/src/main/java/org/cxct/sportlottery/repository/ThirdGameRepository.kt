@@ -42,6 +42,13 @@ object ThirdGameRepository {
         return response
     }
 
+    /**
+     * 獲取第三方遊戲清單
+     */
+    suspend fun getThirdGameResponse(): Response<ThirdGamesResult> {
+        return OneBoSportApi.thirdGameService.getThirdGames()
+    }
+
     private fun localCateSort(code: String?): Int {
         return when (code) {
             ThirdGameCategory.LOCAL_SP.name -> 0
@@ -54,7 +61,7 @@ object ThirdGameRepository {
         }
     }
 
-    private fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<GameCateData> {
+    fun createHomeGameList(thirdGameData: ThirdGameData?): MutableList<GameCateData> {
         //1. 第一層 category 按鈕
         val gameCatList = mutableListOf<GameCategory>()
 

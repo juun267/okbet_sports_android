@@ -461,7 +461,7 @@ class GamePublicityAdapter(private val publicityAdapterListener: PublicityAdapte
     private fun getSortPoint(item: Any): Int = sortMap[item::class] ?: 0
     // endregion
 
-    class PublicityAdapterListener(
+    open class PublicityAdapterListener(
         private val onLogoClickListener: () -> Unit,
         private val onLanguageBlockClickListener: () -> Unit,
         private val onNoticeClickListener: () -> Unit,

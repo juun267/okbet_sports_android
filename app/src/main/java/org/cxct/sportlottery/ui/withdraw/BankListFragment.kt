@@ -91,6 +91,9 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             mBankListAdapter.transferAddSwitch = it
             tv_no_bank_card.text = it.run {
                 val stringList = arrayListOf<String>()
+                if ((!bankTransfer) && (!cryptoTransfer) && (!walletTransfer)) {
+                    return@Observer
+                }
                 if(bankTransfer) stringList.add(getString(R.string.bank_list_bank))
                 if(cryptoTransfer) stringList.add(getString(R.string.bank_list_crypto))
                 if(walletTransfer) stringList.add(getString(R.string.bank_list_e_wallet))

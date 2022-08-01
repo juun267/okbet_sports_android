@@ -41,7 +41,11 @@ data class Row(
     @Json(name = "uwType")
     val uwType: String?,
     @Json(name = "deductMoney")
-    val deductMoney: Double?
+    val deductMoney: Double?,
+    @Json(name = "appointmentDate")
+    val appointmentDate: String?,
+    @Json(name = "appointmentHour")
+    val appointmentHour: String?
 ) {
     var withdrawDateAndTime: String? = null
     var operatorDateAndTime: String? = null
