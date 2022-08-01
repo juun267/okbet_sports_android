@@ -34,7 +34,6 @@
         tools:text="澳大利亚甲组联赛-附加赛" />
 
     <View
-        android:id="@+id/country_league_divider"
         android:layout_width="1dp"
         android:layout_height="14dp"
         android:layout_gravity="center"

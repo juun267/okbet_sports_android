@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -222,24 +221,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         return betListFragment.isVisible
     }
 
-    fun showFastBetFragment(fastBetDataBean: FastBetDataBean) {
-        val transaction = supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        val betListFragment = FastBetFragment()
-        val bundle = Bundle()
-        bundle.putParcelable("data", Parcels.wrap(fastBetDataBean));
-        betListFragment.arguments = bundle;
-
-        transaction
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
+    fun setupBetData(fastBetDataBean: FastBetDataBean) {
+        viewModel.updateMatchBetListData(fastBetDataBean)
     }
 
     override fun updateBetListCount(num: Int) {
@@ -285,15 +268,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
-                if(viewModel.getIsFastBetOpened()){
-//                    BetInfoCarDialog().show(
-//                        supportFragmentManager,
-//                        BetInfoCarDialog::class.java.simpleName
-//                    )
-//                    showFastBetFragment()
-                }else{
-                    showBetListPage()
-                }
+                showBetListPage()
             }
         }
 

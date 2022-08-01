@@ -8,6 +8,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Looper
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
 import org.cxct.sportlottery.network.bettingStation.AreaAll
@@ -125,8 +127,9 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 BetStationSelectorAdapterListener {
                     hideKeyboard()
                     selectBettingStation = it
-                    appointmentDate = ""
+                    //appointmentDate = ""
                     appointmentTime = ""
+                    tv_hour.text = getString(R.string.select_time)
                     updateStation()
                 })
 
@@ -150,6 +153,10 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         btn_info.setOnClickListener {
             CommissionInfoDialog().show(childFragmentManager, null)
         }
+
+        appointmentDate = TimeUtil.dateToDateFormat(Date(), TimeUtil.YMD_FORMAT) ?: ""
+        spinner_area.tv_name.gravity = Gravity.CENTER_VERTICAL
+        spinner_city.tv_name.gravity = Gravity.CENTER_VERTICAL
     }
 
     private fun initEditTextStatus(setupView: LoginEditText) {
@@ -308,7 +315,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             this.viewLifecycleOwner
         ) {
             tv_time_error.text = it ?: ""
-            tv_time_error.visibility = if (it.isBlank()) View.INVISIBLE else View.VISIBLE
+            tv_time_error.visibility = if (it.isBlank()) View.GONE else View.VISIBLE
         }
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             tv_balance.text = sConfigData?.systemCurrency + " " + TextUtil.format(
@@ -351,6 +358,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
         viewModel.needCheck.observe(this.viewLifecycleOwner) {
             ll_commission.visibility = if (it) View.VISIBLE else View.GONE
+            tv_commission_title.visibility = if (it) View.VISIBLE else View.GONE
+            rv_station.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
@@ -438,24 +447,24 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 startCal.set(Calendar.HOUR_OF_DAY, 0)
                 endCal.set(Calendar.HOUR_OF_DAY, 23)
             }
-        }
 
-        for (i in startCal.get(Calendar.HOUR_OF_DAY)..endCal.get(Calendar.HOUR_OF_DAY)) {
-            var cal = Calendar.getInstance()
-            cal.set(Calendar.MINUTE, 0)
-            cal.set(Calendar.HOUR_OF_DAY, i)
-            var start = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT)
-            cal.add(Calendar.HOUR_OF_DAY, 1)
-            var end = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT)
-            items.add(StatusSheetData(start, start + "~" + end))
+            for (i in startCal.get(Calendar.HOUR_OF_DAY)..endCal.get(Calendar.HOUR_OF_DAY)) {
+                var cal = Calendar.getInstance()
+                cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.HOUR_OF_DAY, i)
+                var start = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT)
+                cal.add(Calendar.HOUR_OF_DAY, 1)
+                var end = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT)
+                items.add(StatusSheetData(start, "$start~$end"))
+            }
+            showBottomSheetDialog(
+                getString(R.string.select_time),
+                items,
+                items[0],
+                StatusSheetAdapter.ItemCheckedListener { _, data ->
+                    appointmentTime = data.showName!!
+                })
         }
-        showBottomSheetDialog(
-            getString(R.string.select_time),
-            items,
-            items[0],
-            StatusSheetAdapter.ItemCheckedListener { _, data ->
-                appointmentTime = data.showName!!
-            })
     }
 
     private var fusedLocationClient: FusedLocationProviderClient? = null

@@ -115,7 +115,6 @@
             android:layout_height="30dp">
 
             <ProgressBar
-                android:id="@+id/pb_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:indeterminateTint="@color/color_317FFF_0760D4" />

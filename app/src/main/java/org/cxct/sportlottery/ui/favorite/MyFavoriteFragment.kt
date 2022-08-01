@@ -688,7 +688,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as MyFavoriteActivity).showFastBetFragment(fastBetDataBean)
+        (activity as MyFavoriteActivity).setupBetData(fastBetDataBean)
     }
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {

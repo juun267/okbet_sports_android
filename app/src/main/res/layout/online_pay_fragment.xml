@@ -90,7 +90,6 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
-                    android:id="@+id/iv_click_pay_gap"
                     android:layout_width="35dp"
                     android:layout_height="45dp"
                     android:contentDescription="@null"
@@ -153,7 +152,6 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
-                    android:id="@+id/iv_click_pay_bank"
                     android:layout_width="35dp"
                     android:layout_height="45dp"
                     android:contentDescription="@null"
@@ -238,10 +236,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
+            <!-- class內設定字串-->
             <TextView
+                android:id="@+id/tv_remark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_tips"
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -252,8 +251,8 @@
                 android:text="@string/money_recharge_hint1"
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
-        </LinearLayout>
 
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_submit"

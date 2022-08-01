@@ -240,7 +240,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:minWidth="70dp"
-                            android:text="@string/remarks"
+                            android:text="@string/log_detail_reason"
                             android:textColor="@color/color_AEAEAE_404040"
                             android:textSize="@dimen/textSize14sp"
                             app:layout_constraintBottom_toBottomOf="parent"

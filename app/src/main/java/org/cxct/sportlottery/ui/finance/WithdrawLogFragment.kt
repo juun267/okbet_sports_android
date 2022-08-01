@@ -129,7 +129,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     }
 
     private fun setupListColumn(view: View) {
-        view.rech_log_recharge_amount.text = getString(R.string.withdraw_log_withdraw_amount)
+        view.rech_log_recharge_amount.text = getString(R.string.withdraw_amount)
     }
 
     private fun setupWithdrawLogList(view: View) {

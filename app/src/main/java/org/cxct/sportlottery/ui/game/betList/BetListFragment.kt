@@ -27,7 +27,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
-import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
@@ -46,7 +45,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.bet.list.FastBetSettingDialog
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -100,12 +98,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 BET_CONFIRM_TIPS -> {
                     val spannableStringBuilder = SpannableStringBuilder()
                     val text1 = SpannableString(getString(R.string.text_bet_not_success))
-                    val text2 = SpannableString(getString(R.string.text_bet_not_success2))
+                    val text2 = SpannableString(getString(R.string.waiting))
                     val foregroundSpan =
                         ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
                     text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     val text3 = SpannableString(getString(R.string.text_bet_not_success3))
-                    val text4 = SpannableString(getString(R.string.text_bet_not_success4))
+                    val text4 = SpannableString(getString(R.string.label_transaction_status))
                     val foregroundSpan2 =
                         ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
                     text4.setSpan(foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -214,17 +212,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //點背景dismiss
         binding.bgDimMount.setOnClickListener {
             activity?.onBackPressed()
-        }
-
-        binding.buttonFastBetSetting.apply {
-            cl_fast_bet.setOnClickListener { _ ->
-                fragmentManager?.let { it ->
-                    FastBetSettingDialog().show(
-                        it,
-                        FastBetSettingDialog::class.java.simpleName
-                    )
-                }
-            }
         }
     }
 

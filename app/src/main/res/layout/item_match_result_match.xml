@@ -192,7 +192,6 @@
             android:background="@color/color_1F1F1F_E2E2E2" />
 
         <TextView
-            android:id="@+id/empty"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

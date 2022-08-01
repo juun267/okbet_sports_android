@@ -58,7 +58,6 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
-                    android:id="@+id/iv_click_pay_account"
                     android:layout_width="35dp"
                     android:layout_height="45dp"
                     android:contentDescription="@null"
@@ -114,7 +113,6 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
-                    android:id="@+id/iv_click_recharge_account"
                     android:layout_width="35dp"
                     android:layout_height="45dp"
                     android:contentDescription="@null"
@@ -135,7 +133,6 @@
             app:cardElevation="0dp">
 
             <LinearLayout
-                android:id="@+id/content_qr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -318,7 +315,6 @@
                     tools:text="2020-13-25 19:35:35 (GMT+8)" />
 
                 <ImageView
-                    android:id="@+id/ic_calendar"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginEnd="16dp"

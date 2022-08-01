@@ -40,14 +40,16 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled true
+
             versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
         }
 
         release {
-            minifyEnabled false
+            debuggable true
+            minifyEnabled true
             zipAlignEnabled true
-            debuggable false
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,11 +36,15 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner) { event ->
             event.peekContent().let {
+
+                wd_log_detail_amount_subtitle.text = "${getString(R.string.text_account_history_amount)}："
+
                 wd_log_detail_trans_num.text = it.orderNo ?: ""
                 wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
                 wd_log_detail_status.text = it.withdrawState ?: ""

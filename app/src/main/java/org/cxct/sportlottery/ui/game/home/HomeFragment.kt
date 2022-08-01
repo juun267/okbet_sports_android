@@ -437,7 +437,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                         subscribeChannelType = ChannelType.HALL,
                         betPlayCateNameMap = betPlayCateNameMap,
                     )
-                    (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                    (activity as GameActivity).setupBetData(fastBetDataBean)
                 }
             }
         }
@@ -627,7 +627,7 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                     betPlayCateNameMap = betPlayCateNameMap,
                     playCateMenuCode = if (mSelectMatchType == MatchType.IN_PLAY || mSelectMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
                 )
-                (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+                (activity as GameActivity).setupBetData(fastBetDataBean)
             }
         }
     }

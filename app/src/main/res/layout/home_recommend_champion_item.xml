@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<org.cxct.sportlottery.ui.game.widget.OddsButton xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/odd_btn"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:layout_margin="4dp" />

@@ -9,7 +9,6 @@
     tools:context="org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog">
 
     <View
-        android:id="@+id/shadow"
         android:layout_width="match_parent"
         android:layout_height="16dp"
         android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
@@ -120,7 +119,6 @@
                     tools:text="日本奥运队 v 纽西兰奥运队" />
 
                 <include
-                    android:id="@+id/view_receipt_bet"
                     layout="@layout/view_match_receipt_bet"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="@dimen/margin_12"
@@ -143,7 +141,6 @@
 
 
     <TextView
-        android:id="@+id/tv_receipt_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

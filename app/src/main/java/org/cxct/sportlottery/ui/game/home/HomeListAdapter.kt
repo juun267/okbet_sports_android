@@ -285,12 +285,6 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = mDataList[position]
         when (holder) {
-            is GameMenuViewHolder -> {
-                holder.apply {
-                    setListener(onClickMenuListener)
-                    bind(data as MenuItemData)
-                }
-            }
             is GameMenuV2ViewHolder -> {
                 holder.apply {
                     setListener(onClickMenuListener)

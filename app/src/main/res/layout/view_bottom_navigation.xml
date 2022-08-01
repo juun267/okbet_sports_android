@@ -213,7 +213,6 @@
             app:layout_constraintTop_toBottomOf="@+id/ll_help">
 
             <TextView
-                android:id="@+id/txv_language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btm_navigation_language"
@@ -221,7 +220,6 @@
                 android:textSize="@dimen/textSize12sp" />
 
             <ImageView
-                android:id="@+id/img_flag"
                 android:layout_width="18dp"
                 android:layout_height="12dp"
                 android:layout_marginStart="7dp"
@@ -229,7 +227,6 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/line_language"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/color_3b3b3b_e6e6e6"
@@ -291,12 +288,10 @@
         app:layout_constraintTop_toBottomOf="@+id/ll_pagcor_container">
 
         <View
-            android:id="@+id/betListBarPaddingView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bet_list_bar_height" />
 
         <View
-            android:id="@+id/bottomNavBarPaddingView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_nav_bar_height" />
     </LinearLayout>

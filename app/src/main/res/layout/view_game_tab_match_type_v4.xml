@@ -30,37 +30,31 @@
             android:layout="@layout/home_cate_tab" />-->
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_inPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_at_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_early"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_outright"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_parlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />

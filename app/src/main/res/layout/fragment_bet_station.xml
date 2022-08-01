@@ -65,7 +65,7 @@
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:text="@string/withdraw_amount" />
 
@@ -74,12 +74,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cvDividerColor="@color/transparent"
-                    app:cvHint="@string/hint_please_enter_withdraw_amount"
+                    app:cvHint="@string/edt_hint_deposit_money"
                     app:cvInputType="number"
                     app:cvTitle="@string/withdraw_amount" />
 
                 <!-- 扣除金额 -->
                 <TextView
+                    android:id="@+id/tv_commission_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -87,7 +88,7 @@
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:text="@string/commission_deducted_amount" />
 
@@ -124,7 +125,7 @@
                         android:paddingHorizontal="10dp"
                         android:text="@string/commission_detail"
                         android:textColor="@color/selector_blue_light_gray"
-                        android:textSize="12dp" />
+                        android:textSize="@dimen/textSize12sp" />
 
                     <ImageView
                         android:id="@+id/btn_info"
@@ -145,7 +146,7 @@
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
                     android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textColor="@color/color_BBBBBB_333333"
                     android:text="@string/withdraw_password" />
 
@@ -166,34 +167,35 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="18dp"
-                android:paddingVertical="20dp">
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_map"
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_BBBBBB_333333"
                         android:text="@string/select_area" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_building"
                         android:drawablePadding="5dp"
+                        android:layout_marginLeft="7dp"
                         android:fontFamily="@font/helvetica_bold"
                         android:textStyle="bold"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/color_BBBBBB_333333"
                         android:text="@string/select_city" />
                 </LinearLayout>
@@ -207,7 +209,8 @@
                         android:layout_width="0dp"
                         android:layout_height="44dp"
                         android:layout_weight="1"
-                        android:background="@color/color_2B2B2B_FCFCFC"
+                        android:background="@drawable/bg_radius_4_button_white"
+
                         app:defaultStatusText="@string/waiting" />
 
                     <org.cxct.sportlottery.ui.component.StatusSpinnerView
@@ -216,7 +219,7 @@
                         android:layout_height="44dp"
                         android:layout_weight="1"
                         android:layout_marginLeft="7dp"
-                        android:background="@color/color_2B2B2B_FCFCFC"
+                        android:background="@drawable/bg_radius_4_button_white"
                         app:defaultStatusText="@string/waiting" />
                 </LinearLayout>
 
@@ -224,7 +227,7 @@
                     android:id="@+id/rv_station"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_191919_FCFCFC"
+                    android:background="@drawable/bg_radius_4_view_1c1c1c_fafafa"
                     android:layout_marginTop="@dimen/margin_8"
                     android:padding="@dimen/margin_8"
                     tools:listitem="@layout/item_bet_station"
@@ -262,7 +265,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/color_FF9143_ff9200"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/textSize12sp"
                             tools:text="Address Longway-BS" />
 
                         <TextView
@@ -271,7 +274,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/helvetica_bold"
                             android:textStyle="bold"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/textSize16sp"
                             android:textColor="@color/color_BBBBBB_333333"
                             tools:text="makati 55T 0001prd t" />
 
@@ -288,117 +291,147 @@
                             android:textStyle="bold"
                             tools:text="3.2 km"
                             android:textColor="@color/color_1A1A1A_0760D4"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/textSize22sp" />
                     </LinearLayout>
                 </FrameLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_1F1F1F_E2E2E2"
-                    android:layout_marginHorizontal="18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lin_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/bg_radius_4_view_1c1c1c_fafafa"
+                >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginHorizontal="18dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableLeft="@drawable/ic_appointment"
-                        android:drawablePadding="5dp"
-                        android:fontFamily="@font/helvetica_bold"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        android:text="@string/appointment_time" />
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        android:textColor="@color/color_7F7F7F_999999"
-                        android:text="@string/current_time" />
-
-                    <TextView
-                        android:id="@+id/tv_current_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_6"
-                        android:textSize="12sp"
-                        android:textColor="@color/color_0760D4_0760D4"
-                        tools:text="2022-09" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginHorizontal="@dimen/margin_18"
-                    android:background="@drawable/bg_radius_4_button_white">
-
-                    <TextView
-                        android:id="@+id/tv_calendar"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="12dp"
-                        android:drawablePadding="7dp"
-                        android:gravity="center_vertical"
-                        android:drawableLeft="@drawable/ic_calendar"
-                        android:drawableRight="@drawable/ic_arrow_gray"
-                        android:textSize="14sp"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        tools:text="2022-06-30" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/color_1F1F1F_E2E2E2" />
-
-                    <TextView
-                        android:id="@+id/tv_hour"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="12dp"
-                        android:drawablePadding="7dp"
-                        android:gravity="center_vertical"
-                        android:drawableLeft="@drawable/ic_time"
-                        android:drawableRight="@drawable/ic_arrow_gray"
-                        android:textSize="14sp"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        tools:text="08:00~09:00" />
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/list_no_record_img"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_img_no_record"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_time_error"
-                    android:layout_width="match_parent"
+                    android:id="@+id/list_no_record_text"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:layout_marginHorizontal="@dimen/margin_18"
-                    android:drawablePadding="5dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/color_F75452_b73a20"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="invisible"
-                    app:drawableStartCompat="@drawable/ic_error_tip"
-                    tools:text="@string/please_input_account"
-                    tools:visibility="visible" />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/finance_list_no_record"
+                    android:textColor="@color/color_BBBBBB_333333"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
+                    app:layout_constraintStart_toStartOf="@id/list_no_record_img"
+                    app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
+
             </LinearLayout>
 
-            <include
-                android:id="@+id/lin_empty"
-                layout="@layout/view_no_record"
-                android:visibility="gone" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_1F1F1F_E2E2E2"
+                android:layout_marginHorizontal="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/ic_appointment"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_BBBBBB_333333"
+                    android:text="@string/appointment_time" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/color_7F7F7F_999999"
+                    android:text="@string/current_time" />
+
+                <TextView
+                    android:id="@+id/tv_current_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_6"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textColor="@color/color_0760D4_0760D4"
+                    tools:text="2022-09" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:background="@drawable/bg_radius_4_button_white">
+
+                <TextView
+                    android:id="@+id/tv_calendar"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="12dp"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_calendar"
+                    android:drawableRight="@drawable/ic_arrow_gray"
+                    android:textSize="@dimen/textSize12sp"
+                    android:text="@string/select_date"
+                    android:textColor="@color/color_BBBBBB_333333"
+                    tools:text="2022-06-30" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/color_1F1F1F_E2E2E2" />
+
+                <TextView
+                    android:id="@+id/tv_hour"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="12dp"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_time"
+                    android:drawableRight="@drawable/ic_arrow_gray"
+                    android:textSize="@dimen/textSize12sp"
+                    android:text="@string/select_time"
+                    android:textColor="@color/color_BBBBBB_333333"
+                    tools:text="08:00~09:00" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_time_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_F75452_b73a20"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_error_tip"
+                tools:text="@string/please_input_account"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/btn_submit"
@@ -407,7 +440,6 @@
                 android:layout_margin="18dp"
                 android:background="@drawable/bg_radius_4_button_dusk"
                 android:gravity="center"
-                android:paddingTop="9dp"
                 android:paddingBottom="9dp"
                 android:text="@string/submit"
                 android:textAllCaps="true"

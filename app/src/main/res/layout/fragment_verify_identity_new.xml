@@ -77,8 +77,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/id_description1"
+            android:textColor="@color/color_E44438_e44438" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id_description2"
+            android:textColor="@color/color_E44438_e44438" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="@string/id_description"
+            android:text="@string/id_description3"
             android:textColor="@color/color_E44438_e44438" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

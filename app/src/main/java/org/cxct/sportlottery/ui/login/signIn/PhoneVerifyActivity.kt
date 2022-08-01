@@ -94,7 +94,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                 GamePublicityActivity.reStart(this)
             } else {
                 binding.etVerificationCode.setError(
-                    getString(R.string.login_phone_verify_error),
+                    getString(R.string.dialog_security_error),
                     false
                 )
             }
@@ -135,7 +135,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                             stopSmeTimer()
                             binding.btnSendSms.isEnabled = true
                             binding.btnSendSms.text =
-                                getString(R.string.login_phone_verify_get_code)
+                                getString(R.string.get_security_code)
                             binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }

@@ -92,7 +92,6 @@
                     tools:text="0.89" />
 
                 <include
-                    android:id="@+id/view_receipt_bet_parlay"
                     layout="@layout/view_match_receipt_bet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -164,11 +164,7 @@ class TransactionRecordDiffAdapter :
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
                 when (data.gameType) {
                     GameType.FT.key, GameType.BK.key -> {
-                        if (matchOdds.rtScore?.isNotEmpty() == true)
-                            tv_score.text = String.format(
-                                context.getString(R.string.brackets),
-                                matchOdds.rtScore
-                            )
+                        if (matchOdds.rtScore?.isNotEmpty() == true) tv_score.text = "(${matchOdds.rtScore})"
                     }
                 }
             }

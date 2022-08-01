@@ -8,7 +8,6 @@
     android:showDividers="end">
 
     <LinearLayout
-        android:id="@+id/ll_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_262626_edf4ff"
@@ -39,7 +38,6 @@
             tools:text="@string/league" />
 
         <TextView
-            android:id="@+id/tv_title_winner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"

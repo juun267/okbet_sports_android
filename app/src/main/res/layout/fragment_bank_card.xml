@@ -179,7 +179,6 @@
                 android:orientation="vertical">
                 <!-- 協議/幣種 -->
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/item_protocol_selector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

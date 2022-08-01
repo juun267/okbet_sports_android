@@ -51,7 +51,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_bet_list_receipt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_4"
@@ -63,7 +62,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/ivBetMoney"
                 android:layout_width="@dimen/margin_12"
                 android:layout_height="@dimen/margin_12"
                 android:layout_marginRight="@dimen/margin_8"

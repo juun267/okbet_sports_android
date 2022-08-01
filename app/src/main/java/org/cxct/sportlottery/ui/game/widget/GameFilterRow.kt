@@ -146,7 +146,7 @@ class GameFilterRow @JvmOverloads constructor(
             }
             text = when (type) {
                 IN_PLAY -> resources.getString(R.string.match_type_row_in_play)
-                AT_START -> resources.getString(R.string.match_type_row_at_start)
+                AT_START -> resources.getString(R.string.game_soon)
                 else -> null
             }
         }

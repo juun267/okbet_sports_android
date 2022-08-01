@@ -7,7 +7,6 @@
     tools:ignore="SpUsage, ContentDescription">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cvBlock"
         android:layout_width="285dp"
         android:layout_height="136dp"
         android:layout_marginVertical="@dimen/margin_10"
@@ -20,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_game_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -40,7 +38,6 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/iv_home_icon"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginBottom="@dimen/margin_9"
@@ -81,7 +78,6 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_game_play_cate_code_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
@@ -100,7 +96,6 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/iv_away_icon"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginBottom="@dimen/margin_9"
@@ -131,14 +126,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/blockNormalGame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/ivLiveIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
@@ -173,7 +166,6 @@
                         tools:text="09:15" />
 
                     <TextView
-                        android:id="@+id/tvGameSpt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -186,7 +178,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <include
-                    android:id="@+id/contentBaseballStatus"
                     layout="@layout/content_baseball_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -213,7 +204,6 @@
                     tools:text="Mogolia,1st Leag Mogolia,1st Leag" />
 
                 <TextView
-                    android:id="@+id/tvPlayCateCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_6"
@@ -246,7 +236,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/teamInfoBlock">
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
-                    android:id="@+id/oddBtn1"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="8dp"
@@ -254,7 +243,6 @@
                     android:layout_weight="1" />
 
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
-                    android:id="@+id/oddBtn2"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_marginEnd="8dp"
@@ -266,7 +254,6 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clVsBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_6"
@@ -284,7 +271,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/ivVS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
@@ -332,7 +318,6 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clNoVsBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_6"
@@ -342,7 +327,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_no_vs_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"

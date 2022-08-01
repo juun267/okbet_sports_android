@@ -98,7 +98,7 @@ class ComboDetailDialog internal constructor(
                         holder.setText(R.id.tvScore, matchOdds.rtScore)
                         holder.setText(
                             R.id.tvTeamNames,
-                            String.format(mContext.getString(R.string.match_names_2), matchOdds.homeName, matchOdds.awayName)
+                            String.format(mContext.getString(R.string.match_names_3), matchOdds.homeName, matchOdds.awayName)
                         )
 
                         holder.setText(

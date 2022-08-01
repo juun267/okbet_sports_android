@@ -32,7 +32,6 @@
             android:text="@string/game_tab_outright_odd" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_eps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/game_tab_price_boosts_odd" />
