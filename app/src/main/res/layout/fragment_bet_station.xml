@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cvDividerColor="@color/transparent"
-                    app:cvHint="@string/hint_please_enter_withdraw_amount"
+                    app:cvHint="@string/edt_hint_deposit_money"
                     app:cvInputType="number"
                     app:cvTitle="@string/withdraw_amount" />
 
