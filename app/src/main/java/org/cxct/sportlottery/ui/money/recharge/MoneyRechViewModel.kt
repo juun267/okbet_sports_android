@@ -11,16 +11,15 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.common.MoneyType
-import org.cxct.sportlottery.network.money.*
+import org.cxct.sportlottery.network.money.MoneyAddRequest
+import org.cxct.sportlottery.network.money.MoneyAddResult
+import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.money.config.RechType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.MoneyRepository
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
@@ -355,16 +354,17 @@ class MoneyRechViewModel(
             rechargeAmount.isNullOrEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyRechargeAmount(
+            rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
+                androidContext.getString(R.string.error_recharge_amount_format)
+            }
+            VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) -> {
-                androidContext.getString(R.string.error_recharge_amount)
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
-            else -> {
-                ""
-            }
+            else -> ""
         }
     }
 
@@ -373,19 +373,20 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
-            rechargeAmount.isNullOrEmpty()  -> {
+            rechargeAmount.isNullOrEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyRechargeAmount(
+            rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
+                androidContext.getString(R.string.error_recharge_amount_format)
+            }
+            VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) || rechargeAmount == "0" -> {
-                androidContext.getString(R.string.error_recharge_account)
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
-            else -> {
-                ""
-            }
+            else -> ""
         }
     }
 
@@ -397,16 +398,17 @@ class MoneyRechViewModel(
             rechargeAmount.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyRechargeAmount(
+            rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
+                androidContext.getString(R.string.error_recharge_amount_format)
+            }
+            VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) || rechargeAmount == "0" -> {
-                androidContext.getString(R.string.error_recharge_amount)
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
-            else -> {
-                ""
-            }
+            else -> ""
         }
     }
 
@@ -461,19 +463,20 @@ class MoneyRechViewModel(
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
-            rechargeAmount.isNullOrEmpty()-> {
+            rechargeAmount.isNullOrEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyRechargeAmount(
+            rechargeAmount.toLongOrNull() == null || rechargeAmount.toLong().equals(0) -> {
+                androidContext.getString(R.string.error_recharge_amount_format)
+            }
+            VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) || rechargeAmount == "0" -> {
-                androidContext.getString(R.string.error_recharge_account)
+            ) != 0 -> {
+                androidContext.getString(R.string.error_amount_limit_exceeded)
             }
-            else -> {
-                ""
-            }
+            else -> ""
         }
     }
 
