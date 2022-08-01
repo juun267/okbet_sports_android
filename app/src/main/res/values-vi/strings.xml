@@ -1185,4 +1185,5 @@
     <string name="tran_time_sub">Giờ giao dịch :</string>
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="btn_sure">Xác nhận</string>
+    <string name="next_step">Bước phía trước</string>
 </resources>

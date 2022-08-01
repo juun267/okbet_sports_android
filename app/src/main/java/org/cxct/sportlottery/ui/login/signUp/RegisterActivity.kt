@@ -23,6 +23,7 @@ import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
@@ -58,7 +59,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
     private var isUploaded = false
-
+    private var page = 1;
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -96,27 +97,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setPage()
         setupBackButton()
-        setupFullName()
-        setupWithdrawalPassword()
-        setupQQ()
-        setupPhone()
-        setupMail()
-        setupAddress()
-        setupWeChat()
-        setupZalo()
-        setupFacebook()
-        setupWhatsApp()
-        setupTelegram()
-        setupSecurityPb()
-        setupBirthday()
-        setupRegisterIdentity()
-        setupSalarySource()
-        setupIdentityType()
-        setupBettingShop()
-        setupValidCode()
-        setupSmsValidCode()
+
+
+
+
         setupAgreement()
         setupRegisterButton()
         setupGoToLoginButton()
@@ -168,7 +154,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
         binding.tvPrivacy.text =
-            "1."+getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
+            "1." + getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
                 R.string.register_privacy_policy_promotions
             )
         binding.tvPrivacy.makeLinks(
@@ -185,8 +171,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
         binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
-            LanguageManager.Language.VI -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.terms_conditions) + String.format(getString(R.string.register_rules_2nd_half), appName)
-            else -> "2."+String.format(getString(R.string.register_over_21), appName) + getString(R.string.terms_conditions)
+            LanguageManager.Language.VI -> "2." + String.format(
+                getString(R.string.register_over_21),
+                appName
+            ) + getString(R.string.terms_conditions) + String.format(
+                getString(R.string.register_rules_2nd_half),
+                appName
+            )
+            else -> "2." + String.format(getString(R.string.register_over_21), appName) + getString(
+                R.string.terms_conditions
+            )
         }
 
         binding.tvAgreement.makeLinks(
@@ -199,17 +193,103 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             })
         )
 
-        binding.tvNotPHOfficial.text = "3."+getString(R.string.register_not_ph_official)
-        binding.tvNotPHSchool.text = "4."+getString(R.string.register_not_ph_school)
-        binding.tvRuleOkbet.text = "5."+getString(R.string.register_rule_okbet)
+        binding.tvNotPHOfficial.text = "3." + getString(R.string.register_not_ph_official)
+        binding.tvNotPHSchool.text = "4." + getString(R.string.register_not_ph_school)
+        binding.tvRuleOkbet.text = "5." + getString(R.string.register_rule_okbet)
         binding.tvAgreeAll.text = getString(R.string.register_rule_agree_all)
         setLetterSpace()
     }
-    private fun setLetterSpace(){
-        if (LanguageManager.getSelectLanguage(this)==LanguageManager.Language.ZH) {
+
+    private fun setLetterSpace() {
+        if (LanguageManager.getSelectLanguage(this) == LanguageManager.Language.ZH) {
             binding.btnRegister.letterSpacing = 0.6f
         }
     }
+
+    private fun setPage() {
+        when (page) {
+            1 -> {
+                btn_register.text = getString(R.string.next_step)
+                et_full_name.visibility = View.GONE
+                et_withdrawal_pwd.visibility = View.GONE
+                et_phone.visibility = View.GONE
+                block_sms_valid_code.visibility = View.GONE
+
+                etBirth.visibility = View.GONE
+                etIdentity.visibility = View.GONE
+                etSalary.visibility = View.GONE
+                etBettingShop.visibility = View.GONE
+                et_mail.visibility = View.GONE
+                et_postal.visibility = View.GONE
+                et_province.visibility = View.GONE
+                et_city.visibility = View.GONE
+
+                etIdentityType.visibility = View.GONE
+                etIdentity.visibility = View.GONE
+                etIdentity2.visibility = View.GONE
+                etIdentityType2.visibility = View.GONE
+                etIdentityNumber.visibility = View.GONE
+                etIdentityNumber2.visibility = View.GONE
+                et_address.visibility = View.GONE
+                etSecurityPbType.visibility = View.GONE
+                etSecurityPb.visibility = View.GONE
+
+
+                clAgreement.visibility = View.VISIBLE
+                et_recommend_code.visibility = View.VISIBLE
+                et_member_account.visibility = View.VISIBLE
+                et_login_password.visibility = View.VISIBLE
+                et_confirm_password.visibility = View.VISIBLE
+            }
+            2 -> {
+                btn_register.text = getString(R.string.next_step)
+
+                clAgreement.visibility = View.GONE
+                et_recommend_code.visibility = View.GONE
+                et_member_account.visibility = View.GONE
+                et_login_password.visibility = View.GONE
+                et_confirm_password.visibility = View.GONE
+
+                etIdentityNumber.visibility = View.VISIBLE
+                etIdentityNumber2.visibility = View.VISIBLE
+                etIdentityType2.visibility = View.VISIBLE
+                etIdentity2.visibility = View.VISIBLE
+
+                setupFullName()
+                setupWithdrawalPassword()
+                setupPhone()
+                setupBirthday()
+
+
+                setupSmsValidCode()
+
+
+
+                setupRegisterIdentity()
+                setupSalarySource()
+                setupIdentityType()
+                setupIdentityType2()
+            }
+            else -> {
+                btn_register.text = getString(R.string.btn_register)
+                setupBettingShop()
+                setupMail()
+                setupAddress()
+
+                setupValidCode()
+                setupQQ()
+                setupWeChat()
+                setupZalo()
+                setupFacebook()
+                setupWhatsApp()
+                setupTelegram()
+                setupSecurityPb()
+
+            }
+        }
+
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         stopSmeTimer()
@@ -224,16 +304,21 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         binding.flCredentials.visibility = View.VISIBLE
         val transaction = supportFragmentManager.beginTransaction()
         credentialsFragment = RegisterCredentialsFragment.newInstance(
-            registerCredentialsListener = RegisterCredentialsFragment.RegisterCredentialsListener(onCloseFragment = {
-                supportFragmentManager.popBackStack()
-                binding.flCredentials.visibility = View.GONE
-            })
+            registerCredentialsListener = RegisterCredentialsFragment.RegisterCredentialsListener(
+                onCloseFragment = {
+                    supportFragmentManager.popBackStack()
+                    binding.flCredentials.visibility = View.GONE
+                })
         )
 
 
         credentialsFragment?.let { fragment ->
             transaction
-                .add(binding.flCredentials.id, fragment, RegisterCredentialsFragment::class.java.simpleName)
+                .add(
+                    binding.flCredentials.id,
+                    fragment,
+                    RegisterCredentialsFragment::class.java.simpleName
+                )
                 .addToBackStack(RegisterCredentialsFragment::class.java.simpleName)
                 .commit()
         }
@@ -241,7 +326,18 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupBackButton() {
-        binding.btnBack.setOnClickListener { finish() }
+        binding.btnBack.setOnClickListener {
+            when (page) {
+                1 -> {
+                    finish()
+                }
+                else -> {
+                    page--
+                    setPage()
+                }
+            }
+
+        }
     }
 
     private fun setupFullName() {
@@ -252,12 +348,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupWithdrawalPassword() {
         binding.etWithdrawalPwd.visibility =
             if (sConfigData?.enableFundPwd == FLAG_OPEN) View.VISIBLE else View.GONE
-
-    }
-
-    private fun setupQQ() {
-        binding.etQq.visibility =
-            if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
 
     }
 
@@ -273,15 +363,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     }
 
-    private fun setupAddress() {
-        (if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE).let { visible ->
-            with(binding) {
-                etPostal.visibility = visible
-                etProvince.visibility = visible
-                etCity.visibility = visible
-                etAddress.visibility = visible
-            }
-        }
+    private fun setupQQ() {
+        binding.etQq.visibility =
+            if (sConfigData?.enableQQ == FLAG_OPEN) View.VISIBLE else View.GONE
+
     }
 
     private fun setupWeChat() {
@@ -313,6 +398,19 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     }
 
+
+    private fun setupAddress() {
+        (if (sConfigData?.enableAddress == FLAG_OPEN) View.VISIBLE else View.GONE).let { visible ->
+            with(binding) {
+                etPostal.visibility = visible
+                etProvince.visibility = visible
+                etCity.visibility = visible
+                etAddress.visibility = visible
+            }
+        }
+    }
+
+
     private fun setupSecurityPb() {
         //TODO etSecurityPbType 預設選中第一項故沒有補上未填入的錯誤提示
         with(binding) {
@@ -328,7 +426,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             //根據config配置薪資來源選項
             val securityPbTypeList = mutableListOf<StatusSheetData>()
             sConfigData?.safeQuestionList?.map { securityPbType ->
-                securityPbTypeList.add(StatusSheetData(securityPbType.id.toString(), securityPbType.name))
+                securityPbTypeList.add(
+                    StatusSheetData(
+                        securityPbType.id.toString(),
+                        securityPbType.name
+                    )
+                )
             }
 
             //預設顯示第一項
@@ -363,11 +466,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 /**
                  * 若eetSecurityPb取得focus的話點擊securityPbSpinner
                  */
-                eetSecurityPbType.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus) {
-                        securityPbTypeSpinner.performClick()
+                eetSecurityPbType.onFocusChangeListener =
+                    View.OnFocusChangeListener { _, hasFocus ->
+                        if (hasFocus) {
+                            securityPbTypeSpinner.performClick()
+                        }
                     }
-                }
             }
         }
     }
@@ -383,7 +487,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 //隱藏光標
                 eetBirth.isCursorVisible = false
                 //隱藏鍵盤
-                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 
                 birthdayTimePickerView?.show()
@@ -473,6 +578,60 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 eetSalary.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                     if (hasFocus) {
                         salarySpinner.performClick()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun setupIdentityType2() {
+        with(binding) {
+            //顯示隱藏該選項
+            etIdentityType2.visibility =
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            //根據config配置薪資來源選項
+            val identityTypeList = mutableListOf<StatusSheetData>()
+            sConfigData?.identityTypeList?.map { identityType ->
+                identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
+            }
+
+            //預設顯示第一項
+            identityTypeSelectedData = identityTypeList.firstOrNull()
+            eetIdentityType2.setText(identityTypeList.firstOrNull()?.showName)
+            //設置預設文字後會變成選中狀態, 需清除focus
+            etIdentityType2.hasFocus = false
+            viewModel.checkIdentityType(eetIdentityType2.text.toString())
+
+            //配置點擊展開選項選單
+            etIdentityType2.post {
+                identityTypeSpinner.setSpinnerView(
+                    eetIdentityType2,
+                    etIdentityType2,
+                    identityTypeList,
+                    touchListener = {
+                        //旋轉箭頭
+                        etIdentityType2.endIconImageButton.rotation = 180F
+                    },
+                    itemSelectedListener = {
+                        identityTypeSelectedData = it
+                        eetIdentityType2.setText(it?.showName)
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etIdentityType2.endIconImageButton.rotation = 0F
+                    })
+            }
+
+            eetIdentityType2.post {
+                //TODO 可重構 不需要蓋一層View
+                /**
+                 * 若IdentityType取得focus的話點擊identityTypeSpinner
+                 */
+                eetIdentityType2.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        identityTypeSpinner.performClick()
                     }
                 }
             }
@@ -595,7 +754,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkLoginPassword(it) }
             }
             eetConfirmPassword.apply {
-                checkRegisterListener { viewModel.checkConfirmPassword(eetLoginPassword.text.toString(), it) }
+                checkRegisterListener {
+                    viewModel.checkConfirmPassword(
+                        eetLoginPassword.text.toString(),
+                        it
+                    )
+                }
             }
             eetFullName.apply {
                 checkRegisterListener { viewModel.checkFullName(it) }
@@ -664,50 +828,55 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
 
         binding.btnRegister.setOnClickListener {
-            Log.i(">>>", "btnRegister onclicked")
-            val deviceId = Settings.Secure.getString(
-                applicationContext.contentResolver, Settings.Secure.ANDROID_ID
-            )
-            val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-            binding.apply {
-                var phone = eetPhone.text.toString()
-                if (phone.isNotEmpty() && phone.substring(0, 1) == "0") {
-                    phone = phone.substring(1, phone.length)
-                }
-                viewModel.registerSubmit(
-                    eetRecommendCode.text.toString(),
-                    eetMemberAccount.text.toString(),
-                    eetLoginPassword.text.toString(),
-                    eetConfirmPassword.text.toString(),
-                    eetFullName.text.toString(),
-                    eetWithdrawalPwd.text.toString(),
-                    eetQq.text.toString(),
-                    phone,
-                    eetMail.text.toString(),
-                    eetPostal.text.toString(),
-                    eetProvince.text.toString(),
-                    eetCity.text.toString(),
-                    eetAddress.text.toString(),
-                    eetWeChat.text.toString(),
-                    eetZalo.text.toString(),
-                    eetFacebook.text.toString(),
-                    eetWhatsApp.text.toString(),
-                    eetTelegram.text.toString(),
-                    securityPbTypeCode = securityPbTypeSelectedData?.code,
-                    securityPb = eetSecurityPb.text.toString(),
-                    eetSmsValidCode.text.toString(),
-                    eetVerificationCode.text.toString(),
-                    cbAgreeAll.isChecked,
-                    deviceSn,
-                    deviceId,
-                    birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
-                    identity = eetIdentity.text.toString(),
-                    identityType = identityTypeSelectedData?.code,
-                    salarySource = salarySourceSelectedData?.code,
-                    bettingShop = bettingShopSelectedData?.code
+            page++
+            setPage()
+            if (page == 3) {
+                Log.i(">>>", "btnRegister onclicked")
+                val deviceId = Settings.Secure.getString(
+                    applicationContext.contentResolver, Settings.Secure.ANDROID_ID
                 )
+                val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+                binding.apply {
+                    var phone = eetPhone.text.toString()
+                    if (phone.isNotEmpty() && phone.substring(0, 1) == "0") {
+                        phone = phone.substring(1, phone.length)
+                    }
+                    viewModel.registerSubmit(
+                        eetRecommendCode.text.toString(),
+                        eetMemberAccount.text.toString(),
+                        eetLoginPassword.text.toString(),
+                        eetConfirmPassword.text.toString(),
+                        eetFullName.text.toString(),
+                        eetWithdrawalPwd.text.toString(),
+                        eetQq.text.toString(),
+                        phone,
+                        eetMail.text.toString(),
+                        eetPostal.text.toString(),
+                        eetProvince.text.toString(),
+                        eetCity.text.toString(),
+                        eetAddress.text.toString(),
+                        eetWeChat.text.toString(),
+                        eetZalo.text.toString(),
+                        eetFacebook.text.toString(),
+                        eetWhatsApp.text.toString(),
+                        eetTelegram.text.toString(),
+                        securityPbTypeCode = securityPbTypeSelectedData?.code,
+                        securityPb = eetSecurityPb.text.toString(),
+                        eetSmsValidCode.text.toString(),
+                        eetVerificationCode.text.toString(),
+                        cbAgreeAll.isChecked,
+                        deviceSn,
+                        deviceId,
+                        birth = eetBirth.text.toString().replace(" ", ""), //傳給後端的不需要有空白間隔
+                        identity = eetIdentity.text.toString(),
+                        identityType = identityTypeSelectedData?.code,
+                        salarySource = salarySourceSelectedData?.code,
+                        bettingShop = bettingShopSelectedData?.code
+                    )
+                }
             }
         }
+
     }
 
     private fun sendSms() {
@@ -719,8 +888,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             ) {}
         else {
             binding.btnSendSms.isEnabled = false
-            if(phone.substring(0,1) == "0"){
-                phone = phone.substring(1,phone.length)
+            if (phone.substring(0, 1) == "0") {
+                phone = phone.substring(1, phone.length)
             }
             viewModel.sendSms(phone)
         }
@@ -794,7 +963,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     false
                 )
             }
-            fullNameMsg.observe(this@RegisterActivity) { binding.etFullName.setError(it.first, false) }
+            fullNameMsg.observe(this@RegisterActivity) {
+                binding.etFullName.setError(
+                    it.first,
+                    false
+                )
+            }
             fundPwdMsg.observe(this@RegisterActivity) {
                 binding.etWithdrawalPwd.setError(
                     it.first,
@@ -805,20 +979,65 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             phoneMsg.observe(this@RegisterActivity) { binding.etPhone.setError(it.first, false) }
             emailMsg.observe(this@RegisterActivity) { binding.etMail.setError(it.first, false) }
             postalMsg.observe(this@RegisterActivity) { binding.etPostal.setError(it.first, false) }
-            provinceMsg.observe(this@RegisterActivity) { binding.etProvince.setError(it.first, false) }
+            provinceMsg.observe(this@RegisterActivity) {
+                binding.etProvince.setError(
+                    it.first,
+                    false
+                )
+            }
             cityMsg.observe(this@RegisterActivity) { binding.etCity.setError(it.first, false) }
-            addressMsg.observe(this@RegisterActivity) { binding.etAddress.setError(it.first, false) }
+            addressMsg.observe(this@RegisterActivity) {
+                binding.etAddress.setError(
+                    it.first,
+                    false
+                )
+            }
             salaryMsg.observe(this@RegisterActivity) { binding.etSalary.setError(it.first, false) }
             birthMsg.observe(this@RegisterActivity) { binding.etBirth.setError(it.first, false) }
-            identityMsg.observe(this@RegisterActivity) { binding.etIdentity.setError(it.first, false) }
-            identityTypeMsg.observe(this@RegisterActivity) { binding.etIdentityType.setError(it.first, false) }
-            bettingShopMsg.observe(this@RegisterActivity) { binding.etBettingShop.setError(it.first, false) }
+            identityMsg.observe(this@RegisterActivity) {
+                binding.etIdentity.setError(
+                    it.first,
+                    false
+                )
+            }
+            identityTypeMsg.observe(this@RegisterActivity) {
+                binding.etIdentityType.setError(
+                    it.first,
+                    false
+                )
+            }
+            bettingShopMsg.observe(this@RegisterActivity) {
+                binding.etBettingShop.setError(
+                    it.first,
+                    false
+                )
+            }
             weChatMsg.observe(this@RegisterActivity) { binding.etWeChat.setError(it.first, false) }
             zaloMsg.observe(this@RegisterActivity) { binding.etZalo.setError(it.first, false) }
-            facebookMsg.observe(this@RegisterActivity) { binding.etFacebook.setError(it.first, false) }
-            whatsAppMsg.observe(this@RegisterActivity) { binding.etWhatsApp.setError(it.first, false) }
-            telegramMsg.observe(this@RegisterActivity) { binding.etTelegram.setError(it.first, false) }
-            securityPbMsg.observe(this@RegisterActivity) { binding.etSecurityPb.setError(it.first, false) }
+            facebookMsg.observe(this@RegisterActivity) {
+                binding.etFacebook.setError(
+                    it.first,
+                    false
+                )
+            }
+            whatsAppMsg.observe(this@RegisterActivity) {
+                binding.etWhatsApp.setError(
+                    it.first,
+                    false
+                )
+            }
+            telegramMsg.observe(this@RegisterActivity) {
+                binding.etTelegram.setError(
+                    it.first,
+                    false
+                )
+            }
+            securityPbMsg.observe(this@RegisterActivity) {
+                binding.etSecurityPb.setError(
+                    it.first,
+                    false
+                )
+            }
             securityCodeMsg.observe(this@RegisterActivity) {
                 binding.etSmsValidCode.setError(
                     it.first,
@@ -867,11 +1086,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     /**
                      * 若BettingShop取得focus的話點擊bettingShopSpinner
                      */
-                    eetBettingShop.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-                        if (hasFocus) {
-                            bettingShopSpinner.performClick()
+                    eetBettingShop.onFocusChangeListener =
+                        View.OnFocusChangeListener { _, hasFocus ->
+                            if (hasFocus) {
+                                bettingShopSpinner.performClick()
+                            }
                         }
-                    }
                 }
             }
         }
@@ -895,23 +1115,25 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     //當所有值都有填，按下enter時，自動點擊註冊鈕
     private fun setEditTextIme(registerEnable: Boolean) {
         binding.apply {
-            eetRecommendCode.setActionListener(registerEnable)
-            eetMemberAccount.setActionListener(registerEnable)
-            eetLoginPassword.setActionListener(registerEnable)
-            eetConfirmPassword.setActionListener(registerEnable)
-            eetFullName.setActionListener(registerEnable)
-            eetWithdrawalPwd.setActionListener(registerEnable)
-            eetQq.setActionListener(registerEnable)
-            eetPhone.setActionListener(registerEnable)
-            eetMail.setActionListener(registerEnable)
-            eetWeChat.setActionListener(registerEnable)
-            eetZalo.setActionListener(registerEnable)
-            eetFacebook.setActionListener(registerEnable)
-            eetWhatsApp.setActionListener(registerEnable)
-            eetTelegram.setActionListener(registerEnable)
-            eetSecurityPb.setActionListener(registerEnable)
-            eetSmsValidCode.setActionListener(registerEnable)
-            eetVerificationCode.setActionListener(registerEnable)
+            when (page) {
+                1 -> {
+                    eetMemberAccount.setActionListener(registerEnable)
+                    eetLoginPassword.setActionListener(registerEnable)
+                    eetConfirmPassword.setActionListener(registerEnable)
+                }
+                2 -> {
+                    eetRecommendCode.setActionListener(registerEnable)
+                    eetFullName.setActionListener(registerEnable)
+                    eetWithdrawalPwd.setActionListener(registerEnable)
+                    eetPhone.setActionListener(registerEnable)
+                    eetSecurityPb.setActionListener(registerEnable)
+                }
+                else -> {
+                    eetMail.setActionListener(registerEnable)
+                }
+            }
+
+
         }
     }
 
@@ -1063,7 +1285,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         val limit21YearsOld = Calendar.getInstance()
         limit21YearsOld.add(Calendar.YEAR, -21)
 
-        val dateTimePicker: TimePickerView = TimePickerBuilder(this
+        val dateTimePicker: TimePickerView = TimePickerBuilder(
+            this
         ) { date, _ ->
             try {
                 timeSelectedListener(date)

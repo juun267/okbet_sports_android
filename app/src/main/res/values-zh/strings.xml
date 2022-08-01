@@ -103,8 +103,8 @@
     <string name="income_source">薪资来源</string>
     <string name="identity_type">证件类型</string>
     <string name="betting_shop">匹配投注站</string>
-    <string name="register_identity">身分证号</string>
-    <string name="hint_register_identity">(请输入身分证号)</string>
+    <string name="register_identity">身份证号</string>
+    <string name="hint_register_identity">(请输入身份证号)</string>
     <string name="birth_date">生日</string>
     <string name="hint_birth_date">(YYYY/MM/DD)</string>
     <string name="hint_real_name">(姓名须与银行户口一致)</string>
@@ -1185,10 +1185,10 @@
     <!--endregion-->
 
     <string name="verification_status">身份证验证</string>
-    <string name="register_identity_photo_front">上传身分证正面</string>
-    <string name="register_identity_photo_hint_front">请点击上传身分证正面照</string>
-    <string name="register_identity_photo_back">上传身分证背面</string>
-    <string name="register_identity_photo_hint_back">请点击上传身分证背面照</string>
+    <string name="register_identity_photo_front">上传身份证正面</string>
+    <string name="register_identity_photo_hint_front">请点击上传身份证正面照</string>
+    <string name="register_identity_photo_back">上传身份证背面</string>
+    <string name="register_identity_photo_hint_back">请点击上传身份证背面照</string>
     <string name="redenvelope_trantype_send">发红包</string>
     <string name="redenvelope_trantype_received">收红包</string>
     <string name="tran_order_no">交易单号</string>
@@ -1257,11 +1257,13 @@
     <string name="kyc_text_operations">KYC验证结果短信开关</string>
     <string name="kyc_add">添加</string>
 
-
-
-
-
-
-
+    <string name="next_step">下一步</string>
+    <string name="hint_select_document_type">(请选择证件类型)</string>
+    <string name="hint_select_document_number">(请填写证件号码)</string>
+    <string name="identity_number">证件号码</string>
+    <string name="identity_two_number">证件2号码</string>
+    <string name="identity_two_type">证件2类型</string>
+    <string name="hint_no_file_selected">未选择档案</string>
+    <string name="upload_id_photo">上传证件照片</string>
 
 </resources>

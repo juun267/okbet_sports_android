@@ -436,7 +436,7 @@
     <string name="title_address">Address：</string>
     <string name="title_deposit_money">Deposit Amount</string>
     <string name="title_payer">Account</string>
-<!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
+    <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
     <string name="edt_hint_deposit_money">Limit %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">Please enter your account</string>
     <string name="title_real_name">Verified name</string>
@@ -1202,7 +1202,6 @@
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
 
-
     <string name="kyc_type">ID Type</string>
     <string name="kyc_num">ID Number</string>
     <string name="kyc_upload">Upload Photo</string>
@@ -1262,5 +1261,14 @@
     <string name="kyc_text_operations">[TEXT] Operations</string>
     <string name="kyc_add">Add</string>
 
+    <string name="next_step">下一步</string>
+    <string name="hint_select_document_type">(请选择证件类型)</string>
+    <string name="hint_select_document_number">(请填写证件号码)</string>
+    <string name="hint_answer">(请输入你的回答)</string>
+    <string name="identity_number">证件号码</string>
+    <string name="identity_two_number">证件2号码</string>
+    <string name="identity_two_type">证件2类型</string>
+    <string name="hint_no_file_selected">未选择档案</string>
+    <string name="upload_id_photo">上传证件照片</string>
 
 </resources>
