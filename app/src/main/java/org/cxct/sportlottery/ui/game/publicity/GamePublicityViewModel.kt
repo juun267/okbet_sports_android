@@ -103,11 +103,6 @@ class GamePublicityViewModel(
         }
     }
 
-    //快捷投注單是否開啟
-    fun getIsFastBetOpened(): Boolean {
-        return betInfoRepository.getIsFastBetOpened()
-    }
-
     //region 宣傳頁推薦賽事資料處理
     /**
      * 設置賽事類型參數(滾球、即將、今日、早盤)

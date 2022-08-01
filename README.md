@@ -117,12 +117,9 @@ Mock Request Data Instructions :
 
 ## 投注單 (檔案路徑: ../ui/game/betList)
 
-注單的主要class：
+注單的相關classes：
 BetInfoRepository, BetListFragment, BetListRefactorAdapter,
 BetButton, BetReceiptFragment
-
-- 有 `快捷注單(FastBetFragment)` 和 `滿版注單(BetListFragment)` 兩種Fragment
-- 目前主要使用BetListFragment
 
 注單開啟流程：
 1. User點擊玩法賠率

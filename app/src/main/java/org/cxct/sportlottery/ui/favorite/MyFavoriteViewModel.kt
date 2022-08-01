@@ -306,8 +306,4 @@ class MyFavoriteViewModel(
         return this
     }
 
-    fun getIsFastBetOpened(): Boolean {
-        return betInfoRepository.getIsFastBetOpened()
-    }
-
 }

@@ -254,13 +254,13 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
                             otherPlayCateName = scoPlayCateNameForBetInfo
                         )
                         when (activity) {
-                            is GameActivity -> (activity as GameActivity).showFastBetFragment(
+                            is GameActivity -> (activity as GameActivity).setupBetData(
                                 fastBetDataBean
                             )
-                            is GamePublicityActivity -> (activity as GamePublicityActivity).showFastBetFragment(
+                            is GamePublicityActivity -> (activity as GamePublicityActivity).setupBetData(
                                 fastBetDataBean
                             )
-                            is MyFavoriteActivity -> (activity as MyFavoriteActivity).showFastBetFragment(
+                            is MyFavoriteActivity -> (activity as MyFavoriteActivity).setupBetData(
                                 fastBetDataBean
                             )
                         }

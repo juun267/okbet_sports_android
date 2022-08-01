@@ -19,7 +19,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity
 import org.cxct.sportlottery.ui.game.home.gameTable4.Vp2GameTable4Adapter
@@ -261,7 +260,7 @@ class GameTableViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     betPlayCateNameMap = betPlayCateNameMap,
                     playCateMenuCode = if (mMatchType == MatchType.IN_PLAY || mMatchType == MatchType.MAIN) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
                 )
-                (itemView.context as GameActivity).showFastBetFragment(fastBetDataBean)
+                (itemView.context as GameActivity).setupBetData(fastBetDataBean)
             }
         }
     }

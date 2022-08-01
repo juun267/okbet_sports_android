@@ -293,7 +293,7 @@ class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(Gam
                 subscribeChannelType = ChannelType.HALL,
                 betPlayCateNameMap = null,
             )
-            (activity as GameActivity).showFastBetFragment(fastBetDataBean)
+            (activity as GameActivity).setupBetData(fastBetDataBean)
 
 
 //            viewModel.updateMatchBetListForOutRight(

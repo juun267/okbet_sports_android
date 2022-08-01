@@ -15,6 +15,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
@@ -118,7 +119,31 @@ abstract class BaseOddButtonViewModel(
         MultiLanguagesApplication.saveOddsType(oddsType)
     }
 
-    fun updateMatchBetList(
+    fun updateMatchBetListData(data: FastBetDataBean) {
+        if (data.matchType == MatchType.OUTRIGHT){
+            updateMatchBetListForOutRight(
+                matchType = MatchType.OUTRIGHT,
+                gameType = data.gameType,
+                playCateCode = data.playCateCode ?: "",
+                matchOdd = data.matchOdd!!,
+                odd = data.odd
+            )
+        }else{
+            updateMatchBetList(
+                data.matchType,
+                data.gameType,
+                data.playCateCode ?: "",
+                data.playCateName ?: "",
+                data.matchInfo,
+                data.odd,
+                data.subscribeChannelType,
+                data.betPlayCateNameMap,
+                data.playCateMenuCode
+            )
+        }
+    }
+
+    private fun updateMatchBetList(
         matchType: MatchType,
         gameType: GameType,
         playCateCode: String,
@@ -170,7 +195,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    fun updateMatchBetListForOutRight(
+    private fun updateMatchBetListForOutRight(
         matchType: MatchType,
         gameType: GameType,
         playCateCode: String,
@@ -479,10 +504,6 @@ abstract class BaseOddButtonViewModel(
 
     private fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
-    }
-
-    fun addInBetInfo() {
-        betInfoRepository.addInBetInfo()
     }
 
     protected fun getOddState(
