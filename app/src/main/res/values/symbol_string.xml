@@ -5,13 +5,11 @@
     <string name="greet">Hi!</string>
     <string name="tilde">～</string>
     <string name="start">*</string>
-    <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
     <string name="verse_">&#160;&#160;v&#160;&#160;</string>
     <string name="verse_2">&#160;&#160;V&#160;&#160;</string>
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="id">ID</string>
-    <string name="at">\u0040</string>
     <string name="verse_upper">VS</string>
     <string name="app">APP</string>
     <string name="colon">:</string>
@@ -37,12 +35,10 @@
     <string name="keyboard_code_delete">-5</string>
     <string name="keyboard_code_insert_dot">-48</string>
     <string name="keyboard_code_insert_0">48</string>
-    <string name="keyboard_code_plus_10">-10</string>
     <string name="keyboard_code_plus_25">-25</string>
     <string name="keyboard_code_plus_75">-75</string>
     <string name="keyboard_code_plus_50">-50</string>
     <string name="keyboard_code_plus_100">-100</string>
-    <string name="keyboard_code_done">-4</string>
     <string name="keyboard_code_max">-6</string>
 
     <!--Time-->
@@ -55,9 +51,7 @@
     <!--svg format-->
     <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%5$s&lt;/svg&gt;</string>
 
-    <string name="dash_no_trans">-</string>
     <string name="splash_no_trans">/</string>
-    <string name="draw_no_trans">Draw</string>
 
     <!--Language List-->
     <string name="language_cn">简体中文</string>

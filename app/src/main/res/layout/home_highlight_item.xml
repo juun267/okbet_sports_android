@@ -154,9 +154,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_909090_666666"
             android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="@id/match_row"
-            app:layout_constraintStart_toEndOf="@id/match_status"
-            app:layout_constraintTop_toTopOf="@id/match_row"
             tools:text="90:31" />
 
         <ImageView
