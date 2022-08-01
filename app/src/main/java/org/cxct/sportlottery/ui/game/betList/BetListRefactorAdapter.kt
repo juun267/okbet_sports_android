@@ -1084,15 +1084,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setEtBackground(itemData: BetInfoListData) {
             itemView.apply {
-                if (itemData.isInputBet) {
-                    if (itemData.amountError) {
-                        et_bet.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
-                    }
-                    else {
-                        et_bet.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                    }
+                if (itemData.amountError) {
+                    et_bet.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
                 } else {
-                    et_bet.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
+                    if (itemData.isInputBet) {
+                        et_bet.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
+                    } else {
+                        et_bet.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
+                    }
                 }
                 et_win.setBackgroundResource(
                     if (itemData.isInputWin) R.drawable.bg_radius_2_edittext_focus
