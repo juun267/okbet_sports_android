@@ -727,7 +727,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     private fun updateThirdOpenUI(){
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         // 暫時隱藏入口 by Bee
-        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN) {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || baseContext.getString(R.string.app_name) != "OKbet") {
             btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         }
         else {
