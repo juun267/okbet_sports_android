@@ -36,7 +36,7 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:paddingHorizontal="1dp"
-                    android:textColor="@color/selector_button_odd_top_text2"
+                    android:textColor="@color/selector_publicity_button_odd_top_text2"
                     android:textSize="@dimen/textSize14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_spread"
