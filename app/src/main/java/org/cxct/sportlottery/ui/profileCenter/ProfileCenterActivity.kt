@@ -42,6 +42,7 @@ import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.*
@@ -73,9 +74,11 @@ import java.io.FileNotFoundException
 /**
  * @app_destination 個人中心
  */
-class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity :
+    BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+
     //KYC驗證彈窗
     private var kYCVerifyDialog: CustomSecurityDialog? = null
     private var betListFragment = BetListFragment()
@@ -138,6 +141,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         updateThirdOpenUI()
         updateCreditAccountUI()
     }
+
     override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
@@ -160,7 +164,12 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            }
+
         }
 
         tv_odds_type.setOnClickListener {
@@ -168,11 +177,12 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
         }
     }
+
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
@@ -186,11 +196,13 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     override fun onResume() {
         super.onResume()
         if (MultiLanguagesApplication.isNightMode) {
-            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.night_mode)
+            tv_appearance.text =
+                getString(R.string.appearance) + ": " + getString(R.string.night_mode)
         } else {
-            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.day_mode)
+            tv_appearance.text =
+                getString(R.string.appearance) + ": " + getString(R.string.day_mode)
         }
-        tv_language.text=LanguageManager.getLanguageStringResource(this)
+        tv_language.text = LanguageManager.getLanguageStringResource(this)
         iv_flag.setImageResource(LanguageManager.getLanguageFlag(this))
         getMoney()
     }
@@ -254,7 +266,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                        GamePublicityActivity.reStart(this)
+                    GamePublicityActivity.reStart(this)
                 }
             }
         }
@@ -343,11 +355,11 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
         //切换语言
         btn_language.setOnClickListener {
-            startActivity(Intent(this,SwitchLanguageActivity::class.java))
+            startActivity(Intent(this, SwitchLanguageActivity::class.java))
         }
         //外觀
         btn_appearance.setOnClickListener {
-            startActivity(Intent(this,AppearanceActivity::class.java))
+            startActivity(Intent(this, AppearanceActivity::class.java))
         }
 //        btn_time_zone.visibility = View.GONE
         //时区切换
@@ -436,7 +448,12 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                             startActivity(Intent(this, ProfileCenterActivity::class.java))
                         }
                         else -> { //尚未登入
-                            startActivity(Intent(this, RegisterActivity::class.java))
+                            if (getString(R.string.app_name).equals("OKbet")) {
+                                startActivity(Intent(this, RegisterOkActivity::class.java))
+                            } else {
+                                startActivity(Intent(this, RegisterActivity::class.java))
+                            }
+
                         }
                     }
                     true
@@ -478,7 +495,12 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
                 ivNotice.visibility = View.VISIBLE
                 ivNotice.setOnClickListener { view ->
                     val depositSpannable =
-                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
+                        SpannableString(
+                            getString(
+                                R.string.text_security_money,
+                                formatMoneyNoDecimal(it)
+                            )
+                        )
                     val daysLeftText = getString(
                         R.string.text_security_money2,
                         getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
@@ -745,7 +767,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         viewModel.uploadImage(uploadImgRequest)
     }
 
-    private fun updateThirdOpenUI(){
+    private fun updateThirdOpenUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
@@ -916,8 +938,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
-            iv_menu.visibility =View.VISIBLE
-            iv_notice.visibility =View.VISIBLE
+            iv_menu.visibility = View.VISIBLE
+            iv_notice.visibility = View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.GONE
@@ -928,8 +950,8 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
-            iv_menu.visibility =View.GONE
-            iv_notice.visibility =View.GONE
+            iv_menu.visibility = View.GONE
+            iv_notice.visibility = View.GONE
         }
     }
 
