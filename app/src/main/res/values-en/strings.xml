@@ -315,7 +315,7 @@
     <string name="title">Headline</string>
     <string name="record_time">Time</string>
     <string name="choose_bet_state">Select bets status</string>
-    <string name="champion_play">Champion gamepaly</string>
+    <string name="champion_play">Champion gameplay</string>
     <string name="inquire">Search</string>
     <string name="order_number">Betting order no.</string>
     <string name="order_number_colon">Betting order no.</string>
@@ -585,7 +585,7 @@
     <string name="recharge_channel_crypto">USDT Transactions</string>
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">Grabpay</string>
-    <string name="recharge_channel_paymaya">Maya</string>
+    <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">Manual Deposit</string>
     <string name="recharge_log_order_time">Time</string>
     <string name="recharge_log_recharge_amount">Amount</string>
@@ -841,7 +841,6 @@
     <string name="notice">Tips</string>
     <string name="commission_example">i.g.</string>
     <string name="bet_slip">Bet slip</string>
-    <string name="fast_bet_open_desc">Enable Quick Bet</string>
     <string name="bet_list_empty">Your bet slip is currently empty</string>
     <string name="bank_list_not_bink">You do not have a %1$s bound</string>
     <string name="bank_list_add">Add %1$s</string>

@@ -3350,6 +3350,10 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
+    fun setCurMatchType(matchType: MatchType?) {
+        _curMatchType.postValue(matchType)
+    }
+
     fun switchMatchType(matchType: MatchType?) {
         clearGameHallContent()
 
@@ -3397,7 +3401,7 @@ class GameViewModel(
                         }
                     }
 
-                    _curMatchType.postValue(matchType)
+                    setCurMatchType(matchType)
 
                     // 無數量直接顯示無資料UI
                     if (getMatchCount(matchType) < 1) {
