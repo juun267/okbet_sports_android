@@ -111,10 +111,10 @@ class ProfileCenterViewModel(
     }
 
     fun uploadVerifyPhoto(
-        docFile: File,
+        firstFile: File,
         identityType: Int?,
         identityNumber: String?,
-        photoFile: File? = null,
+        secndFile: File? = null,
         identityTypeBackup: Int? = null,
         identityNumberBackup: String? = null
     ) {
@@ -123,7 +123,7 @@ class ProfileCenterViewModel(
                 OneBoSportApi.uploadImgService.uploadImg(
                     UploadVerifyDocRequest(
                         userInfo.value?.userId.toString(),
-                        docFile
+                        firstFile
                     ).toPars()
                 )
             }
@@ -141,12 +141,12 @@ class ProfileCenterViewModel(
                 docResponse.success -> {
                     _docUrlResult.postValue(Event(docResponse))
 
-                    if(photoFile != null){
+                    if(secndFile != null){
                         val photoResponse = doNetwork(androidContext) {
                             OneBoSportApi.uploadImgService.uploadImg(
                                 UploadVerifyDocRequest(
                                     userInfo.value?.userId.toString(),
-                                    photoFile
+                                    secndFile
                                 ).toPars()
                             )
                         }

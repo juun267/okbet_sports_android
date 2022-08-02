@@ -539,9 +539,9 @@ class RegisterViewModel(
             checkValidCode(validCode)
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
-        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN)
             checkIdentity(identity)
-        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN)
             checkIdentityType(identityType)
         if (sConfigData?.enableSalarySource == FLAG_OPEN)
             checkSalary(salarySource)
@@ -588,9 +588,9 @@ class RegisterViewModel(
                     return false
                 if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
                     return false
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityMsg))
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
                     return false
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityTypeMsg))
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityTypeMsg))
                     return false
                 if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
                     return false
@@ -693,9 +693,14 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
-        identityType: String?,
         salarySource: String?,
-        bettingShop: String?
+        bettingShop: String?,
+        firstFile: File? = null,
+        identityType: String? = null,
+        identityNumber: String? = null,
+        secndFile: File? = null,
+        identityTypeBackup: String? = null,
+        identityNumberBackup: String? = null
     ) {
         if (checkAllInput(
                 inviteCode,
@@ -756,9 +761,14 @@ class RegisterViewModel(
                     identity,
                     docUrlResult.value?.imgData?.path,
                     photoUrlResult.value?.imgData?.path,
-                    identityType,
                     salarySource,
-                    bettingShop
+                    bettingShop,
+                    firstFile,
+                    identityType?.toInt(),
+                    identityNumber,
+                    secndFile,
+                    identityTypeBackup?.toInt(),
+                    identityNumberBackup
                 )
             )
         }
@@ -792,9 +802,14 @@ class RegisterViewModel(
         identity: String?,
         verifyPhoto1: String?,
         verifyPhoto2: String?,
-        identityType: String?,
         salarySource: String?,
-        bettingShop: String?
+        bettingShop: String?,
+        identityPhoto: File?,
+        identityType: Int?,
+        identityNumber: String?,
+        identityPhotoBackup: File?,
+        identityTypeBackup: Int?,
+        identityNumberBackup: String?,
     ): RegisterRequest {
         return RegisterRequest(
             userName = userName,
@@ -842,11 +857,15 @@ class RegisterViewModel(
             }
             if (sConfigData?.enableBirthday == FLAG_OPEN)
                 this.birthday = birth
-            if (sConfigData?.enableIdentityNumber == FLAG_OPEN) {
-                this.identityNumber = identity
-                this.verifyPhoto1 = verifyPhoto1
-                this.verifyPhoto2 = verifyPhoto2
-                this.identityType = identityType
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
+                this.identityPhotoFile = identityPhoto
+                this.identityNumber = identityNumber
+                this.identityNumber = identityNumber
+            }
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
+                this.identityPhotoBackupFile = identityPhotoBackup
+                this.identityTypeBackup = identityTypeBackup
+                this.identityNumberBackup = identityNumberBackup
             }
             if (sConfigData?.enableSalarySource == FLAG_OPEN)
                 this.salarySource = salarySource
@@ -857,12 +876,97 @@ class RegisterViewModel(
 
     private fun register(registerRequest: RegisterRequest) {
         viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.register(registerRequest)
-            }?.let { result ->
-                // TODO 20220108 更新UserInfo by Hewie
-                userInfoRepository.getUserInfo()
-                _registerResult.postValue(result)
+            if (registerRequest.identityPhotoFile != null) {
+                registerRequest.identityPhotoFile?.let {
+                    val docResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                userInfo.value?.userId.toString(),
+                                registerRequest.identityPhotoFile!!
+                            ).toPars()
+                        )
+                    }
+                    when {
+                        docResponse == null -> _docUrlResult.postValue(
+                            UploadImgResult(
+                                -1,
+                                androidContext.getString(R.string.unknown_error),
+                                false,
+                                null
+                            )
+                        )
+                        docResponse.success -> {
+                            _docUrlResult.postValue(docResponse)
+
+                            if (registerRequest.identityPhotoBackupFile != null) {
+                                val photoResponse = doNetwork(androidContext) {
+                                    OneBoSportApi.uploadImgService.uploadImg(
+                                        UploadVerifyDocRequest(
+                                            userInfo.value?.userId.toString(),
+                                            registerRequest.identityPhotoBackupFile!!
+                                        ).toPars()
+                                    )
+                                }
+                                when {
+                                    photoResponse == null -> _photoUrlResult.postValue(
+
+                                        UploadImgResult(
+                                            -1,
+                                            androidContext.getString(R.string.unknown_error),
+                                            false,
+                                            null
+                                        )
+
+                                    )
+                                    photoResponse.success -> {
+                                        _photoUrlResult.postValue(photoResponse)
+                                        doNetwork(androidContext) {
+                                            loginRepository.register(registerRequest)
+                                        }?.let { result ->
+                                            // TODO 20220108 更新UserInfo by Hewie
+                                            userInfoRepository.getUserInfo()
+                                            _registerResult.postValue(result)
+                                        }
+                                    }
+                                    else -> {
+                                        val error =
+                                            UploadImgResult(
+                                                photoResponse.code,
+                                                photoResponse.msg,
+                                                photoResponse.success,
+                                                null
+                                            )
+                                        _photoUrlResult.postValue(error)
+                                    }
+                                }
+                            } else {
+                                doNetwork(androidContext) {
+                                    loginRepository.register(registerRequest)
+                                }?.let { result ->
+                                    // TODO 20220108 更新UserInfo by Hewie
+                                    userInfoRepository.getUserInfo()
+                                    _registerResult.postValue(result)
+                                }
+                            }
+                        }
+                        else -> {
+                            val error = UploadImgResult(
+                                docResponse.code, docResponse.msg, docResponse.success, null
+                            )
+                            _docUrlResult.postValue(error)
+                        }
+                    }
+                }
+
+
+            } else {
+                doNetwork(androidContext) {
+                    loginRepository.register(registerRequest)
+                }?.let { result ->
+                    // TODO 20220108 更新UserInfo by Hewie
+                    userInfoRepository.getUserInfo()
+                    _registerResult.postValue(result)
+                }
             }
         }
     }

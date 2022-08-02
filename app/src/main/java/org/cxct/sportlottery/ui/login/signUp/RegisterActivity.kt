@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -410,7 +411,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupRegisterIdentity() {
         with(binding) {
             etIdentity.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
 //            etIdentity.setEndIcon(R.drawable.ic_camera)
 
@@ -483,7 +484,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         with(binding) {
             //顯示隱藏該選項
             etIdentityType.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
@@ -702,9 +703,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     deviceId,
                     birth = eetBirth.text.toString().replace(" ",""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
-                    identityType = identityTypeSelectedData?.code,
                     salarySource = salarySourceSelectedData?.code,
-                    bettingShop = bettingShopSelectedData?.code
+                    bettingShop = bettingShopSelectedData?.code,
+                    firstFile = null,
+                    identityType = null,
+                    identityNumber = null,
+                    secndFile = null,
+                    identityTypeBackup = null,
+                    identityNumberBackup = null
                 )
             }
         }

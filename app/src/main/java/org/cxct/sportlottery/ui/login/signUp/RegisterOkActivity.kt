@@ -19,10 +19,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.block_sms_valid_code
 import kotlinx.android.synthetic.main.activity_register.btn_register
@@ -48,7 +51,6 @@ import kotlinx.android.synthetic.main.activity_register.et_recommend_code
 import kotlinx.android.synthetic.main.activity_register.et_withdrawal_pwd
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -62,7 +64,11 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
+import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 
 /**
@@ -70,6 +76,8 @@ import java.util.*
  */
 class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::class),
     View.OnClickListener {
+    private var firstFile: File? = null
+    private var secondFile: File? = null
 
     private var mSmsTimer: Timer? = null
     private lateinit var binding: ActivityRegisterOkBinding
@@ -79,6 +87,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private var salarySourceSelectedData: StatusSheetData? = null
     private var bettingShopSelectedData: StatusSheetData? = null
     private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
+    private var backupIdentityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
     private var securityPbTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
@@ -231,6 +240,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun setPage() {
+        val isEnableKYCVerify = sConfigData?.enableKYCVerify == FLAG_OPEN
+        val isSecondVerifyKYCOpen = sConfigData?.idUploadNumber.equals("2")
         when (page) {
             1 -> {
                 btn_register.text = getString(R.string.next_step)
@@ -240,7 +251,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 block_sms_valid_code.visibility = View.GONE
 
                 etBirth.visibility = View.GONE
-                etIdentity.visibility = View.GONE
                 etSalary.visibility = View.GONE
                 etBettingShop.visibility = View.GONE
                 et_mail.visibility = View.GONE
@@ -249,11 +259,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 et_city.visibility = View.GONE
 
                 etIdentityType.visibility = View.GONE
-                etIdentity.visibility = View.GONE
-                etIdentity2.visibility = View.GONE
-                etIdentityType2.visibility = View.GONE
                 etIdentityNumber.visibility = View.GONE
+                etIdentity.visibility = View.GONE
+                etIdentityType2.visibility = View.GONE
                 etIdentityNumber2.visibility = View.GONE
+                etIdentity2.visibility = View.GONE
+
                 et_address.visibility = View.GONE
                 etSecurityPbType.visibility = View.GONE
                 etSecurityPb.visibility = View.GONE
@@ -274,10 +285,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 et_login_password.visibility = View.GONE
                 et_confirm_password.visibility = View.GONE
 
-                etIdentityNumber.visibility = View.VISIBLE
-                etIdentityNumber2.visibility = View.VISIBLE
-                etIdentityType2.visibility = View.VISIBLE
-                etIdentity2.visibility = View.VISIBLE
+                etIdentityType.isVisible = isEnableKYCVerify
+                etIdentityNumber.isVisible = isEnableKYCVerify
+                etIdentity.isVisible = isEnableKYCVerify
+                etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
                 setupFullName()
                 setupWithdrawalPassword()
@@ -539,18 +552,22 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun setupRegisterIdentity() {
         with(binding) {
             etIdentity.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
-
-//            etIdentity.setEndIcon(R.drawable.ic_camera)
-
-//            etIdentity.endIconImageButton.setOnClickListener {
-//                when (etIdentity.endIconResourceId) {
-//                    R.drawable.ic_camera -> openCredentialsPage()
-//                }
-//            }
-
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
             endButton.setOnClickListener {
-                if (!isUploaded) openCredentialsPage()
+                PicSelectorDialog(
+                    this@RegisterOkActivity,
+                    mfirstSelectDocMediaListener,
+                    PicSelectorDialog.CropType.RECTANGLE
+                ).show(supportFragmentManager, null)
+            }
+            endButton2.visibility =
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) View.VISIBLE else View.GONE
+            endButton2.setOnClickListener {
+                PicSelectorDialog(
+                    this@RegisterOkActivity,
+                    mSecondSelectPhotoMediaListener,
+                    PicSelectorDialog.CropType.RECTANGLE
+                ).show(supportFragmentManager, null)
             }
         }
     }
@@ -613,7 +630,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             //顯示隱藏該選項
             etIdentityType2.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
@@ -622,7 +639,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             }
 
             //預設顯示第一項
-            identityTypeSelectedData = identityTypeList.firstOrNull()
+            backupIdentityTypeSelectedData = identityTypeList.firstOrNull()
             eetIdentityType2.setText(identityTypeList.firstOrNull()?.showName)
             //設置預設文字後會變成選中狀態, 需清除focus
             etIdentityType2.hasFocus = false
@@ -639,7 +656,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                         etIdentityType2.endIconImageButton.rotation = 180F
                     },
                     itemSelectedListener = {
-                        identityTypeSelectedData = it
+                        backupIdentityTypeSelectedData = it
                         eetIdentityType2.setText(it?.showName)
                     },
                     popupWindowDismissListener = {
@@ -666,7 +683,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             //顯示隱藏該選項
             etIdentityType.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
@@ -893,9 +910,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                         deviceId,
                         birth = eetBirth.text.toString().replace(" ", ""), //傳給後端的不需要有空白間隔
                         identity = eetIdentity.text.toString(),
-                        identityType = identityTypeSelectedData?.code,
                         salarySource = salarySourceSelectedData?.code,
-                        bettingShop = bettingShopSelectedData?.code
+                        bettingShop = bettingShopSelectedData?.code,
+                        firstFile = firstFile,
+                        identityType = identityTypeSelectedData?.code,
+                        identityNumber = eetIdentityNumber.text.toString(),
+                        secndFile = secondFile,
+                        identityTypeBackup = backupIdentityTypeSelectedData?.code,
+                        identityNumberBackup = eetIdentityNumber2.text.toString()
                     )
                 }
             }
@@ -1120,18 +1142,20 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             }
         }
 
-        //第二張照片是否上傳成功
+        viewModel.docUrlResult.observe(this) {
+            it?.let { result ->
+                if (!result.success) {
+                    hideLoading()
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                }
+            }
+        }
         viewModel.photoUrlResult.observe(this) {
-            if (it != null) {
-//                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
-                binding.endButton.setImageResource(R.drawable.ic_upload_done)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString())
-                isUploaded = true
-            } else {
-//                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
-                binding.endButton.setImageResource(R.drawable.ic_camera)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString())
-                isUploaded = false
+            it?.let { result ->
+                if (!result.success) {
+                    hideLoading()
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                }
             }
         }
     }
@@ -1340,6 +1364,97 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
         if (supportFragmentManager.fragments.isEmpty()) {
             binding.flCredentials.visibility = View.GONE
+        }
+    }
+
+    private val mfirstSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
+        override fun onResult(result: MutableList<LocalMedia>?) {
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.path
+                }
+
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedFirstPhotoImg(compressFile)
+                else
+                    throw FileNotFoundException()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(this@RegisterOkActivity, getString(R.string.error_reading_file))
+            }
+        }
+
+        override fun onCancel() {
+            Timber.i("PictureSelector Cancel")
+        }
+    }
+
+    private val mSecondSelectPhotoMediaListener = object : OnResultCallbackListener<LocalMedia> {
+        override fun onResult(result: MutableList<LocalMedia>?) {
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.path
+                }
+
+                val compressFile = getCompressFile(path)
+                if (compressFile?.exists() == true)
+                    selectedSecondPhotoImg(compressFile)
+                else
+                    throw FileNotFoundException()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(this@RegisterOkActivity, getString(R.string.error_reading_file))
+            }
+        }
+
+        override fun onCancel() {
+            Timber.i("PictureSelector Cancel")
+        }
+    }
+    private fun selectedFirstPhotoImg(file: File) {
+        firstFile = file
+        if (firstFile != null) {
+            binding.endButton.setImageResource(R.drawable.ic_upload_done)
+            viewModel.checkIdentity(binding.eetIdentity.text.toString())
+            isUploaded = true
+        } else {
+            binding.endButton.setImageResource(R.drawable.ic_camera)
+            viewModel.checkIdentity(binding.eetIdentity.text.toString())
+            isUploaded = false
+        }
+    }
+
+    private fun selectedSecondPhotoImg(file: File) {
+        secondFile = file
+        if (secondFile != null) {
+            binding.endButton2.setImageResource(R.drawable.ic_upload_done)
+            viewModel.checkIdentity(binding.eetIdentity2.text.toString())
+            isUploaded = true
+        } else {
+            binding.endButton2.setImageResource(R.drawable.ic_camera)
+            viewModel.checkIdentity(binding.eetIdentity2.text.toString())
+            isUploaded = false
         }
     }
 }
