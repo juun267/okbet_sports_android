@@ -825,6 +825,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
 
+        //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
         viewModel.curMatchType.distinctUntilChanged().observe(this) {
             it?.let {
                 val tabSelectedPosition = tabLayout.selectedTabPosition

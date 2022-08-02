@@ -2248,6 +2248,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
+                viewModel.setCurMatchType(null) //避免args.matchType和curMatchType相同，導致後續流程中斷的問題
                 viewModel.switchMatchType(args.matchType)
             }
         }, 60 * 3 * 1000L, 60 * 3 * 1000L)
