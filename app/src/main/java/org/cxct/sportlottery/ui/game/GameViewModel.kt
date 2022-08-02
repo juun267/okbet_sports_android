@@ -3222,12 +3222,12 @@ class GameViewModel(
                 viewModelScope.launch {
                     val thirdLoginResult = thirdGameLogin(gameData)
 
-                    //第三方自動轉換
-                    autoTransfer(gameData)
-
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
                         if (it.success) {
+                            //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
+                            autoTransfer(gameData) //第三方自動轉換
+
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.SUCCESS,
