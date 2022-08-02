@@ -49,6 +49,7 @@ import kotlinx.android.synthetic.main.activity_register.et_withdrawal_pwd
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
+import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -71,7 +72,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     View.OnClickListener {
 
     private var mSmsTimer: Timer? = null
-    private lateinit var binding: ActivityRegisterBinding
+    private lateinit var binding: ActivityRegisterOkBinding
 
     private var birthdayTimePickerView: TimePickerView? = null
 
@@ -118,7 +119,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        binding = ActivityRegisterOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setPage()
         setupBackButton()
