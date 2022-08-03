@@ -21,7 +21,6 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -43,7 +42,10 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.menu.*
+import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
+import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
@@ -62,7 +64,6 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TextUtil.formatMoneyNoDecimal
 import org.cxct.sportlottery.util.TimeUtil.getRemainDay
-import org.parceler.Parcels
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -217,6 +218,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
+            avoidFastDoubleClick()
             viewModel.checkRechargeSystem()
         }
     }

@@ -73,21 +73,35 @@ abstract class BaseWithdrawViewModel(
         get() = _twoFactorSuccess
     private val _twoFactorSuccess = MutableLiveData<Boolean?>()
 
+    //是否正在请求充值开关
+    private var checkRecharge = false
+
+    //是否正在请求提现开关
+    private var checkWithdraw = false
+
     //提款功能是否啟用
     fun checkWithdrawSystem() {
+        if (checkWithdraw)
+            return
         viewModelScope.launch {
+            checkWithdraw = true
             doNetwork(androidContext) {
                 withdrawRepository.checkWithdrawSystem()
             }
+            checkWithdraw = false
         }
     }
 
     //充值功能是否啟用
     fun checkRechargeSystem() {
+        if (checkRecharge)
+            return
         viewModelScope.launch {
+            checkRecharge = true
             doNetwork(androidContext) {
                 withdrawRepository.checkRechargeSystem()
             }
+            checkRecharge = false
         }
     }
 
