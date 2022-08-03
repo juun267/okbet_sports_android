@@ -133,11 +133,6 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
         return homeBinding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.getSportMenuFilter()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

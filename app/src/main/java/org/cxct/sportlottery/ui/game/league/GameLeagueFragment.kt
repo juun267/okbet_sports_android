@@ -274,12 +274,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.getSportMenuFilter()
-    }
-
     private fun initObserve() {
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             leagueAdapter.discount = it?.discount ?: 1.0F

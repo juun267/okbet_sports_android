@@ -216,10 +216,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
     }
 
-    private fun getSportMenuFilter() {
-        viewModel.getSportMenuFilter()
-    }
-
     //region 開啟(快捷)投注單
     //跟進GameActivity開啟投注單方式
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
