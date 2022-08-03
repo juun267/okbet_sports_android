@@ -127,14 +127,16 @@ class BetInfoRepository(val androidContext: Context) {
         val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
 
         gameType?.let {
+            var betInfo: BetInfo? = null
             val parlayMatchOddList = betList.map { betInfoListData ->
+                betInfo = betInfoListData.betInfo
                 betInfoListData.matchOdd
             }.toMutableList()
 
             _matchOddList.value = parlayMatchOddList
 
             _parlayList.value = updateParlayOddOrder(
-                getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
+                getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, betInfo = betInfo).toMutableList()
             )
         }
     }
@@ -180,7 +182,9 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
         gameType?.let {
+            var betInfo: BetInfo? = null
             val parlayMatchOddList = betList.map { betInfoListData ->
+                betInfo = betInfoListData.betInfo
                 betInfoListData.matchOdd
             }.toMutableList()
 
@@ -188,7 +192,7 @@ class BetInfoRepository(val androidContext: Context) {
 
             if (!hasPointMark) {
                 val newParlayList = updateParlayOddOrder(
-                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, true).toMutableList()
+                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, true, betInfo = betInfo).toMutableList()
                 )
                 if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
@@ -329,12 +333,13 @@ class BetInfoRepository(val androidContext: Context) {
             val data = BetInfoListData(
                 betInfoMatchOdd,
                 getParlayOdd(matchType, gameType, mutableListOf(it), betInfo = betInfo).first(),
-                betPlayCateNameMap
+                betPlayCateNameMap,
             ).apply {
                 this.matchType = matchType
                 this.subscribeChannelType = subscribeChannelType
                 this.playCateMenuCode = playCateMenuCode
                 this.outrightMatchInfo = matchInfo
+                this.betInfo = betInfo
             }
 
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
@@ -363,7 +368,7 @@ class BetInfoRepository(val androidContext: Context) {
      * @param isParlayBet 2021/10/29新增, gameType為GameType.PARLAY時不代表該投注為串關投注, 僅由組合後產生的投注才是PARLAY
      * @param betInfo 2022/8/4 賠率上下限統一改為/api/front/match/bet/info取得
      */
-    fun getParlayOdd(
+    private fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
         matchOddList: MutableList<MatchOdd>,
@@ -463,7 +468,8 @@ class BetInfoRepository(val androidContext: Context) {
                     betInfoListData.parlayOdds = getParlayOdd(
                         matchType,
                         gameType,
-                        mutableListOf(betInfoListData.matchOdd)
+                        mutableListOf(betInfoListData.matchOdd),
+                        betInfo = betInfoListData.betInfo
                     ).first()
                 }
             }
