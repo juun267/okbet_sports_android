@@ -434,8 +434,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun updateBetListCount(num: Int) {
         binding.gameBottomNavigation.sportBottomNavigation.setBetCount(num)
-        cl_bet_list_bar.isVisible = num > 0
-        binding.gameBottomNavigation.lineShadow.isVisible = !cl_bet_list_bar.isVisible
+        if (viewModel.isLogin.value == true) {
+            cl_bet_list_bar.isVisible = num > 0
+            binding.gameBottomNavigation.lineShadow.isVisible = !cl_bet_list_bar.isVisible
+        }
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
     }

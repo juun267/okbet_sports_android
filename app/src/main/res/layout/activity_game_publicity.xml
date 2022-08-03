@@ -56,20 +56,14 @@
             layout="@layout/view_bottom_navigation_sport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <View
-            android:id="@+id/line_shadow"
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:background="@drawable/bg_gradient_bottom_sheet_shadow_light"
-            app:layout_constraintBottom_toTopOf="@id/viewBottom" />
+            app:layout_constraintBottom_toTopOf="@+id/viewBottom"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/viewBottom"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/color_191919_FCFCFC"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" >
 
             <TextView
