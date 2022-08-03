@@ -44,6 +44,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import timber.log.Timber
 
 
 abstract class BaseOddButtonViewModel(
@@ -119,7 +120,12 @@ abstract class BaseOddButtonViewModel(
         MultiLanguagesApplication.saveOddsType(oddsType)
     }
 
+    var savedOddId = "savedOddId"
     fun updateMatchBetListData(data: FastBetDataBean) {
+        val oddId = data.odd.id
+//        Timber.e("oddId: $oddId")
+        if (savedOddId == oddId) return
+        savedOddId = oddId.orEmpty() //保存savedOddId
         if (data.matchType == MatchType.OUTRIGHT){
             updateMatchBetListForOutRight(
                 matchType = MatchType.OUTRIGHT,
@@ -168,6 +174,8 @@ abstract class BaseOddButtonViewModel(
                 OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
             }?.let { result ->
                 if (result.success) {
+                    //TODO: 如有其他地方呼叫getBetInfo，成功後也要重設savedOddId
+                    savedOddId = "savedOddId" //重設savedOddId
                     val playMaxSingleBet = result.BetInfo?.playMaxBetSingleBet ?: 0
                     if (betItem == null) {
                         matchInfo.let {
