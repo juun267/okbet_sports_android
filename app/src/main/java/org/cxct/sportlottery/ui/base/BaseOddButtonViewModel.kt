@@ -121,7 +121,7 @@ abstract class BaseOddButtonViewModel(
 
     fun updateMatchBetListData(data: FastBetDataBean) {
         if (data.matchType == MatchType.OUTRIGHT){
-            updateMatchBetListForOutRight(
+            updateMatchBetListForOutRight(//TODO Bill 這裡要看冠軍的
                 matchType = MatchType.OUTRIGHT,
                 gameType = data.gameType,
                 playCateCode = data.playCateCode ?: "",
@@ -168,7 +168,7 @@ abstract class BaseOddButtonViewModel(
                 OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
             }?.let { result ->
                 if (result.success) {
-                    val playMaxSingleBet = result.BetInfo?.playMaxBetSingleBet ?: 0
+                    val betInfo = result.BetInfo
                     if (betItem == null) {
                         matchInfo.let {
                             betInfoRepository.addInBetInfo(
@@ -184,7 +184,7 @@ abstract class BaseOddButtonViewModel(
                                 playCateMenuCode,
                                 currentOddsType,
                                 betPlayCateNameMap,
-                                playMaxBetSingleBet = playMaxSingleBet
+                                betInfo = betInfo
                             )
                         }
                     } else {
@@ -222,21 +222,31 @@ abstract class BaseOddButtonViewModel(
         }
 
         if (betItem == null) {
-            matchOdd.matchInfo?.let {
-                betInfoRepository.addInBetInfo(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = outrightCateName
-                        ?: "",
-                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
-                        ?: odd.name ?: "",
-                    matchInfo = it,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    oddsType = currentOddsType,
-                    betPlayCateNameMap = matchOdd.betPlayCateNameMap
-                )
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchOdd.matchInfo?.id.toString(), odd.id.toString()))
+                }?.let { result ->
+                    if (result.success) {
+                        val betInfo = result.BetInfo
+                        matchOdd.matchInfo?.let {
+                            betInfoRepository.addInBetInfo(
+                                matchType = matchType,
+                                gameType = gameType,
+                                playCateCode = playCateCode,
+                                playCateName = outrightCateName
+                                    ?: "",
+                                playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                                    ?: odd.name ?: "",
+                                matchInfo = it,
+                                odd = odd,
+                                subscribeChannelType = ChannelType.HALL,
+                                oddsType = currentOddsType,
+                                betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                                betInfo = betInfo
+                            )
+                        }
+                    }
+                }
             }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
