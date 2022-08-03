@@ -379,12 +379,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
                 if (isReload) {
                     mPublicityAdapter.updateToolbarBannerImage()
                 }
-            }
-        }
-
-        viewModel.sportMenuFilterList.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let {
-                queryData()
+                viewModel.getSportMenuFilter()
             }
         }
 
@@ -436,7 +431,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
 //                    loading()
-                    viewModel.getSportMenuFilter()
+                    queryData()
                     subscribeSportChannelHall()
                 }
             }
