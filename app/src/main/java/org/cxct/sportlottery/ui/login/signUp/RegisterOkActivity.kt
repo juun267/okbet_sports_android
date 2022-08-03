@@ -26,7 +26,6 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.block_sms_valid_code
 import kotlinx.android.synthetic.main.activity_register.btn_register
 import kotlinx.android.synthetic.main.activity_register.clAgreement
@@ -677,7 +676,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             eetIdentityType2.setText(identityTypeList.firstOrNull()?.showName)
             //設置預設文字後會變成選中狀態, 需清除focus
             etIdentityType2.hasFocus = false
-            viewModel.checkIdentityType(eetIdentityType2.text.toString())
+            viewModel.checkIdentityBackupType(eetIdentityType2.text.toString())
 
             //配置點擊展開選項選單
             etIdentityType2.post {
@@ -848,7 +847,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
             }
-            eetIdentityType.checkRegisterListener { viewModel.checkIdentityType(it) }
+            eetIdentityType.apply { checkRegisterListener { viewModel.checkIdentityType(it) } }
+            eetIdentityType2.apply { checkRegisterListener { viewModel.checkIdentityBackupType(it) } }
+            eetIdentityNumber.apply { checkRegisterListener { viewModel.checkIdentityNumber(it) } }
+            eetIdentityNumber2.apply {
+                checkRegisterListener {
+                    viewModel.checkIdentityBackupNumber(it)
+                }
+            }
             eetBettingShop.apply {
                 checkRegisterListener { viewModel.checkBettingShop(it) }
             }
@@ -1090,8 +1096,32 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     false
                 )
             }
+            identityBackupMsg.observe(this@RegisterOkActivity) {
+                binding.etIdentity2.setError(
+                    it.first,
+                    false
+                )
+            }
             identityTypeMsg.observe(this@RegisterOkActivity) {
                 binding.etIdentityType.setError(
+                    it.first,
+                    false
+                )
+            }
+            identityBackupTypeMsg.observe(this@RegisterOkActivity) {
+                binding.etIdentityType2.setError(
+                    it.first,
+                    false
+                )
+            }
+            eetIdentityNumber.observe(this@RegisterOkActivity) {
+                binding.etIdentityNumber.setError(
+                    it.first,
+                    false
+                )
+            }
+            eetIdentityBackupNumber.observe(this@RegisterOkActivity) {
+                binding.etIdentityNumber2.setError(
                     it.first,
                     false
                 )
@@ -1497,11 +1527,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         firstFile = file
         if (firstFile != null) {
             binding.endButton.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkIdentity()
+            viewModel.checkIdentity(firstFile)
             isUploaded = true
         } else {
             binding.endButton.setImageResource(R.drawable.ic_camera)
-            viewModel.checkIdentity()
+            viewModel.checkIdentity(firstFile)
             isUploaded = false
         }
     }
@@ -1510,11 +1540,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         secondFile = file
         if (secondFile != null) {
             binding.endButton2.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkIdentity()
+            viewModel.checkBackupIdentity(secondFile)
             isUploaded = true
         } else {
             binding.endButton2.setImageResource(R.drawable.ic_camera)
-            viewModel.checkIdentity()
+            viewModel.checkBackupIdentity(secondFile)
             isUploaded = false
         }
     }

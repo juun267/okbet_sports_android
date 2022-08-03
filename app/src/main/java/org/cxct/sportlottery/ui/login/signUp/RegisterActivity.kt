@@ -885,12 +885,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (it != null) {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
                 binding.endButton.setImageResource(R.drawable.ic_upload_done)
-                viewModel.checkIdentity()
+//                viewModel.checkIdentity()
                 isUploaded = true
             } else {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
                 binding.endButton.setImageResource(R.drawable.ic_camera)
-                viewModel.checkIdentity()
+//                viewModel.checkIdentity()
                 isUploaded = false
             }
         }

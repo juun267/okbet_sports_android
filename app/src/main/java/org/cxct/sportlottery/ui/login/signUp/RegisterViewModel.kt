@@ -25,7 +25,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
 import java.io.File
 
 class RegisterViewModel(
@@ -78,8 +77,16 @@ class RegisterViewModel(
         get() = _birthMsg
     val identityMsg: LiveData<Pair<String?, Boolean>>
         get() = _identityMsg
+    val identityBackupMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityBackupMsg
     val identityTypeMsg: LiveData<Pair<String?, Boolean>>
         get() = _identityTypeMsg
+    val identityBackupTypeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityBackupTypeMsg
+    val eetIdentityNumber: LiveData<Pair<String?, Boolean>>
+        get() = _eetIdentityNumber
+    val eetIdentityBackupNumber: LiveData<Pair<String?, Boolean>>
+        get() = _eetIdentityBackupNumber
     val bettingShopMsg: LiveData<Pair<String?, Boolean>>
         get() = _bettingShopMsg
     val weChatMsg: LiveData<Pair<String?, Boolean>>
@@ -133,7 +140,11 @@ class RegisterViewModel(
     private val _salaryMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _birthMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _identityMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityBackupMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _identityTypeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityBackupTypeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _eetIdentityNumber = MutableLiveData<Pair<String?, Boolean>>()
+    private val _eetIdentityBackupNumber = MutableLiveData<Pair<String?, Boolean>>()
     private val _bettingShopMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _weChatMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _zaloMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -431,8 +442,8 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete(2)
     }
 
-    fun checkIdentity() {
-        val msg = when (photoUrlResult.value) {
+    fun checkIdentity(firstFile: File?) {
+        val msg = when (firstFile) {
             null -> {
                 LocalUtils.getString(R.string.error_identity_photo)
             }
@@ -444,6 +455,19 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete(2)
     }
 
+    fun checkBackupIdentity(secondFile: File?) {
+        val msg = when (secondFile) {
+            null -> {
+                LocalUtils.getString(R.string.error_identity_photo)
+            }
+            else -> {
+                null
+            }
+        }
+        _identityBackupMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
     fun checkIdentityType(identityType: String?) {
         val msg = when {
             identityType.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
@@ -452,6 +476,34 @@ class RegisterViewModel(
         _identityTypeMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(2)
     }
+
+    fun checkIdentityBackupType(identityType: String?) {
+        val msg = when {
+            identityType.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _identityBackupTypeMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
+    fun checkIdentityNumber(identityNumber: String?) {
+        val msg = when {
+            identityNumber.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _eetIdentityNumber.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
+    fun checkIdentityBackupNumber(identityNumber2: String?) {
+        val msg = when {
+            identityNumber2.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _eetIdentityBackupNumber.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
 
     fun checkSalary(salary: String?) {
         val msg = when {
@@ -499,7 +551,12 @@ class RegisterViewModel(
         identity: String?,
         identityType: String?,
         salarySource: String?,
-        bettingShop: String?
+        bettingShop: String?,
+        firstFile: File?,
+        secndFile: File?,
+        identityNumber: String?,
+        identityNumberBackup: String?,
+        identityTypeBackup: String?
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
@@ -542,10 +599,16 @@ class RegisterViewModel(
             checkValidCode(validCode)
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
-        if (sConfigData?.enableKYCVerify == FLAG_OPEN)
-            checkIdentity()
-        if (sConfigData?.enableKYCVerify == FLAG_OPEN)
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN){
+            checkIdentity(firstFile)
+            checkIdentityNumber(identityNumber)
             checkIdentityType(identityType)
+        }
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")){
+            checkBackupIdentity(secndFile)
+            checkIdentityBackupNumber(identityNumberBackup)
+            checkIdentityBackupType(identityTypeBackup)
+        }
         if (sConfigData?.enableSalarySource == FLAG_OPEN)
             checkSalary(salarySource)
         if (sConfigData?.enableBettingStation == FLAG_OPEN)
@@ -732,7 +795,12 @@ class RegisterViewModel(
                 identity,
                 identityType,
                 salarySource,
-                bettingShop
+                bettingShop,
+                firstFile,
+                secndFile,
+                identityNumber,
+                identityNumberBackup,
+                identityTypeBackup
             )
         ) {
             register(
