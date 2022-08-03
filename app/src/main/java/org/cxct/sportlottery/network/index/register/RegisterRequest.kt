@@ -40,7 +40,4 @@ data class RegisterRequest(
     var identityPhotoBackup: String?= null,
     var identityTypeBackup: Int?= null,
     var identityNumberBackup: String?= null
-){
-    var identityPhotoFile: File? = null
-    var identityPhotoBackupFile: File? = null
-}
+)

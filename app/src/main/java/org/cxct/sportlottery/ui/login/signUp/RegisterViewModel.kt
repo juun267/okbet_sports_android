@@ -175,6 +175,13 @@ class RegisterViewModel(
         get() = _photoUrlResult
     private val _photoUrlResult = MutableLiveData<UploadImgResult?>()
     //endregion
+    val identityPhoto: LiveData<File?>
+        get() = _identityPhoto
+    private val _identityPhoto = MutableLiveData<File?>()
+
+    val identityPhotoBackup: LiveData<File?>
+        get() = _identityPhotoBackup
+    private val _identityPhotoBackup = MutableLiveData<File?>()
 
     @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
@@ -996,12 +1003,12 @@ private fun createRegisterRequest(
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             this.birthday = birth
         if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
-            this.identityPhotoFile = identityPhoto
+            _identityPhoto.postValue(identityPhoto)
             this.identityNumber = identityNumber
             this.identityNumber = identityNumber
         }
         if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
-            this.identityPhotoBackupFile = identityPhotoBackup
+            _identityPhotoBackup.postValue(identityPhotoBackup)
             this.identityTypeBackup = identityTypeBackup
             this.identityNumberBackup = identityNumberBackup
         }
@@ -1014,13 +1021,13 @@ private fun createRegisterRequest(
 
 private fun register(registerRequest: RegisterRequest) {
     viewModelScope.launch {
-        if (registerRequest.identityPhotoFile != null) {
-            registerRequest.identityPhotoFile?.let {
+        if (_identityPhoto.value != null) {
+            _identityPhoto.value?.let {
                 val docResponse = doNetwork(androidContext) {
                     OneBoSportApi.uploadImgService.uploadImg(
                         UploadVerifyDocRequest(
                             userInfo.value?.userId.toString(),
-                            registerRequest.identityPhotoFile!!
+                            _identityPhoto.value!!
                         ).toPars()
                     )
                 }
@@ -1035,13 +1042,15 @@ private fun register(registerRequest: RegisterRequest) {
                     )
                     docResponse.success -> {
                         _docUrlResult.postValue(docResponse)
+                        registerRequest.identityPhoto = docResponse.imgData?.path
+                        _identityPhoto.postValue(null)
 
-                        if (registerRequest.identityPhotoBackupFile != null) {
+                        if (_identityPhotoBackup != null) {
                             val photoResponse = doNetwork(androidContext) {
                                 OneBoSportApi.uploadImgService.uploadImg(
                                     UploadVerifyDocRequest(
                                         userInfo.value?.userId.toString(),
-                                        registerRequest.identityPhotoBackupFile!!
+                                        _identityPhotoBackup.value!!
                                     ).toPars()
                                 )
                             }
@@ -1058,6 +1067,8 @@ private fun register(registerRequest: RegisterRequest) {
                                 )
                                 photoResponse.success -> {
                                     _photoUrlResult.postValue(photoResponse)
+                                    registerRequest.identityPhotoBackup = photoResponse.imgData?.path
+                                    _identityPhotoBackup.postValue(null)
                                     doNetwork(androidContext) {
                                         loginRepository.register(registerRequest)
                                     }?.let { result ->
