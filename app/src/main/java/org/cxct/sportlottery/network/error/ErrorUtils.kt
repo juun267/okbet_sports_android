@@ -60,6 +60,7 @@ import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
@@ -130,6 +131,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoResult
 import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -532,6 +534,10 @@ object ErrorUtils {
                     (url.contains(PASSWORD_VERIFY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return PasswordVerifyResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(UPLOAD_VERIFY_PHOTO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UploadVerifyPhotoResult(it.code, it.msg, it.success,null) as T
                     }
                 }
             }

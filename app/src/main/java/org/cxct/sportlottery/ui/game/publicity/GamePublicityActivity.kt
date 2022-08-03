@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.F
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -319,7 +320,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun goRegisterPage() {
-        startActivity(Intent(this@GamePublicityActivity, RegisterActivity::class.java))
+        if (getString(R.string.app_name).equals("OKbet")) {
+            startActivity(Intent(this@GamePublicityActivity, RegisterOkActivity::class.java))
+        } else {
+            startActivity(Intent(this@GamePublicityActivity, RegisterActivity::class.java))
+        }
     }
 
     private fun goLoginPage() {

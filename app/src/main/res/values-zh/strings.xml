@@ -98,8 +98,8 @@
     <string name="income_source">薪资来源</string>
     <string name="identity_type">证件类型</string>
     <string name="betting_shop">匹配投注站</string>
-    <string name="register_identity">身分证号</string>
-    <string name="hint_register_identity">(请输入身分证号)</string>
+    <string name="register_identity">身份证号</string>
+    <string name="hint_register_identity">(请输入身份证号)</string>
     <string name="birth_date">生日</string>
     <string name="hint_birth_date">(YYYY/MM/DD)</string>
     <string name="hint_real_name">(姓名须与银行户口一致)</string>
@@ -1072,10 +1072,10 @@
     <!--endregion-->
 
     <string name="verification_status">身份证验证</string>
-    <string name="register_identity_photo_front">上传身分证正面</string>
-    <string name="register_identity_photo_hint_front">请点击上传身分证正面照</string>
-    <string name="register_identity_photo_back">上传身分证背面</string>
-    <string name="register_identity_photo_hint_back">请点击上传身分证背面照</string>
+    <string name="register_identity_photo_front">上传身份证正面</string>
+    <string name="register_identity_photo_hint_front">请点击上传身份证正面照</string>
+    <string name="register_identity_photo_back">上传身份证背面</string>
+    <string name="register_identity_photo_hint_back">请点击上传身份证背面照</string>
     <string name="redenvelope_trantype_send">发红包</string>
     <string name="redenvelope_trantype_received">收红包</string>
     <string name="redenvelope_amount">红包金额</string>
@@ -1117,4 +1117,72 @@
     <string name="outlets_address_">投注站地址：</string>
     <string name="error_recharge_amount_format">充值额格式有誤</string>
     <string name="error_amount_limit_exceeded">金额超过限额</string>
+
+    <string name="kyc_type">证件类型</string>
+    <string name="kyc_num">证件号码</string>
+    <string name="kyc_upload">上传证件照片</string>
+    <string name="kyc_type2">证件类型2</string>
+    <string name="kyc_num2">证件号码2</string>
+    <string name="kyc_upload2">上传证件照片2</string>
+    <string name="kyc_id_verification">实名验证</string>
+    <string name="kyc_valid">有效证件</string>
+    <string name="kyc_valid2">有效证件2</string>
+    <string name="kyc_id_type">请选择证明类型</string>
+    <string name="kyc_input_id_number">请输入证件号码</string>
+    <string name="kyc_pick_upload_id">请选择上传身份证明文件</string>
+    <string name="kyc_pick_upload_id2">请上传能证明您身份的有效证件</string>
+    <string name="kyc_size_2_mb">文件大小不超过2MB</string>
+    <string name="kyc_contact_service">遇到问题？请联系在线客服</string>
+
+    <string name="kyc_reset">重置</string>
+    <string name="kyc_verify_first">请先进行实名验证。</string>
+    <string name="kyc_go_verify">立即前往认证</string>
+    <string name="kyc_you_wait">您的实名验证资料已提交，请等待审核认证。</string>
+    <string name="kyc_service_verify">您的实名验证资料已提交，请等待审核认证。</string>
+    <string name="kyc_verify_successful">您已完成实名验证！</string>
+    <string name="kyc_unverified">未认证</string>
+    <string name="kyc_verifying">待审核</string>
+    <string name="kyc_passed">已通过</string>
+    <string name="kyc_status">KYC 状态</string>
+    <string name="kyc_all_status">KYC全部状态</string>
+    <string name="kyc_kyc_unverified">KYC未认证</string>
+    <string name="kyc_kyc_verifying">KYC待审核</string>
+    <string name="kyc_kyc_passed">KYC已通过</string>
+    <string name="kyc_valid_id">有效证件</string>
+    <string name="kyc_valid_id2">有效证件2</string>
+    <string name="kyc_valid_id_type">请选择证明类型</string>
+    <string name="kyc_enter_id_num">请输入证件号码</string>
+    <string name="kyc_screenshot_id">视频截图</string>
+    <string name="kyc_screenshot_id2">视频截图2</string>
+    <string name="kyc_screenshot_id_upload">请选择上传视频截图文件</string>
+    <string name="kyc_pass">通过验证</string>
+    <string name="kyc_reject">拒绝</string>
+    <string name="kyc_sure_pass">请确定要通过 %s 的实名验证申请吗？</string>
+    <string name="kyc_sure_reject">"请确定要拒绝 %s 的实名验证申请吗？"</string>
+    <string name="kyc_reason">请输入拒绝理由</string>
+    <string name="kyc_resule">KYC验证结果通知</string>
+    <string name="kyc_open">开启</string>
+    <string name="kyc_open_now">确定开启？</string>
+    <string name="kyc_close_now">确定关闭？</string>
+    <string name="kyc_upload_count">前台上传证件数量</string>
+    <string name="kyc_1">1个</string>
+    <string name="kyc_2">2个</string>
+    <string name="kyc_system_setting">系统通知配置</string>
+    <string name="kyc_inbox_system">站内信相关配置</string>
+    <string name="kyc_operations">KYC验证结果站内信开关</string>
+    <string name="kyc_notification_passed">通过KYC验证信息内容</string>
+    <string name="kyc_notification_reject">拒绝KYC验证信息内容</string>
+    <string name="kyc_notice_system">短信相关配置</string>
+    <string name="kyc_text_operations">KYC验证结果短信开关</string>
+    <string name="kyc_add">添加</string>
+
+    <string name="next_step">下一步</string>
+    <string name="hint_select_document_type">(请选择证件类型)</string>
+    <string name="hint_select_document_number">(请填写证件号码)</string>
+    <string name="identity_number">证件号码</string>
+    <string name="identity_two_number">证件2号码</string>
+    <string name="identity_two_type">证件2类型</string>
+    <string name="hint_no_file_selected">未选择档案</string>
+    <string name="upload_id_photo">上传证件照片</string>
+
 </resources>

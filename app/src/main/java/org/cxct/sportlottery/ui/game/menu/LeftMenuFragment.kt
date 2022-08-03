@@ -47,6 +47,8 @@ import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
@@ -76,12 +78,12 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                     startActivity(Intent(context, GamePublicityActivity::class.java))
                 },
                 { //recharge
-                    viewModel.checkRechargeSystem()
+                    viewModel.checkRechargeKYCVerify()
                     closeMenuFragment()
                 },
                 { //withdraw
                     avoidFastDoubleClick()
-                    viewModel.checkWithdrawSystem()
+                    viewModel.checkWithdrawKYCVerify()
                     closeMenuFragment()
                 },
                 { //member level
@@ -179,6 +181,8 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
     private lateinit var searchResultAdapter: CommonAdapter<SearchResult>
 
 
@@ -790,6 +794,24 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                 startActivity(Intent(context, MyFavoriteActivity::class.java))
             }
         }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkRechargeSystem()
+            }
+        }
     }
 
     var searchResult: MutableList<SearchResult> = ArrayList()
@@ -1062,6 +1084,14 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
     fun clearLeftMenu() {
         if (childFragmentManager.backStackEntryCount > 0) childFragmentManager.popBackStack()
         etSearch.setText("")
+    }
+
+    private fun showKYCVerifyDialog() {
+        VerifyIdentityDialog().apply {
+            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            }
+        }.show(parentFragmentManager, null)
     }
 
 }

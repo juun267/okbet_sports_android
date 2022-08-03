@@ -56,6 +56,7 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -228,7 +229,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         btn_register.setOnClickListener {
             closeLeftMenu()
-            startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@GameActivity, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
+            }
         }
 
         tv_odds_type.setOnClickListener {

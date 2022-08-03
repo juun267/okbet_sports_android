@@ -92,6 +92,7 @@ data class ConfigData(
     val systemCurrency: String? = "PHP",
     val systemUSDTCurrency: String? = "USDT",
     val realNameWithdrawVerified: String? = null,//提现实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
+    val realNameRechargeVerified: String? = null,//充值实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
     val perBetMaxAmount: String?,
     val perBetMinAmount: String?,
     val selfRestraintVerified: String?,
@@ -106,6 +107,7 @@ data class ConfigData(
     val enableIdentityNumber: String?, //是否开启IdentityNumber(1：开启，0：关闭)
     val enableBettingStation: String?, //是否开启BettingStation(1：开启，0：关闭)
     var salarySource: List<SalarySource>?, //薪资来源列表
+    var idUploadNumber: String?,//KYC認證個數
     var identityTypeList: List<IdentityType>?, //身分证件列表
     var safeQuestionList: List<SafeQuestion>?, //安全问题选项列表
     val handicapShow: String? //前端展示的盘口（EU,HK,MY,ID）後端沒配置或為空的狀況下，要顯示預設的四個盤口

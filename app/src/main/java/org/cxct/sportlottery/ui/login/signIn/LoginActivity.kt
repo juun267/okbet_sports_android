@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
@@ -204,7 +205,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnSignUp.setVisibilityByCreditSystem()
 
         binding.btnSignUp.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@LoginActivity, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
             finish()
         }
     }
