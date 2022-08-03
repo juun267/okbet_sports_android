@@ -25,6 +25,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.LocalUtils.getString
 import java.io.File
 
 class RegisterViewModel(
@@ -599,12 +600,12 @@ class RegisterViewModel(
             checkValidCode(validCode)
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
-        if (sConfigData?.enableKYCVerify == FLAG_OPEN){
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
             checkIdentity(firstFile)
             checkIdentityNumber(identityNumber)
             checkIdentityType(identityType)
         }
-        if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")){
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
             checkBackupIdentity(secndFile)
             checkIdentityBackupNumber(identityNumberBackup)
             checkIdentityBackupType(identityTypeBackup)
@@ -624,155 +625,256 @@ class RegisterViewModel(
     }
 
     private fun checkAllInputComplete(page: Int): Boolean {
-        when (page) {
-            1 -> {
-                if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null) {
-                    return false
+        if (getString(R.string.app_name).equals("OKbet")) {
+            when (page) {
+                1 -> {
+                    if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null) {
+                        return false
+                    }
+                    if (checkInputPair(memberAccountMsg)) {
+                        return false
+                    }
+                    if (checkInputPair(loginPasswordMsg)) {
+                        return false
+                    }
+                    if (checkInputPair(confirmPasswordMsg)) {
+                        return false
+                    }
+                    if (cbAgreeAllChecked.value != true)
+                        return false
                 }
-                if (checkInputPair(memberAccountMsg)) {
-                    return false
-                }
-                if (checkInputPair(loginPasswordMsg)) {
-                    return false
-                }
-                if (checkInputPair(confirmPasswordMsg)) {
-                    return false
-                }
-                if (cbAgreeAllChecked.value != true)
-                    return false
-            }
 
-            2 -> {
-                if (sConfigData?.enableFullName == FLAG_OPEN && checkInputPair(fullNameMsg))
-                    return false
-                if (sConfigData?.enableFundPwd == FLAG_OPEN && checkInputPair(fundPwdMsg))
-                    return false
+                2 -> {
+                    if (sConfigData?.enableFullName == FLAG_OPEN && checkInputPair(fullNameMsg))
+                        return false
+                    if (sConfigData?.enableFundPwd == FLAG_OPEN && checkInputPair(fundPwdMsg))
+                        return false
 
-                if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(securityCodeMsg))
-                    return false
-                if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
-                    return false
-                if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
-                    return false
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
-                    return false
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityTypeMsg))
-                    return false
-                if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
-                    return false
+                    if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(
+                            securityCodeMsg
+                        )
+                    )
+                        return false
+
+                    if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityTypeMsg))
+                        return false
+                    if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+                        return false
+                }
+                else -> {
+                    if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(
+                            bettingShopMsg
+                        )
+                    )
+                        return false
+                    if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
+                        return false
+                    if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
+                        return false
+                    if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
+                        return false
+                    if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
+                        return false
+                    if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(
+                            provinceMsg
+                        ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
+                    )
+                        return false
+                    if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
+                        return false
+                    if (sConfigData?.enableZalo == FLAG_OPEN && checkInputPair(zaloMsg))
+                        return false
+                    if (sConfigData?.enableFacebook == FLAG_OPEN && checkInputPair(facebookMsg))
+                        return false
+                    if (sConfigData?.enableWhatsApp == FLAG_OPEN && checkInputPair(whatsAppMsg))
+                        return false
+                    if (sConfigData?.enableTelegram == FLAG_OPEN && checkInputPair(telegramMsg))
+                        return false
+                    if (sConfigData?.enableSafeQuestion == FLAG_OPEN && checkInputPair(securityPbMsg))
+                        return false
+                }
             }
-            else -> {
-                if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(bettingShopMsg))
-                    return false
-                if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
-                    return false
-                if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
-                    return false
-                if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
-                    return false
-                if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(
-                        provinceMsg
-                    ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
-                )
-                    return false
-                if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
-                    return false
-                if (sConfigData?.enableZalo == FLAG_OPEN && checkInputPair(zaloMsg))
-                    return false
-                if (sConfigData?.enableFacebook == FLAG_OPEN && checkInputPair(facebookMsg))
-                    return false
-                if (sConfigData?.enableWhatsApp == FLAG_OPEN && checkInputPair(whatsAppMsg))
-                    return false
-                if (sConfigData?.enableTelegram == FLAG_OPEN && checkInputPair(telegramMsg))
-                    return false
-                if (sConfigData?.enableSafeQuestion == FLAG_OPEN && checkInputPair(securityPbMsg))
-                    return false
+        } else {
+
+            if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null) {
+                return false
             }
+            if (checkInputPair(memberAccountMsg)) {
+                return false
+            }
+            if (checkInputPair(loginPasswordMsg)) {
+                return false
+            }
+            if (checkInputPair(confirmPasswordMsg)) {
+                return false
+            }
+            if (cbAgreeAllChecked.value != true)
+                return false
+
+
+
+            if (sConfigData?.enableFullName == FLAG_OPEN && checkInputPair(fullNameMsg))
+                return false
+            if (sConfigData?.enableFundPwd == FLAG_OPEN && checkInputPair(fundPwdMsg))
+                return false
+
+            if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(securityCodeMsg))
+                return false
+            if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
+                return false
+            if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
+                return false
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
+                return false
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityTypeMsg))
+                return false
+            if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+                return false
+
+
+            if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(bettingShopMsg))
+                return false
+            if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
+                return false
+            if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
+                return false
+            if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
+                return false
+            if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(
+                    provinceMsg
+                ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
+            )
+                return false
+            if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
+                return false
+            if (sConfigData?.enableZalo == FLAG_OPEN && checkInputPair(zaloMsg))
+                return false
+            if (sConfigData?.enableFacebook == FLAG_OPEN && checkInputPair(facebookMsg))
+                return false
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN && checkInputPair(whatsAppMsg))
+                return false
+            if (sConfigData?.enableTelegram == FLAG_OPEN && checkInputPair(telegramMsg))
+                return false
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN && checkInputPair(securityPbMsg))
+                return false
         }
 
 
+    return true
+}
 
+private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
+    return data.value?.first != null || data.value?.second != true
+}
 
-
-
-
-
-        return true
-    }
-
-    private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
-        return data.value?.first != null || data.value?.second != true
-    }
-
-    fun loginAsGuest() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.loginForGuest()
-            }?.let {
-                _loginForGuestResult.value = it
-            }
+fun loginAsGuest() {
+    viewModelScope.launch {
+        doNetwork(androidContext) {
+            loginRepository.loginForGuest()
+        }?.let {
+            _loginForGuestResult.value = it
         }
     }
+}
 
-    fun checkAccountExist(account: String) {
-        //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
+fun checkAccountExist(account: String) {
+    //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
 //        val msg = LocalUtils.getString(R.string.desc_register_checking_account)
 //        _memberAccountMsg.value = Pair(msg, false)
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.indexService.checkAccountExist(account)
-            }.let {
-                if (it?.success == true) {
-                    checkMemberAccount(account, it.isExist ?: false)
-                } else {
-                    checkMemberAccount(account, false)
-                }
+    viewModelScope.launch {
+        doNetwork(androidContext) {
+            OneBoSportApi.indexService.checkAccountExist(account)
+        }.let {
+            if (it?.success == true) {
+                checkMemberAccount(account, it.isExist ?: false)
+            } else {
+                checkMemberAccount(account, false)
             }
         }
     }
+}
 
-    fun registerSubmit(
-        inviteCode: String,
-        userName: String,
-        loginPassword: String,
-        confirmPassword: String,
-        fullName: String,
-        fundPwd: String,
-        qq: String,
-        phone: String,
-        email: String,
-        postalCode: String,
-        province: String,
-        city: String,
-        address: String,
-        weChat: String,
-        zalo: String,
-        facebook: String,
-        whatsApp: String,
-        telegram: String,
-        securityPbTypeCode: String?,
-        securityPb: String,
-        smsCode: String,
-        validCode: String,
-        cbAgreeAllChecked: Boolean,
-        deviceSn: String,
-        deviceId: String,
-        birth: String?,
-        identity: String?,
-        salarySource: String?,
-        bettingShop: String?,
-        firstFile: File? = null,
-        identityType: String? = null,
-        identityNumber: String? = null,
-        secndFile: File? = null,
-        identityTypeBackup: String? = null,
-        identityNumberBackup: String? = null
+fun registerSubmit(
+    inviteCode: String,
+    userName: String,
+    loginPassword: String,
+    confirmPassword: String,
+    fullName: String,
+    fundPwd: String,
+    qq: String,
+    phone: String,
+    email: String,
+    postalCode: String,
+    province: String,
+    city: String,
+    address: String,
+    weChat: String,
+    zalo: String,
+    facebook: String,
+    whatsApp: String,
+    telegram: String,
+    securityPbTypeCode: String?,
+    securityPb: String,
+    smsCode: String,
+    validCode: String,
+    cbAgreeAllChecked: Boolean,
+    deviceSn: String,
+    deviceId: String,
+    birth: String?,
+    identity: String?,
+    salarySource: String?,
+    bettingShop: String?,
+    firstFile: File? = null,
+    identityType: String? = null,
+    identityNumber: String? = null,
+    secndFile: File? = null,
+    identityTypeBackup: String? = null,
+    identityNumberBackup: String? = null
+) {
+    if (checkAllInput(
+            inviteCode,
+            userName,
+            loginPassword,
+            confirmPassword,
+            fullName,
+            fundPwd,
+            qq,
+            phone,
+            email,
+            postalCode,
+            province,
+            city,
+            address,
+            weChat,
+            zalo,
+            facebook,
+            whatsApp,
+            telegram,
+            securityPb,
+            smsCode,
+            validCode,
+            cbAgreeAllChecked,
+            birth,
+            identity,
+            identityType,
+            salarySource,
+            bettingShop,
+            firstFile,
+            secndFile,
+            identityNumber,
+            identityNumberBackup,
+            identityTypeBackup
+        )
     ) {
-        if (checkAllInput(
+        register(
+            createRegisterRequest(
                 inviteCode,
                 userName,
                 loginPassword,
-                confirmPassword,
                 fullName,
                 fundPwd,
                 qq,
@@ -787,357 +889,322 @@ class RegisterViewModel(
                 facebook,
                 whatsApp,
                 telegram,
+                securityPbTypeCode,
                 securityPb,
                 smsCode,
                 validCode,
-                cbAgreeAllChecked,
+                deviceSn,
+                deviceId,
                 birth,
                 identity,
-                identityType,
+                docUrlResult.value?.imgData?.path,
+                photoUrlResult.value?.imgData?.path,
                 salarySource,
                 bettingShop,
                 firstFile,
-                secndFile,
+                identityType?.toInt(),
                 identityNumber,
-                identityNumberBackup,
-                identityTypeBackup
+                secndFile,
+                identityTypeBackup?.toInt(),
+                identityNumberBackup
             )
-        ) {
-            register(
-                createRegisterRequest(
-                    inviteCode,
-                    userName,
-                    loginPassword,
-                    fullName,
-                    fundPwd,
-                    qq,
-                    phone,
-                    email,
-                    postalCode,
-                    province,
-                    city,
-                    address,
-                    weChat,
-                    zalo,
-                    facebook,
-                    whatsApp,
-                    telegram,
-                    securityPbTypeCode,
-                    securityPb,
-                    smsCode,
-                    validCode,
-                    deviceSn,
-                    deviceId,
-                    birth,
-                    identity,
-                    docUrlResult.value?.imgData?.path,
-                    photoUrlResult.value?.imgData?.path,
-                    salarySource,
-                    bettingShop,
-                    firstFile,
-                    identityType?.toInt(),
-                    identityNumber,
-                    secndFile,
-                    identityTypeBackup?.toInt(),
-                    identityNumberBackup
-                )
-            )
-        }
+        )
     }
+}
 
-    private fun createRegisterRequest(
-        inviteCode: String,
-        userName: String,
-        loginPassword: String,
-        fullName: String,
-        fundPwd: String,
-        qq: String,
-        phone: String,
-        email: String,
-        postalCode: String,
-        province: String,
-        city: String,
-        address: String,
-        weChat: String,
-        zalo: String,
-        facebook: String,
-        whatsApp: String,
-        telegram: String,
-        securityPbTypeCode: String?,
-        securityPb: String,
-        smsCode: String,
-        validCode: String,
-        deviceSn: String,
-        deviceId: String,
-        birth: String?,
-        identity: String?,
-        verifyPhoto1: String?,
-        verifyPhoto2: String?,
-        salarySource: String?,
-        bettingShop: String?,
-        identityPhoto: File?,
-        identityType: Int?,
-        identityNumber: String?,
-        identityPhotoBackup: File?,
-        identityTypeBackup: Int?,
-        identityNumberBackup: String?,
-    ): RegisterRequest {
-        return RegisterRequest(
-            userName = userName,
-            password = MD5Util.MD5Encode(loginPassword),
-            loginSrc = LOGIN_SRC,
-            deviceSn = deviceSn,
-            inviteCode = inviteCode,
-            loginEnvInfo = deviceId
-        ).apply {
-            if (sConfigData?.enableFullName == FLAG_OPEN)
-                this.fullName = fullName
-            if (sConfigData?.enableFundPwd == FLAG_OPEN)
-                this.fundPwd = MD5Util.MD5Encode(fundPwd)
-            if (sConfigData?.enableQQ == FLAG_OPEN)
-                this.qq = qq
-            if (sConfigData?.enablePhone == FLAG_OPEN)
-                this.phone = phone
-            if (sConfigData?.enableEmail == FLAG_OPEN)
-                this.email = email
-            if (sConfigData?.enableAddress == FLAG_OPEN) {
-                this.zipCode = postalCode
-                this.province = province
-                this.city = city
-                this.address = address
-            }
-            if (sConfigData?.enableWechat == FLAG_OPEN)
-                this.wechat = weChat
-            if (sConfigData?.enableZalo == FLAG_OPEN)
-                this.zalo = zalo
-            if (sConfigData?.enableFacebook == FLAG_OPEN)
-                this.facebook = facebook
-            if (sConfigData?.enableWhatsApp == FLAG_OPEN)
-                this.whatsapp = whatsApp
-            if (sConfigData?.enableTelegram == FLAG_OPEN)
-                this.telegram = telegram
-            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) {
-                this.safeQuestionType = securityPbTypeCode
-                this.safeQuestion = securityPb
-            }
-            if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
-                this.securityCode = smsCode
-            if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
-                this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
-                this.validCode = validCode
-            }
-            if (sConfigData?.enableBirthday == FLAG_OPEN)
-                this.birthday = birth
-            if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
-                this.identityPhotoFile = identityPhoto
-                this.identityNumber = identityNumber
-                this.identityNumber = identityNumber
-            }
-            if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
-                this.identityPhotoBackupFile = identityPhotoBackup
-                this.identityTypeBackup = identityTypeBackup
-                this.identityNumberBackup = identityNumberBackup
-            }
-            if (sConfigData?.enableSalarySource == FLAG_OPEN)
-                this.salarySource = salarySource
-            if (sConfigData?.enableBettingStation == FLAG_OPEN)
-                this.bettingStationId = bettingShop
+private fun createRegisterRequest(
+    inviteCode: String,
+    userName: String,
+    loginPassword: String,
+    fullName: String,
+    fundPwd: String,
+    qq: String,
+    phone: String,
+    email: String,
+    postalCode: String,
+    province: String,
+    city: String,
+    address: String,
+    weChat: String,
+    zalo: String,
+    facebook: String,
+    whatsApp: String,
+    telegram: String,
+    securityPbTypeCode: String?,
+    securityPb: String,
+    smsCode: String,
+    validCode: String,
+    deviceSn: String,
+    deviceId: String,
+    birth: String?,
+    identity: String?,
+    verifyPhoto1: String?,
+    verifyPhoto2: String?,
+    salarySource: String?,
+    bettingShop: String?,
+    identityPhoto: File?,
+    identityType: Int?,
+    identityNumber: String?,
+    identityPhotoBackup: File?,
+    identityTypeBackup: Int?,
+    identityNumberBackup: String?,
+): RegisterRequest {
+    return RegisterRequest(
+        userName = userName,
+        password = MD5Util.MD5Encode(loginPassword),
+        loginSrc = LOGIN_SRC,
+        deviceSn = deviceSn,
+        inviteCode = inviteCode,
+        loginEnvInfo = deviceId
+    ).apply {
+        if (sConfigData?.enableFullName == FLAG_OPEN)
+            this.fullName = fullName
+        if (sConfigData?.enableFundPwd == FLAG_OPEN)
+            this.fundPwd = MD5Util.MD5Encode(fundPwd)
+        if (sConfigData?.enableQQ == FLAG_OPEN)
+            this.qq = qq
+        if (sConfigData?.enablePhone == FLAG_OPEN)
+            this.phone = phone
+        if (sConfigData?.enableEmail == FLAG_OPEN)
+            this.email = email
+        if (sConfigData?.enableAddress == FLAG_OPEN) {
+            this.zipCode = postalCode
+            this.province = province
+            this.city = city
+            this.address = address
         }
+        if (sConfigData?.enableWechat == FLAG_OPEN)
+            this.wechat = weChat
+        if (sConfigData?.enableZalo == FLAG_OPEN)
+            this.zalo = zalo
+        if (sConfigData?.enableFacebook == FLAG_OPEN)
+            this.facebook = facebook
+        if (sConfigData?.enableWhatsApp == FLAG_OPEN)
+            this.whatsapp = whatsApp
+        if (sConfigData?.enableTelegram == FLAG_OPEN)
+            this.telegram = telegram
+        if (sConfigData?.enableSafeQuestion == FLAG_OPEN) {
+            this.safeQuestionType = securityPbTypeCode
+            this.safeQuestion = securityPb
+        }
+        if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
+            this.securityCode = smsCode
+        if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
+            this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
+            this.validCode = validCode
+        }
+        if (sConfigData?.enableBirthday == FLAG_OPEN)
+            this.birthday = birth
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
+            this.identityPhotoFile = identityPhoto
+            this.identityNumber = identityNumber
+            this.identityNumber = identityNumber
+        }
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
+            this.identityPhotoBackupFile = identityPhotoBackup
+            this.identityTypeBackup = identityTypeBackup
+            this.identityNumberBackup = identityNumberBackup
+        }
+        if (sConfigData?.enableSalarySource == FLAG_OPEN)
+            this.salarySource = salarySource
+        if (sConfigData?.enableBettingStation == FLAG_OPEN)
+            this.bettingStationId = bettingShop
     }
+}
 
-    private fun register(registerRequest: RegisterRequest) {
-        viewModelScope.launch {
-            if (registerRequest.identityPhotoFile != null) {
-                registerRequest.identityPhotoFile?.let {
-                    val docResponse = doNetwork(androidContext) {
-                        OneBoSportApi.uploadImgService.uploadImg(
-                            UploadVerifyDocRequest(
-                                userInfo.value?.userId.toString(),
-                                registerRequest.identityPhotoFile!!
-                            ).toPars()
+private fun register(registerRequest: RegisterRequest) {
+    viewModelScope.launch {
+        if (registerRequest.identityPhotoFile != null) {
+            registerRequest.identityPhotoFile?.let {
+                val docResponse = doNetwork(androidContext) {
+                    OneBoSportApi.uploadImgService.uploadImg(
+                        UploadVerifyDocRequest(
+                            userInfo.value?.userId.toString(),
+                            registerRequest.identityPhotoFile!!
+                        ).toPars()
+                    )
+                }
+                when {
+                    docResponse == null -> _docUrlResult.postValue(
+                        UploadImgResult(
+                            -1,
+                            androidContext.getString(R.string.unknown_error),
+                            false,
+                            null
                         )
-                    }
-                    when {
-                        docResponse == null -> _docUrlResult.postValue(
-                            UploadImgResult(
-                                -1,
-                                androidContext.getString(R.string.unknown_error),
-                                false,
-                                null
-                            )
-                        )
-                        docResponse.success -> {
-                            _docUrlResult.postValue(docResponse)
+                    )
+                    docResponse.success -> {
+                        _docUrlResult.postValue(docResponse)
 
-                            if (registerRequest.identityPhotoBackupFile != null) {
-                                val photoResponse = doNetwork(androidContext) {
-                                    OneBoSportApi.uploadImgService.uploadImg(
-                                        UploadVerifyDocRequest(
-                                            userInfo.value?.userId.toString(),
-                                            registerRequest.identityPhotoBackupFile!!
-                                        ).toPars()
+                        if (registerRequest.identityPhotoBackupFile != null) {
+                            val photoResponse = doNetwork(androidContext) {
+                                OneBoSportApi.uploadImgService.uploadImg(
+                                    UploadVerifyDocRequest(
+                                        userInfo.value?.userId.toString(),
+                                        registerRequest.identityPhotoBackupFile!!
+                                    ).toPars()
+                                )
+                            }
+                            when {
+                                photoResponse == null -> _photoUrlResult.postValue(
+
+                                    UploadImgResult(
+                                        -1,
+                                        androidContext.getString(R.string.unknown_error),
+                                        false,
+                                        null
                                     )
-                                }
-                                when {
-                                    photoResponse == null -> _photoUrlResult.postValue(
 
+                                )
+                                photoResponse.success -> {
+                                    _photoUrlResult.postValue(photoResponse)
+                                    doNetwork(androidContext) {
+                                        loginRepository.register(registerRequest)
+                                    }?.let { result ->
+                                        // TODO 20220108 更新UserInfo by Hewie
+                                        userInfoRepository.getUserInfo()
+                                        _registerResult.postValue(result)
+                                    }
+                                }
+                                else -> {
+                                    val error =
                                         UploadImgResult(
-                                            -1,
-                                            androidContext.getString(R.string.unknown_error),
-                                            false,
+                                            photoResponse.code,
+                                            photoResponse.msg,
+                                            photoResponse.success,
                                             null
                                         )
-
-                                    )
-                                    photoResponse.success -> {
-                                        _photoUrlResult.postValue(photoResponse)
-                                        doNetwork(androidContext) {
-                                            loginRepository.register(registerRequest)
-                                        }?.let { result ->
-                                            // TODO 20220108 更新UserInfo by Hewie
-                                            userInfoRepository.getUserInfo()
-                                            _registerResult.postValue(result)
-                                        }
-                                    }
-                                    else -> {
-                                        val error =
-                                            UploadImgResult(
-                                                photoResponse.code,
-                                                photoResponse.msg,
-                                                photoResponse.success,
-                                                null
-                                            )
-                                        _photoUrlResult.postValue(error)
-                                    }
-                                }
-                            } else {
-                                doNetwork(androidContext) {
-                                    loginRepository.register(registerRequest)
-                                }?.let { result ->
-                                    // TODO 20220108 更新UserInfo by Hewie
-                                    userInfoRepository.getUserInfo()
-                                    _registerResult.postValue(result)
+                                    _photoUrlResult.postValue(error)
                                 }
                             }
-                        }
-                        else -> {
-                            val error = UploadImgResult(
-                                docResponse.code, docResponse.msg, docResponse.success, null
-                            )
-                            _docUrlResult.postValue(error)
+                        } else {
+                            doNetwork(androidContext) {
+                                loginRepository.register(registerRequest)
+                            }?.let { result ->
+                                // TODO 20220108 更新UserInfo by Hewie
+                                userInfoRepository.getUserInfo()
+                                _registerResult.postValue(result)
+                            }
                         }
                     }
-                }
-
-
-            } else {
-                doNetwork(androidContext) {
-                    loginRepository.register(registerRequest)
-                }?.let { result ->
-                    // TODO 20220108 更新UserInfo by Hewie
-                    userInfoRepository.getUserInfo()
-                    _registerResult.postValue(result)
+                    else -> {
+                        val error = UploadImgResult(
+                            docResponse.code, docResponse.msg, docResponse.success, null
+                        )
+                        _docUrlResult.postValue(error)
+                    }
                 }
             }
-        }
-    }
 
-    fun bettingStationQuery() {
-        viewModelScope.launch(Dispatchers.IO) {
+
+        } else {
             doNetwork(androidContext) {
-                bettingStationService.bettingStationsQuery()
+                loginRepository.register(registerRequest)
             }?.let { result ->
-                val bettingStationSheetList = mutableListOf<StatusSheetData>()
-                result.bettingStationList.map { bettingStation ->
-                    bettingStationSheetList.add(
-                        StatusSheetData(
-                            bettingStation.id.toString(),
-                            bettingStation.name
-                        )
-                    )
-                }
-
-                withContext(Dispatchers.Main) {
-                    _bettingStationList.value = bettingStationSheetList
-                }
+                // TODO 20220108 更新UserInfo by Hewie
+                userInfoRepository.getUserInfo()
+                _registerResult.postValue(result)
             }
         }
     }
+}
 
-    //region 證件照片
-    fun uploadVerifyPhoto(docFile: File, photoFile: File) {
-        viewModelScope.launch {
-            val docResponse = doNetwork(androidContext) {
-                OneBoSportApi.uploadImgService.uploadImg(
-                    UploadVerifyDocRequest(
-                        "9999",
-                        docFile
-                    ).toPars()
+fun bettingStationQuery() {
+    viewModelScope.launch(Dispatchers.IO) {
+        doNetwork(androidContext) {
+            bettingStationService.bettingStationsQuery()
+        }?.let { result ->
+            val bettingStationSheetList = mutableListOf<StatusSheetData>()
+            result.bettingStationList.map { bettingStation ->
+                bettingStationSheetList.add(
+                    StatusSheetData(
+                        bettingStation.id.toString(),
+                        bettingStation.name
+                    )
                 )
             }
-            when {
-                docResponse == null -> _docUrlResult.postValue(
-                    UploadImgResult(
-                        -1,
-                        LocalUtils.getString(R.string.unknown_error),
-                        false,
-                        null
-                    )
 
+            withContext(Dispatchers.Main) {
+                _bettingStationList.value = bettingStationSheetList
+            }
+        }
+    }
+}
+
+//region 證件照片
+fun uploadVerifyPhoto(docFile: File, photoFile: File) {
+    viewModelScope.launch {
+        val docResponse = doNetwork(androidContext) {
+            OneBoSportApi.uploadImgService.uploadImg(
+                UploadVerifyDocRequest(
+                    "9999",
+                    docFile
+                ).toPars()
+            )
+        }
+        when {
+            docResponse == null -> _docUrlResult.postValue(
+                UploadImgResult(
+                    -1,
+                    LocalUtils.getString(R.string.unknown_error),
+                    false,
+                    null
                 )
-                //上傳第一張照片成功
-                docResponse.success -> {
-                    _docUrlResult.postValue(docResponse)
 
-                    val photoResponse = doNetwork(androidContext) {
-                        OneBoSportApi.uploadImgService.uploadImg(
-                            UploadVerifyDocRequest(
-                                "9999",
-                                photoFile
-                            ).toPars()
+            )
+            //上傳第一張照片成功
+            docResponse.success -> {
+                _docUrlResult.postValue(docResponse)
+
+                val photoResponse = doNetwork(androidContext) {
+                    OneBoSportApi.uploadImgService.uploadImg(
+                        UploadVerifyDocRequest(
+                            "9999",
+                            photoFile
+                        ).toPars()
+                    )
+                }
+                when {
+                    photoResponse == null -> _photoUrlResult.postValue(
+                        UploadImgResult(
+                            -1,
+                            LocalUtils.getString(R.string.unknown_error),
+                            false,
+                            null
                         )
+                    )
+                    //上傳第二張照片成功
+                    photoResponse.success -> {
+                        _photoUrlResult.postValue(photoResponse)
                     }
-                    when {
-                        photoResponse == null -> _photoUrlResult.postValue(
+                    else -> {
+                        val error =
                             UploadImgResult(
-                                -1,
-                                LocalUtils.getString(R.string.unknown_error),
-                                false,
+                                photoResponse.code,
+                                photoResponse.msg,
+                                photoResponse.success,
                                 null
                             )
-                        )
-                        //上傳第二張照片成功
-                        photoResponse.success -> {
-                            _photoUrlResult.postValue(photoResponse)
-                        }
-                        else -> {
-                            val error =
-                                UploadImgResult(
-                                    photoResponse.code,
-                                    photoResponse.msg,
-                                    photoResponse.success,
-                                    null
-                                )
-                            _photoUrlResult.postValue(error)
-                        }
+                        _photoUrlResult.postValue(error)
                     }
                 }
-                else -> {
-                    val error = UploadImgResult(
-                        docResponse.code, docResponse.msg, docResponse.success, null
-                    )
-                    _docUrlResult.postValue(error)
-                }
+            }
+            else -> {
+                val error = UploadImgResult(
+                    docResponse.code, docResponse.msg, docResponse.success, null
+                )
+                _docUrlResult.postValue(error)
             }
         }
     }
+}
 
-    /**
-     * 清除照片上傳狀態
-     */
-    fun resetCredentialsStatus() {
-        _docUrlResult.value = null
-        _photoUrlResult.value = null
-    }
-    //endregion
+/**
+ * 清除照片上傳狀態
+ */
+fun resetCredentialsStatus() {
+    _docUrlResult.value = null
+    _photoUrlResult.value = null
+}
+//endregion
 }

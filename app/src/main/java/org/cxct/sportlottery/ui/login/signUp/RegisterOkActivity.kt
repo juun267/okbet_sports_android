@@ -274,6 +274,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etSecurityPb.visibility = View.GONE
 
 
+
+
                 clAgreement.visibility = View.VISIBLE
                 et_recommend_code.visibility = View.VISIBLE
                 et_member_account.visibility = View.VISIBLE
@@ -288,6 +290,28 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 et_member_account.visibility = View.GONE
                 et_login_password.visibility = View.GONE
                 et_confirm_password.visibility = View.GONE
+
+                et_address.visibility = View.GONE
+                etSecurityPbType.visibility = View.GONE
+                etSecurityPb.visibility = View.GONE
+
+
+                block_sms_valid_code.visibility = View.GONE
+                block_valid_code.visibility = View.GONE
+
+                etBettingShop.visibility = View.GONE
+                et_mail.visibility = View.GONE
+                et_postal.visibility = View.GONE
+                et_province.visibility = View.GONE
+                et_city.visibility = View.GONE
+
+                et_qq.visibility = View.GONE
+                et_we_chat.visibility = View.GONE
+                et_zalo.visibility = View.GONE
+                et_facebook.visibility = View.GONE
+                et_whats_app.visibility = View.GONE
+                et_telegram.visibility = View.GONE
+
 
                 etIdentityType.isVisible = isEnableKYCVerify
                 etIdentityNumber.isVisible = isEnableKYCVerify
@@ -335,7 +359,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 et_confirm_password.visibility = View.GONE
 
 
-                etIdentityType.visibility= View.GONE
+                etIdentityType.visibility = View.GONE
                 etIdentityNumber.visibility = View.GONE
                 etIdentity.visibility = View.GONE
                 etIdentityType2.visibility = View.GONE
@@ -909,8 +933,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         }
 
         binding.btnRegister.setOnClickListener {
-            page++
-            setPage()
             if (page == 3) {
                 Log.i(">>>", "btnRegister onclicked")
                 val deviceId = Settings.Secure.getString(
@@ -961,6 +983,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     )
                 }
             }
+            if (page < 3) {
+                page++
+                setPage()
+            }
+
+
         }
 
     }
@@ -983,7 +1011,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
     private fun updateValidCode() {
         viewModel.getValidCode()
-        binding.eetVerificationCode.setText("");
+        //binding.eetVerificationCode.setText("");
     }
 
     private fun setupGoToLoginButton() {
