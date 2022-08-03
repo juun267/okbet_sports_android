@@ -1116,5 +1116,5 @@
     <string name="appointment_">预约时间：</string>
     <string name="outlets_address_">投注站地址：</string>
     <string name="error_recharge_amount_format">充值额格式有誤</string>
-    <string name="error_amount_limit_exceeded">金額超過限額</string>
+    <string name="error_amount_limit_exceeded">金额超过限额</string>
 </resources>
