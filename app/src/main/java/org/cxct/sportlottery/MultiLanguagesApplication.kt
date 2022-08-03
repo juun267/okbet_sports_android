@@ -147,7 +147,7 @@ class MultiLanguagesApplication : Application() {
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
-        single { MoneyRepository() }
+        single { MoneyRepository }
         single { BetInfoRepository(get()) }
         single { AvatarRepository(get()) }
         single { FeedbackRepository() }

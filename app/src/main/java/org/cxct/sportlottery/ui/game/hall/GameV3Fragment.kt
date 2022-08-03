@@ -2289,8 +2289,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             initSocketObserver()
             MultiLanguagesApplication.colorModeChanging = false
         }
-
-        viewModel.getSportMenuFilter()
     }
 
     override fun onDestroyView() {

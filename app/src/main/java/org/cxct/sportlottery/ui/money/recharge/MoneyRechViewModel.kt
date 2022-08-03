@@ -149,12 +149,9 @@ class MoneyRechViewModel(
     //獲取充值的基礎配置
     fun getRechCfg() {
         Log.e(">>>", "getRechCfg")
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                moneyRepository.getRechCfg()
-            }
-            result?.rechCfg?.let { _rechargeConfigs.value = result.rechCfg }
-            result?.rechCfg?.let { filterBankList(it.rechTypes,it.rechCfgs) }
+        WithdrawRepository.moneyRechCfgResult.value?.rechCfg?.let {
+            _rechargeConfigs.value = it
+            filterBankList(it.rechTypes,it.rechCfgs)
         }
     }
 

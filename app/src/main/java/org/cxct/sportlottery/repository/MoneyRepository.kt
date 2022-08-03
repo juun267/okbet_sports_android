@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import retrofit2.Response
 
-class MoneyRepository() {
+object MoneyRepository {
 
     val userInfo: LiveData<UserInfo?>
         get() = MultiLanguagesApplication.mInstance.userInfo
