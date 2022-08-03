@@ -1261,14 +1261,13 @@
     <string name="kyc_text_operations">[TEXT] Operations</string>
     <string name="kyc_add">Add</string>
 
-    <string name="next_step">下一步</string>
-    <string name="hint_select_document_type">(请选择证件类型)</string>
-    <string name="hint_select_document_number">(请填写证件号码)</string>
-    <string name="hint_answer">(请输入你的回答)</string>
-    <string name="identity_number">证件号码</string>
-    <string name="identity_two_number">证件2号码</string>
-    <string name="identity_two_type">证件2类型</string>
-    <string name="hint_no_file_selected">未选择档案</string>
-    <string name="upload_id_photo">上传证件照片</string>
+    <string name="next_step">Next</string>
+    <string name="hint_select_document_type">(Valid ID Type)</string>
+    <string name="hint_select_document_number">(Enter ID number)</string>
+    <string name="identity_number">ID Number</string>
+    <string name="identity_two_number">ID Number [2]</string>
+    <string name="identity_two_type">ID Type [2]</string>
+    <string name="hint_no_file_selected">Unselect files</string>
+    <string name="upload_id_photo">Upload Photo</string>
 
 </resources>

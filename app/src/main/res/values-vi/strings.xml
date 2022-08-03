@@ -1186,4 +1186,12 @@
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="btn_sure">Xác nhận</string>
     <string name="next_step">Bước phía trước</string>
+
+    <string name="hint_select_document_type">(Mời nhập loại giấy tờ)</string>
+    <string name="hint_select_document_number">(Mời nhập mã số giấy tờ)</string>
+    <string name="identity_number">Số giấy tờ</string>
+    <string name="identity_two_number">Số giấy tờ2</string>
+    <string name="identity_two_type">Loại giấy tờ 2</string>
+    <string name="hint_no_file_selected">Chưa chọn tập tin</string>
+    <string name="upload_id_photo">Tải ảnh lên</string>
 </resources>

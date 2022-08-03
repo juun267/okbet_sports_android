@@ -292,6 +292,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etIdentityType.isVisible = isEnableKYCVerify
                 etIdentityNumber.isVisible = isEnableKYCVerify
                 etIdentity.isVisible = isEnableKYCVerify
+
                 etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
@@ -662,8 +663,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun setupIdentityType2() {
         with(binding) {
             //顯示隱藏該選項
-            etIdentityType2.visibility =
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
+
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
