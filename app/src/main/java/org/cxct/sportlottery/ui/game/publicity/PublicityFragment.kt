@@ -288,12 +288,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                 if (isReload) {
                     mPublicityAdapter.updateToolbarBannerImage()
                 }
-            }
-        }
-
-        viewModel.sportMenuFilterList.observe(viewLifecycleOwner){
-            it.getContentIfNotHandled()?.let {
-                queryData()
+                viewModel.getSportMenuFilter()
             }
         }
     }
@@ -304,7 +299,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
 //                    loading()
-                    viewModel.getSportMenuFilter()
+                    queryData()
                     subscribeSportChannelHall()
                 }
             }
