@@ -88,14 +88,6 @@ class BetInfoRepository(val androidContext: Context) {
     val betParlaySuccess: LiveData<Boolean>
         get() = _betParlaySuccess
 
-
-    var playQuotaComData: Map<String?, BasePlayQuota?>? = mapOf()
-        set(value) {
-            field = value
-            field?.let {
-                updatePlayQuota()
-            }
-        }
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
@@ -482,43 +474,6 @@ class BetInfoRepository(val androidContext: Context) {
         checkBetInfoContent(updateBetInfoList)
         updateBetOrderParlay(updateBetInfoList)
         _betInfoList.value = Event(updateBetInfoList)
-    }
-
-
-    private fun updatePlayQuota() {
-
-        val updateBetInfoList = _betInfoList.value?.peekContent()
-
-        if (updateBetInfoList.isNullOrEmpty()) return
-
-        val newList = mutableListOf<BetInfoListData>()
-        updateBetInfoList.forEach { betInfoListData ->
-            betInfoListData.matchType?.let { matchType ->
-                //TODO Dean : review
-                val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
-                gameType?.let {
-                    val newBetInfoListData = BetInfoListData(
-                        betInfoListData.matchOdd.copy(),
-                        getParlayOdd(
-                            matchType,
-                            gameType,
-                            mutableListOf(betInfoListData.matchOdd)
-                        ).first(),
-                        betInfoListData.betPlayCateNameMap
-                    )
-                    newBetInfoListData.matchType = betInfoListData.matchType
-                    newBetInfoListData.input = betInfoListData.input
-                    newBetInfoListData.betAmount = betInfoListData.betAmount
-                    newBetInfoListData.pointMarked = betInfoListData.pointMarked
-                    newList.add(newBetInfoListData)
-                }
-            }
-        }
-
-        updateQuickListManager(newList)
-
-        checkBetInfoContent(newList)
-        _betInfoList.value = Event(newList)
     }
 
     fun notifyBetInfoChanged(newList: MutableList<BetInfoListData>) {
