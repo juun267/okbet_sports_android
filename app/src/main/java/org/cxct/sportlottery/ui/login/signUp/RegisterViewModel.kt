@@ -431,11 +431,14 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete(2)
     }
 
-    fun checkIdentity(identity: String?) {
-        val msg = when {
-            identity.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            photoUrlResult.value == null -> LocalUtils.getString(R.string.error_identity_photo)
-            else -> null
+    fun checkIdentity() {
+        val msg = when (photoUrlResult.value) {
+            null -> {
+                LocalUtils.getString(R.string.error_identity_photo)
+            }
+            else -> {
+                null
+            }
         }
         _identityMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(2)
@@ -540,7 +543,7 @@ class RegisterViewModel(
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
         if (sConfigData?.enableKYCVerify == FLAG_OPEN)
-            checkIdentity(identity)
+            checkIdentity()
         if (sConfigData?.enableKYCVerify == FLAG_OPEN)
             checkIdentityType(identityType)
         if (sConfigData?.enableSalarySource == FLAG_OPEN)

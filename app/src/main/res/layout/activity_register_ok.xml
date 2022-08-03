@@ -495,8 +495,8 @@
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eetIdentity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
@@ -550,7 +550,7 @@
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
             <View
-                android:id="@+id/documentTypeSpinner"
+                android:id="@+id/identityTypeSpinner2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:clickable="true"
@@ -604,11 +604,12 @@
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eetIdentity2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:focusable="false"
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
 

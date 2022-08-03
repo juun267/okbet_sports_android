@@ -203,18 +203,22 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         )
         val appName = getString(R.string.app_name)
         //中英appName在前半 越南文appName會在後半
-        binding.tvAgreement.text = when (LanguageManager.getSelectLanguage(this@RegisterOkActivity)) {
-            LanguageManager.Language.VI -> "2." + String.format(
-                getString(R.string.register_over_21),
-                appName
-            ) + getString(R.string.terms_conditions) + String.format(
-                getString(R.string.register_rules_2nd_half),
-                appName
-            )
-            else -> "2." + String.format(getString(R.string.register_over_21), appName) + getString(
-                R.string.terms_conditions
-            )
-        }
+        binding.tvAgreement.text =
+            when (LanguageManager.getSelectLanguage(this@RegisterOkActivity)) {
+                LanguageManager.Language.VI -> "2." + String.format(
+                    getString(R.string.register_over_21),
+                    appName
+                ) + getString(R.string.terms_conditions) + String.format(
+                    getString(R.string.register_rules_2nd_half),
+                    appName
+                )
+                else -> "2." + String.format(
+                    getString(R.string.register_over_21),
+                    appName
+                ) + getString(
+                    R.string.terms_conditions
+                )
+            }
 
         binding.tvAgreement.makeLinks(
             Pair(getString(R.string.terms_conditions), View.OnClickListener {
@@ -245,6 +249,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         when (page) {
             1 -> {
                 btn_register.text = getString(R.string.next_step)
+
                 et_full_name.visibility = View.GONE
                 et_withdrawal_pwd.visibility = View.GONE
                 et_phone.visibility = View.GONE
@@ -309,6 +314,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             }
             else -> {
                 btn_register.text = getString(R.string.btn_register)
+
                 setupBettingShop()
                 setupMail()
                 setupAddress()
@@ -321,6 +327,30 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 setupWhatsApp()
                 setupTelegram()
                 setupSecurityPb()
+
+                clAgreement.visibility = View.GONE
+                et_recommend_code.visibility = View.GONE
+                et_member_account.visibility = View.GONE
+                et_login_password.visibility = View.GONE
+                et_confirm_password.visibility = View.GONE
+
+
+                etIdentityType.visibility= View.GONE
+                etIdentityNumber.visibility = View.GONE
+                etIdentity.visibility = View.GONE
+                etIdentityType2.visibility = View.GONE
+                etIdentityNumber2.visibility = View.GONE
+                etIdentity2.visibility = View.GONE
+
+
+
+                et_full_name.visibility = View.GONE
+                et_withdrawal_pwd.visibility = View.GONE
+                et_phone.visibility = View.GONE
+                block_sms_valid_code.visibility = View.GONE
+                etBirth.visibility = View.GONE
+                etSalary.visibility = View.GONE
+
 
             }
         }
@@ -370,6 +400,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 }
                 else -> {
                     page--
+                    btn_register.isEnabled = true
                     setPage()
                 }
             }
@@ -561,7 +592,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 ).show(supportFragmentManager, null)
             }
             endButton2.visibility =
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
+                        "2"
+                    )
+                ) View.VISIBLE else View.GONE
             endButton2.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -647,7 +681,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
             //配置點擊展開選項選單
             etIdentityType2.post {
-                identityTypeSpinner.setSpinnerView(
+                identityTypeSpinner2.setSpinnerView(
                     eetIdentityType2,
                     etIdentityType2,
                     identityTypeList,
@@ -808,9 +842,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             eetBirth.apply {
                 checkRegisterListener { viewModel.checkBirth(it) }
             }
-            eetIdentity.apply {
-                checkRegisterListener { viewModel.checkIdentity(it) }
-            }
+//            eetIdentity.apply {
+//                checkRegisterListener { viewModel.checkIdentity() }
+//            }
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
             }
@@ -1024,7 +1058,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             qqMsg.observe(this@RegisterOkActivity) { binding.etQq.setError(it.first, false) }
             phoneMsg.observe(this@RegisterOkActivity) { binding.etPhone.setError(it.first, false) }
             emailMsg.observe(this@RegisterOkActivity) { binding.etMail.setError(it.first, false) }
-            postalMsg.observe(this@RegisterOkActivity) { binding.etPostal.setError(it.first, false) }
+            postalMsg.observe(this@RegisterOkActivity) {
+                binding.etPostal.setError(
+                    it.first,
+                    false
+                )
+            }
             provinceMsg.observe(this@RegisterOkActivity) {
                 binding.etProvince.setError(
                     it.first,
@@ -1038,7 +1077,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     false
                 )
             }
-            salaryMsg.observe(this@RegisterOkActivity) { binding.etSalary.setError(it.first, false) }
+            salaryMsg.observe(this@RegisterOkActivity) {
+                binding.etSalary.setError(
+                    it.first,
+                    false
+                )
+            }
             birthMsg.observe(this@RegisterOkActivity) { binding.etBirth.setError(it.first, false) }
             identityMsg.observe(this@RegisterOkActivity) {
                 binding.etIdentity.setError(
@@ -1058,7 +1102,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     false
                 )
             }
-            weChatMsg.observe(this@RegisterOkActivity) { binding.etWeChat.setError(it.first, false) }
+            weChatMsg.observe(this@RegisterOkActivity) {
+                binding.etWeChat.setError(
+                    it.first,
+                    false
+                )
+            }
             zaloMsg.observe(this@RegisterOkActivity) { binding.etZalo.setError(it.first, false) }
             facebookMsg.observe(this@RegisterOkActivity) {
                 binding.etFacebook.setError(
@@ -1203,7 +1252,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             RegisterSuccessDialog(this).apply {
                 setNegativeClickListener {
                     dismiss()
-                    startActivity(Intent(this@RegisterOkActivity, MoneyRechargeActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@RegisterOkActivity,
+                            MoneyRechargeActivity::class.java
+                        )
+                    )
                     finish()
                 }
             }.show(supportFragmentManager, null)
@@ -1391,7 +1445,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(this@RegisterOkActivity, getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(
+                    this@RegisterOkActivity,
+                    getString(R.string.error_reading_file)
+                )
             }
         }
 
@@ -1424,7 +1481,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(this@RegisterOkActivity, getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(
+                    this@RegisterOkActivity,
+                    getString(R.string.error_reading_file)
+                )
             }
         }
 
@@ -1432,15 +1492,16 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             Timber.i("PictureSelector Cancel")
         }
     }
+
     private fun selectedFirstPhotoImg(file: File) {
         firstFile = file
         if (firstFile != null) {
             binding.endButton.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkIdentity(binding.eetIdentity.text.toString())
+            viewModel.checkIdentity()
             isUploaded = true
         } else {
             binding.endButton.setImageResource(R.drawable.ic_camera)
-            viewModel.checkIdentity(binding.eetIdentity.text.toString())
+            viewModel.checkIdentity()
             isUploaded = false
         }
     }
@@ -1449,11 +1510,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         secondFile = file
         if (secondFile != null) {
             binding.endButton2.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkIdentity(binding.eetIdentity2.text.toString())
+            viewModel.checkIdentity()
             isUploaded = true
         } else {
             binding.endButton2.setImageResource(R.drawable.ic_camera)
-            viewModel.checkIdentity(binding.eetIdentity2.text.toString())
+            viewModel.checkIdentity()
             isUploaded = false
         }
     }

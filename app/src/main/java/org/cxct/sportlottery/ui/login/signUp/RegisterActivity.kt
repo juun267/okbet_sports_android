@@ -604,9 +604,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetBirth.apply {
                 checkRegisterListener { viewModel.checkBirth(it) }
             }
-            eetIdentity.apply {
-                checkRegisterListener { viewModel.checkIdentity(it) }
-            }
+
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
             }
@@ -887,12 +885,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (it != null) {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
                 binding.endButton.setImageResource(R.drawable.ic_upload_done)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString())
+                viewModel.checkIdentity()
                 isUploaded = true
             } else {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
                 binding.endButton.setImageResource(R.drawable.ic_camera)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString())
+                viewModel.checkIdentity()
                 isUploaded = false
             }
         }
