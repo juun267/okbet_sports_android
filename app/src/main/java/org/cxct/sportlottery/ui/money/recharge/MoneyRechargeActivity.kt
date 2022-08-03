@@ -247,7 +247,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 }
             }
         }
-        btn_floating_service.setView(this)
+        btn_floating_service.setViewAlwaysDisplay(this)
     }
 
     private fun onlinePageChange() {
