@@ -333,7 +333,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
-                etBettingShop.visibility = View.VISIBLE
+
 
                 setupFullName()
                 setupWithdrawalPassword()
