@@ -1003,12 +1003,12 @@ private fun createRegisterRequest(
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             this.birthday = birth
         if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
-            _identityPhoto.postValue(identityPhoto)
-            this.identityNumber = identityNumber
+            _identityPhoto.value = identityPhoto
+            this.identityType = identityType
             this.identityNumber = identityNumber
         }
         if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
-            _identityPhotoBackup.postValue(identityPhotoBackup)
+            _identityPhotoBackup.value = identityPhotoBackup
             this.identityTypeBackup = identityTypeBackup
             this.identityNumberBackup = identityNumberBackup
         }
@@ -1021,7 +1021,7 @@ private fun createRegisterRequest(
 
 private fun register(registerRequest: RegisterRequest) {
     viewModelScope.launch {
-        if (_identityPhoto.value != null) {
+        if (_identityPhoto.value != null && registerRequest.identityNumber != null) {
             _identityPhoto.value?.let {
                 val docResponse = doNetwork(androidContext) {
                     OneBoSportApi.uploadImgService.uploadImg(
@@ -1042,10 +1042,10 @@ private fun register(registerRequest: RegisterRequest) {
                     )
                     docResponse.success -> {
                         _docUrlResult.postValue(docResponse)
-                        registerRequest.identityPhoto = docResponse.imgData?.path
-                        _identityPhoto.postValue(null)
-
-                        if (_identityPhotoBackup != null) {
+                        registerRequest.apply {
+                            this.identityPhoto= docResponse.imgData?.path
+                        }
+                        if (_identityPhotoBackup != null && registerRequest.identityNumberBackup != null) {
                             val photoResponse = doNetwork(androidContext) {
                                 OneBoSportApi.uploadImgService.uploadImg(
                                     UploadVerifyDocRequest(
@@ -1056,25 +1056,21 @@ private fun register(registerRequest: RegisterRequest) {
                             }
                             when {
                                 photoResponse == null -> _photoUrlResult.postValue(
-
-                                    UploadImgResult(
-                                        -1,
-                                        androidContext.getString(R.string.unknown_error),
-                                        false,
-                                        null
-                                    )
-
+                                    UploadImgResult(-1, androidContext.getString(R.string.unknown_error), false, null)
                                 )
                                 photoResponse.success -> {
                                     _photoUrlResult.postValue(photoResponse)
-                                    registerRequest.identityPhotoBackup = photoResponse.imgData?.path
-                                    _identityPhotoBackup.postValue(null)
+                                    registerRequest.apply {
+                                        this.identityPhotoBackup= photoResponse.imgData?.path
+                                    }
                                     doNetwork(androidContext) {
                                         loginRepository.register(registerRequest)
                                     }?.let { result ->
                                         // TODO 20220108 更新UserInfo by Hewie
                                         userInfoRepository.getUserInfo()
                                         _registerResult.postValue(result)
+                                        _identityPhoto.postValue(null)
+                                        _identityPhotoBackup.postValue(null)
                                     }
                                 }
                                 else -> {
@@ -1085,6 +1081,8 @@ private fun register(registerRequest: RegisterRequest) {
                                             photoResponse.success,
                                             null
                                         )
+                                    _identityPhoto.postValue(null)
+                                    _identityPhotoBackup.postValue(null)
                                     _photoUrlResult.postValue(error)
                                 }
                             }
@@ -1095,6 +1093,8 @@ private fun register(registerRequest: RegisterRequest) {
                                 // TODO 20220108 更新UserInfo by Hewie
                                 userInfoRepository.getUserInfo()
                                 _registerResult.postValue(result)
+                                _identityPhoto.postValue(null)
+                                _identityPhotoBackup.postValue(null)
                             }
                         }
                     }
