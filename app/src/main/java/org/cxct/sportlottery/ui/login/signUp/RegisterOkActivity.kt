@@ -846,7 +846,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 checkRegisterListener { viewModel.checkInviteCode(it) }
             }
             eetMemberAccount.apply {
-                checkRegisterListener { viewModel.checkAccountExist(it) }
+                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
             }
             eetLoginPassword.apply {
                 checkRegisterListener { viewModel.checkLoginPassword(it) }
@@ -1060,6 +1060,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 )
             }
             memberAccountMsg.observe(this@RegisterOkActivity) {
+                if (it.first == null) {
+                    viewModel.checkAccountExist(binding.eetMemberAccount.text.toString())
+                    return@observe
+                }
                 binding.etMemberAccount.setError(
                     it.first,
                     false
