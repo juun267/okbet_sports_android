@@ -118,6 +118,8 @@ object WithdrawRepository {
             if (operation) {
                 withdrawCheckPermissions()
             }
+
+            _moneyRechCfgResult.postValue(response.body())
         }
         return response
     }
