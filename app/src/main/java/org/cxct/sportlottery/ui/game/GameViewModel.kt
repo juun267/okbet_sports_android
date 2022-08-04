@@ -115,6 +115,7 @@ class GameViewModel(
         get() = _gotConfig
     private val _gotConfig = MutableLiveData<Event<Boolean>>()
 
+
     private val gameLiveSharedPreferences by lazy {
         androidContext.getSharedPreferences(
             GameLiveSP,
@@ -579,13 +580,19 @@ class GameViewModel(
                                 SportMenu(
                                     gameType,
                                     row.name,
-                                    getSpecificLanguageString(androidContext, gameType.key, LanguageManager.Language.EN.key),
+                                    getSpecificLanguageString(
+                                        androidContext,
+                                        gameType.key,
+                                        LanguageManager.Language.EN.key
+                                    ),
                                     getGameTypeMenuIcon(gameType)
                                 )
                             }
                     }
                 _sportSortList.postValue(Event(sportCardList))
-                switchMatchType(matchType)
+                if (_sportMenuResult.value == null) {
+                    switchMatchType(matchType)
+                }
             }
         }
     }
@@ -3356,7 +3363,6 @@ class GameViewModel(
 
     fun switchMatchType(matchType: MatchType?) {
         clearGameHallContent()
-
         when (matchType) {
             /* 初次進入主頁 */
             null -> {
@@ -3387,46 +3393,55 @@ class GameViewModel(
                     val sportMenuResult = getSportMenuAll()
                     sportMenuResult?.let {
                         if (it.success) {
+                            val needUpdate = _sportMenuResult.value == null
                             it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
                             _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+                            if (needUpdate) {
+                                updateSportInfo(matchType)
+                            }
                         } else {
                             return@launch
                         }
                     }
-
-                    getSportQuery(matchType)?.let {
-                        if (!it.success) {
-                            _showErrorDialogMsg.postValue(it.msg)
-                            return@launch
-                        }
-                    }
-
-                    setCurMatchType(matchType)
-
-                    // 無數量直接顯示無資料UI
-                    if (getMatchCount(matchType) < 1) {
-                        _isNoEvents.postValue(true)
-                        return@launch
-                    }
-
-                    getSportCouponMenu()?.let {
-                        _sportCouponMenuResult.postValue(Event(it))
-                    }
-
                     // 更新主頁、左邊選單
                     postHomeCardCount(sportMenuResult)
-
-                    // 今日、串關頁面下賽事選擇 (今日、所有)
-                    if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
-                        getMatchCategory(matchType)
+                    if (_sportMenuResult.value != null) {
+                        updateSportInfo(matchType)
                     }
                 }
             }
         }
     }
 
+    fun updateSportInfo(matchType: MatchType) {
+        viewModelScope.launch {
+            getSportQuery(matchType)?.let {
+                if (!it.success) {
+                    _showErrorDialogMsg.postValue(it.msg)
+                    return@launch
+                }
+            }
+            setCurMatchType(matchType)
+
+            // 無數量直接顯示無資料UI
+            if (getMatchCount(matchType) < 1) {
+                _isNoEvents.postValue(true)
+                return@launch
+            }
+
+            getSportCouponMenu()?.let {
+                _sportCouponMenuResult.postValue(Event(it))
+            }
+
+            // 今日、串關頁面下賽事選擇 (今日、所有)
+            if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
+                getMatchCategory(matchType)
+            }
+        }
+    }
+
     fun switchGameType(item: Item) {
-        if(jobSwitchGameType?.isActive == true){
+        if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
 

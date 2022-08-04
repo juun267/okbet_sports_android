@@ -519,7 +519,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         //若為起始fragment不會有轉場動畫, 故無法透過afterAnimateListener動作
             initObserve()
             initSocketObserver()
