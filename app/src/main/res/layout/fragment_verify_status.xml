@@ -38,7 +38,7 @@
             android:visibility="invisible"
             tools:visibility="visible"
             android:text="@string/kyc_verify_successful"
-            tools:text="@string/kyc_service_verify" />
+            tools:text="@string/kyc_you_wait" />
 
 
         <Button
