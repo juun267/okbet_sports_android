@@ -332,10 +332,6 @@ class GameViewModel(
     val sportSortList: LiveData<Event<List<SportMenu>>>
         get() = _sportSortList
 
-    private val _sportMenuFilterList = MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
-    val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
-        get() = _sportMenuFilterList
-
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
@@ -606,7 +602,6 @@ class GameViewModel(
 
             result?.let {
                 PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
-                _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
     }

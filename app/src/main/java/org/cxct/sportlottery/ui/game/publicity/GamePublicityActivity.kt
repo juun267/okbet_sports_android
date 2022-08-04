@@ -216,10 +216,6 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
     }
 
-    private fun getSportMenuFilter() {
-        viewModel.getSportMenuFilter()
-    }
-
     //region 開啟(快捷)投注單
     //跟進GameActivity開啟投注單方式
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
@@ -438,8 +434,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
 
     override fun updateBetListCount(num: Int) {
         binding.gameBottomNavigation.sportBottomNavigation.setBetCount(num)
-        cl_bet_list_bar.isVisible = num > 0
-        binding.gameBottomNavigation.lineShadow.isVisible = !cl_bet_list_bar.isVisible
+        if (viewModel.isLogin.value == true) {
+            cl_bet_list_bar.isVisible = num > 0
+            binding.gameBottomNavigation.lineShadow.isVisible = !cl_bet_list_bar.isVisible
+        }
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
     }
