@@ -1106,8 +1106,6 @@ private fun register(registerRequest: RegisterRequest) {
                     }
                 }
             }
-
-
         } else {
             doNetwork(androidContext) {
                 loginRepository.register(registerRequest)

@@ -1196,4 +1196,73 @@
     <string name="tran_time_sub">Transaction time：</string>
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
+
+    <string name="kyc_type">ID Type</string>
+    <string name="kyc_num">ID Number</string>
+    <string name="kyc_upload">Upload Photo</string>
+    <string name="kyc_type2">ID Type 2</string>
+    <string name="kyc_num2">ID Number 2</string>
+    <string name="kyc_upload2">Upload Photo 2</string>
+    <string name="kyc_id_verification">Get Verified</string>
+    <string name="kyc_valid">Valid ID</string>
+    <string name="kyc_valid2">Valid ID 2</string>
+    <string name="kyc_id_type">Valid ID Type</string>
+    <string name="kyc_input_id_number">Enter ID number </string>
+    <string name="kyc_pick_upload_id">Upload Personal ID Documents</string>
+    <string name="kyc_pick_upload_id2">Upload Personal ID Documents</string>
+    <string name="kyc_size_2_mb">The file size to under 2MB.</string>
+    <string name="kyc_contact_service">If you have any questions. Please do not hesitate to contact us.</string>
+
+
+    <string name="kyc_reset">Reset</string>
+    <string name="kyc_verify_first">Please get verified.</string>
+    <string name="kyc_go_verify">Verify Now</string>
+    <string name="kyc_you_wait">The verification is processing. Just waiting for a while.</string>
+    <string name="kyc_service_verify">Please contact us to get verified</string>
+    <string name="kyc_verify_successful">Verify successful </string>
+    <string name="kyc_unverified">Unverified</string>
+    <string name="kyc_verifying">Pending</string>
+    <string name="kyc_passed">Verified</string>
+    <string name="kyc_status">KYC Status</string>
+    <string name="kyc_all_status">All Status</string>
+    <string name="kyc_kyc_unverified">Unverified</string>
+    <string name="kyc_kyc_verifying">Verifying</string>
+    <string name="kyc_kyc_passed">Verified</string>
+    <string name="kyc_valid_id">Valid ID 1</string>
+    <string name="kyc_valid_id2">Valid ID 2</string>
+    <string name="kyc_valid_id_type">Valid ID Type</string>
+    <string name="kyc_enter_id_num">Enter ID number</string>
+    <string name="kyc_screenshot_id">Screenshot ID 1</string>
+    <string name="kyc_screenshot_id2">Screenshot ID 2</string>
+    <string name="kyc_screenshot_id_upload">Please upload your Personal ID scrennshot documents.</string>
+    <string name="kyc_pass">Passed</string>
+    <string name="kyc_reject">Failed</string>
+    <string name="kyc_sure_pass">Have you confirm your %s verification ?</string>
+    <string name="kyc_sure_reject">"Have you confirm your %s verification ?"</string>
+    <string name="kyc_reason">Enther you rejected reason.</string>
+    <string name="kyc_resule">KYC Result Notification.</string>
+    <string name="kyc_open">Open</string>
+    <string name="kyc_open_now">OPEN NOW ?</string>
+    <string name="kyc_close_now">CLOSE NOW?</string>
+    <string name="kyc_upload_count">Upload ID documents quantity.</string>
+    <string name="kyc_1">ONE</string>
+    <string name="kyc_2">TWO</string>
+    <string name="kyc_system_setting">Notification Setting</string>
+    <string name="kyc_inbox_system">Inbox system</string>
+    <string name="kyc_operations">KYC [INBOX] Operations</string>
+    <string name="kyc_notification_passed">KYC Notification [ PASSED ]</string>
+    <string name="kyc_notification_reject">KYC Notification [ REJECT ]</string>
+    <string name="kyc_notice_system">Notice System </string>
+    <string name="kyc_text_operations">[TEXT] Operations</string>
+    <string name="kyc_add">Add</string>
+
+    <string name="next_step">Next</string>
+    <string name="hint_select_document_type">(Valid ID Type)</string>
+    <string name="hint_select_document_number">(Enter ID number)</string>
+    <string name="identity_number">ID Number</string>
+    <string name="identity_two_number">ID Number [2]</string>
+    <string name="identity_two_type">ID Type [2]</string>
+    <string name="hint_no_file_selected">Unselect files</string>
+    <string name="upload_id_photo">Upload Photo</string>
+
 </resources>
