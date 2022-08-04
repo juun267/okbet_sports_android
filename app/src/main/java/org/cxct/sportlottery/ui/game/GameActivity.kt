@@ -70,7 +70,6 @@ import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.parceler.Parcels
 import timber.log.Timber
 import java.util.*
 
