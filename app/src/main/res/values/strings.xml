@@ -1134,7 +1134,7 @@
     <string name="kyc_pick_upload_id2">Upload Personal ID Documents</string>
     <string name="kyc_size_2_mb">The file size to under 2MB.</string>
     <string name="kyc_contact_service">If you have any questions. Please do not hesitate to contact us.</string>
-
+    <string name="kyc_contact_service_hilight">contact us</string>
 
     <string name="kyc_reset">Reset</string>
     <string name="kyc_verify_first">Please get verified.</string>
