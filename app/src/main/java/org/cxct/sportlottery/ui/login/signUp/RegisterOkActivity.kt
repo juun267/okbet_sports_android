@@ -129,6 +129,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupBettingShop()
         setPage()
         setupBackButton()
 
@@ -245,6 +246,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun setPage() {
         val isEnableKYCVerify = sConfigData?.enableKYCVerify == FLAG_OPEN
         val isSecondVerifyKYCOpen = sConfigData?.idUploadNumber.equals("2")
+        val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
         when (page) {
             1 -> {
                 btn_register.text = getString(R.string.next_step)
@@ -339,7 +341,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             else -> {
                 btn_register.text = getString(R.string.btn_register)
 
-                setupBettingShop()
+
                 setupMail()
                 setupAddress()
 
@@ -376,7 +378,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etSalary.visibility = View.GONE
 
 
-            }
+                    if (bettingStationVisibility) {
+                        etBettingShop.visibility = View.VISIBLE
+                        //查詢投注站列表
+//                        viewModel.bettingStationQuery()
+                    } else {
+                        etBettingShop.visibility = View.GONE
+                    }
+                }
+
         }
 
     }
@@ -790,17 +800,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun setupBettingShop() {
-        with(binding) {
-            val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
+        val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
 
             if (bettingStationVisibility) {
-                etBettingShop.visibility = View.VISIBLE
+               // etBettingShop.visibility = View.VISIBLE
                 //查詢投注站列表
                 viewModel.bettingStationQuery()
-            } else {
-                etBettingShop.visibility = View.GONE
             }
-        }
+
     }
 
     private fun setupValidCode() {
