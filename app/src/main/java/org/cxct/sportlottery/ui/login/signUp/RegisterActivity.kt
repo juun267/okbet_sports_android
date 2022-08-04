@@ -24,6 +24,11 @@ import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.bettingShopSpinner
+import kotlinx.android.synthetic.main.activity_register.eetBettingShop
+import kotlinx.android.synthetic.main.activity_register.etBettingShop
+import kotlinx.android.synthetic.main.activity_register_ok.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
@@ -587,7 +592,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupRegisterButton() {
         binding.apply {
             eetRecommendCode.apply {
-                checkRegisterListener { viewModel.checkInviteCode(it) }
+                checkRegisterListener {
+                    if (it != "") {
+                        viewModel.checkInviteCode(it)
+                    } else {
+                        etBettingShopSelectTrue()
+
+                    }
+                }
             }
             eetMemberAccount.apply {
                 checkRegisterListener { viewModel.checkAccountExist(it) }
@@ -610,7 +622,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
             eetIdentityType.checkRegisterListener { viewModel.checkIdentityType(it) }
             eetBettingShop.apply {
-                checkRegisterListener { viewModel.checkBettingShop(it) }
+                checkRegisterListener {
+                    if (it != "") {
+                        viewModel.checkBettingShop(it)
+                    }
+                }
             }
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
@@ -779,6 +795,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     it,
                     false
                 )
+                if (it == null) {
+                    viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
+                } else {
+                    etBettingShopSelectTrue()
+                }
+
+            }
+
+            checkBettingResult.observe(this@RegisterActivity) {
+                if (it != null && it.success) {
+                    etBettingShopSelectFalse(it.checkBettingData?.name.toString())
+                } else {
+                    etBettingShopSelectTrue()
+                    binding.etRecommendCode.setError(
+                        it?.msg,
+                        false
+                    )
+
+                }
+
             }
             memberAccountMsg.observe(this@RegisterActivity) {
                 binding.etMemberAccount.setError(
@@ -1090,6 +1126,29 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             .isDialog(false)
             .build() as TimePickerView
         return dateTimePicker
+    }
+
+    private fun etBettingShopSelectTrue() {
+        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        bettingShopSpinner.isEnabled = true
+        bettingShopSpinner.isClickable = true
+        etBettingShop.isEnabled = true
+        etBettingShop.isClickable = true
+        eetBettingShop.setText(bettingShopSelectedData?.showName)
+        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
+    }
+
+    private fun etBettingShopSelectFalse(eetBetting: String) {
+        etBettingShop.setEndIcon(null)
+        bettingShopSpinner.isEnabled = false
+        bettingShopSpinner.isClickable = false
+
+        etBettingShop.isEnabled = false
+        etBettingShop.isClickable = false
+
+        etBettingShop.hasFocus = false
+        eetBettingShop.setText(eetBetting)
+        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
     }
 
     override fun onBackPressed() {

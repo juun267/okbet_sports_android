@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
+import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -123,6 +124,8 @@ class RegisterViewModel(
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
+    val checkBettingResult: LiveData<CheckBettingResult?>
+        get() = _checkBettingResult
 
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
@@ -165,7 +168,7 @@ class RegisterViewModel(
     private val _cbAgreeAllChecked = MutableLiveData<Boolean?>()
 
     private val _bettingStationList = MutableLiveData<List<StatusSheetData>>()
-
+    private val _checkBettingResult = MutableLiveData<CheckBettingResult?>()
     //region 證件照片
     val docUrlResult: LiveData<UploadImgResult?>
         get() = _docUrlResult
@@ -434,7 +437,16 @@ class RegisterViewModel(
             _validCodeResult.postValue(result)
         }
     }
+    fun queryPlatform(inviteCode: String) {
 
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
+            }
+            _checkBettingResult.postValue(result)
+        }
+
+    }
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked
