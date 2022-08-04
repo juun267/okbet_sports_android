@@ -1186,5 +1186,5 @@
     <string name="identity_two_type">ID Type [2]</string>
     <string name="hint_no_file_selected">Unselect files</string>
     <string name="upload_id_photo">Upload Photo</string>
-
+    <string name="hint_file_selected">Selected file</string>
 </resources>

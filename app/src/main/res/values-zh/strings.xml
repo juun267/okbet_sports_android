@@ -1184,5 +1184,5 @@
     <string name="identity_two_type">证件2类型</string>
     <string name="hint_no_file_selected">未选择档案</string>
     <string name="upload_id_photo">上传证件照片</string>
-
+    <string name="hint_file_selected">已选择档案</string>
 </resources>

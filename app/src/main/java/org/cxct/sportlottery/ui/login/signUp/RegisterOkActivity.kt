@@ -1556,10 +1556,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         if (firstFile != null) {
             binding.endButton.setImageResource(R.drawable.ic_upload_done)
             viewModel.checkIdentity(firstFile)
+            etIdentity.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
             binding.endButton.setImageResource(R.drawable.ic_camera)
             viewModel.checkIdentity(firstFile)
+            etIdentity.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
         }
     }
@@ -1569,10 +1571,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         if (secondFile != null) {
             binding.endButton2.setImageResource(R.drawable.ic_upload_done)
             viewModel.checkBackupIdentity(secondFile)
+            etIdentity2.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
             binding.endButton2.setImageResource(R.drawable.ic_camera)
             viewModel.checkBackupIdentity(secondFile)
+            etIdentity2.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
         }
     }
