@@ -1208,7 +1208,7 @@
     <string name="kyc_type2">ID Type 2</string>
     <string name="kyc_num2">ID Number 2</string>
     <string name="kyc_upload2">Upload Photo 2</string>
-    <string name="kyc_id_verification">ID Verification</string>
+    <string name="kyc_id_verification">Get Verified</string>
     <string name="kyc_valid">Valid ID</string>
     <string name="kyc_valid2">Valid ID 2</string>
     <string name="kyc_id_type">Valid ID Type</string>
@@ -1217,22 +1217,22 @@
     <string name="kyc_pick_upload_id2">Upload Personal ID Documents</string>
     <string name="kyc_size_2_mb">The file size to under 2MB.</string>
     <string name="kyc_contact_service">If you have any questions. Please do not hesitate to contact us.</string>
-
+    <string name="kyc_contact_service_hilight">contact us</string>
 
     <string name="kyc_reset">Reset</string>
-    <string name="kyc_verify_first">Please complete required verification </string>
-    <string name="kyc_go_verify">Verify</string>
+    <string name="kyc_verify_first">Please get verified.</string>
+    <string name="kyc_go_verify">Verify Now</string>
     <string name="kyc_you_wait">The verification is processing. Just waiting for a while.</string>
-    <string name="kyc_service_verify">Please contact CS complete ID verification</string>
+    <string name="kyc_service_verify">Please contact us to get verified</string>
     <string name="kyc_verify_successful">Verify successful </string>
     <string name="kyc_unverified">Unverified</string>
-    <string name="kyc_verifying">Verifying</string>
-    <string name="kyc_passed">Passed</string>
-    <string name="kyc_status">Status</string>
+    <string name="kyc_verifying">Pending</string>
+    <string name="kyc_passed">Verified</string>
+    <string name="kyc_status">KYC Status</string>
     <string name="kyc_all_status">All Status</string>
     <string name="kyc_kyc_unverified">Unverified</string>
     <string name="kyc_kyc_verifying">Verifying</string>
-    <string name="kyc_kyc_passed">Passed</string>
+    <string name="kyc_kyc_passed">Verified</string>
     <string name="kyc_valid_id">Valid ID 1</string>
     <string name="kyc_valid_id2">Valid ID 2</string>
     <string name="kyc_valid_id_type">Valid ID Type</string>
@@ -1252,9 +1252,9 @@
     <string name="kyc_upload_count">Upload ID documents quantity.</string>
     <string name="kyc_1">ONE</string>
     <string name="kyc_2">TWO</string>
-    <string name="kyc_system_setting">System Setting</string>
+    <string name="kyc_system_setting">Notification Setting</string>
     <string name="kyc_inbox_system">Inbox system</string>
-    <string name="kyc_operations">[INBOX] Operations</string>
+    <string name="kyc_operations">KYC [INBOX] Operations</string>
     <string name="kyc_notification_passed">KYC Notification [ PASSED ]</string>
     <string name="kyc_notification_reject">KYC Notification [ REJECT ]</string>
     <string name="kyc_notice_system">Notice System </string>

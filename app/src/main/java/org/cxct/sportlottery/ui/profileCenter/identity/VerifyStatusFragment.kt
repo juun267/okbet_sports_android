@@ -50,7 +50,7 @@ class VerifyStatusFragment :
                     }
                     else -> {
                         img_status.setImageResource(R.drawable.ic_waiting_time)
-                        txv_status.text = resources.getText(R.string.kyc_service_verify)
+                        txv_status.text = resources.getText(R.string.kyc_you_wait)
                         btn_kyc_verify.setOnClickListener {
                             JumpUtil.toInternalWeb(
                                 requireContext(),

@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 class VerifyIdentityDialog: DialogFragment() {
 
     var positiveClickListener: PositiveClickListener? = null
+    var serviceClickListener: PositiveClickListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +35,9 @@ class VerifyIdentityDialog: DialogFragment() {
         btn_check.setOnClickListener {
             positiveClickListener?.onClick("")
             dismiss()
+        }
+        btn_service.setOnClickListener {
+            serviceClickListener?.onClick("")
         }
     }
 
