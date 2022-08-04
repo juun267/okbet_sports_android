@@ -174,6 +174,8 @@ abstract class BaseOddButtonViewModel(
                 OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
             }?.let { result ->
                 if (result.success) {
+                    //如有其他地方呼叫getBetInfo，成功後也要重設savedOddId
+                    savedOddId = "savedOddId" //重設savedOddId
                     val betInfo = result.BetInfo
                     if (betItem == null) {
                         matchInfo.let {
@@ -233,6 +235,8 @@ abstract class BaseOddButtonViewModel(
                     OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchOdd.matchInfo?.id.toString(), odd.id.toString()))
                 }?.let { result ->
                     if (result.success) {
+                        //如有其他地方呼叫getBetInfo，成功後也要重設savedOddId
+                        savedOddId = "savedOddId" //重設savedOddId
                         val betInfo = result.BetInfo
                         matchOdd.matchInfo?.let {
                             betInfoRepository.addInBetInfo(
