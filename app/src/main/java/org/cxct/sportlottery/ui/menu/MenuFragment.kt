@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -366,6 +367,26 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         VerifyIdentityDialog().apply {
             positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
                 startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            }
+            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                val serviceUrl = sConfigData?.customerServiceUrl
+                val serviceUrl2 = sConfigData?.customerServiceUrl2
+                when {
+                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.supportFragmentManager?.let { it1 ->
+                            ServiceDialog().show(
+                                it1,
+                                null
+                            )
+                        }
+                    }
+                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                    }
+                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                    }
+                }
             }
         }.show(parentFragmentManager, null)
     }
