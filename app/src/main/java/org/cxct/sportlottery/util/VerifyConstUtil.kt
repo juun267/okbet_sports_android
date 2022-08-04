@@ -38,6 +38,7 @@ object VerifyConstUtil {
         return Pattern.matches("([_$ENGLISH_WORD$NUMBER]){4,8}$", inviteCode)
     }
 
+
     fun verifyPayPwd(pwd: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", pwd)
     }

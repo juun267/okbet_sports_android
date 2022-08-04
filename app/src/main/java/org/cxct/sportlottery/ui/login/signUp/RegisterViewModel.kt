@@ -113,9 +113,6 @@ class RegisterViewModel(
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
 
-    val checkBettingResult: LiveData<CheckBettingResult?>
-        get() = _checkBettingResult
-
     val smsResult: LiveData<SmsResult?>
         get() = _smsResult
     val loginForGuestResult: LiveData<LoginResult>
@@ -128,6 +125,8 @@ class RegisterViewModel(
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
+    val checkBettingResult: LiveData<CheckBettingResult?>
+        get() = _checkBettingResult
 
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
@@ -441,7 +440,6 @@ class RegisterViewModel(
             _validCodeResult.postValue(result)
         }
     }
-
     fun queryPlatform(inviteCode: String) {
 
         viewModelScope.launch {
@@ -452,7 +450,6 @@ class RegisterViewModel(
         }
 
     }
-
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked

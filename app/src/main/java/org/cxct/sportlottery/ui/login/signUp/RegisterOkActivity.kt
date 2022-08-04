@@ -26,6 +26,7 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.block_sms_valid_code
 import kotlinx.android.synthetic.main.activity_register.btn_register
 import kotlinx.android.synthetic.main.activity_register.clAgreement
@@ -49,6 +50,15 @@ import kotlinx.android.synthetic.main.activity_register.et_province
 import kotlinx.android.synthetic.main.activity_register.et_recommend_code
 import kotlinx.android.synthetic.main.activity_register.et_withdrawal_pwd
 import kotlinx.android.synthetic.main.activity_register_ok.*
+import kotlinx.android.synthetic.main.activity_register_ok.bettingShopSpinner
+import kotlinx.android.synthetic.main.activity_register_ok.block_valid_code
+import kotlinx.android.synthetic.main.activity_register_ok.eetBettingShop
+import kotlinx.android.synthetic.main.activity_register_ok.et_facebook
+import kotlinx.android.synthetic.main.activity_register_ok.et_qq
+import kotlinx.android.synthetic.main.activity_register_ok.et_telegram
+import kotlinx.android.synthetic.main.activity_register_ok.et_we_chat
+import kotlinx.android.synthetic.main.activity_register_ok.et_whats_app
+import kotlinx.android.synthetic.main.activity_register_ok.et_zalo
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
@@ -323,6 +333,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
+
+
                 setupFullName()
                 setupWithdrawalPassword()
                 setupPhone()
@@ -378,14 +390,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etSalary.visibility = View.GONE
 
 
-                    if (bettingStationVisibility) {
-                        etBettingShop.visibility = View.VISIBLE
-                        //查詢投注站列表
+                if (bettingStationVisibility) {
+                    etBettingShop.visibility = View.VISIBLE
+                    //查詢投注站列表
 //                        viewModel.bettingStationQuery()
-                    } else {
-                        etBettingShop.visibility = View.GONE
-                    }
+                } else {
+                    etBettingShop.visibility = View.GONE
                 }
+            }
 
         }
 
@@ -802,11 +814,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun setupBettingShop() {
         val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
 
-            if (bettingStationVisibility) {
-               // etBettingShop.visibility = View.VISIBLE
-                //查詢投注站列表
-                viewModel.bettingStationQuery()
-            }
+        if (bettingStationVisibility) {
+            // etBettingShop.visibility = View.VISIBLE
+            //查詢投注站列表
+            viewModel.bettingStationQuery()
+        }
 
     }
 
@@ -850,7 +862,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun setupRegisterButton() {
         binding.apply {
             eetRecommendCode.apply {
-                checkRegisterListener { viewModel.checkInviteCode(it) }
+                checkRegisterListener {
+                    if (it != "") {
+                        viewModel.checkInviteCode(it)
+                    } else {
+                        etBettingShopSelectTrue()
+
+                    }
+                }
             }
             eetMemberAccount.apply {
                 checkRegisterListener { viewModel.checkMemberAccount(it, false) }
@@ -886,8 +905,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     viewModel.checkIdentityBackupNumber(it)
                 }
             }
+
+
+
             eetBettingShop.apply {
-                checkRegisterListener { viewModel.checkBettingShop(it) }
+                checkRegisterListener {
+                    if (it != "") {
+                        viewModel.checkBettingShop(it)
+                    }
+                }
             }
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
@@ -1065,7 +1091,36 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     it,
                     false
                 )
+                if (it == null) {
+                    viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
+                } else {
+                    etBettingShopSelectTrue()
+                }
+
             }
+
+            checkBettingResult.observe(this@RegisterOkActivity) {
+                if (it != null && it.success) {
+                    etBettingShopSelectFalse(it.checkBettingData?.name.toString())
+                } else {
+                    etBettingShopSelectTrue()
+                    var msg = ""
+                    if (it?.msg == null) {
+                        msg = getString(R.string.error_recommend_code)
+                    } else {
+                        msg = it?.msg
+                    }
+                    binding.etRecommendCode.setError(
+                        msg,
+                        false
+                    )
+
+                }
+
+            }
+
+
+
             memberAccountMsg.observe(this@RegisterOkActivity) {
                 if (it.first == null) {
                     viewModel.checkAccountExist(binding.eetMemberAccount.text.toString())
@@ -1591,4 +1646,28 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             isUploaded = false
         }
     }
+
+    private fun etBettingShopSelectTrue() {
+        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        bettingShopSpinner.isEnabled = true
+        bettingShopSpinner.isClickable = true
+        etBettingShop.isEnabled = true
+        etBettingShop.isClickable = true
+        eetBettingShop.setText(bettingShopSelectedData?.showName)
+        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
+    }
+
+    private fun etBettingShopSelectFalse(eetBetting: String) {
+        etBettingShop.setEndIcon(null)
+        bettingShopSpinner.isEnabled = false
+        bettingShopSpinner.isClickable = false
+
+        etBettingShop.isEnabled = false
+        etBettingShop.isClickable = false
+
+        etBettingShop.hasFocus = false
+        eetBettingShop.setText(eetBetting)
+        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
+    }
+
 }

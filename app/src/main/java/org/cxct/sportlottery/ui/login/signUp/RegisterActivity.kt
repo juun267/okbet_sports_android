@@ -25,7 +25,6 @@ import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
@@ -829,7 +828,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     false
                 )
                 if (it == null) {
-                    viewModel.queryPlatform(eet_recommend_code.text.toString())
+                    viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
                 } else {
                     etBettingShopSelectTrue()
                 }
@@ -972,8 +971,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     itemSelectedListener = {
                         bettingShopSelectedData = it
                         eetBettingShop.setText(it?.showName)
-                        eet_recommend_code.setText("")
-                        et_recommend_code.hasFocus = false
+                        binding.eetRecommendCode.setText("")
+                        binding.etRecommendCode.hasFocus = false
 
                     }
                 ) {
@@ -1190,26 +1189,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun etBettingShopSelectTrue() {
-        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
-        bettingShopSpinner.isEnabled = true
-        bettingShopSpinner.isClickable = true
-        etBettingShop.isEnabled = true
-        etBettingShop.isClickable = true
-        eetBettingShop.setText(bettingShopSelectedData?.showName)
-        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
+        binding.etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        binding.bettingShopSpinner.isEnabled = true
+        binding.bettingShopSpinner.isClickable = true
+        binding.etBettingShop.isEnabled = true
+        binding.etBettingShop.isClickable = true
+        binding.eetBettingShop.setText(bettingShopSelectedData?.showName)
+        binding.eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
     }
 
     private fun etBettingShopSelectFalse(eetBetting: String) {
-        etBettingShop.setEndIcon(null)
-        bettingShopSpinner.isEnabled = false
-        bettingShopSpinner.isClickable = false
+        binding.etBettingShop.setEndIcon(null)
+        binding.bettingShopSpinner.isEnabled = false
+        binding.bettingShopSpinner.isClickable = false
 
-        etBettingShop.isEnabled = false
-        etBettingShop.isClickable = false
+        binding.etBettingShop.isEnabled = false
+        binding.etBettingShop.isClickable = false
 
-        etBettingShop.hasFocus = false
-        eetBettingShop.setText(eetBetting)
-        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
+        binding.etBettingShop.hasFocus = false
+        binding.eetBettingShop.setText(eetBetting)
+        binding.eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
     }
 
     override fun onBackPressed() {
