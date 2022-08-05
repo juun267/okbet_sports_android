@@ -872,7 +872,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 }
             }
             eetMemberAccount.apply {
-                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
+                checkRegisterListener { viewModel.checkMemberAccount(it) }
             }
             eetLoginPassword.apply {
                 checkRegisterListener { viewModel.checkLoginPassword(it) }
@@ -1125,11 +1125,22 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 if (it.first == null) {
                     viewModel.checkAccountExist(binding.eetMemberAccount.text.toString())
                     return@observe
+                } else {
+                    binding.etMemberAccount.setError(
+                        it.first,
+                        false
+                    )
                 }
-                binding.etMemberAccount.setError(
-                    it.first,
-                    false
-                )
+            }
+            checkAccountMsg.observe(this@RegisterOkActivity) {
+                if (it.isExist) {
+                    binding.etMemberAccount.setError(
+                        getString(R.string.error_register_id_exist),
+                        false
+                    )
+                }
+
+
             }
             loginPasswordMsg.observe(this@RegisterOkActivity) {
                 binding.etLoginPassword.setError(
