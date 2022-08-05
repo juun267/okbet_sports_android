@@ -452,9 +452,7 @@ class WithdrawViewModel(
         viewModelScope.launch {
             loading()
             getMoney()
-            doNetwork(androidContext) {
-                moneyRepository.getRechCfg()
-            }?.let { result ->
+            withdrawRepository.moneyRechCfgResult.value?.let { result ->
                 result.rechCfg?.let { moneyRechCfgData ->
                     uwBankType =
                         moneyRechCfgData.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
