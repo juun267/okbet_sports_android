@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.isThirdTransferOpen
 
 
 class MainViewModel(
@@ -246,6 +247,15 @@ class MainViewModel(
                 } else {
                     _navActivity.postValue(Event(LoginActivity::class.java))
                 }
+            }
+        }
+    }
+
+    suspend fun allTransferOut() {
+        if (isThirdTransferOpen()) {
+            //若自動轉換功能開啟，離開遊戲要全額轉出
+            doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.allTransferOut()
             }
         }
     }

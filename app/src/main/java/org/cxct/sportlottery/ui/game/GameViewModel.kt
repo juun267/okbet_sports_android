@@ -3183,12 +3183,13 @@ class GameViewModel(
     }
 
     private suspend fun autoTransfer(gameData: ThirdDictValues) {
-        val result = doNetwork(androidContext) {
-            OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+        if (isThirdTransferOpen()) {
+            //若自動轉換功能開啟，要先把錢都轉過去再進入遊戲
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+            }
+            if (result?.success == true) getMoney() //金額有變動，通知刷新
         }
-
-        if (result?.success == true)
-            getMoney() //金額有變動，通知刷新
     }
 
     fun requestEnterThirdGame(gameData: ThirdDictValues?) {
@@ -3216,9 +3217,8 @@ class GameViewModel(
                 viewModelScope.launch {
                     val thirdLoginResult = thirdGameLogin(gameData)
 
-                    //若自動轉換功能開啟，要先把錢都轉過去在進入遊戲
-                    if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
-                        autoTransfer(gameData)
+                    //第三方自動轉換
+                    autoTransfer(gameData)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {

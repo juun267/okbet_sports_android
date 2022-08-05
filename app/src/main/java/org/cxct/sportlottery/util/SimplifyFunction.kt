@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -344,6 +345,15 @@ fun View.setVisibilityByCreditSystem() {
  */
 fun isCreditSystem(): Boolean {
     return sConfigData?.creditSystem == FLAG_CREDIT_OPEN
+//    return true // for test
+}
+
+/**
+ * 第三方自動轉換功能是否開啟
+ * @return true: 是, false: 否
+ */
+fun isThirdTransferOpen(): Boolean {
+    return sConfigData?.thirdTransferOpen == FLAG_OPEN
 //    return true // for test
 }
 
