@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
+        android:maxHeight="20dp"
         android:gravity="center"
         android:text="@string/kyc_contact_service"
         android:textColor="@color/color_BBBBBB_333333"
