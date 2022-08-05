@@ -115,6 +115,7 @@ class GameViewModel(
         get() = _gotConfig
     private val _gotConfig = MutableLiveData<Event<Boolean>>()
 
+
     private val gameLiveSharedPreferences by lazy {
         androidContext.getSharedPreferences(
             GameLiveSP,
@@ -326,14 +327,6 @@ class GameViewModel(
     private val _sportMenuList = MutableLiveData<Event<List<SportMenu>>>()
     val sportMenuList: LiveData<Event<List<SportMenu>>>
         get() = _sportMenuList
-
-    private val _sportSortList = MutableLiveData<Event<List<SportMenu>>>()
-    val sportSortList: LiveData<Event<List<SportMenu>>>
-        get() = _sportSortList
-
-    private val _sportMenuFilterList = MutableLiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>()
-    val sportMenuFilterList: LiveData<Event<MutableMap<String?, MutableMap<String?, SportMenuFilter>?>?>>
-        get() = _sportMenuFilterList
 
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
@@ -567,26 +560,38 @@ class GameViewModel(
     }
 
     fun getSportListAtHomePage(matchType: MatchType?) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.sportService.getSportList()
-            }
-            result?.let { sportList ->
-                val sportCardList = sportList.rows.sortedBy { it.sortNum }
-                    .mapNotNull { row ->
-                        GameType.getGameType(row.code)
-                            ?.let { gameType ->
-                                SportMenu(
-                                    gameType,
-                                    row.name,
-                                    getSpecificLanguageString(androidContext, gameType.key, LanguageManager.Language.EN.key),
-                                    getGameTypeMenuIcon(gameType)
-                                )
-                            }
-                    }
-                _sportSortList.postValue(Event(sportCardList))
-                switchMatchType(matchType)
-            }
+//        viewModelScope.launch {
+//            val result = doNetwork(androidContext) {
+//                OneBoSportApi.sportService.getSportList()
+//            }
+//            result?.let { sportList ->
+//                val sportCardList = sportList.rows.sortedBy { it.sortNum }
+//                    .mapNotNull { row ->
+//                        GameType.getGameType(row.code)
+//                            ?.let { gameType ->
+//                                SportMenu(
+//                                    gameType,
+//                                    row.name,
+//                                    getSpecificLanguageString(
+//                                        androidContext,
+//                                        gameType.key,
+//                                        LanguageManager.Language.EN.key
+//                                    ),
+//                                    getGameTypeMenuIcon(gameType)
+//                                )
+//                            }
+//                    }
+//                _sportSortList.postValue(Event(sportCardList))
+//                if (_sportMenuResult.value == null) {
+//                    switchMatchType(matchType)
+//                }
+//            }
+//        }
+    }
+
+    fun firstSwitchMatch(matchType: MatchType?){
+        if (_sportMenuResult.value == null) {
+            switchMatchType(matchType)
         }
     }
 
@@ -599,7 +604,6 @@ class GameViewModel(
 
             result?.let {
                 PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
-                _sportMenuFilterList.postValue(Event(it.t?.sportMenuList))
             }
         }
     }
@@ -707,7 +711,7 @@ class GameViewModel(
             )
         )
 
-        _sportSortList.value?.peekContent()?.let { list ->
+        sportMenuRepository.sportSortList.value?.let { list ->
             list.forEach { sportMenu ->
                 sportMenu.apply {
                     gameCount =
@@ -1139,7 +1143,6 @@ class GameViewModel(
     ) {
 
         if (getMatchCount(matchType) < 1) {
-            _isNoEvents.postValue(true)
             return
         }
 
@@ -2991,14 +2994,14 @@ class GameViewModel(
                                 )
                             }
                     }
-                _sportSortList.postValue(Event(sportCardList))
+                sportMenuRepository.postSportSortList(sportCardList)
             }
         }
     }
 
     private suspend fun postPublicitySportMenu() {
         getSportMenuAll()?.let { sportMenuResult ->
-            _sportSortList.value?.peekContent()?.let { list ->
+            sportMenuRepository.sportSortList.value?.let { list ->
                 val sportMenuDataList = mutableListOf<SportMenu>()
                 list.forEach { sportMenu ->
                     sportMenu.apply {
@@ -3180,12 +3183,13 @@ class GameViewModel(
     }
 
     private suspend fun autoTransfer(gameData: ThirdDictValues) {
-        val result = doNetwork(androidContext) {
-            OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+        if (isThirdTransferOpen()) {
+            //若自動轉換功能開啟，要先把錢都轉過去再進入遊戲
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+            }
+            if (result?.success == true) getMoney() //金額有變動，通知刷新
         }
-
-        if (result?.success == true)
-            getMoney() //金額有變動，通知刷新
     }
 
     fun requestEnterThirdGame(gameData: ThirdDictValues?) {
@@ -3213,9 +3217,8 @@ class GameViewModel(
                 viewModelScope.launch {
                     val thirdLoginResult = thirdGameLogin(gameData)
 
-                    //若自動轉換功能開啟，要先把錢都轉過去在進入遊戲
-                    if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
-                        autoTransfer(gameData)
+                    //第三方自動轉換
+                    autoTransfer(gameData)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
@@ -3350,9 +3353,12 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
+    fun setCurMatchType(matchType: MatchType?) {
+        _curMatchType.postValue(matchType)
+    }
+
     fun switchMatchType(matchType: MatchType?) {
         clearGameHallContent()
-
         when (matchType) {
             /* 初次進入主頁 */
             null -> {
@@ -3385,44 +3391,51 @@ class GameViewModel(
                         if (it.success) {
                             it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
                             _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
+                            postHomeCardCount(it)              // 更新主頁、左邊選單
+                            if (_sportMenuResult.value == null) {
+                                updateSportInfo(matchType)     // 初次頁面進入
+                            }
                         } else {
                             return@launch
                         }
                     }
-
-                    getSportQuery(matchType)?.let {
-                        if (!it.success) {
-                            _showErrorDialogMsg.postValue(it.msg)
-                            return@launch
-                        }
-                    }
-
-                    _curMatchType.postValue(matchType)
-
-                    // 無數量直接顯示無資料UI
-                    if (getMatchCount(matchType) < 1) {
-                        _isNoEvents.postValue(true)
-                        return@launch
-                    }
-
-                    getSportCouponMenu()?.let {
-                        _sportCouponMenuResult.postValue(Event(it))
-                    }
-
-                    // 更新主頁、左邊選單
-                    postHomeCardCount(sportMenuResult)
-
-                    // 今日、串關頁面下賽事選擇 (今日、所有)
-                    if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
-                        getMatchCategory(matchType)
+                }
+                if (_sportMenuResult.value != null) {
+                    viewModelScope.launch {
+                        updateSportInfo(matchType)
                     }
                 }
             }
         }
     }
 
+    private suspend fun updateSportInfo(matchType: MatchType) {
+        getSportQuery(matchType)?.let {
+            if (!it.success) {
+                _showErrorDialogMsg.postValue(it.msg)
+                return
+            }
+        }
+        setCurMatchType(matchType)
+
+        // 無數量直接顯示無資料UI
+        if (getMatchCount(matchType) < 1) {
+            _isNoEvents.postValue(true)
+            return
+        }
+
+        // 今日、串關頁面下賽事選擇 (今日、所有)
+        if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
+            getMatchCategory(matchType)
+        }
+
+        getSportCouponMenu()?.let {
+            _sportCouponMenuResult.postValue(Event(it))
+        }
+    }
+
     fun switchGameType(item: Item) {
-        if(jobSwitchGameType?.isActive == true){
+        if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
 

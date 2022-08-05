@@ -45,10 +45,6 @@ abstract class BaseSocketViewModel(
         }
     }
 
-    fun updatePlayQuota(playQuotaComData: Map<String?, BasePlayQuota?>?) {
-        betInfoRepository.playQuotaComData = playQuotaComData
-    }
-
     fun updateMoney(money: Double?) {
         mUserMoney.postValue(money)
     }

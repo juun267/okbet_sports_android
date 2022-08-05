@@ -519,7 +519,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         //若為起始fragment不會有轉場動畫, 故無法透過afterAnimateListener動作
             initObserve()
             initSocketObserver()
@@ -1428,7 +1427,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         receiver.serviceConnectStatus.observe(this.viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-                    viewModel.getSportListAtHomePage(matchType = args.matchType)
+                    viewModel.firstSwitchMatch(matchType = args.matchType)
                     if (args.matchType == MatchType.OTHER) {
                         viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
                     } else if (!args.gameType.isNullOrEmpty() && args.matchType == MatchType.OUTRIGHT && isRecommendOutright()) {
@@ -1835,17 +1834,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
             if (gameTypeList.isEmpty()) {
                 sport_type_list?.visibility = View.GONE
-                game_toolbar_sport_type.visibility = View.GONE
-                game_toolbar_champion.visibility = View.GONE
-                game_toolbar_calendar.visibility = View.GONE
-                game_tab_odd_v4.visibility = View.GONE
-                game_match_category_pager.visibility = View.GONE
-                game_play_category.visibility = View.GONE
-                game_filter_type_list.visibility = View.GONE
+                game_toolbar_sport_type?.visibility = View.GONE
+                game_toolbar_champion?.visibility = View.GONE
+                game_toolbar_calendar?.visibility = View.GONE
+                game_tab_odd_v4?.visibility = View.GONE
+                game_match_category_pager?.visibility = View.GONE
+                game_play_category?.visibility = View.GONE
+                game_filter_type_list?.visibility = View.GONE
             } else {
                 sport_type_list?.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
-                game_toolbar_sport_type.visibility = View.VISIBLE
-                game_toolbar_calendar.apply {
+                game_toolbar_sport_type?.visibility = View.VISIBLE
+                game_toolbar_calendar?.apply {
                     visibility = when (args.matchType) {
                         MatchType.EARLY -> View.VISIBLE
                         else -> View.GONE
@@ -1853,7 +1852,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     isSelected = mCalendarSelected
                 }
 
-                game_play_category.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
+                game_play_category?.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
                     (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)
                 ) {
                     View.VISIBLE
@@ -2248,6 +2247,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         timer = Timer()
         timer?.schedule(object : TimerTask() {
             override fun run() {
+                viewModel.setCurMatchType(null) //避免args.matchType和curMatchType相同，導致後續流程中斷的問題
                 viewModel.switchMatchType(args.matchType)
             }
         }, 60 * 3 * 1000L, 60 * 3 * 1000L)
@@ -2288,8 +2288,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             initSocketObserver()
             MultiLanguagesApplication.colorModeChanging = false
         }
-
-        viewModel.getSportMenuFilter()
     }
 
     override fun onDestroyView() {

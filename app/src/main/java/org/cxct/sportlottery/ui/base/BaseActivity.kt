@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -118,7 +119,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         viewModel.isKickedOut.observe(this) {
             hideLoading()
             it.getContentIfNotHandled()?.let { msg ->
-                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName) return@observe
+                if (this.javaClass.simpleName == MaintenanceActivity::class.java.simpleName ||
+                    this.javaClass.simpleName == ThirdGameActivity::class.java.simpleName
+                ) return@observe
                 showTokenPromptDialog(msg) {
                     viewModel.loginRepository._isLogin.postValue(false)
                     val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)

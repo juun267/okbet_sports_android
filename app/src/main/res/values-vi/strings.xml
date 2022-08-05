@@ -870,7 +870,6 @@
     <string name="commissiom_completed">Hoàn thành</string>
     <string name="commission_example">i.g.</string>
     <string name="bet_slip">Đơn cược</string>
-    <string name="fast_bet_open_desc">Kích Hoạt Cược Nhanh</string>
     <string name="bet_list_empty">Hiện không có vé cược</string>
     <string name="bank_list_not_bink">Bạn chưa mặc %1$s</string>
     <string name="bank_list_add">Thêm %1$s</string>
@@ -1101,4 +1100,6 @@
     <string name="work_time_">Giờ làm việc：</string>
     <string name="appointment_">Hẹn thời gian：</string>
     <string name="outlets_address_">Địa chỉ：</string>
+    <string name="error_recharge_amount_format">Lỗi định dạng số tiền nạp</string>
+    <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
 </resources>

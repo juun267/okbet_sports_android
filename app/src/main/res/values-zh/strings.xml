@@ -844,7 +844,6 @@
     <string name="commissiom_completed">完成</string>
     <string name="commission_example">范例</string>
     <string name="bet_slip">投注单</string>
-    <string name="fast_bet_open_desc">开启快捷投注</string>
     <string name="bet_list_empty">投注单是空的</string>
     <string name="bank_list_not_bink">您尚未绑定%1$s</string>
     <string name="bank_list_add">新增%1$s</string>
@@ -1116,4 +1115,6 @@
     <string name="phone_">电话：</string>
     <string name="appointment_">预约时间：</string>
     <string name="outlets_address_">投注站地址：</string>
+    <string name="error_recharge_amount_format">充值额格式有誤</string>
+    <string name="error_amount_limit_exceeded">金额超过限额</string>
 </resources>

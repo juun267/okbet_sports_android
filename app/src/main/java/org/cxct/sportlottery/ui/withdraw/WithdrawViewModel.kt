@@ -25,6 +25,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 import java.math.RoundingMode
@@ -451,9 +452,7 @@ class WithdrawViewModel(
         viewModelScope.launch {
             loading()
             getMoney()
-            doNetwork(androidContext) {
-                moneyRepository.getRechCfg()
-            }?.let { result ->
+            withdrawRepository.moneyRechCfgResult.value?.let { result ->
                 result.rechCfg?.let { moneyRechCfgData ->
                     uwBankType =
                         moneyRechCfgData.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
@@ -531,45 +530,47 @@ class WithdrawViewModel(
 
     fun checkCreateName(createName: String) {
         _createNameErrorMsg.value = when {
-            userInfo.value?.fullName.isNullOrEmpty() and !VerifyConstUtil.verifyFullName(createName) -> androidContext.getString(R.string.error_input_has_blank)
+            userInfo.value?.fullName.isNullOrEmpty() and !VerifyConstUtil.verifyFullName(createName) -> LocalUtils.getString(
+                R.string.error_input_has_blank
+            )
             else -> ""
         }
     }
 
     fun checkBankCardNumber(bankCardNumber: String) {
         _bankCardNumberMsg.value = when {
-            bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            bankCardNumber.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
     }
 
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
-            networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            networkPoint.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
     }
 
     fun checkPhoneNumber(phoneNumber: String) {
         _phoneNumberMsg.value = when {
-            phoneNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            phoneNumber.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
     }
 
     fun checkWalletAddress(walletAddress: String) {
         _walletAddressMsg.value = when {
-            walletAddress.isEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> androidContext.getString(R.string.error_wallet_address)
+            walletAddress.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> LocalUtils.getString(R.string.error_wallet_address)
             else -> ""
         }
     }
 
     fun checkWithdrawPassword(withdrawPassword: String) {
         _withdrawPasswordMsg.value = when {
-            withdrawPassword.isEmpty() -> androidContext.getString(R.string.error_input_empty)
+            withdrawPassword.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyWithdrawPassword(withdrawPassword) -> {
-                androidContext.getString(R.string.error_withdraw_password)
+                LocalUtils.getString(R.string.error_withdraw_password)
             }
             else -> ""
         }
@@ -577,9 +578,9 @@ class WithdrawViewModel(
 
     fun checkWithdrawAppointment(appointmentDate: String, appointmentHour: String) {
         if (appointmentDate.isNullOrBlank()) {
-            _withdrawAppointmentMsg.value = androidContext.getString(R.string.select_date)
+            _withdrawAppointmentMsg.value = LocalUtils.getString(R.string.select_date)
         } else if (appointmentHour.isNullOrBlank()) {
-            _withdrawAppointmentMsg.value = androidContext.getString(R.string.select_time)
+            _withdrawAppointmentMsg.value = LocalUtils.getString(R.string.select_time)
         } else {
             _withdrawAppointmentMsg.value = ""
         }
@@ -591,26 +592,22 @@ class WithdrawViewModel(
         _withdrawAmountMsg.value = when {
             withdrawAmount.isEmpty() -> {
                 withdrawAmount = "0"
-                androidContext.getString(R.string.error_input_empty)
+                LocalUtils.getString(R.string.error_input_empty)
             }
             amountLimit.isBalanceMax && withdrawAmount.toDouble() > getWithdrawAmountLimit().max -> {
-                androidContext.getString(R.string.error_withdraw_amount_bigger_than_balance)
+                LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
-            !VerifyConstUtil.verifyWithdrawAmount(
+            withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDouble().equals(0) -> {
+                LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
+            }
+            VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,
                 amountLimit.min,
                 amountLimit.max
-            ) -> {
-                when (dealType) {
-                    TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
-                    TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
-                    TransferType.E_WALLET -> androidContext.getString(R.string.error_withdraw_amount_bank)
-                    TransferType.STATION -> androidContext.getString(R.string.error_withdraw_amount_crypto)
-                }
+            ) != 0 -> {
+                LocalUtils.getString(R.string.error_amount_limit_exceeded)
             }
-            else -> {
-                ""
-            }
+            else -> ""
         }
         if (dealType != TransferType.STATION) {
             getWithdrawRate(withdrawCard, withdrawAmount.toDouble())
@@ -621,7 +618,7 @@ class WithdrawViewModel(
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.edt_hint_deposit_money),
+            LocalUtils.getString(R.string.edt_hint_deposit_money),
             sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()
         )
@@ -686,8 +683,8 @@ class WithdrawViewModel(
                 _withdrawCryptoAmountHint.value = ""
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
-                    androidContext.getString(R.string.withdraw_handling_fee_hint),
-                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),sConfigData?.systemCurrencySign,
+                    LocalUtils.getString(R.string.withdraw_handling_fee_hint),
+                    ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)), sConfigData?.systemCurrencySign,
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
                 )
 
@@ -720,7 +717,7 @@ class WithdrawViewModel(
                             withdrawAmount.times(it.exchangeRate ?: 0.0)
                         } ?: 0.0 else 0.0
                     _withdrawCryptoAmountHint.value = String.format(
-                        androidContext.getString(R.string.withdraw_crypto_amount_hint),
+                        LocalUtils.getString(R.string.withdraw_crypto_amount_hint),
                         sConfigData?.systemCurrencySign,
                         ArithUtil.toMoneyFormat(withdrawNeedAmount)
 
@@ -729,13 +726,13 @@ class WithdrawViewModel(
 
 
                     _withdrawCryptoFeeHint.value = String.format(
-                        androidContext.getString(R.string.withdraw_crypto_fee_hint),
+                        LocalUtils.getString(R.string.withdraw_crypto_fee_hint),
                         sConfigData?.systemCurrencySign,
                         ArithUtil.toMoneyFormat(fee)
 
                     )
                     _withdrawRateHint.value = String.format(
-                        androidContext.getString(R.string.hint_rate),
+                        LocalUtils.getString(R.string.hint_rate),
                         ArithUtil.toMoneyFormat(cardConfig?.exchangeRate)
                     )
                     if (withdrawAmount != null && withdrawAmount.toDouble() > 0) {

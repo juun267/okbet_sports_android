@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import android.content.Context
 import org.cxct.sportlottery.repository.sConfigData
 import java.util.regex.Pattern
 
@@ -84,16 +83,26 @@ object VerifyConstUtil {
     }
 
     //提款金額 //最低與最高同步後台設定值, 最高限制:餘額最大金額,限制提款最大金額 取小者
-    fun verifyWithdrawAmount(withdrawAmount: CharSequence, minAmount: Double?, maxAmount: Double?): Boolean {
+    //-1为低于限额，1为超过限额，
+    fun verifyWithdrawAmount(
+        withdrawAmount: CharSequence,
+        minAmount: Double?,
+        maxAmount: Double?
+    ): Int {
         val withdrawAmountDouble = withdrawAmount.toString().toDouble()
         val minLimit = minAmount ?: 0.0
-
-        return (minLimit <= withdrawAmountDouble) && (if (maxAmount == null) true else withdrawAmountDouble <= maxAmount)
+        if (withdrawAmountDouble < minLimit) return -1
+        if (maxAmount != null && withdrawAmountDouble > maxAmount) return 1
+        return 0
     }
 
     //充值金額
-    fun verifyRechargeAmount(withdrawAmount: CharSequence, minAmount: Long, maxAmount: Long?): Boolean {
-        return (withdrawAmount.toString().toLong().let { it in minAmount until (maxAmount?.plus(1) ?: it + 1) })
+    //-1为低于限额，1为超过限额，
+    fun verifyRechargeAmount(rechargeAmount: CharSequence, minAmount: Long, maxAmount: Long?): Int {
+        val rechargeAmountLong = rechargeAmount.toString().toLong()
+        if (rechargeAmountLong < minAmount) return -1
+        if (maxAmount != null && rechargeAmountLong > maxAmount) return 1
+        return 0
     }
 
     fun verifyFirstRechargeAmount(rechargeAmount: CharSequence): Boolean {

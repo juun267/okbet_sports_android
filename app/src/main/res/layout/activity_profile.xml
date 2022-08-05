@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/color_CAE0FF_FCFCFC"
+            android:background="@color/color_191919_FCFCFC"
             android:orientation="vertical">
 
 

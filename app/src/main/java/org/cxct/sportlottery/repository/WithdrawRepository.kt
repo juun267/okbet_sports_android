@@ -33,10 +33,6 @@ object WithdrawRepository {
     val withdrawSystemOperation: LiveData<Event<Boolean>>
         get() = mWithdrawSystemOperation
 
-    private var mRechargeSystemOperation = MutableLiveData<Event<Boolean>>()
-    val rechargeSystemOperation: LiveData<Event<Boolean>>
-        get() = mRechargeSystemOperation
-
     private var mNeedToUpdateWithdrawPassword = MutableLiveData<Event<Boolean>>()
     val needToUpdateWithdrawPassword: LiveData<Event<Boolean>> //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
         get() = mNeedToUpdateWithdrawPassword
@@ -70,6 +66,10 @@ object WithdrawRepository {
         get() = mHasPhoneNumber
 
     private var mWithdrawOperation: SystemOperation? = null
+
+    private var _moneyRechCfgResult = MutableLiveData<MoneyRechCfgResult>()
+    val moneyRechCfgResult: LiveData<MoneyRechCfgResult>
+        get() = _moneyRechCfgResult
 
     data class SystemOperation(
         val bankSystem: Boolean,
@@ -118,20 +118,18 @@ object WithdrawRepository {
             if (operation) {
                 withdrawCheckPermissions()
             }
+
+            _moneyRechCfgResult.postValue(response.body())
         }
         return response
     }
 
     suspend fun checkRechargeSystem(): Response<MoneyRechCfgResult> {
-        val response = OneBoSportApi.moneyService.getRechCfg()
-        if (response.isSuccessful) {
-            val rechTypesList = response.body()?.rechCfg?.rechTypes //玩家層級擁有的充值方式
-            val rechCfgsList = response.body()?.rechCfg?.rechCfgs  //後台有開的充值方式
-            val operation = (rechTypesList?.size ?: 0 > 0) && (rechCfgsList?.size ?: 0 > 0)
-
-            mRechargeSystemOperation.value = Event(operation)
+        return OneBoSportApi.moneyService.getRechCfg().apply {
+            if (isSuccessful) {
+                _moneyRechCfgResult.value = body()
+            }
         }
-        return response
     }
 
     private suspend fun checkNeedUpdatePassWord(): Boolean {

@@ -68,7 +68,6 @@ class SplashViewModel(
                     gotConfigData = true
                     setBaseUrl(hostUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
-                    getPlayQuotaCom()
                     isCheckNewHost = true
                     getHost()
                     return@launch
@@ -164,7 +163,6 @@ class SplashViewModel(
                     gotConfigData = true
                     setBaseUrl(baseUrl, retrofit)
                     result.configData?.let { setRandomSocketUrl(it.wsHost) }
-                    getPlayQuotaCom()
                 }
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
@@ -201,17 +199,6 @@ class SplashViewModel(
         val wsList = wsHost.split(',')
         val randomIndex = Random.nextInt(wsList.size)
         Constants.setSocketUrl(wsList[randomIndex])
-    }
-
-    private fun getPlayQuotaCom() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                playQuotaComRepository.getPlayQuotaCom()
-            }
-            result?.let {
-                betInfoRepository.playQuotaComData = it.playQuotaComData
-            }
-        }
     }
 
 }

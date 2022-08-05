@@ -44,10 +44,9 @@ class ServiceFloatingButton @JvmOverloads constructor(
         }
     }
 
-    fun setView4Maintenance(activity: AppCompatActivity) {
-        //2022-02-10 維護頁面常駐客服按鈕
-            visibility = View.VISIBLE
-            setupClickEvent(activity)
+    fun setViewAlwaysDisplay(activity: AppCompatActivity) {
+        visibility = View.VISIBLE
+        setupClickEvent(activity)
     }
 
     private fun setupClickEvent(activity: AppCompatActivity) {
