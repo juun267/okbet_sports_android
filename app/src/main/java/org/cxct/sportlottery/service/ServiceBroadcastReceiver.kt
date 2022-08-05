@@ -100,9 +100,6 @@ open class ServiceBroadcastReceiver(
     val serviceConnectStatus: LiveData<ServiceConnectStatus>
         get() = _serviceConnectStatus
 
-    val playQuotaChange: LiveData<PlayQuotaChangeEvent?>
-        get() = _playQuotaChange
-
     val leagueChange: LiveData<LeagueChangeEvent?>
         get() = _leagueChange
 
@@ -138,7 +135,6 @@ open class ServiceBroadcastReceiver(
     private val _userNotice = MutableLiveData<UserNoticeEvent?>()
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
-    private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
@@ -207,10 +203,6 @@ open class ServiceBroadcastReceiver(
             EventType.SYS_MAINTENANCE -> {
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
                 _sysMaintenance.value = data
-            }
-            EventType.PLAY_QUOTA_CHANGE -> {
-                val data = ServiceMessage.getPlayQuotaChange(jObjStr)
-                _playQuotaChange.value = data
             }
 
             //公共频道
