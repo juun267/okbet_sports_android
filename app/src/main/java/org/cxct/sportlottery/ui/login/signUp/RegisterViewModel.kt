@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -51,6 +52,9 @@ class RegisterViewModel(
 
     val memberAccountMsg: LiveData<Pair<String?, Boolean>>
         get() = _memberAccountMsg
+    val checkAccountMsg: LiveData<CheckAccountResult>
+        get() = _checkAccountMsg
+
     val loginPasswordMsg: LiveData<Pair<String?, Boolean>>
         get() = _loginPasswordMsg
     val confirmPasswordMsg: LiveData<Pair<String?, Boolean>>
@@ -130,6 +134,7 @@ class RegisterViewModel(
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _memberAccountMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _checkAccountMsg = MutableLiveData<CheckAccountResult>()
     private val _loginPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _confirmPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _fullNameMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -219,10 +224,9 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete(1)
     }
 
-    fun checkMemberAccount(account: String?, isExistAccount: Boolean) {
+    fun checkMemberAccount(account: String?) {
         val msg = when {
             account.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            isExistAccount -> LocalUtils.getString(R.string.error_register_id_exist)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 LocalUtils.getString(R.string.error_member_account)
             }
@@ -581,7 +585,7 @@ class RegisterViewModel(
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
 
-        checkMemberAccount(userName, false)
+        checkMemberAccount(userName)
         checkLoginPassword(loginPassword)
         checkConfirmPassword(loginPassword, confirmPassword)
 
@@ -651,6 +655,9 @@ class RegisterViewModel(
                         return false
                     }
                     if (checkInputPair(memberAccountMsg)) {
+                        return false
+                    }
+                    if (checkAccountMsg.value?.isExist == true) {
                         return false
                     }
                     if (checkInputPair(loginPasswordMsg)) {
@@ -808,11 +815,13 @@ fun checkAccountExist(account: String) {
         doNetwork(androidContext) {
             OneBoSportApi.indexService.checkAccountExist(account)
         }.let {
-            if (it?.success == true) {
-                checkMemberAccount(account, it.isExist ?: false)
-            } else {
-                checkMemberAccount(account, false)
-            }
+            _checkAccountMsg.value = it
+
+//            if (it?.success == true) {
+//                checkMemberAccount(account, it.isExist ?: false)
+//            } else {
+//                checkMemberAccount(account, false)
+//            }
         }
     }
 }
