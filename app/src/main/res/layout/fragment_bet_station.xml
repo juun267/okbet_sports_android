@@ -271,17 +271,16 @@
                         <TextView
                             android:id="@+id/tv_station_address"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:fontFamily="@font/helvetica_bold"
                             android:textStyle="bold"
                             android:textSize="@dimen/textSize16sp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
                             android:textColor="@color/color_BBBBBB_333333"
                             tools:text="makati 55T 0001prd t" />
 
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
 
                         <TextView
                             android:id="@+id/tv_station_distance"
