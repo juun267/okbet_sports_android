@@ -9,27 +9,28 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
  * @app_destination 右上選單
@@ -297,7 +298,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
-                    showKYCVerifyDialog()
+                    MultiLanguagesApplication.showKYCVerifyDialog(requireActivity())
                 else
                     viewModel.checkWithdrawSystem()
             }
@@ -306,7 +307,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
-                    showKYCVerifyDialog()
+                    MultiLanguagesApplication.showKYCVerifyDialog(requireActivity())
                 else
                     viewModel.checkRechargeSystem()
             }
@@ -362,33 +363,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(btn_sign_out)
         }
 
-    }
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().apply {
-            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                startActivity(Intent(context, VerifyIdentityActivity::class.java))
-            }
-            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                val serviceUrl = sConfigData?.customerServiceUrl
-                val serviceUrl2 = sConfigData?.customerServiceUrl2
-                when {
-                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.supportFragmentManager?.let { it1 ->
-                            ServiceDialog().show(
-                                it1,
-                                null
-                            )
-                        }
-                    }
-                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                    }
-                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                    }
-                }
-            }
-        }.show(parentFragmentManager, null)
     }
 
     private fun setupVersion() {

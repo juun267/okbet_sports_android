@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -24,14 +25,11 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import timber.log.Timber
@@ -352,7 +350,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.isWithdrawShowVerifyDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
-                    showKYCVerifyDialog()
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
                 else
                     viewModel.checkWithdrawSystem()
             }
@@ -361,7 +359,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.isRechargeShowVerifyDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
-                    showKYCVerifyDialog()
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
                 else
                     viewModel.checkRechargeSystem()
             }
@@ -403,31 +401,4 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.getUserInfo()
     }
 
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().apply {
-            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                startActivity(Intent(context, VerifyIdentityActivity::class.java))
-            }
-            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                val serviceUrl = sConfigData?.customerServiceUrl
-                val serviceUrl2 = sConfigData?.customerServiceUrl2
-                when {
-                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.supportFragmentManager?.let { it1 ->
-                            ServiceDialog().show(
-                                it1,
-                                null
-                            )
-                        }
-                    }
-                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                    }
-                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                    }
-                }
-            }
-        }.show(supportFragmentManager, null)
-    }
 }

@@ -70,9 +70,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
@@ -1387,12 +1387,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             RegisterSuccessDialog(this).apply {
                 setNegativeClickListener {
                     dismiss()
-                    startActivity(
-                        Intent(
-                            this@RegisterOkActivity,
-                            MoneyRechargeActivity::class.java
-                        )
-                    )
+                    //KYC注册的情况下，要跳主页并且显示验证弹窗
+                    GamePublicityActivity.reStart(this@RegisterOkActivity, true)
+//                    startActivity(
+//                        Intent(
+//                            this@RegisterOkActivity,
+//                            MoneyRechargeActivity::class.java
+//                        )
+//                    )
                     finish()
                 }
             }.show(supportFragmentManager, null)
