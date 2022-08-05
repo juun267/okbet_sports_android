@@ -15,6 +15,7 @@
         android:text="@string/kyc_contact_service"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize12sp"
+        android:maxLines="2"
         app:highlightColor="@color/transparent"
         app:highlightRadius="0dp"
         app:highlightText="@string/kyc_contact_service_hilight"
