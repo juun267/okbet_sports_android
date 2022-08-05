@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -51,6 +52,9 @@ class RegisterViewModel(
 
     val memberAccountMsg: LiveData<Pair<String?, Boolean>>
         get() = _memberAccountMsg
+    val checkAccountMsg: LiveData<CheckAccountResult>
+        get() = _checkAccountMsg
+
     val loginPasswordMsg: LiveData<Pair<String?, Boolean>>
         get() = _loginPasswordMsg
     val confirmPasswordMsg: LiveData<Pair<String?, Boolean>>
@@ -130,6 +134,7 @@ class RegisterViewModel(
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _memberAccountMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _checkAccountMsg = MutableLiveData<CheckAccountResult>()
     private val _loginPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _confirmPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _fullNameMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -169,6 +174,7 @@ class RegisterViewModel(
 
     private val _bettingStationList = MutableLiveData<List<StatusSheetData>>()
     private val _checkBettingResult = MutableLiveData<CheckBettingResult?>()
+
     //region 證件照片
     val docUrlResult: LiveData<UploadImgResult?>
         get() = _docUrlResult
@@ -177,6 +183,7 @@ class RegisterViewModel(
     val photoUrlResult: LiveData<UploadImgResult?>
         get() = _photoUrlResult
     private val _photoUrlResult = MutableLiveData<UploadImgResult?>()
+
     //endregion
     val identityPhoto: LiveData<File?>
         get() = _identityPhoto
@@ -219,10 +226,9 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete(1)
     }
 
-    fun checkMemberAccount(account: String?, isExistAccount: Boolean) {
+    fun checkMemberAccount(account: String?) {
         val msg = when {
             account.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            isExistAccount -> LocalUtils.getString(R.string.error_register_id_exist)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 LocalUtils.getString(R.string.error_member_account)
             }
@@ -437,6 +443,7 @@ class RegisterViewModel(
             _validCodeResult.postValue(result)
         }
     }
+
     fun queryPlatform(inviteCode: String) {
 
         viewModelScope.launch {
@@ -581,7 +588,7 @@ class RegisterViewModel(
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
 
-        checkMemberAccount(userName, false)
+        checkMemberAccount(userName)
         checkLoginPassword(loginPassword)
         checkConfirmPassword(loginPassword, confirmPassword)
 
@@ -651,6 +658,9 @@ class RegisterViewModel(
                         return false
                     }
                     if (checkInputPair(memberAccountMsg)) {
+                        return false
+                    }
+                    if (checkAccountMsg.value?.isExist == true) {
                         return false
                     }
                     if (checkInputPair(loginPasswordMsg)) {
@@ -783,117 +793,84 @@ class RegisterViewModel(
         }
 
 
-    return true
-}
-
-private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
-    return data.value?.first != null || data.value?.second != true
-}
-
-fun loginAsGuest() {
-    viewModelScope.launch {
-        doNetwork(androidContext) {
-            loginRepository.loginForGuest()
-        }?.let {
-            _loginForGuestResult.value = it
-        }
+        return true
     }
-}
 
-fun checkAccountExist(account: String) {
-    //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
-//        val msg = LocalUtils.getString(R.string.desc_register_checking_account)
-//        _memberAccountMsg.value = Pair(msg, false)
-    viewModelScope.launch {
-        doNetwork(androidContext) {
-            OneBoSportApi.indexService.checkAccountExist(account)
-        }.let {
-            if (it?.success == true) {
-                checkMemberAccount(account, it.isExist ?: false)
-            } else {
-                checkMemberAccount(account, false)
+    private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
+        return data.value?.first != null || data.value?.second != true
+    }
+
+    fun loginAsGuest() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                loginRepository.loginForGuest()
+            }?.let {
+                _loginForGuestResult.value = it
             }
         }
     }
-}
 
-fun registerSubmit(
-    inviteCode: String,
-    userName: String,
-    loginPassword: String,
-    confirmPassword: String,
-    fullName: String,
-    fundPwd: String,
-    qq: String,
-    phone: String,
-    email: String,
-    postalCode: String,
-    province: String,
-    city: String,
-    address: String,
-    weChat: String,
-    zalo: String,
-    facebook: String,
-    whatsApp: String,
-    telegram: String,
-    securityPbTypeCode: String?,
-    securityPb: String,
-    smsCode: String,
-    validCode: String,
-    cbAgreeAllChecked: Boolean,
-    deviceSn: String,
-    deviceId: String,
-    birth: String?,
-    identity: String?,
-    salarySource: String?,
-    bettingShop: String?,
-    firstFile: File? = null,
-    identityType: String? = null,
-    identityNumber: String? = null,
-    secndFile: File? = null,
-    identityTypeBackup: String? = null,
-    identityNumberBackup: String? = null
-) {
-    if (checkAllInput(
-            inviteCode,
-            userName,
-            loginPassword,
-            confirmPassword,
-            fullName,
-            fundPwd,
-            qq,
-            phone,
-            email,
-            postalCode,
-            province,
-            city,
-            address,
-            weChat,
-            zalo,
-            facebook,
-            whatsApp,
-            telegram,
-            securityPb,
-            smsCode,
-            validCode,
-            cbAgreeAllChecked,
-            birth,
-            identity,
-            identityType,
-            salarySource,
-            bettingShop,
-            firstFile,
-            secndFile,
-            identityNumber,
-            identityNumberBackup,
-            identityTypeBackup
-        )
+    fun checkAccountExist(account: String) {
+        //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
+//        val msg = LocalUtils.getString(R.string.desc_register_checking_account)
+//        _memberAccountMsg.value = Pair(msg, false)
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.indexService.checkAccountExist(account)
+            }.let {
+                _checkAccountMsg.value = it
+
+//            if (it?.success == true) {
+//                checkMemberAccount(account, it.isExist ?: false)
+//            } else {
+//                checkMemberAccount(account, false)
+//            }
+            }
+        }
+    }
+
+    fun registerSubmit(
+        inviteCode: String,
+        userName: String,
+        loginPassword: String,
+        confirmPassword: String,
+        fullName: String,
+        fundPwd: String,
+        qq: String,
+        phone: String,
+        email: String,
+        postalCode: String,
+        province: String,
+        city: String,
+        address: String,
+        weChat: String,
+        zalo: String,
+        facebook: String,
+        whatsApp: String,
+        telegram: String,
+        securityPbTypeCode: String?,
+        securityPb: String,
+        smsCode: String,
+        validCode: String,
+        cbAgreeAllChecked: Boolean,
+        deviceSn: String,
+        deviceId: String,
+        birth: String?,
+        identity: String?,
+        salarySource: String?,
+        bettingShop: String?,
+        firstFile: File? = null,
+        identityType: String? = null,
+        identityNumber: String? = null,
+        secndFile: File? = null,
+        identityTypeBackup: String? = null,
+        identityNumberBackup: String? = null
     ) {
-        register(
-            createRegisterRequest(
+        if (checkAllInput(
                 inviteCode,
                 userName,
                 loginPassword,
+                confirmPassword,
                 fullName,
                 fundPwd,
                 qq,
@@ -908,324 +885,364 @@ fun registerSubmit(
                 facebook,
                 whatsApp,
                 telegram,
-                securityPbTypeCode,
                 securityPb,
                 smsCode,
                 validCode,
-                deviceSn,
-                deviceId,
+                cbAgreeAllChecked,
                 birth,
                 identity,
-                docUrlResult.value?.imgData?.path,
-                photoUrlResult.value?.imgData?.path,
+                identityType,
                 salarySource,
                 bettingShop,
                 firstFile,
-                identityType?.toInt(),
-                identityNumber,
                 secndFile,
-                identityTypeBackup?.toInt(),
-                identityNumberBackup
+                identityNumber,
+                identityNumberBackup,
+                identityTypeBackup
             )
-        )
-    }
-}
-
-private fun createRegisterRequest(
-    inviteCode: String,
-    userName: String,
-    loginPassword: String,
-    fullName: String,
-    fundPwd: String,
-    qq: String,
-    phone: String,
-    email: String,
-    postalCode: String,
-    province: String,
-    city: String,
-    address: String,
-    weChat: String,
-    zalo: String,
-    facebook: String,
-    whatsApp: String,
-    telegram: String,
-    securityPbTypeCode: String?,
-    securityPb: String,
-    smsCode: String,
-    validCode: String,
-    deviceSn: String,
-    deviceId: String,
-    birth: String?,
-    identity: String?,
-    verifyPhoto1: String?,
-    verifyPhoto2: String?,
-    salarySource: String?,
-    bettingShop: String?,
-    identityPhoto: File?,
-    identityType: Int?,
-    identityNumber: String?,
-    identityPhotoBackup: File?,
-    identityTypeBackup: Int?,
-    identityNumberBackup: String?,
-): RegisterRequest {
-    return RegisterRequest(
-        userName = userName,
-        password = MD5Util.MD5Encode(loginPassword),
-        loginSrc = LOGIN_SRC,
-        deviceSn = deviceSn,
-        inviteCode = inviteCode,
-        loginEnvInfo = deviceId
-    ).apply {
-        if (sConfigData?.enableFullName == FLAG_OPEN)
-            this.fullName = fullName
-        if (sConfigData?.enableFundPwd == FLAG_OPEN)
-            this.fundPwd = MD5Util.MD5Encode(fundPwd)
-        if (sConfigData?.enableQQ == FLAG_OPEN)
-            this.qq = qq
-        if (sConfigData?.enablePhone == FLAG_OPEN)
-            this.phone = phone
-        if (sConfigData?.enableEmail == FLAG_OPEN)
-            this.email = email
-        if (sConfigData?.enableAddress == FLAG_OPEN) {
-            this.zipCode = postalCode
-            this.province = province
-            this.city = city
-            this.address = address
-        }
-        if (sConfigData?.enableWechat == FLAG_OPEN)
-            this.wechat = weChat
-        if (sConfigData?.enableZalo == FLAG_OPEN)
-            this.zalo = zalo
-        if (sConfigData?.enableFacebook == FLAG_OPEN)
-            this.facebook = facebook
-        if (sConfigData?.enableWhatsApp == FLAG_OPEN)
-            this.whatsapp = whatsApp
-        if (sConfigData?.enableTelegram == FLAG_OPEN)
-            this.telegram = telegram
-        if (sConfigData?.enableSafeQuestion == FLAG_OPEN) {
-            this.safeQuestionType = securityPbTypeCode
-            this.safeQuestion = securityPb
-        }
-        if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
-            this.securityCode = smsCode
-        if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
-            this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
-            this.validCode = validCode
-        }
-        if (sConfigData?.enableBirthday == FLAG_OPEN)
-            this.birthday = birth
-        if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
-            _identityPhoto.value = identityPhoto
-            this.identityType = identityType
-            this.identityNumber = identityNumber
-        }
-        if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
-            _identityPhotoBackup.value = identityPhotoBackup
-            this.identityTypeBackup = identityTypeBackup
-            this.identityNumberBackup = identityNumberBackup
-        }
-        if (sConfigData?.enableSalarySource == FLAG_OPEN)
-            this.salarySource = salarySource
-        if (sConfigData?.enableBettingStation == FLAG_OPEN)
-            this.bettingStationId = bettingShop
-    }
-}
-
-private fun register(registerRequest: RegisterRequest) {
-    viewModelScope.launch {
-        if (_identityPhoto.value != null && registerRequest.identityNumber != null) {
-            _identityPhoto.value?.let {
-                val docResponse = doNetwork(androidContext) {
-                    OneBoSportApi.uploadImgService.uploadImg(
-                        UploadVerifyDocRequest(
-                            userInfo.value?.userId.toString(),
-                            _identityPhoto.value!!
-                        ).toPars()
-                    )
-                }
-                when {
-                    docResponse == null -> _docUrlResult.postValue(
-                        UploadImgResult(
-                            -1,
-                            androidContext.getString(R.string.unknown_error),
-                            false,
-                            null
-                        )
-                    )
-                    docResponse.success -> {
-                        _docUrlResult.postValue(docResponse)
-                        registerRequest.apply {
-                            this.identityPhoto= docResponse.imgData?.path
-                        }
-                        if (_identityPhotoBackup != null && registerRequest.identityNumberBackup != null) {
-                            val photoResponse = doNetwork(androidContext) {
-                                OneBoSportApi.uploadImgService.uploadImg(
-                                    UploadVerifyDocRequest(
-                                        userInfo.value?.userId.toString(),
-                                        _identityPhotoBackup.value!!
-                                    ).toPars()
-                                )
-                            }
-                            when {
-                                photoResponse == null -> _photoUrlResult.postValue(
-                                    UploadImgResult(-1, androidContext.getString(R.string.unknown_error), false, null)
-                                )
-                                photoResponse.success -> {
-                                    _photoUrlResult.postValue(photoResponse)
-                                    registerRequest.apply {
-                                        this.identityPhotoBackup= photoResponse.imgData?.path
-                                    }
-                                    doNetwork(androidContext) {
-                                        loginRepository.register(registerRequest)
-                                    }?.let { result ->
-                                        // TODO 20220108 更新UserInfo by Hewie
-                                        userInfoRepository.getUserInfo()
-                                        _registerResult.postValue(result)
-                                        _identityPhoto.postValue(null)
-                                        _identityPhotoBackup.postValue(null)
-                                    }
-                                }
-                                else -> {
-                                    val error =
-                                        UploadImgResult(
-                                            photoResponse.code,
-                                            photoResponse.msg,
-                                            photoResponse.success,
-                                            null
-                                        )
-                                    _identityPhoto.postValue(null)
-                                    _identityPhotoBackup.postValue(null)
-                                    _photoUrlResult.postValue(error)
-                                }
-                            }
-                        } else {
-                            doNetwork(androidContext) {
-                                loginRepository.register(registerRequest)
-                            }?.let { result ->
-                                // TODO 20220108 更新UserInfo by Hewie
-                                userInfoRepository.getUserInfo()
-                                _registerResult.postValue(result)
-                                _identityPhoto.postValue(null)
-                                _identityPhotoBackup.postValue(null)
-                            }
-                        }
-                    }
-                    else -> {
-                        val error = UploadImgResult(
-                            docResponse.code, docResponse.msg, docResponse.success, null
-                        )
-                        _docUrlResult.postValue(error)
-                    }
-                }
-            }
-        } else {
-            doNetwork(androidContext) {
-                loginRepository.register(registerRequest)
-            }?.let { result ->
-                // TODO 20220108 更新UserInfo by Hewie
-                userInfoRepository.getUserInfo()
-                _registerResult.postValue(result)
-            }
-        }
-    }
-}
-
-fun bettingStationQuery() {
-    viewModelScope.launch(Dispatchers.IO) {
-        doNetwork(androidContext) {
-            bettingStationService.bettingStationsQuery()
-        }?.let { result ->
-            val bettingStationSheetList = mutableListOf<StatusSheetData>()
-            result.bettingStationList.map { bettingStation ->
-                bettingStationSheetList.add(
-                    StatusSheetData(
-                        bettingStation.id.toString(),
-                        bettingStation.name
-                    )
+        ) {
+            register(
+                createRegisterRequest(
+                    inviteCode,
+                    userName,
+                    loginPassword,
+                    fullName,
+                    fundPwd,
+                    qq,
+                    phone,
+                    email,
+                    postalCode,
+                    province,
+                    city,
+                    address,
+                    weChat,
+                    zalo,
+                    facebook,
+                    whatsApp,
+                    telegram,
+                    securityPbTypeCode,
+                    securityPb,
+                    smsCode,
+                    validCode,
+                    deviceSn,
+                    deviceId,
+                    birth,
+                    identity,
+                    docUrlResult.value?.imgData?.path,
+                    photoUrlResult.value?.imgData?.path,
+                    salarySource,
+                    bettingShop,
+                    firstFile,
+                    identityType?.toInt(),
+                    identityNumber,
+                    secndFile,
+                    identityTypeBackup?.toInt(),
+                    identityNumberBackup
                 )
-            }
-
-            withContext(Dispatchers.Main) {
-                _bettingStationList.value = bettingStationSheetList
-            }
+            )
         }
     }
-}
 
-//region 證件照片
-fun uploadVerifyPhoto(docFile: File, photoFile: File) {
-    viewModelScope.launch {
-        val docResponse = doNetwork(androidContext) {
-            OneBoSportApi.uploadImgService.uploadImg(
-                UploadVerifyDocRequest(
-                    "9999",
-                    docFile
-                ).toPars()
-            )
+    private fun createRegisterRequest(
+        inviteCode: String,
+        userName: String,
+        loginPassword: String,
+        fullName: String,
+        fundPwd: String,
+        qq: String,
+        phone: String,
+        email: String,
+        postalCode: String,
+        province: String,
+        city: String,
+        address: String,
+        weChat: String,
+        zalo: String,
+        facebook: String,
+        whatsApp: String,
+        telegram: String,
+        securityPbTypeCode: String?,
+        securityPb: String,
+        smsCode: String,
+        validCode: String,
+        deviceSn: String,
+        deviceId: String,
+        birth: String?,
+        identity: String?,
+        verifyPhoto1: String?,
+        verifyPhoto2: String?,
+        salarySource: String?,
+        bettingShop: String?,
+        identityPhoto: File?,
+        identityType: Int?,
+        identityNumber: String?,
+        identityPhotoBackup: File?,
+        identityTypeBackup: Int?,
+        identityNumberBackup: String?,
+    ): RegisterRequest {
+        return RegisterRequest(
+            userName = userName,
+            password = MD5Util.MD5Encode(loginPassword),
+            loginSrc = LOGIN_SRC,
+            deviceSn = deviceSn,
+            inviteCode = inviteCode,
+            loginEnvInfo = deviceId
+        ).apply {
+            if (sConfigData?.enableFullName == FLAG_OPEN)
+                this.fullName = fullName
+            if (sConfigData?.enableFundPwd == FLAG_OPEN)
+                this.fundPwd = MD5Util.MD5Encode(fundPwd)
+            if (sConfigData?.enableQQ == FLAG_OPEN)
+                this.qq = qq
+            if (sConfigData?.enablePhone == FLAG_OPEN)
+                this.phone = phone
+            if (sConfigData?.enableEmail == FLAG_OPEN)
+                this.email = email
+            if (sConfigData?.enableAddress == FLAG_OPEN) {
+                this.zipCode = postalCode
+                this.province = province
+                this.city = city
+                this.address = address
+            }
+            if (sConfigData?.enableWechat == FLAG_OPEN)
+                this.wechat = weChat
+            if (sConfigData?.enableZalo == FLAG_OPEN)
+                this.zalo = zalo
+            if (sConfigData?.enableFacebook == FLAG_OPEN)
+                this.facebook = facebook
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN)
+                this.whatsapp = whatsApp
+            if (sConfigData?.enableTelegram == FLAG_OPEN)
+                this.telegram = telegram
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN) {
+                this.safeQuestionType = securityPbTypeCode
+                this.safeQuestion = securityPb
+            }
+            if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
+                this.securityCode = smsCode
+            if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
+                this.validCodeIdentity = validCodeResult.value?.validCodeData?.identity
+                this.validCode = validCode
+            }
+            if (sConfigData?.enableBirthday == FLAG_OPEN)
+                this.birthday = birth
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
+                _identityPhoto.value = identityPhoto
+                this.identityType = identityType
+                this.identityNumber = identityNumber
+            }
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
+                _identityPhotoBackup.value = identityPhotoBackup
+                this.identityTypeBackup = identityTypeBackup
+                this.identityNumberBackup = identityNumberBackup
+            }
+            if (sConfigData?.enableSalarySource == FLAG_OPEN)
+                this.salarySource = salarySource
+            if (sConfigData?.enableBettingStation == FLAG_OPEN)
+                this.bettingStationId = bettingShop
         }
-        when {
-            docResponse == null -> _docUrlResult.postValue(
-                UploadImgResult(
-                    -1,
-                    LocalUtils.getString(R.string.unknown_error),
-                    false,
-                    null
-                )
+    }
 
-            )
-            //上傳第一張照片成功
-            docResponse.success -> {
-                _docUrlResult.postValue(docResponse)
-
-                val photoResponse = doNetwork(androidContext) {
-                    OneBoSportApi.uploadImgService.uploadImg(
-                        UploadVerifyDocRequest(
-                            "9999",
-                            photoFile
-                        ).toPars()
-                    )
-                }
-                when {
-                    photoResponse == null -> _photoUrlResult.postValue(
-                        UploadImgResult(
-                            -1,
-                            LocalUtils.getString(R.string.unknown_error),
-                            false,
-                            null
+    private fun register(registerRequest: RegisterRequest) {
+        viewModelScope.launch {
+            if (_identityPhoto.value != null && registerRequest.identityNumber != null) {
+                _identityPhoto.value?.let {
+                    val docResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                userInfo.value?.userId.toString(),
+                                _identityPhoto.value!!
+                            ).toPars()
                         )
-                    )
-                    //上傳第二張照片成功
-                    photoResponse.success -> {
-                        _photoUrlResult.postValue(photoResponse)
                     }
-                    else -> {
-                        val error =
+                    when {
+                        docResponse == null -> _docUrlResult.postValue(
                             UploadImgResult(
-                                photoResponse.code,
-                                photoResponse.msg,
-                                photoResponse.success,
+                                -1,
+                                androidContext.getString(R.string.unknown_error),
+                                false,
                                 null
                             )
-                        _photoUrlResult.postValue(error)
+                        )
+                        docResponse.success -> {
+                            _docUrlResult.postValue(docResponse)
+                            registerRequest.apply {
+                                this.identityPhoto = docResponse.imgData?.path
+                            }
+                            if (_identityPhotoBackup != null && registerRequest.identityNumberBackup != null) {
+                                val photoResponse = doNetwork(androidContext) {
+                                    OneBoSportApi.uploadImgService.uploadImg(
+                                        UploadVerifyDocRequest(
+                                            userInfo.value?.userId.toString(),
+                                            _identityPhotoBackup.value!!
+                                        ).toPars()
+                                    )
+                                }
+                                when {
+                                    photoResponse == null -> _photoUrlResult.postValue(
+                                        UploadImgResult(
+                                            -1,
+                                            androidContext.getString(R.string.unknown_error),
+                                            false,
+                                            null
+                                        )
+                                    )
+                                    photoResponse.success -> {
+                                        _photoUrlResult.postValue(photoResponse)
+                                        registerRequest.apply {
+                                            this.identityPhotoBackup = photoResponse.imgData?.path
+                                        }
+                                        doNetwork(androidContext) {
+                                            loginRepository.register(registerRequest)
+                                        }?.let { result ->
+                                            // TODO 20220108 更新UserInfo by Hewie
+                                            userInfoRepository.getUserInfo()
+                                            _registerResult.postValue(result)
+                                            _identityPhoto.postValue(null)
+                                            _identityPhotoBackup.postValue(null)
+                                        }
+                                    }
+                                    else -> {
+                                        val error =
+                                            UploadImgResult(
+                                                photoResponse.code,
+                                                photoResponse.msg,
+                                                photoResponse.success,
+                                                null
+                                            )
+                                        _identityPhoto.postValue(null)
+                                        _identityPhotoBackup.postValue(null)
+                                        _photoUrlResult.postValue(error)
+                                    }
+                                }
+                            } else {
+                                doNetwork(androidContext) {
+                                    loginRepository.register(registerRequest)
+                                }?.let { result ->
+                                    // TODO 20220108 更新UserInfo by Hewie
+                                    userInfoRepository.getUserInfo()
+                                    _registerResult.postValue(result)
+                                    _identityPhoto.postValue(null)
+                                    _identityPhotoBackup.postValue(null)
+                                }
+                            }
+                        }
+                        else -> {
+                            val error = UploadImgResult(
+                                docResponse.code, docResponse.msg, docResponse.success, null
+                            )
+                            _docUrlResult.postValue(error)
+                        }
                     }
                 }
-            }
-            else -> {
-                val error = UploadImgResult(
-                    docResponse.code, docResponse.msg, docResponse.success, null
-                )
-                _docUrlResult.postValue(error)
+            } else {
+                doNetwork(androidContext) {
+                    loginRepository.register(registerRequest)
+                }?.let { result ->
+                    // TODO 20220108 更新UserInfo by Hewie
+                    userInfoRepository.getUserInfo()
+                    _registerResult.postValue(result)
+                }
             }
         }
     }
-}
 
-/**
- * 清除照片上傳狀態
- */
-fun resetCredentialsStatus() {
-    _docUrlResult.value = null
-    _photoUrlResult.value = null
-}
+    fun bettingStationQuery() {
+        viewModelScope.launch(Dispatchers.IO) {
+            doNetwork(androidContext) {
+                bettingStationService.bettingStationsQuery()
+            }?.let { result ->
+                val bettingStationSheetList = mutableListOf<StatusSheetData>()
+                result.bettingStationList.map { bettingStation ->
+                    bettingStationSheetList.add(
+                        StatusSheetData(
+                            bettingStation.id.toString(),
+                            bettingStation.name
+                        )
+                    )
+                }
+
+                withContext(Dispatchers.Main) {
+                    _bettingStationList.value = bettingStationSheetList
+                }
+            }
+        }
+    }
+
+    //region 證件照片
+    fun uploadVerifyPhoto(docFile: File, photoFile: File) {
+        viewModelScope.launch {
+            val docResponse = doNetwork(androidContext) {
+                OneBoSportApi.uploadImgService.uploadImg(
+                    UploadVerifyDocRequest(
+                        "9999",
+                        docFile
+                    ).toPars()
+                )
+            }
+            when {
+                docResponse == null -> _docUrlResult.postValue(
+                    UploadImgResult(
+                        -1,
+                        LocalUtils.getString(R.string.unknown_error),
+                        false,
+                        null
+                    )
+
+                )
+                //上傳第一張照片成功
+                docResponse.success -> {
+                    _docUrlResult.postValue(docResponse)
+
+                    val photoResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                "9999",
+                                photoFile
+                            ).toPars()
+                        )
+                    }
+                    when {
+                        photoResponse == null -> _photoUrlResult.postValue(
+                            UploadImgResult(
+                                -1,
+                                LocalUtils.getString(R.string.unknown_error),
+                                false,
+                                null
+                            )
+                        )
+                        //上傳第二張照片成功
+                        photoResponse.success -> {
+                            _photoUrlResult.postValue(photoResponse)
+                        }
+                        else -> {
+                            val error =
+                                UploadImgResult(
+                                    photoResponse.code,
+                                    photoResponse.msg,
+                                    photoResponse.success,
+                                    null
+                                )
+                            _photoUrlResult.postValue(error)
+                        }
+                    }
+                }
+                else -> {
+                    val error = UploadImgResult(
+                        docResponse.code, docResponse.msg, docResponse.success, null
+                    )
+                    _docUrlResult.postValue(error)
+                }
+            }
+        }
+    }
+
+    /**
+     * 清除照片上傳狀態
+     */
+    fun resetCredentialsStatus() {
+        _docUrlResult.value = null
+        _photoUrlResult.value = null
+    }
 //endregion
 }
