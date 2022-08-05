@@ -630,6 +630,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             etIdentity.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            etIdentity.isEnabled = false
+            etIdentity.isClickable = false
+            etIdentity.hasFocus = false
+
+
+            etIdentity.setError("", false)
+
+
             endButton.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -710,12 +719,19 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             //顯示隱藏該選項
 
-
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
             sConfigData?.identityTypeList?.map { identityType ->
                 identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
             }
+
+            etIdentity2.isEnabled = false
+            etIdentity2.isClickable = false
+            etIdentity2.hasFocus = false
+
+
+            etIdentity2.setError("", false)
+
 
             //預設顯示第一項
             backupIdentityTypeSelectedData = identityTypeList.firstOrNull()
@@ -915,6 +931,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     }
                 }
             }
+
+
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
             }
