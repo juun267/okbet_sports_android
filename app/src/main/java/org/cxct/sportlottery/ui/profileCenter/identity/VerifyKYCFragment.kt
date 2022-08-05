@@ -247,8 +247,6 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
     private fun setupUploadView() {
         activity?.let { activityNotNull ->
             identity_1st.apply {
-                this.tvUploadTip.isVisible = false
-                this.tvUploadTip2.isVisible = false
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,
@@ -259,8 +257,6 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
             }
 
             identity_2nd.apply {
-                this.tvUploadTip.isVisible = false
-                this.tvUploadTip2.isVisible = false
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,
