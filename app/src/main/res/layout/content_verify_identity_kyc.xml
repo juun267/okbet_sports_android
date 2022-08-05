@@ -295,7 +295,6 @@
         android:text="@string/upload_photo_tips"
         android:textColor="@color/color_D65752"
         android:textSize="@dimen/textSize12sp"
-        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/tvUploadTip"
         app:layout_constraintTop_toBottomOf="@+id/tvUploadTip"
         app:layout_constraintBottom_toBottomOf="parent"
