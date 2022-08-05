@@ -1116,5 +1116,7 @@
     <string name="phone_">Phone：</string>
     <string name="appointment_">Appointment：</string>
     <string name="outlets_address_">Outlets Address：</string>
+    <string name="error_recharge_amount_format">The format of the amount you entered is incorrect.</string>
+    <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
 
 </resources>
