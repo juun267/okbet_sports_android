@@ -3,22 +3,17 @@ package org.cxct.sportlottery.ui.login.signUp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.text.*
 import android.text.method.HideReturnsTransformationMethod
-import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
-import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
@@ -40,7 +35,6 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
-import org.w3c.dom.Text
 import java.util.*
 
 /**
@@ -713,6 +707,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
 
         binding.btnRegister.setOnClickListener {
+            avoidFastDoubleClick()
             Log.i(">>>", "btnRegister onclicked")
             val deviceId = Settings.Secure.getString(
                 applicationContext.contentResolver, Settings.Secure.ANDROID_ID
@@ -723,6 +718,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 if (phone.isNotEmpty() && phone.substring(0, 1) == "0") {
                     phone = phone.substring(1, phone.length)
                 }
+                loading()
                 viewModel.registerSubmit(
                     eetRecommendCode.text.toString(),
                     eetMemberAccount.text.toString(),
