@@ -70,9 +70,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
@@ -630,6 +630,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             etIdentity.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            etIdentity.isEnabled = false
+            etIdentity.isClickable = false
+            etIdentity.hasFocus = false
+
+
+            etIdentity.setError("", false)
+
+
             endButton.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -710,12 +719,19 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             //顯示隱藏該選項
 
-
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
             sConfigData?.identityTypeList?.map { identityType ->
                 identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
             }
+
+            etIdentity2.isEnabled = false
+            etIdentity2.isClickable = false
+            etIdentity2.hasFocus = false
+
+
+            etIdentity2.setError("", false)
+
 
             //預設顯示第一項
             backupIdentityTypeSelectedData = identityTypeList.firstOrNull()
@@ -915,6 +931,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     }
                 }
             }
+
+
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
             }
@@ -1387,12 +1405,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             RegisterSuccessDialog(this).apply {
                 setNegativeClickListener {
                     dismiss()
-                    startActivity(
-                        Intent(
-                            this@RegisterOkActivity,
-                            MoneyRechargeActivity::class.java
-                        )
-                    )
+                    //KYC注册的情况下，要跳主页并且显示验证弹窗
+                    GamePublicityActivity.reStart(this@RegisterOkActivity, true)
+//                    startActivity(
+//                        Intent(
+//                            this@RegisterOkActivity,
+//                            MoneyRechargeActivity::class.java
+//                        )
+//                    )
                     finish()
                 }
             }.show(supportFragmentManager, null)

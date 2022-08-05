@@ -49,13 +49,18 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         const val PUBLICITY_MATCH_ID = "publicityMatchId"
         const val PUBLICITY_MATCH_TYPE = "publicityMatchType"
         const val PUBLICITY_MATCH_LIST = "publicityMatchList"
+        const val SHOW_KEY_VERIFY = "showKYCVerify"
 
-        fun reStart(context: Context) {
+        fun reStart(context: Context, showKYCVerify: Boolean = false) {
             val intent = Intent(context, GamePublicityActivity::class.java)
+            intent.putExtra(SHOW_KEY_VERIFY, showKYCVerify)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
             if (context is Activity) {
-                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+                context.overridePendingTransition(
+                    R.anim.push_right_to_left_enter,
+                    R.anim.push_right_to_left_exit
+                )
             }
         }
     }
@@ -75,6 +80,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
 //        if (sConfigData?.thirdOpen != FLAG_OPEN)
         MultiLanguagesApplication.showAgeVerifyDialog(this)
+        if (intent.getBooleanExtra(SHOW_KEY_VERIFY, false)) {
+            MultiLanguagesApplication.showKYCVerifyDialog(this)
+        }
     }
 
     override fun onAttachedToWindow() {
