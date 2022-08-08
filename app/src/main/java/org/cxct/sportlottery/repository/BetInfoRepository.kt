@@ -397,6 +397,12 @@ class BetInfoRepository(val androidContext: Context) {
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
+
+            var minBet = betInfo?.minBetMoney ?: 0
+            val minBetMoney = betInfo?.minBetMoney ?: 0
+            val minCpBetMoney = betInfo?.minCpBetMoney ?: 0
+            val minParlayBetMoney = betInfo?.maxParlayBetMoney ?: 0
+
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
                 maxBet = calculateComboMaxBet(it.value, betInfo?.maxParlayBetMoney)
@@ -409,6 +415,12 @@ class BetInfoRepository(val androidContext: Context) {
                 } ?: 0
 
                 maxBet = matchTypeMaxBetMoney
+
+                minBet = when {
+                    matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
+                    matchType == MatchType.OUTRIGHT -> minCpBetMoney
+                    else -> minBetMoney
+                } ?: 0
 
                 //[Martin]為馬來盤＆印度計算投注上限
                 if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
@@ -427,7 +439,7 @@ class BetInfoRepository(val androidContext: Context) {
             ParlayOdd(
                 parlayType = it.key,
                 max = maxBet,
-                min = it.value.min.toInt(),
+                min = minBet,
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),

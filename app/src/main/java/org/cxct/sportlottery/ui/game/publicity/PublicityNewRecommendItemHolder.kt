@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
 import android.view.View
-import com.archit.calendardaterangepicker.manager.LanguageManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -18,10 +17,10 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ViewHolderUtils
 import org.cxct.sportlottery.util.needCountStatus
-import timber.log.Timber
 
 //TODO 棒球比分狀態顯示
 class PublicityNewRecommendItemHolder(
@@ -85,7 +84,6 @@ class PublicityNewRecommendItemHolder(
             }
         } else
             return
-
         //玩法名稱
         val playCateName =
             data.playCateNameMap?.get(oddPlayCateCode)?.get(LanguageManager.getSelectLanguage(binding.root.context).key)
@@ -158,7 +156,6 @@ class PublicityNewRecommendItemHolder(
         with(binding) {
             //聯賽名稱
             tvLeagueName.text = data.leagueName
-
             //region 隊伍名稱
             tvHomeName.text = data.homeName
             tvAwayName.text = data.awayName

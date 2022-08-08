@@ -598,7 +598,7 @@ class WithdrawViewModel(
                 LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
             withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDouble().equals(0) -> {
-                LocalUtils.getString(R.string.error_recharge_amount_format)
+                LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
             VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,
