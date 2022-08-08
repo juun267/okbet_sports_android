@@ -87,12 +87,12 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
             when (value) {
                 LanguageManager.Language.EN.key -> binding.llLanguageList.addView(binding.llEnglish)
                 LanguageManager.Language.VI.key -> binding.llLanguageList.addView(binding.llVietnam)
-                else -> binding.llLanguageList.addView(binding.llChina)
+                LanguageManager.Language.ZH.key -> binding.llLanguageList.addView(binding.llChina)
             }
             when (index) {
+                0 -> binding.llLanguageList.addView(binding.line1)
                 1 -> binding.llLanguageList.addView(binding.line2)
                 2 -> binding.llLanguageList.addView(binding.line3)
-                else -> binding.llLanguageList.addView(binding.line1)
             }
         }
 
