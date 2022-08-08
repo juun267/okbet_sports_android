@@ -173,9 +173,9 @@ abstract class BaseOddButtonViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
             }?.let { result ->
+                //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+                savedOddId = "savedOddId" //重設savedOddId
                 if (result.success) {
-                    //TODO: 如有其他地方呼叫getBetInfo，成功後也要重設savedOddId
-                    savedOddId = "savedOddId" //重設savedOddId
                     val betInfo = result.BetInfo
                     if (betItem == null) {
                         matchInfo.let {
@@ -234,6 +234,8 @@ abstract class BaseOddButtonViewModel(
                 doNetwork(androidContext) {
                     OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchOdd.matchInfo?.id.toString(), odd.id.toString()))
                 }?.let { result ->
+                    //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+                    savedOddId = "savedOddId" //重設savedOddId
                     if (result.success) {
                         val betInfo = result.BetInfo
                         matchOdd.matchInfo?.let {
@@ -259,49 +261,6 @@ abstract class BaseOddButtonViewModel(
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
-    }
-
-    fun updateMatchOddForParlay(matchOdd: MatchOddsChangeEvent) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> =
-            mutableListOf()
-        for ((_, value) in matchOdd.odds ?: mapOf()) {
-            value.odds?.forEach { odd ->
-                odd?.let { o ->
-                    newList.add(o)
-                }
-            }
-        }
-        updateBetInfoListByMatchOddChange(newList)
-    }
-
-    fun updateMatchOddForParlay(
-        betAddErrorDataList: List<BetAddErrorData>,
-        betAddError: BetAddError
-    ) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
-        betAddErrorDataList.forEach { betAddErrorData ->
-            betAddErrorData.let { data ->
-                data.status?.let { status ->
-                    val newOdd = org.cxct.sportlottery.network.odds.Odd(
-                        extInfoMap = null,
-                        id = data.id,
-                        name = null,
-                        odds = data.odds,
-                        hkOdds = data.hkOdds,
-                        producerId = data.producerId,
-                        spread = data.spread,
-                        status = status,
-                    )
-                    newList.add(newOdd)
-                }
-            }
-        }
-
-        betInfoRepository.matchOddList.value?.forEach {
-            updateItemForBetAddError(it, newList, betAddError)
-        }
-
-        updateBetInfoListByMatchOddChange(newList)
     }
 
     fun updateLockMatchOdd(matchOddsLock: MatchOddsLockEvent) {
@@ -505,23 +464,12 @@ abstract class BaseOddButtonViewModel(
             betInfoRepository.clear()
     }
 
-    fun removeBetInfoItemAndRefresh(oddId: String) {
-        removeBetInfoItem(oddId)
-        if (betInfoRepository.betInfoList.value?.peekContent()?.size != 0) {
-            getBetInfoListForParlay()
-        }
-    }
-
     fun removeClosedPlatBetInfo() {
         betInfoRepository.removeClosedPlatItem()
     }
 
     fun removeBetInfoAll() {
         betInfoRepository.clear()
-    }
-
-    private fun getBetInfoListForParlay() {
-        betInfoRepository.addInBetInfoParlay()
     }
 
     protected fun getOddState(
@@ -694,14 +642,6 @@ abstract class BaseOddButtonViewModel(
             else -> SpreadState.SAME.state
         }
 
-
-    private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.Odd>) {
-        betInfoRepository.matchOddList.value?.forEach {
-            updateItem(it, newListFromSocket)
-        }
-        getBetInfoListForParlay()
-    }
-
     private fun updateItem(
         oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
         newList: List<org.cxct.sportlottery.network.odds.Odd>
@@ -793,6 +733,26 @@ abstract class BaseOddButtonViewModel(
                 e.printStackTrace()
             }
         }
+    }
+
+    //更新投注限額
+    fun updateBetLimit() {
+        betInfoList.value?.peekContent()?.forEach { betInfoListData ->
+            viewModelScope.launch {
+                val result = doNetwork(androidContext) {
+                    OneBoSportApi.betService.getBetInfo(
+                        BetInfoRequest(
+                            betInfoListData.matchOdd.matchId,
+                            betInfoListData.matchOdd.oddsId
+                        )
+                    )
+                }
+                //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+                savedOddId = "savedOddId" //重設savedOddId
+                betInfoListData.betInfo = result?.BetInfo
+            }
+        }
+        betInfoRepository.notifyBetInfoChanged()
     }
 
     fun updateBetInfoDiscount(discount: Float, newDiscount: Float) {

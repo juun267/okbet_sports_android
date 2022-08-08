@@ -116,31 +116,6 @@ class BetInfoRepository(val androidContext: Context) {
         )
     }
 
-    @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
-    fun addInBetInfoParlay() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
-        if (betList.size == 0) {
-            return
-        }
-
-        val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
-
-        gameType?.let {
-            var betInfo: BetInfo? = null
-            val parlayMatchOddList = betList.map { betInfoListData ->
-                betInfo = betInfoListData.betInfo
-                betInfoListData.matchOdd
-            }.toMutableList()
-
-            _matchOddList.value = parlayMatchOddList
-
-            _parlayList.value = updateParlayOddOrder(
-                getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, betInfo = betInfo).toMutableList()
-            )
-        }
-    }
-
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
      */
