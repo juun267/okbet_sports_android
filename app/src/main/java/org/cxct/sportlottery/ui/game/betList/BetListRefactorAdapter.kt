@@ -1151,6 +1151,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
                 tvBalanceInsufficientMessage.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
+                    tvErrorMessage.isVisible = false //同時滿足低於最小限額和餘額不足，優先顯示餘額不足
                     balanceError = true
                     View.VISIBLE
                 } else {
@@ -1850,6 +1851,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
                 tvBalanceInsufficientMessageParlay.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
+                    tvErrorMessageParlay.isVisible = false //同時滿足低於最小限額和餘額不足，優先顯示餘額不足
                     balanceError = true
                     View.VISIBLE
                 } else {
