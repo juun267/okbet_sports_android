@@ -1750,7 +1750,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_bet_parlay.isFocusable = true
                         layoutKeyBoard.showKeyboard(
                             et_bet_parlay,
-                            position
+                            position,
+                            isParlay = true
                         )
                         onSelectedPositionListener.onSelectChange(
                             bindingAdapterPosition,

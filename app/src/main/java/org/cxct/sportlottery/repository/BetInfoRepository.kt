@@ -109,8 +109,6 @@ object BetInfoRepository {
         get() = _hasBetPlatClose
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
 
-    var maxBet: Int = 9999999
-
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
      */
@@ -363,6 +361,7 @@ object BetInfoRepository {
         )
 
         return parlayBetLimitMap.map {
+            var maxBet: Int
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
