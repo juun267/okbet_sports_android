@@ -420,6 +420,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 game_toolbar_sport_type.text = args.matchCategoryName ?: when (args.matchType) {
                     MatchType.TODAY -> getString(R.string.home_tab_today)
                     MatchType.EARLY -> getString(R.string.home_tab_early)
+                    MatchType.CS -> getString(R.string.home_tab_cs)
                     MatchType.PARLAY -> getString(R.string.home_tab_parlay)
                     MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
                     else -> ""

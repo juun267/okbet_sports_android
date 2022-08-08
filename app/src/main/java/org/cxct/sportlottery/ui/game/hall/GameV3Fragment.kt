@@ -431,6 +431,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
             MatchType.TODAY -> getString(R.string.home_tab_today)
             MatchType.EARLY -> getString(R.string.home_tab_early)
+            MatchType.CS -> getString(R.string.home_tab_cs)
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
@@ -456,8 +457,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             initMatchCategoryPagerPosition()
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
-                    game_toolbar_calendar.visibility = if (args.matchType == MatchType.EARLY) View.VISIBLE else View.GONE
-                    game_filter_type_list.visibility = if (game_toolbar_calendar.isSelected) View.VISIBLE else View.GONE
+                    game_toolbar_calendar.visibility =
+                        if (args.matchType == MatchType.EARLY || args.matchType == MatchType.CS) View.VISIBLE else View.GONE
+                    game_filter_type_list.visibility =
+                        if (game_toolbar_calendar.isSelected) View.VISIBLE else View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.VISIBLE
                     }
@@ -543,7 +546,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupToolbar() {
         when (args.matchType) {
-            MatchType.OTHER -> game_toolbar_match_type.text =
+            MatchType.CS, MatchType.OTHER -> game_toolbar_match_type.text =
                 gameToolbarMatchTypeText(args.matchType)
             else -> {
             }
@@ -578,14 +581,17 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         game_toolbar_calendar.apply {
             visibility = when (args.matchType) {
                 MatchType.EARLY -> View.VISIBLE
+                MatchType.CS -> View.VISIBLE
                 else -> View.GONE
             }
-
+            if (args.matchType == MatchType.CS) {
+                mCalendarSelected = true
+                isSelected = true
+            }
             setOnClickListener {
                 val newSelectedStatus = !isSelected
                 mCalendarSelected = newSelectedStatus
                 isSelected = newSelectedStatus
-
                 view?.game_filter_type_list?.visibility = when (game_toolbar_calendar.isSelected) {
                     true -> View.VISIBLE
                     false -> View.GONE
@@ -659,7 +665,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         game_bg_layer3?.visibility = when (args.matchType) {
-            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
+            MatchType.TODAY, MatchType.EARLY, MatchType.CS, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
     }
@@ -718,7 +724,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         game_filter_type_list.visibility =
-            if (args.matchType == MatchType.EARLY && mCalendarSelected) {
+            if ((args.matchType == MatchType.EARLY && mCalendarSelected) || args.matchType == MatchType.CS) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -729,6 +735,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = leagueAdapter
+            Log.d("hjq", "leagueAdapter")
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()
@@ -855,6 +862,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 MatchType.EARLY -> {
                     updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
+                }
+
+                MatchType.CS -> {
+                    updateSportType(it?.sportMenuData?.menu?.cs?.items ?: listOf())
                 }
 
                 MatchType.PARLAY -> {
@@ -1214,7 +1225,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
 
             game_toolbar_match_type.isVisible = !it
-            game_toolbar_calendar.isVisible = args.matchType == MatchType.EARLY && !it
+            game_toolbar_calendar.isVisible =
+                (args.matchType == MatchType.EARLY || args.matchType == MatchType.CS) && !it
             leagueAdapter.removePreloadItem()
             hideLoading()
         }
@@ -1319,7 +1331,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             mLeagueIsFiltered = leagueList.isNotEmpty()
             game_toolbar_champion.isSelected = mLeagueIsFiltered
-            sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
+            sport_type_list.visibility =
+                if (mLeagueIsFiltered || isRecommendOutright() || args.matchType == MatchType.CS) View.GONE else View.VISIBLE
         }
 
         viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) { leagueChangeEvent ->
@@ -1366,6 +1379,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
             MatchType.AT_START -> viewModel.sportMenuResult.value?.sportMenuData?.atStart?.num ?: 0 > 0
             MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
+            MatchType.CS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.cs?.num ?: 0 > 0
             MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
             MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
             MatchType.EPS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.eps?.num ?: 0 > 0
@@ -1790,6 +1804,12 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
+        if (args.matchType == MatchType.CS) {
+            ll_sport_type.visibility = View.GONE
+            return
+        } else {
+            ll_sport_type.visibility = View.VISIBLE
+        }
         gameTypeAdapter.dataSport = gameTypeList
 
         //post待view繪製完成
@@ -1845,11 +1865,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 sport_type_list?.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
                 game_toolbar_sport_type?.visibility = View.VISIBLE
                 game_toolbar_calendar?.apply {
-                    visibility = when (args.matchType) {
-                        MatchType.EARLY -> View.VISIBLE
-                        else -> View.GONE
+                    if (args.matchType == MatchType.CS) {
+                        visibility = View.VISIBLE
+                        isSelected = true
+                    } else {
+                        visibility = when (args.matchType) {
+                            MatchType.EARLY -> View.VISIBLE
+                            else -> View.GONE
+                        }
+                        isSelected = mCalendarSelected
                     }
-                    isSelected = mCalendarSelected
                 }
 
                 game_play_category?.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||

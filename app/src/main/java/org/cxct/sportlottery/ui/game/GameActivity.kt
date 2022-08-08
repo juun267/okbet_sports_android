@@ -430,6 +430,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countCS =
+                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             val countParlay =
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
@@ -465,13 +467,19 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
                 tv_number?.text = countEarly.toString()
             }
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 5)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
+                tv_number?.text = countCS.toString()
+            }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5)?.customView?.apply {
+            tabLayout.getTabAt(
+                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 6
+            )?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 6)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 7)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
                 tv_number?.text = countParlay.toString()
             }
@@ -508,9 +516,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
-        MatchType.OUTRIGHT to 4,
-        MatchType.PARLAY to 5,
-        MatchType.EPS to 6,
+        MatchType.CS to 4,
+        MatchType.OUTRIGHT to 5,
+        MatchType.PARLAY to 6,
+        MatchType.EPS to 7,
         MatchType.MAIN to 99
     )
 
@@ -555,6 +564,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             getMatchTypeTabPosition(MatchType.EARLY) -> {
                 viewModel.switchMatchType(MatchType.EARLY)
+            }
+            getMatchTypeTabPosition(MatchType.CS) -> {
+                viewModel.switchMatchType(MatchType.CS)
             }
             getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
                 /**
@@ -836,11 +848,24 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     else -> {
                         //僅有要切換的MatchType與當前選中的Tab相同時才繼續進行後續的切頁行為, 避免快速切頁導致切頁邏輯進入無窮迴圈
                         when {
-                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.IN_PLAY) ||
-                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(MatchType.AT_START) ||
-                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.TODAY) ||
-                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.EARLY) ||
-                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(MatchType.OUTRIGHT) ||
+                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.IN_PLAY
+                            ) ||
+                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.AT_START
+                            ) ||
+                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.TODAY
+                            ) ||
+                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.EARLY
+                            ) ||
+                                    it == MatchType.CS && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.CS
+                            ) ||
+                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.OUTRIGHT
+                            ) ||
                                     it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.PARLAY)
                             -> {
                                 navGameFragment(it)

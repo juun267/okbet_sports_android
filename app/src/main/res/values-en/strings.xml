@@ -130,6 +130,7 @@
     <string name="home_tab_in_play">IN-PLAY</string>
     <string name="home_tab_today">TODAY</string>
     <string name="home_tab_early">EARLY</string>
+    <string name="home_tab_cs">EARLY</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
     <string name="home_tab_at_start">SOON</string>

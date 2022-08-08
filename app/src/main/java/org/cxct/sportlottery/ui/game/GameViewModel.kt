@@ -738,6 +738,9 @@ class GameViewModel(
                         getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> {
                             MatchType.EARLY
                         }
+                        getSportCount(MatchType.CS, gameType, sportMenuResult) != 0 -> {
+                            MatchType.CS
+                        }
                         getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
                             MatchType.PARLAY
                         }
@@ -1007,6 +1010,14 @@ class GameViewModel(
                     gameTypeCode
                 )
             }
+            MatchType.CS -> {
+                val gameTypeCode =
+                    if (sportMenuResult.value?.sportMenuData?.menu?.cs?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.cs?.items?.first()?.code.toString()
+                switchSportType(
+                    matchType,
+                    gameTypeCode
+                )
+            }
             MatchType.PARLAY -> {
                 val gameTypeCode =
                     if (sportMenuResult.value?.sportMenuData?.menu?.parlay?.items.isNullOrEmpty()) GameType.FT.key else sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.first()?.code.toString()
@@ -1193,12 +1204,14 @@ class GameViewModel(
                         endTime = TimeUtil.getTodayEndTimeStamp().toString(),
                     )
                 }
-                MatchType.EARLY -> {
+                MatchType.EARLY, MatchType.CS -> {
                     getLeagueList(
                         gameType = code,
                         matchType = nowChildMatchType.postValue,
-                        startTime = reloadedTimeRange?.startTime ?: getCurrentTimeRangeParams()?.startTime ?: "",
-                        endTime = reloadedTimeRange?.endTime ?: getCurrentTimeRangeParams()?.endTime,
+                        startTime = reloadedTimeRange?.startTime
+                            ?: getCurrentTimeRangeParams()?.startTime ?: "",
+                        endTime = reloadedTimeRange?.endTime
+                            ?: getCurrentTimeRangeParams()?.endTime,
                         isIncrement = isIncrement
                     )
                 }
@@ -1910,7 +1923,7 @@ class GameViewModel(
                 tempDatePosition = 0 //切換賽盤清除記憶
                 listOf(Date("", getTodayTimeRangeParams()))
             }
-            MatchType.EARLY -> {
+            MatchType.EARLY, MatchType.CS -> {
                 getDateRowEarly()
             }
             MatchType.PARLAY -> {
@@ -2219,6 +2232,9 @@ class GameViewModel(
             MatchType.EARLY -> {
                 sportMenuRes?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             }
+            MatchType.CS -> {
+                sportMenuRes?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
+            }
             MatchType.PARLAY -> {
                 sportMenuRes?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             }
@@ -2260,6 +2276,10 @@ class GameViewModel(
                 sportMenuRes?.sportMenuData?.menu?.early?.items?.find { it.code == gameType.key }?.num
                     ?: 0
             }
+            MatchType.CS -> {
+                sportMenuRes?.sportMenuData?.menu?.cs?.items?.find { it.code == gameType.key }?.num
+                    ?: 0
+            }
             MatchType.PARLAY -> {
                 sportMenuRes?.sportMenuData?.menu?.parlay?.items?.find { it.code == gameType.key }?.num
                     ?: 0
@@ -2292,6 +2312,9 @@ class GameViewModel(
         MatchType.EARLY -> {
             sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }
         }
+        MatchType.CS -> {
+            sportMenuResult.value?.sportMenuData?.menu?.cs?.items?.find { it.isSelected }
+        }
         MatchType.PARLAY -> {
             sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }
         }
@@ -2322,6 +2345,9 @@ class GameViewModel(
         }
         MatchType.EARLY -> {
             sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
+        }
+        MatchType.CS -> {
+            sportMenuResult.value?.sportMenuData?.menu?.cs?.items?.find { it.isSelected }?.code
         }
         MatchType.PARLAY -> {
             sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
@@ -2411,6 +2437,16 @@ class GameViewModel(
                     }
                 }
             }
+            MatchType.CS -> this.menu.cs.items.map { sport ->
+                sport.isSelected = when {
+                    (gameTypeCode != null && sport.num > 0) -> {
+                        sport.code == gameTypeCode
+                    }
+                    else -> {
+                        this.menu.cs.items.indexOf(sport) == 0
+                    }
+                }
+            }
             MatchType.PARLAY -> this.menu.parlay.items.map { sport ->
                 sport.isSelected = when {
                     (gameTypeCode != null && sport.num > 0) -> {
@@ -2469,6 +2505,9 @@ class GameViewModel(
 
             //早盤
             setupMatchTypeSelectState(MatchType.EARLY, menuData.menu.early)
+
+            //早盤
+            setupMatchTypeSelectState(MatchType.CS, menuData.menu.cs)
 
             //串關
             setupMatchTypeSelectState(MatchType.PARLAY, menuData.menu.parlay)
@@ -2850,7 +2889,7 @@ class GameViewModel(
 
     //region 宣傳頁推薦賽事資料處理
     /**
-     * 設置賽事類型參數(滾球、即將、今日、早盤)
+     * 設置賽事類型參數(滾球、即將、今日、早盤,波胆)
      */
     private fun Recommend.setupMatchType() {
         matchType = when (status) {
@@ -3032,6 +3071,9 @@ class GameViewModel(
                             getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> {
                                 MatchType.EARLY
                             }
+                            getSportCount(MatchType.CS, gameType, sportMenuResult) != 0 -> {
+                                MatchType.CS
+                            }
                             getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
                                 MatchType.PARLAY
                             }
@@ -3147,6 +3189,16 @@ class GameViewModel(
             (sportMenuData?.menu?.early?.num ?: 0) > 0 -> {
                 sportMenuData?.menu?.early?.items?.firstOrNull { it.num > 0 }?.code?.let {
                     Pair(MatchType.EARLY, it)
+                }
+            }
+            (sportMenuData?.menu?.early?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.early?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.EARLY, it)
+                }
+            }
+            (sportMenuData?.menu?.cs?.num ?: 0) > 0 -> {
+                sportMenuData?.menu?.early?.items?.firstOrNull { it.num > 0 }?.code?.let {
+                    Pair(MatchType.CS, it)
                 }
             }
             (sportMenuData?.menu?.parlay?.num ?: 0) > 0 -> {
@@ -3342,6 +3394,7 @@ class GameViewModel(
 
         if (_curMatchType.value == MatchType.TODAY ||
             _curMatchType.value == MatchType.EARLY ||
+            _curMatchType.value == MatchType.CS ||
             _curMatchType.value == MatchType.PARLAY
         ) {
             _curChildMatchType.postValue(_curMatchType.value)  // 清除今日、早盤、串關設定預設match type
