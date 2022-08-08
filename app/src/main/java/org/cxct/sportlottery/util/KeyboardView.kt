@@ -14,6 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import timber.log.Timber
 import java.lang.reflect.Method
@@ -117,7 +119,7 @@ class KeyboardView @JvmOverloads constructor(
             hideKeyboard()
         }
         tvMax.setOnClickListener {
-            if (mIsLogin) {
+            if (isLogin) {
                 plusAll(maxBetMoney)
             } else {
                 setSnackBarNotify()
@@ -137,24 +139,26 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private lateinit var mEditText: EditText
-    private var maxBetMoney: String = "0"
+    //最大限額
+    private val maxBetMoney: String
+        get() {
+            val maxBetMoney = BetInfoRepository.maxBet
+            return TextUtil.formatInputMoney(maxBetMoney)
+        }
     private var isShow = false
 
     //是否登入
-    private var mIsLogin = false
+    private val isLogin: Boolean
+        get() = LoginRepository.isLogin.value == true
 
     //提示未登入
     private var snackBarNotify: Snackbar? = null
 
     fun showKeyboard(
         editText: EditText,
-        position: Int?,
-        maxBetMoney: Double,
-        minBetMoney: Long,
-        isLogin: Boolean
+        position: Int?
     ) {
         this.mEditText = editText
-        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
             //inputType = InputType.TYPE_NULL
@@ -165,7 +169,6 @@ class KeyboardView @JvmOverloads constructor(
         this.visibility = View.VISIBLE
         //parent?.visibility = View.VISIBLE
         isShow = true
-        mIsLogin = isLogin
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
     }
 
@@ -198,10 +201,6 @@ class KeyboardView @JvmOverloads constructor(
                 }
             }
         snackBarNotify?.show()
-    }
-
-    fun setMaxBetMoney(maxBetMoney: Double) {
-        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
     }
 
     private fun disableKeyboard() {
