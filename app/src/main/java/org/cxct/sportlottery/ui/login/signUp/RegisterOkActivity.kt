@@ -908,7 +908,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 checkRegisterListener { viewModel.checkMemberAccount(it) }
             }
             eetLoginPassword.apply {
-                checkRegisterListener { viewModel.checkLoginPassword(it) }
+                checkRegisterListener { viewModel.checkLoginPassword(it, confirmPassword = eetConfirmPassword.text.toString()) }
             }
             eetConfirmPassword.apply {
                 checkRegisterListener {
