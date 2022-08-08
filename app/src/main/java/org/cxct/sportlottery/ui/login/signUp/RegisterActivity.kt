@@ -623,7 +623,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkAccountExist(it) }
             }
             eetLoginPassword.apply {
-                checkRegisterListener { viewModel.checkLoginPassword(it) }
+                checkRegisterListener { viewModel.checkLoginPassword(it, confirmPassword = eet_confirm_password.text.toString()) }
             }
             eetConfirmPassword.apply {
                 checkRegisterListener {
