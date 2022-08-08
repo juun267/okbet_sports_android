@@ -67,6 +67,8 @@ import org.cxct.sportlottery.util.TimeUtil.getRemainDay
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
+import kotlinx.android.synthetic.main.activity_profile_center.iv_menu as iv_menu1
+import kotlinx.android.synthetic.main.view_toolbar_main.iv_notice as iv_notice1
 
 /**
  * @app_destination 個人中心
@@ -135,14 +137,11 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         updateCreditAccountUI()
     }
     override fun initToolBar() {
-        iv_logo.setImageResource(R.drawable.ic_logo)
-        iv_logo.setOnClickListener {
-            viewModel.navMainPage(ThirdGameCategory.MAIN)
-        }
 
-        iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
 
-        //頭像 當 側邊欄 開/關
+
+
+
         iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
@@ -151,23 +150,12 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
             }
         }
 
-        btn_login.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
 
-        btn_register.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
 
-        tv_odds_type.setOnClickListener {
-            ChangeOddsTypeDialog().show(supportFragmentManager, null)
-        }
 
-        iv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
-                viewModel.betInfoRepository.clear()
-            }).show(supportFragmentManager, null)
-        }
+
+
+
     }
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
@@ -192,9 +180,9 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     }
 
     private fun setupHeadButton() {
-        iv_head.setOnClickListener {
-            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
-        }
+//        iv_head.setOnClickListener {
+//            AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
+//        }
 
     }
 
@@ -473,34 +461,34 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
 
         viewModel.lockMoney.observe(this) {
-            if (it?.toInt()!! > 0) {
-                ivNotice.visibility = View.VISIBLE
-                ivNotice.setOnClickListener { view ->
-                    val depositSpannable =
-                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
-                    val daysLeftText = getString(
-                        R.string.text_security_money2,
-                        getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-                    )
-                    val remainDaySpannable = SpannableString(daysLeftText)
-                    val remainDay = getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
-                    remainDaySpannable.setSpan(
-                        ForegroundColorSpan(
-                            ContextCompat.getColor(this, R.color.color_317FFF_1053af)
-                        ),
-                        remainDayStartIndex,
-                        remainDayStartIndex + remainDay.length, 0
-                    )
-
-                    SecurityDepositDialog().apply {
-                        this.depositText = depositSpannable
-                        this.daysLeftText = remainDaySpannable
-                    }.show(supportFragmentManager, this::class.java.simpleName)
-                }
-            } else {
-                ivNotice.visibility = View.GONE
-            }
+//            if (it?.toInt()!! > 0) {
+//                ivNotice.visibility = View.VISIBLE
+//                ivNotice.setOnClickListener { view ->
+//                    val depositSpannable =
+//                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
+//                    val daysLeftText = getString(
+//                        R.string.text_security_money2,
+//                        getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+//                    )
+//                    val remainDaySpannable = SpannableString(daysLeftText)
+//                    val remainDay = getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+//                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
+//                    remainDaySpannable.setSpan(
+//                        ForegroundColorSpan(
+//                            ContextCompat.getColor(this, R.color.color_317FFF_1053af)
+//                        ),
+//                        remainDayStartIndex,
+//                        remainDayStartIndex + remainDay.length, 0
+//                    )
+//
+//                    SecurityDepositDialog().apply {
+//                        this.depositText = depositSpannable
+//                        this.daysLeftText = remainDaySpannable
+//                    }.show(supportFragmentManager, this::class.java.simpleName)
+//                }
+//            } else {
+//                ivNotice.visibility = View.GONE
+//            }
         }
 
         viewModel.withdrawSystemOperation.observe(this) {
@@ -709,14 +697,14 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
-        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
-            ivNotice.visibility = View.VISIBLE
-            ivNotice.setOnClickListener {
-                viewModel.getLockMoney()
-            }
-        } else {
-            ivNotice.visibility = View.GONE
-        }
+//        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
+//            ivNotice.visibility = View.VISIBLE
+//            ivNotice.setOnClickListener {
+//                viewModel.getLockMoney()
+//            }
+//        } else {
+//            ivNotice.visibility = View.GONE
+//        }
     }
 
     private fun uploadImg(file: File) {
@@ -874,26 +862,17 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
-            btn_login.visibility = View.GONE
-            iv_menu.visibility =View.VISIBLE
-            iv_notice.visibility =View.VISIBLE
-            btn_register.visibility = View.GONE
-            toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.GONE
-            tv_odds_type.visibility = View.GONE
+
+
+
         } else {
-            btn_login.visibility = View.VISIBLE
-            btn_register.visibility = View.VISIBLE
-            toolbar_divider.visibility = View.VISIBLE
-            iv_head.visibility = View.GONE
-            tv_odds_type.visibility = View.GONE
-            iv_menu.visibility =View.GONE
-            iv_notice.visibility =View.GONE
+
+
         }
     }
 
     override fun updateOddsType(oddsType: OddsType) {
-        tv_odds_type.text = getString(oddsType.res)
+      //  tv_odds_type.text = getString(oddsType.res)
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
