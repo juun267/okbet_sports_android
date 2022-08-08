@@ -693,10 +693,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             onItemClickListener.onHideKeyBoard()
                             layoutKeyBoard.showKeyboard(
                                 et_bet,
-                                position,
-                                inputMaxMoney,
-                                itemData.parlayOdds?.min?.toLong() ?: 0,
-                                mUserLogin
+                                position
                             )
                             onSelectedPositionListener.onSelectChange(
                                 bindingAdapterPosition,
@@ -714,10 +711,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     itemData.isInputBet = true
                     layoutKeyBoard.showKeyboard(
                         et_bet,
-                        position,
-                        inputMaxMoney,
-                        itemData.parlayOdds?.min?.toLong() ?: 0,
-                        mUserLogin
+                        position
                     )
                 }
                 et_bet.setOnFocusChangeListener { _, hasFocus ->
@@ -725,7 +719,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     itemData.isInputBet = hasFocus
                     if (hasFocus) {
                         et_bet.setSelection(et_bet.text.length)
-                        layoutKeyBoard.setMaxBetMoney(inputMaxMoney)
                     }
                     setEtBackground(itemData)
                 }
@@ -739,10 +732,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             onItemClickListener.onHideKeyBoard()
                             layoutKeyBoard.showKeyboard(
                                 et_win,
-                                position,
-                                inputWinMaxMoney,
-                                itemData.parlayOdds?.min?.toLong() ?: 0,
-                                mUserLogin
+                                position
                             )
                             onSelectedPositionListener.onSelectChange(
                                 bindingAdapterPosition,
@@ -758,7 +748,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     itemData.isInputWin = hasFocus
                     if (hasFocus) {
                         et_win.setSelection(et_win.text.length)
-                        layoutKeyBoard.setMaxBetMoney(inputWinMaxMoney)
                     }
                     setEtBackground(itemData)
                 }
@@ -1440,23 +1429,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_bet_single.isSelected =
                     mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
 
-                if (et_bet_single.isFocusable) layoutKeyBoard.setMaxBetMoney(
-                    getMaxOrMinAmount(
-                        isGetMax = true,
-                        betList
-                    )
-                )
-
                 et_bet_single.setOnTouchListener { view, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
                         et_bet_single.isFocusable = true
                         onItemClickListener.onHideKeyBoard()
                         layoutKeyBoard.showKeyboard(
                             et_bet_single,
-                            position,
-                            getMaxOrMinAmount(isGetMax = true, betList),
-                            getMaxOrMinAmount(isGetMax = false, betList).toLong(),
-                            mUserLogin
+                            position
                         )
                         //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
                         onSelectedPositionListener.onSelectChange(
@@ -1715,10 +1694,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 checkMinimumLimit(data)
 
-                if (et_bet_parlay.isFocusable) {
-                    layoutKeyBoard?.setMaxBetMoney(inputMaxMoney)
-                }
-
                 et_bet_parlay.apply {
                     /* set listener */
                     val tw: TextWatcher?
@@ -1775,10 +1750,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_bet_parlay.isFocusable = true
                         layoutKeyBoard.showKeyboard(
                             et_bet_parlay,
-                            position,
-                            inputMaxMoney,
-                            data.min.toLong(),
-                            mUserLogin
+                            position
                         )
                         onSelectedPositionListener.onSelectChange(
                             bindingAdapterPosition,

@@ -143,12 +143,12 @@ class MultiLanguagesApplication : Application() {
 
     private val repoModule = module {
         single { UserInfoRepository }
-        single { LoginRepository(get()) }
+        single { LoginRepository }
         single { SportMenuRepository }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
         single { MoneyRepository }
-        single { BetInfoRepository(get()) }
+        single { BetInfoRepository }
         single { AvatarRepository(get()) }
         single { FeedbackRepository() }
         single { HostRepository(get()) }

@@ -42,9 +42,9 @@ const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 
 
-class LoginRepository(private val androidContext: Context) {
+object LoginRepository {
     private val sharedPref: SharedPreferences by lazy {
-        androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+        MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
     val isLogin: LiveData<Boolean>

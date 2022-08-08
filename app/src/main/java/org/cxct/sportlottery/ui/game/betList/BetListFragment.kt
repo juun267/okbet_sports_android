@@ -92,6 +92,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var isMultiBet = false //是否為多筆注單
 
+    private var needUpdateBetLimit = false //是否需要更新投注限額
+
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
@@ -222,6 +224,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnEvent() {
         binding.btnBet.apply {
             tv_login.setOnClickListener {
+                needUpdateBetLimit = true
                 MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
@@ -668,6 +671,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupBetButtonType(it)
             updateCommonToolbarLoginStatus(it)
+            if (needUpdateBetLimit) {
+                viewModel.updateBetLimit()
+                needUpdateBetLimit = false
+            }
             betListRefactorAdapter?.userLogin = it
             betParlayListRefactorAdapter?.userLogin = it
         }

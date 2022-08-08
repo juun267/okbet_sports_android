@@ -45,7 +45,7 @@ import kotlin.math.abs
 const val BET_INFO_MAX_COUNT = 10
 
 
-class BetInfoRepository(val androidContext: Context) {
+object BetInfoRepository {
 
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
@@ -109,37 +109,7 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _hasBetPlatClose
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
 
-    private val gameFastBetOpenedSharedPreferences by lazy {
-        androidContext.getSharedPreferences(
-            GameViewModel.GameFastBetOpenedSP,
-            Context.MODE_PRIVATE
-        )
-    }
-
-    @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
-    fun addInBetInfoParlay() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
-        if (betList.size == 0) {
-            return
-        }
-
-        val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
-
-        gameType?.let {
-            var betInfo: BetInfo? = null
-            val parlayMatchOddList = betList.map { betInfoListData ->
-                betInfo = betInfoListData.betInfo
-                betInfoListData.matchOdd
-            }.toMutableList()
-
-            _matchOddList.value = parlayMatchOddList
-
-            _parlayList.value = updateParlayOddOrder(
-                getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, betInfo = betInfo).toMutableList()
-            )
-        }
-    }
+    var maxBet: Int = 9999999
 
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
@@ -393,7 +363,6 @@ class BetInfoRepository(val androidContext: Context) {
         )
 
         return parlayBetLimitMap.map {
-            var maxBet = betInfo?.maxBetMoney ?: 9999999
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
