@@ -139,10 +139,18 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private lateinit var mEditText: EditText
+    private var mPosition: Int? = 0
     //最大限額
     private val maxBetMoney: String
         get() {
-            val maxBetMoney = BetInfoRepository.maxBet
+            val maxBetMoney = mPosition?.let {
+                val betInfoList = BetInfoRepository.betInfoList.value?.peekContent()
+                if (it == (betInfoList?.size ?: 0)) {
+                    betInfoList?.first()?.parlayOdds?.max //多投單注
+                } else {
+                    betInfoList?.get(it)?.parlayOdds?.max
+                }
+            } ?: 9999999
             return TextUtil.formatInputMoney(maxBetMoney)
         }
     private var isShow = false
@@ -159,6 +167,7 @@ class KeyboardView @JvmOverloads constructor(
         position: Int?
     ) {
         this.mEditText = editText
+        this.mPosition = position
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
             //inputType = InputType.TYPE_NULL
