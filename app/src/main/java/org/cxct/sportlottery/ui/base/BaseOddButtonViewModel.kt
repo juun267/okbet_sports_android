@@ -169,15 +169,15 @@ abstract class BaseOddButtonViewModel(
             currentOddsType = OddsType.EU
         }
 
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
-            }?.let { result ->
-                //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
-                savedOddId = "savedOddId" //重設savedOddId
-                if (result.success) {
-                    val betInfo = result.BetInfo
-                    if (betItem == null) {
+        if (betItem == null) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id, odd.id.toString()))
+                }?.let { result ->
+                    //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
+                    savedOddId = "savedOddId" //重設savedOddId
+                    if (result.success) {
+                        val betInfo = result.BetInfo
                         matchInfo.let {
                             betInfoRepository.addInBetInfo(
                                 matchType,
@@ -195,11 +195,11 @@ abstract class BaseOddButtonViewModel(
                                 betInfo = betInfo
                             )
                         }
-                    } else {
-                        odd.id?.let { removeBetInfoItem(it) }
                     }
                 }
             }
+        } else {
+            odd.id?.let { removeBetInfoItem(it) }
         }
     }
 
@@ -456,6 +456,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun removeBetInfoItem(oddId: String?) {
+        savedOddId = "savedOddId" //重設savedOddId
         betInfoRepository.removeItem(oddId)
     }
 
