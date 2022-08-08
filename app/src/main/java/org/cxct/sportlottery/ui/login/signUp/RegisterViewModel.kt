@@ -241,7 +241,7 @@ class RegisterViewModel(
         focusChangeCheckAllInputComplete(1)
     }
 
-    fun checkLoginPassword(password: String?) {
+    fun checkLoginPassword(password: String?, confirmPassword: String? = null) {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
@@ -249,6 +249,10 @@ class RegisterViewModel(
             !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_register_password)
             else -> null
         }
+
+        if(confirmPassword?.isNotEmpty() == true)
+            checkConfirmPassword(password, confirmPassword)
+
         _loginPasswordMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(1)
     }

@@ -23,6 +23,11 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
+import kotlinx.android.synthetic.main.fragment_bet_station.btn_info
+import kotlinx.android.synthetic.main.fragment_bet_station.ll_commission
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_balance
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_commission
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_detail
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
@@ -171,7 +176,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 lin_station.visibility = View.GONE
                 lin_empty.visibility = View.VISIBLE
             } else {
-                lin_station_detail.visibility = View.VISIBLE
+                lin_station.visibility = View.VISIBLE
                 lin_empty.visibility = View.GONE
                 tv_station_name.text = it.name
                 tv_station_address.text = it.addr
@@ -360,7 +365,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         viewModel.needCheck.observe(this.viewLifecycleOwner) {
             ll_commission.visibility = if (it) View.VISIBLE else View.GONE
             tv_commission_title.visibility = if (it) View.VISIBLE else View.GONE
-            rv_station.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
@@ -385,6 +389,11 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 )
             }
         }
+
+        //提款手續費提示
+        viewModel.withdrawRateHint.observe(this.viewLifecycleOwner, Observer {
+            tv_withdraw_rate.text = it
+        })
 
         viewModel.queryArea()
 

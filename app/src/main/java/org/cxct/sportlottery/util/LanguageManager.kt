@@ -3,7 +3,6 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.util.Log
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -11,7 +10,17 @@ import java.util.*
 
 object LanguageManager {
 
-    enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi") }
+    enum class Language(val key: String) {
+        ZH("zh"),
+        ZHT("zht"),
+        EN("en"),
+        VI("vi"),
+//        TH("th"),
+//        IN("in"),
+//        MY("my"),
+//        KN("kn"),
+//        JP("jp"),
+    }
 
     /**
      * 获取系统的locale
