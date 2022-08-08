@@ -265,7 +265,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             if (loginResult.code == SELF_LIMIT) {
                 showSelfLimitFrozeErrorDialog(loginResult.msg)
             } else {
-                showErrorDialog(loginResult.msg)
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    loginResult.msg
+                ) {}
             }
         }
     }
