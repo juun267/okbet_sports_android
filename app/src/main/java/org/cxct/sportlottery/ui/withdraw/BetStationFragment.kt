@@ -171,7 +171,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 lin_station.visibility = View.GONE
                 lin_empty.visibility = View.VISIBLE
             } else {
-                lin_station_detail.visibility = View.VISIBLE
+                lin_station.visibility = View.VISIBLE
                 lin_empty.visibility = View.GONE
                 tv_station_name.text = it.name
                 tv_station_address.text = it.addr
@@ -360,7 +360,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         viewModel.needCheck.observe(this.viewLifecycleOwner) {
             ll_commission.visibility = if (it) View.VISIBLE else View.GONE
             tv_commission_title.visibility = if (it) View.VISIBLE else View.GONE
-            rv_station.visibility = if (it) View.VISIBLE else View.GONE
         }
 
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
