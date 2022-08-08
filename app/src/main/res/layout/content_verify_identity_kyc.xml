@@ -158,7 +158,7 @@
             android:background="@null"
             android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:letterSpacing="0.05"
-            android:textColor="@color/color_0760D4"
+            android:textColor="@color/color_317FFF_0760D4"
             android:textColorHint="@color/color_cccccc"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"

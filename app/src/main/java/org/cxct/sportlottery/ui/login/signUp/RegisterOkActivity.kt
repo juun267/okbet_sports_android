@@ -70,9 +70,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
@@ -97,11 +97,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private var bettingShopSelectedData: StatusSheetData? = null
     private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
     private var backupIdentityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
+    private var backupIdentityTypeSelectedData2: StatusSheetData? = null //當前證件類型選中
     private var securityPbTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
     private var isUploaded = false
     private var page = 1;
+
+    private var etIdentityTypeName: String = "";
+    private var etIdentityTypeName2: String = "";
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -142,10 +146,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         setupBettingShop()
         setPage()
         setupBackButton()
-
-
-
-
         setupAgreement()
         setupRegisterButton()
         setupGoToLoginButton()
@@ -293,6 +293,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 et_member_account.visibility = View.VISIBLE
                 et_login_password.visibility = View.VISIBLE
                 et_confirm_password.visibility = View.VISIBLE
+
             }
             2 -> {
                 btn_register.text = getString(R.string.next_step)
@@ -334,21 +335,16 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
 
-
                 setupFullName()
                 setupWithdrawalPassword()
                 setupPhone()
                 setupBirthday()
-
-
                 setupSmsValidCode()
-
-
-
                 setupRegisterIdentity()
                 setupSalarySource()
-                setupIdentityType()
-                setupIdentityType2()
+
+                setupIdentityType(null)
+                setupIdentityType2(null)
             }
             else -> {
                 btn_register.text = getString(R.string.btn_register)
@@ -356,7 +352,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
                 setupMail()
                 setupAddress()
-
                 setupValidCode()
                 setupQQ()
                 setupWeChat()
@@ -392,8 +387,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
                 if (bettingStationVisibility) {
                     etBettingShop.visibility = View.VISIBLE
-                    //查詢投注站列表
-//                        viewModel.bettingStationQuery()
                 } else {
                     etBettingShop.visibility = View.GONE
                 }
@@ -630,6 +623,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             etIdentity.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
+
+            etIdentity.isEnabled = false
+            etIdentity.isClickable = false
+            etIdentity.hasFocus = false
+
+
+            etIdentity.setError("", false)
+
+
             endButton.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -684,6 +686,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     itemSelectedListener = {
                         salarySourceSelectedData = it
                         eetSalary.setText(it?.showName)
+
                     },
                     popupWindowDismissListener = {
                         //旋轉箭頭
@@ -706,37 +709,58 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
 
-    private fun setupIdentityType2() {
+    private fun setupIdentityType2(statusSheetData: StatusSheetData?) {
         with(binding) {
             //顯示隱藏該選項
 
-
             //根據config配置薪資來源選項
-            val identityTypeList = mutableListOf<StatusSheetData>()
+            val identityTypeList2 = mutableListOf<StatusSheetData>()
             sConfigData?.identityTypeList?.map { identityType ->
-                identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
+                identityTypeList2.add(
+                    StatusSheetData(
+                        identityType.id.toString(),
+                        identityType.name
+                    )
+                )
             }
 
-            //預設顯示第一項
-            backupIdentityTypeSelectedData = identityTypeList.firstOrNull()
-            eetIdentityType2.setText(identityTypeList.firstOrNull()?.showName)
-            //設置預設文字後會變成選中狀態, 需清除focus
-            etIdentityType2.hasFocus = false
-            viewModel.checkIdentityBackupType(eetIdentityType2.text.toString())
+            etIdentity2.isEnabled = false
+            etIdentity2.isClickable = false
+            etIdentity2.hasFocus = false
 
+
+            etIdentity2.setError("", false)
+
+            if (statusSheetData == null) {
+                identityTypeList2.removeAt(0)
+
+                //預設顯示第一項
+                backupIdentityTypeSelectedData2 = identityTypeList2[1]
+                eetIdentityType2.setText(backupIdentityTypeSelectedData2?.showName)
+                //設置預設文字後會變成選中狀態, 需清除focus
+                etIdentityType2.hasFocus = false
+                viewModel.checkIdentityBackupType(eetIdentityType2.text.toString())
+            } else {
+                identityTypeList2.remove(statusSheetData)
+            }
+
+
+            etIdentityTypeName = identityTypeSelectedData?.showName.toString()
             //配置點擊展開選項選單
             etIdentityType2.post {
                 identityTypeSpinner2.setSpinnerView(
                     eetIdentityType2,
                     etIdentityType2,
-                    identityTypeList,
+                    identityTypeList2,
                     touchListener = {
                         //旋轉箭頭
                         etIdentityType2.endIconImageButton.rotation = 180F
                     },
                     itemSelectedListener = {
-                        backupIdentityTypeSelectedData = it
+                        backupIdentityTypeSelectedData2 = it
+                        etIdentityTypeName2 = it?.showName.toString()
                         eetIdentityType2.setText(it?.showName)
+                        setupIdentityType(it)
                     },
                     popupWindowDismissListener = {
                         //旋轉箭頭
@@ -751,31 +775,37 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                  */
                 eetIdentityType2.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                     if (hasFocus) {
-                        identityTypeSpinner.performClick()
+                        identityTypeSpinner2.performClick()
                     }
                 }
             }
         }
     }
 
-    private fun setupIdentityType() {
+    private fun setupIdentityType(statusSheetData: StatusSheetData?) {
         with(binding) {
             //顯示隱藏該選項
-            etIdentityType.visibility =
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
+//            etIdentityType.visibility =
+//                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
             sConfigData?.identityTypeList?.map { identityType ->
                 identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
             }
+            if (statusSheetData == null) {
+                identityTypeList.removeAt(1)
+                //預設顯示第一項
+                identityTypeSelectedData = identityTypeList.firstOrNull()
+                eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
 
-            //預設顯示第一項
-            identityTypeSelectedData = identityTypeList.firstOrNull()
-            eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
-            //設置預設文字後會變成選中狀態, 需清除focus
-            etIdentityType.hasFocus = false
-            viewModel.checkIdentityType(eetIdentityType.text.toString())
+                //設置預設文字後會變成選中狀態, 需清除focus
+                etIdentityType.hasFocus = false
+                viewModel.checkIdentityType(eetIdentityType.text.toString())
+            } else {
+                identityTypeList.remove(statusSheetData)
+            }
+
 
             //配置點擊展開選項選單
             etIdentityType.post {
@@ -789,7 +819,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     },
                     itemSelectedListener = {
                         identityTypeSelectedData = it
+                        etIdentityTypeName = it?.showName.toString()
                         eetIdentityType.setText(it?.showName)
+                        setupIdentityType2(it)
+
                     },
                     popupWindowDismissListener = {
                         //旋轉箭頭
@@ -915,6 +948,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     }
                 }
             }
+
+
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
             }
@@ -1387,12 +1422,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             RegisterSuccessDialog(this).apply {
                 setNegativeClickListener {
                     dismiss()
-                    startActivity(
-                        Intent(
-                            this@RegisterOkActivity,
-                            MoneyRechargeActivity::class.java
-                        )
-                    )
+                    //KYC注册的情况下，要跳主页并且显示验证弹窗
+                    GamePublicityActivity.reStart(this@RegisterOkActivity, true)
+//                    startActivity(
+//                        Intent(
+//                            this@RegisterOkActivity,
+//                            MoneyRechargeActivity::class.java
+//                        )
+//                    )
                     finish()
                 }
             }.show(supportFragmentManager, null)

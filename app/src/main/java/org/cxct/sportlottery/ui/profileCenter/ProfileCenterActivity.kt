@@ -25,7 +25,10 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -50,8 +53,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
-import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -721,7 +722,7 @@ class ProfileCenterActivity :
         viewModel.isWithdrawShowVerifyDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
-                    showKYCVerifyDialog()
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
                 else
                     viewModel.checkWithdrawSystem()
             }
@@ -730,7 +731,7 @@ class ProfileCenterActivity :
         viewModel.isRechargeShowVerifyDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b)
-                    showKYCVerifyDialog()
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
                 else
                     viewModel.checkRechargeSystem()
             }
@@ -786,34 +787,6 @@ class ProfileCenterActivity :
 
     private fun updateCreditAccountUI() {
         lin_wallet_operation.setVisibilityByCreditSystem()
-    }
-
-    private fun showKYCVerifyDialog() {
-        VerifyIdentityDialog().apply {
-            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                startActivity(Intent(context, VerifyIdentityActivity::class.java))
-            }
-            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
-                val serviceUrl = sConfigData?.customerServiceUrl
-                val serviceUrl2 = sConfigData?.customerServiceUrl2
-                when {
-                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.supportFragmentManager?.let { it1 ->
-                            ServiceDialog().show(
-                                it1,
-                                null
-                            )
-                        }
-                    }
-                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                    }
-                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                    }
-                }
-            }
-        }.show(supportFragmentManager, null)
     }
 
     override fun clickMenuEvent() {
