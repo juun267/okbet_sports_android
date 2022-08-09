@@ -583,10 +583,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 MatchType.CS -> View.VISIBLE
                 else -> View.GONE
             }
-            if (args.matchType == MatchType.CS) {
-                mCalendarSelected = true
-                isSelected = true
-            }
             setOnClickListener {
                 val newSelectedStatus = !isSelected
                 mCalendarSelected = newSelectedStatus
@@ -723,7 +719,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         game_filter_type_list.visibility =
-            if ((args.matchType == MatchType.EARLY && mCalendarSelected) || args.matchType == MatchType.CS) {
+            if ((args.matchType == MatchType.EARLY || args.matchType == MatchType.CS) && mCalendarSelected) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -1863,16 +1859,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 sport_type_list?.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
                 game_toolbar_sport_type?.visibility = View.VISIBLE
                 game_toolbar_calendar?.apply {
-                    if (args.matchType == MatchType.CS) {
-                        visibility = View.VISIBLE
-                        isSelected = true
-                    } else {
                         visibility = when (args.matchType) {
-                            MatchType.EARLY -> View.VISIBLE
+                            MatchType.EARLY, MatchType.CS -> View.VISIBLE
                             else -> View.GONE
                         }
                         isSelected = mCalendarSelected
-                    }
                 }
 
                 game_play_category?.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
