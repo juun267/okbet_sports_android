@@ -14,7 +14,6 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.common.GameType.Companion.getGameTypeMenuIcon
@@ -283,10 +282,6 @@ class GameViewModel(
     private val _highlightMatchResult = MutableLiveData<Event<MatchCategoryResult>>()
     val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
         get() = _highlightMatchResult
-
-    private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
-    val betInfoResult: LiveData<Event<BetInfoResult?>>
-        get() = _betInfoResult
 
     private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>?>()
     val oddsDetailResult: LiveData<Event<OddsDetailResult?>?>

@@ -343,15 +343,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             }
         }
 
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner) {
-            val eventResult = it.getContentIfNotHandled()
-            eventResult?.success?.let { success ->
-                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
-                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
-                }
-            }
-        }
-
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             oddsDetailListAdapter?.oddsType = it
         }

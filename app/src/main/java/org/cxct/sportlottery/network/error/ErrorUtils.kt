@@ -80,7 +80,7 @@ import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
-import org.cxct.sportlottery.network.bet.info.BetInfoResult
+import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult

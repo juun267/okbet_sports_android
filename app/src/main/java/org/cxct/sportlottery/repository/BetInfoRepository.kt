@@ -369,7 +369,7 @@ object BetInfoRepository {
             var minBet = betInfo?.minBetMoney ?: 0
             val minBetMoney = betInfo?.minBetMoney ?: 0
             val minCpBetMoney = betInfo?.minCpBetMoney ?: 0
-            val minParlayBetMoney = betInfo?.maxParlayBetMoney ?: 0
+            val minParlayBetMoney = betInfo?.minParlayBetMoney ?: 0
 
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
