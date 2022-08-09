@@ -263,6 +263,18 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     tv_correct_2.text = item.playCateNameMap?.get(PlayCate.CS_1ST_SD.value)
                         .getPlayCateName(LanguageManager.getSelectLanguage(context))
                         .replace("||", "\n").updatePlayCateColor()
+
+                    tv_correct_1.setOnClickListener {
+                        tv_correct_1.setTypeface(null, Typeface.BOLD)
+                        tv_correct_2.setTypeface(null, Typeface.NORMAL)
+                        //TODO: 切換波膽 for kevin
+                    }
+
+                    tv_correct_2.setOnClickListener {
+                        tv_correct_1.setTypeface(null, Typeface.NORMAL)
+                        tv_correct_2.setTypeface(null, Typeface.BOLD)
+                        //TODO: 切換波膽上半場 for kevin
+                    }
                 } else {
                     ll_cs_text_layout.isVisible = false
                 }
