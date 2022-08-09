@@ -1119,4 +1119,7 @@
     <string name="error_recharge_amount_format">The format of the amount you entered is incorrect.</string>
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
 
+
+    <string name="deposits">DEPOSITS</string>
+    <string name="withdraw_down">WITHDRAWAL</string>
 </resources>
