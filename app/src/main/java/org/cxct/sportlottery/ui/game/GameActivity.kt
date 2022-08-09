@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import kotlinx.coroutines.DelicateCoroutinesApi
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -467,9 +468,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
                 tv_number?.text = countEarly.toString()
             }
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 5)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
-                tv_number?.text = countCS.toString()
+
+            //TODO 於ONbet分支調整此處判斷, 共用SimplifyFunction中多站點判斷方法
+            if (getString(R.string.app_name) != "ONbet") {
+                tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 5)?.customView?.apply {
+                    tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
+                    tv_number?.text = countCS.toString()
+                }
             }
 
             tabLayout.getTabAt(
@@ -523,6 +528,17 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         MatchType.MAIN to 99
     )
 
+    private val matchTypeTabPositionONbetMap = mapOf<MatchType, Int>(
+        MatchType.IN_PLAY to 0,
+        MatchType.AT_START to 1,
+        MatchType.TODAY to 2,
+        MatchType.EARLY to 3,
+        MatchType.OUTRIGHT to 4,
+        MatchType.PARLAY to 5,
+        MatchType.EPS to 6,
+        MatchType.MAIN to 99
+    )
+
     /**
      * 根據MatchTypeTabPositionMap獲取MatchType的tab position
      *
@@ -534,7 +550,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             null
         }
         else -> {
-            when (val tabPosition = matchTypeTabPositionMap[matchType]) {
+            //TODO 於ONbet分支調整此處判斷, 共用SimplifyFunction中多站點判斷方法
+            when (val tabPosition = when (getString(R.string.app_name)) {
+                "ONbet" -> matchTypeTabPositionONbetMap[matchType]
+                else -> matchTypeTabPositionMap[matchType]
+            }) {
                 null -> {
                     Timber.e("There is not tab position of $matchType")
                     null
