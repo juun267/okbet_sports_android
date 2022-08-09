@@ -1130,6 +1130,13 @@ class GameViewModel(
                         leagueChangeEvent = leagueChangeEvent,
                     )
                 }
+                MatchType.CS -> {
+                    checkOddsList(
+                        code,
+                        nowChildMatchType.postValue,
+                        leagueChangeEvent = leagueChangeEvent,
+                    )
+                }
                 MatchType.OTHER -> {
                     checkOddsList(
                         code,
@@ -1204,7 +1211,7 @@ class GameViewModel(
                         endTime = TimeUtil.getTodayEndTimeStamp().toString(),
                     )
                 }
-                MatchType.EARLY, MatchType.CS -> {
+                MatchType.EARLY -> {
                     getLeagueList(
                         gameType = code,
                         matchType = nowChildMatchType.postValue,
@@ -1213,6 +1220,13 @@ class GameViewModel(
                         endTime = reloadedTimeRange?.endTime
                             ?: getCurrentTimeRangeParams()?.endTime,
                         isIncrement = isIncrement
+                    )
+                }
+                MatchType.CS -> {
+                    getOddsList(
+                        code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams(),
                     )
                 }
                 MatchType.PARLAY -> {
@@ -1522,7 +1536,7 @@ class GameViewModel(
                 _oddsListResult.postValue(Event(null))
                 currentTimeRangeParams = timeRangeParams
             }
-            MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+            MatchType.TODAY.postValue, MatchType.CS.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                 _oddsListGameHallResult.value = Event(null)
                 currentTimeRangeParams = timeRangeParams
             }
@@ -1552,7 +1566,10 @@ class GameViewModel(
             startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
             endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
         }
-
+        val playCateMenuCode = when (matchType) {
+            MatchType.CS.postValue -> MatchType.CS.postValue
+            else -> getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+        }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -1563,7 +1580,7 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = startTime,
                         endTime = endTime,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+                        playCateMenuCode = playCateMenuCode
                     )
                 )
             }?.updateMatchType()
@@ -1571,6 +1588,9 @@ class GameViewModel(
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
+                    if (matchOdd.playCateNameMap == null) {
+                        matchOdd.playCateNameMap = leagueOdd.playCateNameMap
+                    }
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
@@ -1596,8 +1616,7 @@ class GameViewModel(
                     matchOdd.updateOddStatus()
                 }
             }
-
-            result?.oddsListData.getPlayCateNameMap()
+            result?.oddsListData.getPlayCateNameMap(matchType)
 
             when (matchType) {
                 MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
@@ -3641,12 +3660,16 @@ class GameViewModel(
     /**
      * 更新翻譯
      */
-    private fun OddsListData?.getPlayCateNameMap() {
+    private fun OddsListData?.getPlayCateNameMap(matchType: String) {
         this?.leagueOdds?.onEach { LeagueOdd ->
             LeagueOdd.matchOdds.onEach { matchOdd ->
-                matchOdd.playCateNameMap =
-                    PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)
-                        ?.get(MenuCode.MAIN.code)?.playCateNameMap
+                if (matchType == MatchType.CS.postValue) {
+                    matchOdd.playCateNameMap = LeagueOdd.playCateNameMap
+                } else {
+                    matchOdd.playCateNameMap =
+                        PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)
+                            ?.get(MenuCode.MAIN.code)?.playCateNameMap
+                }
             }
         }
     }

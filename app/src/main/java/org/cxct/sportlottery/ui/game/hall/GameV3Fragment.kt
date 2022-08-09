@@ -325,7 +325,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             getPlaySelectedCode()
         ).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
-
             leagueListener = LeagueListener {
                 if (it.unfold == FoldState.FOLD.code) {
                     Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
@@ -735,7 +734,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         game_list.apply {
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = leagueAdapter
-            Log.d("hjq", "leagueAdapter")
             addScrollWithItemVisibility(
                 onScrolling = {
                     unSubscribeChannelHallAll()

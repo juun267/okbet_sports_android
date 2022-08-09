@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
@@ -312,7 +311,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
-
         fun updateByBetInfo() {
             leagueOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
         }
@@ -357,6 +355,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = leagueOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
+                        Log.d("hjq", "222")
                         item.matchOdds
                     }.onEach {
                         it.matchInfo?.leagueName = item.league.name

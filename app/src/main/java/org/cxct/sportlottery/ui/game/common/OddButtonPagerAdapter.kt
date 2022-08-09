@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -21,12 +20,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
-import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
-import java.lang.Exception
 
 
 class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
@@ -41,7 +36,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
         if (!oddsSort.isNullOrEmpty())
             this.oddsSort = oddsSort
-
         this.playCateNameMap = playCateNameMap
         this.betPlayCateNameMap = betPlayCateNameMap
         this.getPlaySelectedCodeSelectionType = getPlaySelectedCodeSelectionType
@@ -332,7 +326,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
             oddsIndex
         }.thenBy { it })
-
         return if(oddsSort.isNullOrEmpty()) this else oddsMap
     }
 
@@ -555,7 +548,6 @@ class OddButtonPagerViewHolder private constructor(
                 .replace(": ", " ").replace("||", "\n").replace("{S}", replaceScore).replace("{H}","${matchInfo.homeName}")?.replace("{C}","${matchInfo.awayName}")
 
         odds.second?.firstOrNull()?.replaceScore?.let { playCateName.replace("{S}", it) }
-
         if (playCateName == "null" || playCateName.isEmpty()){
             playCateName = "-"
         }
@@ -565,7 +557,6 @@ class OddButtonPagerViewHolder private constructor(
         ).replace(": ", " ").replace("||", "\n")
 
         val playCateCode = odds.first ?: ""
-
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
