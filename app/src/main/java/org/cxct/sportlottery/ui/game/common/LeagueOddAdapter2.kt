@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
+import android.text.Spanned
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -256,8 +258,13 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 Timber.e("item.playCateNameMap: ${item.playCateNameMap}")
                 if (matchType == MatchType.CS) {
                     ll_cs_text_layout.isVisible = true
-                    tv_correct_1.text = item.playCateNameMap?.get(PlayCate.CS).getPlayCateName(LanguageManager.getSelectLanguage(context))
-                    tv_correct_2.text = item.playCateNameMap?.get(PlayCate.CS_1ST_SD).getPlayCateName(LanguageManager.getSelectLanguage(context))
+
+                    tv_correct_1.text = item.playCateNameMap?.get(PlayCate.CS.value)
+                        .getPlayCateName(LanguageManager.getSelectLanguage(context))
+
+                    tv_correct_2.text = item.playCateNameMap?.get(PlayCate.CS_1ST_SD.value)
+                        .getPlayCateName(LanguageManager.getSelectLanguage(context))
+                        .replace("||", "\n").updatePlayCateColor()
                 } else {
                     ll_cs_text_layout.isVisible = false
                 }
@@ -276,6 +283,27 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     this?.get(LanguageManager.Language.ZH.key).toString()
                 }
             }
+        }
+
+        private fun String.updatePlayCateColor(): Spanned {
+            val color =  if (MultiLanguagesApplication.isNightMode) "#a3a3a3"
+            else "#666666"
+
+            return Html.fromHtml(
+                when {
+                    (this.contains("\n")) -> {
+                        val strSplit = this.split("\n")
+                        "<font color=$color>${strSplit.first()}</font><br><font color=#b73a20>${
+                            strSplit.getOrNull(
+                                1
+                            )
+                        }</font>"
+                    }
+                    else -> {
+                        "<font color=$color>${this}</font>"
+                    }
+                }
+            )
         }
 
         fun updateByBetInfo(
