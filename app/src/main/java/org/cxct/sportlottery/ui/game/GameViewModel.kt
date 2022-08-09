@@ -365,6 +365,7 @@ class GameViewModel(
         MatchType.AT_START.postValue to null,
         MatchType.TODAY.postValue to null,
         MatchType.EARLY.postValue to null,
+        MatchType.CS.postValue to null,
         MatchType.OUTRIGHT.postValue to null,
         MatchType.PARLAY.postValue to null,
         MatchType.EPS.postValue to null
@@ -1566,10 +1567,8 @@ class GameViewModel(
             startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
             endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
         }
-        val playCateMenuCode = when (matchType) {
-            MatchType.CS.postValue -> MatchType.CS.postValue
-            else -> getPlayCateSelected()?.code ?: MenuCode.MAIN.code
-        }
+        val playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -3210,11 +3209,6 @@ class GameViewModel(
                     Pair(MatchType.EARLY, it)
                 }
             }
-            (sportMenuData?.menu?.early?.num ?: 0) > 0 -> {
-                sportMenuData?.menu?.early?.items?.firstOrNull { it.num > 0 }?.code?.let {
-                    Pair(MatchType.EARLY, it)
-                }
-            }
             (sportMenuData?.menu?.cs?.num ?: 0) > 0 -> {
                 sportMenuData?.menu?.early?.items?.firstOrNull { it.num > 0 }?.code?.let {
                     Pair(MatchType.CS, it)
@@ -3665,6 +3659,7 @@ class GameViewModel(
             LeagueOdd.matchOdds.onEach { matchOdd ->
                 if (matchType == MatchType.CS.postValue) {
                     matchOdd.playCateNameMap = LeagueOdd.playCateNameMap
+                    matchOdd.betPlayCateNameMap = LeagueOdd.playCateNameMap
                 } else {
                     matchOdd.playCateNameMap =
                         PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)

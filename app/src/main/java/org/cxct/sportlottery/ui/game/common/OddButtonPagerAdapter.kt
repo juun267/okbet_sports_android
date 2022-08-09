@@ -530,7 +530,6 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnAway.visibility = View.VISIBLE
             oddBtnDraw.visibility = View.VISIBLE
         }
-
         if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString()
                 .contains("EmptyData")
         ) {
@@ -540,7 +539,6 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnDraw.betStatus = BetStatus.DEACTIVATED.code
             return
         }
-
         val replaceScore = odds.second?.firstOrNull()?.replaceScore ?: ""
 
         var playCateName =
@@ -555,12 +553,10 @@ class OddButtonPagerViewHolder private constructor(
         val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(
             LanguageManager.getSelectLanguage(itemView.context)
         ).replace(": ", " ").replace("||", "\n")
-
         val playCateCode = odds.first ?: ""
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
-
             else -> playCateName.updatePlayCateColor()
         }
 
