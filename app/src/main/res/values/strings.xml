@@ -912,6 +912,10 @@
     <string name="e_address">Address</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
+    <string name="online_momopay">MoMoPay</string>
+    <string name="online_zalopay">ZaloPay</string>
+    <string name="online_viettelpay">ViettelPay</string>
+    <string name="online_recharge_card_pay">Recharge Card</string>
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="hint_e_address">(Please enter a contact address)</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s %2$s.</string>

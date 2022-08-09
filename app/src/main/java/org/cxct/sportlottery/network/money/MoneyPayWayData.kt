@@ -41,5 +41,9 @@ enum class OnlineType(val type : Int) {
     GRABPAY(205),//GrabPay
     PAYMAYA(206),//PayMaya
     PAYPAL(210),//Paypal
-    DRAGON_PAY(211)//Grangon Pay
+    DRAGON_PAY(211),//Grangon Pay
+    MOMOPAY(102),//MoMoPay
+    ZALOPAY(103),//ZaloPay
+    VIETTELPAY(107),//ViettelPay
+    RECHARGE_CARD(108)//刮刮卡充值
 }

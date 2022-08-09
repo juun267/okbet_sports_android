@@ -458,6 +458,10 @@
     <string name="online_maya">PayMaya</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
+    <string name="online_momopay">MoMoPay</string>
+    <string name="online_zalopay">ZaloPay</string>
+    <string name="online_viettelpay">ViettelPay</string>
+    <string name="online_recharge_card_pay">Recharge Card</string>
     <string name="online_alipay">在线支付宝</string>
     <string name="online_weixin">在线微信</string>
     <string name="online_qq">在线QQ</string>

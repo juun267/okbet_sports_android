@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
@@ -150,6 +151,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
             OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
+            OnlineType.MOMOPAY.type -> R.drawable.ic_momopay_type
+            OnlineType.ZALOPAY.type -> R.drawable.ic_zalopay_type
+            OnlineType.VIETTELPAY.type -> R.drawable.ic_viettelpay_type
+            OnlineType.RECHARGE_CARD.type -> R.drawable.ic_recharge_card_type
             else -> R.drawable.ic_online_pay_type
         }
         return this

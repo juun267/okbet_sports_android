@@ -48,7 +48,7 @@ object MoneyManager {
         }
         return mMoneyPayWayList
     }
-//TODO Bill 等UI補Icon
+
     fun getBankIcon(bankName: String): Int {
         return when (bankName) {
             MoneyType.BANK.code -> R.drawable.ic_bank_atm
@@ -65,7 +65,10 @@ object MoneyManager {
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
             MoneyType.PAYPAL.code -> R.drawable.ic_paypal
             MoneyType.DRAGONPAY.code -> R.drawable.ic_gragon_pay
-
+            MoneyType.MOMOPAY.code -> R.drawable.ic_momopay
+            MoneyType.ZALOPAY.code -> R.drawable.ic_zalopay
+            MoneyType.VIETTELPAY.code -> R.drawable.ic_viettelpay
+            MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
             else -> R.drawable.ic_bank_atm
         }
     }
