@@ -1378,6 +1378,32 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 }
             }
         }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { showKycVerify ->
+                if (showKycVerify) {
+                    //跳宣傳頁顯示驗證彈窗
+                    GamePublicityActivity.reStart(this@RegisterOkActivity, true)
+                } else {
+                    //檢查充值系統
+                    viewModel.checkRechargeSystem()
+                }
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(this@RegisterOkActivity, MoneyRechargeActivity::class.java))
+                    finish()
+                } else {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
+                }
+            }
+        }
     }
 
     //當所有值都有填，按下enter時，自動點擊註冊鈕
@@ -1423,18 +1449,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             RegisterSuccessDialog(this).apply {
                 setNegativeClickListener {
                     dismiss()
-                    //KYC注册的情况下，要跳主页并且显示验证弹窗
-                    if (viewModel.isRechargeShowVerifyDialog()) {
-                        GamePublicityActivity.reStart(this@RegisterOkActivity, true)
-                    } else {
-                        startActivity(
-                            Intent(
-                                this@RegisterOkActivity,
-                                MoneyRechargeActivity::class.java
-                            )
-                        )
-                        finish()
-                    }
+                    //判斷要跳宣傳頁顯示驗證彈窗，還是檢查充值系統
+                    viewModel.checkRechargeKYCVerify()
                 }
             }.show(supportFragmentManager, null)
 
