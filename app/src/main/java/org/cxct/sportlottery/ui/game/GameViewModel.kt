@@ -1615,6 +1615,7 @@ class GameViewModel(
 
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
+                    matchOdd.filterQuickPlayCate(matchType)
                 }
             }
             result?.oddsListData.getPlayCateNameMap(matchType)
@@ -3669,6 +3670,20 @@ class GameViewModel(
                         PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)
                             ?.get(MenuCode.MAIN.code)?.playCateNameMap
                 }
+            }
+        }
+    }
+
+    /**
+     * 根據當前MatchType過濾快捷玩法
+     */
+    private fun MatchOdd.filterQuickPlayCate(matchType: String) {
+        //MatchType為波膽時, 僅需顯示反波膽, 其餘不需顯示反波膽
+        quickPlayCateList = when (matchType) {
+            MatchType.CS.postValue -> {
+                quickPlayCateList?.filter { it.code == QuickPlayCate.QUICK_LCS.value }?.toMutableList()
+            } else -> {
+                quickPlayCateList?.filter { it.code != QuickPlayCate.QUICK_LCS.value }?.toMutableList()
             }
         }
     }
