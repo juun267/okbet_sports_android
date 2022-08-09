@@ -35,7 +35,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
-import timber.log.Timber
 import java.util.*
 
 class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -255,7 +254,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         private fun setupCsTextLayout(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
-                Timber.e("item.playCateNameMap: ${item.playCateNameMap}")
                 if (matchType == MatchType.CS) {
                     ll_cs_text_layout.isVisible = true
 

@@ -1542,13 +1542,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         val leagueOdds = leagueAdapter.data
                         leagueOdds.sortOddsMap()
-                        leagueOdds.updateOddsSort(
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
-                            playCategoryAdapter
-                        ) //篩選玩法
+
+                        //MatchType為波膽時, 不透過playCategory選中狀態進行更新, 於下方翻譯更新直接更新
+                        if (args.matchType != MatchType.CS) {
+                            leagueOdds.updateOddsSort(
+                                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                                playCategoryAdapter
+                            ) //篩選玩法
+                        }
 
                         //翻譯更新
                         leagueOdds.forEach { LeagueOdd ->
+                            //波膽 玩法名稱翻譯更新
+                            if (args.matchType == MatchType.CS) {
+                                LeagueOdd.playCateNameMap = PlayCateMenuFilterUtils.filterPlayCateNameMap(GameType.FT.name, PlayCate.CS.value)
+                            }
                             LeagueOdd.matchOdds.forEach { MatchOdd ->
                                 if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
                                     //馬克說betPlayCateNameMap還是由socket更新
