@@ -1567,7 +1567,12 @@ class GameViewModel(
             startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
             endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
         }
-        val playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+        var playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+//        Timber.e("getPlayCateSelected: ${getPlayCateSelected()}")
+        if (matchType == MatchType.CS.postValue) {
+            playCateMenuCode = MenuCode.CS.code
+        }
+//        Timber.e("playCateMenuCode: $playCateMenuCode")
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1587,9 +1592,6 @@ class GameViewModel(
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
-                    if (matchOdd.playCateNameMap == null) {
-                        matchOdd.playCateNameMap = leagueOdd.playCateNameMap
-                    }
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
@@ -3658,8 +3660,10 @@ class GameViewModel(
         this?.leagueOdds?.onEach { LeagueOdd ->
             LeagueOdd.matchOdds.onEach { matchOdd ->
                 if (matchType == MatchType.CS.postValue) {
-                    matchOdd.playCateNameMap = LeagueOdd.playCateNameMap
-                    matchOdd.betPlayCateNameMap = LeagueOdd.playCateNameMap
+                    matchOdd.playCateNameMap =
+                        PlayCateMenuFilterUtils.filterList?.get(GameType.FT.name)
+                            ?.get(PlayCate.CS.value)?.playCateNameMap
+//                    Timber.e("matchOdd.playCateNameMap: ${matchOdd.playCateNameMap}")
                 } else {
                     matchOdd.playCateNameMap =
                         PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)

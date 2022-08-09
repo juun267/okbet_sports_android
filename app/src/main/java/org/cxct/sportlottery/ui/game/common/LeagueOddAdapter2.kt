@@ -30,8 +30,10 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
+import timber.log.Timber
 import java.util.*
 
 class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -204,6 +206,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
             setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode)
+            setupCsTextLayout(matchType, item)
         }
 
         // region update functions
@@ -222,6 +225,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
             setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode, updateSelected = true)
+            setupCsTextLayout(matchType, item)
         }
 
         private fun setQuickListView(
@@ -244,6 +248,33 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
                 if (updateSelected)
                     itemView.quickListView?.updateQuickSelected()
+            }
+        }
+
+        private fun setupCsTextLayout(matchType: MatchType, item: MatchOdd) {
+            itemView.apply {
+                Timber.e("item.playCateNameMap: ${item.playCateNameMap}")
+                if (matchType == MatchType.CS) {
+                    ll_cs_text_layout.isVisible = true
+                    tv_correct_1.text = item.playCateNameMap?.get(PlayCate.CS).getPlayCateName(LanguageManager.getSelectLanguage(context))
+                    tv_correct_2.text = item.playCateNameMap?.get(PlayCate.CS_1ST_SD).getPlayCateName(LanguageManager.getSelectLanguage(context))
+                } else {
+                    ll_cs_text_layout.isVisible = false
+                }
+            }
+        }
+
+        private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
+            return when (selectLanguage) {
+                LanguageManager.Language.EN -> {
+                    this?.get(LanguageManager.Language.EN.key).toString()
+                }
+                LanguageManager.Language.VI -> {
+                    this?.get(LanguageManager.Language.VI.key).toString()
+                }
+                else -> {
+                    this?.get(LanguageManager.Language.ZH.key).toString()
+                }
             }
         }
 

@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="45dp" />
+        app:layout_constraintGuide_percent="0.19911504" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_game_center"
@@ -481,6 +481,36 @@
         app:layout_constraintTop_toTopOf="@+id/v_top"
         tools:itemCount="5"
         tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
+
+    <LinearLayout
+        android:id="@+id/ll_cs_text_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="4dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/guide_game_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guide_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_correct_1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/tv_correct_2"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="abc"/>
+
+    </LinearLayout>
 
     <View
         android:id="@+id/league_odd_quick_cate_divider"
