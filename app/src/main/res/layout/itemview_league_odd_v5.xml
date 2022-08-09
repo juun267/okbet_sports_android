@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.19911504" />
+        app:layout_constraintGuide_begin="45dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_game_center"
@@ -501,6 +501,8 @@
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:textColor="@color/color_909090_666666"
+            android:textStyle="bold"
             tools:text="abc" />
 
         <TextView
@@ -508,7 +510,8 @@
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            tools:text="abc"/>
+            android:textColor="@color/color_909090_666666"
+            tools:text="abc" />
 
     </LinearLayout>
 

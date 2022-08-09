@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
@@ -559,6 +560,9 @@ class OddButtonPagerViewHolder private constructor(
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
             else -> playCateName.updatePlayCateColor()
         }
+        if (playCateCode.isCSType()) {
+            oddBtnType.visibility = View.INVISIBLE
+        }
 
         oddBtnHome.apply homeButtonSettings@{
             setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
@@ -659,6 +663,9 @@ class OddButtonPagerViewHolder private constructor(
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
             else -> playCateName.updatePlayCateColor()
         }
+        if (playCateCode.isCSType()) {
+            oddBtnType.visibility = View.INVISIBLE
+        }
         oddBtnHome.apply homeButtonSettings@{
             setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
@@ -671,6 +678,10 @@ class OddButtonPagerViewHolder private constructor(
             setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
         }
+    }
+
+    fun String.isCSType(): Boolean {
+        return this.contains(PlayCate.CS.value) && !this.isCombination()
     }
 
     private fun getOddByType(
