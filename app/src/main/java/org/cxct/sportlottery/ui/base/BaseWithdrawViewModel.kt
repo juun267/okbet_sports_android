@@ -110,8 +110,12 @@ abstract class BaseWithdrawViewModel(
         _isWithdrawShowVerifyDialog.postValue(Event(userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyWithdrawOpen()))
     }
 
-    fun checkRechargeKYCVerify(){
-        _isRechargeShowVerifyDialog.postValue(Event(userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()))
+    fun isRechargeShowVerifyDialog(): Boolean {
+        return userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
+    }
+
+    fun checkRechargeKYCVerify() {
+        _isRechargeShowVerifyDialog.postValue(Event(isRechargeShowVerifyDialog()))
     }
 
     /**
