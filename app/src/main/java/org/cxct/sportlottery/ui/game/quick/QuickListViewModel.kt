@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.odds.quick.QuickListResult
@@ -32,8 +33,10 @@ class QuickListViewModel(val context: Context) : BaseViewModel2() {
                     it.quickOdds?.forEach { (_key, quickOddsValue) ->
                         quickOddsValue.forEach { (key, value) ->
                             value?.forEach { odd ->
-                                odd?.odds = odd?.odds?.applyDiscount(discount)
-                                odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                                if (!key.contains(PlayCate.LCS.value)) {
+                                    odd?.odds = odd?.odds?.applyDiscount(discount)
+                                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                                }
                                 if (key == QuickPlayCate.QUICK_EPS.value) {
                                     odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
                                 }

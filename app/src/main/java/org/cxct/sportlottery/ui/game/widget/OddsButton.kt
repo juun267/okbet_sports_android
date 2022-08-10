@@ -127,7 +127,7 @@ class OddsButton @JvmOverloads constructor(
 
     }
 
-    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false) {
+    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false, isOtherBtn: Boolean? = false) {
         mOdd = odds
         mOddsType = oddsType
 
@@ -147,7 +147,7 @@ class OddsButton @JvmOverloads constructor(
                 betStatus = BetStatus.DEACTIVATED.code
                 return
             }
-            (oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) -> {
+            ((oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) && isOtherBtn == false) -> {
                 betStatus = BetStatus.LOCKED.code
                 return
             }
