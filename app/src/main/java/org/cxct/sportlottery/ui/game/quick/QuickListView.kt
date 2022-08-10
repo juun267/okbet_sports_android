@@ -306,17 +306,50 @@ class QuickListView @JvmOverloads constructor(
         }
 
         rv_home.apply {
-            mLCSHomeAdapter = TypeLCSAdapter(homeList, oddsType, true)
+            mLCSHomeAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, homeList, oddsType = oddsType, isOddPercentage = true).apply {
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                    leagueOddListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        selectedQuickPlayCate.name ?: playCateName,
+                        mMatchOdd?.betPlayCateNameMap
+                    )
+                    notifyDataSetChanged()
+                }
+            }
             this.adapter = mLCSHomeAdapter
         }
 
         rv_draw.apply {
-            mLCSDrawAdapter = TypeLCSAdapter(drawList, oddsType, true)
+            mLCSDrawAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, drawList, oddsType = oddsType, isOddPercentage = true).apply {
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                    leagueOddListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        selectedQuickPlayCate.name ?: playCateName,
+                        mMatchOdd?.betPlayCateNameMap
+                    )
+                    notifyDataSetChanged()
+                }
+            }
             this.adapter = mLCSDrawAdapter
         }
 
         rv_away.apply {
-            mLCSAwayAdapter = TypeLCSAdapter(awayList, oddsType, true)
+            mLCSAwayAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, awayList, oddsType = oddsType, isOddPercentage = true).apply {
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                    leagueOddListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        selectedQuickPlayCate.name ?: playCateName,
+                        mMatchOdd?.betPlayCateNameMap
+                    )
+                    notifyDataSetChanged()
+                }
+            }
             this.adapter = mLCSAwayAdapter
         }
     }
