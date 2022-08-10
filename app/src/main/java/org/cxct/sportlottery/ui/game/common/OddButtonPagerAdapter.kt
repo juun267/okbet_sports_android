@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.betList.receipt.DataItem.ParlayTitle.status
 import org.cxct.sportlottery.ui.game.widget.OddsButton
@@ -33,8 +34,12 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null
     private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
     private var getPlaySelectedCodeSelectionType: Int? = null
+    private var matchOdd: MatchOdd? = null
 
-    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?) {
+    fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+                betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, getPlaySelectedCodeSelectionType: Int?,
+                matchOdd: MatchOdd?
+    ) {
         this.matchInfo = matchInfo
 
         if (!oddsSort.isNullOrEmpty())
@@ -42,13 +47,14 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         this.playCateNameMap = playCateNameMap
         this.betPlayCateNameMap = betPlayCateNameMap
         this.getPlaySelectedCodeSelectionType = getPlaySelectedCodeSelectionType
+        this.matchOdd = matchOdd
     }
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
-            field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList().filterOddsStatus().splitPlayCate()
+            field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList(matchOdd).filterOddsStatus().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }
@@ -319,10 +325,10 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         }
     }
 
-    private fun Map<String, List<Odd?>?>.mappingCSList(): Map<String, List<Odd?>?> {
+    private fun Map<String, List<Odd?>?>.mappingCSList(matchOdd: MatchOdd?): Map<String, List<Odd?>?> {
         if (matchType != MatchType.CS) return this
         var oddsMap = mapOf<String, List<Odd?>?>()
-        val csList = this[PlayCate.CS.value]
+        val csList = this[matchOdd?.csTabSelected?.value]
         val homeList: MutableList<Odd> = mutableListOf()
         val drawList: MutableList<Odd> = mutableListOf()
         val awayList: MutableList<Odd> = mutableListOf()

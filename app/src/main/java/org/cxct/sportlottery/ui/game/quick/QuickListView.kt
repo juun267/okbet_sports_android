@@ -504,7 +504,8 @@ class QuickListView @JvmOverloads constructor(
                 oddsSort,
                 quickListData?.playCateNameMap,
                 quickListData?.betPlayCateNameMap,
-                mPlaySelectedCodeSelectionType
+                mPlaySelectedCodeSelectionType,
+                null
             )
             this.adapter = mQuickOddButtonPagerAdapter.apply {
                 stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT

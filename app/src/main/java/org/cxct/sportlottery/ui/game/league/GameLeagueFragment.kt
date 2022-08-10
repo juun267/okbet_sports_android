@@ -159,6 +159,16 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     if (viewModel.checkLoginStatus()) {
                         navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                     }
+                },
+                clickCsTabListener = { playCate, matchOdd ->
+                    data.forEachIndexed { index, l ->
+                        l.matchOdds.find { m ->
+                            m == matchOdd
+                        }?.let {
+                            it.csTabSelected = playCate
+                            updateLeagueBySelectCsTab(index, matchOdd)
+                        }
+                    }
                 }
             )
         }

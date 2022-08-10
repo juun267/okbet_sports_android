@@ -95,6 +95,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
     }
 
+    fun updateBySelectCsTab(matchOdd: MatchOdd){
+        val index =  data.indexOf(data.find { it == matchOdd })
+        notifyItemChanged(index, matchOdd)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
@@ -207,7 +212,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
             setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode)
-            setupCsTextLayout(matchType, item)
+            setupCsTextLayout(matchType, item, leagueOddListener)
         }
 
         // region update functions
@@ -226,7 +231,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
             setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode, updateSelected = true)
-            setupCsTextLayout(matchType, item)
+            setupCsTextLayout(matchType, item, leagueOddListener)
         }
 
         private fun setQuickListView(
@@ -252,7 +257,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
         }
 
-        private fun setupCsTextLayout(matchType: MatchType, item: MatchOdd) {
+        private fun setupCsTextLayout(matchType: MatchType, item: MatchOdd, leagueOddListener: LeagueOddListener?) {
             itemView.apply {
                 if (matchType == MatchType.CS) {
                     ll_cs_text_layout.isVisible = true
@@ -264,16 +269,27 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                         .getPlayCateName(LanguageManager.getSelectLanguage(context))
                         .replace("||", "\n").updatePlayCateColor()
 
+                    when(item.csTabSelected){
+                        PlayCate.CS -> {
+                            tv_correct_1.setTypeface(null, Typeface.BOLD)
+                            tv_correct_2.setTypeface(null, Typeface.NORMAL)
+                        }
+                        else -> {
+                            tv_correct_1.setTypeface(null, Typeface.NORMAL)
+                            tv_correct_2.setTypeface(null, Typeface.BOLD)
+                        }
+                    }
+
                     tv_correct_1.setOnClickListener {
                         tv_correct_1.setTypeface(null, Typeface.BOLD)
                         tv_correct_2.setTypeface(null, Typeface.NORMAL)
-                        //TODO: 切換波膽 for kevin
+                        leagueOddListener?.onClickCsTabListener(PlayCate.CS, item)
                     }
 
                     tv_correct_2.setOnClickListener {
                         tv_correct_1.setTypeface(null, Typeface.NORMAL)
                         tv_correct_2.setTypeface(null, Typeface.BOLD)
-                        //TODO: 切換波膽上半場 for kevin
+                        leagueOddListener?.onClickCsTabListener(PlayCate.CS_1ST_SD, item)
                     }
                 } else {
                     ll_cs_text_layout.isVisible = false
@@ -938,7 +954,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     item.oddsSort,
                     item.playCateNameMap,
                     item.betPlayCateNameMap,
-                    playSelectedCodeSelectionType
+                    playSelectedCodeSelectionType,
+                    item
                 )
                 oddButtonPagerAdapter.apply {
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT

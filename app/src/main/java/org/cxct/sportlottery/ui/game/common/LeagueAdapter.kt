@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
@@ -192,6 +193,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         notifyItemChanged(position, PayLoadEnum.EXPAND)
     }
 
+    fun updateLeagueBySelectCsTab(position: Int, matchOdd: MatchOdd){
+        notifyItemChanged(position, matchOdd)
+    }
+
     // 限制全列表更新頻率
     fun limitRefresh() {
         if (isLock) {
@@ -232,6 +237,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             }
                         }
                     }
+                }
+
+                is MatchOdd -> {
+                    (holder as ItemViewHolder).updateBySelectCsTab(payloads.first() as MatchOdd)
                 }
             }
         }
@@ -317,6 +326,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         fun updateByPlayCate() {
             leagueOddAdapter.updateByPlayCate()
+        }
+
+        fun updateBySelectCsTab(matchOdd: MatchOdd){
+            leagueOddAdapter.updateBySelectCsTab(matchOdd)
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
