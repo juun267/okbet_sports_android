@@ -58,6 +58,9 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         val gameListFilter: MutableList<String>
 
                         when{
+                            //波膽玩法不限制個數
+                            matchType == MatchType.CS -> gameListFilter = this.toMutableList()
+
                             this.isNullOrEmpty() ->{
                                 gameListFilter = mutableListOf()
                                 gameListFilter.add("EmptyData1")
@@ -174,7 +177,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     data[position].getOrNull(0)?.second
                 )),
             oddsType,
-            listener
+            listener,
+            matchType
         )
     }
 
@@ -185,7 +189,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             val list = payloads.first() as ArrayList<Pair<String, List<Odd?>?>>
             holder.update(matchInfo, playCateNameMap, betPlayCateNameMap,
                 listOf(Pair(list.first().first, list.first().second)),
-                oddsType)
+                oddsType, matchType)
         }
     }
 
@@ -342,11 +346,14 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     }
                 }
             }
-            val newList: MutableList<List<Odd?>> = mutableListOf()
+            val newList: MutableList<MutableList<Odd?>> = mutableListOf()
             homeList.forEachIndexed { index, _ ->
-                newList.add(listOf(homeList[index], awayList[index], if(index > drawList.size -1) Odd(status = 2) else drawList[index]))
+                if(index > drawList.size -1)
+                    newList.add(mutableListOf(homeList[index], awayList[index]))
+                else
+                    newList.add(mutableListOf(homeList[index], awayList[index], drawList[index]))
             }
-            newList.add(newList.size, listOf(csList[csList.lastIndex]))
+            newList.add(newList.size, mutableListOf(csList[csList.lastIndex]))
             val csMap = newList.associateBy(keySelector = { "${PlayCate.CS.value}_${newList.indexOf(it)}" }, valueTransform = { it })
             oddsMap = csMap
         }
@@ -496,16 +503,19 @@ class OddButtonPagerViewHolder private constructor(
         odds: List<Pair<String?, List<Odd?>?>>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
+        matchType: MatchType?
     ) {
         setupOddsButton(
             itemView.odd_btn_row1_type,
             itemView.odd_btn_row1_home,
             itemView.odd_btn_row1_away,
             itemView.odd_btn_row1_draw,
+            itemView.odd_btn_row1_other,
             matchInfo,
             playCateNameMap,
             betPlayCateNameMap,
-            odds?.getOrNull(0), oddsType, oddButtonListener
+            odds?.getOrNull(0), oddsType, oddButtonListener,
+            matchType
         )
     }
 
@@ -515,16 +525,19 @@ class OddButtonPagerViewHolder private constructor(
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         odds: List<Pair<String?, List<Odd?>?>>?,
         oddsType: OddsType,
+        matchType: MatchType?
     ) {
         updateOddsButton(
             itemView.odd_btn_row1_type,
             itemView.odd_btn_row1_home,
             itemView.odd_btn_row1_away,
             itemView.odd_btn_row1_draw,
+            itemView.odd_btn_row1_other,
             matchInfo,
             playCateNameMap,
             betPlayCateNameMap,
-            odds?.getOrNull(0), oddsType
+            odds?.getOrNull(0), oddsType,
+            matchType
         )
     }
 
@@ -547,27 +560,46 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnHome: OddsButton,
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
+        oddBtnOther: OddsButton,
         matchInfo: MatchInfo?,
         playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
-        oddButtonListener: OddButtonListener?
+        oddButtonListener: OddButtonListener?,
+        matchType: MatchType?
     ) {
+
         if (matchInfo == null ||
             betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty() ||
             odds == null || odds.first == null || odds.second.isNullOrEmpty()
         ) {
-            oddBtnType.visibility = View.INVISIBLE
-            oddBtnHome.visibility = View.INVISIBLE
-            oddBtnAway.visibility = View.INVISIBLE
-            oddBtnDraw.visibility = View.INVISIBLE
+            if(matchType == MatchType.CS && odds?.second?.size == 1){
+                oddBtnHome.visibility = View.GONE
+                oddBtnAway.visibility = View.GONE
+                oddBtnDraw.visibility = View.GONE
+                oddBtnOther.visibility = View.INVISIBLE
+            }else{
+                oddBtnType.visibility = View.INVISIBLE
+                oddBtnHome.visibility = View.INVISIBLE
+                oddBtnAway.visibility = View.INVISIBLE
+                oddBtnDraw.visibility = View.INVISIBLE
+                oddBtnOther.visibility = View.GONE
+            }
             return
         } else {
-            oddBtnType.visibility = View.VISIBLE
-            oddBtnHome.visibility = View.VISIBLE
-            oddBtnAway.visibility = View.VISIBLE
-            oddBtnDraw.visibility = View.VISIBLE
+            if(matchType == MatchType.CS && odds.second?.size == 1){
+                oddBtnHome.visibility = View.GONE
+                oddBtnAway.visibility = View.GONE
+                oddBtnDraw.visibility = View.GONE
+                oddBtnOther.visibility = View.VISIBLE
+            }else{
+                oddBtnType.visibility = View.VISIBLE
+                oddBtnHome.visibility = View.VISIBLE
+                oddBtnAway.visibility = View.VISIBLE
+                oddBtnDraw.visibility = View.VISIBLE
+                oddBtnOther.visibility = View.GONE
+            }
         }
         if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString()
                 .contains("EmptyData")
@@ -576,6 +608,7 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
             oddBtnDraw.betStatus = BetStatus.DEACTIVATED.code
+            oddBtnOther.betStatus = BetStatus.DEACTIVATED.code
             return
         }
         val replaceScore = odds.second?.firstOrNull()?.replaceScore ?: ""
@@ -608,6 +641,24 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnType.visibility = View.INVISIBLE
         }
 
+        if(matchType == MatchType.CS && odds?.second?.size == 1){
+            oddBtnOther.apply otherButtonSettings@{
+                setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType, isOtherBtn = true)
+                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
+                setOnClickListener {
+                    odds.second?.getOrNull(0)?.let { odd ->
+                        //it.isSelected = !it.isSelected
+                        oddButtonListener?.onClickBet(
+                            matchInfo,
+                            odd,
+                            odds.first ?: "",
+                            playCateName,
+                            betPlayCateName
+                        )
+                    }
+                }
+            }
+        }else{
         oddBtnHome.apply homeButtonSettings@{
             setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
@@ -661,6 +712,7 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
         }
+        }
     }
 
     private fun updateOddsButton(
@@ -668,11 +720,13 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnHome: OddsButton,
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
+        oddBtnOther: OddsButton,
         matchInfo: MatchInfo?,
         playCateNameMap: Map<String?, Map<String?, String?>?>?,
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
+        matchType: MatchType?
     ) {
         if (matchInfo == null ||
             betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty() ||
@@ -682,12 +736,22 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnHome.visibility = View.INVISIBLE
             oddBtnAway.visibility = View.INVISIBLE
             oddBtnDraw.visibility = View.INVISIBLE
+            oddBtnOther.visibility = View.GONE
             return
         } else {
-            oddBtnType.visibility = View.VISIBLE
-            oddBtnHome.visibility = View.VISIBLE
-            oddBtnAway.visibility = View.VISIBLE
-            oddBtnDraw.visibility = View.VISIBLE
+            if(matchType == MatchType.CS && odds.second?.size == 1){
+                oddBtnType.visibility = View.GONE
+                oddBtnHome.visibility = View.GONE
+                oddBtnAway.visibility = View.GONE
+                oddBtnDraw.visibility = View.GONE
+                oddBtnOther.visibility = View.VISIBLE
+            }else{
+                oddBtnType.visibility = View.VISIBLE
+                oddBtnHome.visibility = View.VISIBLE
+                oddBtnAway.visibility = View.VISIBLE
+                oddBtnDraw.visibility = View.VISIBLE
+                oddBtnOther.visibility = View.GONE
+            }
         }
         if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString()
                 .contains("EmptyData")
@@ -696,6 +760,7 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
             oddBtnDraw.betStatus = BetStatus.DEACTIVATED.code
+            oddBtnOther.betStatus = BetStatus.DEACTIVATED.code
             return
         }
         val playCateName =
@@ -710,17 +775,24 @@ class OddButtonPagerViewHolder private constructor(
         if (playCateCode.isCSType()) {
             oddBtnType.visibility = View.INVISIBLE
         }
-        oddBtnHome.apply homeButtonSettings@{
-            setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
-            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
-        }
-        oddBtnAway.apply awayButtonSettings@{
-            setupOdd4hall(playCateCode,odds.second?.getOrNull(1), odds.second, oddsType)
-            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
-        }
-        oddBtnDraw.apply drawButtonSettings@{
-            setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
-            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
+        if(matchType == MatchType.CS && odds?.second?.size == 1){
+            oddBtnOther.apply homeButtonSettings@{
+                setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType, isOtherBtn = true)
+                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
+            }
+        } else {
+            oddBtnHome.apply homeButtonSettings@{
+                setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
+                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
+            }
+            oddBtnAway.apply awayButtonSettings@{
+                setupOdd4hall(playCateCode,odds.second?.getOrNull(1), odds.second, oddsType)
+                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
+            }
+            oddBtnDraw.apply drawButtonSettings@{
+                setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
+                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
+            }
         }
     }
 

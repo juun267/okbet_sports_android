@@ -49,9 +49,9 @@
         app:ob_hide_item_flag="true" />
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
-        android:id="@+id/odd_btn_row1_draw_cs"
+        android:id="@+id/odd_btn_row1_other"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="156dp"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
         app:ob_hide_item_flag="true"
