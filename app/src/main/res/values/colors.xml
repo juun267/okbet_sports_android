@@ -340,7 +340,11 @@
     <color name="color_FFFDFE">#FFFDFE</color>
     <color name="color_345577">#345577</color>
     <!-- ======================================= -->
-   <color name="color_A7B2C">#A7B2C4</color>
+    <color name="color_A7B2C">#A7B2C4</color>
     <color name="color_535D76">#535D76</color>
-
+    <color name="color_E3E8EE">#E3E8EE</color>
+    <color name="color_6C7BA8">#6C7BA8</color>
+    <color name="color_A5AABF">#A5AABF</color>
+    <color name="color_C4D0DE">#C4D0DE</color>
+    <color name="color_DAE7F6">#DAE7F6</color>
 </resources>
