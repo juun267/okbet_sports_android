@@ -1571,7 +1571,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent, args.matchType
                                     )
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
@@ -1591,7 +1591,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         epsOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent, args.matchType
                                     )
                                 } == true && !leagueOdd.isClose) {
                                 updateBetInfo(leagueOdd, oddsChangeEvent)

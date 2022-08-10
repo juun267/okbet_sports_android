@@ -228,7 +228,8 @@ object SocketUpdateUtil {
     fun updateMatchOdds(
         context: Context?,
         matchOdd: MatchOdd,
-        oddsChangeEvent: OddsChangeEvent
+        oddsChangeEvent: OddsChangeEvent,
+        matchType: MatchType? = null
     ): Boolean {
         var isNeedRefresh = false
         var isNeedRefreshPlayCate = false
@@ -311,10 +312,10 @@ object SocketUpdateUtil {
 
                 isNeedRefreshPlayCate = when (matchOdd.quickPlayCateList.isNullOrEmpty()) {
                     true -> {
-                        insertPlayCate(matchOdd, oddsChangeEvent)
+                        insertPlayCate(matchOdd, oddsChangeEvent, matchType)
                     }
                     false -> {
-                        refreshPlayCate(matchOdd, oddsChangeEvent)
+                        refreshPlayCate(matchOdd, oddsChangeEvent, matchType)
                     }
                 } || (matchOdd.matchInfo?.playCateNum != oddsChangeEvent.playCateNum)
 
@@ -668,11 +669,22 @@ object SocketUpdateUtil {
         return odds?.odds?.isNotEmpty() ?: false
     }
 
-    private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+    private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent, matchType: MatchType?): Boolean {
+        /**
+         * MatchType為波膽時, 快捷玩法只需出現反波膽, 其餘MatchType的快捷玩法不得出現反波膽
+         */
+        val socketQuickPlayCateList = when (matchType) {
+            MatchType.CS -> {
+                oddsChangeEvent.quickPlayCateList?.filter { it.code == QuickPlayCate.QUICK_LCS.value }
+            }
+            else -> {
+                oddsChangeEvent.quickPlayCateList?.filter { it.code != QuickPlayCate.QUICK_LCS.value }
+            }
+        }
         if (matchOdd.quickPlayCateList == null) {
-            matchOdd.quickPlayCateList = oddsChangeEvent.quickPlayCateList?.toMutableList()
+            matchOdd.quickPlayCateList = socketQuickPlayCateList?.toMutableList()
         } else {
-            matchOdd.quickPlayCateList?.addAll(oddsChangeEvent.quickPlayCateList ?: listOf())
+            matchOdd.quickPlayCateList?.addAll(socketQuickPlayCateList ?: listOf())
         }
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
@@ -840,10 +852,22 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    private fun refreshPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+    private fun refreshPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent, matchType: MatchType?): Boolean {
         var isNeedRefresh = false
 
-        oddsChangeEvent.quickPlayCateList?.forEach { quickPlayCateSocket ->
+        /**
+         * MatchType為波膽時, 快捷玩法只需出現反波膽, 其餘MatchType的快捷玩法不得出現反波膽
+         */
+        val socketQuickPlayCateList = when (matchType) {
+            MatchType.CS -> {
+                oddsChangeEvent.quickPlayCateList?.filter { it.code == QuickPlayCate.QUICK_LCS.value }
+            }
+            else -> {
+                oddsChangeEvent.quickPlayCateList?.filter { it.code != QuickPlayCate.QUICK_LCS.value }
+            }
+        }
+
+        socketQuickPlayCateList?.forEach { quickPlayCateSocket ->
             when (matchOdd.quickPlayCateList?.map { it.code }?.contains(quickPlayCateSocket.code)) {
                 false -> {
                     matchOdd.quickPlayCateList?.add(quickPlayCateSocket)
