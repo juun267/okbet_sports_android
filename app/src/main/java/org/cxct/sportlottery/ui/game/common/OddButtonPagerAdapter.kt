@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
+import org.cxct.sportlottery.ui.game.betList.receipt.DataItem.ParlayTitle.status
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
@@ -46,7 +47,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         set(value) {
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
-            field = value.sortScores().refactorPlayCode().sortOdds().filterOddsStatus().splitPlayCate()
+            field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList().filterOddsStatus().splitPlayCate()
                 .filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }
@@ -313,6 +314,38 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             e.printStackTrace()
             this
         }
+    }
+
+    private fun Map<String, List<Odd?>?>.mappingCSList(): Map<String, List<Odd?>?> {
+        var oddsMap = mapOf<String, List<Odd?>?>()
+        val csList = this[PlayCate.CS.value]
+        val homeList: MutableList<Odd> = mutableListOf()
+        val drawList: MutableList<Odd> = mutableListOf()
+        val awayList: MutableList<Odd> = mutableListOf()
+        if (csList != null) {
+            for (odd in csList) {
+                if (odd?.name?.contains(" - ") == true) {
+                    val stringArray: List<String> = odd.name.split(" - ")
+                    if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                        homeList.add(odd)
+                    }
+                    if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                        drawList.add(odd)
+                    }
+                    if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                        awayList.add(odd)
+                    }
+                }
+            }
+            val newList: MutableList<List<Odd?>> = mutableListOf()
+            homeList.forEachIndexed { index, _ ->
+                newList.add(listOf(homeList[index], awayList[index], if(index > drawList.size -1) Odd(status = 2) else drawList[index]))
+            }
+            newList.add(newList.size, listOf(csList[csList.lastIndex]))
+            val csMap = newList.associateBy(keySelector = { "${PlayCate.CS.value}_${newList.indexOf(it)}" }, valueTransform = { it })
+            oddsMap = csMap
+        }
+        return oddsMap
     }
 
     /**
