@@ -13,6 +13,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -119,6 +120,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                 //notifyDataSetChanged()
             }
         }
+
+    var matchType: MatchType? = null
 
     private var data: List<List<Pair<String, List<Odd?>?>>> = listOf()
         set(value) {
@@ -317,6 +320,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     }
 
     private fun Map<String, List<Odd?>?>.mappingCSList(): Map<String, List<Odd?>?> {
+        if (matchType != MatchType.CS) return this
         var oddsMap = mapOf<String, List<Odd?>?>()
         val csList = this[PlayCate.CS.value]
         val homeList: MutableList<Odd> = mutableListOf()
@@ -632,7 +636,7 @@ class OddButtonPagerViewHolder private constructor(
         }
 
         oddBtnDraw.apply drawButtonSettings@{
-            
+
             setupOdd4hall(playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
