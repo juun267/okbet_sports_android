@@ -651,7 +651,7 @@ class OddButtonPagerViewHolder private constructor(
                         oddButtonListener?.onClickBet(
                             matchInfo,
                             odd,
-                            odds.first ?: "",
+                            playCateCode,
                             playCateName,
                             betPlayCateName
                         )
