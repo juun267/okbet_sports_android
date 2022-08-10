@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
+import timber.log.Timber
 
 
 class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
@@ -591,7 +592,13 @@ class OddButtonPagerViewHolder private constructor(
         val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(
             LanguageManager.getSelectLanguage(itemView.context)
         ).replace(": ", " ").replace("||", "\n")
-        val playCateCode = odds.first ?: ""
+        var playCateCode = odds.first ?: ""
+        //去掉mappingCS playCateCode的後綴
+        if (playCateCode.contains(PlayCate.CS.value) && playCateCode.contains("_")) {
+            playCateCode = playCateCode.split("_")[0]
+        }
+//        Timber.e("playCateCode: $playCateCode")
+
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
@@ -610,7 +617,7 @@ class OddButtonPagerViewHolder private constructor(
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
-                        odds.first ?: "",
+                        playCateCode,
                         playCateName,
                         betPlayCateName
                     )
@@ -627,7 +634,7 @@ class OddButtonPagerViewHolder private constructor(
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
-                        odds.first ?: "",
+                        playCateCode,
                         playCateName,
                         betPlayCateName
                     )
@@ -647,7 +654,7 @@ class OddButtonPagerViewHolder private constructor(
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
-                        odds.first ?: "",
+                        playCateCode,
                         playCateName,
                         betPlayCateName
                     )
