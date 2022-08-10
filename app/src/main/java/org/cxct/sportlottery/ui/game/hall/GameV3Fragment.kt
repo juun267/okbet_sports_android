@@ -2077,8 +2077,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = when (args.matchType) {
+            MatchType.CS -> {
+                GameType.FT
+            }
+            else -> {
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            }
+        }
 
         gameType?.let {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
@@ -2128,8 +2134,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         playCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = when (args.matchType) {
+            MatchType.CS -> {
+                GameType.FT
+            }
+            else -> {
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            }
+        }
 
         gameType?.let {
             matchInfo?.let { matchInfo ->
