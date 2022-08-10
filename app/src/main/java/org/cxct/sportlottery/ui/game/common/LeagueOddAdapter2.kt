@@ -203,7 +203,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
-            setupOddsButton(item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
+            setupOddsButton(matchType, item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
             setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode)
@@ -895,6 +895,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
 
         val oddButtonPagerAdapter = OddButtonPagerAdapter()
         private fun setupOddsButton(
+            matchType: MatchType,
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?,
@@ -910,6 +911,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
                     //this.odds = item.oddsMap ?: mutableMapOf()
                     //this.oddsType = oddsType
+                    this.matchType = matchType
                     this.listener =
                         OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                             leagueOddListener?.onClickBet(
