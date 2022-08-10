@@ -489,6 +489,7 @@
         android:background="@color/color_191919_FCFCFC"
         android:orientation="horizontal"
         android:visibility="visible"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/guide_game_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guide_content"
