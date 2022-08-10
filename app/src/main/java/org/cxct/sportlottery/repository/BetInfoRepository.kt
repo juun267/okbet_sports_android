@@ -361,7 +361,7 @@ object BetInfoRepository {
         )
 
         return parlayBetLimitMap.map {
-            var maxBet: Int
+            var maxBet: Long
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
@@ -394,12 +394,12 @@ object BetInfoRepository {
                 if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
                     if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
                         //馬來盤使用者投注上限
-                        maxBet = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
+                        maxBet = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toLong()
                     }
                 } else if (oddsType == OddsType.IDN && !it.value.isOnlyEUType) {
                     if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
                         //印度使用者投注上限
-                        maxBet = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
+                        maxBet = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toLong()
                     }
                 }
             }
@@ -420,10 +420,10 @@ object BetInfoRepository {
 
     private fun calculateComboMaxBet(
         parlayBetLimit: ParlayBetLimit,
-        max: Int?,
-    ): Int {
+        max: Long?,
+    ): Long {
         val tempMax = (max ?: 1).times(parlayBetLimit.num)
-        return tempMax.div(parlayBetLimit.hdOdds.toDouble()).toInt()
+        return tempMax.div(parlayBetLimit.hdOdds.toDouble()).toLong()
     }
 
 
