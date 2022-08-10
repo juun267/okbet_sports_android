@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -263,6 +264,21 @@ class QuickListView @JvmOverloads constructor(
 //        }
 
         league_odd_quick_odd_lcs.visibility = View.VISIBLE
+
+        with(quick_odd_lcs_tab) {
+            for (index in 0 until tabCount) {
+                val tab = getTabAt(index)
+                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
+                when (index) {
+                    0 -> {
+                        tvType?.text = context.getString(R.string.full_game)
+                    }
+//                    1 -> {
+//                        tvType?.text = context.getString(R.string.first_half_game)
+//                    }
+                }
+            }
+        }
 
         val homeList: MutableList<Odd> = mutableListOf()
         val drawList: MutableList<Odd> = mutableListOf()
