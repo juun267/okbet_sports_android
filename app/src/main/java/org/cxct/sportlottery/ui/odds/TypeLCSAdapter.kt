@@ -13,13 +13,14 @@ import org.cxct.sportlottery.ui.game.common.OddButtonListener
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.QuickListManager
 
 
 class TypeLCSAdapter(
     private val matchInfo: MatchInfo?,
     private val oddsList: List<Odd?>,
     private val oddsType: OddsType,
-    private val isOddPercentage:Boolean? = false
+    private val isOddPercentage: Boolean? = false
 ) : RecyclerView.Adapter<TypeLCSAdapter.ViewHolder>() {
 
     var listener: OddButtonListener? = null
@@ -52,8 +53,12 @@ class TypeLCSAdapter(
                 setupOdd(odd, oddsType, isOddPercentage = isOddPercentage)
                 setupOddState(this, odd)
                 setOnClickListener {
-                    odd?.let { o -> listener?.onClickBet(matchInfo, o, PlayCate.LCS.value) }
+                    odd?.let { o ->
+                        it.isSelected = !it.isSelected
+                        listener?.onClickBet(matchInfo, o, PlayCate.LCS.value)
+                    }
                 }
+                isSelected = QuickListManager.getQuickSelectedList()?.contains(odd?.id) ?: false
             }
         }
 
