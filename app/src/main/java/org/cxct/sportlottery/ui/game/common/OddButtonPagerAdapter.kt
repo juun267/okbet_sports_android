@@ -360,7 +360,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     newList.add(mutableListOf(homeList[index], awayList[index], drawList[index]))
             }
             newList.add(newList.size, mutableListOf(csList[csList.lastIndex]))
-            val csMap = newList.associateBy(keySelector = { "${PlayCate.CS.value}_${newList.indexOf(it)}" }, valueTransform = { it })
+            val csMap = newList.associateBy(keySelector = { "${matchOdd?.csTabSelected?.value}_${newList.indexOf(it)}" }, valueTransform = { it })
             oddsMap = csMap
         }
         return oddsMap
