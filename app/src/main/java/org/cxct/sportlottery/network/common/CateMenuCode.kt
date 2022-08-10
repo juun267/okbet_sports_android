@@ -10,5 +10,6 @@ enum class MenuCode(val code: String) {
     HOME_INPLAY_MOBILE("HOME_INPLAY_MOBILE"), //滚球赛事-移动端
     HOME_ATSTART("HOME_ATSTART"), //即将开赛
     HOME_ATSTART_MOBILE("HOME_ATSTART_MOBILE"), //即将开赛-移动端
-    MAIN("MAIN") //我的賽事頁面使用
+    MAIN("MAIN"), //我的賽事頁面使用
+    CS("CS") //波膽
 }

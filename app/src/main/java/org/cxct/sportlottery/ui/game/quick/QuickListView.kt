@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.view_quick_list.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
+import kotlinx.android.synthetic.main.view_quick_odd_lcs.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
@@ -25,9 +27,11 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.odds.TypeLCSAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setBackColorWithColorMode
+import timber.log.Timber
 
 class QuickListView @JvmOverloads constructor(
     context: Context,
@@ -53,6 +57,10 @@ class QuickListView @JvmOverloads constructor(
     private var mQuickOddButtonPagerAdapter: OddButtonPagerAdapter = OddButtonPagerAdapter()
     private var mOddButtonEpsAdapter: OddButtonEpsAdapter =
         OddButtonEpsAdapter(mMatchOdd?.matchInfo)
+
+    private var mLCSHomeAdapter: TypeLCSAdapter? = null
+    private var mLCSDrawAdapter: TypeLCSAdapter? = null
+    private var mLCSAwayAdapter: TypeLCSAdapter? = null
 
     init {
         addView(LayoutInflater.from(context).inflate(R.layout.view_quick_list, this, false).apply {
@@ -134,10 +142,20 @@ class QuickListView @JvmOverloads constructor(
                         quickOdds1 =
                             quickListResult.quickListData?.quickOdds?.get(selectedQuickPlayCateCode)
                                 ?: mutableMapOf()
+                        Timber.e("quickOdds1: $quickOdds1")
                         quickOddsSort = quickListResult.quickListData?.oddsSortMap?.get(selectedQuickPlayCateCode)
                         when (selectedQuickPlayCateCode) {
                             org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_OU.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_HDP.value, org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_ADVANCE.value -> {
                                 setupQuickOddButtonPair(
+                                    mSelectedQuickPlayCate!!,
+                                    quickOdds1,
+                                    mOddsType,
+                                    mLeagueOddListener,
+                                    quickListResult.quickListData
+                                )
+                            }
+                            org.cxct.sportlottery.network.common.QuickPlayCate.QUICK_LCS.value -> {
+                                setupQuickOddLcs(
                                     mSelectedQuickPlayCate!!,
                                     quickOdds1,
                                     mOddsType,
@@ -221,6 +239,135 @@ class QuickListView @JvmOverloads constructor(
 
     private fun clearTabState() {
         league_odd_quick_cate_tabs.clearCheck()
+    }
+
+    private fun setupQuickOddLcs(
+        selectedQuickPlayCate: QuickPlayCate,
+        quickOdds: MutableMap<String, List<Odd?>?>,
+        oddsType: OddsType,
+        leagueOddListener: LeagueOddListener?,
+        quickListData: QuickListData?
+    ) {
+//        mOddButtonPairAdapter = OddButtonPairAdapter(mMatchOdd?.matchInfo).apply {
+//            this.oddsType = oddsType
+//            listener =
+//                OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+//                    leagueOddListener?.onClickBet(
+//                        matchInfo,
+//                        odd,
+//                        getQuickPairPlayCateCode(playCateCode),
+//                        selectedQuickPlayCate.name ?: playCateName,
+//                        mMatchOdd?.betPlayCateNameMap
+//                    )
+//                    notifyDataSetChanged()
+//                }
+//        }
+
+        league_odd_quick_odd_lcs.visibility = View.VISIBLE
+
+        with(quick_odd_lcs_tab) {
+            for (index in 0 until tabCount) {
+                val tab = getTabAt(index)
+                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
+                when (index) {
+                    0 -> {
+                        tvType?.text = context.getString(R.string.full_game)
+                    }
+//                    1 -> {
+//                        tvType?.text = context.getString(R.string.first_half_game)
+//                    }
+                }
+            }
+        }
+
+        val homeList: MutableList<Odd> = mutableListOf()
+        val drawList: MutableList<Odd> = mutableListOf()
+        val awayList: MutableList<Odd> = mutableListOf()
+
+        val oddList = quickOdds[PlayCate.LCS.value].orEmpty()
+
+        var otherOdd : Odd? = null
+        for (odd in oddList) {
+            if (odd?.name?.contains(" - ") == true) {
+                val stringArray: List<String> = odd.name.split(" - ")
+                if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                    homeList.add(odd)
+                }
+                if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                    drawList.add(odd)
+                }
+                if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                    awayList.add(odd)
+                }
+            } else {
+                otherOdd = odd
+            }
+        }
+
+        homeList.sortBy {
+            it.name?.split(" - ")?.get(1)?.toInt()
+        }
+        homeList.sortBy {
+            it.name?.split(" - ")?.get(0)?.toInt()
+        }
+
+        awayList.sortBy {
+            it.name?.split(" - ")?.get(0)?.toInt()
+        }
+        awayList.sortBy {
+            it.name?.split(" - ")?.get(1)?.toInt()
+        }
+        otherOdd?.let {
+            homeList.add(it)
+        }
+
+        rv_home.apply {
+            mLCSHomeAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, homeList, oddsType = oddsType, isOddPercentage = true).apply {
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                    leagueOddListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        selectedQuickPlayCate.name ?: playCateName,
+                        mMatchOdd?.betPlayCateNameMap
+                    )
+                    notifyDataSetChanged()
+                }
+            }
+            this.adapter = mLCSHomeAdapter
+        }
+
+        rv_draw.apply {
+            mLCSDrawAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, drawList, oddsType = oddsType, isOddPercentage = true).apply {
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                    leagueOddListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        selectedQuickPlayCate.name ?: playCateName,
+                        mMatchOdd?.betPlayCateNameMap
+                    )
+                    notifyDataSetChanged()
+                }
+            }
+            this.adapter = mLCSDrawAdapter
+        }
+
+        rv_away.apply {
+            mLCSAwayAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, awayList, oddsType = oddsType, isOddPercentage = true).apply {
+                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                    leagueOddListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        selectedQuickPlayCate.name ?: playCateName,
+                        mMatchOdd?.betPlayCateNameMap
+                    )
+                    notifyDataSetChanged()
+                }
+            }
+            this.adapter = mLCSAwayAdapter
+        }
     }
 
     private fun setupQuickOddButtonPair(
@@ -357,7 +504,8 @@ class QuickListView @JvmOverloads constructor(
                 oddsSort,
                 quickListData?.playCateNameMap,
                 quickListData?.betPlayCateNameMap,
-                mPlaySelectedCodeSelectionType
+                mPlaySelectedCodeSelectionType,
+                null
             )
             this.adapter = mQuickOddButtonPagerAdapter.apply {
                 stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
@@ -410,6 +558,7 @@ class QuickListView @JvmOverloads constructor(
         league_odd_quick_odd_btn_pair.visibility = View.GONE
         league_odd_quick_odd_btn_pager.visibility = View.GONE
         league_odd_quick_odd_btn_eps.visibility = View.GONE
+        league_odd_quick_odd_lcs.visibility = View.GONE
         SpaceItemDecorationView.visibility = View.GONE
     }
 
@@ -417,5 +566,9 @@ class QuickListView @JvmOverloads constructor(
         mOddButtonPairAdapter.notifyDataSetChanged()
         mQuickOddButtonPagerAdapter.notifyDataSetChanged()
         mOddButtonEpsAdapter.notifyDataSetChanged()
+
+        mLCSHomeAdapter?.notifyDataSetChanged()
+        mLCSDrawAdapter?.notifyDataSetChanged()
+        mLCSAwayAdapter?.notifyDataSetChanged()
     }
 }

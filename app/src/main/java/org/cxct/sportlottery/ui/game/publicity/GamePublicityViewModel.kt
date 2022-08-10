@@ -105,7 +105,7 @@ class GamePublicityViewModel(
 
     //region 宣傳頁推薦賽事資料處理
     /**
-     * 設置賽事類型參數(滾球、即將、今日、早盤)
+     * 設置賽事類型參數(滾球、即將、今日、早盤,波胆)
      */
     private fun Recommend.setupMatchType(matchInfo: MatchInfo) {
         matchType = when (status) {

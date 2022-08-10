@@ -147,6 +147,16 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     if (viewModel.checkLoginStatus()) {
                         navMatchDetailPage(matchId, gameMatchType)
                     }
+                },
+                clickCsTabListener = { playCate, matchOdd ->
+                    data.forEachIndexed { index, l ->
+                        l.matchOdds.find { m ->
+                            m == matchOdd
+                        }?.let {
+                            it.csTabSelected = playCate
+                            updateLeagueBySelectCsTab(index, matchOdd)
+                        }
+                    }
                 }
             )
         }
