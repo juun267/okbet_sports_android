@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 
@@ -50,7 +51,10 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
 
         fun bind(item: MoneyPayWayData) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.image))
-            tvType.text = MoneyManager.getMoneyBankTypeTitle(item.rechType)
+            tvType.text =
+                if (item.rechType == RechType.ONLINE_PAYMENT.type) MoneyManager.getOnlinePayTypeName(
+                    item.onlineType
+                ) else MoneyManager.getMoneyBankTypeTitle(item.rechType)
         }
 
         companion object {
