@@ -1178,4 +1178,6 @@
     <string name="hint_no_file_selected">Chưa chọn tập tin</string>
     <string name="upload_id_photo">Tải ảnh lên</string>
     <string name="hint_file_selected">Đã chọn tập tin</string>
+
+    <string name="correct">Kết Quả Đúng</string>
 </resources>

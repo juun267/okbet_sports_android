@@ -262,8 +262,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 if (matchType == MatchType.CS) {
                     ll_cs_text_layout.isVisible = true
 
-                    tv_correct_1.text = item.playCateNameMap?.get(PlayCate.CS.value)
-                        .getPlayCateName(LanguageManager.getSelectLanguage(context))
+                    //比照h5，直接使用local波膽翻譯文字
+                    tv_correct_1.text = context.getText(R.string.correct)
 
                     var correct2 = item.playCateNameMap?.get(PlayCate.CS_1ST_SD.value)
                         .getPlayCateName(LanguageManager.getSelectLanguage(context))
