@@ -156,7 +156,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             android:background="@null"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:letterSpacing="0.05"
             android:textColor="@color/color_317FFF_0760D4"
             android:textColorHint="@color/color_cccccc"
