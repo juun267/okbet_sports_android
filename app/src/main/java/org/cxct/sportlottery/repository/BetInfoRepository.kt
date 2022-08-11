@@ -364,6 +364,7 @@ object BetInfoRepository {
         return parlayBetLimitMap.map {
             var maxBet: Long
             val maxPayout = betInfo?.maxPayout ?: 9999999
+            val maxCpPayout = betInfo?.maxCpPayout ?: 9999999
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
             val maxParlayPayout = betInfo?.maxParlayPayout ?: 9999999
@@ -385,16 +386,28 @@ object BetInfoRepository {
                 }
                 maxBet = calculateComboMaxBet(it.value, maxParlayBet)
             }else{
+                val payout: Long
                 //根據賽事類型的投注上限
                 val matchTypeMaxBetMoney = when {
-                    matchType == MatchType.PARLAY && isParlayBet -> maxParlayBetMoney
-                    matchType == MatchType.OUTRIGHT -> maxCpBetMoney
-                    else -> maxBetMoney
-                } ?: 0
+                    matchType == MatchType.PARLAY && isParlayBet -> {
+                        payout = maxParlayPayout
+                        maxParlayBetMoney
+                    }
+                    matchType == MatchType.OUTRIGHT -> {
+                        //冠軍賠付額
+                        payout = maxCpPayout
+                        maxCpBetMoney
+                    }
+                    else -> {
+                        //一般賠付額
+                        payout = maxPayout
+                        maxBetMoney
+                    }
+                }
 
                 //賠付額上限計算投注限額
                 val oddsPayout =
-                    maxPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
+                    payout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
                         .toLong()
 
                 maxBet = if (matchTypeMaxBetMoney == 0L) {
