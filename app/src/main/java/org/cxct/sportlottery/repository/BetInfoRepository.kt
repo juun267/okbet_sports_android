@@ -40,6 +40,7 @@ import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response
 import timber.log.Timber
 import kotlin.math.abs
+import kotlin.math.min
 
 
 const val BET_INFO_MAX_COUNT = 10
@@ -362,6 +363,7 @@ object BetInfoRepository {
 
         return parlayBetLimitMap.map {
             var maxBet: Long
+            val maxPayout = betInfo?.maxPayout ?: 9999999
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
@@ -382,7 +384,13 @@ object BetInfoRepository {
                     else -> maxBetMoney
                 } ?: 0
 
-                maxBet = matchTypeMaxBetMoney
+                //賠付額上限計算投注限額
+                val oddsPayout =
+                    maxPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
+                        .toLong()
+
+                //用戶投注限額與賠付額計算投注限額取小
+                maxBet = min(oddsPayout, matchTypeMaxBetMoney)
 
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
