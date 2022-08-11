@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.TransferType
+import org.cxct.sportlottery.ui.finance.df.RechType
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -48,7 +49,7 @@ object MoneyManager {
         }
         return mMoneyPayWayList
     }
-//TODO Bill 等UI補Icon
+
     fun getBankIcon(bankName: String): Int {
         return when (bankName) {
             MoneyType.BANK.code -> R.drawable.ic_bank_atm
@@ -65,7 +66,10 @@ object MoneyManager {
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
             MoneyType.PAYPAL.code -> R.drawable.ic_paypal
             MoneyType.DRAGONPAY.code -> R.drawable.ic_gragon_pay
-
+            MoneyType.MOMOPAY.code -> R.drawable.ic_momopay
+            MoneyType.ZALOPAY.code -> R.drawable.ic_zalopay
+            MoneyType.VIETTELPAY.code -> R.drawable.ic_viettelpay
+            MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -140,5 +144,22 @@ object MoneyManager {
         JUANCASH("JuanCash", R.drawable.ic_juancash),
         GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
         ALIPAY("Alipay", R.drawable.ic_alipay_type)
+    }
+
+    fun getMoneyBankTypeTitle(rechType:String):String{
+       return when (rechType) {
+            RechType.ONLINE_PAYMENT.type -> mContext.getString(R.string.recharge_channel_online)
+            RechType.ADMIN_ADD_MONEY.type -> mContext.getString(R.string.recharge_channel_admin)
+            RechType.CFT.type -> mContext.getString(R.string.recharge_channel_cft)
+            RechType.WEIXIN.type -> mContext.getString(R.string.recharge_channel_weixin)
+            RechType.ALIPAY.type -> mContext.getString(R.string.recharge_channel_alipay)
+            RechType.BANK_TRANSFER.type -> mContext.getString(R.string.recharge_channel_bank)
+            RechType.CRYPTO.type -> mContext.getString(R.string.recharge_channel_crypto)
+            RechType.GCASH.type -> mContext.getString(R.string.recharge_channel_gcash)
+            RechType.GRABPAY.type -> mContext.getString(R.string.recharge_channel_grabpay)
+            RechType.PAYMAYA.type -> mContext.getString(R.string.recharge_channel_paymaya)
+            RechType.BETTING_STATION.type -> mContext.getString(R.string.betting_station_deposit)
+            else -> ""
+        }
     }
 }

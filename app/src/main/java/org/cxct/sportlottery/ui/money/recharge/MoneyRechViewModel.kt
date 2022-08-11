@@ -629,6 +629,10 @@ class MoneyRechViewModel(
             OnlineType.PAYMAYA.type -> androidContext.resources.getString(R.string.online_maya)
             OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
             OnlineType.DRAGON_PAY.type -> androidContext.resources.getString(R.string.online_gragon_pay)
+            OnlineType.MOMOPAY.type -> androidContext.resources.getString(R.string.online_momopay)
+            OnlineType.ZALOPAY.type -> androidContext.resources.getString(R.string.online_zalopay)
+            OnlineType.VIETTELPAY.type -> androidContext.resources.getString(R.string.online_viettelpay)
+            OnlineType.RECHARGE_CARD.type -> androidContext.resources.getString(R.string.online_recharge_card_pay)
             else -> ""
         }
     }

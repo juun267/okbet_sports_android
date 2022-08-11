@@ -167,6 +167,50 @@
   },
   {
     "titleNameMap": {
+      "zh": "MoMoPay",
+      "en": "MoMoPay",
+      "vi": "MoMoPay"
+    },
+    "subtitle": "MoMoPay",
+    "image": "ic_momopay",
+    "rechType": "onlinePayment",
+    "onlineType": "102"
+  },
+  {
+    "titleNameMap": {
+      "zh": "ZaloPay",
+      "en": "ZaloPay",
+      "vi": "ZaloPay"
+    },
+    "subtitle": "ZaloPay",
+    "image": "ic_zalopay",
+    "rechType": "onlinePayment",
+    "onlineType": "103"
+  },
+  {
+    "titleNameMap": {
+      "zh": "ViettelPay",
+      "en": "ViettelPay",
+      "vi": "ViettelPay"
+    },
+    "subtitle": "ViettelPay",
+    "image": "ic_viettelpay",
+    "rechType": "onlinePayment",
+    "onlineType": "107"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Recharge Card",
+      "en": "Recharge Card",
+      "vi": "Recharge Card"
+    },
+    "subtitle": "Recharge Card",
+    "image": "ic_recharge_card",
+    "rechType": "onlinePayment",
+    "onlineType": "108"
+  },
+  {
+    "titleNameMap": {
       "zh": "Gcash",
       "en": "Gcash",
       "vi": "Gcash"

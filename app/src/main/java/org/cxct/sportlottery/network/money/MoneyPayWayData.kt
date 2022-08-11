@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MoneyPayWayData(
+    @Deprecated("改用res的資源檔")
     @Json(name = "titleNameMap")
     var titleNameMap: Map<String, String>,
     @Json(name = "subtitle")
@@ -41,5 +42,9 @@ enum class OnlineType(val type : Int) {
     GRABPAY(205),//GrabPay
     PAYMAYA(206),//PayMaya
     PAYPAL(210),//Paypal
-    DRAGON_PAY(211)//Grangon Pay
+    DRAGON_PAY(211),//Grangon Pay
+    MOMOPAY(102),//MoMoPay
+    ZALOPAY(103),//ZaloPay
+    VIETTELPAY(107),//ViettelPay
+    RECHARGE_CARD(108)//刮刮卡充值
 }
