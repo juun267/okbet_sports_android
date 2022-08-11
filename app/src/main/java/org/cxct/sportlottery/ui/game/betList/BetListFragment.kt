@@ -206,7 +206,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initCommonToolbar()
         initToolBar()
 
-        ll_root.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        ll_root.setOnClickListener {
+            betListRefactorAdapter?.closeAllKeyboard()
+            betParlayListRefactorAdapter?.closeAllKeyboard()
+        }
         tv_balance.text = TextUtil.formatMoney(0.0)
     }
 
@@ -286,6 +289,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.betTypeTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 betListRefactorAdapter?.closeAllKeyboard()
+                betParlayListRefactorAdapter?.closeAllKeyboard()
                 when (tab?.position) {
                     //單項投注
                     0 -> {
@@ -447,6 +451,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                     isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size ?: 0 <= 1
                     betListRefactorAdapter?.closeAllKeyboard()
+                    betParlayListRefactorAdapter?.closeAllKeyboard()
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
@@ -473,6 +478,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         it.isInputBet = false; it.isInputWin = false
                     }
                     betListRefactorAdapter?.closeAllKeyboard()
+                    betParlayListRefactorAdapter?.closeAllKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
