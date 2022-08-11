@@ -265,30 +265,35 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     tv_correct_1.text = item.playCateNameMap?.get(PlayCate.CS.value)
                         .getPlayCateName(LanguageManager.getSelectLanguage(context))
 
-                    tv_correct_2.text = item.playCateNameMap?.get(PlayCate.CS_1ST_SD.value)
+                    var correct2 = item.playCateNameMap?.get(PlayCate.CS_1ST_SD.value)
                         .getPlayCateName(LanguageManager.getSelectLanguage(context))
-                        .replace("||", "\n").updatePlayCateColor()
+                    if (correct2.contains("||")) {
+                        val correct2Split = correct2.split("||")
+                        //將換行符後的文字移到前面顯示
+                        correct2 = correct2Split[1] + correct2Split[0]
+                    }
+                    tv_correct_2.text = correct2
 
                     when(item.csTabSelected){
                         PlayCate.CS -> {
-                            tv_correct_1.setTypeface(null, Typeface.BOLD)
-                            tv_correct_2.setTypeface(null, Typeface.NORMAL)
+                            tv_correct_1.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
+                            tv_correct_2.setTextColor(ContextCompat.getColor(context, R.color.color_a3a3a3_666666))
                         }
                         else -> {
-                            tv_correct_1.setTypeface(null, Typeface.NORMAL)
-                            tv_correct_2.setTypeface(null, Typeface.BOLD)
+                            tv_correct_1.setTextColor(ContextCompat.getColor(context, R.color.color_a3a3a3_666666))
+                            tv_correct_2.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
                         }
                     }
 
                     tv_correct_1.setOnClickListener {
-                        tv_correct_1.setTypeface(null, Typeface.BOLD)
-                        tv_correct_2.setTypeface(null, Typeface.NORMAL)
+                        tv_correct_1.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
+                        tv_correct_2.setTextColor(ContextCompat.getColor(context, R.color.color_a3a3a3_666666))
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS, item)
                     }
 
                     tv_correct_2.setOnClickListener {
-                        tv_correct_1.setTypeface(null, Typeface.NORMAL)
-                        tv_correct_2.setTypeface(null, Typeface.BOLD)
+                        tv_correct_1.setTextColor(ContextCompat.getColor(context, R.color.color_a3a3a3_666666))
+                        tv_correct_2.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS_1ST_SD, item)
                     }
                 } else {
