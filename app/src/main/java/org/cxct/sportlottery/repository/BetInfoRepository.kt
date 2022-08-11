@@ -366,6 +366,7 @@ object BetInfoRepository {
             val maxPayout = betInfo?.maxPayout ?: 9999999
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
+            val maxParlayPayout = betInfo?.maxParlayPayout ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
 
             var minBet = betInfo?.minBetMoney ?: 0
@@ -375,7 +376,8 @@ object BetInfoRepository {
 
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
-                maxBet = calculateComboMaxBet(it.value, betInfo?.maxParlayBetMoney)
+                //投注額和賠付額取小計算
+                maxBet = calculateComboMaxBet(it.value, min(maxParlayBetMoney, maxParlayPayout))
             }else{
                 //根據賽事類型的投注上限
                 val matchTypeMaxBetMoney = when {
