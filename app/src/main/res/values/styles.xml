@@ -9,10 +9,12 @@
 
         <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
         <item name="android:colorControlHighlight">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/background</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
         <item name="android:overScrollMode">never</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/color_317FFF_0760D4</item>
 
         <!-- about issue 24880 在設定window背景色時在暗色模式時也會吃這裡 不會吃 night/styles -->

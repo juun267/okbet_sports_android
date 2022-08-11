@@ -1102,4 +1102,6 @@
     <string name="outlets_address_">Địa chỉ：</string>
     <string name="error_recharge_amount_format">Lỗi định dạng số tiền nạp</string>
     <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
+    <string name="my_message">My message</string>
+    <string name="betting_setting">Betting setting</string>
 </resources>

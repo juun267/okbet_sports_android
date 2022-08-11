@@ -14,8 +14,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -74,7 +74,8 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun goGamePublicityPage() {
-        startActivity(Intent(this@SplashActivity, GamePublicityActivity::class.java))
+//        startActivity(Intent(this@SplashActivity, GamePublicityActivity::class.java))
+        startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
         finish()
     }
 

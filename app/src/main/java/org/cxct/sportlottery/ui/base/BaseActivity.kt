@@ -18,10 +18,12 @@ import androidx.lifecycle.viewModelScope
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.event.NULLEvent
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -32,6 +34,8 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -60,7 +64,11 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onStart() {
         super.onStart()
         startCheckToken()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
         RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -392,5 +400,17 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
         }
         return super.getResources()
+    }
+
+    @Subscribe
+    open fun onMainEvent(event: NULLEvent?) {
+        //空方法，不能删除，适配EventBus
+    }
+
+    open fun setStatusbar(bgColor: Int, darkFont: Boolean) {
+        ImmersionBar.with(this).statusBarColor(bgColor)
+            .statusBarDarkFont(darkFont)
+            .fitsSystemWindows(true)
+            .init()
     }
 }

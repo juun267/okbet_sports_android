@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@color/transparent"
+    tools:background="@drawable/bg01_sidebar">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_24"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="@dimen/margin_50"
+        android:textSize="24dp"
+        android:textColor="@color/color_FFF3E1"
+        android:text="@string/setting" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lin_message"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_massage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/my_message" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_01" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/lin_odds_type"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_massage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/left_menu_odds_type_setting" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_01" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/lin_betting_setting"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_massage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/betting_setting" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_01" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/lin_language"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_massage" />
+
+            <TextView
+                android:id="@+id/tv_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/language_en" />
+
+            <ImageView
+                android:id="@+id/iv_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin_10"
+                tools:src="@drawable/icon_language_english" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_01" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/lin_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_massage" />
+
+            <TextView
+                android:id="@+id/tv_appearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/self_limit_per_bet_limit_user_none" />
+
+            <CheckBox
+                android:id="@+id/cb_appearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/selector_skin_switch" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/lin_customer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_customer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/btn_service" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_01" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+
+        <LinearLayout
+            android:id="@+id/lin_question"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/margin_20"
+                android:layout_height="@dimen/margin_20"
+                android:src="@drawable/icon_massage" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="@dimen/margin_10"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/faqs" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_arrow_01" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="64dp"
+            android:alpha="0.1"
+            android:background="@color/color_FFFFFF" />
+    </LinearLayout>
+
+    <androidx.legacy.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_affiliate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:text="@string/btm_navigation_affiliate" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/margin_12"
+                android:background="@color/color_FFFFFF"
+                android:alpha="0.4" />
+
+            <TextView
+                android:id="@+id/tv_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:text="@string/contact" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/margin_12"
+                android:background="@color/color_FFFFFF"
+                android:alpha="0.4" />
+
+            <TextView
+                android:id="@+id/tv_about_us"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:text="@string/about_us" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_responsible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:text="@string/responsible" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/margin_12"
+                android:background="@color/color_FFFFFF"
+                android:alpha="0.4" />
+
+            <TextView
+                android:id="@+id/tv_terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:text="@string/terms_conditions" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/margin_12"
+                android:background="@color/color_FFFFFF"
+                android:alpha="0.4" />
+
+            <TextView
+                android:id="@+id/tv_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginVertical="@dimen/margin_10"
+                android:textSize="@dimen/textSize12sp"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:text="@string/privacy_policy" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

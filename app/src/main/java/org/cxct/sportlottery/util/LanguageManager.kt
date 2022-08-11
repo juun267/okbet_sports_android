@@ -3,7 +3,6 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.util.Log
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -50,9 +49,9 @@ object LanguageManager {
 
     fun getLanguageFlag(context: Context?): Int {
         return when (getSelectLanguage(context)) {
-            Language.ZH -> R.drawable.ic_flag_cn
-            Language.VI -> R.drawable.ic_flag_vi
-            else -> R.drawable.ic_flag_en
+            Language.ZH -> R.drawable.icon_language_chinese
+            Language.VI -> R.drawable.icon_language_vietnam
+            else -> R.drawable.icon_language_english
         }
     }
 

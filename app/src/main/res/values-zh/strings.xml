@@ -189,7 +189,7 @@
     <string name="fish_game">捕鱼游戏</string>
     <string name="premium_odds">特优赔率</string>
     <string name="infomation_center">信息中心</string>
-    <string name="left_menu_odds_type_setting">盘口设定</string>
+    <string name="left_menu_odds_type_setting">盘口设置</string>
     <string name="go_back_home_page">返回首页</string>
     <string name="profile_center">个人中心</string>
     <string name="member_level">会员层级</string>
@@ -907,7 +907,7 @@
     <string name="other_link">其它相关链接</string>
     <string name="about_us">关于我们</string>
     <string name="responsible">博彩责任</string>
-    <string name="terms_conditions">规则与条款</string>
+    <string name="terms_conditions">规则条款</string>
     <string name="privacy_policy">隐私权条款</string>
     <string name="help">是否需要帮助？</string>
     <string name="official_partner">官方合作伙伴</string>
@@ -1117,4 +1117,6 @@
     <string name="outlets_address_">投注站地址：</string>
     <string name="error_recharge_amount_format">充值额格式有誤</string>
     <string name="error_amount_limit_exceeded">金额超过限额</string>
+    <string name="my_message">我的消息</string>
+    <string name="betting_setting">投注设置</string>
 </resources>

@@ -1114,4 +1114,6 @@
     <string name="outlets_address_">Outlets Address：</string>
     <string name="error_recharge_amount_format">The format of the amount you entered is incorrect.</string>
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
+    <string name="my_message">My message</string>
+    <string name="betting_setting">Betting setting</string>
 </resources>
