@@ -40,6 +40,7 @@ import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response
 import timber.log.Timber
 import kotlin.math.abs
+import kotlin.math.min
 
 
 const val BET_INFO_MAX_COUNT = 10
@@ -361,9 +362,11 @@ object BetInfoRepository {
         )
 
         return parlayBetLimitMap.map {
-            var maxBet: Int
+            var maxBet: Long
+            val maxPayout = betInfo?.maxPayout ?: 9999999
             val maxBetMoney = betInfo?.maxBetMoney ?: 9999999
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: 9999999
+            val maxParlayPayout = betInfo?.maxParlayPayout ?: 9999999
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: 9999999
 
             var minBet = betInfo?.minBetMoney ?: 0
@@ -373,7 +376,14 @@ object BetInfoRepository {
 
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
-                maxBet = calculateComboMaxBet(it.value, betInfo?.maxParlayBetMoney)
+                val maxParlayBet = if (maxParlayBetMoney == 0L) {
+                    //如果 maxParlayBetMoney 為 0 使用最大賠付額
+                    maxParlayPayout
+                } else {
+                    //投注額和賠付額取小計算
+                    min(maxParlayBetMoney, maxParlayPayout)
+                }
+                maxBet = calculateComboMaxBet(it.value, maxParlayBet)
             }else{
                 //根據賽事類型的投注上限
                 val matchTypeMaxBetMoney = when {
@@ -382,7 +392,18 @@ object BetInfoRepository {
                     else -> maxBetMoney
                 } ?: 0
 
-                maxBet = matchTypeMaxBetMoney
+                //賠付額上限計算投注限額
+                val oddsPayout =
+                    maxPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
+                        .toLong()
+
+                maxBet = if (matchTypeMaxBetMoney == 0L) {
+                    //如果 matchTypeMaxBetMoney 為 0 使用最大賠付額
+                    oddsPayout
+                } else {
+                    //用戶投注限額與賠付額計算投注限額取小
+                    min(oddsPayout, matchTypeMaxBetMoney)
+                }
 
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
@@ -394,12 +415,12 @@ object BetInfoRepository {
                 if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
                     if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
                         //馬來盤使用者投注上限
-                        maxBet = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
+                        maxBet = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toLong()
                     }
                 } else if (oddsType == OddsType.IDN && !it.value.isOnlyEUType) {
                     if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
                         //印度使用者投注上限
-                        maxBet = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
+                        maxBet = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toLong()
                     }
                 }
             }
@@ -420,10 +441,10 @@ object BetInfoRepository {
 
     private fun calculateComboMaxBet(
         parlayBetLimit: ParlayBetLimit,
-        max: Int?,
-    ): Int {
+        max: Long?,
+    ): Long {
         val tempMax = (max ?: 1).times(parlayBetLimit.num)
-        return tempMax.div(parlayBetLimit.hdOdds.toDouble()).toInt()
+        return tempMax.div(parlayBetLimit.hdOdds.toDouble()).toLong()
     }
 
 

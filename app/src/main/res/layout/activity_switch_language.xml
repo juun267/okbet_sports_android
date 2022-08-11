@@ -9,12 +9,18 @@
         android:id="@+id/il_tool_bar"
         layout="@layout/view_base_tool_bar_no_drawer" />
 
-    <ImageView
-        android:id="@+id/image_logo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_logo_21"
-        android:padding="@dimen/margin_8"/>
+        android:background="@drawable/bg_title">
+
+        <ImageView
+            android:id="@+id/image_logo"
+            android:layout_width="115dp"
+            android:layout_height="56dp"
+            android:padding="@dimen/margin_8"
+            android:src="@drawable/ic_logo" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_select_language"

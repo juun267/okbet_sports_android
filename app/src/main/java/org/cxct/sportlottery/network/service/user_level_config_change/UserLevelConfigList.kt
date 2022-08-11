@@ -12,9 +12,9 @@ data class UserLevelConfigList(
     @Json(name = "growthThreshold")
     val growthThreshold: Int,
     @Json(name = "maxBetMoney")
-    val maxBetMoney: Int,
+    val maxBetMoney: Long,
     @Json(name = "maxParlayBetMoney")
-    val maxParlayBetMoney: Int,
+    val maxParlayBetMoney: Long,
     @Json(name = "maxCpBetMoney")
-    val maxCpBetMoney: Int
+    val maxCpBetMoney: Long
 )
