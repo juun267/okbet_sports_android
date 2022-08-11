@@ -1817,6 +1817,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun updateSportType(gameTypeList: List<Item>) {
         if (args.matchType == MatchType.CS) {
+            //波膽只有FT
+            game_toolbar_bg?.setBackgroundResource(R.drawable.img_home_title_soccer_background)
             ll_sport_type.visibility = View.GONE
             return
         } else {
