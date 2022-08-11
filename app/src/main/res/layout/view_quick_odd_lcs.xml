@@ -13,42 +13,45 @@
         app:layout_constraintBottom_toBottomOf="@id/quick_odd_lcs"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.tabs.TabLayout
+    <RadioGroup
         android:id="@+id/quick_odd_lcs_tab"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="120dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicator="@drawable/custom_quick_indicator"
-        app:tabIndicatorFullWidth="true"
-        app:tabMode="fixed"
-        app:tabPaddingEnd="0dp"
-        app:tabPaddingStart="0dp"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_BBBBBB_333333"
-        app:tabTextAppearance="@style/NoUppercaseTab"
-        app:tabTextColor="@color/color_7F7F7F_999999">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/first_tab"
+        <RadioButton
+            android:id="@+id/quick_odd_lcs_tab_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout="@layout/item_quick_tab" />
+            android:button="@null"
+            android:text="@string/full_game"
+            android:textColor="@color/selector_tab_text_color_light_gray"
+            android:textSize="@dimen/textSize16sp"
+            android:checked="true"
+            android:visibility="visible"
+            tools:visibility="visible" />
 
-<!--    目前只有全場的資料，上半場隱藏    -->
-<!--        <com.google.android.material.tabs.TabItem-->
-<!--            android:id="@+id/second_tab"-->
+        <!--    目前只有全場的資料，上半場隱藏    -->
+<!--        <RadioButton-->
+<!--            android:id="@+id/quick_odd_lcs_tab_2"-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
-<!--            android:layout="@layout/item_quick_tab" />-->
-
-    </com.google.android.material.tabs.TabLayout>
+<!--            android:button="@null"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:text="@string/first_half_game"-->
+<!--            android:textColor="@color/selector_tab_text_color_light_gray"-->
+<!--            android:textSize="@dimen/textSize16sp"-->
+<!--            android:visibility="gone"-->
+<!--            tools:visibility="visible" />-->
+    </RadioGroup>
 
     <LinearLayout
         android:id="@+id/quick_odd_lcs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_191919_FCFCFC"
         android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:paddingBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/quick_odd_lcs_tab"
