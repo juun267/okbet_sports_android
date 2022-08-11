@@ -8,21 +8,21 @@ data class BetInfo(
     @Json(name = "playMaxBetSingleBet")
     val playMaxBetSingleBet: Long?,
     @Json(name = "maxBetMoney")
-    val maxBetMoney: Int?,
+    val maxBetMoney: Long?,
     @Json(name = "minBetMoney")
-    val minBetMoney: Int?,
+    val minBetMoney: Long?,
     @Json(name = "maxPayout")
-    val maxPayout: Int?,
+    val maxPayout: Long?,
     @Json(name = "maxParlayBetMoney")
-    val maxParlayBetMoney: Int?,
+    val maxParlayBetMoney: Long?,
     @Json(name = "minParlayBetMoney")
-    val minParlayBetMoney: Int?,
+    val minParlayBetMoney: Long?,
     @Json(name = "maxParlayPayout")
-    val maxParlayPayout: Int?,
+    val maxParlayPayout: Long?,
     @Json(name = "maxCpBetMoney")
-    val maxCpBetMoney: Int?,
+    val maxCpBetMoney: Long?,
     @Json(name = "minCpBetMoney")
-    val minCpBetMoney: Int?,
+    val minCpBetMoney: Long?,
     @Json(name = "maxCpPayout")
-    val maxCpPayout: Int?
+    val maxCpPayout: Long?
 )

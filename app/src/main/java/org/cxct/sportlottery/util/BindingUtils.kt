@@ -100,7 +100,7 @@ fun TextView.setWeekDay(date: String?) {
 }
 
 @BindingAdapter("betMaximumLimit")
-fun TextView.setBetMaximumLimit(max: Int) {
+fun TextView.setBetMaximumLimit(max: Long) {
     text = TextUtil.formatBetQuota(max)
 }
 

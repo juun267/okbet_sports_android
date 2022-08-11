@@ -76,11 +76,11 @@ data class UserInfoData(
     @Json(name = "growth")
     val growth: Long?,
     @Json(name = "maxBetMoney")
-    val maxBetMoney: Int?,
+    val maxBetMoney: Long?,
     @Json(name = "maxCpBetMoney")
-    val maxCpBetMoney: Int?,
+    val maxCpBetMoney: Long?,
     @Json(name = "maxParlayBetMoney")
-    val maxParlayBetMoney: Int?,
+    val maxParlayBetMoney: Long?,
     @Json(name = "discount")
     val discount: Float?,
     @Json(name = "verified")
