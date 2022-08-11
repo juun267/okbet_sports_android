@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MoneyPayWayData(
+    @Deprecated("改用res的資源檔")
     @Json(name = "titleNameMap")
     var titleNameMap: Map<String, String>,
     @Json(name = "subtitle")

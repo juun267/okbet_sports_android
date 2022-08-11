@@ -50,7 +50,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
 
         fun bind(item: MoneyPayWayData) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.image))
-            tvType.text = item.titleNameMap[LanguageManager.getSelectLanguage(itemView.context).key]
+            tvType.text = MoneyManager.getMoneyBankTypeTitle(item.rechType)
         }
 
         companion object {
