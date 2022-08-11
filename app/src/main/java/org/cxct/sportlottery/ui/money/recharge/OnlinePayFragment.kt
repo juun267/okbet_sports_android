@@ -355,7 +355,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             rechCfgsList.forEach { it ->
                 val selectBank =
                     BtsRvAdapter.SelectBank(
-                        "${viewModel.getOnlinePayTypeName(it.onlineType)} ${count++}",
+                        "${MoneyManager.getOnlinePayTypeName(it.onlineType)} ${count++}",
                         typeIcon
                     )
                 payRoadSpannerList.add(selectBank)
@@ -364,7 +364,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             rechCfgsList.forEach { it ->
                 val selectBank =
                     BtsRvAdapter.SelectBank(
-                        "${viewModel.getOnlinePayTypeName(it.onlineType)} $count",
+                        "${MoneyManager.getOnlinePayTypeName(it.onlineType)} $count",
                         typeIcon
                     )
                 payRoadSpannerList.add(selectBank)
