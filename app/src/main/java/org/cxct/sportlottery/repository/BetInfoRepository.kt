@@ -376,8 +376,14 @@ object BetInfoRepository {
 
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則
-                //投注額和賠付額取小計算
-                maxBet = calculateComboMaxBet(it.value, min(maxParlayBetMoney, maxParlayPayout))
+                val maxParlayBet = if (maxParlayBetMoney == 0L) {
+                    //如果 maxParlayBetMoney 為 0 使用最大賠付額
+                    maxParlayPayout
+                } else {
+                    //投注額和賠付額取小計算
+                    min(maxParlayBetMoney, maxParlayPayout)
+                }
+                maxBet = calculateComboMaxBet(it.value, maxParlayBet)
             }else{
                 //根據賽事類型的投注上限
                 val matchTypeMaxBetMoney = when {
@@ -391,8 +397,13 @@ object BetInfoRepository {
                     maxPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
                         .toLong()
 
-                //用戶投注限額與賠付額計算投注限額取小
-                maxBet = min(oddsPayout, matchTypeMaxBetMoney)
+                maxBet = if (matchTypeMaxBetMoney == 0L) {
+                    //如果 matchTypeMaxBetMoney 為 0 使用最大賠付額
+                    oddsPayout
+                } else {
+                    //用戶投注限額與賠付額計算投注限額取小
+                    min(oddsPayout, matchTypeMaxBetMoney)
+                }
 
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
