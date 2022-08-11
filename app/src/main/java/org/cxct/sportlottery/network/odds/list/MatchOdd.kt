@@ -59,6 +59,8 @@ data class MatchOdd(
     }
 
     var runningTime: String = ""
+
+    var csTabSelected: PlayCate = PlayCate.CS
 }
 
 enum class TimeCounting(val value: Int) {

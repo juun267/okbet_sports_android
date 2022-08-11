@@ -12,6 +12,8 @@ data class Menu(
     val today: Sport, //今日
     @Json(name = "early")
     val early: Sport, //早盘
+    @Json(name = "cs")
+    val cs: Sport, //波胆
     @Json(name = "parlay")
     val parlay: Sport, //串连
     @Json(name = "outright")

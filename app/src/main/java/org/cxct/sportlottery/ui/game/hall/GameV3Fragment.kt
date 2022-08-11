@@ -325,7 +325,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             getPlaySelectedCode()
         ).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
-
             leagueListener = LeagueListener {
                 if (it.unfold == FoldState.FOLD.code) {
                     Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
@@ -386,6 +385,16 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     if (viewModel.checkLoginStatus()) {
                         navMatchDetailPage(matchId, matchInfoList, liveVideo)
                     }
+                },
+                clickCsTabListener = { playCate, matchOdd ->
+                    data.forEachIndexed { index, l ->
+                        l.matchOdds.find { m ->
+                            m == matchOdd
+                        }?.let {
+                            it.csTabSelected = playCate
+                            updateLeagueBySelectCsTab(index, matchOdd)
+                        }
+                    }
                 }
             )
         }
@@ -431,6 +440,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
             MatchType.TODAY -> getString(R.string.home_tab_today)
             MatchType.EARLY -> getString(R.string.home_tab_early)
+            MatchType.CS -> getString(R.string.home_tab_cs)
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
@@ -456,8 +466,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             initMatchCategoryPagerPosition()
             when (tab?.text.toString()) { //固定寫死
                 getString(R.string.game_tab_league_odd) -> { //賽事
-                    game_toolbar_calendar.visibility = if (args.matchType == MatchType.EARLY) View.VISIBLE else View.GONE
-                    game_filter_type_list.visibility = if (game_toolbar_calendar.isSelected) View.VISIBLE else View.GONE
+                    game_toolbar_calendar.visibility =
+                        if (args.matchType == MatchType.EARLY || args.matchType == MatchType.CS) View.VISIBLE else View.GONE
+                    game_filter_type_list.visibility =
+                        if (game_toolbar_calendar.isSelected) View.VISIBLE else View.GONE
                     if (args.matchType == MatchType.OTHER) {
                         game_play_category.visibility = View.VISIBLE
                     }
@@ -543,7 +555,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun setupToolbar() {
         when (args.matchType) {
-            MatchType.OTHER -> game_toolbar_match_type.text =
+            MatchType.CS, MatchType.OTHER -> game_toolbar_match_type.text =
                 gameToolbarMatchTypeText(args.matchType)
             else -> {
             }
@@ -578,14 +590,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         game_toolbar_calendar.apply {
             visibility = when (args.matchType) {
                 MatchType.EARLY -> View.VISIBLE
+                MatchType.CS -> View.VISIBLE
                 else -> View.GONE
             }
-
             setOnClickListener {
                 val newSelectedStatus = !isSelected
                 mCalendarSelected = newSelectedStatus
                 isSelected = newSelectedStatus
-
                 view?.game_filter_type_list?.visibility = when (game_toolbar_calendar.isSelected) {
                     true -> View.VISIBLE
                     false -> View.GONE
@@ -659,7 +670,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         game_bg_layer3?.visibility = when (args.matchType) {
-            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
+            MatchType.TODAY, MatchType.EARLY, MatchType.CS, MatchType.PARLAY, MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
     }
@@ -718,7 +729,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
 
         game_filter_type_list.visibility =
-            if (args.matchType == MatchType.EARLY && mCalendarSelected) {
+            if ((args.matchType == MatchType.EARLY || args.matchType == MatchType.CS) && mCalendarSelected) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -855,6 +866,10 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 MatchType.EARLY -> {
                     updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
+                }
+
+                MatchType.CS -> {
+                    updateSportType(it?.sportMenuData?.menu?.cs?.items ?: listOf())
                 }
 
                 MatchType.PARLAY -> {
@@ -1214,7 +1229,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START || (args.matchType == MatchType.OTHER && childMatchType == MatchType.OTHER)) && !it
 
             game_toolbar_match_type.isVisible = !it
-            game_toolbar_calendar.isVisible = args.matchType == MatchType.EARLY && !it
+            game_toolbar_calendar.isVisible =
+                (args.matchType == MatchType.EARLY || args.matchType == MatchType.CS) && !it
             leagueAdapter.removePreloadItem()
             hideLoading()
         }
@@ -1319,7 +1335,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             mLeagueIsFiltered = leagueList.isNotEmpty()
             game_toolbar_champion.isSelected = mLeagueIsFiltered
-            sport_type_list.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
+            sport_type_list.visibility =
+                if (mLeagueIsFiltered || isRecommendOutright() || args.matchType == MatchType.CS) View.GONE else View.VISIBLE
         }
 
         viewModel.checkInListFromSocket.observe(this.viewLifecycleOwner) { leagueChangeEvent ->
@@ -1366,6 +1383,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
             MatchType.AT_START -> viewModel.sportMenuResult.value?.sportMenuData?.atStart?.num ?: 0 > 0
             MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
+            MatchType.CS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.cs?.num ?: 0 > 0
             MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
             MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
             MatchType.EPS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.eps?.num ?: 0 > 0
@@ -1530,13 +1548,21 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         val leagueOdds = leagueAdapter.data
                         leagueOdds.sortOddsMap()
-                        leagueOdds.updateOddsSort(
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
-                            playCategoryAdapter
-                        ) //篩選玩法
+
+                        //MatchType為波膽時, 不透過playCategory選中狀態進行更新, 於下方翻譯更新直接更新
+                        if (args.matchType != MatchType.CS) {
+                            leagueOdds.updateOddsSort(
+                                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                                playCategoryAdapter
+                            ) //篩選玩法
+                        }
 
                         //翻譯更新
                         leagueOdds.forEach { LeagueOdd ->
+                            //波膽 玩法名稱翻譯更新
+                            if (args.matchType == MatchType.CS) {
+                                LeagueOdd.playCateNameMap = PlayCateMenuFilterUtils.filterPlayCateNameMap(GameType.FT.name, PlayCate.CS.value)
+                            }
                             LeagueOdd.matchOdds.forEach { MatchOdd ->
                                 if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
                                     //馬克說betPlayCateNameMap還是由socket更新
@@ -1555,7 +1581,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent, args.matchType
                                     )
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
@@ -1575,7 +1601,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         epsOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent, args.matchType
                                     )
                                 } == true && !leagueOdd.isClose) {
                                 updateBetInfo(leagueOdd, oddsChangeEvent)
@@ -1790,6 +1816,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
+        if (args.matchType == MatchType.CS) {
+            //波膽只有FT
+            game_toolbar_bg?.setBackgroundResource(R.drawable.img_home_title_soccer_background)
+            ll_sport_type.visibility = View.GONE
+            return
+        } else {
+            ll_sport_type.visibility = View.VISIBLE
+        }
         gameTypeAdapter.dataSport = gameTypeList
 
         //post待view繪製完成
@@ -1845,11 +1879,11 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 sport_type_list?.visibility = if (mLeagueIsFiltered || isRecommendOutright()) View.GONE else View.VISIBLE
                 game_toolbar_sport_type?.visibility = View.VISIBLE
                 game_toolbar_calendar?.apply {
-                    visibility = when (args.matchType) {
-                        MatchType.EARLY -> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    isSelected = mCalendarSelected
+                        visibility = when (args.matchType) {
+                            MatchType.EARLY, MatchType.CS -> View.VISIBLE
+                            else -> View.GONE
+                        }
+                        isSelected = mCalendarSelected
                 }
 
                 game_play_category?.visibility = if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ||
@@ -2055,8 +2089,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = when (args.matchType) {
+            MatchType.CS -> {
+                GameType.FT
+            }
+            else -> {
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            }
+        }
 
         gameType?.let {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
@@ -2106,8 +2146,14 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         playCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = when (args.matchType) {
+            MatchType.CS -> {
+                GameType.FT
+            }
+            else -> {
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            }
+        }
 
         gameType?.let {
             matchInfo?.let { matchInfo ->

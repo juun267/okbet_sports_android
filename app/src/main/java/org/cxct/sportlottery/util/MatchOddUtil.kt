@@ -64,7 +64,7 @@ object MatchOddUtil {
     fun MutableMap<String, MutableList<Odd?>?>.updateOddsDiscount(discount: Float, newDiscount: Float) {
         this.toMap().forEach { (_, value) ->
             value?.toList()?.forEach { odd ->
-                odd?.updateDiscount(discount, newDiscount)
+                if (!keys.contains(PlayCate.LCS.value)) odd?.updateDiscount(discount, newDiscount)
             }
         }
     }
