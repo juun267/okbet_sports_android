@@ -90,6 +90,14 @@ object WithdrawRepository {
         }
     }
 
+    suspend fun getRechCfg(): Response<MoneyRechCfgResult> {
+        val response = OneBoSportApi.moneyService.getRechCfg()
+        if (response.isSuccessful) {
+            _moneyRechCfgResult.postValue(response.body())
+        }
+        return response
+    }
+
     suspend fun checkWithdrawSystem(): Response<MoneyRechCfgResult> {
         val response = OneBoSportApi.moneyService.getRechCfg()
         if (response.isSuccessful) {
@@ -206,23 +214,24 @@ object WithdrawRepository {
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
+        getRechCfg().let {
+            val twoFactorStatus = checkTwoFactorStatus()
+            val needUpdatePassWord = checkNeedUpdatePassWord()
 
-        val twoFactorStatus = checkTwoFactorStatus()
-        val needUpdatePassWord = checkNeedUpdatePassWord()
-
-        when {
-            needUpdatePassWord -> {
-                //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
-                if (twoFactorStatus == false) {
-                    sConfigData?.enterCertified = SecurityEnter.SETTING_PW.ordinal
-                    mShowSecurityDialog.value = Event(true)
-                } else if (twoFactorStatus == true) {
-                    //不需要簡訊驗證，提示需更新提款密碼
-                    mNeedToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
+            when {
+                needUpdatePassWord -> {
+                    //是否需要顯示簡訊驗證 false: 需顯示簡訊驗證
+                    if (twoFactorStatus == false) {
+                        sConfigData?.enterCertified = SecurityEnter.SETTING_PW.ordinal
+                        mShowSecurityDialog.value = Event(true)
+                    } else if (twoFactorStatus == true) {
+                        //不需要簡訊驗證，提示需更新提款密碼
+                        mNeedToUpdateWithdrawPassword.postValue(Event(needUpdatePassWord))
+                    }
                 }
-            }
-            else -> {
-                checkSettingProfileInfoComplete()
+                else -> {
+                    checkSettingProfileInfoComplete()
+                }
             }
         }
     }
