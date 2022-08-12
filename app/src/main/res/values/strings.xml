@@ -391,7 +391,7 @@
     <string name="title_address">Address：</string>
     <string name="title_deposit_money">Deposit Amount</string>
     <string name="title_payer">Account</string>
-<!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
+    <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
     <string name="edt_hint_deposit_money">Limit %1$s %2$s～%3$s</string>
     <string name="edt_hint_payer">Please enter your account</string>
     <string name="title_real_name">Verified name</string>
@@ -1127,4 +1127,6 @@
     <string name="current_version">当前版本</string>
     <string name="updatable_version">可更新</string>
     <string name="join_us_win_wealth">加入我们，共赢财富</string>
+    <string name="personal_information">个人信息</string>
+    <string name="cancel_account">注销账号</string>
 </resources>

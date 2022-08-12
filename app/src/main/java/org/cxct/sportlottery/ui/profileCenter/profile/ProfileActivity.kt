@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -117,7 +118,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_real_name.visibility =
                 if (enableWithdrawFullName == FLAG_OPEN) View.VISIBLE else View.GONE
         }
-
+        tv_toolbar_title.text = getString(R.string.personal_information)
     }
 
     private fun initButton() {
