@@ -9,32 +9,28 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
-import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
-import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
  * @app_destination 右上選單
@@ -45,6 +41,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -296,6 +294,24 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 startActivity(Intent(context, WithdrawActivity::class.java))
             }
         }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(requireActivity())
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(requireActivity())
+                else
+                    viewModel.checkRechargeSystem()
+            }
+        }
     }
 
     private fun initEvent() {
@@ -312,7 +328,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setVisibilityByCreditSystem()
             setOnClickListener {
                 avoidFastDoubleClick()
-                viewModel.checkRechargeSystem()
+                viewModel.checkRechargeKYCVerify()
             }
         }
 
@@ -321,10 +337,9 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setVisibilityByCreditSystem()
             setOnClickListener {
                 avoidFastDoubleClick()
-                viewModel.checkWithdrawSystem()
+                viewModel.checkWithdrawKYCVerify()
             }
         }
-
 
         //版本更新
         menu_version_update.setOnClickListener {

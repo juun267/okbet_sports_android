@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
@@ -16,6 +15,7 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
@@ -193,6 +193,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         notifyItemChanged(position, PayLoadEnum.EXPAND)
     }
 
+    fun updateLeagueBySelectCsTab(position: Int, matchOdd: MatchOdd){
+        notifyItemChanged(position, matchOdd)
+    }
+
     // 限制全列表更新頻率
     fun limitRefresh() {
         if (isLock) {
@@ -233,6 +237,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                             }
                         }
                     }
+                }
+
+                is MatchOdd -> {
+                    (holder as ItemViewHolder).updateBySelectCsTab(payloads.first() as MatchOdd)
                 }
             }
         }
@@ -312,13 +320,16 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
-
         fun updateByBetInfo() {
             leagueOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
         }
 
         fun updateByPlayCate() {
             leagueOddAdapter.updateByPlayCate()
+        }
+
+        fun updateBySelectCsTab(matchOdd: MatchOdd){
+            leagueOddAdapter.updateBySelectCsTab(matchOdd)
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
@@ -357,6 +368,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = leagueOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
+                        Log.d("hjq", "222")
                         item.matchOdds
                     }.onEach {
                         it.matchInfo?.leagueName = item.league.name

@@ -28,6 +28,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
+import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
@@ -337,6 +338,22 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
  */
 fun View.setVisibilityByCreditSystem() {
     visibility = if (isCreditSystem()) View.GONE else View.VISIBLE
+}
+
+/**
+ * sConfigData?.realNameWithdrawVerified -> 判斷提現有沒有開啟KYC認證
+ * enableKYCVerify的判斷已經棄用
+ */
+fun isKYCVerifyWithdrawOpen():Boolean{
+   return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+}
+
+/**
+ * sConfigData?.realNameRechargeVerified -> 判斷充值有沒有開啟KYC認證
+ * enableKYCVerify的判斷已經棄用
+ */
+fun isKYCVerifyRechargeOpen():Boolean{
+    return sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
 }
 
 /**

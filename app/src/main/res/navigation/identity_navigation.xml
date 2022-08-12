@@ -2,7 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/verifyIdentityFragment">
+    android:id="@+id/identity_navigation"
+    app:startDestination="@id/verifyKYCFragment">
 
     <fragment
         android:id="@+id/verifyIdentityFragment"
@@ -46,4 +47,31 @@
             app:popExitAnim="@anim/exit_to_right"
             />
     </fragment>
+
+    <fragment
+        android:id="@+id/verifyKYCFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyKYCFragment"
+        android:label="VerifyKYCFragment"
+        tools:layout="@layout/fragment_verify_identity_kyc">
+
+        <action
+            android:id="@+id/action_verifyKYCFragment_to_verifyStatusFragment"
+            app:destination="@id/verifyStatusFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/verifyStatusFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.VerifyStatusFragment"
+        android:label="VerifyStatusFragment"
+        tools:layout="@layout/fragment_verify_status">
+
+        <action
+            android:id="@+id/action_verifyStatusFragment_to_verifyKYCFragment"
+            app:destination="@id/verifyKYCFragment" />
+
+    </fragment>
+
 </navigation>

@@ -46,5 +46,5 @@
             android:layout_height="8dp"
             android:layout_below="@id/league_odd_list"
             android:background="@color/color_191919_FCFCFC" />
-
+        <!-- 快選元件 -->
 </RelativeLayout>

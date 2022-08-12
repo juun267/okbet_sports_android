@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import kotlinx.coroutines.DelicateCoroutinesApi
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -56,6 +57,7 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -227,7 +229,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         btn_register.setOnClickListener {
             closeLeftMenu()
-            startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@GameActivity, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
+            }
         }
 
         tv_odds_type.setOnClickListener {
@@ -430,6 +436,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countCS =
+                sportMenuResult?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
             val countParlay =
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
@@ -466,12 +474,22 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_number?.text = countEarly.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5)?.customView?.apply {
+            //TODO 於ONbet分支調整此處判斷, 共用SimplifyFunction中多站點判斷方法
+            if (getString(R.string.app_name) != "ONbet") {
+                tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 5)?.customView?.apply {
+                    tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
+                    tv_number?.text = countCS.toString()
+                }
+            }
+
+            tabLayout.getTabAt(
+                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 6
+            )?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 6)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 7)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
                 tv_number?.text = countParlay.toString()
             }
@@ -508,6 +526,18 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
+        MatchType.CS to 4,
+        MatchType.OUTRIGHT to 5,
+        MatchType.PARLAY to 6,
+        MatchType.EPS to 7,
+        MatchType.MAIN to 99
+    )
+
+    private val matchTypeTabPositionONbetMap = mapOf<MatchType, Int>(
+        MatchType.IN_PLAY to 0,
+        MatchType.AT_START to 1,
+        MatchType.TODAY to 2,
+        MatchType.EARLY to 3,
         MatchType.OUTRIGHT to 4,
         MatchType.PARLAY to 5,
         MatchType.EPS to 6,
@@ -525,7 +555,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             null
         }
         else -> {
-            when (val tabPosition = matchTypeTabPositionMap[matchType]) {
+            //TODO 於ONbet分支調整此處判斷, 共用SimplifyFunction中多站點判斷方法
+            when (val tabPosition = when (getString(R.string.app_name)) {
+                "ONbet" -> matchTypeTabPositionONbetMap[matchType]
+                else -> matchTypeTabPositionMap[matchType]
+            }) {
                 null -> {
                     Timber.e("There is not tab position of $matchType")
                     null
@@ -555,6 +589,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
             getMatchTypeTabPosition(MatchType.EARLY) -> {
                 viewModel.switchMatchType(MatchType.EARLY)
+            }
+            getMatchTypeTabPosition(MatchType.CS) -> {
+                viewModel.switchMatchType(MatchType.CS)
             }
             getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
                 /**
@@ -836,11 +873,24 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     else -> {
                         //僅有要切換的MatchType與當前選中的Tab相同時才繼續進行後續的切頁行為, 避免快速切頁導致切頁邏輯進入無窮迴圈
                         when {
-                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.IN_PLAY) ||
-                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(MatchType.AT_START) ||
-                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.TODAY) ||
-                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.EARLY) ||
-                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(MatchType.OUTRIGHT) ||
+                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.IN_PLAY
+                            ) ||
+                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.AT_START
+                            ) ||
+                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.TODAY
+                            ) ||
+                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.EARLY
+                            ) ||
+                                    it == MatchType.CS && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.CS
+                            ) ||
+                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.OUTRIGHT
+                            ) ||
                                     it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(MatchType.PARLAY)
                             -> {
                                 navGameFragment(it)

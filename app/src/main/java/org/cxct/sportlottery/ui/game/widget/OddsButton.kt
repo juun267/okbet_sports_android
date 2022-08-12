@@ -127,7 +127,7 @@ class OddsButton @JvmOverloads constructor(
 
     }
 
-    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false) {
+    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false, isOtherBtn: Boolean? = false) {
         mOdd = odds
         mOddsType = oddsType
 
@@ -147,7 +147,7 @@ class OddsButton @JvmOverloads constructor(
                 betStatus = BetStatus.DEACTIVATED.code
                 return
             }
-            (oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) -> {
+            ((oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) && isOtherBtn == false) -> {
                 betStatus = BetStatus.LOCKED.code
                 return
             }
@@ -176,11 +176,16 @@ class OddsButton @JvmOverloads constructor(
                 }
             } else {
                 visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() -> View.VISIBLE
                     else -> View.GONE
                 }
 
                 text = when {
+                    playCateCode.isCSType() -> {
+                        odds?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds?.name
+                    }
                     playCateCode.isOUType() -> {
                         //越南語大小顯示又要特殊處理(用O/U)
                         val language =
@@ -392,6 +397,10 @@ class OddsButton @JvmOverloads constructor(
     /**
      * 玩法判斷
      * */
+    private fun String.isCSType(): Boolean {
+        return this.contains(PlayCate.CS.value) && !this.isCombination()
+    }
+
     private fun String.isOUType(): Boolean {
         return this.contains(PlayCate.OU.value) && !this.isCombination()
     }

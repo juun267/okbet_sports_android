@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
@@ -31,7 +32,6 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
 
 class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
@@ -151,7 +151,12 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@MainActivity, RegisterOkActivity::class.java))
+            }else{
+                startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
+            }
+
         }
 
         iv_language.setOnClickListener {

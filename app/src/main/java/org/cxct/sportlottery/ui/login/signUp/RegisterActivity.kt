@@ -15,11 +15,11 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
@@ -432,7 +432,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun setupRegisterIdentity() {
         with(binding) {
             etIdentity.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
 //            etIdentity.setEndIcon(R.drawable.ic_camera)
 
@@ -505,7 +505,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         with(binding) {
             //顯示隱藏該選項
             etIdentityType.visibility =
-                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
@@ -623,7 +623,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 checkRegisterListener { viewModel.checkAccountExist(it) }
             }
             eetLoginPassword.apply {
-                checkRegisterListener { viewModel.checkLoginPassword(it, confirmPassword = eet_confirm_password.text.toString()) }
+                checkRegisterListener { viewModel.checkLoginPassword(it, confirmPassword = eetConfirmPassword.text.toString()) }
             }
             eetConfirmPassword.apply {
                 checkRegisterListener {
@@ -639,9 +639,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             eetBirth.apply {
                 checkRegisterListener { viewModel.checkBirth(it) }
             }
-            eetIdentity.apply {
-                checkRegisterListener { viewModel.checkIdentity(it) }
-            }
+
             eetSalary.apply {
                 checkRegisterListener { viewModel.checkSalary(it) }
             }
@@ -747,9 +745,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     deviceId,
                     birth = eetBirth.text.toString().replace(" ", ""), //傳給後端的不需要有空白間隔
                     identity = eetIdentity.text.toString(),
-                    identityType = identityTypeSelectedData?.code,
                     salarySource = salarySourceSelectedData?.code,
-                    bettingShop = bettingShopSelectedData?.code
+                    bettingShop = bettingShopSelectedData?.code,
+                    firstFile = null,
+                    identityType = null,
+                    identityNumber = null,
+                    secndFile = null,
+                    identityTypeBackup = null,
+                    identityNumberBackup = null
                 )
             }
         }
@@ -821,7 +824,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     false
                 )
                 if (it == null) {
-                    viewModel.queryPlatform(eet_recommend_code.text.toString())
+                    viewModel.queryPlatform(binding.eetRecommendCode.text.toString())
                 } else {
                     etBettingShopSelectTrue()
                 }
@@ -964,8 +967,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                     itemSelectedListener = {
                         bettingShopSelectedData = it
                         eetBettingShop.setText(it?.showName)
-                        eet_recommend_code.setText("")
-                        et_recommend_code.hasFocus = false
+                        binding.eetRecommendCode.setText("")
+                        binding.etRecommendCode.hasFocus = false
 
                     }
                 ) {
@@ -1002,12 +1005,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             if (it != null) {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_upload_done)
                 binding.endButton.setImageResource(R.drawable.ic_upload_done)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString())
+//                viewModel.checkIdentity()
                 isUploaded = true
             } else {
 //                binding.etIdentity.setEndIcon(R.drawable.ic_camera)
                 binding.endButton.setImageResource(R.drawable.ic_camera)
-                viewModel.checkIdentity(binding.eetIdentity.text.toString())
+//                viewModel.checkIdentity()
                 isUploaded = false
             }
         }
@@ -1182,26 +1185,26 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun etBettingShopSelectTrue() {
-        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
-        bettingShopSpinner.isEnabled = true
-        bettingShopSpinner.isClickable = true
-        etBettingShop.isEnabled = true
-        etBettingShop.isClickable = true
-        eetBettingShop.setText(bettingShopSelectedData?.showName)
-        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
+        binding.etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        binding.bettingShopSpinner.isEnabled = true
+        binding.bettingShopSpinner.isClickable = true
+        binding.etBettingShop.isEnabled = true
+        binding.etBettingShop.isClickable = true
+        binding.eetBettingShop.setText(bettingShopSelectedData?.showName)
+        binding.eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
     }
 
     private fun etBettingShopSelectFalse(eetBetting: String) {
-        etBettingShop.setEndIcon(null)
-        bettingShopSpinner.isEnabled = false
-        bettingShopSpinner.isClickable = false
+        binding.etBettingShop.setEndIcon(null)
+        binding.bettingShopSpinner.isEnabled = false
+        binding.bettingShopSpinner.isClickable = false
 
-        etBettingShop.isEnabled = false
-        etBettingShop.isClickable = false
+        binding.etBettingShop.isEnabled = false
+        binding.etBettingShop.isClickable = false
 
-        etBettingShop.hasFocus = false
-        eetBettingShop.setText(eetBetting)
-        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
+        binding.etBettingShop.hasFocus = false
+        binding.eetBettingShop.setText(eetBetting)
+        binding.eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
     }
 
     override fun onBackPressed() {

@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -42,6 +43,8 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     enum class VerifiedType(val value: Int) {
         NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
@@ -202,7 +205,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+            ll_verified.isVisible = sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value || sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
             when (it?.verified) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
@@ -343,6 +346,24 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 if (!b) phoneNumCheckDialog(this, supportFragmentManager)
             }
         }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
+                else
+                    viewModel.checkRechargeSystem()
+            }
+        }
     }
 
     private fun setWithdrawInfo(userInfo: UserInfo) {
@@ -379,4 +400,5 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun getUserInfo() {
         viewModel.getUserInfo()
     }
+
 }

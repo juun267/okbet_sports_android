@@ -16,6 +16,6 @@ interface UploadImgService {
     suspend fun uploadImg(@Part parts: List<MultipartBody.Part>): Response<UploadImgResult>
 
     @POST(UPLOAD_VERIFY_PHOTO)
-    suspend fun uploadVerifyPhoto(@Body uploadVerifyPhotoRequest: UploadVerifyPhotoRequest): Response<UploadVerifyPhotoResult>
+    suspend fun uploadVerifyPhoto(@Body uploadVerifyPhotoKYCRequest: UploadVerifyPhotoKYCRequest): Response<UploadVerifyPhotoResult>
 
 }

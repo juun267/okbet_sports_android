@@ -185,7 +185,8 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
                 else -> {
                     loading()
-                    viewModel.uploadVerifyPhoto(docFile!!, photoFile!!)
+                    //3523需求 API結構調整，舊有邏輯不適用
+                    //viewModel.uploadVerifyPhoto(docFile!!, photoFile!!)
                 }
             }
         }

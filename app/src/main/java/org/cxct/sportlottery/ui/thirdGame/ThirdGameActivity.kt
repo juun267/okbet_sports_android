@@ -20,14 +20,16 @@ import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActi
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.ToastUtil
 
 open class ThirdGameActivity : WebActivity() {
 
     private var mUserInfo: UserInfo? = null
 
+    //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     private val mGameCategoryCode: String? by lazy { intent?.getStringExtra(GAME_CATEGORY_CODE) }
 
@@ -66,14 +68,14 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashSave() {
                 if (checkLogin()) {
-                    viewModel.checkRechargeSystem()
+                    viewModel.checkRechargeKYCVerify()
                 }
             }
 
             override fun onCashGet() {
                 if (checkLogin()) {
                     avoidFastDoubleClick()
-                    viewModel.checkWithdrawSystem()
+                    viewModel.checkWithdrawKYCVerify()
                 }
             }
         })
@@ -215,5 +217,24 @@ open class ThirdGameActivity : WebActivity() {
                 startActivity(Intent(this, WithdrawActivity::class.java))
             }
         }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(this)
+                else
+                    viewModel.checkRechargeSystem()
+            }
+        }
     }
+
 }

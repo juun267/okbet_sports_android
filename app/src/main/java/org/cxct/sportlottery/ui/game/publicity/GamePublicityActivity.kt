@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.F
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -47,18 +48,23 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         const val PUBLICITY_MATCH_ID = "publicityMatchId"
         const val PUBLICITY_MATCH_TYPE = "publicityMatchType"
         const val PUBLICITY_MATCH_LIST = "publicityMatchList"
+        const val SHOW_KEY_VERIFY = "showKYCVerify"
 
-        fun reStart(context: Context) {
+        fun reStart(context: Context, showKYCVerify: Boolean = false) {
             if (MultiLanguagesApplication.mInstance.doNotReStartPublicity) {
                 MultiLanguagesApplication.mInstance.doNotReStartPublicity = false
                 AppManager.currentActivity().finish()
                 return
             }
             val intent = Intent(context, GamePublicityActivity::class.java)
+            intent.putExtra(SHOW_KEY_VERIFY, showKYCVerify)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
             if (context is Activity) {
-                context.overridePendingTransition(R.anim.push_right_to_left_enter, R.anim.push_right_to_left_exit)
+                context.overridePendingTransition(
+                    R.anim.push_right_to_left_enter,
+                    R.anim.push_right_to_left_exit
+                )
             }
         }
     }
@@ -78,6 +84,9 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         //進入宣傳頁，優先跳出這個視窗(不論有沒有登入，每次都要跳)
 //        if (sConfigData?.thirdOpen != FLAG_OPEN)
         MultiLanguagesApplication.showAgeVerifyDialog(this)
+        if (intent.getBooleanExtra(SHOW_KEY_VERIFY, false)) {
+            MultiLanguagesApplication.showKYCVerifyDialog(this)
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -319,7 +328,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun goRegisterPage() {
-        startActivity(Intent(this@GamePublicityActivity, RegisterActivity::class.java))
+        if (getString(R.string.app_name).equals("OKbet")) {
+            startActivity(Intent(this@GamePublicityActivity, RegisterOkActivity::class.java))
+        } else {
+            startActivity(Intent(this@GamePublicityActivity, RegisterActivity::class.java))
+        }
     }
 
     private fun goLoginPage() {

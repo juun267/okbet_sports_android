@@ -76,12 +76,12 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                     startActivity(Intent(context, GamePublicityActivity::class.java))
                 },
                 { //recharge
-                    viewModel.checkRechargeSystem()
+                    viewModel.checkRechargeKYCVerify()
                     closeMenuFragment()
                 },
                 { //withdraw
                     avoidFastDoubleClick()
-                    viewModel.checkWithdrawSystem()
+                    viewModel.checkWithdrawKYCVerify()
                     closeMenuFragment()
                 },
                 { //member level
@@ -179,6 +179,8 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
     private lateinit var searchResultAdapter: CommonAdapter<SearchResult>
 
 
@@ -788,6 +790,24 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
             it.getContentIfNotHandled()?.let {
                 closeMenuFragment()
                 startActivity(Intent(context, MyFavoriteActivity::class.java))
+            }
+        }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(requireActivity())
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    MultiLanguagesApplication.showKYCVerifyDialog(requireActivity())
+                else
+                    viewModel.checkRechargeSystem()
             }
         }
     }

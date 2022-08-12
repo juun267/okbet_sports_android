@@ -86,7 +86,9 @@ class PublicityRecommendViewHolder(
                         matchId = matchId,
                         matchInfoList = matchInfoList
                     )
-                })
+                },
+                clickCsTabListener = { _, _ -> }
+            )
         }
 
         //GameTypeView

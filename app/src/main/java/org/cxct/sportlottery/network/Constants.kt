@@ -181,6 +181,16 @@ object Constants {
         }
     }
 
+    //KYC人工客服審核
+    fun getKYVUrl(context: Context): String? {
+        return try {
+              "https://okbetsports.ladesk.com/scripts/generateWidget.php?v=5.30.5.9&t=1658377154&cwid=6h5p37dx&cwrt=V&cwt=phone_popout&vid=qh2gmm3j339kbfmwswxdikkz8woqc&ud=%7B%7D&pt=Document&ref=file%3A%2F%2F%2FUsers%2Flingzhang%2FDesktop%2Ftest%2Findex.html#startScreen"
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     //常见问题
     fun getFAQsUrl(context: Context): String? {
 

@@ -59,6 +59,11 @@
             android:layout_height="wrap_content"
             android:layout="@layout/home_cate_tab" />
 
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout="@layout/home_cate_tab" />
+
 <!--        <com.google.android.material.tabs.TabItem-->
 <!--            android:id="@+id/tab_eps"-->
 <!--            android:layout_width="wrap_content"-->

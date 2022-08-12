@@ -127,7 +127,7 @@ abstract class BaseOddButtonViewModel(
         if (savedOddId == oddId) return
         savedOddId = oddId.orEmpty() //保存savedOddId
         if (data.matchType == MatchType.OUTRIGHT){
-            updateMatchBetListForOutRight(
+            updateMatchBetListForOutRight(//TODO Bill 這裡要看冠軍的
                 matchType = MatchType.OUTRIGHT,
                 gameType = data.gameType,
                 playCateCode = data.playCateCode ?: "",
@@ -750,7 +750,15 @@ abstract class BaseOddButtonViewModel(
                 }
                 //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
                 savedOddId = "savedOddId" //重設savedOddId
-                betInfoListData.betInfo = result?.BetInfo
+                result?.let {
+                    if (result.success) {
+                        betInfoListData.betInfo = it.BetInfo
+                    } else {
+                        //避免登入後socket更新有時間差，當取不到限額資訊的betInfoData改為LOCKED
+                        betInfoListData.matchOdd.status = BetStatus.LOCKED.code
+                        betInfoListData.amountError = true
+                    }
+                }
             }
         }
         betInfoRepository.notifyBetInfoChanged()

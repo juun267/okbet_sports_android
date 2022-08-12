@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.common
 
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -24,6 +25,7 @@ class LeagueOddListener(
     val refreshListener: (leagueId: String) -> Unit,
     val clickLiveIconListener: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
     val clickAnimationIconListener: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
+    val clickCsTabListener: (playCate: PlayCate, matchOdd: MatchOdd) -> Unit
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int = 0) =
         clickListenerPlayType(matchId, matchInfoList, gameMatchType, liveVideo)
@@ -48,6 +50,8 @@ class LeagueOddListener(
     fun onClickFavorite(matchId: String?) = clickListenerFavorite(matchId)
 
     fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
+
+    fun onClickCsTabListener(playCate: PlayCate, matchOdd: MatchOdd) = clickCsTabListener(playCate, matchOdd)
 
     fun onRefresh(leagueId: String) = refreshListener(leagueId)
 

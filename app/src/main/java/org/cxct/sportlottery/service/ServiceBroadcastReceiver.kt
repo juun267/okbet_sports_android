@@ -368,7 +368,7 @@ open class ServiceBroadcastReceiver(
     private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
-                if (key != PlayCate.LCS.value) {//反波膽不處理折扣
+                if (!key.contains(PlayCate.LCS.value)) {//反波膽不處理折扣
                     value.odds?.forEach { odd ->
                         odd?.odds = odd?.odds?.applyDiscount(discount)
                         odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)

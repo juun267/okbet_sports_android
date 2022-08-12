@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.ui.common
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
@@ -92,6 +95,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: WebView) {
         if (BuildConfig.DEBUG)
             WebView.setWebContentsDebuggingEnabled(true)
@@ -111,6 +115,10 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.databaseEnabled = false
         settings.setAppCacheEnabled(false)
         settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+        settings.allowFileAccess = true
+        settings.allowContentAccess = true
+        settings.allowFileAccessFromFileURLs = true
+        settings.allowUniversalAccessFromFileURLs = true
         webView.webChromeClient = object : WebChromeClient() {
             override fun onCreateWindow(view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
                 val newWebView = WebView(view.context)
@@ -140,6 +148,19 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 mUploadCallbackAboveL = filePathCallback
                 openImageChooserActivity()
                 return true
+            }
+
+            override fun onPermissionRequest(request: PermissionRequest?) {
+                val PERMISSIONS_AT_WEBVIEW = 0
+                val permissionCheck = checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(
+                        arrayOf(Manifest.permission.RECORD_AUDIO),
+                        PERMISSIONS_AT_WEBVIEW
+                    )
+                } else {
+                    request?.grant(request.resources)
+                }
             }
         }
 

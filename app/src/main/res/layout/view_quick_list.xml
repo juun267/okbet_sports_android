@@ -57,6 +57,13 @@
         android:visibility="gone" />
 
     <include
+        android:id="@+id/league_odd_quick_odd_lcs"
+        layout="@layout/view_quick_odd_lcs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <include
         android:id="@+id/league_odd_quick_odd_btn_eps"
         layout="@layout/view_quick_odd_btn_eps"
         android:layout_width="match_parent"
