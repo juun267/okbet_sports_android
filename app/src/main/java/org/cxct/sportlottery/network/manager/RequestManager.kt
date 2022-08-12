@@ -55,8 +55,8 @@ class RequestManager private constructor(context: Context) {
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
-//        .addInterceptor(MoreBaseUrlInterceptor())
-//        .addInterceptor(RequestInterceptor(context))
+        .addInterceptor(MoreBaseUrlInterceptor())
+        .addInterceptor(RequestInterceptor(context))
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
 
