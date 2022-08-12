@@ -30,4 +30,5 @@ enum class MoneyType(val code: String) {
     ZALOPAY("ic_zalopay"),//103:ZaloPay
     VIETTELPAY("ic_viettelpay"),//107:ViettelPay
     RECHARGE_CARD("ic_recharge_card"),//108:刮刮卡充值 //Recharge Card
+    QQONLINE("ic_online_qq")//4:在線QQ
 }

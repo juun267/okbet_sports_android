@@ -71,6 +71,7 @@ object MoneyManager {
             MoneyType.ZALOPAY.code -> R.drawable.ic_zalopay
             MoneyType.VIETTELPAY.code -> R.drawable.ic_viettelpay
             MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
+            MoneyType.QQONLINE.code -> R.drawable.ic_qq_online
             else -> R.drawable.ic_bank_atm
         }
     }

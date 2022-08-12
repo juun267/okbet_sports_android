@@ -155,6 +155,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.ZALOPAY.type -> R.drawable.ic_zalopay_type
             OnlineType.VIETTELPAY.type -> R.drawable.ic_viettelpay_type
             OnlineType.RECHARGE_CARD.type -> R.drawable.ic_recharge_card_type
+            OnlineType.QQ.type -> R.drawable.ic_qq_online_type
             else -> R.drawable.ic_online_pay_type
         }
         return this
