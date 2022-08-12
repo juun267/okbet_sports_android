@@ -76,7 +76,7 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
             if (getSocket() == null) {
                 throw new IllegalStateException("Not connected");
             } else {
-                Log.v(TAG, "Send STOMP message: " + stompMessage);
+//                Log.v(TAG, "Send STOMP message: " + stompMessage);
                 rawSend(stompMessage);
                 return null;
             }

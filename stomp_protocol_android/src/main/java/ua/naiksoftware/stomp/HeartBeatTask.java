@@ -128,8 +128,8 @@ public class HeartBeatTask {
 
     private void scheduleServerHeartBeatCheck() {
         if (serverHeartbeat > 0 && scheduler != null) {
-            final long now = System.currentTimeMillis();
-            Log.v(TAG, "Scheduling server heart-beat to be checked in " + serverHeartbeat + " ms and now is '" + now + "'");
+//            final long now = System.currentTimeMillis();
+//            Log.v(TAG, "Scheduling server heart-beat to be checked in " + serverHeartbeat + " ms and now is '" + now + "'");
             //add some slack on the check
             serverCheckHeartBeatTask = scheduler.scheduleDirect(() ->
                     checkServerHeartBeat(), serverHeartbeat, TimeUnit.MILLISECONDS);
@@ -148,7 +148,7 @@ public class HeartBeatTask {
                     failedListener.onServerHeartBeatFailed();
                 }
             } else {
-                Log.d(TAG, "We were checking and server sent heart-beat on time. So well-behaved :)");
+//                Log.d(TAG, "We were checking and server sent heart-beat on time. So well-behaved :)");
                 lastServerHeartBeat = System.currentTimeMillis();
             }
         }
@@ -159,7 +159,7 @@ public class HeartBeatTask {
      */
     private void abortServerHeartBeatCheck() {
         lastServerHeartBeat = System.currentTimeMillis();
-        Log.v(TAG, "Aborted last check because server sent heart-beat on time ('" + lastServerHeartBeat + "'). So well-behaved :)");
+//        Log.v(TAG, "Aborted last check because server sent heart-beat on time ('" + lastServerHeartBeat + "'). So well-behaved :)");
         if (serverCheckHeartBeatTask != null) {
             serverCheckHeartBeatTask.dispose();
         }
@@ -171,7 +171,7 @@ public class HeartBeatTask {
      */
     private void scheduleClientHeartBeat() {
         if (clientHeartbeat > 0 && scheduler != null) {
-            Log.v(TAG, "Scheduling client heart-beat to be sent in " + clientHeartbeat + " ms");
+//            Log.v(TAG, "Scheduling client heart-beat to be sent in " + clientHeartbeat + " ms");
             clientSendHeartBeatTask = scheduler.scheduleDirect(() ->
                     sendClientHeartBeat(), clientHeartbeat, TimeUnit.MILLISECONDS);
         }
