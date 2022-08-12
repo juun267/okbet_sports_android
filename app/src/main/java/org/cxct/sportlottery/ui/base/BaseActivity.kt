@@ -124,9 +124,11 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 ) return@observe
                 showTokenPromptDialog(msg) {
                     viewModel.loginRepository._isLogin.postValue(false)
-                    val intent = Intent(this@BaseActivity, GamePublicityActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                    viewModel.doLogoutCleanUser {
+                        run {
+                            GamePublicityActivity.reStart(this)
+                        }
+                    }
                 }
             }
         }
