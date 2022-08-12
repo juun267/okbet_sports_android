@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
@@ -41,19 +42,28 @@ class RequestManager private constructor(context: Context) {
 
     var retrofit: Retrofit
 
+    private val logging: HttpLoggingInterceptor =
+        HttpLoggingInterceptor().setLevel(
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        )
+
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
-        .addInterceptor(MoreBaseUrlInterceptor())
-        .addInterceptor(RequestInterceptor(context))
+//        .addInterceptor(MoreBaseUrlInterceptor())
+//        .addInterceptor(RequestInterceptor(context))
         //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
 
 
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
-                addInterceptor(HttpLogInterceptor())
+                addInterceptor(logging)
             }
             // mock data, 必須擺在最後
             if (BuildConfig.MOCK)
