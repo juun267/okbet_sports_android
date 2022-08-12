@@ -57,7 +57,7 @@
       "zh": "在线QQ"
     },
     "subtitle": "QQ在线支付",
-    "image": "money_qqpay_icon",
+    "image": "ic_online_qq",
     "rechType": "onlinePayment",
     "onlineType": "4"
   },
