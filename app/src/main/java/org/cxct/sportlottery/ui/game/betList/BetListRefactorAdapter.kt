@@ -425,8 +425,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     //單注
     class BetInfoItemViewHolder(itemView: View) : BetInfoChangeViewHolder(itemView) {
-        private var parlayMaxBet: Long = 0
         private var inputMaxMoney: Double = 0.0
+        private var inputMinMoney: Double = 0.0
         private var inputWinMaxMoney: Double = 0.0
         private var mUserMoney: Double = 0.0
         private var mUserLogin: Boolean = false
@@ -447,7 +447,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mUserLogin = userLogin
 
             //設置輸入投注上限額
-            setupInputMaxMoney(itemData)
+            setupInputLimit(itemData)
             //設置可贏額上限
             inputWinMaxMoney = inputMaxMoney * getOddsAndSaveRealAmount(itemData, currentOddsType)
 //            Timber.e("inputMaxMoney: $inputMaxMoney")
@@ -515,9 +515,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupInputMaxMoney(itemData: BetInfoListData) {
-            parlayMaxBet = itemData.parlayOdds?.max?.toLong() ?: 0
-            inputMaxMoney = parlayMaxBet.toDouble()
+        private fun setupInputLimit(itemData: BetInfoListData) {
+            val maxBet = itemData.parlayOdds?.max ?: 0
+            inputMaxMoney = maxBet.toDouble()
+            val minBet = itemData.parlayOdds?.min ?: 0
+            inputMinMoney = minBet.toDouble()
         }
 
         var isSingleBetFirstOpenKeyboard = true
@@ -561,13 +563,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } else text.clear()
                     setSelection(text.length)
                 }
-                checkMinimumLimit(itemData)
+                checkBetLimit(itemData)
 
                 setupOddInfo(itemData, currentOddsType, betListSize, onItemClickListener, adapterBetType)
 
-//                if (et_bet.isFocusable) {
-//                    layoutKeyBoard?.setMaxBetMoney(inputMaxMoney)
-//                }
+                if (itemData.isInputWin) {
+                    layoutKeyBoard.setupMaxBetMoney(inputWinMaxMoney)
+                } else {
+                    layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
+                }
 
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -603,7 +607,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             //更新可贏額
                             if (itemData.isInputBet) et_win.setText(TextUtil.formatInputMoney(win))
                         }
-                        checkMinimumLimit(itemData)
+                        checkBetLimit(itemData)
                         onItemClickListener.refreshBetInfoTotal()
                     }
 
@@ -688,6 +692,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                             et_bet.isFocusable = true
                             onItemClickListener.onHideKeyBoard()
+                            layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                             layoutKeyBoard.showKeyboard(
                                 et_bet,
                                 position
@@ -706,6 +711,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     isSingleBetFirstOpenKeyboard = false
                     et_bet.requestFocus()
                     itemData.isInputBet = true
+                    layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         et_bet,
                         position
@@ -727,6 +733,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                             et_win.isFocusable = true
                             onItemClickListener.onHideKeyBoard()
+                            layoutKeyBoard.setupMaxBetMoney(inputWinMaxMoney)
                             layoutKeyBoard.showKeyboard(
                                 et_win,
                                 position
@@ -1106,7 +1113,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun checkMinimumLimit(
+        private fun checkBetLimit(
             itemData: BetInfoListData
         ) {
             itemView.apply {
@@ -1126,8 +1133,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
                 } else {
                     tvPleaseEnterCorrectAmount.isVisible = false
-                    itemData.parlayOdds?.min?.let { min ->
-                        tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < min) {
+                    if (itemData.betAmount > inputMaxMoney) {
+                        //暫不顯示超過最大限額的提示，僅更新amountError
+                        amountError = true
+                    } else {
+                        //最小限額
+                        tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < inputMinMoney) {
                             amountError = true
                             View.VISIBLE
                         } else {
@@ -1145,8 +1156,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     View.GONE
                 }
                 itemData.amountError = balanceError || amountError
-                setEtBackground(itemData)
             }
+            setEtBackground(itemData)
         }
 
         private fun setupDeleteButton(
@@ -1174,11 +1185,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             userMoney: Double,
             userLogin: Boolean
         ) {
-            itemData.let {
-                it?.max =
-                    if (GameConfigManager.maxParlayBetMoney?.toLong() ?: 0 > itemData?.max?.toLong() ?: 0) itemData?.max
-                        ?: 0 else GameConfigManager.maxParlayBetMoney ?: 0
-            }
             setupParlayItem(
                 itemData,
                 currentOddsType,
@@ -1268,6 +1274,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 tv_single_count.text = betList.size.toString()
 
                 val initValue = if (itemData.singleInput != null) itemData.allSingleInput else ""
+
+                if (itemData.isInputBet) {
+                    layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
+                }
+
                 //init winnable amount
 //                if (!initValue.isNullOrEmpty()) {
 //                    et_win_single.setText(
@@ -1340,7 +1351,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 if (data.matchOdd.status != BetStatus.ACTIVATED.code)
                                     return@forEachIndexed
 
-                                checkSingleMinimumLimit(data, inputValue)
+                                checkBetLimitSingle(data, inputValue)
+
                                 if (data.parlayOdds?.max == null || inputValue < (data.parlayOdds?.max
                                         ?: 0)
                                 ) {
@@ -1430,6 +1442,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     if (event.action == MotionEvent.ACTION_UP) {
                         et_bet_single.isFocusable = true
                         onItemClickListener.onHideKeyBoard()
+                        layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
                         layoutKeyBoard.showKeyboard(
                             et_bet_single,
                             position
@@ -1538,14 +1551,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun checkSingleMinimumLimit(
+        private fun checkBetLimitSingle(
             itemData: BetInfoListData,
             betAmount: Double
         ) {
             itemView.apply {
                 var amountError = false
-                itemData.parlayOdds?.min?.let { min ->
-                    amountError = betAmount != 0.0 && betAmount < min
+                val maxBet = (itemData.parlayOdds?.max ?: 0).toDouble()
+                val minBet = (itemData.parlayOdds?.min ?: 0).toDouble()
+                amountError = if (betAmount > maxBet) {
+                    //最大限額
+                    true
+                } else {
+                    //最小限額
+                    betAmount != 0.0 && betAmount < minBet
                 }
                 val balanceError = betAmount != 0.0 && betAmount > mUserMoney
                 itemData.amountError = if (balanceError) true else amountError
@@ -1689,7 +1708,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                checkMinimumLimit(data)
+                if (data.isInputBet) {
+                    layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
+                }
+                checkBetLimitParlay(data)
 
                 et_bet_parlay.apply {
                     /* set listener */
@@ -1716,7 +1738,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     }
                                 }
                             }
-                            checkMinimumLimit(data)
+                            checkBetLimitParlay(data)
                             onItemClickListener.refreshBetInfoTotal()
                         }
 
@@ -1745,6 +1767,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_bet_parlay.setOnTouchListener { view, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
                         et_bet_parlay.isFocusable = true
+                        layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                         layoutKeyBoard.showKeyboard(
                             et_bet_parlay,
                             position,
@@ -1780,12 +1803,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     et_bet_parlay.isEnabled = false
                 } else {
                     et_bet_parlay.isEnabled = true
+                    if (itemData.amountError) {
+                        et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
+                    } else
                     if (itemData.isInputBet) {
-                        if (itemData.amountError) {
-                            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
-                        } else {
-                            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                        }
+                        et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
                     } else {
                         et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
                     }
@@ -1793,7 +1815,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun checkMinimumLimit(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
+        private fun checkBetLimitParlay(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
             itemView.apply {
                 var amountError: Boolean
                 val balanceError: Boolean
@@ -1810,13 +1832,19 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
                 } else {
                     tvPleaseEnterCorrectAmountParlay.isVisible = false
-                    itemData.min.let { min ->
-                        tvErrorMessageParlay.visibility = if (betAmount != 0.0 && betAmount < min) {
-                            amountError = true
-                            View.VISIBLE
-                        } else {
-                            amountError = false
-                            View.GONE
+                    if (betAmount > inputMaxMoney) {
+                        //暫不顯示超過最大限額的提示，僅更新amountError
+                        amountError = true
+                    } else {
+                        //最小限額
+                        itemData.min.let { min ->
+                            tvErrorMessageParlay.visibility = if (betAmount != 0.0 && betAmount < min) {
+                                amountError = true
+                                View.VISIBLE
+                            } else {
+                                amountError = false
+                                View.GONE
+                            }
                         }
                     }
                 }
