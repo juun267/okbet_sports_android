@@ -49,9 +49,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_money_recharge)
-
         initToolbar()
         initRecyclerView()
         initLiveData()
@@ -317,7 +315,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()
         })
-        rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
+        rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
         rv_pay_type.adapter = bankTypeAdapter
         rv_pay_type.addItemDecoration(
             GridItemDecoration(

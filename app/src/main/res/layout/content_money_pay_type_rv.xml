@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootItem"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_width="wrap_content"
+    android:layout_height="60dp"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/margin_10"
     android:background="@drawable/bg_skin_select_money_type_effect_main_light_color"
     tools:ignore="RtlSymmetry,SpUsage,ContentDescription">
 
@@ -12,40 +14,34 @@
         android:id="@+id/ic_bank"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_9"
         tools:src="@drawable/ic_bank_atm" />
 
     <TextView
         android:id="@+id/tv_type"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ic_bank"
+        android:layout_centerHorizontal="true"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:paddingStart="21dp"
         android:paddingEnd="4dp"
         android:singleLine="true"
-        android:textColor="@color/selector_text_effect_pay_type_main_light_color"
-        android:textSize="@dimen/textSize14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ic_bank"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/margin_5"
+        android:textColor="@color/color_025BE8"
+        android:textSize="@dimen/textSize12sp"
         tools:text="银行卡转账" />
 
     <ImageView
         android:id="@+id/img_tri"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:src="@drawable/ic_tri"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

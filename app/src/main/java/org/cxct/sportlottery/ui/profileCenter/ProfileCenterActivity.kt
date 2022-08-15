@@ -123,7 +123,7 @@ class ProfileCenterActivity :
         initToolBar()
         initBottomNavigation()
         initMenu()
-        setupNoticeButton(iv_notice)
+        setupNoticeButton(iv_notice,iv_circle)
         initView()
         setupHeadButton()
         setupEditNickname()
@@ -137,8 +137,27 @@ class ProfileCenterActivity :
         initObserve()
         updateThirdOpenUI()
         updateCreditAccountUI()
+        setupServiceButton()
+
     }
 
+    private fun setupServiceButton() {
+        iv_customer_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(supportFragmentManager, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                }
+            }
+        }
+    }
     override fun initToolBar() {
         iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
@@ -154,10 +173,10 @@ class ProfileCenterActivity :
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
-       // btn_withdrawal_setting.setVisibilityByCreditSystem()
+        // btn_withdrawal_setting.setVisibilityByCreditSystem()
         //優惠活動
         btn_promotion.setVisibilityByCreditSystem()
-     //   btn_affiliate.setVisibilityByCreditSystem()
+        //   btn_affiliate.setVisibilityByCreditSystem()
         btn_feedback.setVisibilityByCreditSystem()
         val version = "V${BuildConfig.VERSION_NAME}"
         tv_current_version.text = version
@@ -245,10 +264,12 @@ class ProfileCenterActivity :
 
     private fun setupMoreButtons() {
         //個人資訊
-        btn_profile.setOnClickListener {
+//        btn_profile.setOnClickListener {
+//            startActivity(Intent(this, ProfileActivity::class.java))
+//        }
+        iv_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
-
         //額度轉換
         btn_account_transfer.setOnClickListener {
             startActivity(Intent(this, MoneyTransferActivity::class.java))
@@ -720,7 +741,7 @@ class ProfileCenterActivity :
         } else {
             btn_account_transfer.visibility = /*if (!thirdOpen)*/ View.GONE /*else View.VISIBLE*/
         }
-     //   btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        //   btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
         bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
     }

@@ -16,6 +16,7 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     BaseActivity<T>(clazz) {
 
     private var mNoticeButton: ImageView? = null
+    private var mNoticeCircle: ImageView? = null
     private var noticeCount: Int? = null
     private var isGuest: Boolean? = null
 
@@ -55,6 +56,17 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     fun setupNoticeButton(noticeButton: ImageView) {
         mNoticeButton = noticeButton
         mNoticeButton?.setOnClickListener {
+            startActivity(
+                Intent(this, InfoCenterActivity::class.java)
+                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
+            )
+        }
+    }
+    //有 child activity 給定 notice button 顯示
+    fun setupNoticeButton(noticeButton: ImageView, noticeCircle: ImageView) {
+        mNoticeButton = noticeButton
+        mNoticeCircle = noticeCircle
+        mNoticeButton?.setOnClickListener {
             onCloseMenu()
             startActivity(
                 Intent(this, InfoCenterActivity::class.java)
@@ -90,7 +102,8 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     }
 
     private fun updateNoticeButton() {
-        mNoticeButton?.setImageResource(if (noticeCount ?: 0 > 0 && isGuest == false) R.drawable.icon_bell_with_red_dot else R.drawable.icon_bell)
+        mNoticeCircle?.visibility =
+            (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
 
 }

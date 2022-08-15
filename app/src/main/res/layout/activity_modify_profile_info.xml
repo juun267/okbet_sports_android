@@ -9,171 +9,285 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.nickname.ModifyProfileInfoActivity">
 
-    <include android:id="@+id/tool_bar" layout="@layout/view_base_tool_bar_no_drawer" />
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/view_base_tool_bar_no_drawer" />
 
     <!--  暱稱  -->
     <LinearLayout
         android:id="@+id/ll_nickname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
+        android:layout_gravity="center"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="4dp"
+        android:background="@color/exo_white"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_nickname"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/hint_nickname"
-            app:cvTitle="@string/nickname" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nickname"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+            <EditText
+                android:id="@+id/et_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@null"
+                android:hint="@string/edt_hint_nick_name"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <!--  真實姓名  -->
     <LinearLayout
         android:id="@+id/ll_real_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/exo_white"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_real_name"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/edt_hint_real_name"
-            app:cvTitle="@string/real_name" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/real_name"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+            <EditText
+                android:id="@+id/et_real_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@null"
+                android:hint="@string/edt_hint_real_name"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
+
+
+        <!--        <org.cxct.sportlottery.ui.login.LoginEditText-->
+        <!--            android:id="@+id/et_real_name"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:cvHint="@string/edt_hint_real_name"-->
+        <!--            app:cvTitle="@string/real_name" />-->
     </LinearLayout>
 
     <!--  QQ號碼  -->
     <LinearLayout
         android:id="@+id/ll_qq_number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/exo_white"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_qq_number"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/hint_qq_number"
-            app:cvInputType="number"
-            app:cvTitle="@string/qq_number" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/qq_number"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+            <EditText
+                android:id="@+id/et_qq_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@null"
+                android:hint="@string/hint_qq_number"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
+
+
+        <!--        <org.cxct.sportlottery.ui.login.LoginEditText-->
+        <!--            android:id="@+id/et_qq_number"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:cvHint="@string/hint_qq_number"-->
+        <!--            app:cvInputType="number"-->
+        <!--            app:cvTitle="@string/qq_number" />-->
     </LinearLayout>
 
     <!--  郵箱  -->
     <LinearLayout
         android:id="@+id/ll_e_mail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/exo_white"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_e_mail"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/hint_e_mail"
-            app:cvTitle="@string/e_mail" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/e_mail"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+            <EditText
+                android:id="@+id/et_e_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@null"
+                android:hint="@string/hint_e_mail"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
     <!--  手機號碼  -->
     <LinearLayout
         android:id="@+id/ll_phone_number"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/exo_white"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_phone_number"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/hint_phone_number"
-            app:cvInputType="number"
-            app:cvTitle="@string/phone_number" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:orientation="vertical">
 
-        <!--  簡訊驗證碼暫時先關閉, 待後端完成後再處理  -->
-        <!--<RelativeLayout
-            android:id="@+id/block_sms_valid_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_sms_valid_code"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cvEnableVerificationCode="true"
-                app:cvHint="@string/hint_verification_code_by_sms"
-                app:cvInputType="number"
-                app:cvTitle="@string/verification_code" />
+                android:text="@string/phone_number"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="10dp"
-                android:background="@color/color_191919_FCFCFC"
-                android:gravity="center"
-                android:minWidth="80dp"
-                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@null"
+                android:hint="@string/hint_phone_number"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
 
-                <Button
-                    android:id="@+id/btn_send_sms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/effect_ripple_rectangle_blue_light"
-                    android:text="@string/get_verification_code"
-                    android:textColor="@color/color_select_black_gray"
-                    android:textSize="@dimen/textSize14sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_timer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray4"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="@string/send_timer" />
 
-            </LinearLayout>
-
-        </RelativeLayout>-->
     </LinearLayout>
 
     <!--  微信  -->
     <LinearLayout
         android:id="@+id/ll_wechat"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="77dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/exo_white"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <org.cxct.sportlottery.ui.login.LoginEditText
-            android:id="@+id/et_we_chat"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/hint_we_chat_number"
-            app:cvInputType="text"
-            app:cvTitle="@string/we_chat" />
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/we_chat"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+            <EditText
+                android:id="@+id/et_we_chat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:background="@null"
+                android:hint="@string/hint_we_chat_number"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
+
 
     <Button
         android:id="@+id/btn_confirm"
