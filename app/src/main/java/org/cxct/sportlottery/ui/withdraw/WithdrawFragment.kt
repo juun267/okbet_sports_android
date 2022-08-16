@@ -53,11 +53,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initView()
         initEvent()
         initObserve(view)
-
         setupData()
     }
 
@@ -358,7 +356,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         })
         //Tab 顯示判斷
-        viewModel.withdrawTabIsShow.observe(this.viewLifecycleOwner, Observer { list ->
+        viewModel.withdrawTabIsShow.observe(this.viewLifecycleOwner) { list ->
 
             if (list.isNullOrEmpty() || list.size == 1) {
                 tab_layout.visibility = View.GONE
@@ -381,10 +379,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     tab_layout.getTabAt(3)?.view?.visibility = View.GONE
                 }
             }
-        })
+        }
 
         //資金設定
-        viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
+        viewModel.rechargeConfigs.observe(this.viewLifecycleOwner) {
             if (et_withdrawal_amount.getText().isEmpty()) {
                 viewModel.getWithdrawRate(withdrawBankCardData)
             } else {
@@ -394,51 +392,51 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 )
             }
             viewModel.getWithdrawHint()
-        })
+        }
 
         //提款金額提示訊息
-        viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner) {
             et_withdrawal_amount.et_input.hint = it
-        })
+        }
 
         //提款金額訊息
-        viewModel.withdrawAmountMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawAmountMsg.observe(this.viewLifecycleOwner) {
             et_withdrawal_amount.setError(it)
-        })
+        }
 
         //提款手續費提示
-        viewModel.withdrawRateHint.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawRateHint.observe(this.viewLifecycleOwner) {
             tv_hint_withdraw_rate.text = it
-        })
+        }
 
         //提款虛擬幣所需餘額
-        viewModel.withdrawCryptoAmountHint.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawCryptoAmountHint.observe(this.viewLifecycleOwner) {
             tv_hint_withdraw_crypto_amount.visibility = if (it.isEmpty())
                 View.GONE
             else {
                 tv_hint_withdraw_crypto_amount.text = it
                 View.VISIBLE
             }
-        })
+        }
 
         //提款虛擬幣手續費
-        viewModel.withdrawCryptoFeeHint.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawCryptoFeeHint.observe(this.viewLifecycleOwner) {
             tv_hint_withdraw_crypto_fee.visibility = if (it.isEmpty())
                 View.GONE
             else {
                 tv_hint_withdraw_crypto_fee.text = it
                 View.VISIBLE
             }
-        })
+        }
 
 
         //提款密碼訊息
-        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner) {
             et_withdrawal_password.setError(it ?: "")
-        })
+        }
 
         //提款
-        viewModel.withdrawAddResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.withdrawAddResult.observe(this.viewLifecycleOwner) {
             if (lin_withdraw.isVisible)
                 if (it.success) {
                     clearEvent()
@@ -449,7 +447,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 } else {
                     showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
                 }
-        })
+        }
     }
 
     /**

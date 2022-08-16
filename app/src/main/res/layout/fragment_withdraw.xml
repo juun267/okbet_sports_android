@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="org.cxct.sportlottery.ui.withdraw.WithdrawFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="org.cxct.sportlottery.ui.withdraw.WithdrawFragment">
 
     <LinearLayout
         android:id="@+id/ll_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/exo_white"
         android:orientation="vertical"
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
 
         <com.google.android.material.tabs.TabLayout
-            app:tabTextAppearance="@style/NoUppercaseTab"
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -27,6 +27,7 @@
             app:tabPaddingStart="@dimen/margin_10"
             app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/color_BBBBBB_333333"
+            app:tabTextAppearance="@style/NoUppercaseTab"
             app:tabTextColor="@color/color_909090_666666">
 
             <com.google.android.material.tabs.TabItem
@@ -72,43 +73,61 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_191919_FCFCFC"
-                android:gravity="start|center_vertical"
-                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginTop="10dp"
-                android:paddingStart="24dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="24dp"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:background="@drawable/ic_mask_group"
+                android:orientation="vertical"
                 android:paddingBottom="12dp">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/now_balance"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="17dp"
+                    android:layout_marginTop="@dimen/margin_14">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="@dimen/margin_12"
+                        android:src="@drawable/ic_group_7130" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/now_balance"
+                        android:textColor="@color/exo_white"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
 
 
-                <TextView
-                    android:id="@+id/tv_currency_type"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="₱" />
+                    android:layout_marginStart="17dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_currency_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/exo_white"
+                        android:textSize="@dimen/textSize20sp"
+                        tools:text="₱" />
 
 
-                <TextView
-                    android:id="@+id/tv_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize14sp"
-                    android:layout_marginStart="4dp"
-                    tools:text="19940.000" />
+                    <TextView
+                        android:id="@+id/tv_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="0"
+                        android:textColor="@color/exo_white"
+                        android:textSize="@dimen/textSize20sp"
+                        tools:text="19940.000" />
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -185,27 +204,27 @@
                     android:id="@+id/tv_hint_withdraw_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="@string/withdraw_handling_fee_hint"
                     android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/withdraw_handling_fee_hint" />
                 <!-- 提款虛擬幣所需餘提示 -->
                 <TextView
                     android:id="@+id/tv_hint_withdraw_crypto_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="@string/withdraw_crypto_amount_hint"
                     android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/withdraw_crypto_amount_hint" />
                 <!-- 提款虛擬幣手續費提示 -->
                 <TextView
                     android:id="@+id/tv_hint_withdraw_crypto_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    tools:text="@string/withdraw_crypto_fee_hint"
                     android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/withdraw_crypto_fee_hint" />
                 <!-- 扣除金额 -->
                 <LinearLayout
                     android:id="@+id/ll_commission"
@@ -253,11 +272,11 @@
                         android:background="@drawable/selector_commission_detail_button"
                         android:enabled="false"
                         android:gravity="center"
-                        android:textStyle="bold"
                         android:paddingHorizontal="10dp"
                         android:text="@string/commission_detail"
                         android:textColor="@color/selector_blue_light_gray"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/btn_info"
@@ -312,8 +331,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:textColor="@color/color_E44438_e44438"
                         android:text="0.000"
+                        android:textColor="@color/color_E44438_e44438"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -324,14 +343,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_radius_20_button_dusk"
+                    android:background="@drawable/ic_submit"
                     android:paddingVertical="9dp"
                     android:text="@string/submit"
-                    android:textStyle="bold"
-                    android:textAllCaps="true"
                     android:textAlignment="center"
+                    android:textAllCaps="true"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
-                    android:textSize="@dimen/textSize16sp" />
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -365,13 +384,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
                         android:paddingBottom="5dp"
-                        tools:text="@string/initial_withdrawal_needs_credited"
                         android:textColor="@color/color_E44438_e44438"
                         android:textSize="12dp"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/guideline"
                         app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/initial_withdrawal_needs_credited"
                         tools:visibility="visible" />
 
                     <TextView
@@ -392,7 +411,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        tools:text="@string/make_sure_valid_account"
                         android:textColor="@color/color_E44438_e44438"
                         android:textSize="12dp"
                         android:visibility="gone"
@@ -400,6 +418,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/guideline"
                         app:layout_constraintTop_toBottomOf="@+id/tv_notification_1"
+                        tools:text="@string/make_sure_valid_account"
                         tools:visibility="visible" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

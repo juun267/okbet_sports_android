@@ -5,7 +5,6 @@
     tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@color/color_141414_F3F4F5"
     android:layout_height="wrap_content">
 
     <com.google.android.material.tabs.TabLayout

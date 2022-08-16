@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
@@ -17,9 +19,11 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_currency_type
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
@@ -28,6 +32,7 @@ import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
@@ -72,7 +77,6 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initPayAccountBottomSheet()
         initView()
         initButton()
@@ -121,6 +125,22 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             bankBottomSheet.show()
         }
 
+        tv_customer_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(activity?.supportFragmentManager!!, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(activity?.applicationContext!!, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(activity?.applicationContext!!, serviceUrl)
+                }
+            }
+        }
+
     }
 
     private fun initView() {
@@ -131,12 +151,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         updateMoneyRange()
         getBankType(0)
         refreshFieldTitle()
-
         tv_currency_type.text = sConfigData?.systemCurrencySign
+
     }
 
-    private fun refreshFieldTitle(){
-        if(mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
+    private fun refreshFieldTitle() {
+        if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
             tv_pay_type.text = String.format(resources.getString(R.string.title_bank))
         else
             tv_pay_type.text = String.format(resources.getString(R.string.title_main_account))
@@ -166,7 +186,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             et_nickname.setError(it)
         }
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            txv_wallet_money.text = "${sConfigData?.systemCurrencySign} ${ArithUtil.toMoneyFormat(it)} "
+            txv_wallet_money.text =
+                "${sConfigData?.systemCurrencySign} ${ArithUtil.toMoneyFormat(it)} "
         }
 
         viewModel.transferPayResult.observe(viewLifecycleOwner) {
@@ -183,7 +204,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
             val bottomSheetView =
-                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
+                layoutInflater.inflate(
+                    R.layout.dialog_bottom_sheet_icon_and_tick,
+                    contentView,
+                    false
+                )
             bankBottomSheet = BottomSheetDialog(this.requireContext())
             bankBottomSheet.apply {
                 setContentView(bottomSheetView)
@@ -197,14 +222,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                         resetEvent()
                         dismiss()
                     })
-                rv_bank_item.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+                rv_bank_item.layoutManager =
+                    LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 rv_bank_item.adapter = bankCardAdapter
 
 
                 if (mMoneyPayWay?.rechType == RechType.BANKTRANSFER.code)
-                    tv_game_type_title.text=String.format(resources.getString(R.string.title_bank))
+                    tv_game_type_title.text =
+                        String.format(resources.getString(R.string.title_bank))
                 else
-                    tv_game_type_title.text=String.format(resources.getString(R.string.title_main_account))
+                    tv_game_type_title.text =
+                        String.format(resources.getString(R.string.title_main_account))
 
                 bankBottomSheet.btn_close.setOnClickListener {
                     this.dismiss()
@@ -291,11 +319,36 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
-            .setTitleColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_CCCCCC_000000))
-            .setTitleBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_2B2B2B_e2e2e2))
-            .setBgColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_191919_FCFCFC))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_7F7F7F_999999))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.color_7F7F7F_999999))
+            .setTitleColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.color_CCCCCC_000000
+                )
+            )
+            .setTitleBgColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.color_2B2B2B_e2e2e2
+                )
+            )
+            .setBgColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.color_191919_FCFCFC
+                )
+            )
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
             .isDialog(false)
             .build() as TimePickerView
     }
@@ -419,7 +472,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     }
 
-    private fun hideEditText(){
+    private fun hideEditText() {
         ll_qr.visibility = View.GONE
         ll_address.visibility = View.GONE
         et_wx_id.visibility = View.GONE
@@ -433,14 +486,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         viewModel.apply {
             //充值金額
             et_recharge_amount.afterTextChanged {
-                if(it.startsWith("0") && it.length>1){
-                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0",""))
+                if (it.startsWith("0") && it.length > 1) {
+                    et_recharge_amount.setText(et_recharge_amount.getText().replace("0", ""))
                     et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }
 
-                if(et_recharge_amount.getText().length > 6){
-                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0,6))
+                if (et_recharge_amount.getText().length > 6) {
+                    et_recharge_amount.setText(et_recharge_amount.getText().substring(0, 6))
                     et_recharge_amount.setCursor()
                     return@afterTextChanged
                 }
@@ -465,7 +518,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     MoneyType.CTF_TYPE.code -> {
                         checkUserName(MoneyType.CTF_TYPE.code, it)
                     }
-                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code-> {
+                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                         checkUserName(MoneyType.ALI_TYPE.code, it)
                     }
                 }
@@ -492,7 +545,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     MoneyType.CTF_TYPE.code -> {
                         checkUserName(MoneyType.CTF_TYPE.code, it)
                     }
-                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code-> {
+                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                         checkUserName(MoneyType.ALI_TYPE.code, it)
                     }
                 }
@@ -520,9 +573,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun updateMoneyRange() {
         et_recharge_amount.setHint(
             String.format(
-                getString(R.string.edt_hint_deposit_money),sConfigData?.systemCurrencySign,
-                TextUtil.formatBetQuota(ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.00).toInt()),
-                TextUtil.formatBetQuota(ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.00).toInt())
+                getString(R.string.edt_hint_deposit_money), sConfigData?.systemCurrencySign,
+                TextUtil.formatBetQuota(
+                    ArithUtil.toMoneyFormatForHint(
+                        mSelectRechCfgs?.minMoney ?: 0.00
+                    ).toInt()
+                ),
+                TextUtil.formatBetQuota(
+                    ArithUtil.toMoneyFormatForHint(
+                        mSelectRechCfgs?.maxMoney ?: 999999.00
+                    ).toInt()
+                )
             )
         )
     }

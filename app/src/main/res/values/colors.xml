@@ -62,7 +62,7 @@
     <color name="color_D2D2D7">#d2d2d7</color>
     <color name="color_1A1A1A">#1A1A1A</color>
     <color name="color_F0F5FA">#F0F5FA</color>
-    <color name="color_404348">#404348</color>#
+    <color name="color_404348">#404348</color>
     <color name="color_939393">#939393</color>
     <color name="color_EAF4FE">#EAF4FE</color>
     <color name="color_202020">#202020</color>
@@ -351,4 +351,6 @@
     <color name="color_C9CFD7">#C9CFD7</color>
     <color name="color_414655">#414655</color>
     <color name="color_025BE8">#025BE8</color>
+    <color name="color_A5A9B3">#A5A9B3</color>
+
 </resources>

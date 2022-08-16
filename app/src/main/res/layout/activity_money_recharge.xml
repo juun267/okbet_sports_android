@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_F0F5FA"
     android:orientation="vertical"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
-
-    <org.cxct.sportlottery.ui.common.CustomTabLayout
-        android:id="@+id/custom_tab_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:firstTabText="@string/txv_transfer_pay"
-        app:secondTabText="@string/recharge_channel_online"/>
+        android:orientation="vertical">
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlDragRate="0.3"
-        app:srlEnableLoadMore="true"
-        app:srlEnablePureScrollMode="true">
+        <include layout="@layout/view_base_tool_bar_no_drawer" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <org.cxct.sportlottery.ui.common.CustomTabLayout
+            android:id="@+id/custom_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_1"
+            android:background="@color/exo_white"
+            app:firstTabText="@string/txv_transfer_pay"
+            app:secondTabText="@string/recharge_channel_online" />
+
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_10"
+            app:srlDragRate="0.3"
+            app:srlEnableLoadMore="true"
+            app:srlEnablePureScrollMode="true">
+
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -41,14 +47,33 @@
                     android:background="@color/color_191919_FCFCFC"
                     android:orientation="vertical">
 
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:text="@string/payment_method"
+                        android:textColor="@color/color_414655"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_1"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        android:background="@color/color_E3E8EE" />
+
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_pay_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="10dp"
                         android:layout_marginEnd="@dimen/margin_14"
                         android:clipToPadding="false"
                         android:overScrollMode="never"
+                        android:paddingVertical="10dp"
                         android:visibility="gone"
                         tools:itemCount="5"
                         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -95,17 +120,18 @@
 
             </ScrollView>
 
-            <!--20220802 充值畫面增加聯繫在線客服的入口，不需要判斷是否隱藏-->
-            <org.cxct.sportlottery.ui.common.ServiceFloatingButton
-                android:id="@+id/btn_floating_service"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="14dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    </LinearLayout>
 
 
-
-</LinearLayout>
+    <!--20220802 充值畫面增加聯繫在線客服的入口，不需要判斷是否隱藏-->
+    <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+        android:id="@+id/btn_floating_service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="14dp" />
+</RelativeLayout>

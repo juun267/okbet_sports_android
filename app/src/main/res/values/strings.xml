@@ -1129,4 +1129,7 @@
     <string name="join_us_win_wealth">加入我们，共赢财富</string>
     <string name="personal_information">个人信息</string>
     <string name="cancel_account">注销账号</string>
+    <string name="payment_method">支付方式</string>
+
+    <string name="customer_service">如需帮助，请</string>
 </resources>

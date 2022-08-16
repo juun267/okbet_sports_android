@@ -24,12 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ic_bank"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_5"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:paddingStart="21dp"
         android:paddingEnd="4dp"
         android:singleLine="true"
-        android:layout_marginTop="@dimen/margin_5"
+
         android:textColor="@color/color_025BE8"
         android:textSize="@dimen/textSize12sp"
         tools:text="银行卡转账" />

@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:overScrollMode="never"
     android:background="@color/color_141414_F3F4F5"
+    android:overScrollMode="never"
     android:paddingBottom="15dp"
     tools:context=".ui.money.recharge.TransferPayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="14dp">
+        android:layout_marginTop="@dimen/margin_14"
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_bank"
@@ -62,8 +61,8 @@
                     android:layout_marginStart="9dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:textColor="@color/color_CCCCCC_000000"
                     android:gravity="center_vertical|left"
+                    android:textColor="@color/color_CCCCCC_000000"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -91,10 +90,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="10dp"
                 android:paddingStart="14dp"
-                android:paddingBottom="14dp"
-                android:paddingEnd="10dp">
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="14dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,8 +139,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
@@ -180,13 +179,13 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    tools:visibility="gone"
-                    android:layout_marginTop="2dp"
                     android:id="@+id/ll_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -208,10 +207,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="2dp"
                     android:id="@+id/ll_qr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -240,9 +239,9 @@
                             android:id="@+id/iv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="110dp"
-                            android:maxHeight="110dp"
-                            android:maxWidth="110dp"
                             android:adjustViewBounds="true"
+                            android:maxWidth="110dp"
+                            android:maxHeight="110dp"
                             android:scaleType="fitCenter"
                             tools:src="@drawable/ic_close_gray_blue" />
                     </LinearLayout>
@@ -250,11 +249,11 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="2dp"
                     android:id="@+id/ll_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -398,15 +397,15 @@
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize13sp" />
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/color_1F1F1F_E2E2E2" />
 
@@ -427,12 +426,12 @@
                     tools:text="2020-13-25 19:35:35 (GMT+8)" />
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
                     android:contentDescription="@null"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_calendar_v4" />
+                    android:src="@drawable/ic_icon_timev_01" />
 
             </LinearLayout>
 
@@ -462,10 +461,10 @@
                     android:autoSizeTextType="uniform"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textStyle="bold"
                     android:text="@string/title_current_money"
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize13sp" />
+                    android:textSize="@dimen/textSize13sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="1dp"
@@ -497,7 +496,8 @@
             android:id="@+id/ll_fee_rate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/title_fee_rate"
@@ -538,7 +538,6 @@
                 tools:text="@string/title_fee_amount" />
 
 
-
             <TextView
                 android:id="@id/tv_currency_type"
                 android:layout_width="wrap_content"
@@ -546,15 +545,15 @@
 
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
-                tools:text = "$"/>
+                tools:text="$" />
 
             <TextView
                 android:id="@+id/tv_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
-                android:layout_marginStart="4dp"
                 tools:text="12.000" />
 
 
@@ -562,16 +561,43 @@
 
         <Button
             android:id="@+id/btn_submit"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/bg_radius_20_button_dusk"
+            android:background="@drawable/ic_submit"
             android:gravity="center"
             android:text="@string/btn_submit"
+            android:layout_marginStart="@dimen/margin_20"
+            android:layout_marginEnd="@dimen/margin_20"
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_service"
+                android:textColor="@color/color_A5A9B3"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/tv_customer_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_service"
+                android:textColor="@color/color_025BE8"
+                android:textSize="@dimen/textSize14sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
