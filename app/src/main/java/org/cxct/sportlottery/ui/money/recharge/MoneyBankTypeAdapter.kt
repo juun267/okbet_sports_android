@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +46,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icBank: ImageView = itemView.findViewById(R.id.ic_bank)
         private val tvType: TextView = itemView.findViewById(R.id.tv_type)
-        val rootItem: ConstraintLayout = itemView.findViewById(R.id.rootItem)
+        val rootItem: RelativeLayout = itemView.findViewById(R.id.rootItem)
         val imgTri: ImageView = itemView.findViewById(R.id.img_tri)
 
         fun bind(item: MoneyPayWayData) {

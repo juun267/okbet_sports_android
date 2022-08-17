@@ -75,25 +75,25 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun initObserve() {
         //充值金額訊息
-        viewModel.rechargeOnlineAmountMsg.observe(viewLifecycleOwner, {
+        viewModel.rechargeOnlineAmountMsg.observe(viewLifecycleOwner) {
             et_recharge_online_amount.setError(it)
-        })
+        }
 
-        viewModel.rechargeOnlineAccountMsg.observe(viewLifecycleOwner, {
+        viewModel.rechargeOnlineAccountMsg.observe(viewLifecycleOwner) {
             et_recharge_online_payer.setError(it)
-        })
+        }
 
         //在線充值成功
-        viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
+        viewModel.onlinePayResult.observe(this.viewLifecycleOwner) {
             resetEvent()
-        })
+        }
 
         //在線充值首充提示
-        viewModel.onlinePayFirstRechargeTips.observe(viewLifecycleOwner, { event ->
+        viewModel.onlinePayFirstRechargeTips.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { tipString ->
                 showPromptDialog(getString(R.string.prompt), tipString) {}
             }
-        })
+        }
     }
 
     private fun initView() {

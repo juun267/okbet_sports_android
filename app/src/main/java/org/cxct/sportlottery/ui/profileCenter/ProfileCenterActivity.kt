@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -73,7 +74,8 @@ import kotlinx.android.synthetic.main.view_toolbar_main.iv_notice as iv_notice1
 /**
  * @app_destination 個人中心
  */
-class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity :
+    BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
     private var betListFragment = BetListFragment()
@@ -121,7 +123,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         initToolBar()
         initBottomNavigation()
         initMenu()
-        setupNoticeButton(iv_notice)
+        setupNoticeButton(iv_notice,iv_circle)
         initView()
         setupHeadButton()
         setupEditNickname()
@@ -135,13 +137,28 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         initObserve()
         updateThirdOpenUI()
         updateCreditAccountUI()
+        setupServiceButton()
+
+    }
+
+    private fun setupServiceButton() {
+        iv_customer_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(supportFragmentManager, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                }
+            }
+        }
     }
     override fun initToolBar() {
-
-
-
-
-
         iv_menu.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
@@ -151,30 +168,30 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
 
 
-
-
-
-
-
     }
+
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
-        btn_withdrawal_setting.setVisibilityByCreditSystem()
+        // btn_withdrawal_setting.setVisibilityByCreditSystem()
         //優惠活動
         btn_promotion.setVisibilityByCreditSystem()
-        btn_affiliate.setVisibilityByCreditSystem()
+        //   btn_affiliate.setVisibilityByCreditSystem()
         btn_feedback.setVisibilityByCreditSystem()
+        val version = "V${BuildConfig.VERSION_NAME}"
+        tv_current_version.text = version
     }
 
     override fun onResume() {
         super.onResume()
         if (MultiLanguagesApplication.isNightMode) {
-            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.night_mode)
+            tv_appearance.text =
+                getString(R.string.appearance) + ": " + getString(R.string.night_mode)
         } else {
-            tv_appearance.text = getString(R.string.appearance) + ": " + getString(R.string.day_mode)
+            tv_appearance.text =
+                getString(R.string.appearance) + ": " + getString(R.string.day_mode)
         }
-        tv_language.text=LanguageManager.getLanguageStringResource(this)
+        tv_language.text = LanguageManager.getLanguageStringResource(this)
         iv_flag.setImageResource(LanguageManager.getLanguageFlag(this))
         getMoney()
     }
@@ -239,7 +256,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                        GamePublicityActivity.reStart(this)
+                    GamePublicityActivity.reStart(this)
                 }
             }
         }
@@ -247,10 +264,12 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
 
     private fun setupMoreButtons() {
         //個人資訊
-        btn_profile.setOnClickListener {
+//        btn_profile.setOnClickListener {
+//            startActivity(Intent(this, ProfileActivity::class.java))
+//        }
+        iv_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
-
         //額度轉換
         btn_account_transfer.setOnClickListener {
             startActivity(Intent(this, MoneyTransferActivity::class.java))
@@ -334,7 +353,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         }
         //外觀
         btn_appearance.setOnClickListener {
-            startActivity(Intent(this,AppearanceActivity::class.java))
+            startActivity(Intent(this, AppearanceActivity::class.java))
         }
 //        btn_time_zone.visibility = View.GONE
         //时区切换
@@ -714,16 +733,15 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         viewModel.uploadImage(uploadImgRequest)
     }
 
-    private fun updateThirdOpenUI(){
+    private fun updateThirdOpenUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         // 暫時隱藏入口 by Bee
         if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || baseContext.getString(R.string.app_name) != "OKbet") {
             btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
-        }
-        else {
+        } else {
             btn_account_transfer.visibility = /*if (!thirdOpen)*/ View.GONE /*else View.VISIBLE*/
         }
-        btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
+        //   btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
         bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
     }
@@ -864,7 +882,6 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
         if (isLogin) {
 
 
-
         } else {
 
 
@@ -872,7 +889,7 @@ class ProfileCenterActivity : BaseBottomNavActivity<ProfileCenterViewModel>(Prof
     }
 
     override fun updateOddsType(oddsType: OddsType) {
-      //  tv_odds_type.text = getString(oddsType.res)
+        //  tv_odds_type.text = getString(oddsType.res)
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {

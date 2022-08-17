@@ -42,17 +42,13 @@
                     android:gravity="center"
                     android:minHeight="44dp"
                     android:paddingHorizontal="26dp"
-                    android:paddingVertical="11dp"
+
                     android:textColor="@color/color_CCCCCC_000000"
                     android:textSize="@dimen/textSize16sp"
                     android:textStyle="bold"
                     tools:text="工商银行停用通知" />
 
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/color_191919_EEEFF0" />
+
 
                 <ScrollView
                     android:layout_width="match_parent"

@@ -66,6 +66,7 @@
         <item name="android:gravity">center</item>
         <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
+
     <style name="FullScreen" parent="Theme.AppCompat.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@color/transparent</item>
@@ -81,6 +82,13 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/textSize12sp</item>
     </style>
+
+    <style name="cretate_room_edit_text_theme">
+        <item name="android:colorControlNormal">@color/color_C9CFD7</item>
+        <item name="colorControlActivated">@color/color_C9CFD7</item>
+
+    </style>
+
 
     <!-- 导航 没有选中的样式 -->
     <style name="bottom_nav_title_inactive">

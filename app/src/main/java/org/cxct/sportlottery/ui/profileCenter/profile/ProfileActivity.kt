@@ -13,6 +13,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -24,6 +26,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
@@ -97,8 +100,22 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         initView()
         initButton()
         initObserve()
-    }
 
+        setupLogout()
+    }
+    private fun setupLogout() {
+        btn_sign_out.setOnClickListener {
+            viewModel.doLogoutAPI()
+            viewModel.doLogoutCleanUser {
+                run {
+//                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+//                        MainActivity.reStart(this)
+//                    else
+                    GamePublicityActivity.reStart(this)
+                }
+            }
+        }
+    }
     override fun onResume() {
         super.onResume()
 
@@ -117,7 +134,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             ll_real_name.visibility =
                 if (enableWithdrawFullName == FLAG_OPEN) View.VISIBLE else View.GONE
         }
-
+        tv_toolbar_title.text = getString(R.string.personal_information)
     }
 
     private fun initButton() {

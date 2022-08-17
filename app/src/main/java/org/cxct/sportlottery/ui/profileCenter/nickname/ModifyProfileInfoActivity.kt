@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.nickname
 
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.lifecycle.Observer
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
@@ -79,26 +81,25 @@ class ModifyProfileInfoActivity :
     private fun setupInputFieldVerify() {
         //暱稱
         setEditTextFocusChangeMethod(et_nickname)
-        //真實姓名
-        setEditTextFocusChangeMethod(et_real_name)
-        //QQ號碼
-        setEditTextFocusChangeMethod(et_qq_number)
-        //郵箱
-        setEditTextFocusChangeMethod(et_e_mail)
-        //手機號碼
-        setEditTextFocusChangeMethod(et_phone_number)
-        //微信
-        setEditTextFocusChangeMethod(et_we_chat)
+//        //真實姓名
+//        setEditTextFocusChangeMethod(et_real_name)
+//        //QQ號碼
+//        setEditTextFocusChangeMethod(et_qq_number)
+//        //郵箱
+//        setEditTextFocusChangeMethod(et_e_mail)
+//        //手機號碼
+//        setEditTextFocusChangeMethod(et_phone_number)
+//        //微信
+//        setEditTextFocusChangeMethod(et_we_chat)
     }
 
-    private fun setEditTextFocusChangeMethod(editText: LoginEditText) {
-        editText.apply {
-            setEditTextOnFocusChangeListener { view, hasFocus ->
-                if (!hasFocus)
-                    viewModel.checkInput(modifyType as ModifyType, view.et_input.text.toString())
-            }
-            setupEditTextClearListener() { viewModel.checkInput(modifyType as ModifyType, editText.et_input.text.toString()) }
+    private fun setEditTextFocusChangeMethod(editText: EditText) {
+        editText.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus)
+                viewModel.checkInput(modifyType as ModifyType, editText.text.toString())
         }
+
+
     }
 
     private fun initButton() {
@@ -110,7 +111,7 @@ class ModifyProfileInfoActivity :
             checkInputData()
         }
         et_real_name.afterTextChanged {
-            viewModel.checkFullName(applicationContext,it)
+            viewModel.checkFullName(applicationContext, it)
         }
         btn_confirm.setTitleLetterSpacing()
     }
@@ -122,9 +123,9 @@ class ModifyProfileInfoActivity :
             ModifyType.Email -> et_e_mail.getText()
             ModifyType.WeChat -> et_we_chat.getText()
             ModifyType.PhoneNumber -> et_phone_number.getText()
-            ModifyType.NickName -> et_nickname.getText()
+            ModifyType.NickName -> et_nickname.text
         }
-        viewModel.confirmProfileInfo(modifyType as ModifyType, inputText)
+        viewModel.confirmProfileInfo(modifyType as ModifyType, inputText.toString())
     }
 
     private fun initObserve() {
@@ -135,7 +136,7 @@ class ModifyProfileInfoActivity :
                 hideLoading()
         })
 
-        setupEditTextErrorMsgObserve()
+//        setupEditTextErrorMsgObserve()
 
         viewModel.nicknameResult.observe(this, Observer {
             updateUiWithResult(it)
