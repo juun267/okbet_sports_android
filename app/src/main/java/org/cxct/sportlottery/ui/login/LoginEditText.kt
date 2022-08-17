@@ -75,8 +75,10 @@ class LoginEditText @JvmOverloads constructor(
                 null,
                 typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1)
             )
+            view.tv_title.setTextColor( typedArray.getInt(R.styleable.CustomView_cvTextColor, 1))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
+
             if (!editable) {
                 view.et_input.isEnabled = false
                 view.et_input.inputType = InputType.TYPE_NULL

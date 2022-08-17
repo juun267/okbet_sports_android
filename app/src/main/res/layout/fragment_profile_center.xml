@@ -1230,6 +1230,7 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:background="@drawable/bg_white_8_block"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:padding="@dimen/margin_10">
 
                 <TextView

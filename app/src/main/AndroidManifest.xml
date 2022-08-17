@@ -131,10 +131,7 @@
             android:name=".ui.login.signUp.RegisterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".ui.profileCenter.ProfileCenterFragment"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.profileCenter.profile.ProfileActivity"
             android:screenOrientation="portrait" />

@@ -137,7 +137,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp"
                 android:paddingTop="16dp">
 
 
@@ -145,57 +144,64 @@
                 <LinearLayout
                     android:id="@+id/ll_select_bank"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_square_shape_4dp_white"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingStart="10dp"
+                    android:orientation="vertical"
                     android:paddingEnd="10dp">
 
                     <TextView
                         android:id="@+id/tv_channel_select"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
+                        android:background="@color/exo_white"
+                        android:paddingStart="@dimen/margin_14"
+                        android:paddingTop="@dimen/margin_10"
+                        android:paddingBottom="@dimen/margin_9"
                         android:text="@string/select_bank"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        android:textSize="@dimen/textSize13sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/color_414655"
+                        android:textSize="@dimen/textSize13sp" />
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="@dimen/margin_1"
+                        android:background="@color/exo_white"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/margin_14">
+
+                        <ImageView
+                            android:id="@+id/iv_bank_card_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_bank_default" />
+
+                        <TextView
+                            android:id="@+id/tv_select_bank_card"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="28dp"
+                            android:layout_weight="1"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/select_bank"
+                            android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize12sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="16dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="11dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_arrow_down_gray" />
 
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iv_bank_card_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="12dp"
-                        android:src="@drawable/ic_bank_default" />
 
-                    <TextView
-                        android:id="@+id/tv_select_bank_card"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="28dp"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:text="@string/select_bank"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="16dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="11dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_arrow_down_gray" />
                 </LinearLayout>
                 <!-- 提款金額 -->
                 <org.cxct.sportlottery.ui.login.LoginEditText
@@ -203,6 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cvInputType="number"
+                    app:cvTextColor="@color/color_414655"
                     app:cvTitle="@string/withdraw_amount" />
                 <!-- 提款提示 -->
                 <TextView
@@ -269,19 +276,6 @@
                         android:textColor="@color/color_F75452_b73a20"
                         android:textSize="@dimen/textSize12sp" />
 
-                    <TextView
-                        android:id="@+id/tv_detail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/selector_commission_detail_button"
-                        android:enabled="false"
-                        android:gravity="center"
-                        android:paddingHorizontal="10dp"
-                        android:text="@string/commission_detail"
-                        android:textColor="@color/selector_blue_light_gray"
-                        android:textSize="12dp"
-                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/btn_info"
@@ -289,24 +283,29 @@
                         android:layout_height="16dp"
                         android:contentDescription="@null"
                         android:gravity="center"
-                        android:src="@drawable/icon_info" />
+                        android:src="@drawable/ic_icon_exp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="10dp"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:paddingHorizontal="4dp"
+                        android:text="@string/log_detail_title"
+                        android:textColor="@color/color_6C7BA8"
+                        android:textSize="@dimen/textSize14sp" />
 
 
                 </LinearLayout>
-                <!-- 提款密碼 -->
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_withdrawal_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:cvHint="@string/hint_four_number_password"
-                    app:cvInputType="numberPassword"
-                    app:cvTitle="@string/withdraw_password" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
+                    android:layout_marginTop="@dimen/margin_10"
                     android:background="@drawable/effect_edittext_bg"
                     android:focusable="true"
                     android:gravity="center"
@@ -342,12 +341,26 @@
 
                 </LinearLayout>
 
+                <!-- 提款密碼 -->
+                <org.cxct.sportlottery.ui.login.LoginEditText
+                    android:id="@+id/et_withdrawal_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cvTextColor="@color/color_414655"
+                    app:cvHint="@string/hint_four_number_password"
+                    app:cvInputType="numberPassword"
+                    app:cvTitle="@string/withdraw_password" />
+
+
                 <TextView
                     android:id="@+id/btn_withdraw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/margin_20"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/margin_20"
                     android:background="@drawable/ic_submit"
                     android:paddingVertical="9dp"
                     android:text="@string/submit"

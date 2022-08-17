@@ -21,40 +21,72 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="vertical"
-                android:background="@color/color_191919_FCFCFC">
+                android:background="@color/color_191919_FCFCFC"
+                android:orientation="vertical">
 
-                <FrameLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:background="@drawable/ic_mask_group"
+                    android:orientation="vertical"
+                    android:paddingBottom="12dp">
 
-                    <ImageView
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginTop="@dimen/margin_14">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="@dimen/margin_12"
+                            android:src="@drawable/ic_group_7130" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/now_balance"
+                            android:textColor="@color/exo_white"
+                            android:textSize="@dimen/textSize14sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/bg_current_balance"
-                        android:adjustViewBounds="true" />
+                        android:layout_marginStart="17dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin_14"
-                        android:fontFamily="@font/helvetica_bold"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/textSize18sp"
-                        android:textColor="@color/color_2b2b2b_ffffff"
-                        tools:text="PHP 999,999,999.000" />
+                        <TextView
+                            android:id="@+id/tv_currency_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/exo_white"
+                            android:textSize="@dimen/textSize20sp"
+                            tools:text="₱" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin_14"
-                        android:layout_gravity="right|bottom"
-                        android:textSize="@dimen/textSize14sp"
-                        android:textColor="@color/color_2b2b2b_ffffff"
-                        android:text="@string/current_balance" />
-                </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/tv_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="0"
+                            android:textColor="@color/exo_white"
+                            android:textSize="@dimen/textSize20sp"
+                            tools:text="19940.000" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -64,10 +96,11 @@
                     android:drawableLeft="@drawable/ic_withdraw"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize14sp"
+                    android:text="@string/withdraw_amount"
+
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:text="@string/withdraw_amount" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
 
                 <org.cxct.sportlottery.ui.login.LoginEditText
                     android:id="@+id/et_amount"
@@ -75,6 +108,7 @@
                     android:layout_height="wrap_content"
                     app:cvDividerColor="@color/transparent"
                     app:cvHint="@string/edt_hint_deposit_money"
+                    app:cvTextColor="@color/color_414655"
                     app:cvInputType="number"
                     app:cvTitle="@string/withdraw_amount" />
 
@@ -87,10 +121,10 @@
                     android:drawableLeft="@drawable/ic_deduction"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize14sp"
+                    android:text="@string/commission_deducted_amount"
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:text="@string/commission_deducted_amount" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/ll_commission"
@@ -121,11 +155,11 @@
                         android:background="@drawable/selector_commission_detail_button"
                         android:enabled="false"
                         android:gravity="center"
-                        android:textStyle="bold"
                         android:paddingHorizontal="10dp"
                         android:text="@string/commission_detail"
                         android:textColor="@color/selector_blue_light_gray"
-                        android:textSize="@dimen/textSize12sp" />
+                        android:textSize="@dimen/textSize12sp"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/btn_info"
@@ -145,10 +179,10 @@
                     android:drawableLeft="@drawable/ic_password_green"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize14sp"
+                    android:text="@string/withdraw_password"
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:text="@string/withdraw_password" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
 
                 <org.cxct.sportlottery.ui.login.LoginEditText
                     android:id="@+id/et_password"
@@ -181,23 +215,23 @@
                         android:drawableLeft="@drawable/ic_map"
                         android:drawablePadding="5dp"
                         android:fontFamily="@font/helvetica_bold"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/textSize14sp"
+                        android:text="@string/select_area"
                         android:textColor="@color/color_BBBBBB_333333"
-                        android:text="@string/select_area" />
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_building"
                         android:drawablePadding="5dp"
-                        android:layout_marginLeft="7dp"
                         android:fontFamily="@font/helvetica_bold"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/textSize14sp"
+                        android:text="@string/select_city"
                         android:textColor="@color/color_BBBBBB_333333"
-                        android:text="@string/select_city" />
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -217,8 +251,8 @@
                         android:id="@+id/spinner_city"
                         android:layout_width="0dp"
                         android:layout_height="44dp"
-                        android:layout_weight="1"
                         android:layout_marginLeft="7dp"
+                        android:layout_weight="1"
                         android:background="@drawable/bg_radius_4_button_white"
                         app:defaultStatusText="@string/waiting" />
                 </LinearLayout>
@@ -227,11 +261,11 @@
                     android:id="@+id/rv_station"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_radius_4_view_1c1c1c_fafafa"
                     android:layout_marginTop="@dimen/margin_8"
+                    android:background="@drawable/bg_radius_4_view_1c1c1c_fafafa"
                     android:padding="@dimen/margin_8"
-                    tools:listitem="@layout/item_bet_station"
-                    tools:itemCount="2" />
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_bet_station" />
 
             </LinearLayout>
 
@@ -249,8 +283,8 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/bg_station_detail"
-                        android:adjustViewBounds="true" />
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/bg_station_detail" />
 
                     <LinearLayout
                         android:id="@+id/lin_station_detail"
@@ -273,12 +307,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:fontFamily="@font/helvetica_bold"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/textSize16sp"
                             android:ellipsize="end"
+                            android:fontFamily="@font/helvetica_bold"
                             android:maxLines="2"
                             android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize16sp"
+                            android:textStyle="bold"
                             tools:text="makati 55T 0001prd t" />
 
 
@@ -287,26 +321,26 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/helvetica_bold"
-                            android:textStyle="bold"
-                            tools:text="3.2 km"
                             android:textColor="@color/color_1A1A1A_0760D4"
-                            android:textSize="@dimen/textSize22sp" />
+                            android:textSize="@dimen/textSize22sp"
+                            android:textStyle="bold"
+                            tools:text="3.2 km" />
                     </LinearLayout>
                 </FrameLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lin_empty"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
                 android:layout_marginHorizontal="18dp"
                 android:layout_marginBottom="10dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="10dp"
                 android:background="@drawable/bg_radius_4_view_1c1c1c_fafafa"
-                >
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp">
 
                 <ImageView
                     android:id="@+id/list_no_record_img"
@@ -336,14 +370,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/color_1F1F1F_E2E2E2"
-                android:layout_marginHorizontal="18dp" />
+                android:layout_marginHorizontal="18dp"
+                android:background="@color/color_1F1F1F_E2E2E2" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="18dp">
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -352,33 +386,33 @@
                     android:drawableLeft="@drawable/ic_appointment"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/helvetica_bold"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize14sp"
+                    android:text="@string/appointment_time"
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:text="@string/appointment_time" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/textSize12sp"
+                    android:text="@string/current_time"
                     android:textColor="@color/color_7F7F7F_999999"
-                    android:text="@string/current_time" />
+                    android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_current_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_6"
-                    android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/color_0760D4_0760D4"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="2022-09" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/bg_radius_4_button_white">
 
                 <TextView
@@ -386,14 +420,14 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingHorizontal="12dp"
-                    android:drawablePadding="7dp"
-                    android:gravity="center_vertical"
                     android:drawableLeft="@drawable/ic_calendar"
                     android:drawableRight="@drawable/ic_arrow_gray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
                     android:text="@string/select_date"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="2022-06-30" />
 
                 <View
@@ -406,14 +440,14 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:paddingHorizontal="12dp"
-                    android:drawablePadding="7dp"
-                    android:gravity="center_vertical"
                     android:drawableLeft="@drawable/ic_time"
                     android:drawableRight="@drawable/ic_arrow_gray"
-                    android:textSize="@dimen/textSize12sp"
+                    android:drawablePadding="7dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
                     android:text="@string/select_time"
                     android:textColor="@color/color_BBBBBB_333333"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="08:00~09:00" />
             </LinearLayout>
 
@@ -421,8 +455,8 @@
                 android:id="@+id/tv_time_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginHorizontal="@dimen/margin_18"
+                android:layout_marginTop="@dimen/margin_10"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/color_F75452_b73a20"

@@ -101,7 +101,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        setIntentClassLiveData(ProfileCenterFragment::class.java)
+//        setIntentClassLiveData(ProfileCenterFragment::class.java)
     }
 
     fun navShoppingCart() {
