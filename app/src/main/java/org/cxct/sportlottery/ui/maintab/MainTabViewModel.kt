@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.app.Application
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 
 class MainTabViewModel(
     androidContext: Application,
@@ -11,7 +11,7 @@ class MainTabViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository,
-) : BaseSocketViewModel(
+) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,

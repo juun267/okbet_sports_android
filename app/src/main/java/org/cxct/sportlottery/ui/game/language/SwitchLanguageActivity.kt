@@ -4,22 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_switch_language.*
-import kotlinx.android.synthetic.main.activity_switch_language.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
-import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SPUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
-import java.security.AccessController.getContext
 
 
 class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),

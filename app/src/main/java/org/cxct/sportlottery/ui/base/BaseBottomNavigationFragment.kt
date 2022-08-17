@@ -4,13 +4,12 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.view_bottom_navigation.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.util.JumpUtil
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -187,5 +186,6 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             else -> Timber.i("$this 尚未實作關閉菜單方法")
         }
     }
+
 
 }

@@ -3,50 +3,33 @@ package org.cxct.sportlottery.ui.profileCenter
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.view.MenuItem
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.activity_profile_center.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_nav_right.*
-import kotlinx.android.synthetic.main.view_toolbar_main.*
+import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.fragment_profile_center.*
+import kotlinx.android.synthetic.main.view_toolbar_main.iv_menu
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
+import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
-import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
-import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
-import org.cxct.sportlottery.ui.menu.MenuFragment
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
@@ -54,7 +37,6 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivi
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
@@ -63,67 +45,41 @@ import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.TextUtil.formatMoneyNoDecimal
-import org.cxct.sportlottery.util.TimeUtil.getRemainDay
-import timber.log.Timber
+import org.greenrobot.eventbus.EventBus
 import java.io.File
-import java.io.FileNotFoundException
-import kotlinx.android.synthetic.main.activity_profile_center.iv_menu as iv_menu1
-import kotlinx.android.synthetic.main.view_toolbar_main.iv_notice as iv_notice1
 
 /**
  * @app_destination 個人中心
  */
-class ProfileCenterActivity :
-    BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
-    //簡訊驗證彈窗
-    private var customSecurityDialog: CustomSecurityDialog? = null
-    private var betListFragment = BetListFragment()
+class ProfileCenterFragment :
+    BaseBottomNavigationFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
-    private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
-            try {
-                // 图片选择结果回调
-                // LocalMedia 里面返回三种path
-                // 1.media.getPath(); 为原图path
-                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
-
-                val media = result?.firstOrNull() //這裡應當只會有一張圖片
-                val path = when {
-                    media?.isCompressed == true -> media.compressPath
-                    media?.isCut == true -> media.cutPath
-                    else -> media?.path
-                }
-
-                val file = File(path!!)
-                if (file.exists())
-                    uploadImg(file)
-                else
-                    throw FileNotFoundException()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                ToastUtil.showToastInCenter(
-                    this@ProfileCenterActivity,
-                    getString(R.string.error_reading_file)
-                )
-            }
+    companion object {
+        fun newInstance(): ProfileCenterFragment {
+            val args = Bundle()
+            val fragment = ProfileCenterFragment()
+            fragment.arguments = args
+            return fragment
         }
-
-        override fun onCancel() {
-            Timber.i("PictureSelector Cancel")
-        }
-
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile_center)
+    //簡訊驗證彈窗
+    private var customSecurityDialog: CustomSecurityDialog? = null
+    private var noticeCount: Int? = null
+    private var isGuest: Boolean? = null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_profile_center, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initToolBar()
-        initBottomNavigation()
-        initMenu()
-        setupNoticeButton(iv_notice,iv_circle)
+        setupNoticeButton()
         initView()
         setupHeadButton()
         setupEditNickname()
@@ -132,13 +88,11 @@ class ProfileCenterActivity :
         setupWithdrawButton()
         setupLogout()
         setupMoreButtons()
-        initBottomNav()
         getUserInfo()
         initObserve()
         updateThirdOpenUI()
         updateCreditAccountUI()
         setupServiceButton()
-
     }
 
     private fun setupServiceButton() {
@@ -147,27 +101,16 @@ class ProfileCenterActivity :
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
                 !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(supportFragmentManager, null)
+                    ServiceDialog().show(childFragmentManager, null)
                 }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl2)
+                    JumpUtil.toExternalWeb(requireContext(), serviceUrl2)
                 }
                 !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@ProfileCenterActivity, serviceUrl)
+                    JumpUtil.toExternalWeb(requireContext(), serviceUrl)
                 }
             }
         }
-    }
-    override fun initToolBar() {
-        iv_menu.setOnClickListener {
-            if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
-            else {
-                drawer_layout.openDrawer(nav_right)
-                viewModel.getMoney()
-            }
-        }
-
-
     }
 
     private fun initView() {
@@ -182,6 +125,14 @@ class ProfileCenterActivity :
         tv_current_version.text = version
     }
 
+    fun initToolBar() {
+        lin_person.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        iv_menu.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(true))
+        }
+
+    }
+
     override fun onResume() {
         super.onResume()
         if (MultiLanguagesApplication.isNightMode) {
@@ -191,8 +142,8 @@ class ProfileCenterActivity :
             tv_appearance.text =
                 getString(R.string.appearance) + ": " + getString(R.string.day_mode)
         }
-        tv_language.text = LanguageManager.getLanguageStringResource(this)
-        iv_flag.setImageResource(LanguageManager.getLanguageFlag(this))
+        tv_language.text = LanguageManager.getLanguageStringResource(context)
+        iv_flag.setImageResource(LanguageManager.getLanguageFlag(context))
         getMoney()
     }
 
@@ -207,7 +158,7 @@ class ProfileCenterActivity :
         btn_edit_nickname.setOnClickListener {
             startActivity(
                 Intent(
-                    this@ProfileCenterActivity,
+                    requireActivity(),
                     ModifyProfileInfoActivity::class.java
                 ).apply {
                     putExtra(ModifyProfileInfoActivity.MODIFY_INFO, ModifyType.NickName)
@@ -256,7 +207,7 @@ class ProfileCenterActivity :
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                    GamePublicityActivity.reStart(this)
+                    GamePublicityActivity.reStart(requireContext())
                 }
             }
         }
@@ -265,14 +216,14 @@ class ProfileCenterActivity :
     private fun setupMoreButtons() {
         //個人資訊
 //        btn_profile.setOnClickListener {
-//            startActivity(Intent(this, ProfileActivity::class.java))
+//            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
 //        }
         iv_profile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
         }
         //額度轉換
         btn_account_transfer.setOnClickListener {
-            startActivity(Intent(this, MoneyTransferActivity::class.java))
+            startActivity(Intent(requireActivity(), MoneyTransferActivity::class.java))
         }
 
         //提款設置
@@ -282,17 +233,17 @@ class ProfileCenterActivity :
 
         //其他投注記錄
         btn_other_bet_record.setOnClickListener {
-            startActivity(Intent(this, OtherBetRecordActivity::class.java))
+            startActivity(Intent(requireActivity(), OtherBetRecordActivity::class.java))
         }
 
         //資金明細
         btn_fund_detail.setOnClickListener {
-            startActivity(Intent(this, FinanceActivity::class.java))
+            startActivity(Intent(requireActivity(), FinanceActivity::class.java))
         }
 
         //消息中心
         btn_news_center.setOnClickListener {
-            startActivity(Intent(this, InfoCenterActivity::class.java))
+            startActivity(Intent(requireActivity(), InfoCenterActivity::class.java))
         }
 
         //優惠活動
@@ -306,7 +257,7 @@ class ProfileCenterActivity :
                 }
                 else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
                     ToastUtil.showToastInCenter(
-                        this,
+                        requireContext(),
                         getString(R.string.message_guest_no_permission)
                     )
                 }
@@ -315,14 +266,14 @@ class ProfileCenterActivity :
         //代理加盟
         btn_affiliate.setOnClickListener {
             JumpUtil.toInternalWeb(
-                this,
-                Constants.getAffiliateUrl(this),
+                requireContext(),
+                Constants.getAffiliateUrl(requireContext()),
                 resources.getString(R.string.btm_navigation_affiliate)
             )
         }
         //会员等级
         btn_member_level.setOnClickListener {
-            startActivity(Intent(this, VipActivity::class.java))
+            startActivity(Intent(requireActivity(), VipActivity::class.java))
         }
         //自我約束
         if (sConfigData?.selfRestraintVerified == "0" || sConfigData?.selfRestraintVerified == null) {
@@ -330,45 +281,45 @@ class ProfileCenterActivity :
         } else {
             btn_self_limit.visibility = View.VISIBLE
             btn_self_limit.setOnClickListener {
-                startActivity(Intent(this, SelfLimitActivity::class.java))
+                startActivity(Intent(requireActivity(), SelfLimitActivity::class.java))
             }
         }
         //赛果结算
         btn_game_settlement.setOnClickListener {
-            startActivity(Intent(this, ResultsSettlementActivity::class.java))
+            startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
         }
         //游戏规则
         btn_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(
-                this,
-                Constants.getGameRuleUrl(this),
+                requireContext(),
+                Constants.getGameRuleUrl(requireContext()),
                 getString(R.string.game_rule)
             )
         }
         //切换语言
         btn_language.setOnClickListener {
-            var intent = Intent(this, SwitchLanguageActivity::class.java);
+            var intent = Intent(requireActivity(), SwitchLanguageActivity::class.java);
             intent.putExtra("type", 1)
             startActivity(intent)
         }
         //外觀
         btn_appearance.setOnClickListener {
-            startActivity(Intent(this, AppearanceActivity::class.java))
+            startActivity(Intent(requireActivity(), AppearanceActivity::class.java))
         }
 //        btn_time_zone.visibility = View.GONE
         //时区切换
         btn_time_zone.setOnClickListener {
-            startActivity(Intent(this, TimeZoneActivity::class.java))
+            startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
         }
 
         //幫助中心
         btn_help_center.setOnClickListener {
-            startActivity(Intent(this, HelpCenterActivity::class.java))
+            startActivity(Intent(requireActivity(), HelpCenterActivity::class.java))
         }
 
         //建議反饋
         btn_feedback.setOnClickListener {
-            startActivity(Intent(this, FeedbackMainActivity::class.java))
+            startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
         }
         //联系客服
         btn_custom_serivce.setOnClickListener {
@@ -376,21 +327,21 @@ class ProfileCenterActivity :
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
                 !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(supportFragmentManager, null)
+                    ServiceDialog().show(childFragmentManager, null)
                 }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this, serviceUrl2)
+                    JumpUtil.toExternalWeb(requireContext(), serviceUrl2)
                 }
                 !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this, serviceUrl)
+                    JumpUtil.toExternalWeb(requireContext(), serviceUrl)
                 }
             }
         }
         //关于我们
         btn_about_us.setOnClickListener {
             JumpUtil.toInternalWeb(
-                this,
-                Constants.getAboutUsUrl(this),
+                requireContext(),
+                Constants.getAboutUsUrl(requireContext()),
                 getString(R.string.about_us)
             )
         }
@@ -399,60 +350,13 @@ class ProfileCenterActivity :
     // TODO 跳轉Promotion 20220108新增 by Hewie
     private fun toProfileCenter() {
         JumpUtil.toInternalWeb(
-            this,
+            requireContext(),
             Constants.getPromotionUrl(
                 viewModel.token,
-                LanguageManager.getSelectLanguage(this@ProfileCenterActivity)
+                LanguageManager.getSelectLanguage(requireContext())
             ),
             getString(R.string.promotion)
         )
-    }
-
-    private fun initBottomNav() {
-        bottom_nav_view.selectedItemId = R.id.my_account_page
-        bottom_nav_view.setOnNavigationItemSelectedListener {
-            //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
-            when (it.itemId) {
-                R.id.home_page -> {
-//                    startActivity(Intent(this, MainActivity::class.java))
-                    GamePublicityActivity.reStart(this)
-                    false
-                }
-                R.id.game_page -> {
-                    startActivity(Intent(this, GameActivity::class.java))
-                    false
-                }
-                R.id.promotion_page -> {
-                    JumpUtil.toInternalWeb(
-                        this,
-                        Constants.getPromotionUrl(
-                            viewModel.token,
-                            LanguageManager.getSelectLanguage(this@ProfileCenterActivity)
-                        ),
-                        getString(R.string.promotion)
-                    )
-                    false
-                }
-                R.id.chat_page -> {
-                    false
-                }
-                R.id.my_account_page -> {
-                    when (viewModel.isLogin.value) {
-                        true -> { //登入
-                            startActivity(Intent(this, ProfileCenterActivity::class.java))
-                        }
-                        else -> { //尚未登入
-                            startActivity(Intent(this, RegisterActivity::class.java))
-                        }
-                    }
-                    true
-                }
-                else -> false
-            }
-        }
-
-        //聊天室按鈕 啟用判斷
-        bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
     /*private fun initServiceButton() {
@@ -464,22 +368,22 @@ class ProfileCenterActivity :
     }
 
     private fun initObserve() {
-        viewModel.userMoney.observe(this) {
+        viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let {
                 refreshMoneyHideLoading()
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
 
-        viewModel.userInfo.observe(this) {
+        viewModel.userInfo.observe(viewLifecycleOwner) {
             updateUI(it)
         }
 
-        viewModel.navPublicityPage.observe(this) {
-            GamePublicityActivity.reStart(this)
+        viewModel.navPublicityPage.observe(viewLifecycleOwner) {
+            GamePublicityActivity.reStart(requireContext())
         }
 
-        viewModel.lockMoney.observe(this) {
+        viewModel.lockMoney.observe(viewLifecycleOwner) {
 //            if (it?.toInt()!! > 0) {
 //                ivNotice.visibility = View.VISIBLE
 //                ivNotice.setOnClickListener { view ->
@@ -510,7 +414,7 @@ class ProfileCenterActivity :
 //            }
         }
 
-        viewModel.withdrawSystemOperation.observe(this) {
+        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
                 showPromptDialog(
@@ -520,10 +424,10 @@ class ProfileCenterActivity :
             }
         }
 
-        viewModel.rechargeSystemOperation.observe(this) {
+        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                    startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
                 } else {
                     showPromptDialog(
                         getString(R.string.prompt),
@@ -533,7 +437,7 @@ class ProfileCenterActivity :
             }
         }
 
-        viewModel.needToUpdateWithdrawPassword.observe(this) {
+        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -544,7 +448,7 @@ class ProfileCenterActivity :
                     ) {
                         startActivity(
                             Intent(
-                                this,
+                                requireActivity(),
                                 SettingPasswordActivity::class.java
                             ).apply {
                                 putExtra(
@@ -559,7 +463,7 @@ class ProfileCenterActivity :
             }
         }
 
-        viewModel.needToCompleteProfileInfo.observe(this) {
+        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -568,7 +472,7 @@ class ProfileCenterActivity :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
+                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
                     }
                 } else {
                     viewModel.checkBankCardPermissions()
@@ -576,7 +480,7 @@ class ProfileCenterActivity :
             }
         }
 
-        viewModel.needToBindBankCard.observe(this) {
+        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { messageId ->
                 if (messageId != -1) {
                     showPromptDialog(
@@ -585,18 +489,18 @@ class ProfileCenterActivity :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(Intent(this, BankActivity::class.java))
+                        startActivity(Intent(requireActivity(), BankActivity::class.java))
                     }
                 } else {
-                    startActivity(Intent(this, WithdrawActivity::class.java))
+                    startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
                 }
             }
         }
 
-        viewModel.needToSendTwoFactor.observe(this) {
+        viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    customSecurityDialog = CustomSecurityDialog(this).apply {
+                    customSecurityDialog = CustomSecurityDialog(requireContext()).apply {
                         getSecurityCodeClickListener {
                             this.showSmeTimer300()
                             viewModel.sendTwoFactor()
@@ -606,40 +510,40 @@ class ProfileCenterActivity :
                                 viewModel.validateTwoFactor(ValidateTwoFactorRequest(number))
                             }
                     }
-                    customSecurityDialog?.show(supportFragmentManager, null)
+                    customSecurityDialog?.show(childFragmentManager, null)
                 }
             }
         }
 
-        viewModel.errorMessageDialog.observe(this) {
+        viewModel.errorMessageDialog.observe(viewLifecycleOwner) {
             val errorMsg = it ?: getString(R.string.unknown_error)
-            CustomAlertDialog(this).apply {
+            CustomAlertDialog(requireContext()).apply {
                 setMessage(errorMsg)
                 setNegativeButtonText(null)
                 setCanceledOnTouchOutside(false)
                 setCancelable(false)
-            }.show(supportFragmentManager, null)
+            }.show(childFragmentManager, null)
         }
 
-        viewModel.twoFactorSuccess.observe(this) {
+        viewModel.twoFactorSuccess.observe(viewLifecycleOwner) {
             if (it == true)
                 customSecurityDialog?.dismiss()
         }
 
-        viewModel.twoFactorResult.observe(this) {
+        viewModel.twoFactorResult.observe(viewLifecycleOwner) {
             //傳送驗證碼成功後才能解鎖提交按鈕
             customSecurityDialog?.setPositiveBtnClickable(it?.success ?: false)
             sConfigData?.hasGetTwoFactorResult = true
         }
 
         //使用者沒有電話號碼
-        viewModel.showPhoneNumberMessageDialog.observe(this) {
+        viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
-                if (!b) phoneNumCheckDialog(this, supportFragmentManager)
+                if (!b) phoneNumCheckDialog(requireContext(), childFragmentManager)
             }
         }
 
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -650,7 +554,7 @@ class ProfileCenterActivity :
                     ) {
                         startActivity(
                             Intent(
-                                this,
+                                requireActivity(),
                                 SettingPasswordActivity::class.java
                             ).apply {
                                 putExtra(
@@ -660,12 +564,12 @@ class ProfileCenterActivity :
                             })
                     }
                 } else if (!b) {
-                    startActivity(Intent(this, BankActivity::class.java))
+                    startActivity(Intent(requireActivity(), BankActivity::class.java))
                 }
             }
         }
 
-        viewModel.settingNeedToCompleteProfileInfo.observe(this) {
+        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -674,15 +578,15 @@ class ProfileCenterActivity :
                         getString(R.string.go_to_setting),
                         true
                     ) {
-                        startActivity(Intent(this, ProfileActivity::class.java))
+                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
                     }
                 } else if (!b) {
-                    startActivity(Intent(this, BankActivity::class.java))
+                    startActivity(Intent(requireActivity(), BankActivity::class.java))
                 }
             }
         }
 
-        viewModel.editIconUrlResult.observe(this) {
+        viewModel.editIconUrlResult.observe(viewLifecycleOwner) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
                 showPromptDialog(
@@ -690,13 +594,21 @@ class ProfileCenterActivity :
                     getString(R.string.save_avatar_success)
                 ) {}
             else
-                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
 
-        viewModel.intoWithdraw.observe(this) {
+        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let {
-                startActivity(Intent(this, WithdrawActivity::class.java))
+                startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
+        }
+        viewModel.infoCenterRepository.unreadNoticeList.observe(viewLifecycleOwner) {
+            updateNoticeCount(it.size)
+        }
+
+        viewModel.userInfo.observe(viewLifecycleOwner) {
+            //是否测试用户（0-正常用户，1-游客，2-内部测试）
+            updateUserIdentity(it?.testFlag)
         }
     }
 
@@ -736,172 +648,45 @@ class ProfileCenterActivity :
     private fun updateThirdOpenUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         // 暫時隱藏入口 by Bee
-        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || baseContext.getString(R.string.app_name) != "OKbet") {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || requireContext().getString(R.string.app_name) != "OKbet") {
             btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         } else {
             btn_account_transfer.visibility = /*if (!thirdOpen)*/ View.GONE /*else View.VISIBLE*/
         }
         //   btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
-        bottom_nav_view.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
     }
 
     private fun updateCreditAccountUI() {
         lin_wallet_operation.setVisibilityByCreditSystem()
     }
 
-    override fun clickMenuEvent() {
-        if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
-        else {
-            drawer_layout.openDrawer(nav_right)
-            viewModel.getMoney()
-        }
-    }
-
-    override fun initMenu() {
-        try {
-            //關閉側邊欄滑動行為
-            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-
-            //選單選擇結束要收起選單
-            val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
-            menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
-            nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun initBottomNavigation() {
-        sport_bottom_navigation.apply {
-            setNavigationItemClickListener {
-                when (it) {
-                    R.id.navigation_home -> {
-                        viewModel.navHome()
-                        finish()
-                        false
-                    }
-                    R.id.navigation_sport -> {
-                        viewModel.navGame()
-                        finish()
-                        false
-                    }
-                    R.id.navigation_account_history -> {
-                        viewModel.navAccountHistory()
-                        finish()
-                        false
-                    }
-                    R.id.navigation_transaction_status -> {
-                        viewModel.navTranStatus()
-                        finish()
-                        false
-                    }
-                    R.id.navigation_my -> {
-                        true
-                    }
-                    else -> false
-                }
-            }
-
-            setSelected(R.id.navigation_my)
-        }
-    }
-
-    override fun onBackPressed() {
-        //返回鍵優先關閉投注單fragment
-        if (supportFragmentManager.backStackEntryCount != 0) {
-            for (i in 0 until supportFragmentManager.backStackEntryCount) {
-                supportFragmentManager.popBackStack()
-            }
-            return
-        }
-        super.onBackPressed()
-    }
-
-    override fun showBetListPage() {
-        betListFragment =
-            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(
-                    betResultData: Receipt?,
-                    betParlayList: List<ParlayOdd>,
-                    isMultiBet: Boolean
-                ) {
-                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
-                }
-
-            })
-
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
+    //有 child activity 給定 notice button 顯示
+    fun setupNoticeButton() {
+        iv_user_notice.setOnClickListener {
+            startActivity(
+                Intent(requireActivity(), InfoCenterActivity::class.java)
+                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
             )
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
-    }
-
-    override fun getBetListPageVisible(): Boolean {
-        return betListFragment.isVisible
-    }
-
-    override fun updateBetListCount(num: Int) {
-        sport_bottom_navigation.setBetCount(num)
-    }
-
-    override fun showLoginNotify() {
-        snackBarLoginNotify.apply {
-            setAnchorView(R.id.my_profile_bottom_navigation)
-            show()
         }
     }
 
-    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-        snackBarMyFavoriteNotify?.apply {
-            setAnchorView(R.id.my_profile_bottom_navigation)
-            show()
+    private fun updateNoticeCount(noticeCount: Int) {
+        this.noticeCount = noticeCount
+        updateNoticeButton()
+    }
+
+    private fun updateUserIdentity(isGuest: Long?) {
+        this.isGuest = when (isGuest) {
+            0.toLong() -> false
+            1.toLong() -> true
+            else -> null
         }
+        updateNoticeButton()
     }
 
-    override fun updateUiWithLogin(isLogin: Boolean) {
-        if (isLogin) {
-
-
-        } else {
-
-
-        }
+    private fun updateNoticeButton() {
+        iv_circle?.visibility =
+            (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
     }
-
-    override fun updateOddsType(oddsType: OddsType) {
-        //  tv_odds_type.text = getString(oddsType.res)
-    }
-
-    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
-        if (thirdGameCategory != null) {
-            val intent = Intent(this, MainActivity::class.java)
-                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
-            startActivity(intent)
-
-            return
-        }
-
-        startActivity(Intent(this, GamePublicityActivity::class.java))
-    }
-
 }

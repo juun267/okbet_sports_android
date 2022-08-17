@@ -24,7 +24,7 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.isThirdTransferOpen
@@ -245,7 +245,7 @@ class MainViewModel(
 
     fun navActivity(navClass: Class<*>) {
         when (navClass) {
-            ProfileCenterActivity::class.java -> {
+            ProfileCenterFragment::class.java -> {
                 if (isLogin.value == true) {
                     _navActivity.postValue(Event(navClass))
                 } else {

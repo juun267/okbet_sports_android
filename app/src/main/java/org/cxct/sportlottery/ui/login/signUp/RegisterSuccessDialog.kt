@@ -1,25 +1,15 @@
 package org.cxct.sportlottery.ui.login.signUp
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Spanned
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import kotlinx.android.synthetic.main.dialog_register_success.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class RegisterSuccessDialog(context: Context) : DialogFragment() {

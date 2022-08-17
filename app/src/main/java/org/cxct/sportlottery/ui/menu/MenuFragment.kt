@@ -9,32 +9,27 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
-import org.cxct.sportlottery.ui.game.Page
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
-import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
-import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import org.cxct.sportlottery.ui.vip.VipActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.phoneNumCheckDialog
+import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 /**
  * @app_destination 右上選單
@@ -302,7 +297,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //個人中心
         menu_profile_center.setOnClickListener {
-            viewModel.navActivity(ProfileCenterActivity::class.java)
+            viewModel.navActivity(ProfileCenterFragment::class.java)
             //遊客 TODO 20221208 拿掉遊客選項，預設以外行為需要另外定義(先預設登入) by Hewie
             mDownMenuListener?.onClick(menu_profile_center)
         }

@@ -26,12 +26,11 @@ import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
 
 class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
@@ -204,7 +203,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                     false
                 }
                 R.id.my_account_page -> {
-                    viewModel.navActivity(ProfileCenterActivity::class.java)
+                    viewModel.navActivity(ProfileCenterFragment::class.java)
                     false
                 }
                 else -> false

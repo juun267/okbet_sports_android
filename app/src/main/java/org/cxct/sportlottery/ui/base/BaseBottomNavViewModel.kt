@@ -9,7 +9,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.Event
 
@@ -101,7 +101,7 @@ abstract class BaseBottomNavViewModel(
             return
         }
 
-        setIntentClassLiveData(ProfileCenterActivity::class.java)
+        setIntentClassLiveData(ProfileCenterFragment::class.java)
     }
 
     fun navShoppingCart() {

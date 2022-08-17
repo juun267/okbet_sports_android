@@ -9,14 +9,11 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
 import org.cxct.sportlottery.enum.PassVerifyEnum
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
-import org.cxct.sportlottery.ui.main.MainActivity
 
 /**
  * @app_destination 自我禁制-帳號登入限制

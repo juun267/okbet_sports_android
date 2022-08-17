@@ -132,7 +132,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".ui.profileCenter.ProfileCenterActivity"
+            android:name=".ui.profileCenter.ProfileCenterFragment"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
