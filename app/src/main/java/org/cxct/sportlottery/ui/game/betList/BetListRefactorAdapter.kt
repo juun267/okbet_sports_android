@@ -1118,7 +1118,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 val betAmount = itemData.betAmount
-                var amountError = true
+                var amountError: Boolean
                 val balanceError: Boolean
                 if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
                     tvErrorMessage.isVisible = false
@@ -1133,22 +1133,30 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
                 } else {
                     tvPleaseEnterCorrectAmount.isVisible = false
-                    if (itemData.betAmount > inputMaxMoney) {
-                        //暫不顯示超過最大限額的提示，僅更新amountError
+                    if (betAmount > inputMaxMoney) {
+                        //超過最大限額
                         amountError = true
+                        tvErrorMessage.apply {
+                            text = context.getString(R.string.bet_info_list_maximum_limit_amount)
+                            isVisible = true
+                        }
                     } else {
-                        //最小限額
-                        tvErrorMessage.visibility = if (betAmount != 0.0 && betAmount < inputMinMoney) {
-                            amountError = true
-                            View.VISIBLE
-                        } else {
-                            amountError = false
-                            View.GONE
+                        tvErrorMessage.apply {
+                            isVisible = false
+                            if (betAmount != 0.0 && betAmount < inputMinMoney) {
+                                //低於最小限額
+                                amountError = true
+                                text = context.getString(R.string.bet_info_list_minimum_limit_amount)
+                                isVisible = true
+                            } else {
+                                amountError = false
+                                isVisible = false
+                            }
                         }
                     }
                 }
                 tvBalanceInsufficientMessage.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
-                    tvErrorMessage.isVisible = false //同時滿足低於最小限額和餘額不足，優先顯示餘額不足
+                    tvErrorMessage.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
                     balanceError = true
                     View.VISIBLE
                 } else {
@@ -1607,6 +1615,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private var mUserMoney: Double = 0.0
         private var mUserLogin: Boolean = false
         private var inputMaxMoney: Double = 0.0
+        private var inputMinMoney: Double = 0.0
         private var mHasBetClosed: Boolean = false
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
@@ -1668,6 +1677,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupInputMoney(itemData: ParlayOdd?) {
             val parlayMaxBet = itemData?.max ?: 0
             inputMaxMoney = parlayMaxBet.toDouble()
+            val parlayMinBet = itemData?.min ?: 0
+            inputMinMoney = parlayMinBet.toDouble()
         }
 
         private fun getParlayName(parlayType: String): String {
@@ -1833,23 +1844,29 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 } else {
                     tvPleaseEnterCorrectAmountParlay.isVisible = false
                     if (betAmount > inputMaxMoney) {
-                        //暫不顯示超過最大限額的提示，僅更新amountError
+                        //超過最大限額
                         amountError = true
+                        tvErrorMessageParlay.apply {
+                            text = context.getString(R.string.bet_info_list_maximum_limit_amount)
+                            isVisible = true
+                        }
                     } else {
-                        //最小限額
-                        itemData.min.let { min ->
-                            tvErrorMessageParlay.visibility = if (betAmount != 0.0 && betAmount < min) {
+                        tvErrorMessageParlay.apply {
+                            isVisible = false
+                            if (betAmount != 0.0 && betAmount < inputMinMoney) {
+                                //低於最小限額
                                 amountError = true
-                                View.VISIBLE
+                                text = context.getString(R.string.bet_info_list_minimum_limit_amount)
+                                isVisible = true
                             } else {
                                 amountError = false
-                                View.GONE
+                                isVisible = false
                             }
                         }
                     }
                 }
                 tvBalanceInsufficientMessageParlay.visibility = if (betAmount != 0.0 && betAmount > mUserMoney) {
-                    tvErrorMessageParlay.isVisible = false //同時滿足低於最小限額和餘額不足，優先顯示餘額不足
+                    tvErrorMessageParlay.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
                     balanceError = true
                     View.VISIBLE
                 } else {

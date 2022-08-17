@@ -721,6 +721,7 @@
     <string name="myfavorite_notify_detail_remove">Xóa khỏi kèo của tôi</string>
     <string name="statistics_title">Số liệu thống kê</string>
     <string name="bet_info_list_minimum_limit_amount">Số tiền đặt cược nhỏ hơn hạn mức đặt cược</string>
+    <string name="bet_info_list_maximum_limit_amount">Số tiền đặt cược lớn hơn giới hạn đặt cược</string> <!--F039-->
     <string name="actual_bet">Cược thực tế</string>
     <string name="bet_receipt_all_bet">Tổng tiền đặt cược</string>
     <string name="third_game_vncp">Xổ số CG</string>
