@@ -872,7 +872,7 @@
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
     <string name="text_security_money">押金：%s</string>
     <string name="text_security_money2">还有%s天</string>
-    <string name="customer_service_title">客服中心</string>
+    <string name="customer_service_title">客服</string>
 
     <!--自我禁制-->
     <string name="self_limit">自我禁制</string>
@@ -1061,7 +1061,7 @@
     <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
     <string name="function">常用功能</string>
     <string name="sport_relative">体育相关</string>
-    <string name="setting">系统设定</string>
+    <string name="setting">设置</string>
     <string name="service">服务</string>
     <string name="red_envelope_congratulations">恭喜您抢到</string>
     <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>

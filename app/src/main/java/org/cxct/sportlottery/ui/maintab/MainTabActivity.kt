@@ -11,17 +11,23 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.MetricsUtil
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class MainTabActivity : BaseActivity<MainTabViewModel>(MainTabViewModel::class) {
+class MainTabActivity : BaseSocketActivity<MainTabViewModel>(MainTabViewModel::class) {
 
-    var fragmentHelper: FragmentHelper? = null
-    var fragments = arrayOfNulls<Fragment>(5)
+    lateinit var fragmentHelper: FragmentHelper
+    var fragments = arrayOf<Fragment>(
+        MainHomeFragment.newInstance(),
+        MainHomeFragment.newInstance(),
+        MainHomeFragment.newInstance(),
+        MainHomeFragment.newInstance(),
+        MainHomeFragment.newInstance()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +43,6 @@ class MainTabActivity : BaseActivity<MainTabViewModel>(MainTabViewModel::class) 
     }
 
     private fun initBottomFragment() {
-        fragments[0] = MainHomeFragment.newInstance()
-        fragments[1] = MainHomeFragment.newInstance()
-        fragments[2] = MainHomeFragment.newInstance()
-        fragments[3] = MainHomeFragment.newInstance()
-        fragments[4] = MainHomeFragment.newInstance()
         fragmentHelper = FragmentHelper(supportFragmentManager, R.id.fl_content, fragments)
         bottom_navigation_view.apply {
             enableAnimation(true)
@@ -102,9 +103,10 @@ class MainTabActivity : BaseActivity<MainTabViewModel>(MainTabViewModel::class) 
                         Gravity.RIGHT
                     )
                     ImmersionBar.with(this@MainTabActivity)
+                        .transparentStatusBar()
                         .statusBarDarkFont(false)
+                        .fitsSystemWindows(false)
                         .init()
-                    setStatusbar(R.color.transparent, false)
                 } else {
                     drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -116,7 +118,9 @@ class MainTabActivity : BaseActivity<MainTabViewModel>(MainTabViewModel::class) 
             override fun onDrawerClosed(drawerView: View) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 ImmersionBar.with(this@MainTabActivity)
+                    .transparentStatusBar()
                     .statusBarDarkFont(true)
+                    .fitsSystemWindows(false)
                     .init()
             }
         })
@@ -131,8 +135,7 @@ class MainTabActivity : BaseActivity<MainTabViewModel>(MainTabViewModel::class) 
             //選單選擇結束要收起選單
             val fragment =
                 supportFragmentManager.findFragmentById(R.id.left_menu) as MainLeftFragment
-//            fragment.setDownMenuListener { drawer_layout.closeDrawers() }
-            nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+            left_menu.layoutParams.width = MetricsUtil.getScreenWidth() / 5 * 4 //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()

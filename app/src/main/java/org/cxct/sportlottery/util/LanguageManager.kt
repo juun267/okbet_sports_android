@@ -49,9 +49,9 @@ object LanguageManager {
 
     fun getLanguageFlag(context: Context?): Int {
         return when (getSelectLanguage(context)) {
-            Language.ZH -> R.drawable.icon_language_chinese
-            Language.VI -> R.drawable.icon_language_vietnam
-            else -> R.drawable.icon_language_english
+            Language.ZH -> R.drawable.ic_flag_cn
+            Language.VI -> R.drawable.ic_flag_vi
+            else -> R.drawable.ic_flag_en
         }
     }
 

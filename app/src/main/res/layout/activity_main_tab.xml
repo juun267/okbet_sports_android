@@ -32,23 +32,17 @@
             app:menu="@menu/main_menu_navigation" />
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_left"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/left_menu"
+        android:name="org.cxct.sportlottery.ui.maintab.MainLeftFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:outlineAmbientShadowColor="@color/transparent"
         android:outlineSpotShadowColor="@color/transparent"
         android:background="@color/transparent"
         android:layout_gravity="left"
-        android:tag="LEFT">
+        android:tag="LEFT"
+        tools:layout="@layout/fragment_main_left" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/left_menu"
-            android:name="org.cxct.sportlottery.ui.maintab.MainLeftFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_main_left" />
-
-    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

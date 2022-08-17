@@ -10,6 +10,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
@@ -71,6 +72,9 @@ class MainViewModel(
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
+
+    //未讀總數目
+    val totalUnreadMsgCount = infoCenterRepository.totalUnreadMsgCount
 
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
@@ -256,6 +260,16 @@ class MainViewModel(
             //若自動轉換功能開啟，離開遊戲要全額轉出
             doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.allTransferOut()
+            }
+        }
+    }
+
+    fun getMessageCount() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                val infoCenterRequest =
+                    InfoCenterRequest(1, 10, 0)
+                infoCenterRepository.getUserNoticeList(infoCenterRequest)
             }
         }
     }

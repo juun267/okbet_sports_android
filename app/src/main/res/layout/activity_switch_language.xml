@@ -79,7 +79,7 @@
                 <ImageView
                     android:layout_width="@dimen/margin_40"
                     android:layout_height="@dimen/margin_26"
-                    android:src="@drawable/ic_flat_cn" />
+                    android:src="@drawable/ic_flag_cn" />
             </LinearLayout>
 
             <View
@@ -110,7 +110,7 @@
                 <ImageView
                     android:layout_width="@dimen/margin_40"
                     android:layout_height="@dimen/margin_26"
-                    android:src="@drawable/ic_flat_en" />
+                    android:src="@drawable/ic_flag_en" />
             </LinearLayout>
 
             <View
@@ -140,7 +140,7 @@
                 <ImageView
                     android:layout_width="@dimen/margin_40"
                     android:layout_height="@dimen/margin_26"
-                    android:src="@drawable/ic_flat_vn" />
+                    android:src="@drawable/ic_flag_vi" />
             </LinearLayout>
 
             <View

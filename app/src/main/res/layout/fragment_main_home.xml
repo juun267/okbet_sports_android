@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     android:background="@color/background"
     android:orientation="vertical">
@@ -9,4 +11,174 @@
     <include
         android:id="@+id/lin_toolbar"
         layout="@layout/view_toolbar_home" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginHorizontal="18dp"
+        tl:cardCornerRadius="10dp">
+
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="135dp"
+            tl:banner_loop_time="3000"
+            tl:layout_constraintBottom_toBottomOf="parent"
+            tl:layout_constraintDimensionRatio="375:130"
+            tl:layout_constraintEnd_toEndOf="parent"
+            tl:layout_constraintStart_toStartOf="parent"
+            tl:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/lin_announcement"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="18dp">
+
+        <ImageView
+            android:id="@+id/iv_broadcast_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:src="@drawable/icon_notice"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <org.cxct.sportlottery.ui.common.AutoScrollRecyclerView
+            android:id="@+id/rv_marquee"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintHorizontal_weight="1"
+            android:layout_marginStart="@dimen/margin_6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:clipChildren="false"
+            app:layout_constraintEnd_toStartOf="@id/tv_customer_service"
+            app:layout_constraintStart_toEndOf="@id/iv_broadcast_icon"
+            app:speed_dp_sec="60dp"
+            tools:itemCount="1"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/content_marquee" />
+
+        <TextView
+            android:id="@+id/tv_customer_service"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/bg_blue_radius_10"
+            android:paddingHorizontal="7dp"
+            android:drawablePadding="3dp"
+            android:drawableLeft="@drawable/icon_customer_service"
+            android:textSize="12sp"
+            android:textColor="@color/color_025BE8"
+            android:text="@string/customer_service_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_marginVertical="@dimen/margin_10"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbtn_sport"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:background="@drawable/selector_bg_home_tab_menu"
+            android:textColor="@color/selector_blue_white"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/sport" />
+
+        <RadioButton
+            android:id="@+id/rbtn_egame"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:gravity="center"
+            android:button="@null"
+            android:background="@drawable/selector_bg_home_tab_menu"
+            android:textColor="@color/selector_blue_white"
+            android:textSize="@dimen/textSize14sp"
+            android:text="@string/e_game" />
+    </RadioGroup>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_type_list"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginHorizontal="@dimen/margin_15" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_marginVertical="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        tools:ignore="SpUsage, ContentDescription">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_hot_recommended" />
+
+        <TextView
+            android:id="@+id/tv_hot_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/hot_recommend"
+            android:textAllCaps="true"
+            android:textColor="@color/color_6C7BA8"
+            android:textSize="@dimen/textSize14sp"
+            android:drawableEnd="@drawable/icon_arrow03" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="SpUsage, ContentDescription"
+        tools:itemCount="1"
+        tools:listitem="@layout/publicity_recommend_item">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/lin_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_10"
+        android:paddingLeft="60dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/img_active"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <org.cxct.sportlottery.ui.common.UPMarqueeView
+            android:id="@+id/um_activity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
 </LinearLayout>

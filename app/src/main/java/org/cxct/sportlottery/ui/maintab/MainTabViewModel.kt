@@ -1,16 +1,23 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.content.Context
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
+import android.app.Application
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 class MainTabViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository,
+    favoriteRepository
+) {
 
 }

@@ -140,7 +140,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { TestViewModel(get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MainTabViewModel(get(), get(), get(), get()) }
+        viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

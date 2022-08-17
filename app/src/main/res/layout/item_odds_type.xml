@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rbtn_odds"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingVertical="@dimen/margin_10"
+    android:drawablePadding="8dp"
+    android:paddingRight="@dimen/margin_15"
+    android:includeFontPadding="true"
+    android:layout_marginHorizontal="4dp"
+    android:button="@null"
+    android:checked="true"
+    android:drawableLeft="@drawable/selector_radio_white"
+    android:textColor="@color/color_2b2b2b_ffffff"
+    android:textSize="@dimen/textSize14sp"
+    tools:text="@string/odd_type_eu" />

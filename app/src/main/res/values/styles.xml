@@ -16,6 +16,7 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/color_317FFF_0760D4</item>
+        <item name="android:screenOrientation">portrait</item>
 
         <!-- about issue 24880 在設定window背景色時在暗色模式時也會吃這裡 不會吃 night/styles -->
         <!-- <item name="android:windowBackground"></item> -->
