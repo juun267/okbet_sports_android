@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     android:background="@color/color_F0F5FA"
     android:overScrollMode="never"
     android:scrollbars="none">
@@ -12,6 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <View
+            android:id="@+id/v_statusbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_25"
+            android:background="@color/color_FFFFFF" />
 
         <FrameLayout
             android:id="@+id/lin_person"
@@ -27,14 +34,14 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp">
+                    android:layout_height="@dimen/tool_bar_height"
+                    android:paddingHorizontal="18dp">
 
                     <ImageView
                         android:id="@+id/iv_menu"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_height="24dp"
+                        android:layout_centerVertical="true"
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_icon_menu" />
 
@@ -42,6 +49,7 @@
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_marginEnd="19dp"
                         android:layout_toLeftOf="@+id/iv_customer_service">
 
@@ -71,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginEnd="19dp"
+                        android:layout_centerVertical="true"
                         android:src="@drawable/ic_icon_customer02" />
 
                 </RelativeLayout>
