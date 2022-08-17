@@ -132,12 +132,15 @@
 
             </LinearLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingTop="16dp">
+
+
                 <!-- 選擇銀行 -->
                 <LinearLayout
                     android:id="@+id/ll_select_bank"
@@ -160,11 +163,13 @@
                         android:textSize="@dimen/textSize13sp"
                         android:textStyle="bold" />
 
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:background="@color/color_666666_bcbcbc" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="">
+
+
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_bank_card_icon"

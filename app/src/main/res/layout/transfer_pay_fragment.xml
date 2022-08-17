@@ -123,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_radius_20_button_dusk_stroke"
+                        android:background="@drawable/bg_radius_2_button_dusk_stroke"
                         android:gravity="center"
                         android:minWidth="48dp"
                         android:paddingHorizontal="4dp"
@@ -131,7 +131,7 @@
                         android:paddingEnd="8dp"
                         android:text="@string/btn_copy"
                         android:textAllCaps="false"
-                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textColor="@color/color_025BE8"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -165,7 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="22dp"
                         android:layout_marginEnd="12dp"
-                        android:background="@drawable/bg_radius_20_button_dusk_stroke"
+                        android:background="@drawable/bg_radius_2_button_dusk_stroke"
                         android:gravity="center"
                         android:minWidth="48dp"
                         android:paddingHorizontal="4dp"
@@ -173,7 +173,7 @@
                         android:paddingEnd="8dp"
                         android:text="@string/btn_copy"
                         android:textAllCaps="false"
-                        android:textColor="@color/color_317FFF_0760D4"
+                        android:textColor="@color/color_025BE8"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -210,7 +210,7 @@
                     android:id="@+id/ll_qr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -228,22 +228,33 @@
                         android:minHeight="40dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/title_hint_qr_pay"
-                            android:textColor="@color/color_CCCCCC_000000"
-                            android:textSize="@dimen/textSize12sp" />
 
-                        <ImageView
-                            android:id="@+id/iv_address"
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="110dp"
-                            android:adjustViewBounds="true"
-                            android:maxWidth="110dp"
-                            android:maxHeight="110dp"
-                            android:scaleType="fitCenter"
-                            tools:src="@drawable/ic_close_gray_blue" />
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/iv_address"
+                                android:layout_width="wrap_content"
+                                android:layout_height="110dp"
+                                android:adjustViewBounds="true"
+                                android:maxWidth="110dp"
+                                android:maxHeight="110dp"
+                                android:scaleType="fitCenter"
+                                tools:src="@drawable/ic_close_gray_blue" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_14"
+                                android:text="@string/title_hint_qr_pay"
+                                android:textColor="@color/color_CCCCCC_000000"
+                                android:textSize="@dimen/textSize12sp" />
+
+                        </LinearLayout>
+
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -252,7 +263,7 @@
                     android:id="@+id/ll_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="2dp"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -270,9 +281,26 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/title_hint_qr_pay"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_E23434"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="财付通线下充值" />
+
+                    <Button
+                        android:id="@+id/btn_remaks_copy"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="12dp"
+                        android:background="@drawable/bg_radius_2_button_dusk_stroke"
+                        android:gravity="center"
+                        android:minWidth="48dp"
+                        android:paddingHorizontal="4dp"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="@string/btn_copy"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
 
@@ -564,12 +592,12 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="44dp"
+            android:layout_marginStart="@dimen/margin_20"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/margin_20"
             android:background="@drawable/ic_submit"
             android:gravity="center"
             android:text="@string/btn_submit"
-            android:layout_marginStart="@dimen/margin_20"
-            android:layout_marginEnd="@dimen/margin_20"
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold" />
