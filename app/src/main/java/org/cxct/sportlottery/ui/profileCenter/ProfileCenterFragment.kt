@@ -126,7 +126,11 @@ class ProfileCenterFragment :
     }
 
     fun initToolBar() {
-        lin_person.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        ImmersionBar.with(this)
+            .statusBarView(R.id.v_statusbar)
+            .statusBarDarkFont(true)
+            .init()
+//        v_statusbar?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
         }
