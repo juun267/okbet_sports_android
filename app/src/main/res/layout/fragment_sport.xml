@@ -1,94 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_191919_FCFCFC"
-    tools:context=".ui.main.more.SportFragment">
+    android:layout_height="wrap_content"
+    android:background="@color/color_1A1A1A_FFFFFF"
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
+        android:id="@+id/lin_toolbar"
+        layout="@layout/view_toolbar_home" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0.5dp"
+        android:background="@color/color_E3E8EE" />
 
-        <ImageView
-            android:id="@+id/bg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:src="@drawable/sport_category_bg"
-            app:layout_constraintTop_toTopOf="parent" />
+    <include
+        layout="@layout/view_game_tab_match_type_v4"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
 
-        <ImageView
-            android:id="@+id/iv_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:src="@drawable/sport_category_title"
-            app:layout_constraintBottom_toBottomOf="@+id/bg"
-            app:layout_constraintEnd_toEndOf="@+id/bg"
-            app:layout_constraintStart_toStartOf="@+id/bg"
-            app:layout_constraintTop_toTopOf="@+id/bg"
-            app:layout_constraintVertical_bias="0.66" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_E3E8EE" />
 
-        <LinearLayout
-            android:id="@+id/label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_label">
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-            <org.cxct.sportlottery.ui.component.IconText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_soccer"
-                app:cvTitle="@string/soccer" />
+    <!-- 投注單列表 & 快捷投注單 -->
+    <FrameLayout
+        android:id="@+id/fl_bet_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="gone" />
 
-            <org.cxct.sportlottery.ui.component.IconText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                app:cvIcon="@drawable/ic_basketball_icon"
-                app:cvTitle="@string/basketball" />
-
-            <org.cxct.sportlottery.ui.component.IconText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_tennis_icon"
-                app:cvTitle="@string/tennis" />
-
-            <org.cxct.sportlottery.ui.component.IconText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                app:cvIcon="@drawable/ic_volley_ball"
-                app:cvTitle="@string/volleyball" />
-
-            <org.cxct.sportlottery.ui.component.IconText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cvIcon="@drawable/ic_badminton_icon"
-                app:cvTitle="@string/badminton" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/btn_sport"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@null"
-            android:src="@drawable/btn_sportbook_start"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</LinearLayout>

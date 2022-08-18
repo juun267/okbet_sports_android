@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.content.Context
 import android.text.Html
 import android.text.Spanned
 import android.util.Log
@@ -23,7 +24,44 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import java.lang.Exception
+import kotlin.collections.ArrayList
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.MutableList
+import kotlin.collections.MutableMap
+import kotlin.collections.all
+import kotlin.collections.any
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.filter
+import kotlin.collections.filterIndexed
+import kotlin.collections.filterValues
+import kotlin.collections.find
+import kotlin.collections.first
+import kotlin.collections.firstOrNull
+import kotlin.collections.forEach
+import kotlin.collections.forEachIndexed
+import kotlin.collections.getOrNull
+import kotlin.collections.groupBy
+import kotlin.collections.indexOf
+import kotlin.collections.isNotEmpty
+import kotlin.collections.isNullOrEmpty
+import kotlin.collections.iterator
+import kotlin.collections.listOf
+import kotlin.collections.map
+import kotlin.collections.mapOf
+import kotlin.collections.mapValues
+import kotlin.collections.mutableMapOf
+import kotlin.collections.plus
+import kotlin.collections.set
+import kotlin.collections.sortedBy
+import kotlin.collections.take
+import kotlin.collections.toList
+import kotlin.collections.toMap
+import kotlin.collections.toMutableList
+import kotlin.collections.toMutableMap
+import kotlin.collections.toSortedMap
+import kotlin.collections.withIndex
 
 
 class QuickOddButtonPagerAdapter :RecyclerView.Adapter<QuickOddButtonPagerViewHolder>() {
@@ -446,18 +484,8 @@ class QuickOddButtonPagerViewHolder private constructor(
         )
     }
 
-    private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
-        return when (selectLanguage) {
-            LanguageManager.Language.EN -> {
-                this?.get(LanguageManager.Language.EN.key).toString()
-            }
-            LanguageManager.Language.VI -> {
-                this?.get(LanguageManager.Language.VI.key).toString()
-            }
-            else -> {
-                this?.get(LanguageManager.Language.ZH.key).toString()
-            }
-        }
+    private fun <K, V> Map<out K, V>.getPlayCateName(context: Context): String {
+        return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
     }
 
     private fun setupOddsButton(
@@ -470,7 +498,7 @@ class QuickOddButtonPagerViewHolder private constructor(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
-        oddButtonListener: QuickOddButtonListener?
+        oddButtonListener: QuickOddButtonListener?,
     ) {
         if (matchInfo == null ||
             betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty() ||
@@ -494,11 +522,11 @@ class QuickOddButtonPagerViewHolder private constructor(
         }
 
         val playCateName =
-            playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-                .replace(": ", " ").replace("||", "\n")
-        val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(
-            LanguageManager.getSelectLanguage(itemView.context)
-        ).replace(": ", " ").replace("||", "\n")
+            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+                ?.replace(": ", " ")?.replace("||", "\n") ?: ""
+        val betPlayCateName =
+            betPlayCateNameMap[odds.first]?.getPlayCateName(itemView.context)?.replace(": ", " ")
+                ?.replace("||", "\n") ?: ""
 
         val playCateCode = odds.first ?: ""
 
@@ -808,8 +836,8 @@ class QuickOddButtonPagerViewHolder private constructor(
             return
         }
         val playCateName =
-            playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-                .replace(": ", " ").replace("||", "\n")
+            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+                ?.replace(": ", " ")?.replace("||", "\n") ?: ""
         val playCateCode = odds.first ?: ""
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }

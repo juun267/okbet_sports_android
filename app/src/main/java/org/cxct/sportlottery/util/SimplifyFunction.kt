@@ -38,7 +38,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
@@ -46,6 +45,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.sport.SportCategoryAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.json.JSONArray
@@ -379,9 +379,49 @@ fun isThirdTransferOpen(): Boolean {
  */
 fun MutableList<LeagueOdd>.updateOddsSort(
     gameType: String?,
-    playCategoryAdapter: PlayCategoryAdapter
+    playCategoryAdapter: PlayCategoryAdapter,
 ) {
     val playSelected = playCategoryAdapter.data.find { it.isSelected }
+    val selectionType = playSelected?.selectionType
+    val playSelectedCode = playSelected?.code
+    val playCateMenuCode = when (playSelected?.selectionType) {
+        SelectionType.SELECTABLE.code -> {
+            playSelected.playCateList?.find { it.isSelected }?.code
+        }
+        SelectionType.UN_SELECTABLE.code -> {
+            playSelected.code
+        }
+        else -> null
+    }
+
+    val mPlayCateMenuCode =
+        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else playSelectedCode
+
+    val oddsSortFilter =
+        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else PlayCateMenuFilterUtils.filterOddsSort(
+            gameType,
+            mPlayCateMenuCode
+        )
+    val playCateNameMapFilter =
+        if (selectionType == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
+            gameType,
+            playSelectedCode,
+            mPlayCateMenuCode
+        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(gameType, mPlayCateMenuCode)
+
+    this.forEach { LeagueOdd ->
+        LeagueOdd.matchOdds.forEach { MatchOdd ->
+            MatchOdd.oddsSort = oddsSortFilter
+            MatchOdd.playCateNameMap = playCateNameMapFilter
+        }
+    }
+}
+
+fun MutableList<LeagueOdd>.updateNewOddsSort(
+    gameType: String?,
+    adapter: SportCategoryAdapter,
+) {
+    val playSelected = adapter.data.find { it.isSelected }
     val selectionType = playSelected?.selectionType
     val playSelectedCode = playSelected?.code
     val playCateMenuCode = when (playSelected?.selectionType) {

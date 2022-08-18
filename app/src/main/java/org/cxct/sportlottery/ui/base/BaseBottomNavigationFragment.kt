@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
+import android.os.Bundle
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
@@ -16,6 +18,18 @@ import kotlin.reflect.KClass
 
 abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseSocketFragment<T>(clazz), Animation.AnimationListener {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        receiver.dataSourceChange.observe(viewLifecycleOwner) {
+            this.run {
+                showErrorPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = getString(R.string.message_source_change)
+                ) { dataSourceChangeEven() }
+            }
+        }
+    }
 
     fun initBottomNavigation() {
         //底部hint提示
@@ -187,5 +201,10 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
     }
 
+    var dataSourceChangeEven = {}
+
+    fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
+        this.dataSourceChangeEven = dataSourceChangeEven
+    }
 
 }

@@ -1104,4 +1104,5 @@
     <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
     <string name="my_message">My message</string>
     <string name="betting_setting">Betting setting</string>
+    <string name="filter">filter</string>
 </resources>

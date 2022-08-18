@@ -1116,4 +1116,5 @@
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
     <string name="my_message">My message</string>
     <string name="betting_setting">Betting setting</string>
+    <string name="filter">filter</string>
 </resources>

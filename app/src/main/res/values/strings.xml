@@ -1134,6 +1134,9 @@
     <string name="payment_method">支付方式</string>
 
     <string name="customer_service">如需帮助，请</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="filter">filter</string>
 
     <string name="next_step">Next</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
