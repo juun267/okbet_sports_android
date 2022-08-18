@@ -239,7 +239,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:background="@drawable/bg_radius_4_view_1c1c1c_fafafa"
                     android:padding="@dimen/margin_8"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_bet_station" />

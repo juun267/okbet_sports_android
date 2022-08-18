@@ -12,8 +12,7 @@
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@drawable/bg_betstation_nor" />
+        android:adjustViewBounds="true" />
 
 
     <TextView
@@ -41,7 +40,7 @@
         android:id="@+id/img_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:src="@drawable/ic_yellow_check" />
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/ic_bule_check" />
 
 </FrameLayout>

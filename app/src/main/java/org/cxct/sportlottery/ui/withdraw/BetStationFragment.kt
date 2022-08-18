@@ -563,10 +563,12 @@ class BetStationAdapter(
                 if (station.isSelected) {
                     selectedPosition = position
                     imgCheck.visibility = View.VISIBLE
-                    ivBg.setImageResource(R.drawable.bg_betstation_sel)
+                    ivBg.setImageResource(R.drawable.ic_bule_site)
                 } else {
                     imgCheck.visibility = View.GONE
-                    ivBg.setImageResource(R.drawable.bg_betstation_nor)
+                    ivBg.setImageResource(R.drawable.ic_white_site)
+
+
                 }
             }
         }
