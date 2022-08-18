@@ -76,30 +76,54 @@ class VersionUpdateViewModel(
         }
     }
 
-    private suspend fun check(compareFun: (CheckAppVersionResult) -> Unit) {
-        try {
-            val url = getNextCheckAppUpdateUrl(mServerUrlIndex)
-            val response = OneBoSportApi.appUpdateService.checkAppVersion(url)
-            val result = response.body()
-            when {
-                response.isSuccessful && result != null -> compareFun(result)
-                else -> throw Exception(response.errorBody().toString())
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            if (++mServerUrlIndex in Constants.SERVER_URL_LIST.indices)
-                check(compareFun)
-            else {
-                _appVersionState.postValue(
-                    AppVersionState(
-                        false,
-                        BuildConfig.VERSION_CODE.toString(),
-                        BuildConfig.VERSION_NAME
-                    )
-                )
+    private fun check(compareFun: (CheckAppVersionResult) -> Unit) {
+        var appVersionChecked = false //是否已完成版本檢查
 
-                val version = "${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
-                _appMinVersionState.postValue(AppMinVersionState(isShowUpdateDialog = false, isForceUpdate = false, version = version))
+        //Map<伺服器網址, 是否已檢查過>
+        val serverUrlStatusMap: MutableMap<String, Boolean> =
+            Constants.SERVER_URL_LIST.associateWith { false }.toMutableMap()
+
+        serverUrlStatusMap.toMap().forEach { (serverUrl, status) ->
+            val url = Constants.getCheckAppUpdateUrl(serverUrl)
+            viewModelScope.launch {
+                val response = OneBoSportApi.appUpdateService.checkAppVersion(url)
+                val result = response.body()
+
+                serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
+
+                //已有獲取的最新版本資訊
+                if (appVersionChecked) {
+                    return@launch
+                } else {
+                    when {
+                        response.isSuccessful && result != null -> {
+                            appVersionChecked = true
+                            Constants.currentServerUrl = serverUrl //紀錄成功獲取檢查版本的 serverUrl
+                            compareFun(result)
+                        }
+                        else -> {
+                            //如果每一個伺服器網址都已檢查過
+                            if (serverUrlStatusMap.all { it.value }) {
+                                _appVersionState.postValue(
+                                    AppVersionState(
+                                        false,
+                                        BuildConfig.VERSION_CODE.toString(),
+                                        BuildConfig.VERSION_NAME
+                                    )
+                                )
+
+                                val version = "${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
+                                _appMinVersionState.postValue(
+                                    AppMinVersionState(
+                                        isShowUpdateDialog = false,
+                                        isForceUpdate = false,
+                                        version = version
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
