@@ -11,6 +11,14 @@ import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository.userInfo
+import org.cxct.sportlottery.repository.WithdrawRepository
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.util.isKYCVerifyRechargeOpen
+import org.cxct.sportlottery.util.isKYCVerifyWithdrawOpen
 
 /**
  * @author kevin
@@ -75,6 +83,16 @@ abstract class BaseWithdrawViewModel(
     //是否正在请求提现开关
     private var checkWithdraw = false
 
+    //判斷提現是否需要KYC認證
+    private var _isWithdrawShowVerifyDialog = MutableLiveData<Event<Boolean>>()
+    val isWithdrawShowVerifyDialog: LiveData<Event<Boolean>>
+        get() = _isWithdrawShowVerifyDialog
+
+    //判斷充值是否需要KYC認證
+    private var _isRechargeShowVerifyDialog = MutableLiveData<Event<Boolean>>()
+    val isRechargeShowVerifyDialog: LiveData<Event<Boolean>>
+        get() = _isRechargeShowVerifyDialog
+
     //提款功能是否啟用
     fun checkWithdrawSystem() {
         if (checkWithdraw)
@@ -111,6 +129,18 @@ abstract class BaseWithdrawViewModel(
 
             checkRecharge = false
         }
+    }
+
+    fun checkWithdrawKYCVerify(){
+        _isWithdrawShowVerifyDialog.postValue(Event(userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyWithdrawOpen()))
+    }
+
+    fun isRechargeShowVerifyDialog(): Boolean {
+        return userInfo.value?.verified != ProfileActivity.VerifiedType.PASSED.value && isKYCVerifyRechargeOpen()
+    }
+
+    fun checkRechargeKYCVerify() {
+        _isRechargeShowVerifyDialog.postValue(Event(isRechargeShowVerifyDialog()))
     }
 
     /**

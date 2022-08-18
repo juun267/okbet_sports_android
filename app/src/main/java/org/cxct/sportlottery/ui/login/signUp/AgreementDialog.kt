@@ -23,7 +23,7 @@ class AgreementDialog : BaseDialog<RegisterViewModel>(RegisterViewModel::class) 
         super.onViewCreated(view, savedInstanceState)
 
         setupConfirmButton()
-        setupContent()
+
     }
 
     private fun setupConfirmButton() {
@@ -32,8 +32,5 @@ class AgreementDialog : BaseDialog<RegisterViewModel>(RegisterViewModel::class) 
         }
     }
 
-    private fun setupContent() {
-        tv_content.text = viewModel.getAgreementContent(tv_content.context)
-    }
 
 }

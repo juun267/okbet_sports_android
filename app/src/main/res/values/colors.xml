@@ -204,7 +204,7 @@
     <color name="color_303030_ecedef">@color/color_ECEDEF</color>
     <color name="color_515151_EBEBEB">@color/color_EBEBEB</color>
 
-
+    <color name="color_2B2B2B_E2E2E2">@color/color_E2E2E2</color>
     <color name="color_FFFFFF_DE000000">@color/color_DE000000</color>
     <color name="color_B3FFFFFF_99000000">@color/transparent_black_60</color>
     <color name="color_66000000_14000000">@color/transparent_black_8</color>
