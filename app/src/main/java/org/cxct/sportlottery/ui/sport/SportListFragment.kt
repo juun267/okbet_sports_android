@@ -18,7 +18,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -442,48 +441,6 @@ class SportListFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     override fun hideLoading() {
         if (timer == null) startTimer()
     }
-
-    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
-        override fun onTabSelected(tab: TabLayout.Tab?) {
-            countryAdapter.setPreloadItem()
-            outrightLeagueOddAdapter.setPreloadItem()
-            //切換tab要重置位置
-            when (tab?.text.toString()) { //固定寫死
-                getString(R.string.game_tab_league_odd) -> { //賽事
-                    iv_calendar.visibility =
-                        if (matchType == MatchType.EARLY) View.VISIBLE else View.GONE
-                    game_filter_type_list.visibility =
-                        if (iv_calendar.isSelected) View.VISIBLE else View.GONE
-                    childMatchType = matchType
-                    viewModel.switchChildMatchType(childMatchType = matchType)
-                }
-                getString(R.string.game_tab_outright_odd) -> { //冠軍
-                    iv_calendar.visibility = View.GONE
-                    game_filter_type_list.visibility = View.GONE
-                    if (matchType == MatchType.OTHER) {
-                        childMatchType = MatchType.OTHER_OUTRIGHT
-                        viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_OUTRIGHT)
-                    } else {
-                        viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
-                    }
-                }
-//                getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率  需求先隱藏特優賠率
-//                    if (matchType == MatchType.OTHER) {
-//                        viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_EPS)
-//                    } else {
-//                        viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
-//                    }
-//                }
-            }
-        }
-
-        override fun onTabReselected(tab: TabLayout.Tab?) {
-        }
-
-        override fun onTabUnselected(tab: TabLayout.Tab?) {
-        }
-    }
-
     init {
         afterAnimateListener = AfterAnimateListener {
             try {
