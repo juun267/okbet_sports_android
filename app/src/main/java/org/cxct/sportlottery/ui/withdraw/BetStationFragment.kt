@@ -87,18 +87,15 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
 
     private fun initView() {
-        et_amount.setTitle(sConfigData?.systemCurrency)
         et_amount.apply {
             clearIsShow = false
             getAllIsShow = true
             block_editText.setBackgroundResource(R.drawable.effect_edittext_bg_gray)
         }
         et_password.apply {
-            tv_title.visibility = View.GONE
             v_divider.visibility = View.GONE
-            block_editText.setBackgroundResource(R.drawable.effect_edittext_bg_gray)
+
         }
-        et_password.setTitle(null)
         initEditTextStatus(et_amount)
         initEditTextStatus(et_password)
         View.OnClickListener { hideKeyboard() }.let {

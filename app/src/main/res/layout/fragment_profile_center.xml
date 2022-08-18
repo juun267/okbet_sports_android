@@ -195,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_27"
-                    android:layout_marginTop="@dimen/margin_31"
+                    android:layout_marginTop="@dimen/margin_25"
                     android:background="@drawable/ic_personal_wallet_bg"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"

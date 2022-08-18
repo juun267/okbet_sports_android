@@ -13,7 +13,10 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
+import org.cxct.sportlottery.network.index.config.Currency
+import org.cxct.sportlottery.network.index.config.NationCurrency
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -26,7 +29,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
+import org.cxct.sportlottery.util.LocalUtils.getString
 import java.io.File
 
 class RegisterViewModel(
@@ -51,6 +54,9 @@ class RegisterViewModel(
 
     val memberAccountMsg: LiveData<Pair<String?, Boolean>>
         get() = _memberAccountMsg
+    val checkAccountMsg: LiveData<CheckAccountResult>
+        get() = _checkAccountMsg
+
     val loginPasswordMsg: LiveData<Pair<String?, Boolean>>
         get() = _loginPasswordMsg
     val confirmPasswordMsg: LiveData<Pair<String?, Boolean>>
@@ -79,8 +85,16 @@ class RegisterViewModel(
         get() = _birthMsg
     val identityMsg: LiveData<Pair<String?, Boolean>>
         get() = _identityMsg
+    val identityBackupMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityBackupMsg
     val identityTypeMsg: LiveData<Pair<String?, Boolean>>
         get() = _identityTypeMsg
+    val identityBackupTypeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _identityBackupTypeMsg
+    val eetIdentityNumber: LiveData<Pair<String?, Boolean>>
+        get() = _eetIdentityNumber
+    val eetIdentityBackupNumber: LiveData<Pair<String?, Boolean>>
+        get() = _eetIdentityBackupNumber
     val bettingShopMsg: LiveData<Pair<String?, Boolean>>
         get() = _bettingShopMsg
     val weChatMsg: LiveData<Pair<String?, Boolean>>
@@ -99,14 +113,15 @@ class RegisterViewModel(
         get() = _securityCodeMsg
     val validCodeMsg: LiveData<Pair<String?, Boolean>>
         get() = _validCodeMsg
+    val nationMsg: LiveData<Pair<String?, Boolean>>
+        get() = _nationMsg
+    val currencyMsg: LiveData<Pair<String?, Boolean>>
+        get() = _currencyMsg
 
     val registerEnable: LiveData<Boolean>
         get() = _registerEnable
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
-
-    val checkBettingResult: LiveData<CheckBettingResult?>
-        get() = _checkBettingResult
 
     val smsResult: LiveData<SmsResult?>
         get() = _smsResult
@@ -120,10 +135,13 @@ class RegisterViewModel(
     private val cbAgreeAllChecked: LiveData<Boolean?>
         get() = _cbAgreeAllChecked
 
+    val checkBettingResult: LiveData<CheckBettingResult?>
+        get() = _checkBettingResult
 
     private val _registerResult = MutableLiveData<LoginResult>()
     private val _inviteCodeMsg = MutableLiveData<String?>()
     private val _memberAccountMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _checkAccountMsg = MutableLiveData<CheckAccountResult>()
     private val _loginPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _confirmPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _fullNameMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -138,7 +156,11 @@ class RegisterViewModel(
     private val _salaryMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _birthMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _identityMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityBackupMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _identityTypeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _identityBackupTypeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _eetIdentityNumber = MutableLiveData<Pair<String?, Boolean>>()
+    private val _eetIdentityBackupNumber = MutableLiveData<Pair<String?, Boolean>>()
     private val _bettingShopMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _weChatMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _zaloMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -148,6 +170,8 @@ class RegisterViewModel(
     private val _securityPbMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _securityCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
     private val _validCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _nationMsg = MutableLiveData<Pair<String?, Boolean>>()
+    private val _currencyMsg = MutableLiveData<Pair<String?, Boolean>>()
 
     private val _registerEnable = MutableLiveData<Boolean>()
 
@@ -169,22 +193,49 @@ class RegisterViewModel(
     val photoUrlResult: LiveData<UploadImgResult?>
         get() = _photoUrlResult
     private val _photoUrlResult = MutableLiveData<UploadImgResult?>()
+
+    //endregion
+    val identityPhoto: LiveData<File?>
+        get() = _identityPhoto
+    private val _identityPhoto = MutableLiveData<File?>()
+
+    val identityPhotoBackup: LiveData<File?>
+        get() = _identityPhotoBackup
+    private val _identityPhotoBackup = MutableLiveData<File?>()
+
+    //region 國家幣種
+    val nationCurrencyList: LiveData<List<NationCurrency>?>
+        get() = _nationCurrencyList
+    private var _nationCurrencyList = MutableLiveData<List<NationCurrency>?>()
+
+    val currencyList: LiveData<List<Currency>?>
+        get() = _currencyList
+    private val _currencyList = MutableLiveData<List<Currency>?>()
+
+    val nationPhoneCode: LiveData<String>
+        get() = _nationPhoneCode
+    private var _nationPhoneCode = MutableLiveData<String>()
+
     //endregion
 
-    @Deprecated("沒在用")
-    fun getAgreementContent(context: Context): Spanned {
-        //TODO 添加多國語系 開戶協議 檔案路徑 mapping
-        val path = when (LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> "agreement/register_agreement_zh.html"
-            LanguageManager.Language.ZHT -> "agreement/register_agreement_zh.html"
-            LanguageManager.Language.EN -> "agreement/register_agreement_en.html"
-            LanguageManager.Language.VI -> "agreement/register_agreement_vi.html"
-        }
+    fun getNationCurrencyList() {
+        //有開啟國家幣種選項時才去獲取相關資料
+        if (sConfigData?.enableNationCurrency == FLAG_OPEN) {
+            //不複製一份的話選中狀態會被記錄著
+            _nationCurrencyList.value = sConfigData?.nationCurrencyList?.map { it.copy() }
 
-        val assetManager = context.assets
-        val htmlString = FileUtil.readStringFromAssetManager(assetManager, path) ?: ""
-        return HtmlCompat.fromHtml(htmlString, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            _currencyList.value = nationCurrencyList.value?.firstOrNull()?.currencyList
+        }
     }
+
+    fun updateNationCurrency(nationCode: String) {
+        _currencyList.value = nationCurrencyList.value?.firstOrNull { it.nationCode == nationCode }?.currencyList
+    }
+
+    fun updateNationPhoneCode(nationCode: String) {
+        _nationPhoneCode.value = nationCurrencyList.value?.firstOrNull { it.nationCode == nationCode }?.phoneCode ?: ""
+    }
+
 
     /**
      * 檢查輸入欄位
@@ -194,20 +245,19 @@ class RegisterViewModel(
         _inviteCodeMsg.value = when {
             inviteCode.isNullOrEmpty() -> {
                 if (sConfigData?.enableInviteCode != FLAG_OPEN)
-                      null
+                    null
                 else
                     LocalUtils.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(R.string.error_recommend_code)
+            !VerifyConstUtil.verifyInviteCode(inviteCode) -> LocalUtils.getString(if (sConfigData?.enableBettingStation == FLAG_OPEN) R.string.error_recommend_code else R.string.error_recommend_agent)
             else -> null
         }
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(1)
     }
 
-    fun checkMemberAccount(account: String?, isExistAccount: Boolean) {
+    fun checkMemberAccount(account: String?) {
         val msg = when {
             account.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            isExistAccount -> LocalUtils.getString(R.string.error_register_id_exist)
             !VerifyConstUtil.verifyCombinationAccount(account) -> {
                 LocalUtils.getString(R.string.error_member_account)
             }
@@ -215,10 +265,10 @@ class RegisterViewModel(
             else -> null
         }
         _memberAccountMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(1)
     }
 
-    fun checkLoginPassword(password: String?) {
+    fun checkLoginPassword(password: String?, confirmPassword: String? = null) {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
@@ -226,8 +276,12 @@ class RegisterViewModel(
             !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_register_password)
             else -> null
         }
+
+        if(confirmPassword?.isNotEmpty() == true)
+            checkConfirmPassword(password, confirmPassword)
+
         _loginPasswordMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(1)
     }
 
     fun checkConfirmPassword(password: String?, confirmPassword: String?) {
@@ -237,7 +291,7 @@ class RegisterViewModel(
             else -> null
         }
         _confirmPasswordMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(1)
     }
 
     fun checkFullName(fullName: String?) {
@@ -247,7 +301,7 @@ class RegisterViewModel(
             else -> null
         }
         _fullNameMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkFundPwd(fundPwd: String?) {
@@ -257,7 +311,7 @@ class RegisterViewModel(
             else -> null
         }
         _fundPwdMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkQQ(qq: String?) {
@@ -267,7 +321,7 @@ class RegisterViewModel(
             else -> null
         }
         _qqMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkPhone(phone: String?) {
@@ -276,7 +330,7 @@ class RegisterViewModel(
             else -> null
         }
         _phoneMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkEmail(email: String?) {
@@ -286,7 +340,7 @@ class RegisterViewModel(
             else -> null
         }
         _emailMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkPostal(postalCode: String?) {
@@ -295,7 +349,7 @@ class RegisterViewModel(
             else -> null
         }
         _postalMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkProvince(province: String?) {
@@ -304,7 +358,7 @@ class RegisterViewModel(
             else -> null
         }
         _provinceMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkCity(city: String?) {
@@ -313,7 +367,7 @@ class RegisterViewModel(
             else -> null
         }
         _cityMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkAddress(address: String?) {
@@ -322,7 +376,7 @@ class RegisterViewModel(
             else -> null
         }
         _addressMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkWeChat(weChat: String?) {
@@ -331,7 +385,7 @@ class RegisterViewModel(
             else -> null
         }
         _weChatMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkZalo(zalo: String?) {
@@ -341,7 +395,7 @@ class RegisterViewModel(
             else -> null
         }
         _zaloMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkFacebook(facebook: String?) {
@@ -351,7 +405,7 @@ class RegisterViewModel(
             else -> null
         }
         _facebookMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkWhatsApp(whatsApp: String?) {
@@ -361,7 +415,7 @@ class RegisterViewModel(
             else -> null
         }
         _whatsAppMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkTelegram(telegram: String?) {
@@ -371,7 +425,7 @@ class RegisterViewModel(
             else -> null
         }
         _telegramMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun checkSecurityPb(securityPb: String?) {
@@ -380,7 +434,7 @@ class RegisterViewModel(
             else -> null
         }
         _securityPbMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkSecurityCode(securityCode: String?) {
@@ -390,7 +444,7 @@ class RegisterViewModel(
             else -> null
         }
         _securityCodeMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkValidCode(validCode: String?) {
@@ -400,7 +454,7 @@ class RegisterViewModel(
             else -> null
         }
         _validCodeMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun sendSms(phone: String) {
@@ -430,14 +484,69 @@ class RegisterViewModel(
                 OneBoSportApi.bettingStationService.queryPlatform(inviteCode)
             }
             _checkBettingResult.postValue(result)
-        }
 
+            //投注站與國家幣種選擇互斥, 僅會存在其中一種類型, 若投注站關閉則根據回傳的國家幣種去配置
+            if (sConfigData?.enableBettingStation != FLAG_OPEN) {
+                if (result?.success == true) {
+                    setupInviteNationCurrency(result)
+                } else {
+                    _inviteCodeMsg.value = result?.msg
+                    focusChangeCheckAllInputComplete(1)
+                }
+            }
+        }
     }
 
+    /**
+     * 根據邀請碼配置國家、幣種欄位
+     */
+    private fun setupInviteNationCurrency(result: CheckBettingResult) {
+        var inviteNation: NationCurrency? = null
+        var inviteCurrency: Currency? = null
+        result.checkBettingData?.nationCode?.let { inviteNationCode ->
+            result.checkBettingData.currency?.let { inviteCurrencyCode ->
+                inviteNation = nationCurrencyList.value?.firstOrNull { nationCurrency ->
+                    nationCurrency.nationCode == inviteNationCode
+                }
+
+                inviteCurrency = inviteNation?.currencyList?.firstOrNull { configCurrency ->
+                    configCurrency.currency == inviteCurrencyCode
+                }
+            }
+        }
+
+        //選中邀請碼配置的國家清單
+        var inviteNationCurrencyList: List<NationCurrency>? = null
+        inviteNation?.let { nationCurrency ->
+            inviteNationCurrencyList =
+                nationCurrencyList.value?.onEach { it.isSelected = it.nationCode == nationCurrency.nationCode }
+        }
+
+        //選中邀請碼配置的幣種清單
+        var inviteCurrencyList: List<Currency>? = null
+        var inviteNationPhoneCode: String? = ""
+        inviteCurrency?.let { inviteCurrencyNotNull ->
+            inviteCurrencyList = inviteNationCurrencyList?.firstOrNull { it.isSelected }
+                ?.apply { phoneCode?.let { inviteNationPhoneCode = it } }?.currencyList?.onEach {
+                    it.isSelected = it.currency == inviteCurrencyNotNull.currency
+                }
+        }
+
+        viewModelScope.launch(Dispatchers.Main) {
+            inviteNationCurrencyList?.let {
+                _nationCurrencyList.value = it
+                _nationPhoneCode.value = inviteNationPhoneCode ?: ""
+            }
+
+            inviteCurrencyList?.let {
+                _currencyList.value = it
+            }
+        }
+    }
 
     fun checkCbAgreeAll(checked: Boolean?) {
         _cbAgreeAllChecked.value = checked
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(1)
     }
 
     fun checkBirth(birth: String?) {
@@ -446,7 +555,20 @@ class RegisterViewModel(
             else -> null
         }
         _birthMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
+    }
+
+    fun checkIdentity(firstFile: File?) {
+        val msg = when (firstFile) {
+            null -> {
+                LocalUtils.getString(R.string.error_identity_photo)
+            }
+            else -> {
+                null
+            }
+        }
+        _identityMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkIdentity(identity: String?) {
@@ -456,7 +578,20 @@ class RegisterViewModel(
             else -> null
         }
         _identityMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(0)
+    }
+
+    fun checkBackupIdentity(secondFile: File?) {
+        val msg = when (secondFile) {
+            null -> {
+                LocalUtils.getString(R.string.error_identity_photo)
+            }
+            else -> {
+                null
+            }
+        }
+        _identityBackupMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkIdentityType(identityType: String?) {
@@ -465,8 +600,36 @@ class RegisterViewModel(
             else -> null
         }
         _identityTypeMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
+
+    fun checkIdentityBackupType(identityType: String?) {
+        val msg = when {
+            identityType.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _identityBackupTypeMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
+    fun checkIdentityNumber(identityNumber: String?) {
+        val msg = when {
+            identityNumber.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _eetIdentityNumber.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
+    fun checkIdentityBackupNumber(identityNumber2: String?) {
+        val msg = when {
+            identityNumber2.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _eetIdentityBackupNumber.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(2)
+    }
+
 
     fun checkSalary(salary: String?) {
         val msg = when {
@@ -474,7 +637,7 @@ class RegisterViewModel(
             else -> null
         }
         _salaryMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkBettingShop(bettingShop: String?) {
@@ -483,7 +646,25 @@ class RegisterViewModel(
             else -> null
         }
         _bettingShopMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete()
+        focusChangeCheckAllInputComplete(3)
+    }
+
+    fun checkNation(nationCode: String?) {
+        val msg = when {
+            nationCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _nationMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(-1) //國家選項不會出現在有分頁式的註冊頁
+    }
+
+    fun checkCurrency(currency: String?) {
+        val msg = when {
+            currency.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _currencyMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(-1) // 幣種選項不會出現在有分頁式的註冊頁
     }
 
     //檢查是否所有欄位都填寫完畢
@@ -514,12 +695,19 @@ class RegisterViewModel(
         identity: String?,
         identityType: String?,
         salarySource: String?,
-        bettingShop: String?
+        bettingShop: String?,
+        nationCode: String?,
+        currency: String?,
+        firstFile: File?,
+        secndFile: File?,
+        identityNumber: String?,
+        identityNumberBackup: String?,
+        identityTypeBackup: String?
     ): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN)
             checkInviteCode(inviteCode)
 
-        checkMemberAccount(userName, false)
+        checkMemberAccount(userName)
         checkLoginPassword(loginPassword)
         checkConfirmPassword(loginPassword, confirmPassword)
 
@@ -557,22 +745,38 @@ class RegisterViewModel(
             checkValidCode(validCode)
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
-        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
-            checkIdentity(identity)
-        if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
+            checkIdentity(firstFile)
+            checkIdentityNumber(identityNumber)
             checkIdentityType(identityType)
+        }
+        if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
+            checkBackupIdentity(secndFile)
+            checkIdentityBackupNumber(identityNumberBackup)
+            checkIdentityBackupType(identityTypeBackup)
+        }
+        if (!isOKPlat()) {
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+                checkIdentity(identity)
+            if (sConfigData?.enableIdentityNumber == FLAG_OPEN)
+                checkIdentityType(identityType)
+        }
         if (sConfigData?.enableSalarySource == FLAG_OPEN)
             checkSalary(salarySource)
         if (sConfigData?.enableBettingStation == FLAG_OPEN)
             checkBettingShop(bettingShop)
+        if (sConfigData?.enableNationCurrency == FLAG_OPEN) {
+            checkNation(nationCode)
+            checkCurrency(currency)
+        }
 
         checkCbAgreeAll(cbAgreeAllChecked)
 
-        return checkAllInputComplete()
+        return checkAllInputComplete(3)
     }
 
-    private fun focusChangeCheckAllInputComplete() {
-        _registerEnable.value = checkAllInputComplete()
+    private fun focusChangeCheckAllInputComplete(page: Int) {
+        _registerEnable.value = checkAllInputComplete(page)
     }
 
     private fun checkAllInputComplete(): Boolean {
@@ -629,6 +833,8 @@ class RegisterViewModel(
             return false
         if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(bettingShopMsg))
             return false
+        if (sConfigData?.enableNationCurrency == FLAG_OPEN && (checkInputPair(nationMsg) || checkInputPair(currencyMsg)))
+            return false
 
         if (cbAgreeAllChecked.value != true)
             return false
@@ -650,6 +856,161 @@ class RegisterViewModel(
         }
     }
 
+    private fun checkAllInputComplete(page: Int): Boolean {
+        if (getString(R.string.app_name).equals("OKbet")) {
+            when (page) {
+                1 -> {
+                    if (inviteCodeMsg.value != null) {
+                        return false
+                    }
+                    if (checkInputPair(memberAccountMsg)) {
+                        return false
+                    }
+                    if (checkAccountMsg.value?.isExist == true) {
+                        return false
+                    }
+                    if (checkInputPair(loginPasswordMsg)) {
+                        return false
+                    }
+                    if (checkInputPair(confirmPasswordMsg)) {
+                        return false
+                    }
+                    if (cbAgreeAllChecked.value != true)
+                        return false
+                }
+
+                2 -> {
+                    if (sConfigData?.enableFullName == FLAG_OPEN && checkInputPair(fullNameMsg))
+                        return false
+                    if (sConfigData?.enableFundPwd == FLAG_OPEN && checkInputPair(fundPwdMsg))
+                        return false
+
+                    if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(
+                            securityCodeMsg
+                        )
+                    )
+                        return false
+                    if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityTypeMsg))
+                        return false
+                    if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+                        return false
+                }
+                else -> {
+                    if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(
+                            bettingShopMsg
+                        )
+                    )
+                        return false
+                    if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
+                        return false
+                    if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
+                        return false
+                    if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
+                        return false
+                    if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
+                        return false
+                    if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(
+                            provinceMsg
+                        ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
+                    )
+                        return false
+                    if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
+                        return false
+                    if (sConfigData?.enableZalo == FLAG_OPEN && checkInputPair(zaloMsg))
+                        return false
+                    if (sConfigData?.enableFacebook == FLAG_OPEN && checkInputPair(facebookMsg))
+                        return false
+                    if (sConfigData?.enableWhatsApp == FLAG_OPEN && checkInputPair(whatsAppMsg))
+                        return false
+                    if (sConfigData?.enableTelegram == FLAG_OPEN && checkInputPair(telegramMsg))
+                        return false
+                    if (sConfigData?.enableSafeQuestion == FLAG_OPEN && checkInputPair(securityPbMsg))
+                        return false
+                }
+            }
+        } else {
+
+            if (inviteCodeMsg.value != null) {
+                return false
+            }
+            if (checkInputPair(memberAccountMsg)) {
+                return false
+            }
+            if (checkAccountMsg.value?.isExist == true) {
+                return false
+            }
+            if (checkInputPair(loginPasswordMsg)) {
+                return false
+            }
+            if (checkInputPair(confirmPasswordMsg)) {
+                return false
+            }
+
+
+
+            if (sConfigData?.enableFullName == FLAG_OPEN && checkInputPair(fullNameMsg))
+                return false
+            if (sConfigData?.enableFundPwd == FLAG_OPEN && checkInputPair(fundPwdMsg))
+                return false
+
+            if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(securityCodeMsg))
+                return false
+            if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
+                return false
+            if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
+                return false
+            if (!isOKPlat()) {
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityMsg))
+                    return false
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN && checkInputPair(identityTypeMsg))
+                    return false
+            }
+            if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+                return false
+
+
+            if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(bettingShopMsg))
+                return false
+            if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
+                return false
+            if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
+                return false
+            if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
+                return false
+            if (sConfigData?.enableAddress == FLAG_OPEN && (checkInputPair(postalMsg) || checkInputPair(
+                    provinceMsg
+                ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
+            )
+                return false
+            if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
+                return false
+            if (sConfigData?.enableZalo == FLAG_OPEN && checkInputPair(zaloMsg))
+                return false
+            if (sConfigData?.enableFacebook == FLAG_OPEN && checkInputPair(facebookMsg))
+                return false
+            if (sConfigData?.enableWhatsApp == FLAG_OPEN && checkInputPair(whatsAppMsg))
+                return false
+            if (sConfigData?.enableTelegram == FLAG_OPEN && checkInputPair(telegramMsg))
+                return false
+            if (sConfigData?.enableSafeQuestion == FLAG_OPEN && checkInputPair(securityPbMsg))
+                return false
+            if (sConfigData?.enableNationCurrency == FLAG_OPEN && (checkInputPair(nationMsg) || checkInputPair(
+                    currencyMsg
+                ))
+            )
+                return false
+            if (!isMultipleSitePlat() && cbAgreeAllChecked.value != true)
+                return false
+        }
+
+
+        return true
+    }
+
     fun checkAccountExist(account: String) {
         //舊 檢查中字樣 (不過會有消不掉的疑慮 h5沒有此)
 //        val msg = LocalUtils.getString(R.string.desc_register_checking_account)
@@ -658,11 +1019,15 @@ class RegisterViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.indexService.checkAccountExist(account)
             }.let {
-                if (it?.success == true) {
-                    checkMemberAccount(account, it.isExist ?: false)
-                } else {
-                    checkMemberAccount(account, false)
-                }
+                _checkAccountMsg.value = it
+
+                focusChangeCheckAllInputComplete(1)
+
+//            if (it?.success == true) {
+//                checkMemberAccount(account, it.isExist ?: false)
+//            } else {
+//                checkMemberAccount(account, false)
+//            }
             }
         }
     }
@@ -695,9 +1060,16 @@ class RegisterViewModel(
         deviceId: String,
         birth: String?,
         identity: String?,
-        identityType: String?,
         salarySource: String?,
-        bettingShop: String?
+        bettingShop: String?,
+        nationCode: String?,
+        currency: String?,
+        firstFile: File? = null,
+        identityType: String? = null,
+        identityNumber: String? = null,
+        secndFile: File? = null,
+        identityTypeBackup: String? = null,
+        identityNumberBackup: String? = null
     ) {
         if (checkAllInput(
                 inviteCode,
@@ -726,7 +1098,14 @@ class RegisterViewModel(
                 identity,
                 identityType,
                 salarySource,
-                bettingShop
+                bettingShop,
+                nationCode,
+                currency,
+                firstFile,
+                secndFile,
+                identityNumber,
+                identityNumberBackup,
+                identityTypeBackup
             )
         ) {
             register(
@@ -758,9 +1137,16 @@ class RegisterViewModel(
                     identity,
                     docUrlResult.value?.imgData?.path,
                     photoUrlResult.value?.imgData?.path,
-                    identityType,
                     salarySource,
-                    bettingShop
+                    bettingShop,
+                    firstFile,
+                    identityType?.toInt(),
+                    identityNumber,
+                    secndFile,
+                    identityTypeBackup?.toInt(),
+                    identityNumberBackup,
+                    nationCode,
+                    currency
                 )
             )
         }
@@ -794,9 +1180,16 @@ class RegisterViewModel(
         identity: String?,
         verifyPhoto1: String?,
         verifyPhoto2: String?,
-        identityType: String?,
         salarySource: String?,
-        bettingShop: String?
+        bettingShop: String?,
+        identityPhoto: File?,
+        identityType: Int?,
+        identityNumber: String?,
+        identityPhotoBackup: File?,
+        identityTypeBackup: Int?,
+        identityNumberBackup: String?,
+        nationCode: String?,
+        currency: String?
     ): RegisterRequest {
         return RegisterRequest(
             userName = userName,
@@ -844,27 +1237,136 @@ class RegisterViewModel(
             }
             if (sConfigData?.enableBirthday == FLAG_OPEN)
                 this.birthday = birth
-            if (sConfigData?.enableIdentityNumber == FLAG_OPEN) {
-                this.identityNumber = identity
-                this.verifyPhoto1 = verifyPhoto1
-                this.verifyPhoto2 = verifyPhoto2
+
+            if (!isOKPlat()) {
+                if (sConfigData?.enableIdentityNumber == FLAG_OPEN) {
+                    this.identityType = identityType
+                    this.identityNumber = identity
+                    this.verifyPhoto1 = verifyPhoto1
+                    this.verifyPhoto2 = verifyPhoto2
+                }
+            }
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN) {
+                _identityPhoto.value = identityPhoto
                 this.identityType = identityType
+                this.identityNumber = identityNumber
+            }
+            if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals("2")) {
+                _identityPhotoBackup.value = identityPhotoBackup
+                this.identityTypeBackup = identityTypeBackup
+                this.identityNumberBackup = identityNumberBackup
             }
             if (sConfigData?.enableSalarySource == FLAG_OPEN)
                 this.salarySource = salarySource
             if (sConfigData?.enableBettingStation == FLAG_OPEN)
                 this.bettingStationId = bettingShop
+            if (sConfigData?.enableNationCurrency == FLAG_OPEN) {
+                this.nationCode = nationCode
+                this.currency = currency
+            }
         }
     }
 
     private fun register(registerRequest: RegisterRequest) {
         viewModelScope.launch {
-            doNetwork(androidContext) {
-                loginRepository.register(registerRequest)
-            }?.let { result ->
-                // TODO 20220108 更新UserInfo by Hewie
-                userInfoRepository.getUserInfo()
-                _registerResult.postValue(result)
+            if (_identityPhoto.value != null && registerRequest.identityNumber != null) {
+                _identityPhoto.value?.let {
+                    val docResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                userInfo.value?.userId.toString(),
+                                _identityPhoto.value!!
+                            ).toPars()
+                        )
+                    }
+                    when {
+                        docResponse == null -> _docUrlResult.postValue(
+                            UploadImgResult(
+                                -1,
+                                androidContext.getString(R.string.unknown_error),
+                                false,
+                                null
+                            )
+                        )
+                        docResponse.success -> {
+                            _docUrlResult.postValue(docResponse)
+                            registerRequest.apply {
+                                this.identityPhoto = docResponse.imgData?.path
+                            }
+                            if (_identityPhotoBackup != null && registerRequest.identityNumberBackup != null) {
+                                val photoResponse = doNetwork(androidContext) {
+                                    OneBoSportApi.uploadImgService.uploadImg(
+                                        UploadVerifyDocRequest(
+                                            userInfo.value?.userId.toString(),
+                                            _identityPhotoBackup.value!!
+                                        ).toPars()
+                                    )
+                                }
+                                when {
+                                    photoResponse == null -> _photoUrlResult.postValue(
+                                        UploadImgResult(
+                                            -1,
+                                            androidContext.getString(R.string.unknown_error),
+                                            false,
+                                            null
+                                        )
+                                    )
+                                    photoResponse.success -> {
+                                        _photoUrlResult.postValue(photoResponse)
+                                        registerRequest.apply {
+                                            this.identityPhotoBackup = photoResponse.imgData?.path
+                                        }
+                                        doNetwork(androidContext) {
+                                            loginRepository.register(registerRequest)
+                                        }?.let { result ->
+                                            // TODO 20220108 更新UserInfo by Hewie
+                                            userInfoRepository.getUserInfo()
+                                            _registerResult.postValue(result)
+                                            _identityPhoto.postValue(null)
+                                            _identityPhotoBackup.postValue(null)
+                                        }
+                                    }
+                                    else -> {
+                                        val error =
+                                            UploadImgResult(
+                                                photoResponse.code,
+                                                photoResponse.msg,
+                                                photoResponse.success,
+                                                null
+                                            )
+                                        _identityPhoto.postValue(null)
+                                        _identityPhotoBackup.postValue(null)
+                                        _photoUrlResult.postValue(error)
+                                    }
+                                }
+                            } else {
+                                doNetwork(androidContext) {
+                                    loginRepository.register(registerRequest)
+                                }?.let { result ->
+                                    // TODO 20220108 更新UserInfo by Hewie
+                                    userInfoRepository.getUserInfo()
+                                    _registerResult.postValue(result)
+                                    _identityPhoto.postValue(null)
+                                    _identityPhotoBackup.postValue(null)
+                                }
+                            }
+                        }
+                        else -> {
+                            val error = UploadImgResult(
+                                docResponse.code, docResponse.msg, docResponse.success, null
+                            )
+                            _docUrlResult.postValue(error)
+                        }
+                    }
+                }
+            } else {
+                doNetwork(androidContext) {
+                    loginRepository.register(registerRequest)
+                }?.let { result ->
+                    // TODO 20220108 更新UserInfo by Hewie
+                    userInfoRepository.getUserInfo()
+                    _registerResult.postValue(result)
+                }
             }
         }
     }
@@ -966,5 +1468,5 @@ class RegisterViewModel(
         _docUrlResult.value = null
         _photoUrlResult.value = null
     }
-    //endregion
+//endregion
 }
