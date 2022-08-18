@@ -373,7 +373,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ivMenu.setOnClickListener { clickMenu() }
                 ivLanguage.setImageResource(LanguageManager.getLanguageFlag(context))
                 btnLogin.setOnClickListener { startActivity(Intent(context, LoginActivity::class.java)) }
-                btnRegister.setOnClickListener { startActivity(Intent(context, RegisterActivity::class.java)) }
+                btnRegister.setOnClickListener { startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java )) }
             }*/
         }
     }

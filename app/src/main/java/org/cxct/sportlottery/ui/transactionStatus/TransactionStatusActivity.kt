@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
@@ -34,6 +35,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.isOKPlat
 
 class TransactionStatusActivity :
     BaseBottomNavActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
@@ -91,7 +93,7 @@ class TransactionStatusActivity :
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
         }
 
         tv_odds_type.setOnClickListener {

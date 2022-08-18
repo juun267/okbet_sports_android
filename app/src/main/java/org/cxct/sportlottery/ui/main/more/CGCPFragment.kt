@@ -10,10 +10,12 @@ import kotlinx.android.synthetic.main.fragment_cgcp.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.isOKPlat
 
 class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,7 +50,7 @@ class CGCPFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {
             }

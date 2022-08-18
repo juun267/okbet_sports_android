@@ -18,7 +18,9 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.isOKPlat
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 
 
@@ -90,7 +92,7 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
 
         vBinding.gameToolbar.btnRegister.setOnClickListener {
             dismiss()
-            startActivity(Intent(MultiLanguagesApplication.appContext, RegisterActivity::class.java))
+            startActivity(Intent(MultiLanguagesApplication.appContext,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
         }
 
         vBinding.gameToolbar.ivLogo.setOnClickListener {

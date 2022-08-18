@@ -29,8 +29,10 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.isOKPlat
 
 /**
  * @app_destination 宣傳頁
@@ -486,15 +488,15 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goRegisterPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
     }
 
     private fun goDepositPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
     }
 
     private fun goWithdrawPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
     }
 
     private fun goGamePage() {

@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.game.GameActivity.Companion.ARGS_PUBLICITY_SPORT
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.profileCenter.AppearanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
@@ -650,15 +651,15 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun goRegisterPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
     }
 
     private fun goDepositPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
     }
 
     private fun goWithdrawPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
     }
 
     private fun goGamePage() {
@@ -788,7 +789,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
                 Intent(
                     context,
-                    RegisterActivity::class.java
+                     if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java
                 )
             )
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(

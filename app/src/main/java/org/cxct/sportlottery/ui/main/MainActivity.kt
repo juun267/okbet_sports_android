@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
@@ -150,7 +151,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
+            startActivity(Intent(this@MainActivity,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
         }
 
         iv_language.setOnClickListener {
