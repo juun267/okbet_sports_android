@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.maintab
 
+import BetRecordFragment
+import FavoriteFragment
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -32,9 +34,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     lateinit var fragmentHelper: FragmentHelper
     var fragments = arrayOf<Fragment>(
         MainHomeFragment.newInstance(),
-        MainHomeFragment.newInstance(),
-        MainHomeFragment.newInstance(),
-        MainHomeFragment.newInstance(),
+        SportFragment.newInstance(),
+        BetRecordFragment.newInstance(),
+        FavoriteFragment.newInstance(),
         ProfileCenterFragment.newInstance()
     )
     private var betListFragment = BetListFragment()

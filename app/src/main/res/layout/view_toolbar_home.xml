@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/tool_bar_height"
     android:paddingHorizontal="18dp"
-    android:background="@color/background"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     app:layout_scrollFlags="scroll|enterAlways"

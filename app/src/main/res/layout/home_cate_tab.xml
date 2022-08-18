@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical"
-    tools:layout_gravity="center_horizontal"
+    android:orientation="horizontal"
+    tools:layout_gravity="center_vertical"
     tools:layout_width="wrap_content">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
         android:maxLines="1"
         android:textAllCaps="true"
         android:textColor="@color/color_select_blue_black"
@@ -25,13 +24,14 @@
 
     <TextView
         android:id="@+id/tv_number"
-        android:layout_width="34dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/margin_4"
         android:maxLines="1"
         android:textColor="@color/color_select_white_gray"
         android:textSize="@dimen/textSize12sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/helvetica_bold"
         app:autoSizeMaxTextSize="12dp"
         app:autoSizeMinTextSize="2dp"
         app:autoSizeTextType="uniform"

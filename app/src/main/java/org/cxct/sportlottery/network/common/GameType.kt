@@ -101,53 +101,53 @@ enum class GameType(val key: String, @StringRes val string: Int) {
         }
 
         fun getGameTypeMenuIcon(gameType: GameType): Int{
-            return when(gameType){
-                FT -> R.drawable.ic_home_football
-                BK -> R.drawable.ic_home_basketball
-                TN -> R.drawable.ic_home_tennis
-                VB -> R.drawable.ic_home_volleyballx
-                BM -> R.drawable.ic_home_badminton
-                TT -> R.drawable.ic_home_pingpong
-                IH -> R.drawable.ic_home_icehockey
-                BX -> R.drawable.ic_home_boxing
-                CB -> R.drawable.ic_home_snooker
-                CK -> R.drawable.ic_home_cricket
-                BB -> R.drawable.ic_home_baseball
-                RB -> R.drawable.ic_home_rugby
-                AFT -> R.drawable.ic_home_amfootball
-                MR -> R.drawable.ic_home_racing
-                GF -> R.drawable.ic_home_golf
+            return when (gameType) {
+                FT -> R.drawable.selector_sport_football
+                BK -> R.drawable.selector_sport_basketball
+                TN -> R.drawable.selector_sport_tennis
+                VB -> R.drawable.selector_sport_volleyball
+                BM -> R.drawable.selector_sport_badminton
+                TT -> R.drawable.selector_sport_pingpong
+                IH -> R.drawable.selector_sport_icehockey
+                BX -> R.drawable.selector_sport_boxing
+                CB -> R.drawable.selector_sport_snooker
+                CK -> R.drawable.ic_sport_cricket
+                BB -> R.drawable.selector_sport_baseball
+                RB -> R.drawable.selector_sport_rugby
+                AFT -> R.drawable.selector_sport_amfootball
+                MR -> R.drawable.selector_sport_racing
+                GF -> R.drawable.selector_sport_golf
                 FB -> R.drawable.ic_home_finance_piechart
-                ES -> R.drawable.ic_home_gaming
+                ES -> R.drawable.selector_sport_gaming
                 OTHER -> R.drawable.ic_home_champ
-                BB_COMING_SOON -> R.drawable.ic_home_baseball
-                ES_COMING_SOON -> R.drawable.ic_home_gaming
+                BB_COMING_SOON -> R.drawable.selector_sport_baseball
+                ES_COMING_SOON -> R.drawable.selector_sport_gaming
             }
         }
 
 
         fun getGameTypeMenuIcon(gameType: String): Int{
-            return when(gameType){
-                FT.key -> R.drawable.ic_home_football
-                BK.key -> R.drawable.ic_home_basketball
-                TN.key -> R.drawable.ic_home_tennis
-                VB.key -> R.drawable.ic_home_volleyballx
-                BM.key -> R.drawable.ic_home_badminton
-                TT.key -> R.drawable.ic_home_pingpong
-                IH.key -> R.drawable.ic_home_icehockey
-                BX.key -> R.drawable.ic_home_boxing
-                CB.key -> R.drawable.ic_home_snooker
+            return when (gameType) {
+                FT.key -> R.drawable.selector_sport_football
+                BK.key -> R.drawable.selector_sport_basketball
+                TN.key -> R.drawable.selector_sport_tennis
+                VB.key -> R.drawable.selector_sport_volleyball
+                BM.key -> R.drawable.selector_sport_badminton
+                TT.key -> R.drawable.selector_sport_pingpong
+                IH.key -> R.drawable.selector_sport_icehockey
+                BX.key -> R.drawable.selector_sport_boxing
+                CB.key -> R.drawable.selector_sport_snooker
                 CK.key -> R.drawable.ic_home_cricket
-                BB.key -> R.drawable.ic_home_baseball
-                RB.key -> R.drawable.ic_home_rugby
-                AFT.key -> R.drawable.ic_home_amfootball
-                MR.key -> R.drawable.ic_home_racing
-                GF.key -> R.drawable.ic_home_golf
+                BB.key -> R.drawable.selector_sport_baseball
+                RB.key -> R.drawable.selector_sport_rugby
+                AFT.key -> R.drawable.selector_sport_amfootball
+                MR.key -> R.drawable.selector_sport_racing
+                GF.key -> R.drawable.selector_sport_golf
                 FB.key -> R.drawable.ic_home_finance_piechart
-                ES.key -> R.drawable.ic_home_gaming
+                ES.key -> R.drawable.selector_sport_gaming
                 OTHER.key -> R.drawable.ic_home_champ
-                BB_COMING_SOON.key -> R.drawable.ic_home_baseball
-                ES_COMING_SOON.key -> R.drawable.ic_home_gaming
+                BB_COMING_SOON.key -> R.drawable.selector_sport_baseball
+                ES_COMING_SOON.key -> R.drawable.selector_sport_gaming
                 else -> R.drawable.ic_game_champ
             }
         }

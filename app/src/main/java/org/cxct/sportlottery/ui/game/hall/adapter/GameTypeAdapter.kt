@@ -139,7 +139,6 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             itemView.apply {
                 setupSportContent(item, gameTypeListener)
-                divider.visibility = if (position >= count - 1) View.GONE else View.VISIBLE
                 isSelected = item.isSelected
 
 //                if (isSelected) {

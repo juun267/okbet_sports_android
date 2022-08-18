@@ -8,25 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.moshi.*
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_recommend_champion.view.*
 import kotlinx.android.synthetic.main.home_recommend_eps.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
-import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.matchCategory.result.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class VpRecommendAdapter(
@@ -330,20 +327,6 @@ class VpRecommendAdapter(
                         }, odd, PlayCate.UNCHECK.value, playCateName, betPlayCateNameMap)
                     }
                 }
-            }
-        }
-    }
-
-    private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
-        return when (l) {
-            LanguageManager.Language.EN -> {
-                this.playCateNameEn
-            }
-            LanguageManager.Language.VI -> {
-                this.playCateNameVi
-            }
-            else -> {
-                this.playCateName
             }
         }
     }

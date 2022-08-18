@@ -128,7 +128,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     ): View? {
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getConfigData()
@@ -149,6 +148,17 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun initView() {
+        initToolBar()
+        tv_customer_service.setOnClickListener {
+            clickCustomService(requireContext(), childFragmentManager)
+        }
+        tv_hot_recommend.setOnClickListener {
+
+        }
+        initRecommendView()
+    }
+
+    fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         tv_balance_currency.text = sConfigData?.systemCurrencySign
         setupLogin()
@@ -159,17 +169,10 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             refreshMoneyLoading()
             viewModel.getMoney()
         }
-        tv_customer_service.setOnClickListener {
-            clickCustomService(requireContext(), childFragmentManager)
+        btn_login.setOnClickListener {
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
-        startActivity(Intent(requireActivity(), LoginActivity::class.java))
-        tv_hot_recommend.setOnClickListener {
-
-        }
-        initRecommendView()
-
     }
-
     private fun initObservable() {
         viewModel.isLogin.observe(viewLifecycleOwner) {
             setupLogin()

@@ -356,5 +356,7 @@
     <color name="background">@color/color_F0F5FA</color>
     <color name="color_A65B0A">#A65B0A</color>
     <color name="color_A7B2C4">#A7B2C4</color>
+    <color name="color_E8F4FF">#E8F4FF</color>
+
 
 </resources>
