@@ -161,8 +161,7 @@
                     app:cvInputType="textPassword"
                     app:cvMarginBottom="8dp"
                     app:cvTextColor="@color/color_414655"
-                    app:cvTitle="@string/withdraw_password"
-                 />
+                    app:cvTitle="@string/withdraw_password" />
 
             </LinearLayout>
 
@@ -239,7 +238,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:padding="@dimen/margin_8"
+                    android:background="@color/color_F5FAFF"
+                    android:paddingBottom="@dimen/margin_10"
                     tools:itemCount="2"
                     tools:listitem="@layout/item_bet_station" />
 
@@ -254,13 +254,13 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp">
+                 >
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/bg_station_detail" />
+                        android:src="@mipmap/bg_adrees" />
 
                     <LinearLayout
                         android:id="@+id/lin_station_detail"

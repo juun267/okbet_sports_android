@@ -39,7 +39,6 @@ import org.cxct.sportlottery.util.setTitleLetterSpacing
  */
 class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: WithdrawBankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
     private lateinit var betStationFragment: BetStationFragment
@@ -203,9 +202,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 //            }
 //        }
 
-        ll_select_bank.setOnClickListener {
-            bankCardBottomSheet.show()
-        }
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
@@ -307,15 +303,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             if (cardList.isEmpty()) {
                 jumpToMoneyCardSetting(true, it.transferType)
                 return@Observer
-            }
-            val initData = cardList.firstOrNull()
-            initData?.let { bankCardList ->
-                setupDealView(bankCardList.transferType)
-                withdrawBankCardData = initData
-                tv_select_bank_card.text = getBankCardTailNo(initData)
-                bankCardList.bankName.let { bankName ->
-                    iv_bank_card_icon.setImageResource(getBankIconByBankName(bankName))
-                }
             }
             initSelectBankCardBottomSheet(view, cardList.toMutableList())
         })
@@ -488,49 +475,35 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         view: View,
         bankCardList: MutableList<BankCardList>
     ) { //TODO Dean : 重構BottomSheet
-        val bankCardBottomSheetView =
-            layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
-        bankCardBottomSheet = BottomSheetDialog(requireContext())
-        bankCardBottomSheet.apply {
-            setContentView(bankCardBottomSheetView)
-            bankCardAdapter =
-                WithdrawBankCardAdapter(
-                    lv_bank_item.context,
-                    bankCardList,
-                    BankCardAdapterListener {
+        bankCardList.addAll(bankCardList)
+        bankCardAdapter =
+            WithdrawBankCardAdapter(
+                requireContext(),
+                bankCardList,
+                BankCardAdapterListener {
+                    val cardIcon = when (it.transferType) {
+                        TransferType.BANK -> getBankIconByBankName(it.bankName)
+                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
+                        TransferType.STATION -> getBankIconByBankName(it.bankName)
+                    }
 
-                        val cardIcon = when (it.transferType) {
-                            TransferType.BANK -> getBankIconByBankName(it.bankName)
-                            TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
-                            TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
-                            TransferType.STATION -> getBankIconByBankName(it.bankName)
-                        }
-                        view.iv_bank_card_icon.setImageResource(cardIcon)
 
-                        view.tv_select_bank_card.text = getBankCardTailNo(it)
+                    withdrawBankCardData = it
+                    viewModel.setupWithdrawCard(it)
 
-                        withdrawBankCardData = it
-                        viewModel.setupWithdrawCard(it)
+                    view.et_withdrawal_amount.resetText()
 
-                        view.et_withdrawal_amount.resetText()
 
-                        dismiss()
-                    })
+                })
 
-            with(lv_bank_item) {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = bankCardAdapter
-            }
-
-            bankCardBottomSheet.tv_game_type_title.text =
-                when (bankCardList.firstOrNull()?.transferType) {
-                    TransferType.CRYPTO -> getString(R.string.select_crypto_card)
-                    else -> getString(R.string.select_bank)
-                }
-            bankCardBottomSheet.btn_close.setOnClickListener {
-                this.dismiss()
-            }
+        with(rv_bank_item) {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = bankCardAdapter
         }
+
+
+
         bankCardAdapter.initSelectStatus()
     }
 
@@ -628,37 +601,25 @@ class WithdrawBankCardAdapter(
                         TransferType.STATION -> getBankIconByBankName(bankCard.bankName)
                     }
                 )
-
                 if (bankCard.isSelected) {
-                    imgCheckBank.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.color_191919_EEEFF0
-                        )
-                    )
+                    selectedPosition = position
+                    checkBank.isChecked = true
                 } else {
-                    imgCheckBank.visibility = View.GONE
-                    llSelectBankCard.setBackgroundColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.color_191919_FCFCFC
-                        )
-                    )
+                    checkBank.isChecked = false
                 }
             }
         }
-
-        private fun selectBankCard(bankPosition: Int) {
-            dataList[selectedPosition].isSelected = false
-            notifyItemChanged(selectedPosition)
-            selectedPosition = bankPosition
-            dataList[bankPosition].isSelected = true
-            notifyItemChanged(bankPosition)
-        }
     }
 
+    private fun selectBankCard(bankPosition: Int) {
+        dataList[selectedPosition].isSelected = false
+        notifyItemChanged(selectedPosition)
+        selectedPosition = bankPosition
+        dataList[bankPosition].isSelected = true
+        notifyItemChanged(bankPosition)
+    }
 }
+
 
 class BankCardAdapterListener(val listener: (bankCard: BankCardList) -> Unit) {
     fun onClick(bankCard: BankCardList) = listener(bankCard)

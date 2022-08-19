@@ -1148,4 +1148,5 @@
     <string name="upload_id_photo">Upload Photo</string>
     <string name="hint_file_selected">Selected file</string>
     <string name="error_recommend_agent">No matched</string>
+    <string name="Appointment">预约时间</string>
 </resources>

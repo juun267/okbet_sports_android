@@ -144,7 +144,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupBankSelector(rechCfgData: MoneyRechCfgData) {
         mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext())
         mBankSelectorBottomSheetDialog.apply {
-            val bankSelectorBottomSheetView = layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
+            val bankSelectorBottomSheetView =
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
             setContentView(bankSelectorBottomSheetView)
             mBankSelectorAdapter =
                 BankSelectorAdapter(
@@ -276,8 +277,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) {
         transferTypeAddSwitch?.apply {
             tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
-            tab_layout.getTabAt(1)?.view?.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
-            tab_layout.getTabAt(2)?.view?.visibility = if (walletTransfer) View.VISIBLE else View.GONE
+            tab_layout.getTabAt(1)?.view?.visibility =
+                if (cryptoTransfer) View.VISIBLE else View.GONE
+            tab_layout.getTabAt(2)?.view?.visibility =
+                if (walletTransfer) View.VISIBLE else View.GONE
             ll_tab_layout.visibility =
                 if ((!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) || mBankCardStatus) View.GONE else View.VISIBLE
         }
@@ -604,7 +607,13 @@ class BankSelectorAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        BankItemViewHolder(ItemListviewBankCardBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        BankItemViewHolder(
+            ItemListviewBankCardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (holder) {
         is BankItemViewHolder -> {
@@ -617,7 +626,8 @@ class BankSelectorAdapter(
 
     override fun getItemCount(): Int = bankList.size
 
-    inner class BankItemViewHolder(val binding: ItemListviewBankCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class BankItemViewHolder(val binding: ItemListviewBankCardBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(bank: Bank, position: Int) {
             with(binding) {
                 root.setOnClickListener {
@@ -627,13 +637,14 @@ class BankSelectorAdapter(
                 tvBankCard.text = bank.name
                 ivBankIcon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
 
+
+
+
                 if (bank.isSelected) {
                     selectedPosition = position
-                    imgCheckBank.visibility = View.VISIBLE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_EEEFF0))
+                    checkBank.isChecked = true
                 } else {
-                    imgCheckBank.visibility = View.GONE
-                    llSelectBankCard.setBackgroundColor(ContextCompat.getColor(context, R.color.color_191919_FCFCFC))
+                    checkBank.isChecked = false
                 }
             }
         }

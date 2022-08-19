@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_select_bank_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="start|center_vertical"
-    android:orientation="horizontal">
+    android:layout_height="@dimen/margin_42"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="@dimen/margin_10"
+    android:layout_marginEnd="8dp">
 
-
-    <ImageView
-        android:id="@+id/iv_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_10"
-        android:layout_marginTop="7dp"
-        android:textColor="@color/color_7F7F7F_999999"
-        android:textSize="@dimen/textSize10sp"
-        tools:text="BetStation" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/margin_10"
         android:layout_marginLeft="@dimen/margin_10"
         android:layout_marginBottom="7dp"
         android:fontFamily="@font/helvetica_bold"
+        android:gravity="center"
         android:textColor="@color/color_BCBCBC_666666"
         android:textSize="@dimen/textSize14sp"
         tools:text="BetStation" />
@@ -40,7 +28,8 @@
         android:id="@+id/img_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:src="@drawable/ic_bule_check" />
 
-</FrameLayout>
+</RelativeLayout>
