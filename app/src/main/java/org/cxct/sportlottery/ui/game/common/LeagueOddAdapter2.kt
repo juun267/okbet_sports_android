@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.common
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
@@ -270,7 +271,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     tv_correct_1.text = context.getText(R.string.correct)
 
                     var correct2 = item.playCateNameMap?.get(PlayCate.CS_1ST_SD.value)
-                        .getPlayCateName(LanguageManager.getSelectLanguage(context))
+                        ?.getPlayCateName(context) ?: ""
                     if (correct2.contains("||")) {
                         val correct2Split = correct2.split("||")
                         //將換行符後的文字移到前面顯示
@@ -296,8 +297,10 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     }
 
                     tv_correct_2.setOnClickListener {
-                        tv_correct_1.setTextColor(ContextCompat.getColor(context, R.color.color_a3a3a3_666666))
-                        tv_correct_2.setTextColor(ContextCompat.getColor(context, R.color.color_CCCCCC_000000))
+                        tv_correct_1.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_a3a3a3_666666))
+                        tv_correct_2.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_CCCCCC_000000))
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS_1ST_SD, item)
                     }
                 } else {
@@ -306,22 +309,12 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             }
         }
 
-        private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
-            return when (selectLanguage) {
-                LanguageManager.Language.EN -> {
-                    this?.get(LanguageManager.Language.EN.key).toString()
-                }
-                LanguageManager.Language.VI -> {
-                    this?.get(LanguageManager.Language.VI.key).toString()
-                }
-                else -> {
-                    this?.get(LanguageManager.Language.ZH.key).toString()
-                }
-            }
+        private fun <K, V> Map<K, V>.getPlayCateName(context: Context): String {
+            return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
         }
 
         private fun String.updatePlayCateColor(): Spanned {
-            val color =  if (MultiLanguagesApplication.isNightMode) "#a3a3a3"
+            val color = if (MultiLanguagesApplication.isNightMode) "#a3a3a3"
             else "#666666"
 
             return Html.fromHtml(

@@ -7,6 +7,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
+import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
@@ -53,6 +54,12 @@ object Constants {
                     token,
                     "utf-8"
                 )
+            }${
+                if (isMultipleSitePlat()) {
+                    "&platform=onbet"
+                } else {
+                    ""
+                }
             }"
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
@@ -60,81 +67,44 @@ object Constants {
         }
     }
 
+    /**
+     * 在url拼接语言字符
+     */
+    fun getLanguageTag(context: Context): String {
+        return when (getSelectLanguage(context)) {
+            LanguageManager.Language.ZH -> ""
+            LanguageManager.Language.VI -> "vi/"
+            else -> "us/"
+        }
+    }
+
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/?platform=" + context.getString(
-                    R.string.app_name
-                )
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}?platform=" + context.getString(
+            R.string.app_name
+        )
     }
 
     //關於我們
     fun getAboutUsUrl(context: Context): String? {
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/about-us?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/about-us?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/about-us?platform=" + context.getString(
-                    R.string.app_name
-                )
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}about-us?platform=" + context.getString(
+            R.string.app_name
+        )
     }
 
     //博彩责任
     fun getDutyRuleUrl(context: Context): String? {
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/responsibility?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/responsibility?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/responsibility?platform=" + context.getString(
-                    R.string.app_name
-                )
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}responsibility?platform=" + context.getString(
+            R.string.app_name
+        )
     }
 
     //代理加盟
     fun getAffiliateUrl(context: Context): String {
-        return "${getBaseUrl()}sports-rule/#/${
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> ""
-                LanguageManager.Language.VI -> "vi/"
-                else -> "us/"
-            }
-        }affiliate?platform=${
+        return "${getBaseUrl()}sports-rule/#/${getLanguageTag(context)}affiliate?platform=${
             context.getString(
                 R.string.app_name
             )
@@ -144,23 +114,9 @@ object Constants {
     //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/privacy-policy?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/privacy-policy?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/privacy-policy?platform=" + context.getString(
-                    R.string.app_name
-                )
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}privacy-policy?platform=" + context.getString(
+            R.string.app_name
+        )
     }
 
     //规则与条款
@@ -168,17 +124,7 @@ object Constants {
 
         val checkCreditQuery = if (sConfigData?.creditSystem == 1) "credit=1" else context.getString(R.string.app_name)
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/terms-conditions?" + checkCreditQuery
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/terms-conditions?" + checkCreditQuery
-                else -> getBaseUrl() + "sports-rule/#/us/terms-conditions?" + checkCreditQuery
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}terms-conditions?" + checkCreditQuery
     }
 
     //KYC人工客服審核
@@ -194,45 +140,17 @@ object Constants {
     //常见问题
     fun getFAQsUrl(context: Context): String? {
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/faq?platform=" + context.getString(
-                    R.string.app_name
-                )
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/faq?platform=" + context.getString(
-                    R.string.app_name
-                )
-                else -> getBaseUrl() + "sports-rule/#/us/faq?platform=" + context.getString(
-                    R.string.app_name
-                )
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}faq?platform=" + context.getString(
+            R.string.app_name
+        )
     }
 
     //联系我们
     fun getContactUrl(context: Context): String? {
 
-        return try {
-            when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl() + "sports-rule/#/contact-us?platform=" + context.getString(
-                    R.string.app_name
-                ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
-                LanguageManager.Language.VI -> getBaseUrl() + "sports-rule/#/vi/contact-us?platform=" + context.getString(
-                    R.string.app_name
-                ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
-                else -> getBaseUrl() + "sports-rule/#/us/contact-us?platform=" + context.getString(
-                    R.string.app_name
-                ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
-            }
-
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-            null
-        }
+        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}contact-us?platform=" + context.getString(
+            R.string.app_name
+        ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
     //web页面增加夜间模式参数

@@ -79,7 +79,9 @@ data class UserInfo(
 
     val uwEnableTime: Long? = 0,
 
-    val maxPayout:Double? = 0.0,
+    val maxPayout: Double? = 0.0,
 
-    val firstRechTime: String? = null //首充时间
+    val firstRechTime: String? = null, //首充时间
+
+    val currencySign: String? = null, //幣種
 )

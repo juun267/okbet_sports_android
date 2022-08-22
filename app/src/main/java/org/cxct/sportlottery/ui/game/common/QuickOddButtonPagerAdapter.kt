@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.content.Context
 import android.text.Html
 import android.text.Spanned
 import android.util.Log
@@ -445,18 +446,8 @@ class QuickOddButtonPagerViewHolder private constructor(
         )
     }
 
-    private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
-        return when (selectLanguage) {
-            LanguageManager.Language.EN -> {
-                this?.get(LanguageManager.Language.EN.key).toString()
-            }
-            LanguageManager.Language.VI -> {
-                this?.get(LanguageManager.Language.VI.key).toString()
-            }
-            else -> {
-                this?.get(LanguageManager.Language.ZH.key).toString()
-            }
-        }
+    private fun <K, V> Map<K, V>.getPlayCateName(context: Context): String {
+        return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
     }
 
     private fun setupOddsButton(
@@ -469,7 +460,7 @@ class QuickOddButtonPagerViewHolder private constructor(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
-        oddButtonListener: QuickOddButtonListener?
+        oddButtonListener: QuickOddButtonListener?,
     ) {
         if (matchInfo == null ||
             betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty() ||
@@ -493,11 +484,10 @@ class QuickOddButtonPagerViewHolder private constructor(
         }
 
         val playCateName =
-            playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-                .replace(": ", " ").replace("||", "\n")
-        val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(
-            LanguageManager.getSelectLanguage(itemView.context)
-        ).replace(": ", " ").replace("||", "\n")
+            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+                ?.replace(": ", " ")?.replace("||", "\n") ?: ""
+        val betPlayCateName = betPlayCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+            ?.replace(": ", " ")?.replace("||", "\n") ?: ""
 
         val playCateCode = odds.first ?: ""
 
@@ -807,8 +797,8 @@ class QuickOddButtonPagerViewHolder private constructor(
             return
         }
         val playCateName =
-            playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
-                .replace(": ", " ").replace("||", "\n")
+            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+                ?.replace(": ", " ")?.replace("||", "\n") ?: ""
         val playCateCode = odds.first ?: ""
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }

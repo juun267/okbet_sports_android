@@ -92,5 +92,9 @@ data class UserInfoData(
     @Json(name = "maxPayout")
     val maxPayout: Double? = 0.0,
     @Json(name = "firstRechTime")
-    val firstRechTime: String?
+    val firstRechTime: String?,
+    @Json(name = "currency")
+    val currency: String?,
+    @Json(name = "nationCode")
+    val nationCode: String?,
 )

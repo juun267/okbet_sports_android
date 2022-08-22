@@ -130,6 +130,7 @@
     <string name="home_tab_in_play">滚球</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
+    <string name="home_tab_cs">波胆</string>
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
     <string name="home_tab_at_start">即将</string>
@@ -458,6 +459,10 @@
     <string name="online_maya">PayMaya</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
+    <string name="online_momopay">MoMoPay</string>
+    <string name="online_zalopay">ZaloPay</string>
+    <string name="online_viettelpay">ViettelPay</string>
+    <string name="online_recharge_card_pay">刮刮卡充值</string>
     <string name="online_alipay">在线支付宝</string>
     <string name="online_weixin">在线微信</string>
     <string name="online_qq">在线QQ</string>
@@ -907,7 +912,7 @@
     <string name="other_link">其它相关链接</string>
     <string name="about_us">关于我们</string>
     <string name="responsible">博彩责任</string>
-    <string name="terms_conditions">规则与条款</string>
+    <string name="terms_conditions">规则条款</string>
     <string name="privacy_policy">隐私权条款</string>
     <string name="help">是否需要帮助？</string>
     <string name="official_partner">官方合作伙伴</string>
@@ -1061,7 +1066,7 @@
     <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
     <string name="function">常用功能</string>
     <string name="sport_relative">体育相关</string>
-    <string name="setting">系统设定</string>
+    <string name="setting">设置</string>
     <string name="service">服务</string>
     <string name="red_envelope_congratulations">恭喜您抢到</string>
     <string name="pls_check_amount">请至您的帐户内查询入帐金额</string>
@@ -1185,4 +1190,8 @@
     <string name="hint_no_file_selected">未选择档案</string>
     <string name="upload_id_photo">上传证件照片</string>
     <string name="hint_file_selected">已选择档案</string>
+    <string name="correct">波胆</string>
+    <string name="my_message">我的消息</string>
+    <string name="betting_setting">投注设置</string>
+    <string name="filter">筛选</string>
 </resources>

@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.repository
 
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.index.config.ConfigData
-import org.cxct.sportlottery.network.index.login.LoginData
+import org.cxct.sportlottery.repository.HandicapType.NULL
+import org.cxct.sportlottery.repository.ImageType.PROMOTION
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
@@ -40,12 +42,22 @@ const val PROJECT_CODE = "cx_sports" //項目代碼
 var sConfigData: ConfigData? = null
 
 /**
+ * 當前需要顯示的幣種符號
+ * 若沒有登入者幣種符號則顯示系統預設幣種符號
+ */
+val showCurrencySign: String?
+    get() = getLoginCurrency() ?: sConfigData?.systemCurrencySign
+
+private fun getLoginCurrency(): String? =
+    MultiLanguagesApplication.mInstance.userInfo.value?.currencySign
+
+/**
  * 紀錄是否第一次開啟app取得configData
  */
 var gotConfigData: Boolean = false
 
 class StaticData {
-    companion object{
+    companion object {
         fun getTestFlag(index: Long?): TestFlag? {
             return TestFlag.values().find { it.index == index }
         }

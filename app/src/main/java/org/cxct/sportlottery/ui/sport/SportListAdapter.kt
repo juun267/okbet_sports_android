@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
@@ -269,6 +270,10 @@ class SportListAdapter(private val matchType: MatchType) :
                 holder.itemView.league_odd_list.adapter = null
             }
         }
+    }
+
+    fun updateLeagueBySelectCsTab(position: Int, matchOdd: MatchOdd) {
+        notifyItemChanged(position, matchOdd)
     }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

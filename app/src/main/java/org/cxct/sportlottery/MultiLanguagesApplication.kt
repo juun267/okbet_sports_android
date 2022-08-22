@@ -384,22 +384,7 @@ class MultiLanguagesApplication : Application() {
                     override fun onConfirm() {
                         //當玩家點擊"I AM OVER 21 YEARS OLD"後，關閉此視窗
                         getInstance()?.setIsAgeVerifyShow(false)
-                        val token = loginSharedPref.getString(KEY_TOKEN, "")
-
-                        if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code } == true)
-                            PromotionPopupDialog(
-                                activity,
-                                PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
-                                    JumpUtil.toInternalWeb(
-                                        activity,
-                                        Constants.getPromotionUrl(
-                                            token,
-                                            LanguageManager.getSelectLanguage(activity)
-                                        ),
-                                        activity.getString(R.string.promotion)
-                                    )
-                                })
-                            ).show()
+                        showPromotionPopupDialog(activity)
                     }
 
                     override fun onExit() {
@@ -408,6 +393,25 @@ class MultiLanguagesApplication : Application() {
                     }
 
                 }).show()
+        }
+
+        private fun showPromotionPopupDialog(activity: FragmentActivity) {
+            val token = loginSharedPref.getString(KEY_TOKEN, "")
+
+            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code } == true)
+                PromotionPopupDialog(
+                    activity,
+                    PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {
+                        JumpUtil.toInternalWeb(
+                            activity,
+                            Constants.getPromotionUrl(
+                                token,
+                                LanguageManager.getSelectLanguage(activity)
+                            ),
+                            activity.getString(R.string.promotion)
+                        )
+                    })
+                ).show()
         }
 
         fun saveOddsType(oddsType: OddsType) {

@@ -45,6 +45,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.sport.SportListAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.json.JSONArray
@@ -218,20 +219,54 @@ fun RecyclerView.firstVisibleRange(leagueAdapter: LeagueAdapter, activity: Activ
     }
 }
 
+@SuppressLint("LogNotTimber")
+fun RecyclerView.firstVisibleRange(adapter: SportListAdapter, activity: Activity) {
+    post {
+        getVisibleRangePosition().forEach { leaguePosition ->
+            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
+            viewByPosition?.let { view ->
+                if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
+                    val viewHolder = getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
+                    viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                        .forEach { matchPosition ->
+                            if (adapter.data.isNotEmpty()) {
+                                Log.d(
+                                    "[subscribe]",
+                                    "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
+                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
+                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
+                                )
+                                (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                    adapter.data[leaguePosition].gameType?.key,
+                                    adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
+                                )
+                            }
+                        }
+                }
+            }
+        }
+    }
+}
+
 /**
  * 初次獲取冠軍資料訂閱可視範圍內賽事(GameV3Fragment(OutrightLeagueOddAdapter))
  *
  * @see org.cxct.sportlottery.ui.game.hall.GameV3Fragment.setOutrightLeagueAdapter
  * @see OutrightLeagueOddAdapter
  */
-fun RecyclerView.firstVisibleRange(gameType: String?, outrightLeagueOddAdapter: OutrightLeagueOddAdapter, activity: Activity) {
+fun RecyclerView.firstVisibleRange(
+    gameType: String?,
+    outrightLeagueOddAdapter: OutrightLeagueOddAdapter,
+    activity: Activity,
+) {
     post {
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             viewByPosition?.let { view ->
                 when (getChildViewHolder(view)) {
                     is OutrightLeagueOddAdapter.OutrightTitleViewHolder -> {
-                        when (val outrightLeagueData = outrightLeagueOddAdapter.data[leaguePosition]) {
+                        when (val outrightLeagueData =
+                            outrightLeagueOddAdapter.data[leaguePosition]) {
                             is MatchOdd -> {
                                 Log.d(
                                     "[subscribe]",
@@ -343,15 +378,15 @@ fun View.setVisibilityByCreditSystem() {
  * sConfigData?.realNameWithdrawVerified -> 判斷提現有沒有開啟KYC認證
  * enableKYCVerify的判斷已經棄用
  */
-fun isKYCVerifyWithdrawOpen():Boolean{
-   return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+fun isKYCVerifyWithdrawOpen(): Boolean {
+    return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
 }
 
 /**
  * sConfigData?.realNameRechargeVerified -> 判斷充值有沒有開啟KYC認證
  * enableKYCVerify的判斷已經棄用
  */
-fun isKYCVerifyRechargeOpen():Boolean{
+fun isKYCVerifyRechargeOpen(): Boolean {
     return sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
 }
 
@@ -379,7 +414,7 @@ fun isThirdTransferOpen(): Boolean {
  */
 fun MutableList<LeagueOdd>.updateOddsSort(
     gameType: String?,
-    playCategoryAdapter: PlayCategoryAdapter
+    playCategoryAdapter: PlayCategoryAdapter,
 ) {
     val playSelected = playCategoryAdapter.data.find { it.isSelected }
     val selectionType = playSelected?.selectionType
@@ -418,7 +453,8 @@ fun MutableList<LeagueOdd>.updateOddsSort(
 }
 
 fun getLevelName(context: Context, level: Int): String {
-    val jsonString = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/LevelName.json")
+    val jsonString = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext,
+        "localJson/LevelName.json")
     val jsonArray = JSONArray(jsonString)
     val jsonObject = jsonArray.getJSONObject(level)
     return jsonObject.getString(LanguageManager.getSelectLanguage(context).key)
@@ -428,7 +464,7 @@ fun getLevelName(context: Context, level: Int): String {
  * 設置WebView的日、夜間模式背景色, 避免還在讀取時出現與日夜模式不符的顏色區塊
  * @since 夜間模式時, WebView尚未讀取完成時會顯示其預設背景(白色)
  */
-fun WebView.setWebViewCommonBackgroundColor(){
+fun WebView.setWebViewCommonBackgroundColor() {
     setBackgroundColor(
         ContextCompat.getColor(
             context, if (MultiLanguagesApplication.isNightMode) {
@@ -458,7 +494,7 @@ fun View.setSpinnerView(
     spinnerList: List<StatusSheetData>,
     touchListener: () -> Unit,
     itemSelectedListener: (data: StatusSheetData?) -> Unit,
-    popupWindowDismissListener: () -> Unit
+    popupWindowDismissListener: () -> Unit,
 ) {
     val spinnerAdapter: StatusSpinnerAdapter?
 
@@ -537,6 +573,7 @@ fun isOddsTypeEnable(handicapType: HandicapType): Boolean {
 fun isOddsTypeEnable(handicapTypeCode: String): Boolean {
     return !isHandicapShowSetup() || sConfigData?.handicapShow?.contains(handicapTypeCode) == true
 }
+
 /**
  * 根據盤口類型是否有開放顯示或隱藏View
  */
@@ -560,7 +597,8 @@ fun getDefaultHandicapType(): HandicapType {
                 //endregion
                 //region 第一個盤口作為預設盤口
                 else -> {
-                    when (sConfigData?.handicapShow?.split(",")?.first { type -> type.isNotEmpty() }) {
+                    when (sConfigData?.handicapShow?.split(",")
+                        ?.first { type -> type.isNotEmpty() }) {
                         HandicapType.EU.name -> HandicapType.EU
                         HandicapType.HK.name -> HandicapType.HK
                         HandicapType.MY.name -> HandicapType.MY
@@ -575,6 +613,7 @@ fun getDefaultHandicapType(): HandicapType {
 }
 
 var updatingDefaultHandicapType = false
+
 /**
  * 僅作為獲取config後更新預設盤口使用
  */
@@ -584,7 +623,8 @@ fun setupDefaultHandicapType() {
         updatingDefaultHandicapType = true
         //若當前盤口尚未配置預設盤口
         if (MultiLanguagesApplication.mInstance.sOddsType == HandicapType.NULL.name) {
-            OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+            OddsType.values()
+                .firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
                 ?.let { defaultOddsType ->
                     MultiLanguagesApplication.saveOddsType(defaultOddsType)
                 }
@@ -602,7 +642,8 @@ fun updateDefaultHandicapType() {
     //若config尚未取得或處於更新中則不再更新
     if (!updatingDefaultHandicapType) {
         updatingDefaultHandicapType = true
-        OddsType.values().firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
+        OddsType.values()
+            .firstOrNull { oddsType -> oddsType.code == getDefaultHandicapType().name }
             ?.let { defaultOddsType ->
                 MultiLanguagesApplication.saveOddsType(defaultOddsType)
             }
@@ -629,7 +670,8 @@ private fun compressImageToFile(image: Bitmap, sizeLimit: Int): File? {
         options -= 10
     }
 
-    val path = MultiLanguagesApplication.appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
+    val path =
+        MultiLanguagesApplication.appContext.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
     val file = File.createTempFile(Math.random().toString(), ".png", path)
     val os = FileOutputStream(file)
     os.write(baos.toByteArray())
@@ -740,7 +782,17 @@ fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
     }
 
 
-
-
-
 }
+
+fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
+    sConfigData?.nationCurrencyList?.firstOrNull { it.nationCode == nationCode }?.currencyList?.firstOrNull { it.currency == currency }?.sign
+
+/**
+ * 判斷當前是否為多站點平台
+ */
+fun isMultipleSitePlat(): Boolean = LocalUtils.getString(R.string.app_name) == "ONbet"
+
+/**
+ * 判斷當前是否為OKbet平台
+ */
+fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name) == "OKbet"

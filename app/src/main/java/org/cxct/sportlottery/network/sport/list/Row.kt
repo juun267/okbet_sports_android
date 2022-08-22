@@ -13,5 +13,7 @@ data class Row(
     @Json(name = "name")
     val name: String,
     @Json(name = "sortNum")
-    val sortNum: Int
+    val sortNum: Int,
+    @Json(name = "state")
+    val state: Int, //状态（1：启用；0：停用）
 )

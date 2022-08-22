@@ -130,6 +130,7 @@
     <string name="home_tab_in_play">IN-PLAY</string>
     <string name="home_tab_today">TODAY</string>
     <string name="home_tab_early">EARLY</string>
+    <string name="home_tab_cs">CORRECT</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
     <string name="home_tab_at_start">SOON</string>
@@ -911,6 +912,10 @@
     <string name="e_address">Address</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
+    <string name="online_momopay">MoMoPay</string>
+    <string name="online_zalopay">ZaloPay</string>
+    <string name="online_viettelpay">ViettelPay</string>
+    <string name="online_recharge_card_pay">Recharge Card</string>
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="hint_e_address">(Please enter a contact address)</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s %2$s.</string>
@@ -1114,6 +1119,9 @@
     <string name="outlets_address_">Outlets Address：</string>
     <string name="error_recharge_amount_format">The format of the amount you entered is incorrect.</string>
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
+    <string name="my_message">My message</string>
+    <string name="betting_setting">Betting setting</string>
+    <string name="filter">filter</string>
 
     <string name="kyc_type">ID Type</string>
     <string name="kyc_num">ID Number</string>
@@ -1182,4 +1190,5 @@
     <string name="hint_no_file_selected">Unselect files</string>
     <string name="upload_id_photo">Upload Photo</string>
 
+    <string name="correct">Correct</string>
 </resources>

@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
+import org.cxct.sportlottery.network.interceptor.HttpLogInterceptor
 import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
 import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
 import org.cxct.sportlottery.network.interceptor.RequestInterceptor
@@ -65,7 +66,8 @@ class RequestManager private constructor(context: Context) {
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
-                addInterceptor(logging)
+//                addInterceptor(logging)
+                addInterceptor(HttpLogInterceptor())
             }
             // mock data, 必須擺在最後
             if (BuildConfig.MOCK)
