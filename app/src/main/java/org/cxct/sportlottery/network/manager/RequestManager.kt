@@ -6,12 +6,15 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
-import org.cxct.sportlottery.network.interceptor.*
+import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
+import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
+import org.cxct.sportlottery.network.interceptor.RequestInterceptor
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
@@ -41,6 +44,15 @@ class RequestManager private constructor(context: Context) {
 
     var retrofit: Retrofit
 
+    private val logging: HttpLoggingInterceptor =
+        HttpLoggingInterceptor().setLevel(
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        )
+
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -53,7 +65,7 @@ class RequestManager private constructor(context: Context) {
         .apply {
             //debug版本才打印api內容
             if (BuildConfig.DEBUG) {
-                addInterceptor(HttpLogInterceptor())
+                addInterceptor(logging)
             }
             // mock data, 必須擺在最後
             if (BuildConfig.MOCK)

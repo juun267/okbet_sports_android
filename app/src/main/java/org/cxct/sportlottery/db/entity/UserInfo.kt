@@ -3,7 +3,6 @@ package org.cxct.sportlottery.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
 import org.cxct.sportlottery.network.common.UserRebate
 
 @Entity(tableName = "user_info_table")
@@ -61,13 +60,13 @@ data class UserInfo(
     var userRebateList: List<UserRebate>? = null,
 
     @ColumnInfo(name = "maxBetMoney")//会员对应vip层级的单注最大下注额
-    var maxBetMoney: Int? = null,
+    var maxBetMoney: Long? = null,
 
     @ColumnInfo(name = "maxParlayBetMoney")//会员对应vip层级的串关最大下注额
-    var maxParlayBetMoney: Int? = null,
+    var maxParlayBetMoney: Long? = null,
 
     @ColumnInfo(name = "maxCpBetMoney")//会员对应vip层级的单注冠军最大下注额
-    var maxCpBetMoney: Int? = null,
+    var maxCpBetMoney: Long? = null,
 
     @ColumnInfo(name = "discount")
     var discount: Float? = null,

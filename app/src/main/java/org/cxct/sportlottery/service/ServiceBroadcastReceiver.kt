@@ -27,7 +27,6 @@ import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
-import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
@@ -368,7 +367,7 @@ open class ServiceBroadcastReceiver(
     private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
         this.odds?.let { oddsMap ->
             oddsMap.forEach { (key, value) ->
-                if (key != PlayCate.LCS.value) {//反波膽不處理折扣
+                if (!key.contains(PlayCate.LCS.value)) {//反波膽不處理折扣
                     value.odds?.forEach { odd ->
                         odd?.odds = odd?.odds?.applyDiscount(discount)
                         odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)

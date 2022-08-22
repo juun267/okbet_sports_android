@@ -6,7 +6,6 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
-import org.cxct.sportlottery.network.Constants.BETTING_STATION_QUERY
 import org.cxct.sportlottery.network.Constants.BETTING_STATION_QUERY_INVITE
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
@@ -41,9 +40,9 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
-import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
@@ -60,6 +59,7 @@ import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.UPLOAD_VERIFY_PHOTO
 import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
@@ -80,8 +80,8 @@ import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
-import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.bet.settledDetailList.BetInfoResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
@@ -104,19 +104,18 @@ import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlResponse
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
-import org.cxct.sportlottery.network.money.RedEnvelopeInfo
 import org.cxct.sportlottery.network.money.RedEnvelopePrizeResult
 import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.money.list.SportBillResult
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
+import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
-import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
-import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.sport.SportMenuFilterResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -130,6 +129,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoResult
 import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -532,6 +532,10 @@ object ErrorUtils {
                     (url.contains(PASSWORD_VERIFY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return PasswordVerifyResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(UPLOAD_VERIFY_PHOTO)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return UploadVerifyPhotoResult(it.code, it.msg, it.success,null) as T
                     }
                 }
             }

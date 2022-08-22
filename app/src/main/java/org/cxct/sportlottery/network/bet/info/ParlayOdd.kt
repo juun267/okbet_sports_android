@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ParlayOdd(
     @Json(name = "max")
-    var max: Int,
+    var max: Long,
     @Json(name = "min")
-    val min: Int,
+    val min: Long,
     @Json(name = "num")
     val num: Int,
     @Json(name = "odds")

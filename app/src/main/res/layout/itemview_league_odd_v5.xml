@@ -482,6 +482,45 @@
         tools:itemCount="5"
         tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
 
+    <LinearLayout
+        android:id="@+id/ll_cs_text_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/guide_game_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guide_content"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_correct_1"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/color_CCCCCC_000000"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="abc" />
+
+        <TextView
+            android:id="@+id/tv_correct_2"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/color_a3a3a3_666666"
+            android:maxLines="1"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="abc" />
+
+    </LinearLayout>
+
     <View
         android:id="@+id/league_odd_quick_cate_divider"
         android:layout_width="match_parent"

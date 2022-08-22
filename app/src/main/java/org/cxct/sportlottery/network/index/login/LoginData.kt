@@ -41,11 +41,11 @@ data class LoginData(
     @Json(name = "userRebateList")
     val userRebateList: List<UserRebate>?, //用户返点数据
     @Json(name = "maxBetMoney")
-    val maxBetMoney: Int?,
+    val maxBetMoney: Long?,
     @Json(name = "maxCpBetMoney")
-    val maxCpBetMoney: Int?,
+    val maxCpBetMoney: Long?,
     @Json(name = "maxParlayBetMoney")
-    val maxParlayBetMoney: Int?,
+    val maxParlayBetMoney: Long?,
     @Json(name = "discount")
     var discount: Float?, //後台維修 暫時修改做測試 要改回va
     @Json(name = "deviceValidateStatus")

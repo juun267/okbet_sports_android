@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -327,6 +328,20 @@ class VpRecommendAdapter(
                         }, odd, PlayCate.UNCHECK.value, playCateName, betPlayCateNameMap)
                     }
                 }
+            }
+        }
+    }
+
+    private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
+        return when (l) {
+            LanguageManager.Language.EN -> {
+                this.playCateNameEn
+            }
+            LanguageManager.Language.VI -> {
+                this.playCateNameVi
+            }
+            else -> {
+                this.playCateName
             }
         }
     }

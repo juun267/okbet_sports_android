@@ -3,7 +3,6 @@ package org.cxct.sportlottery.util
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
-import timber.log.Timber
 import java.lang.reflect.Method
 
 class KeyboardView @JvmOverloads constructor(
@@ -117,7 +117,7 @@ class KeyboardView @JvmOverloads constructor(
             hideKeyboard()
         }
         tvMax.setOnClickListener {
-            if (mIsLogin) {
+            if (isLogin) {
                 plusAll(maxBetMoney)
             } else {
                 setSnackBarNotify()
@@ -137,11 +137,33 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private lateinit var mEditText: EditText
-    private var maxBetMoney: String = "0"
+    private var mPosition: Int? = 0
+    private var isParlay: Boolean = false
+    //最大限額
+    private val maxBetMoney: String
+        get() {
+            val maxBetMoney = mPosition?.let {
+                if (!isParlay) {
+                    val betInfoList = BetInfoRepository.betInfoList.value?.peekContent()
+                    if (it == (betInfoList?.size ?: 0)) {
+                        betInfoList?.first()?.parlayOdds?.max //多投單注
+                    } else {
+                        betInfoList?.get(it)?.parlayOdds?.max
+                    }
+                } else {
+                    val parlayList = BetInfoRepository.parlayList.value
+//                    Timber.e("parlayList: $parlayList")
+                    parlayList?.get(it)?.max
+                }
+            } ?: 9999999
+//            Timber.e("maxBetMoney: $maxBetMoney")
+            return TextUtil.formatInputMoney(maxBetMoney)
+        }
     private var isShow = false
 
     //是否登入
-    private var mIsLogin = false
+    private val isLogin: Boolean
+        get() = LoginRepository.isLogin.value == true
 
     //提示未登入
     private var snackBarNotify: Snackbar? = null
@@ -149,12 +171,11 @@ class KeyboardView @JvmOverloads constructor(
     fun showKeyboard(
         editText: EditText,
         position: Int?,
-        maxBetMoney: Double,
-        minBetMoney: Long,
-        isLogin: Boolean
+        isParlay: Boolean = false
     ) {
         this.mEditText = editText
-        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
+        this.mPosition = position
+        this.isParlay = isParlay
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.apply {
             //inputType = InputType.TYPE_NULL
@@ -165,7 +186,6 @@ class KeyboardView @JvmOverloads constructor(
         this.visibility = View.VISIBLE
         //parent?.visibility = View.VISIBLE
         isShow = true
-        mIsLogin = isLogin
         //keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
     }
 
@@ -198,10 +218,6 @@ class KeyboardView @JvmOverloads constructor(
                 }
             }
         snackBarNotify?.show()
-    }
-
-    fun setMaxBetMoney(maxBetMoney: Double) {
-        this.maxBetMoney = TextUtil.formatInputMoney(maxBetMoney)
     }
 
     private fun disableKeyboard() {

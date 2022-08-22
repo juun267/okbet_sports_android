@@ -48,6 +48,8 @@ class StatusSpinnerView @JvmOverloads constructor(
     var selectedTag: String? = ""
         get() = tv_name.tag?.toString()
 
+    var selectedCode: String? = ""
+        get() = selectItem.code
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner, null)

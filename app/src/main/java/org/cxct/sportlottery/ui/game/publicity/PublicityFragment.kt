@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentPublicityBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
@@ -486,15 +488,28 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun goRegisterPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        if (getString(R.string.app_name).equals("OKbet")) {
+            startActivity(Intent(context, RegisterOkActivity::class.java))
+        } else {
+            startActivity(Intent(context, RegisterActivity::class.java))
+        }
+
     }
 
     private fun goDepositPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        if (getString(R.string.app_name).equals("OKbet")) {
+            startActivity(Intent(context, RegisterOkActivity::class.java))
+        } else {
+            startActivity(Intent(context, RegisterActivity::class.java))
+        }
     }
 
     private fun goWithdrawPage() {
-        startActivity(Intent(context, RegisterActivity::class.java))
+        if (getString(R.string.app_name).equals("OKbet")) {
+            startActivity(Intent(context, RegisterOkActivity::class.java))
+        } else {
+            startActivity(Intent(context, RegisterActivity::class.java))
+        }
     }
 
     private fun goGamePage() {

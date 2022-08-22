@@ -3,12 +3,13 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.content.res.AssetManager
 import androidx.annotation.DrawableRes
-import com.squareup.moshi.Types
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.TransferType
+import org.cxct.sportlottery.ui.finance.df.RechType
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -48,7 +49,7 @@ object MoneyManager {
         }
         return mMoneyPayWayList
     }
-//TODO Bill 等UI補Icon
+
     fun getBankIcon(bankName: String): Int {
         return when (bankName) {
             MoneyType.BANK.code -> R.drawable.ic_bank_atm
@@ -65,7 +66,11 @@ object MoneyManager {
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
             MoneyType.PAYPAL.code -> R.drawable.ic_paypal
             MoneyType.DRAGONPAY.code -> R.drawable.ic_gragon_pay
-
+            MoneyType.MOMOPAY.code -> R.drawable.ic_momopay
+            MoneyType.ZALOPAY.code -> R.drawable.ic_zalopay
+            MoneyType.VIETTELPAY.code -> R.drawable.ic_viettelpay
+            MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
+            MoneyType.QQONLINE.code -> R.drawable.ic_qq_online
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -140,5 +145,46 @@ object MoneyManager {
         JUANCASH("JuanCash", R.drawable.ic_juancash),
         GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
         ALIPAY("Alipay", R.drawable.ic_alipay_type)
+    }
+
+    fun getMoneyBankTypeTitle(rechType:String):String{
+       return when (rechType) {
+            RechType.ONLINE_PAYMENT.type -> mContext.getString(R.string.recharge_channel_online)
+            RechType.ADMIN_ADD_MONEY.type -> mContext.getString(R.string.recharge_channel_admin)
+            RechType.CFT.type -> mContext.getString(R.string.recharge_channel_cft)
+            RechType.WEIXIN.type -> mContext.getString(R.string.recharge_channel_weixin)
+            RechType.ALIPAY.type -> mContext.getString(R.string.recharge_channel_alipay)
+            RechType.BANK_TRANSFER.type -> mContext.getString(R.string.recharge_channel_bank)
+            RechType.CRYPTO.type -> mContext.getString(R.string.recharge_channel_crypto)
+            RechType.GCASH.type -> mContext.getString(R.string.recharge_channel_gcash)
+            RechType.GRABPAY.type -> mContext.getString(R.string.recharge_channel_grabpay)
+            RechType.PAYMAYA.type -> mContext.getString(R.string.recharge_channel_paymaya)
+            RechType.BETTING_STATION.type -> mContext.getString(R.string.betting_station_deposit)
+            else -> ""
+        }
+    }
+
+    //在線充值帳戶選單名稱
+    fun getOnlinePayTypeName(onlineType: Int?): String {
+        return when (onlineType) {//在线充值类型：1-网银在线充值、2-支付宝在线充值、3-微信在线充值、4-qq在线充值、5-出款、6、信用卡在线充值、7-百度钱包、8-京东钱包
+            OnlineType.WY.type -> mContext.resources.getString(R.string.online_bank)
+            OnlineType.ZFB.type -> mContext.resources.getString(R.string.online_alipay)
+            OnlineType.WX.type -> mContext.resources.getString(R.string.online_weixin)
+            OnlineType.QQ.type -> mContext.resources.getString(R.string.online_qq)
+            OnlineType.XYK.type -> mContext.resources.getString(R.string.online_credit_card)
+            OnlineType.JUAN.type -> mContext.resources.getString(R.string.online_juan)
+            OnlineType.DISPENSHIN.type -> mContext.resources.getString(R.string.online_dispenshing)
+            OnlineType.ONLINEBANK.type -> mContext.resources.getString(R.string.online_online_bank)
+            OnlineType.GCASH.type -> mContext.resources.getString(R.string.online_gcash)
+            OnlineType.GRABPAY.type -> mContext.resources.getString(R.string.online_grab)
+            OnlineType.PAYMAYA.type -> mContext.resources.getString(R.string.online_maya)
+            OnlineType.PAYPAL.type -> mContext.resources.getString(R.string.online_paypal)
+            OnlineType.DRAGON_PAY.type -> mContext.resources.getString(R.string.online_gragon_pay)
+            OnlineType.MOMOPAY.type -> mContext.resources.getString(R.string.online_momopay)
+            OnlineType.ZALOPAY.type -> mContext.resources.getString(R.string.online_zalopay)
+            OnlineType.VIETTELPAY.type -> mContext.resources.getString(R.string.online_viettelpay)
+            OnlineType.RECHARGE_CARD.type -> mContext.resources.getString(R.string.online_recharge_card_pay)
+            else -> ""
+        }
     }
 }

@@ -28,7 +28,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -340,15 +339,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let { list ->
                 oddsDetailListAdapter?.betInfoList = list
-            }
-        }
-
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner) {
-            val eventResult = it.getContentIfNotHandled()
-            eventResult?.success?.let { success ->
-                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
-                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
-                }
             }
         }
 

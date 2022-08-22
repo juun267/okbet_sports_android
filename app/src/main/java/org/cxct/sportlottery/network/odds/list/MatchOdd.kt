@@ -5,8 +5,8 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
@@ -59,6 +59,8 @@ data class MatchOdd(
     }
 
     var runningTime: String = ""
+
+    var csTabSelected: PlayCate = PlayCate.CS
 }
 
 enum class TimeCounting(val value: Int) {

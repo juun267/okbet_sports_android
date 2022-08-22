@@ -14,6 +14,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -21,16 +22,22 @@ import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class BYFragment(private val gameCateData: GameCateData) : BaseFragment<MainViewModel>(MainViewModel::class) {
+class BYFragment(private val gameCateData: GameCateData) :
+    BaseFragment<MainViewModel>(MainViewModel::class) {
 
-    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> = object : OnSelectItemListener<ThirdDictValues?> {
-        override fun onClick(select: ThirdDictValues?) {
-            loading()
-            viewModel.requestEnterThirdGame(select)
+    private var mOnSelectThirdGameListener: OnSelectItemListener<ThirdDictValues?> =
+        object : OnSelectItemListener<ThirdDictValues?> {
+            override fun onClick(select: ThirdDictValues?) {
+                loading()
+                viewModel.requestEnterThirdGame(select)
+            }
         }
-    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_by, container, false)
     }
 
@@ -61,10 +68,30 @@ class BYFragment(private val gameCateData: GameCateData) : BaseFragment<MainView
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
         when (result.resultType) {
-            EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterActivity::class.java))
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.SUCCESS -> context?.run {
+                JumpUtil.toThirdGameWeb(
+                    this,
+                    result.url ?: ""
+                )
+            }
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
+                getString(R.string.error),
+                result.errorMsg ?: ""
+            ) {}
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> if (getString(R.string.app_name).equals(
+                    "OKbet"
+                )
+            ) {
+                context?.startActivity(Intent(context, RegisterOkActivity::class.java))
+            } else {
+                context?.startActivity(Intent(context, RegisterActivity::class.java))
+            }
+
+
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
+                getString(R.string.error),
+                result.errorMsg ?: ""
+            ) {}
             EnterThirdGameResult.ResultType.NONE -> {
             }
         }
@@ -74,7 +101,12 @@ class BYFragment(private val gameCateData: GameCateData) : BaseFragment<MainView
 
     //設定recycleView item 向上重疊高度
     private val mItemDecoration = object : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
             val position = parent.getChildAdapterPosition(view)
             if (position > 1) outRect.top = MetricsUtil.convertDpToPixel(-86f, context).toInt()
         }

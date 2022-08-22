@@ -10,9 +10,5 @@ class CheckBettingData(
     @Json(name = "code")
     val code: String? = null,
     @Json(name = "name")
-    val name: String? = null,
-    @Json(name = "nationCode")
-    val nationCode: String? = null,
-    @Json(name = "currency")
-    val currency: String? = null
+    val name: String? = null
 )

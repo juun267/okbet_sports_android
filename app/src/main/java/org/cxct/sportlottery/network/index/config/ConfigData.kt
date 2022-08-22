@@ -91,8 +91,8 @@ data class ConfigData(
     val systemCurrencySign: String?,
     val systemCurrency: String? = "PHP",
     val systemUSDTCurrency: String? = "USDT",
-    val realNameRechargeVerified: String? = null,//充值实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
     val realNameWithdrawVerified: String? = null,//提现实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
+    val realNameRechargeVerified: String? = null,//充值实名制验证开关 (1：开启，0：关闭， 默认是null:关闭)
     val perBetMaxAmount: String?,
     val perBetMinAmount: String?,
     val selfRestraintVerified: String?,
@@ -102,17 +102,15 @@ data class ConfigData(
     val wsHost: String = "",
     val creditSystem: Int? = null,
     val firstRechLessAmountLimit: String?,
-    var idUploadNumber: String?,//KYC認證個數
     val enableBirthday: String?, //是否开启Birthday(1：开启，0：关闭)
     val enableSalarySource: String?, //是否开启SalarySource(1：开启，0：关闭)
     val enableIdentityNumber: String?, //是否开启IdentityNumber(1：开启，0：关闭)
     val enableBettingStation: String?, //是否开启BettingStation(1：开启，0：关闭)
     var salarySource: List<SalarySource>?, //薪资来源列表
+    var idUploadNumber: String?,//KYC認證個數
     var identityTypeList: List<IdentityType>?, //身分证件列表
     var safeQuestionList: List<SafeQuestion>?, //安全问题选项列表
-    val enableNationCurrency: String?, //国家与币种是否需填(1: 是, 0: 否, 默认是null:关闭)
-    val handicapShow: String?, //前端展示的盘口（EU,HK,MY,ID）後端沒配置或為空的狀況下，要顯示預設的四個盤口
-    val nationCurrencyList: List<NationCurrency>? //国家币种列表
+    val handicapShow: String? //前端展示的盘口（EU,HK,MY,ID）後端沒配置或為空的狀況下，要顯示預設的四個盤口
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

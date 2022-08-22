@@ -2528,6 +2528,7 @@ class SportViewModel(
      * @see setupSportSelectState
      */
     private fun setupMatchTypeSelectState(matchType: MatchType, matchTypeSport: Sport) {
+
         matchTypeSport.items.let { matchTypeItems ->
             matchTypeItems.forEach { sport ->
                 sport.isSelected = when {

@@ -11,8 +11,6 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
@@ -22,8 +20,6 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
-import org.cxct.sportlottery.ui.game.BetRecordType
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
@@ -42,9 +38,9 @@ const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
 
 
-class LoginRepository(private val androidContext: Context) {
+object LoginRepository {
     private val sharedPref: SharedPreferences by lazy {
-        androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+        MultiLanguagesApplication.appContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
     val isLogin: LiveData<Boolean>

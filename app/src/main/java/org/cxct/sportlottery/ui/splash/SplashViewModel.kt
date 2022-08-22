@@ -59,6 +59,20 @@ class SplashViewModel(
         viewModelScope.launch {
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
+
+                val checkTokenRetrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
+
+                doNetwork(androidContext) {
+                    checkTokenRetrofit.create(IndexService::class.java).checkToken()
+                }?.let {
+                    if (!it.success) {
+                        Timber.i("==> check token fail : do getHost")
+                        loginRepository.clear()
+                        getHost()
+                        return@launch
+                    }
+                }
+
                 val retrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
                 val result = doNetwork(androidContext, exceptionHandle = false) {
                     retrofit.create(IndexService::class.java).getConfig()

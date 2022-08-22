@@ -209,12 +209,9 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
-            val countParlay =
-                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
-            val countEps =
-                sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
+
 
             //20220728 不要有主頁
             /*tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.view?.visibility = View.GONE
@@ -252,10 +249,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 tv_number?.text = countOutright.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 6)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
-                tv_number?.text = countParlay.toString()
-            }
 
             //0401需求先隱藏特優賠率
 //            val tabEps = tabLayout.getTabAt(7)?.customView
@@ -290,8 +283,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
         MatchType.OUTRIGHT to 4,
-        MatchType.PARLAY to 5,
-        MatchType.EPS to 6,
+//        MatchType.PARLAY to 5,
+//        MatchType.EPS to 6,
         MatchType.MAIN to 99
     )
 
@@ -347,12 +340,12 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                     viewModel.switchMatchType(MatchType.OUTRIGHT)
                 }
             }
-            getMatchTypeTabPosition(MatchType.PARLAY) -> {
-                viewModel.switchMatchType(MatchType.PARLAY)
-            }
-            getMatchTypeTabPosition(MatchType.EPS) -> {
-                viewModel.switchMatchType(MatchType.EPS)
-            }
+//            getMatchTypeTabPosition(MatchType.PARLAY) -> {
+//                viewModel.switchMatchType(MatchType.PARLAY)
+//            }
+//            getMatchTypeTabPosition(MatchType.EPS) -> {
+//                viewModel.switchMatchType(MatchType.EPS)
+//            }
         }
     }
 

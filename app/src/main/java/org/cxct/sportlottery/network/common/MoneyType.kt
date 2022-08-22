@@ -26,4 +26,9 @@ enum class MoneyType(val code: String) {
     PAYPAL("ic_paypal"),//210 Paypal okBet要用
     DRAGONPAY("ic_gragon_pay"),//211:DragonPay
     DRAGONPAY_TYPE("gragon"),//211:DragonPay
+    MOMOPAY("ic_momopay"),//102:MoMoPay
+    ZALOPAY("ic_zalopay"),//103:ZaloPay
+    VIETTELPAY("ic_viettelpay"),//107:ViettelPay
+    RECHARGE_CARD("ic_recharge_card"),//108:刮刮卡充值 //Recharge Card
+    QQONLINE("ic_online_qq")//4:在線QQ
 }

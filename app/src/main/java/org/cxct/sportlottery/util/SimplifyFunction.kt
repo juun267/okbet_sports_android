@@ -45,7 +45,6 @@ import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.sport.SportCategoryAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.json.JSONArray
@@ -339,6 +338,15 @@ fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?)
 fun View.setVisibilityByCreditSystem() {
     visibility = if (isCreditSystem()) View.GONE else View.VISIBLE
 }
+
+/**
+ * sConfigData?.realNameWithdrawVerified -> 判斷提現有沒有開啟KYC認證
+ * enableKYCVerify的判斷已經棄用
+ */
+fun isKYCVerifyWithdrawOpen():Boolean{
+   return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
+}
+
 /**
  * sConfigData?.realNameRechargeVerified -> 判斷充值有沒有開啟KYC認證
  * enableKYCVerify的判斷已經棄用
@@ -346,14 +354,6 @@ fun View.setVisibilityByCreditSystem() {
 fun isKYCVerifyRechargeOpen():Boolean{
     return sConfigData?.realNameRechargeVerified == VerifySwitchType.OPEN.value
 }
-/**
- * sConfigData?.realNameWithdrawVerified -> 判斷提現有沒有開啟KYC認證
- * enableKYCVerify的判斷已經棄用
- */
-fun isKYCVerifyWithdrawOpen():Boolean{
-    return sConfigData?.realNameWithdrawVerified == VerifySwitchType.OPEN.value
-}
-
 
 /**
  * 判斷當前是否為信用系統
@@ -379,49 +379,9 @@ fun isThirdTransferOpen(): Boolean {
  */
 fun MutableList<LeagueOdd>.updateOddsSort(
     gameType: String?,
-    playCategoryAdapter: PlayCategoryAdapter,
+    playCategoryAdapter: PlayCategoryAdapter
 ) {
     val playSelected = playCategoryAdapter.data.find { it.isSelected }
-    val selectionType = playSelected?.selectionType
-    val playSelectedCode = playSelected?.code
-    val playCateMenuCode = when (playSelected?.selectionType) {
-        SelectionType.SELECTABLE.code -> {
-            playSelected.playCateList?.find { it.isSelected }?.code
-        }
-        SelectionType.UN_SELECTABLE.code -> {
-            playSelected.code
-        }
-        else -> null
-    }
-
-    val mPlayCateMenuCode =
-        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else playSelectedCode
-
-    val oddsSortFilter =
-        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else PlayCateMenuFilterUtils.filterOddsSort(
-            gameType,
-            mPlayCateMenuCode
-        )
-    val playCateNameMapFilter =
-        if (selectionType == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-            gameType,
-            playSelectedCode,
-            mPlayCateMenuCode
-        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(gameType, mPlayCateMenuCode)
-
-    this.forEach { LeagueOdd ->
-        LeagueOdd.matchOdds.forEach { MatchOdd ->
-            MatchOdd.oddsSort = oddsSortFilter
-            MatchOdd.playCateNameMap = playCateNameMapFilter
-        }
-    }
-}
-
-fun MutableList<LeagueOdd>.updateNewOddsSort(
-    gameType: String?,
-    adapter: SportCategoryAdapter,
-) {
-    val playSelected = adapter.data.find { it.isSelected }
     val selectionType = playSelected?.selectionType
     val playSelectedCode = playSelected?.code
     val playCateMenuCode = when (playSelected?.selectionType) {
@@ -784,15 +744,3 @@ fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
 
 
 }
-fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
-    sConfigData?.nationCurrencyList?.firstOrNull { it.nationCode == nationCode }?.currencyList?.firstOrNull { it.currency ==currency }?.sign
-
-/**
- * 判斷當前是否為多站點平台
- */
-fun isMultipleSitePlat(): Boolean = LocalUtils.getString(R.string.app_name) == "ONbet"
-
-/**
- * 判斷當前是否為OKbet平台
- */
-fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name) == "OKbet"

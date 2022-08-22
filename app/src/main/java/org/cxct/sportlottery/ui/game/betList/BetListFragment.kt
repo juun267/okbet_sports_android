@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -40,7 +39,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
-import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -53,7 +51,9 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 
 /**
  * @app_destination 滿版注單(點擊賠率彈出)
@@ -91,6 +91,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var tabPosition = 0 //tab的位置
 
     private var isMultiBet = false //是否為多筆注單
+
+    private var needUpdateBetLimit = false //是否需要更新投注限額
 
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -204,7 +206,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initCommonToolbar()
         initToolBar()
 
-        ll_root.setOnClickListener { betListRefactorAdapter?.closeAllKeyboard() }
+        ll_root.setOnClickListener {
+            betListRefactorAdapter?.closeAllKeyboard()
+            betParlayListRefactorAdapter?.closeAllKeyboard()
+        }
         tv_balance.text = TextUtil.formatMoney(0.0)
     }
 
@@ -222,6 +227,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnEvent() {
         binding.btnBet.apply {
             tv_login.setOnClickListener {
+                needUpdateBetLimit = true
                 MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
@@ -283,6 +289,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.betTypeTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 betListRefactorAdapter?.closeAllKeyboard()
+                betParlayListRefactorAdapter?.closeAllKeyboard()
                 when (tab?.position) {
                     //單項投注
                     0 -> {
@@ -444,6 +451,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                     isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size ?: 0 <= 1
                     betListRefactorAdapter?.closeAllKeyboard()
+                    betParlayListRefactorAdapter?.closeAllKeyboard()
                     viewModel.removeBetInfoItem(oddsId)
                 }
 
@@ -470,6 +478,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         it.isInputBet = false; it.isInputWin = false
                     }
                     betListRefactorAdapter?.closeAllKeyboard()
+                    betParlayListRefactorAdapter?.closeAllKeyboard()
                 }
 
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -668,6 +677,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupBetButtonType(it)
             updateCommonToolbarLoginStatus(it)
+            if (needUpdateBetLimit) {
+                viewModel.updateBetLimit()
+                needUpdateBetLimit = false
+            }
             betListRefactorAdapter?.userLogin = it
             betParlayListRefactorAdapter?.userLogin = it
         }
