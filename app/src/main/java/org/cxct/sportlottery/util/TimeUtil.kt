@@ -21,6 +21,7 @@ object TimeUtil {
     const val VI_MD_FORMAT = "dd 'TH.'M"
     const val DM_FORMAT = "MM / dd"
     const val HM_FORMAT = "HH:mm"
+    const val HM_FORMAT_SS = "HH:mm:ss"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val MD_HM_FORMAT = "MM/dd HH:mm"
     const val DM_HM_FORMAT = "MM/dd HH:mm"

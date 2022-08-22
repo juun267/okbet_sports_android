@@ -424,10 +424,10 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             if (it.officeStartTime.isNotEmpty() && it.officeEndTime.isNotEmpty()) {
                 try {
                     startCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().apply {
-                        time = SimpleDateFormat(TimeUtil.HM_FORMAT).parse(it.officeStartTime)
+                        time = SimpleDateFormat(TimeUtil.HM_FORMAT_SS).parse(it.officeStartTime)
                     }.get(Calendar.HOUR_OF_DAY))
                     endCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().apply {
-                        time = SimpleDateFormat(TimeUtil.HM_FORMAT).parse(it.officeEndTime)
+                        time = SimpleDateFormat(TimeUtil.HM_FORMAT_SS).parse(it.officeEndTime)
                     }.get(Calendar.HOUR_OF_DAY))
                 } catch (e: java.lang.Exception) {
                     e.printStackTrace()
@@ -441,9 +441,9 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 var cal = Calendar.getInstance()
                 cal.set(Calendar.MINUTE, 0)
                 cal.set(Calendar.HOUR_OF_DAY, i)
-                var start = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT)
+                var start = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT_SS)
                 cal.add(Calendar.HOUR_OF_DAY, 1)
-                var end = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT)
+                var end = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT_SS)
                 items.add(StatusSheetData(start, "$start~$end"))
             }
             showBottomSheetDialog(
