@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
@@ -865,8 +867,12 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 epsListAdapter.oddsType = oddsType
             }
         }
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner,
+            object : Observer<List<League>> {
+                override fun onChanged(t: List<League>?) {
 
-        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner) {
+                }
+            })
 //            countryAdapter.apply {
 //                data.forEach { row ->
 //                    row.list.forEach { league ->
@@ -876,7 +882,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 //
 //                notifyDataSetChanged()
 //            }
-        }
+//        }
 
         viewModel.playList.observe(this.viewLifecycleOwner) { event ->
 

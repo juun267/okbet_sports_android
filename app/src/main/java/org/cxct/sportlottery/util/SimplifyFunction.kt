@@ -17,8 +17,12 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
@@ -796,3 +800,15 @@ fun isMultipleSitePlat(): Boolean = LocalUtils.getString(R.string.app_name) == "
  * 判斷當前是否為OKbet平台
  */
 fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name) == "OKbet"
+
+/**
+ * 解析以下报错，不能用lamda
+ *  Cannot add the same observer with different lifecycles
+ */
+fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Unit) {
+    this.observe(owner, object : Observer<T> {
+        override fun onChanged(t: T) {
+            callback.invoke(t)
+        }
+    })
+}

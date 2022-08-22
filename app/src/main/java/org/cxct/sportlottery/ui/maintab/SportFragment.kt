@@ -209,6 +209,10 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+            val countCS =
+                sportMenuResult?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
+//            val countParlay =
+//                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
 
@@ -243,8 +247,14 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 tv_number?.text = countEarly.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT)
-                ?: 5)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 5)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
+                tv_number?.text = countCS.toString()
+            }
+
+            tabLayout.getTabAt(
+                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 6
+            )?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
@@ -282,7 +292,20 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
-        MatchType.OUTRIGHT to 4,
+        MatchType.CS to 4,
+        MatchType.OUTRIGHT to 5,
+//        MatchType.PARLAY to 6,
+//        MatchType.EPS to 7,
+        MatchType.MAIN to 99
+    )
+
+    private val matchTypeTabPositionONbetMap = mapOf<MatchType, Int>(
+        MatchType.IN_PLAY to 0,
+        MatchType.AT_START to 1,
+        MatchType.TODAY to 2,
+        MatchType.EARLY to 3,
+        MatchType.CS to 4,
+        MatchType.OUTRIGHT to 5,
 //        MatchType.PARLAY to 5,
 //        MatchType.EPS to 6,
         MatchType.MAIN to 99
@@ -329,6 +352,9 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             }
             getMatchTypeTabPosition(MatchType.EARLY) -> {
                 viewModel.switchMatchType(MatchType.EARLY)
+            }
+            getMatchTypeTabPosition(MatchType.CS) -> {
+                viewModel.switchMatchType(MatchType.CS)
             }
             getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
                 /**
@@ -457,10 +483,10 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                                 MatchType.TODAY) ||
                                     it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(
                                 MatchType.EARLY) ||
+                                    it == MatchType.CS && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.CS) ||
                                     it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.OUTRIGHT) ||
-                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.PARLAY)
+                                MatchType.OUTRIGHT)
                             -> {
                                 navGameFragment(it)
                             }
