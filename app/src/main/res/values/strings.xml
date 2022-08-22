@@ -130,7 +130,6 @@
     <string name="home_tab_in_play">IN-PLAY</string>
     <string name="home_tab_today">TODAY</string>
     <string name="home_tab_early">EARLY</string>
-    <string name="home_tab_cs">CORRECT</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
     <string name="home_tab_at_start">SOON</string>
@@ -913,10 +912,6 @@
     <string name="e_address">Address</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
-    <string name="online_momopay">MoMoPay</string>
-    <string name="online_zalopay">ZaloPay</string>
-    <string name="online_viettelpay">ViettelPay</string>
-    <string name="online_recharge_card_pay">Recharge Card</string>
     <string name="bank_list_e_wallet">eWallet</string>
     <string name="hint_e_address">(Please enter a contact address)</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s %2$s.</string>
@@ -1124,20 +1119,6 @@
     <string name="error_recharge_amount_format">The format of the amount you entered is incorrect.</string>
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
 
-    <string name="register_currency">Currency</string>
-    <string name="register_nation">Country</string>
-    <string name="deposits">DEPOSITS</string>
-    <string name="withdraw_down">WITHDRAWAL</string>
-    <string name="my_message">My message</string>
-    <string name="betting_setting">Betting setting</string>
-    <string name="transaction_record">交易记录明细</string>
-    <string name="transaction_recor">意见反馈</string>
-    <string name="current_version">当前版本</string>
-    <string name="updatable_version">可更新</string>
-    <string name="join_us_win_wealth">加入我们，共赢财富</string>
-    <string name="personal_information">个人信息</string>
-    <string name="cancel_account">注销账号</string>
-    <string name="payment_method">支付方式</string>
     <string name="kyc_type">ID Type</string>
     <string name="kyc_num">ID Number</string>
     <string name="kyc_upload">Upload Photo</string>
@@ -1196,13 +1177,6 @@
     <string name="kyc_text_operations">[TEXT] Operations</string>
     <string name="kyc_add">Add</string>
 
-    <string name="correct">Correct</string>
-
-    <string name="customer_service">如需帮助，请</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="filter">filter</string>
-
     <string name="next_step">Next</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
     <string name="hint_select_document_number">(Enter ID number)</string>
@@ -1212,6 +1186,4 @@
     <string name="hint_no_file_selected">Unselect files</string>
     <string name="upload_id_photo">Upload Photo</string>
     <string name="hint_file_selected">Selected file</string>
-    <string name="error_recommend_agent">No matched</string>
-    <string name="Appointment">预约时间</string>
 </resources>

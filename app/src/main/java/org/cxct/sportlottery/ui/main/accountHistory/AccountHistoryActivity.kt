@@ -35,7 +35,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.isOKPlat
 
 
 class AccountHistoryActivity :
@@ -297,7 +296,12 @@ class AccountHistoryActivity :
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this@AccountHistoryActivity,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@AccountHistoryActivity, RegisterOkActivity::class.java))
+            }else{
+                startActivity(Intent(this@AccountHistoryActivity, RegisterActivity::class.java))
+            }
+
         }
 
         tv_odds_type.setOnClickListener {

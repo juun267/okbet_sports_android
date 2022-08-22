@@ -205,7 +205,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnSignUp.setVisibilityByCreditSystem()
 
         binding.btnSignUp.setOnClickListener {
-            startActivity(Intent(this@LoginActivity,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@LoginActivity, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
+            }
             finish()
         }
     }

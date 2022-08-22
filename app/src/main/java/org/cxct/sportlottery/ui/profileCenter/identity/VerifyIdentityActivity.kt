@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
@@ -8,6 +9,7 @@ import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class VerifyIdentityActivity :
@@ -25,18 +27,12 @@ class VerifyIdentityActivity :
 
     override fun onStart() {
         super.onStart()
-        checkKYCEnable()
+        checkKYCStatus()
     }
 
-    private fun checkKYCEnable() {
-        if (sConfigData?.enableKYCVerify == VerifySwitchType.CLOSE.value) {
-            when (mNavController.currentDestination?.id) {
-                R.id.verifyIdentityFragment -> {
-                    val action = VerifyIdentityFragmentDirections.actionVerifyIdentityFragmentToCredentialsFragment()
-                    mNavController.navigate(action)
-                }
-            }
-        }
+    private fun checkKYCStatus() {
+        if (viewModel.userInfo.value?.verified != ProfileActivity.VerifiedType.NOT_YET.value && mNavController.currentDestination?.id == R.id.verifyKYCFragment)
+            mNavController.navigate(R.id.action_verifyKYCFragment_to_verifyStatusFragment)
     }
 
     private fun initToolbar() {

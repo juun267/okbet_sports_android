@@ -35,7 +35,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.isOKPlat
 
 class TransactionStatusActivity :
     BaseBottomNavActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
@@ -93,7 +92,12 @@ class TransactionStatusActivity :
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            }
+
         }
 
         tv_odds_type.setOnClickListener {
@@ -101,7 +105,7 @@ class TransactionStatusActivity :
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
         }
@@ -293,8 +297,8 @@ class TransactionStatusActivity :
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
-            iv_menu.visibility =View.VISIBLE
-            iv_notice.visibility =View.VISIBLE
+            iv_menu.visibility = View.VISIBLE
+            iv_notice.visibility = View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.GONE
@@ -305,8 +309,8 @@ class TransactionStatusActivity :
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
-            iv_menu.visibility =View.GONE
-            iv_notice.visibility =View.GONE
+            iv_menu.visibility = View.GONE
+            iv_notice.visibility = View.GONE
         }
     }
 

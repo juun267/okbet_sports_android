@@ -1,12 +1,17 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListPopupWindow
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -18,9 +23,12 @@ import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.view_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_upload.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
+import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
@@ -239,6 +247,8 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
     private fun setupUploadView() {
         activity?.let { activityNotNull ->
             identity_1st.apply {
+                this.tvUploadTip.isVisible = false
+                this.tvUploadTip2.isVisible = false
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,
@@ -249,6 +259,8 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
             }
 
             identity_2nd.apply {
+                this.tvUploadTip.isVisible = false
+                this.tvUploadTip2.isVisible = false
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,

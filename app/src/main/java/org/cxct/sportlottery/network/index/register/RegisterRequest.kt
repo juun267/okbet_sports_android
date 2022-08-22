@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.index.register
 
+import com.squareup.moshi.Json
+import java.io.File
+
 data class RegisterRequest(
     val userName: String,
     val password: String, //密码，md5(明文)，校验格式：32位md5值

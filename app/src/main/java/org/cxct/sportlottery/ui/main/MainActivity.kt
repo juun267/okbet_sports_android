@@ -27,7 +27,7 @@ import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -151,7 +151,12 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         btn_register.setOnClickListener {
-            startActivity(Intent(this@MainActivity,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@MainActivity, RegisterOkActivity::class.java))
+            }else{
+                startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
+            }
+
         }
 
         iv_language.setOnClickListener {
@@ -204,7 +209,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                     false
                 }
                 R.id.my_account_page -> {
-                    viewModel.navActivity(ProfileCenterFragment::class.java)
+                    viewModel.navActivity(ProfileCenterActivity::class.java)
                     false
                 }
                 else -> false

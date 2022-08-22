@@ -129,7 +129,6 @@
     <string name="home_tab_in_play">TRONG TRẬN</string>
     <string name="home_tab_today">HÔM NAY</string>
     <string name="home_tab_early">CƯỢC SỚM</string>
-    <string name="home_tab_cs">Kết Quả Đúng</string>
     <string name="home_tab_parlay">CƯỢC XÂU</string>
     <string name="home_tab_outright">CƯỢC CHUNG CUỘC</string>
     <string name="home_tab_at_start">SẮP DIỄN RA</string>
@@ -459,12 +458,6 @@
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
-    <string name="online_paypal">Paypal</string>
-    <string name="online_gragon_pay">DragonPay</string>
-    <string name="online_momopay">MoMoPay</string>
-    <string name="online_zalopay">ZaloPay</string>
-    <string name="online_viettelpay">ViettelPay</string>
-    <string name="online_recharge_card_pay">Recharge Card</string>
     <string name="online_alipay">Alipay trực tuyến</string>
     <string name="online_weixin">WeChat trực tuyến</string>
     <string name="online_qq">QQ trực tuyến</string>
@@ -1178,6 +1171,4 @@
     <string name="hint_no_file_selected">Chưa chọn tập tin</string>
     <string name="upload_id_photo">Tải ảnh lên</string>
     <string name="hint_file_selected">Đã chọn tập tin</string>
-
-    <string name="correct">Kết Quả Đúng</string>
 </resources>

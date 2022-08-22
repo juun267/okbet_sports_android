@@ -9,27 +9,27 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
+import kotlinx.android.synthetic.main.fragment_menu.iv_head
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.phoneNumCheckDialog
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
+import org.cxct.sportlottery.util.*
 
 /**
  * @app_destination 右上選單
@@ -40,6 +40,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
+    //KYC驗證彈窗
+    private var kYCVerifyDialog: CustomSecurityDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -291,13 +293,31 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 startActivity(Intent(context, WithdrawActivity::class.java))
             }
         }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkRechargeSystem()
+            }
+        }
     }
 
     private fun initEvent() {
 
         //個人中心
         menu_profile_center.setOnClickListener {
-            viewModel.navActivity(ProfileCenterFragment::class.java)
+            viewModel.navActivity(ProfileCenterActivity::class.java)
             //遊客 TODO 20221208 拿掉遊客選項，預設以外行為需要另外定義(先預設登入) by Hewie
             mDownMenuListener?.onClick(menu_profile_center)
         }
@@ -307,7 +327,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setVisibilityByCreditSystem()
             setOnClickListener {
                 avoidFastDoubleClick()
-                viewModel.checkRechargeSystem()
+                viewModel.checkRechargeKYCVerify()
             }
         }
 
@@ -316,10 +336,9 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setVisibilityByCreditSystem()
             setOnClickListener {
                 avoidFastDoubleClick()
-                viewModel.checkWithdrawSystem()
+                viewModel.checkWithdrawKYCVerify()
             }
         }
-
 
         //版本更新
         menu_version_update.setOnClickListener {
@@ -343,6 +362,33 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(btn_sign_out)
         }
 
+    }
+    private fun showKYCVerifyDialog() {
+        VerifyIdentityDialog().apply {
+            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            }
+            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                val serviceUrl = sConfigData?.customerServiceUrl
+                val serviceUrl2 = sConfigData?.customerServiceUrl2
+                when {
+                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.supportFragmentManager?.let { it1 ->
+                            ServiceDialog().show(
+                                it1,
+                                null
+                            )
+                        }
+                    }
+                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                    }
+                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                    }
+                }
+            }
+        }.show(parentFragmentManager, null)
     }
 
     private fun setupVersion() {

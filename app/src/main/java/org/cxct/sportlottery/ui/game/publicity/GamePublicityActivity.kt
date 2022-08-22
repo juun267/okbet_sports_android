@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
+import org.parceler.Parcels
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
@@ -319,7 +320,11 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun goRegisterPage() {
-        startActivity(Intent(this@GamePublicityActivity,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
+        if (getString(R.string.app_name).equals("OKbet")) {
+            startActivity(Intent(this@GamePublicityActivity, RegisterOkActivity::class.java))
+        } else {
+            startActivity(Intent(this@GamePublicityActivity, RegisterActivity::class.java))
+        }
     }
 
     private fun goLoginPage() {

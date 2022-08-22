@@ -228,8 +228,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         btn_register.setOnClickListener {
             closeLeftMenu()
-            startActivity(Intent(this@GameActivity,
-                 if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
+            if (getString(R.string.app_name).equals("OKbet")) {
+                startActivity(Intent(this@GameActivity, RegisterOkActivity::class.java))
+            } else {
+                startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
+            }
         }
 
         tv_odds_type.setOnClickListener {

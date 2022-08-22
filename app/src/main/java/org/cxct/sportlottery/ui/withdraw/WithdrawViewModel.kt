@@ -452,7 +452,9 @@ class WithdrawViewModel(
         viewModelScope.launch {
             loading()
             getMoney()
-            withdrawRepository.moneyRechCfgResult.value?.let { result ->
+            doNetwork(androidContext) {
+                moneyRepository.getRechCfg()
+            }?.let { result ->
                 result.rechCfg?.let { moneyRechCfgData ->
                     uwBankType =
                         moneyRechCfgData.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
@@ -598,7 +600,7 @@ class WithdrawViewModel(
                 LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
             }
             withdrawAmount.toDoubleOrNull() == null || withdrawAmount.toDouble().equals(0) -> {
-                LocalUtils.getString(R.string.error_withdraw_amount_bigger_than_balance)
+                LocalUtils.getString(R.string.error_recharge_amount_format)
             }
             VerifyConstUtil.verifyWithdrawAmount(
                 withdrawAmount,

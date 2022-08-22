@@ -20,8 +20,8 @@ android {
         applicationId "org.cxct.sportlottery"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 32
-        versionName "1.0.211"
+        versionCode 5
+        versionName "1.0.209"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -411,11 +411,6 @@ dependencies {
     implementation 'com.airbnb.android:lottie:5.0.3'
 
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    implementation 'org.greenrobot:eventbus:3.1.1'
-    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
-    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
-    implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
 
 }
 
