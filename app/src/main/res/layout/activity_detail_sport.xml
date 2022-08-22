@@ -48,34 +48,37 @@
                         android:background="@color/color_191919_FCFCFC"
                         android:orientation="vertical">
 
-                        <include
-                            android:id="@+id/v_toolbar"
-                            layout="@layout/view_detail_head_toolbar"
-                            app:fragment="@{fragment}"
-                            app:gameViewModel="@{gameViewModel}" />
-
-                        <org.cxct.sportlottery.ui.component.LiveViewToolbar
-                            android:id="@+id/live_view_tool_bar"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:layout_height="220dp" />
+                            android:layout_height="wrap_content">
+                            <include
+                                android:id="@+id/v_toolbar"
+                                layout="@layout/view_detail_head_toolbar"
+                                app:fragment="@{fragment}"
+                                app:gameViewModel="@{gameViewModel}" />
+
+                            <org.cxct.sportlottery.ui.component.LiveViewToolbar
+                                android:id="@+id/liveViewToolBar"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:layout_height="220dp" />
+
+                        </FrameLayout>
 
                         <View
                             android:id="@+id/v_divider"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/color_1F1F1F_e6e6e6"
-                            app:layout_constraintTop_toBottomOf="@+id/live_view_tool_bar" />
+                            app:layout_constraintTop_toBottomOf="@+id/liveViewToolBar" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_cat"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:background="@color/color_191919_FCFCFC"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="10dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             tools:listitem="@layout/tab_odds_detail" />
                     </LinearLayout>
@@ -96,9 +99,6 @@
                     android:layout_height="wrap_content"
                     android:background="@color/color_191919_FCFCFC"
                     android:overScrollMode="never"
-                    app:layout_constraintTop_toBottomOf="@id/rv_cat"
-                    tools:layout_constraintBottom_toBottomOf="parent"
-                    tools:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
             </LinearLayout>
