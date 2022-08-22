@@ -43,6 +43,8 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.data.DetailParams
+import org.cxct.sportlottery.ui.game.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.game.publicity.*
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -641,13 +643,15 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         val gameType = GameType.getGameType(gameTypeCode)
         val navMatchType = matchType ?: MatchType.DETAIL
         if (gameType != null && matchId != null) {
-            findNavController().navigate(
-                PublicityFragmentDirections.actionPublicityFragmentToOddsDetailLiveFragment(
-                    navMatchType,
-                    gameType,
-                    matchId
-                )
-            )
+            SportDetailActivity.startActivity(requireContext(),
+                DetailParams(matchType = navMatchType, gameType = gameType, matchId = matchId))
+//            findNavController().navigate(
+//                PublicityFragmentDirections.actionPublicityFragmentToOddsDetailLiveFragment(
+//                    navMatchType,
+//                    gameType,
+//                    matchId
+//                )
+//            )
         }
     }
 

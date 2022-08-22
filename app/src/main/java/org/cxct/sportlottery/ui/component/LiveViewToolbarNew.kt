@@ -29,7 +29,9 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 
-
+/**
+ * @description 赛事头部：直播，动画，数据统计
+ */
 @SuppressLint("SetJavaScriptEnabled")
 class LiveViewToolbarNew @JvmOverloads constructor(
     context: Context,
