@@ -132,14 +132,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
         with(rv_station) {
             layoutManager = GridLayoutManager(context, 2)
-            addItemDecoration(
-                GridItemDecoration(
-                    8.dp,
-                    8.dp,
-                    ContextCompat.getColor(context, R.color.color_191919_FCFCFC),
-                    false
-                )
-            )
             adapter = stationAdapter
         }
 
@@ -563,10 +555,12 @@ class BetStationAdapter(
                 if (station.isSelected) {
                     selectedPosition = position
                     imgCheck.visibility = View.VISIBLE
-                    ivBg.setImageResource(R.drawable.bg_betstation_sel)
+                    llSelectBankCard.setBackgroundResource(R.drawable.ic_bule_site)
                 } else {
                     imgCheck.visibility = View.GONE
-                    ivBg.setImageResource(R.drawable.bg_betstation_nor)
+                    llSelectBankCard.setBackgroundResource(R.drawable.ic_white_site)
+
+
                 }
             }
         }

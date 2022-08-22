@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.publicity.*
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -174,6 +175,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
     private fun initObservable() {
+        if(viewModel == null){
+            return
+        }
         viewModel.isLogin.observe(viewLifecycleOwner) {
             setupLogin()
         }
@@ -694,8 +698,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
                 Intent(
                     context,
-                    RegisterActivity::class.java
-                )
+                     if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
             )
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
@@ -786,8 +789,10 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     }
 
     private fun setupLogin() {
-        val isLogin = viewModel.isLogin != null && viewModel.isLogin.value!!
-        lin_money.visibility = if (isLogin) View.VISIBLE else View.GONE
-        btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
+        if(viewModel != null && viewModel.isLogin!=null && viewModel.isLogin.value!!){
+            val isLogin = viewModel.isLogin != null
+            lin_money.visibility = if (isLogin) View.VISIBLE else View.GONE
+            btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
+        }
     }
 }

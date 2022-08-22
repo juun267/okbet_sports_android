@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.isOKPlat
 
 class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
@@ -79,12 +80,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
 
         btn_register.setOnClickListener {
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this@MyFavoriteActivity, RegisterOkActivity::class.java))
-            } else {
-                startActivity(Intent(this@MyFavoriteActivity, RegisterActivity::class.java))
-            }
-
+            startActivity(Intent(this@MyFavoriteActivity,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java ))
         }
 
         tv_odds_type.setOnClickListener {
@@ -92,7 +88,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
 
         iv_language.setOnClickListener {
-            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener {
+            ChangeLanguageDialog(ChangeLanguageDialog.ClearBetListListener{
                 viewModel.betInfoRepository.clear()
             }).show(supportFragmentManager, null)
         }
@@ -300,8 +296,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
-            iv_menu.visibility = View.VISIBLE
-            iv_notice.visibility = View.VISIBLE
+            iv_menu.visibility =View.VISIBLE
+            iv_notice.visibility =View.VISIBLE
             btn_register.visibility = View.GONE
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.GONE
@@ -312,8 +308,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
-            iv_menu.visibility = View.GONE
-            iv_notice.visibility = View.GONE
+            iv_menu.visibility =View.GONE
+            iv_notice.visibility =View.GONE
         }
     }
 

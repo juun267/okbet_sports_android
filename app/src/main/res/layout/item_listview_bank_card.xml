@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_select_bank_card"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:gravity="start|center_vertical"
+    android:layout_height="50dp"
     android:orientation="horizontal"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp">
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:id="@+id/ll_select_bank_card">
 
     <ImageView
         android:id="@+id/iv_bank_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_bank_default" />
 
     <TextView
         android:id="@+id/tv_bank_card"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_BBBBBB_333333"
-        android:textSize="@dimen/textSize14sp"
-        tools:text="@string/selected_bank_card" />
-
-    <ImageView
-        android:id="@+id/img_check_bank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_check"/>
+        android:text="@string/deposits"
+        android:layout_marginStart="@dimen/margin_14"
+        android:textColor="@color/color_414655"
+        android:textSize="@dimen/textSize14sp" />
+
+    <TextView
+        android:id="@+id/tv_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="sssd"
+        android:layout_marginStart="@dimen/margin_8"
+        android:textColor="@color/color_A5A9B3"
+        android:textSize="@dimen/textSize14sp" />
+
+    <CheckBox
+        android:id="@+id/check_bank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_style"
+        android:checked="false" />
 
 </LinearLayout>

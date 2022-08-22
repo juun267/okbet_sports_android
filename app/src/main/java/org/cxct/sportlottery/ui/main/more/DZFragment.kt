@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.isOKPlat
 
 class DZFragment(private val gameCateData: GameCateData, private val defaultSelectFirmCode: String) : BaseFragment<MainViewModel>(MainViewModel::class) {
 
@@ -77,16 +78,7 @@ class DZFragment(private val gameCateData: GameCateData, private val defaultSele
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER ->
-                if (getString(R.string.app_name).equals(
-                        "OKbet"
-                    )
-                ) {
-                    context?.startActivity(Intent(context, RegisterOkActivity::class.java))
-                } else {
-                    context?.startActivity(Intent(context, RegisterActivity::class.java))
-                }
-
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context,  if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java))
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {
             }
