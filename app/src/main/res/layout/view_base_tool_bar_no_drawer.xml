@@ -35,7 +35,7 @@
         android:layout_gravity="center|right"
         android:layout_marginEnd="@dimen/margin_20"
         android:textColor="@color/color_6C7BA8"
-        android:textSize="@dimen/textSize16sp"
+        android:textSize="@dimen/textSize14sp"
         android:visibility="gone" />
 
 </FrameLayout>

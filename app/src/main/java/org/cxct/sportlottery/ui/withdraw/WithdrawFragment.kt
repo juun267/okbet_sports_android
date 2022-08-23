@@ -104,8 +104,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             getAllIsShow = true
         }
 
-        tv_toolbar_title_right.visibility = View.VISIBLE
-        tv_toolbar_title_right.text = getString(R.string.withdraw_setting)
+
 
         ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
 
