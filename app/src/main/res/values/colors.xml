@@ -317,7 +317,7 @@
     <color name="blueDeep">#35485C</color>
 
 <!--    <color name="colorBronze">#CB7C2E</color>-->
-
+    <color name="color_F75452_B73A20">@color/color_B73A20</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_black_0">#00000000</color>
     <color name="transparent_black_8">#14000000</color>
@@ -359,7 +359,7 @@
     <color name="color_414655">#414655</color>
     <color name="color_025BE8">#025BE8</color>
     <color name="color_A5A9B3">#A5A9B3</color>
-
+    <color name="color_B73A20">#B73A20</color>
     <color name="background">@color/color_F0F5FA</color>
     <color name="color_A65B0A">#A65B0A</color>
     <color name="color_A7B2C4">#A7B2C4</color>
