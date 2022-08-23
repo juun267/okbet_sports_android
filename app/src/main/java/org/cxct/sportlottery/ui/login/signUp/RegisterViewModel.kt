@@ -618,8 +618,8 @@ class RegisterViewModel(
             checkSecurityPb(securityPb)
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN)
             checkSecurityCode(smsCode)
-        if (sConfigData?.enableRegValidCode == FLAG_OPEN)
-            checkValidCode(validCode)
+//        if (sConfigData?.enableRegValidCode == FLAG_OPEN)
+//            checkValidCode(validCode)
         if (sConfigData?.enableBirthday == FLAG_OPEN)
             checkBirth(birth)
         if (sConfigData?.enableKYCVerify == FLAG_OPEN) {

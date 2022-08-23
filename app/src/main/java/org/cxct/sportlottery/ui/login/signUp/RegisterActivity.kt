@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.index.config.NationCurrency
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
@@ -41,6 +42,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.util.*
 import org.w3c.dom.Text
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -506,6 +508,126 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }
         }
     }
+
+//    /**
+//     * 配置國家下拉選單
+//     */
+//    private fun setupNation(nationCurrencyList: List<NationCurrency>) {
+//        with(binding) {
+//            Timber.e("Dean, nationCurrencyList = $nationCurrencyList")
+//            //配置國家選項
+//            val nationCurrencyDataList = mutableListOf<StatusSheetData>()
+//            nationCurrencyList.map { nationCurrency ->
+//                nationCurrencyDataList.add(StatusSheetData(nationCurrency.nationCode, nationCurrency.nationName).apply {
+//                    isChecked = nationCurrency.isSelected
+//                })
+//            }
+//
+//            //若無預設選中項目則預設顯示第一項
+//            val initSelectedItem = nationCurrencyDataList.firstOrNull { it.isChecked } ?: nationCurrencyDataList.firstOrNull()
+//            nationSelectedData = initSelectedItem
+//            eetNation.setText(initSelectedItem?.showName)
+//            //設置預設文字後會變成選中狀態, 需清除focus
+//            etNation.hasFocus = false
+//            viewModel.checkNation(eetNation.text.toString())
+//
+//            //配置點擊展開選項選單
+//            etNation.post {
+//                nationSpinner.setSpinnerView(
+//                    eetNation,
+//                    etNation,
+//                    nationCurrencyDataList,
+//                    touchListener = {
+//                        //旋轉箭頭
+//                        etNation.endIconImageButton.rotation = 180F
+//                    },
+//                    itemSelectedListener = {
+//                        nationSelectedData = it
+//                        eetNation.setText(it?.showName)
+//                        it?.code?.let { nationCode ->
+//                            viewModel.updateNationCurrency(nationCode)
+//                            viewModel.updateNationPhoneCode(nationCode)
+//                        }
+//                    }
+//                ) {
+//                    //旋轉箭頭
+//                    etNation.endIconImageButton.rotation = 0F
+//                }
+//            }
+//
+//            eetNation.post {
+//                //TODO 可重構 不需要蓋一層View
+//                /**
+//                 * 若Nation取得focus的話點擊nationSpinner
+//                 */
+//                eetNation.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//                    if (hasFocus) {
+//                        nationSpinner.performClick()
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+//    /**
+//     * 配置幣種下拉選單
+//     */
+//    private fun setupCurrency(currencyList: List<Currency>) {
+//        with(binding) {
+//            //配置幣種選項
+//            val currencyDataList = mutableListOf<StatusSheetData>()
+//            currencyList.map { currency ->
+//                currencyDataList.add(
+//                    StatusSheetData(
+//                        currency.currency,
+//                        getCurrencyItemShowText(currency)
+//                    ).apply {
+//                        isChecked = currency.isSelected
+//                    }
+//                )
+//            }
+//
+//            //若無預設選中項目則預設顯示第一項
+//            val initSelectedItem = currencyDataList.firstOrNull { it.isChecked } ?: currencyDataList.firstOrNull()
+//            currencySelectedData = initSelectedItem
+//            eetCurrency.setText(initSelectedItem?.showName)
+//            //設置預設文字後會變成選中狀態, 需清除focus
+//            etCurrency.hasFocus = false
+//            viewModel.checkCurrency(eetCurrency.text.toString())
+//
+//            //配置點擊展開選項選單
+//            etCurrency.post {
+//                currencySpinner.setSpinnerView(
+//                    eetCurrency,
+//                    etCurrency,
+//                    currencyDataList,
+//                    touchListener = {
+//                        //旋轉箭頭
+//                        etCurrency.endIconImageButton.rotation = 180F
+//                    },
+//                    itemSelectedListener = {
+//                        currencySelectedData = it
+//                        eetCurrency.setText(it?.showName)
+//                    }
+//                ) {
+//                    //旋轉箭頭
+//                    etCurrency.endIconImageButton.rotation = 0F
+//                }
+//            }
+//
+//            eetCurrency.post {
+//                //TODO 可重構 不需要蓋一層View
+//                /**
+//                 * 若Currency取得focus的話點擊currencySpinner
+//                 */
+//                eetCurrency.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//                    if (hasFocus) {
+//                        currencySpinner.performClick()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private fun setupIdentityType() {
         with(binding) {

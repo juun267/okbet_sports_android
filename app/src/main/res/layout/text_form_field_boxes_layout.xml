@@ -59,6 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
                         android:gravity="center"
@@ -172,11 +173,11 @@
     </RelativeLayout>
 
     <View
-        android:id="@+id/view_line"
+        android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/rl_main"
-        android:background="@color/color_E3E8EE" />
+        android:background="@color/colorRedLight" />
 
     <RelativeLayout
         android:id="@+id/text_field_boxes_bottom"
