@@ -672,7 +672,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                     if (mLeagueOddList.isNotEmpty()) {
                         game_list.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-                        Log.d("hjq", "0000")
                         sportListAdapter.data = mLeagueOddList.onEach { leagueOdd ->
                             // 將儲存的賠率表指定的賽事列表裡面
                             val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
@@ -687,7 +686,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                     } else {
                         game_list.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-                        Log.d("hjq", "111")
                         sportListAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
                     }

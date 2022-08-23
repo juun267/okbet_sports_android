@@ -18,7 +18,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import kotlinx.android.synthetic.main.itemview_league_quick.view.*
@@ -42,7 +41,10 @@ import org.cxct.sportlottery.ui.game.common.OddButtonListener
 import org.cxct.sportlottery.ui.game.common.OddButtonPagerAdapter
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.needCountStatus
+import org.cxct.sportlottery.util.setSvgDrawable
 import java.util.*
 
 class SportOddAdapter(private val matchType: MatchType) :
@@ -54,8 +56,6 @@ class SportOddAdapter(private val matchType: MatchType) :
             value?.forEach {
                 Log.d("hjq", "SportOddAdapter=" + it.oddsMap)
             }
-
-
         }
     var oddsType: OddsType = OddsType.EU
     fun setData(data: List<MatchOdd> = listOf(), oddsType: OddsType = OddsType.EU) {
@@ -123,7 +123,6 @@ class SportOddAdapter(private val matchType: MatchType) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
-        Log.d("hjq", "onBindViewHolder=" + item.oddsMap?.toJson())
         Log.d("Hewie", "綁定：賽事($position)")
         val matchInfoList = data.mapNotNull {
             it.matchInfo
@@ -224,7 +223,6 @@ class SportOddAdapter(private val matchType: MatchType) :
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?,
         ) {
-            Log.d("hjq", "bind=" + item.oddsMap?.toJson())
 
             itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
 
@@ -259,7 +257,6 @@ class SportOddAdapter(private val matchType: MatchType) :
             updateMatchInfo(item, matchType)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
-            Log.d("hjq", "updateOddsButton 111" + Gson().toJson(item.oddsMap))
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
             setQuickListView(item,
@@ -402,7 +399,6 @@ class SportOddAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
             playSelectedCodeSelectionType: Int?,
         ) {
-            Log.d("hjq", "updateOddsButton 222" + Gson().toJson(item.oddsMap))
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
         }
 
@@ -1017,7 +1013,6 @@ class SportOddAdapter(private val matchType: MatchType) :
                 }
                 Log.d("Hewie4",
                     "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
-                Log.d("hjq", "updateOddsButton 333" + Gson().toJson(item.oddsMap))
                 updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
                 OverScrollDecoratorHelper.setUpOverScroll(this,
@@ -1030,7 +1025,6 @@ class SportOddAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
             playSelectedCodeSelectionType: Int?,
         ) {
-            Log.d("hjq", "updateOddsButton=" + Gson().toJson(item.oddsMap))
             itemView.rv_league_odd_btn_pager_main.apply {
                 oddButtonPagerAdapter.setData(
                     item.matchInfo,

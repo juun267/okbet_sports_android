@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -53,7 +54,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            Log.d("hjq", "data=" + value.toJson())
+            Log.d("hjq", "odds=" + value.toJson())
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList(matchOdd).filterOddsStatus().splitPlayCate()
@@ -90,7 +91,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                             }
                             else -> {
                                 val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
-                                val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+                                val count =
+                                    if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
 
                                 gameListFilter = this.take(this.size + 1).toMutableList()
                                 for (i in 1..count) {
@@ -100,6 +102,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         }
                         gameListFilter
                     }
+            Log.d("hjq", "gameList=" + Gson().toJson(gameList))
+
             data = gameList.withIndex().groupBy {
                 it.index / 1
             }.map {

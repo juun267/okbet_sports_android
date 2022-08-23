@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import kotlinx.android.synthetic.main.item_sport.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
@@ -26,7 +25,6 @@ import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
-import org.cxct.sportlottery.util.toJson
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
@@ -109,17 +107,13 @@ class SportListAdapter(private val matchType: MatchType) :
 
     var data = mutableListOf<LeagueOdd>()
         set(value) {
-            Log.d("hjq", "SportListAdapter=" + Gson().toJson(value))
             field = value
             isPreload = false
         }
 
     var discount: Float = 1.0F
         set(value) {
-            Log.d("hjq", "discount")
-
             if (field == value) return
-
             data.forEachIndexed { index, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.oddsMap?.updateOddsDiscount(field, value)
@@ -133,7 +127,6 @@ class SportListAdapter(private val matchType: MatchType) :
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
-            Log.d("hjq", "oddsType")
             if (value != field) {
                 field = value
                 notifyDataSetChanged()
@@ -363,8 +356,6 @@ class SportListAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
-            Log.d("hjq", "setupOddsButton=" + item.matchOdds.toJson())
-
             itemView.league_odd_list.apply {
                 //league_odd_list.itemAnimator = null
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -393,7 +384,6 @@ class SportListAdapter(private val matchType: MatchType) :
         }
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
-            Log.d("hjq", "setupLeagueOddExpand=" + item.matchOdds.toJson())
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
                     data[adapterPosition].unfold =
