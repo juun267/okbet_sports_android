@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -64,6 +65,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setIconSize(30f)
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                            if (viewModel.isLogin?.value == false) {
+                                startActivity(Intent(this@MainTabActivity,
+                                    LoginActivity::class.java))
+                                false
+                            }
+                        }
+
+                    }
                     val itemId = menuItem.itemId
                     fragmentHelper?.showFragment(this.getMenuItemPosition(menuItem))
                     true

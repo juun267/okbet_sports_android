@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.toJson
 
 
 class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
@@ -52,6 +53,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
+            Log.d("hjq", "data=" + value.toJson())
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList(matchOdd).filterOddsStatus().splitPlayCate()

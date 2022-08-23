@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +28,6 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
-import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
@@ -553,27 +551,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         }
     }
 
-    /**
-     * 設置冠軍adapter, 訂閱當前頁面上的資料
-     */
-    private fun setOutrightLeagueAdapter() {
-        if (game_list.adapter !is OutrightLeagueOddAdapter) {
-            game_list.adapter = outrightLeagueOddAdapter
-        }
-
-        if (game_list.adapter is OutrightLeagueOddAdapter) {
-            Handler().postDelayed(
-                {
-                    game_list?.firstVisibleRange(
-                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
-                        outrightLeagueOddAdapter,
-                        activity ?: requireActivity()
-                    )
-                },
-                400
-            )
-        }
-    }
 
     private fun initObserve() {
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
@@ -608,6 +585,9 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 
                 MatchType.EARLY -> {
                     updateSportType(it?.sportMenuData?.menu?.early?.items ?: listOf())
+                }
+                MatchType.CS -> {
+                    updateSportType(it?.sportMenuData?.menu?.cs?.items ?: listOf())
                 }
 
                 MatchType.PARLAY -> {
@@ -692,6 +672,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                     if (mLeagueOddList.isNotEmpty()) {
                         game_list.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+                        Log.d("hjq", "0000")
                         sportListAdapter.data = mLeagueOddList.onEach { leagueOdd ->
                             // 將儲存的賠率表指定的賽事列表裡面
                             val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
@@ -706,6 +687,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                     } else {
                         game_list.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+                        Log.d("hjq", "111")
                         sportListAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
                     }
@@ -867,12 +849,8 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 epsListAdapter.oddsType = oddsType
             }
         }
-        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner,
-            object : Observer<List<League>> {
-                override fun onChanged(t: List<League>?) {
 
-                }
-            })
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner) {
 //            countryAdapter.apply {
 //                data.forEach { row ->
 //                    row.list.forEach { league ->
@@ -882,7 +860,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 //
 //                notifyDataSetChanged()
 //            }
-//        }
+        }
 
         viewModel.playList.observe(this.viewLifecycleOwner) { event ->
 

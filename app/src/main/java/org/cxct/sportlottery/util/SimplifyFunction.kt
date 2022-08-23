@@ -13,10 +13,7 @@ import android.text.Spanned
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ListPopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -811,4 +808,16 @@ fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Uni
             callback.invoke(t)
         }
     })
+}
+
+fun ImageView.setSvgDrawable(icon: String?) {
+    val countryIcon = SvgUtil.getSvgDrawable(
+        this.context,
+        if (icon.isNullOrEmpty()) {
+            SvgUtil.defaultIconPath
+        } else {
+            icon
+        }
+    )
+    this.setImageDrawable(countryIcon)
 }

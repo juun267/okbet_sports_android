@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
@@ -19,13 +20,13 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.game.common.LeagueOddAdapter2
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
+import org.cxct.sportlottery.util.toJson
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
@@ -108,12 +109,15 @@ class SportListAdapter(private val matchType: MatchType) :
 
     var data = mutableListOf<LeagueOdd>()
         set(value) {
+            Log.d("hjq", "SportListAdapter=" + Gson().toJson(value))
             field = value
             isPreload = false
         }
 
     var discount: Float = 1.0F
         set(value) {
+            Log.d("hjq", "discount")
+
             if (field == value) return
 
             data.forEachIndexed { index, leagueOdd ->
@@ -129,6 +133,7 @@ class SportListAdapter(private val matchType: MatchType) :
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
+            Log.d("hjq", "oddsType")
             if (value != field) {
                 field = value
                 notifyDataSetChanged()
@@ -169,7 +174,8 @@ class SportListAdapter(private val matchType: MatchType) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
-                ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_league_v5, parent, false)) //itemview_league_v5
+                ItemViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_sport, parent, false)) //itemview_league_v5
             }
 
             else -> initBaseViewHolders(parent, viewType)
@@ -182,6 +188,7 @@ class SportListAdapter(private val matchType: MatchType) :
     }
 
     private fun updateLeagueByBetInfo(position: Int) {
+        Log.d("hjq", "updateLeagueByBetInfo")
         notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
     }
 
@@ -278,8 +285,8 @@ class SportListAdapter(private val matchType: MatchType) :
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val leagueOddAdapter by lazy {
-            LeagueOddAdapter2(matchType)
+        private val sportOddAdapter by lazy {
+            SportOddAdapter(matchType)
         }
 
         fun bind(
@@ -320,24 +327,24 @@ class SportListAdapter(private val matchType: MatchType) :
         }
 
         fun updateByBetInfo() {
-            leagueOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
+            sportOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
         }
 
         fun updateByPlayCate() {
-            leagueOddAdapter.updateByPlayCate()
+            sportOddAdapter.updateByPlayCate()
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {
-            leagueOddAdapter.data = if (item.searchMatchOdds.isNotEmpty()) {
+            sportOddAdapter.data = if (item.searchMatchOdds.isNotEmpty()) {
                 item.searchMatchOdds
             } else {
                 item.matchOdds
             }.onEach {
                 it.matchInfo?.gameType = item.gameType?.key
             }
-            leagueOddAdapter.oddsType = oddsType
+            sportOddAdapter.oddsType = oddsType
             if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
-                leagueOddAdapter.update()
+                sportOddAdapter.update()
             }
         }
 
@@ -356,10 +363,12 @@ class SportListAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
+            Log.d("hjq", "setupOddsButton=" + item.matchOdds.toJson())
+
             itemView.league_odd_list.apply {
                 //league_odd_list.itemAnimator = null
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = leagueOddAdapter.apply {
+                adapter = sportOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
                     }.onEach {
@@ -384,9 +393,11 @@ class SportListAdapter(private val matchType: MatchType) :
         }
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
+            Log.d("hjq", "setupLeagueOddExpand=" + item.matchOdds.toJson())
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+                    data[adapterPosition].unfold =
+                        if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
@@ -412,7 +423,7 @@ class SportListAdapter(private val matchType: MatchType) :
         }
 
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
-            leagueOddAdapter.isTimerEnable =
+            sportOddAdapter.isTimerEnable =
                 itemView.league_odd_list.visibility == View.VISIBLE && (gameType == GameType.FT || gameType == GameType.BK || gameType == GameType.RB || gameType == GameType.AFT || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
         }
     }
