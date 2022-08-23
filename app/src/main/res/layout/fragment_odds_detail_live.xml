@@ -47,11 +47,11 @@
                         android:background="@color/color_191919_FCFCFC"
                         android:orientation="vertical">
 
-                        <include
-                            android:id="@+id/v_toolbar"
-                            layout="@layout/view_odds_detail_toolbar"
-                            app:fragment="@{fragment}"
-                            app:gameViewModel="@{gameViewModel}" />
+<!--                        <include-->
+<!--                            android:id="@+id/v_toolbar"-->
+<!--                            layout="@layout/view_odds_detail_toolbar"-->
+<!--                            app:fragment="@{fragment}"-->
+<!--                            app:gameViewModel="@{gameViewModel}" />-->
 
                         <org.cxct.sportlottery.ui.component.LiveViewToolbar
                             android:id="@+id/live_view_tool_bar"

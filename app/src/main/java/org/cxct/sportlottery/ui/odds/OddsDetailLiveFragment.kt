@@ -163,9 +163,9 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         gameViewModel = this@OddsDetailLiveFragment.viewModel
         lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
         executePendingBindings()
-        vToolbar.ivTitleBar.setImageResource(
-            GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
-        )
+//        vToolbar.ivTitleBar.setImageResource(
+//            GameConfigManager.getTitleBarBackground(args.gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
+//        )
     }.root
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
