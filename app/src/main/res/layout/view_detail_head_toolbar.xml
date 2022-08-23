@@ -37,7 +37,6 @@
             android:padding="16dp"
             android:tint="@color/color_AEAEAE_404040"
             android:src="@drawable/ic_arrow_left_game_back"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_title_bar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

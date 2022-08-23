@@ -171,9 +171,9 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             gameViewModel = this@SportDetailActivity.viewModel
             lifecycleOwner = this@SportDetailActivity
             executePendingBindings()
-            vToolbar.ivTitleBar.setImageResource(
-                GameConfigManager.getTitleBarBackground(gameType?.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
-            )
+//            binding.vToolbar.ivTitleBar.setImageResource(
+//                GameConfigManager.getTitleBarBackground(gameType?.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
+//            )
         }
 
     }
@@ -306,7 +306,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        rv_cat.apply {
+        binding.rvCat.apply {
             adapter = tabCateAdapter
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
@@ -719,7 +719,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         if (playCateTypeList?.isNotEmpty() == true) {
             tabCateAdapter.dataList = playCateTypeList
         } else {
-            rv_cat.visibility = View.GONE
+            binding.rvCat.visibility = View.GONE
         }
     }
 
