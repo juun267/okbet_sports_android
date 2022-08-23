@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -38,9 +39,16 @@ import kotlinx.android.synthetic.main.activity_register.etSecurityPb
 import kotlinx.android.synthetic.main.activity_register.etSecurityPbType
 import kotlinx.android.synthetic.main.activity_register.et_address
 import kotlinx.android.synthetic.main.activity_register.et_city
+import kotlinx.android.synthetic.main.activity_register.et_confirm_password
+import kotlinx.android.synthetic.main.activity_register.et_full_name
+import kotlinx.android.synthetic.main.activity_register.et_login_password
 import kotlinx.android.synthetic.main.activity_register.et_mail
+import kotlinx.android.synthetic.main.activity_register.et_member_account
+import kotlinx.android.synthetic.main.activity_register.et_phone
 import kotlinx.android.synthetic.main.activity_register.et_postal
 import kotlinx.android.synthetic.main.activity_register.et_province
+import kotlinx.android.synthetic.main.activity_register.et_recommend_code
+import kotlinx.android.synthetic.main.activity_register.et_withdrawal_pwd
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import kotlinx.android.synthetic.main.activity_register_ok.bettingShopSpinner
 import kotlinx.android.synthetic.main.activity_register_ok.block_valid_code
@@ -62,11 +70,12 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
-import org.koin.android.ext.android.bind
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -89,11 +98,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private var bettingShopSelectedData: StatusSheetData? = null
     private var identityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
     private var backupIdentityTypeSelectedData: StatusSheetData? = null //當前證件類型選中
+    private var backupIdentityTypeSelectedData2: StatusSheetData? = null //當前證件類型選中
     private var securityPbTypeSelectedData: StatusSheetData? = null //當前證件類型選中
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
     private var isUploaded = false
     private var page = 1;
+
+    private var etIdentityTypeName: String = "";
+    private var etIdentityTypeName2: String = "";
     override fun onClick(v: View?) {
         when (v) {
             binding.ivReturn -> {
@@ -134,10 +147,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         setupBettingShop()
         setPage()
         setupBackButton()
-
-
-
-
         setupAgreement()
         setupRegisterButton()
         setupGoToLoginButton()
@@ -189,9 +198,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
         binding.tvPrivacy.text =
-            "1." + getString(R.string.register_privacy) +" "+ getString(R.string.register_privacy_policy)+" "+ getString(
+            "1." + getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
                 R.string.register_privacy_policy_promotions
-            )+ " ;"
+            )
         binding.tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.register_privacy_policy),
@@ -213,13 +222,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 ) + getString(R.string.terms_conditions) + String.format(
                     getString(R.string.register_rules_2nd_half),
                     appName
-                )+ " ;"
+                )
                 else -> "2." + String.format(
                     getString(R.string.register_over_21),
                     appName
-                ) + " " +getString(
+                ) + getString(
                     R.string.terms_conditions
-                ) + " ;"
+                )
             }
 
         binding.tvAgreement.makeLinks(
@@ -253,98 +262,90 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             1 -> {
                 btn_register.text = getString(R.string.next_step)
 
-                binding.etFullName.visibility = View.GONE
-                binding.etWithdrawalPwd.visibility = View.GONE
-                binding.etPhone.visibility = View.GONE
+                et_full_name.visibility = View.GONE
+                et_withdrawal_pwd.visibility = View.GONE
+                et_phone.visibility = View.GONE
                 block_sms_valid_code.visibility = View.GONE
 
-                binding.etBirth.visibility = View.GONE
-                binding.etSalary.visibility = View.GONE
-                binding.etBettingShop.visibility = View.GONE
-                binding.etMail.visibility = View.GONE
-                binding.etPostal.visibility = View.GONE
-                binding.etProvince.visibility = View.GONE
-                binding.etCity.visibility = View.GONE
+                etBirth.visibility = View.GONE
+                etSalary.visibility = View.GONE
+                etBettingShop.visibility = View.GONE
+                et_mail.visibility = View.GONE
+                et_postal.visibility = View.GONE
+                et_province.visibility = View.GONE
+                et_city.visibility = View.GONE
 
-                binding.etIdentityType.visibility = View.GONE
-                binding.etIdentityNumber.visibility = View.GONE
-                binding.etIdentity.visibility = View.GONE
-                binding.etIdentityType2.visibility = View.GONE
-                binding.etIdentityNumber2.visibility = View.GONE
-                binding.etIdentity2.visibility = View.GONE
+                etIdentityType.visibility = View.GONE
+                etIdentityNumber.visibility = View.GONE
+                etIdentity.visibility = View.GONE
+                etIdentityType2.visibility = View.GONE
+                etIdentityNumber2.visibility = View.GONE
+                etIdentity2.visibility = View.GONE
 
-                binding.etAddress.visibility = View.GONE
-                binding.etSecurityPbType.visibility = View.GONE
-                binding.etSecurityPb.visibility = View.GONE
+                et_address.visibility = View.GONE
+                etSecurityPbType.visibility = View.GONE
+                etSecurityPb.visibility = View.GONE
 
-                binding.clAgreement.visibility = View.VISIBLE
-                binding.etRecommendCode.visibility = View.VISIBLE
-                binding.etMemberAccount.visibility = View.VISIBLE
-                binding.etLoginPassword.visibility = View.VISIBLE
-                binding.etConfirmPassword.visibility = View.VISIBLE
+
+
+
+                clAgreement.visibility = View.VISIBLE
+                et_recommend_code.visibility = View.VISIBLE
+                et_member_account.visibility = View.VISIBLE
+                et_login_password.visibility = View.VISIBLE
+                et_confirm_password.visibility = View.VISIBLE
+
             }
             2 -> {
                 btn_register.text = getString(R.string.next_step)
 
-                binding.clAgreement.visibility = View.GONE
-                binding.etRecommendCode.visibility = View.GONE
-                binding.etMemberAccount.visibility = View.GONE
-                binding.etLoginPassword.visibility = View.GONE
-                binding.etConfirmPassword.visibility = View.GONE
+                clAgreement.visibility = View.GONE
+                et_recommend_code.visibility = View.GONE
+                et_member_account.visibility = View.GONE
+                et_login_password.visibility = View.GONE
+                et_confirm_password.visibility = View.GONE
 
-                binding.etAddress.visibility = View.GONE
-                binding.etSecurityPbType.visibility = View.GONE
-                binding.etSecurityPb.visibility = View.GONE
+                et_address.visibility = View.GONE
+                etSecurityPbType.visibility = View.GONE
+                etSecurityPb.visibility = View.GONE
 
 
                 block_sms_valid_code.visibility = View.GONE
                 block_valid_code.visibility = View.GONE
 
-                binding.etBettingShop.visibility = View.GONE
-                binding.etMail.visibility = View.GONE
-                binding.etPostal.visibility = View.GONE
-                binding.etProvince.visibility = View.GONE
-                binding.etCity.visibility = View.GONE
+                etBettingShop.visibility = View.GONE
+                et_mail.visibility = View.GONE
+                et_postal.visibility = View.GONE
+                et_province.visibility = View.GONE
+                et_city.visibility = View.GONE
 
-                binding.etQq.visibility = View.GONE
-                binding.etWeChat.visibility = View.GONE
-                binding.etZalo.visibility = View.GONE
-                binding.etFacebook.visibility = View.GONE
-                binding.etWhatsApp.visibility = View.GONE
-                binding.etTelegram.visibility = View.GONE
+                et_qq.visibility = View.GONE
+                et_we_chat.visibility = View.GONE
+                et_zalo.visibility = View.GONE
+                et_facebook.visibility = View.GONE
+                et_whats_app.visibility = View.GONE
+                et_telegram.visibility = View.GONE
 
 
-//                etIdentityType.isVisible = isEnableKYCVerify
-//                etIdentityNumber.isVisible = isEnableKYCVerify
-//                etIdentity.isVisible = isEnableKYCVerify
-//
-//                etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-//                etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-//                etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                etIdentityType.isVisible = isEnableKYCVerify
+                etIdentityNumber.isVisible = isEnableKYCVerify
+                etIdentity.isVisible = isEnableKYCVerify
+
+                etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
 
                 setupFullName()
                 setupWithdrawalPassword()
                 setupPhone()
                 setupBirthday()
-
-
                 setupSmsValidCode()
                 setupRegisterIdentity()
                 setupSalarySource()
 
                 setupIdentityType(null)
                 setupIdentityType2(null)
-
-                setupRegisterIdentity()
-
-                binding.etIdentityType.visibility = View.VISIBLE
-                binding.etIdentityNumber.visibility = View.VISIBLE
-                binding.etIdentity.visibility = View.VISIBLE
-
-                binding.etIdentityType2.visibility = View.VISIBLE
-                binding.etIdentityNumber2.visibility = View.VISIBLE
-                binding.etIdentity2.visibility = View.VISIBLE
             }
             else -> {
                 btn_register.text = getString(R.string.btn_register)
@@ -352,7 +353,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
                 setupMail()
                 setupAddress()
-
                 setupValidCode()
                 setupQQ()
                 setupWeChat()
@@ -363,31 +363,33 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 setupSecurityPb()
 
                 clAgreement.visibility = View.GONE
-                binding.etRecommendCode.visibility = View.GONE
-                binding.etMemberAccount.visibility = View.GONE
-                binding.etLoginPassword.visibility = View.GONE
-                binding.etConfirmPassword.visibility = View.GONE
+                et_recommend_code.visibility = View.GONE
+                et_member_account.visibility = View.GONE
+                et_login_password.visibility = View.GONE
+                et_confirm_password.visibility = View.GONE
 
 
-                binding.etIdentityType.visibility = View.GONE
-                binding.etIdentityNumber.visibility = View.GONE
-                binding.etIdentity.visibility = View.GONE
-                binding.etIdentityType2.visibility = View.GONE
-                binding.etIdentityNumber2.visibility = View.GONE
-                binding.etIdentity2.visibility = View.GONE
+                etIdentityType.visibility = View.GONE
+                etIdentityNumber.visibility = View.GONE
+                etIdentity.visibility = View.GONE
+                etIdentityType2.visibility = View.GONE
+                etIdentityNumber2.visibility = View.GONE
+                etIdentity2.visibility = View.GONE
 
-                binding.etFullName.visibility = View.GONE
-                binding.etWithdrawalPwd.visibility = View.GONE
-                binding.etPhone.visibility = View.GONE
+
+
+                et_full_name.visibility = View.GONE
+                et_withdrawal_pwd.visibility = View.GONE
+                et_phone.visibility = View.GONE
                 block_sms_valid_code.visibility = View.GONE
-                binding.etBirth.visibility = View.GONE
-                binding.etSalary.visibility = View.GONE
+                etBirth.visibility = View.GONE
+                etSalary.visibility = View.GONE
 
 
                 if (bettingStationVisibility) {
-                    binding.etBettingShop.visibility = View.VISIBLE
+                    etBettingShop.visibility = View.VISIBLE
                 } else {
-                    binding.etBettingShop.visibility = View.GONE
+                    etBettingShop.visibility = View.GONE
                 }
             }
 
@@ -560,11 +562,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     itemSelectedListener = {
                         securityPbTypeSelectedData = it
                         eetSecurityPbType.setText(it?.showName)
-                    }
-                ) {
-                    //旋轉箭頭
-                    etSecurityPbType.endIconImageButton.rotation = 0F
-                }
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etSecurityPbType.endIconImageButton.rotation = 0F
+                    })
             }
 
             eetSecurityPbType.post {
@@ -592,12 +594,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etBirth.hasFocus = true
                 //隱藏光標
                 eetBirth.isCursorVisible = false
-                if(view != null){
-                    //隱藏鍵盤
-                    val inputMethodManager =
-                        getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-                }
+                //隱藏鍵盤
+                val inputMethodManager =
+                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
                 birthdayTimePickerView?.show()
             }
 
@@ -624,11 +625,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             etIdentity.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
-
             etIdentity.isEnabled = false
             etIdentity.isClickable = false
             etIdentity.hasFocus = false
+
+
             etIdentity.setError("", false)
+
 
             endButton.setOnClickListener {
                 PicSelectorDialog(
@@ -637,11 +640,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     PicSelectorDialog.CropType.RECTANGLE
                 ).show(supportFragmentManager, null)
             }
-//            endButton2.visibility =
-//                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
-//                        "2"
-//                    )
-//                ) View.VISIBLE else View.GONE
+            endButton2.visibility =
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
+                        "2"
+                    )
+                ) View.VISIBLE else View.GONE
             endButton2.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -684,11 +687,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     itemSelectedListener = {
                         salarySourceSelectedData = it
                         eetSalary.setText(it?.showName)
-                    }
-                ) {
-                    //旋轉箭頭
-                    etSalary.endIconImageButton.rotation = 0F
-                }
+
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etSalary.endIconImageButton.rotation = 0F
+                    })
             }
 
             eetSalary.post {
@@ -710,39 +714,59 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         with(binding) {
             //顯示隱藏該選項
 
-
             //根據config配置薪資來源選項
-            val identityTypeList = mutableListOf<StatusSheetData>()
+            val identityTypeList2 = mutableListOf<StatusSheetData>()
             sConfigData?.identityTypeList?.map { identityType ->
-                identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
+                identityTypeList2.add(
+                    StatusSheetData(
+                        identityType.id.toString(),
+                        identityType.name
+                    )
+                )
             }
 
-            //預設顯示第一項
-            backupIdentityTypeSelectedData = identityTypeList.firstOrNull()
-            eetIdentityType2.setText(identityTypeList.firstOrNull()?.showName)
-            //設置預設文字後會變成選中狀態, 需清除focus
-            etIdentityType2.hasFocus = false
-            viewModel.checkIdentityBackupType(eetIdentityType2.text.toString())
+            etIdentity2.isEnabled = false
+            etIdentity2.isClickable = false
+            etIdentity2.hasFocus = false
 
+
+            etIdentity2.setError("", false)
+
+            if (statusSheetData == null) {
+                identityTypeList2.removeAt(0)
+
+                //預設顯示第一項
+                backupIdentityTypeSelectedData2 = identityTypeList2[1]
+                eetIdentityType2.setText(backupIdentityTypeSelectedData2?.showName)
+                //設置預設文字後會變成選中狀態, 需清除focus
+                etIdentityType2.hasFocus = false
+                viewModel.checkIdentityBackupType(eetIdentityType2.text.toString())
+            } else {
+                identityTypeList2.remove(statusSheetData)
+            }
+
+
+            etIdentityTypeName = identityTypeSelectedData?.showName.toString()
             //配置點擊展開選項選單
             etIdentityType2.post {
                 identityTypeSpinner2.setSpinnerView(
                     eetIdentityType2,
                     etIdentityType2,
-                    identityTypeList,
+                    identityTypeList2,
                     touchListener = {
                         //旋轉箭頭
                         etIdentityType2.endIconImageButton.rotation = 180F
                     },
                     itemSelectedListener = {
-                        backupIdentityTypeSelectedData = it
+                        backupIdentityTypeSelectedData2 = it
+                        etIdentityTypeName2 = it?.showName.toString()
                         eetIdentityType2.setText(it?.showName)
                         setupIdentityType(it)
-                    }
-                ) {
-                    //旋轉箭頭
-                    etIdentityType2.endIconImageButton.rotation = 0F
-                }
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etIdentityType2.endIconImageButton.rotation = 0F
+                    })
             }
 
             eetIdentityType2.post {
@@ -752,7 +776,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                  */
                 eetIdentityType2.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
                     if (hasFocus) {
-                        identityTypeSpinner.performClick()
+                        identityTypeSpinner2.performClick()
                     }
                 }
             }
@@ -762,21 +786,27 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun setupIdentityType(statusSheetData: StatusSheetData?) {
         with(binding) {
             //顯示隱藏該選項
-            etIdentityType.visibility =
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
+//            etIdentityType.visibility =
+//                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
 
             //根據config配置薪資來源選項
             val identityTypeList = mutableListOf<StatusSheetData>()
             sConfigData?.identityTypeList?.map { identityType ->
                 identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
             }
+            if (statusSheetData == null) {
+                identityTypeList.removeAt(1)
+                //預設顯示第一項
+                identityTypeSelectedData = identityTypeList.firstOrNull()
+                eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
 
-            //預設顯示第一項
-            identityTypeSelectedData = identityTypeList.firstOrNull()
-            eetIdentityType.setText(identityTypeList.firstOrNull()?.showName)
-            //設置預設文字後會變成選中狀態, 需清除focus
-            etIdentityType.hasFocus = false
-            viewModel.checkIdentityType(eetIdentityType.text.toString())
+                //設置預設文字後會變成選中狀態, 需清除focus
+                etIdentityType.hasFocus = false
+                viewModel.checkIdentityType(eetIdentityType.text.toString())
+            } else {
+                identityTypeList.remove(statusSheetData)
+            }
+
 
             //配置點擊展開選項選單
             etIdentityType.post {
@@ -790,14 +820,15 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     },
                     itemSelectedListener = {
                         identityTypeSelectedData = it
+                        etIdentityTypeName = it?.showName.toString()
                         eetIdentityType.setText(it?.showName)
                         setupIdentityType2(it)
 
-                    }
-                ) {
-                    //旋轉箭頭
-                    etIdentityType.endIconImageButton.rotation = 0F
-                }
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etIdentityType.endIconImageButton.rotation = 0F
+                    })
             }
 
             eetIdentityType.post {
@@ -875,10 +906,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 }
             }
             eetMemberAccount.apply {
-                checkRegisterListener { viewModel.checkMemberAccount(it, false) }
+                checkRegisterListener { viewModel.checkMemberAccount(it) }
             }
             eetLoginPassword.apply {
-                checkRegisterListener { viewModel.checkLoginPassword(it) }
+                checkRegisterListener { viewModel.checkLoginPassword(it, confirmPassword = eetConfirmPassword.text.toString()) }
             }
             eetConfirmPassword.apply {
                 checkRegisterListener {
@@ -918,6 +949,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     }
                 }
             }
+
+
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
             }
@@ -963,9 +996,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             eetSmsValidCode.apply {
                 checkRegisterListener { viewModel.checkSecurityCode(it) }
             }
-//            eetVerificationCode.apply {
-//                checkRegisterListener { viewModel.checkValidCode(it) }
-//            }
+            eetVerificationCode.apply {
+                checkRegisterListener { viewModel.checkValidCode(it) }
+            }
         }
 
         binding.btnRegister.setOnClickListener {
@@ -1010,6 +1043,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                         identity = eetIdentity.text.toString(),
                         salarySource = salarySourceSelectedData?.code,
                         bettingShop = bettingShopSelectedData?.code,
+                        nationCode = null, //國家選項不會出現在有分頁式的註冊頁
+                        currency = null, //幣種選項不會出現在有分頁式的註冊頁
                         firstFile = firstFile,
                         identityType = identityTypeSelectedData?.code,
                         identityNumber = eetIdentityNumber.text.toString(),
@@ -1128,11 +1163,22 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 if (it.first == null) {
                     viewModel.checkAccountExist(binding.eetMemberAccount.text.toString())
                     return@observe
+                } else {
+                    binding.etMemberAccount.setError(
+                        it.first,
+                        false
+                    )
                 }
-                binding.etMemberAccount.setError(
-                    it.first,
-                    false
-                )
+            }
+            checkAccountMsg.observe(this@RegisterOkActivity) {
+                if (it.isExist) {
+                    binding.etMemberAccount.setError(
+                        getString(R.string.error_register_id_exist),
+                        false
+                    )
+                }
+
+
             }
             loginPasswordMsg.observe(this@RegisterOkActivity) {
                 binding.etLoginPassword.setError(
@@ -1288,11 +1334,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     itemSelectedListener = {
                         bettingShopSelectedData = it
                         eetBettingShop.setText(it?.showName)
-                    }
-                ) {
-                    //旋轉箭頭
-                    etBettingShop.endIconImageButton.rotation = 0F
-                }
+                    },
+                    popupWindowDismissListener = {
+                        //旋轉箭頭
+                        etBettingShop.endIconImageButton.rotation = 0F
+                    })
 
                 //預設第一項
                 bettingShopSelectedData = bettingStationList.firstOrNull()
@@ -1331,6 +1377,32 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 if (!result.success) {
                     hideLoading()
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                }
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { showKycVerify ->
+                if (showKycVerify) {
+                    //跳宣傳頁顯示驗證彈窗
+                    GamePublicityActivity.reStart(this@RegisterOkActivity)
+                } else {
+                    //檢查充值系統
+                    viewModel.checkRechargeSystem()
+                }
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(this@RegisterOkActivity, MoneyRechargeActivity::class.java))
+                    finish()
+                } else {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
                 }
             }
         }
@@ -1379,13 +1451,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             RegisterSuccessDialog(this).apply {
                 setNegativeClickListener {
                     dismiss()
-                    startActivity(
-                        Intent(
-                            this@RegisterOkActivity,
-                            MoneyRechargeActivity::class.java
-                        )
-                    )
-                    finish()
+                    //判斷要跳宣傳頁顯示驗證彈窗，還是檢查充值系統
+                    viewModel.checkRechargeKYCVerify()
                 }
             }.show(supportFragmentManager, null)
 
@@ -1483,7 +1550,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             val clickableSpan = object : ClickableSpan() {
                 override fun updateDrawState(textPaint: TextPaint) {
                     textPaint.color = textPaint.linkColor
-                    textPaint.isUnderlineText = true
+                    textPaint.isUnderlineText = false
                 }
 
                 override fun onClick(view: View) {
@@ -1529,9 +1596,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             .setTimeSelectChangeListener { }
             .setType(booleanArrayOf(true, true, true, false, false, false))
             .setCancelText(" ")
-            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitText(getString(R.string.btn_sure))
             .setTitleColor(ContextCompat.getColor(this, R.color.color_CCCCCC_000000))
-            .setTitleBgColor(ContextCompat.getColor(this, R.color.color_2B2B2B_e2e2e2))
+            .setTitleBgColor(ContextCompat.getColor(this, R.color.color_2B2B2B_E2E2E2))
             .setBgColor(ContextCompat.getColor(this, R.color.color_191919_FCFCFC))
             .setSubmitColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
             .setCancelColor(ContextCompat.getColor(this, R.color.color_7F7F7F_999999))
@@ -1624,13 +1691,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         firstFile = file
         if (firstFile != null) {
             binding.endButton.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkBackupIdentity(firstFile)
-            binding.etIdentity.setHintText(getString(R.string.hint_file_selected))
+            viewModel.checkIdentity(firstFile)
+            etIdentity.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
             binding.endButton.setImageResource(R.drawable.ic_camera)
-            viewModel.checkBackupIdentity(firstFile)
-            binding.etIdentity.setHintText(getString(R.string.hint_no_file_selected))
+            viewModel.checkIdentity(firstFile)
+            etIdentity.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
         }
     }
@@ -1640,37 +1707,37 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         if (secondFile != null) {
             binding.endButton2.setImageResource(R.drawable.ic_upload_done)
             viewModel.checkBackupIdentity(secondFile)
-            binding.etIdentity2.setHintText(getString(R.string.hint_file_selected))
+            etIdentity2.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
             binding.endButton2.setImageResource(R.drawable.ic_camera)
             viewModel.checkBackupIdentity(secondFile)
-            binding.etIdentity2.setHintText(getString(R.string.hint_no_file_selected))
+            etIdentity2.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
         }
     }
 
     private fun etBettingShopSelectTrue() {
-        binding.etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
-        binding.bettingShopSpinner.isEnabled = true
-        binding.bettingShopSpinner.isClickable = true
-        binding.etBettingShop.isEnabled = true
-        binding.etBettingShop.isClickable = true
-        binding.eetBettingShop.setText(bettingShopSelectedData?.showName)
-        binding.eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
+        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        bettingShopSpinner.isEnabled = true
+        bettingShopSpinner.isClickable = true
+        etBettingShop.isEnabled = true
+        etBettingShop.isClickable = true
+        eetBettingShop.setText(bettingShopSelectedData?.showName)
+        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
     }
 
     private fun etBettingShopSelectFalse(eetBetting: String) {
-        binding.etBettingShop.setEndIcon(null)
-        binding.bettingShopSpinner.isEnabled = false
-        binding.bettingShopSpinner.isClickable = false
+        etBettingShop.setEndIcon(null)
+        bettingShopSpinner.isEnabled = false
+        bettingShopSpinner.isClickable = false
 
-        binding.etBettingShop.isEnabled = false
-        binding.etBettingShop.isClickable = false
+        etBettingShop.isEnabled = false
+        etBettingShop.isClickable = false
 
-        binding.etBettingShop.hasFocus = false
-        binding.eetBettingShop.setText(eetBetting)
-        binding.eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
+        etBettingShop.hasFocus = false
+        eetBettingShop.setText(eetBetting)
+        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
     }
 
 }
