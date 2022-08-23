@@ -32,6 +32,7 @@
     <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">Sign up now</string>
+    <string name="not_sign_up">Not Sign up</string>
     <string name="recommend_code">Invite Code</string>
     <string name="hint_recommend_code">(Please enter your invite code)</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
@@ -1213,6 +1214,7 @@
     <string name="hint_no_file_selected">Unselect files</string>
     <string name="upload_id_photo">Upload Photo</string>
     <string name="hint_file_selected">Selected file</string>
+    <string name="select_file">select file</string>
     <string name="error_recommend_agent">No matched</string>
     <string name="local_time">当地时间:</string>
     <string name="register_title">Register</string>

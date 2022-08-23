@@ -8,7 +8,6 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,9 +69,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setUpLoginForGuestButton() {
-        binding.btnVisitFirst.setOnClickListener {
-            viewModel.loginAsGuest()
-        }
+//        binding.btnVisitFirst.setOnClickListener {
+//            viewModel.loginAsGuest()
+//        }
     }
 
     private fun setupBackButton() {
@@ -125,12 +124,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupValidCode() {
         if (sConfigData?.enableValidCode == FLAG_OPEN) {
-            binding.blockValidCode.visibility = View.VISIBLE
+            //binding.blockValidCode.visibility = View.VISIBLE
             updateValidCode()
         } else {
-            binding.blockValidCode.visibility = View.GONE
+            //binding.blockValidCode.visibility = View.GONE
         }
-        binding.ivReturn.setOnClickListener { updateValidCode() }
+        //binding.ivReturn.setOnClickListener { updateValidCode() }
     }
 
     private fun setupLoginButton() {
@@ -147,14 +146,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             this,
             binding.eetAccount.text.toString(),
             binding.eetPassword.text.toString(),
-            binding.eetVerificationCode.text.toString()
+            //binding.eetVerificationCode.text.toString()
         )
     }
 
     private fun updateValidCode() {
         val data = viewModel.validCodeResult.value?.validCodeData
         viewModel.getValidCode(data?.identity)
-        binding.eetVerificationCode.setText(null)
+        //binding.eetVerificationCode.setText(null)
     }
 
     private fun login() {
@@ -163,7 +162,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val account = binding.eetAccount.text.toString()
         val password = binding.eetPassword.text.toString()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
-        val validCode = binding.eetVerificationCode.text.toString()
+        //val validCode = binding.eetVerificationCode.text.toString()
         val deviceSn = JPushInterface.getRegistrationID(applicationContext)
 //        val deviceSn =
 //            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
@@ -177,7 +176,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             loginSrc = LOGIN_SRC,
             deviceSn = deviceSn,
             validCodeIdentity = validCodeIdentity,
-            validCode = validCode,
+            //validCode = validCode,
             appVersion = BuildConfig.VERSION_NAME,
             loginEnvInfo = deviceId
         )
@@ -202,9 +201,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupRegisterButton() {
-        binding.btnSignUp.setVisibilityByCreditSystem()
+        binding.tvSignUp.setVisibilityByCreditSystem()
 
-        binding.btnSignUp.setOnClickListener {
+        binding.tvSignUp.setOnClickListener {
             if (getString(R.string.app_name).equals("OKbet")) {
                 startActivity(Intent(this@LoginActivity, RegisterOkActivity::class.java))
             } else {
@@ -215,7 +214,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupServiceButton() {
-        binding.btnService.setOnClickListener {
+        binding.btnCustomSerivce.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
@@ -237,7 +236,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             val loginState = it ?: return@Observer
             binding.etAccount.setError(loginState.accountError, false)
             binding.etPassword.setError(loginState.passwordError, false)
-            binding.etVerificationCode.setError(loginState.validCodeError, false)
         })
 
         viewModel.loginResult.observe(this, Observer {
@@ -280,10 +278,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
         if (validCodeResult?.success == true) {
-            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
-            Glide.with(this)
-                .load(bitmap)
-                .into(binding.ivVerification)
+//            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
+//            Glide.with(this)
+//                .load(bitmap)
+//                .into(binding.ivVerification)
         } else {
             updateValidCode()
             //et_verification_code.setVerificationCode(null)

@@ -60,12 +60,13 @@
                 <org.cxct.sportlottery.widget.scrollview.MyScrollView
                     android:id="@+id/scrollView3"
                     android:layout_width="match_parent"
-                    android:layout_height="534dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_10"
                     android:layout_marginRight="@dimen/margin_10"
                     android:layout_marginBottom="@dimen/margin_10"
                     android:overScrollMode="never"
                     android:scrollbars="none"
+                    android:maxHeight="534dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_register"
                     app:layout_constraintVertical_bias="1.0"
@@ -497,19 +498,19 @@
 
                         </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
 
-                        <androidx.appcompat.widget.AppCompatImageButton
+                        <Button
                             android:id="@+id/end_button"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginTop="13dp"
-                            android:layout_marginEnd="15dp"
-                            android:background="@drawable/ic_camera"
-                            android:minWidth="@dimen/end_icon_min_width"
-                            android:minHeight="@dimen/end_icon_min_height"
-                            android:visibility="visible"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/btn_upload_file"
+                            android:minHeight="32dp"
+                            android:text="@string/select_file"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_FCFCFC"
+                            android:textSize="@dimen/textSize14sp"
                             app:layout_constraintEnd_toEndOf="@+id/etIdentity"
-                            app:layout_constraintTop_toTopOf="@+id/etIdentity" />
-
+                            app:layout_constraintTop_toTopOf="@+id/etIdentity"
+                            app:layout_constraintBottom_toBottomOf="@+id/etIdentity"/>
 
                         <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                             android:id="@+id/etIdentityType2"
@@ -600,18 +601,19 @@
 
                         </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
 
-                        <androidx.appcompat.widget.AppCompatImageButton
+                        <Button
                             android:id="@+id/end_button2"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginTop="13dp"
-                            android:layout_marginEnd="15dp"
-                            android:background="@drawable/ic_camera"
-                            android:minWidth="@dimen/end_icon_min_width"
-                            android:minHeight="@dimen/end_icon_min_height"
-                            android:visibility="visible"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/btn_upload_file"
+                            android:minHeight="32dp"
+                            android:text="@string/select_file"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_FCFCFC"
+                            android:textSize="@dimen/textSize14sp"
                             app:layout_constraintEnd_toEndOf="@+id/etIdentity2"
-                            app:layout_constraintTop_toTopOf="@+id/etIdentity2" />
+                            app:layout_constraintTop_toTopOf="@+id/etIdentity"
+                            app:layout_constraintBottom_toBottomOf="@+id/etIdentity" />
 
 
                         <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -1043,8 +1045,8 @@
                                 android:background="@color/transparent"
                                 android:gravity="center"
                                 android:minWidth="80dp"
-                                android:visibility="gone"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <com.makeramen.roundedimageview.RoundedImageView
                                     android:id="@+id/ivVerification"

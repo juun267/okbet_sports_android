@@ -29,9 +29,10 @@
     <string name="please_input_account">(请输入您的会员账号)</string>
     <string name="login_password">登录密码</string>
     <string name="remember_password">记住密码</string>
-    <string name="forget_password_question">忘记密码?</string>
+    <string name="forget_password_question"><u>忘记密码?</u></string>
     <string name="desc_forget_password">请联系客服</string>
     <string name="sign_up_know">立即注册</string>
+    <string name="not_sign_up">还没有账号,</string>
     <string name="recommend_code">推荐代码(非必填)</string>
     <string name="hint_recommend_code">(请输入推荐代码)</string>
     <string name="error_recommend_code">没有该投注站，请确认代码</string>
@@ -1190,6 +1191,7 @@
     <string name="hint_no_file_selected">未选择档案</string>
     <string name="upload_id_photo">上传证件照片</string>
     <string name="hint_file_selected">已选择档案</string>
+    <string name="select_file">选择档案</string>
     <string name="correct">波胆</string>
     <string name="my_message">我的消息</string>
     <string name="betting_setting">投注设置</string>

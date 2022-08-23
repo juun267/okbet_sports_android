@@ -103,7 +103,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
     private var credentialsFragment: RegisterCredentialsFragment? = null
     private var isUploaded = false
-    private var page = 1;
+    private var page = 1
 
     private var etIdentityTypeName: String = "";
     private var etIdentityTypeName2: String = "";
@@ -260,80 +260,87 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
         when (page) {
             1 -> {
+                System.out.println("============= setPage 111111 ================")
                 btn_register.text = getString(R.string.next_step)
 
-                et_full_name.visibility = View.GONE
-                et_withdrawal_pwd.visibility = View.GONE
-                et_phone.visibility = View.GONE
+                binding.etFullName.visibility = View.GONE
+                binding.etWithdrawalPwd.visibility = View.GONE
+                binding.etPhone.visibility = View.GONE
                 block_sms_valid_code.visibility = View.GONE
 
-                etBirth.visibility = View.GONE
-                etSalary.visibility = View.GONE
-                etBettingShop.visibility = View.GONE
-                et_mail.visibility = View.GONE
-                et_postal.visibility = View.GONE
-                et_province.visibility = View.GONE
-                et_city.visibility = View.GONE
+                binding.etIdentityType.visibility = View.GONE
+                binding.etIdentityNumber.visibility = View.GONE
+                binding.etIdentity.visibility = View.GONE
 
-                etIdentityType.visibility = View.GONE
-                etIdentityNumber.visibility = View.GONE
-                etIdentity.visibility = View.GONE
-                etIdentityType2.visibility = View.GONE
-                etIdentityNumber2.visibility = View.GONE
-                etIdentity2.visibility = View.GONE
+                binding.etIdentityType2.visibility = View.GONE
+                binding.etIdentityNumber2.visibility = View.GONE
+                binding.etIdentity2.visibility = View.GONE
 
-                et_address.visibility = View.GONE
-                etSecurityPbType.visibility = View.GONE
-                etSecurityPb.visibility = View.GONE
+                binding.etBirth.visibility = View.GONE
+                binding.etSalary.visibility = View.GONE
+                binding.etBettingShop.visibility = View.GONE
+                binding.etMail.visibility = View.GONE
 
+                binding.etAddress.visibility = View.GONE
+                binding.etSecurityPb.visibility = View.GONE
+                binding.etSecurityPbType.visibility = View.GONE
 
+                binding.etPostal.visibility = View.GONE
+                binding.etProvince.visibility = View.GONE
+                binding.etCity.visibility = View.GONE
 
-
-                clAgreement.visibility = View.VISIBLE
-                et_recommend_code.visibility = View.VISIBLE
-                et_member_account.visibility = View.VISIBLE
-                et_login_password.visibility = View.VISIBLE
-                et_confirm_password.visibility = View.VISIBLE
-
+                binding.clAgreement.visibility = View.VISIBLE
+                binding.etRecommendCode.visibility = View.VISIBLE
+                binding.etMemberAccount.visibility = View.VISIBLE
+                binding.etLoginPassword.visibility = View.VISIBLE
+                binding.etConfirmPassword.visibility = View.VISIBLE
             }
             2 -> {
+                System.out.println("============= setPage 222222 ================")
                 btn_register.text = getString(R.string.next_step)
 
-                clAgreement.visibility = View.GONE
-                et_recommend_code.visibility = View.GONE
-                et_member_account.visibility = View.GONE
-                et_login_password.visibility = View.GONE
-                et_confirm_password.visibility = View.GONE
+                binding.clAgreement.visibility = View.GONE
+                binding.etRecommendCode.visibility = View.GONE
+                binding.etMemberAccount.visibility = View.GONE
+                binding.etLoginPassword.visibility = View.GONE
+                binding.etConfirmPassword.visibility = View.GONE
 
-                et_address.visibility = View.GONE
-                etSecurityPbType.visibility = View.GONE
-                etSecurityPb.visibility = View.GONE
-
+                binding.etAddress.visibility = View.GONE
+                binding.etSecurityPbType.visibility = View.GONE
+                binding.etSecurityPb.visibility = View.GONE
 
                 block_sms_valid_code.visibility = View.GONE
                 block_valid_code.visibility = View.GONE
 
-                etBettingShop.visibility = View.GONE
-                et_mail.visibility = View.GONE
-                et_postal.visibility = View.GONE
-                et_province.visibility = View.GONE
-                et_city.visibility = View.GONE
+                binding.etBettingShop.visibility = View.GONE
+                binding.etMail.visibility = View.GONE
+                binding.etPostal.visibility = View.GONE
+                binding.etProvince.visibility = View.GONE
+                binding.etCity.visibility = View.GONE
 
-                et_qq.visibility = View.GONE
-                et_we_chat.visibility = View.GONE
-                et_zalo.visibility = View.GONE
-                et_facebook.visibility = View.GONE
-                et_whats_app.visibility = View.GONE
-                et_telegram.visibility = View.GONE
+                binding.etQq.visibility = View.GONE
+                binding.etWeChat.visibility = View.GONE
+                binding.etZalo.visibility = View.GONE
+                binding.etFacebook.visibility = View.GONE
+                binding.etWhatsApp.visibility = View.GONE
+                binding.etTelegram.visibility = View.GONE
 
 
-                etIdentityType.isVisible = isEnableKYCVerify
-                etIdentityNumber.isVisible = isEnableKYCVerify
-                etIdentity.isVisible = isEnableKYCVerify
+//                binding.etIdentityType.isVisible = isEnableKYCVerify
+//                binding.etIdentityNumber.isVisible = isEnableKYCVerify
+//                binding.etIdentity.isVisible = isEnableKYCVerify
+//
+//                binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+//                binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+//                binding.etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
-                etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-                etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-                etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                binding.etIdentityType.visibility = View.VISIBLE
+                binding.etIdentityNumber.visibility = View.VISIBLE
+                binding.etIdentity.visibility = View.VISIBLE
+
+                binding.etIdentityType2.visibility = View.VISIBLE
+                binding.etIdentityNumber2.visibility = View.VISIBLE
+                binding.etIdentity2.visibility = View.VISIBLE
 
 
                 setupFullName()
@@ -350,6 +357,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             else -> {
                 btn_register.text = getString(R.string.btn_register)
 
+                System.out.println("============= setPage 333333 ================")
 
                 setupMail()
                 setupAddress()
@@ -362,34 +370,24 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 setupTelegram()
                 setupSecurityPb()
 
-                clAgreement.visibility = View.GONE
-                et_recommend_code.visibility = View.GONE
-                et_member_account.visibility = View.GONE
-                et_login_password.visibility = View.GONE
-                et_confirm_password.visibility = View.GONE
+                binding.clAgreement.visibility = View.GONE
+                binding.etRecommendCode.visibility = View.GONE
+                binding.etMemberAccount.visibility = View.GONE
+                binding.etLoginPassword.visibility = View.GONE
+                binding.etConfirmPassword.visibility = View.GONE
 
-
-                etIdentityType.visibility = View.GONE
-                etIdentityNumber.visibility = View.GONE
-                etIdentity.visibility = View.GONE
-                etIdentityType2.visibility = View.GONE
-                etIdentityNumber2.visibility = View.GONE
-                etIdentity2.visibility = View.GONE
-
-
-
-                et_full_name.visibility = View.GONE
-                et_withdrawal_pwd.visibility = View.GONE
-                et_phone.visibility = View.GONE
+                binding.etFullName.visibility = View.GONE
+                binding.etWithdrawalPwd.visibility = View.GONE
+                binding.etPhone.visibility = View.GONE
                 block_sms_valid_code.visibility = View.GONE
-                etBirth.visibility = View.GONE
-                etSalary.visibility = View.GONE
+                binding.etBirth.visibility = View.GONE
+                binding.etSalary.visibility = View.GONE
 
 
                 if (bettingStationVisibility) {
-                    etBettingShop.visibility = View.VISIBLE
+                    binding.etBettingShop.visibility = View.VISIBLE
                 } else {
-                    etBettingShop.visibility = View.GONE
+                    binding.etBettingShop.visibility = View.GONE
                 }
             }
 
@@ -594,11 +592,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etBirth.hasFocus = true
                 //隱藏光標
                 eetBirth.isCursorVisible = false
-                //隱藏鍵盤
-                val inputMethodManager =
-                    getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-
+                if(view != null && view.windowToken != null){
+                    //隱藏鍵盤
+                    val inputMethodManager =
+                        getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                }
                 birthdayTimePickerView?.show()
             }
 
@@ -1097,9 +1096,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun initObserve() {
-
         setEditTextIme(binding.btnRegister.isEnabled)
+
         viewModel.registerEnable.observe(this) {
+            System.out.println("=========== initObserve it ============"+it)
             binding.btnRegister.isEnabled = it
             setEditTextIme(it)
         }
@@ -1418,11 +1418,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     eetConfirmPassword.setActionListener(registerEnable)
                 }
                 2 -> {
-                    eetRecommendCode.setActionListener(registerEnable)
+                    //eetRecommendCode.setActionListener(registerEnable)
                     eetFullName.setActionListener(registerEnable)
                     eetWithdrawalPwd.setActionListener(registerEnable)
-                    eetPhone.setActionListener(registerEnable)
-                    eetSecurityPb.setActionListener(registerEnable)
+//                    eetPhone.setActionListener(registerEnable)
+//                    eetSecurityPb.setActionListener(registerEnable)
                 }
                 else -> {
                     eetMail.setActionListener(registerEnable)
@@ -1690,14 +1690,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun selectedFirstPhotoImg(file: File) {
         firstFile = file
         if (firstFile != null) {
-            binding.endButton.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkIdentity(firstFile)
-            etIdentity.setHintText(getString(R.string.hint_file_selected))
+            //binding.endButton.setImageResource(R.drawable.ic_upload_done)
+            viewModel.checkBackupIdentity(firstFile)
+            binding.etIdentity.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
-            binding.endButton.setImageResource(R.drawable.ic_camera)
-            viewModel.checkIdentity(firstFile)
-            etIdentity.setHintText(getString(R.string.hint_no_file_selected))
+            //binding.endButton.setImageResource(R.drawable.ic_camera)
+            viewModel.checkBackupIdentity(firstFile)
+            binding.etIdentity.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
         }
     }
@@ -1705,12 +1705,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     private fun selectedSecondPhotoImg(file: File) {
         secondFile = file
         if (secondFile != null) {
-            binding.endButton2.setImageResource(R.drawable.ic_upload_done)
+            //binding.endButton2.setImageResource(R.drawable.ic_upload_done)
             viewModel.checkBackupIdentity(secondFile)
             etIdentity2.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
-            binding.endButton2.setImageResource(R.drawable.ic_camera)
+            //binding.endButton2.setImageResource(R.drawable.ic_camera)
             viewModel.checkBackupIdentity(secondFile)
             etIdentity2.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
@@ -1718,26 +1718,26 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun etBettingShopSelectTrue() {
-        etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
-        bettingShopSpinner.isEnabled = true
-        bettingShopSpinner.isClickable = true
-        etBettingShop.isEnabled = true
-        etBettingShop.isClickable = true
-        eetBettingShop.setText(bettingShopSelectedData?.showName)
-        eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
+        binding.etBettingShop.setEndIcon(R.drawable.ic_arrow_gray)
+        binding.bettingShopSpinner.isEnabled = true
+        binding.bettingShopSpinner.isClickable = true
+        binding.etBettingShop.isEnabled = true
+        binding.etBettingShop.isClickable = true
+        binding.eetBettingShop.setText(bettingShopSelectedData?.showName)
+        binding.eetBettingShop.setTextColor(getColor(R.color.color_FFFFFF_DE000000))
     }
 
     private fun etBettingShopSelectFalse(eetBetting: String) {
-        etBettingShop.setEndIcon(null)
-        bettingShopSpinner.isEnabled = false
-        bettingShopSpinner.isClickable = false
+        binding.etBettingShop.setEndIcon(null)
+        binding.bettingShopSpinner.isEnabled = false
+        binding.bettingShopSpinner.isClickable = false
 
-        etBettingShop.isEnabled = false
-        etBettingShop.isClickable = false
+        binding.etBettingShop.isEnabled = false
+        binding.etBettingShop.isClickable = false
 
-        etBettingShop.hasFocus = false
-        eetBettingShop.setText(eetBetting)
-        eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
+        binding.etBettingShop.hasFocus = false
+        binding.eetBettingShop.setText(eetBetting)
+        binding.eetBettingShop.setTextColor(getColor(R.color.color_AFAFB1))
     }
 
 }
