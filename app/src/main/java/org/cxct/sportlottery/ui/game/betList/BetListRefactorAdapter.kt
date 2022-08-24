@@ -1536,19 +1536,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             isGetMax: Boolean,
             betList: MutableList<BetInfoListData>
         ): Double {
+            val defaultMax = 999999999L
             var min = betList.first().parlayOdds?.min ?: 0
-            var max = betList.first().parlayOdds?.max ?: 99999999
+            var max = betList.first().parlayOdds?.max ?: defaultMax
             betList.forEach {
                 if (it.parlayOdds?.min ?: 0 > min) {
                     min = it.parlayOdds?.min ?: 0
                 }
                 if (it.parlayOdds?.max ?: 0 < max) {
-                    max = it.parlayOdds?.max ?: 99999999
+                    max = it.parlayOdds?.max ?: defaultMax
                 }
             }
 
             return when (isGetMax) {
-                true -> max.toDouble()
+                true -> if (mUserLogin) max.toDouble() else defaultMax.toDouble() //未登入最大值9位數
                 else -> min.toDouble()
             }
         }
