@@ -348,7 +348,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
                 ivOddsArrow.setImageResource(R.drawable.ic_arrow_down)
                 setAnimation(false)
                 //賠率顏色
-                tv_odds.setTextColor(ContextCompat.getColor(context, R.color.color_ce3636_ce3636))
+                tv_odds.setTextColor(ContextCompat.getColor(context, R.color.color_E23434_E23434))
 
                 isActivated = true
             }

@@ -368,7 +368,6 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = leagueOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
-                        Log.d("hjq", "222")
                         item.matchOdds
                     }.onEach {
                         it.matchInfo?.leagueName = item.league.name

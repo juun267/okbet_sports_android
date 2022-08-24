@@ -273,7 +273,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textColor="@color/color_F75452_b73a20"
+                            android:textColor="@color/color_F75452_E23434"
                             android:textSize="@dimen/textSize12sp" />
 
 

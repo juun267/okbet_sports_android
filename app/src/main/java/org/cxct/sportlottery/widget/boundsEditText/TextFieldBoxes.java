@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -254,7 +253,7 @@ public class TextFieldBoxes extends FrameLayout {
         TypedArray themeArray;
 
         /* Get Default Error Color From Theme */
-        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.color_F75452_b73a20);
+        DEFAULT_ERROR_COLOR = ContextCompat.getColor(getContext(), R.color.color_F75452_E23434);
 
         /* Get Default Background Color From Theme */
         themeArray = theme.obtainStyledAttributes(new int[]{android.R.attr.colorForeground});

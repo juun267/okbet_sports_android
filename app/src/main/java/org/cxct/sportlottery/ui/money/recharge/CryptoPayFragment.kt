@@ -7,11 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
@@ -39,7 +37,6 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.*
-import kotlin.collections.HashMap
 import kotlin.math.abs
 
 
@@ -212,7 +209,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     tv_upload.setTextColor(
                         ContextCompat.getColor(
                             tv_upload.context,
-                            R.color.color_F75452_b73a20
+                            R.color.color_F75452_E23434
                         )
                     )
                 } else {
@@ -295,7 +292,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             tv_upload.setTextColor(
                 ContextCompat.getColor(
                     tv_upload.context,
-                    R.color.color_F75452_b73a20
+                    R.color.color_F75452_E23434
                 )
             )
         }

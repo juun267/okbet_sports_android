@@ -147,10 +147,10 @@
     <color name="color_FF9143_ff9200">@color/color_ff9200</color>
     <color name="color_FF9143_cb7c2e">@color/color_cb7c2e</color>
     <color name="color_08dc6e_08dc6e">@color/color_08dc6e</color>
-    <color name="color_34CB8A_3db893">@color/color_3db893</color>
+    <color name="color_34CB8A_1D9F51">@color/color_1D9F51</color>
     <color name="color_E44438_e44438">@color/color_E44438</color>
-    <color name="color_ce3636_ce3636">@color/color_ce3636</color>
-    <color name="color_F75452_b73a20">@color/color_b73a20</color>
+    <color name="color_E23434_E23434">@color/color_E23434</color>
+    <color name="color_F75452_E23434">@color/color_E23434</color>
     <color name="color_FFFFFF_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_191919_FCFCFC">@color/color_FCFCFC</color>
     <color name="color_000000_FCFCFC">@color/color_FCFCFC</color>
@@ -371,4 +371,10 @@
     <color name="color_D3DEF5">#D3DEF5</color>
 
 
+    <color name="color_E8EFFD">#E8EFFD</color>
+    <color name="color_FFCC15">#FFCC15</color>
+    <color name="color_1D9F51">#1D9F51</color>
+    <color name="color_F0F8FF">#F0F8FF</color>
+    <color name="color_1B73FF">#1B73FF</color>
+    <color name="color_F9F9F9">#F9F9F9</color>
 </resources>

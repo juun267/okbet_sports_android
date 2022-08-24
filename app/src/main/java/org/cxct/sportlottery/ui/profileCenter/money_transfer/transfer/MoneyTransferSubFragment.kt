@@ -133,7 +133,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                                     ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                             }
                             setNegativeButtonText(null)
-                            setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_b73a20)
+                            setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
                         }
                         dialog.show(childFragmentManager, null)
                     }
