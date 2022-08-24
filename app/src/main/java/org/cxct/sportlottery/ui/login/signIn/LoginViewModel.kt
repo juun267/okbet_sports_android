@@ -57,8 +57,7 @@ class LoginViewModel(
     fun checkInputData(context: Context, account: String, password: String): Boolean {
         val accountError = checkAccount(context, account)
         val passwordError = checkPassword(context, password)
-        val isDataValid = accountError == null && passwordError == null &&
-                (sConfigData?.enableValidCode != FLAG_OPEN)
+        val isDataValid = accountError == null && passwordError == null
         _loginFormState.value = LoginFormState(accountError, passwordError)
 
         return isDataValid

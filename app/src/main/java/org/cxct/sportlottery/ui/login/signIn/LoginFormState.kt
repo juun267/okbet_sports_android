@@ -6,5 +6,5 @@ package org.cxct.sportlottery.ui.login.signIn
 data class LoginFormState(
     val accountError: String? = null,
     val passwordError: String? = null,
-    val validCodeError: String? = null,
+//    val validCodeError: String? = null,
 )

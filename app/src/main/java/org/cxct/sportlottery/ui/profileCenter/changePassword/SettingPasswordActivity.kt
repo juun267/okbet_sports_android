@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
@@ -13,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
+import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
 /**
  * @app_destination 密碼設置
@@ -43,6 +46,48 @@ class SettingPasswordActivity :
     private fun initView() {
         tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.setting_password)
+
+        et_current_password.endIconImageButton.setOnClickListener {
+            if (et_current_password.endIconResourceId == R.drawable.ic_eye_open) {
+                eet_current_password.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                et_current_password.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                et_current_password.setEndIcon(R.drawable.ic_eye_open)
+                eet_current_password.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            }
+            et_current_password.hasFocus = true
+            eet_current_password.setSelection(eet_current_password.text.toString().length)
+        }
+
+        et_new_password.endIconImageButton.setOnClickListener {
+            if (et_new_password.endIconResourceId == R.drawable.ic_eye_open) {
+                eet_new_password.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                et_new_password.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                et_new_password.setEndIcon(R.drawable.ic_eye_open)
+                eet_new_password.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            }
+            et_new_password.hasFocus = true
+            eet_new_password.setSelection(eet_current_password.text.toString().length)
+        }
+        et_confirm_password.endIconImageButton.setOnClickListener {
+            if (et_confirm_password.endIconResourceId == R.drawable.ic_eye_open) {
+                eet_confirm_password.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                et_confirm_password.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                et_confirm_password.setEndIcon(R.drawable.ic_eye_open)
+                eet_confirm_password.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            }
+            et_confirm_password.hasFocus = true
+            eet_confirm_password.setSelection(eet_current_password.text.toString().length)
+        }
+
     }
 
     private fun setupBackButton() {
@@ -79,26 +124,30 @@ class SettingPasswordActivity :
 
     private fun setupEditText() {
         //當失去焦點才去檢查 inputData
-        setupEditTextFocusChangeEvent(et_current_password) { viewModel.checkCurrentPwd(it) }
-        setupEditTextFocusChangeEvent(et_new_password) {
+        setupEditTextFocusChangeEvent(eet_current_password) { viewModel.checkCurrentPwd(it) }
+        setupEditTextFocusChangeEvent(eet_new_password) {
             viewModel.checkNewPwd(
                 mPwdPage,
-                et_current_password.getText(),
+                eet_current_password.getText().toString(),
                 it
             )
         }
-        setupEditTextFocusChangeEvent(et_confirm_password) {
+        setupEditTextFocusChangeEvent(eet_confirm_password) {
             viewModel.checkConfirmPwd(
-                et_new_password.getText(),
+                eet_new_password.getText().toString(),
                 it
             )
         }
     }
 
-    private fun setupEditTextFocusChangeEvent(editText: LoginEditText, listener: (String) -> Unit) {
-        editText.setEditTextOnFocusChangeListener { _, hasFocus ->
+    private fun setupEditTextFocusChangeEvent(
+        editText: ExtendedEditText,
+        listener: (String) -> Unit
+    ) {
+
+        editText.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
-                listener.invoke(editText.getText())
+                listener.invoke(editText.getText().toString())
         }
     }
 
@@ -112,24 +161,24 @@ class SettingPasswordActivity :
     private fun checkInputData() {
         viewModel.checkInputField(
             mPwdPage,
-            et_current_password.getText(),
-            et_new_password.getText(),
-            et_confirm_password.getText()
+            eet_current_password.getText().toString(),
+            eet_new_password.getText().toString(),
+            eet_confirm_password.getText().toString()
         )
     }
 
     private fun initObserve() {
 
         viewModel.currentPwdError.observe(this, Observer {
-            et_current_password.setError(it)
+            et_current_password.setError(it, false)
         })
 
         viewModel.newPwdError.observe(this, Observer {
-            et_new_password.setError(it)
+            et_new_password.setError(it, false)
         })
 
         viewModel.confirmPwdError.observe(this, Observer {
-            et_confirm_password.setError(it)
+            et_confirm_password.setError(it, false)
         })
 
         viewModel.updatePwdResult.observe(this, Observer {
@@ -174,30 +223,31 @@ class SettingPasswordActivity :
 
     private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) {
         if (pwdPage == PwdPage.LOGIN_PWD) {
-            et_current_password.setTitle(getString(R.string.current_login_password))
-            et_current_password.setHint(getString(R.string.hint_current_login_password))
-            et_new_password.setHint(getString(R.string.hint_register_password))
+            et_current_password.labelText = getString(R.string.current_login_password)
+            et_current_password.setHintText(getString(R.string.hint_current_login_password))
+            et_new_password.setHintText(getString(R.string.hint_register_password))
         } else {
 
             if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW) {
-                et_current_password.setTitle(getString(R.string.current_login_password))
-                et_current_password.setHint(getString(R.string.hint_current_login_password))
+                et_current_password.labelText = getString(R.string.current_login_password)
+                et_current_password.setHintText(getString(R.string.hint_current_login_password))
             } else {
-                et_current_password.setTitle(getString(R.string.current_withdrawal_password))
-                et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
+                et_current_password.labelText = getString(R.string.current_withdrawal_password)
+                et_current_password.setHintText(getString(R.string.hint_current_withdrawal_password))
             }
-            et_new_password.setHint(getString(R.string.hint_withdrawal_new_password))
+            et_new_password.setHintText(getString(R.string.hint_withdrawal_new_password))
         }
     }
 
     private fun cleanField() {
-        et_current_password.setText(null)
-        et_current_password.setError(null)
+        eet_current_password.setText(null)
+        et_current_password.setError(null, false)
 
-        et_new_password.setText(null)
-        et_new_password.setError(null)
+        eet_new_password.setText(null)
+        et_new_password.setError(null, false)
 
-        et_confirm_password.setText(null)
-        et_confirm_password.setError(null)
+        eet_confirm_password.setText(null)
+        et_confirm_password.setError(null, false)
     }
+
 }

@@ -3,9 +3,13 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.coroutines.CoroutineScope
@@ -50,13 +54,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupBackButton()
         setupAccount()
         setupPassword()
-        setupValidCode()
         setupLoginButton()
         setupRememberPWD()
         setupForgetPasswordButton()
         setupRegisterButton()
         setupServiceButton()
-        setUpLoginForGuestButton()
         initObserve()
         setLetterSpace()
 
@@ -68,11 +70,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    private fun setUpLoginForGuestButton() {
+//    private fun setUpLoginForGuestButton() {
 //        binding.btnVisitFirst.setOnClickListener {
 //            viewModel.loginAsGuest()
 //        }
-    }
+//    }
 
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener { finish() }
@@ -91,17 +93,40 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //            if (!hasFocus)
 //                checkInputData()
 //        }
+        binding.eetAccount.addTextChangedListener(object: TextWatcher{
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                System.out.println("============= s.toString() ============"+s.toString())
+                if(s!= null && s.toString().length > 0){
+                    adjustEnableLoginButton(true)
+                    System.out.println("============= afterTextChanged1111 ============"+s.toString())
+                }else{
+                    adjustEnableLoginButton(false)
+                    System.out.println("============= afterTextChanged2222 ============"+s.toString())
+                }
+            }
+
+        })
+
     }
 
     private fun setupPassword() {
         binding.eetPassword.setText(viewModel.password)
         binding.etPassword.endIconImageButton.setOnClickListener {
             if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.eetPassword.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
                 binding.etPassword.setEndIcon(R.drawable.ic_eye_close)
             } else {
                 binding.etPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.eetPassword.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
             }
             binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }
@@ -122,15 +147,15 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnLogin.requestFocus()
     }
 
-    private fun setupValidCode() {
-        if (sConfigData?.enableValidCode == FLAG_OPEN) {
-            //binding.blockValidCode.visibility = View.VISIBLE
-            updateValidCode()
-        } else {
-            //binding.blockValidCode.visibility = View.GONE
-        }
-        //binding.ivReturn.setOnClickListener { updateValidCode() }
-    }
+//    private fun setupValidCode() {
+//        if (sConfigData?.enableValidCode == FLAG_OPEN) {
+//            binding.blockValidCode.visibility = View.VISIBLE
+//            updateValidCode()
+//        } else {
+//            binding.blockValidCode.visibility = View.GONE
+//        }
+//        binding.ivReturn.setOnClickListener { updateValidCode() }
+//    }
 
     private fun setupLoginButton() {
         binding.btnLogin.setOnClickListener {
@@ -145,16 +170,15 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         return viewModel.checkInputData(
             this,
             binding.eetAccount.text.toString(),
-            binding.eetPassword.text.toString(),
-            //binding.eetVerificationCode.text.toString()
+            binding.eetPassword.text.toString()
         )
     }
 
-    private fun updateValidCode() {
-        val data = viewModel.validCodeResult.value?.validCodeData
-        viewModel.getValidCode(data?.identity)
-        //binding.eetVerificationCode.setText(null)
-    }
+//    private fun updateValidCode() {
+//        val data = viewModel.validCodeResult.value?.validCodeData
+//        viewModel.getValidCode(data?.identity)
+//        binding.eetVerificationCode.setText(null)
+//    }
 
     private fun login() {
         loading()
@@ -175,8 +199,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             password = MD5Util.MD5Encode(password),
             loginSrc = LOGIN_SRC,
             deviceSn = deviceSn,
-            validCodeIdentity = validCodeIdentity,
-            //validCode = validCode,
+//            validCodeIdentity = validCodeIdentity,
+//            validCode = validCode,
             appVersion = BuildConfig.VERSION_NAME,
             loginEnvInfo = deviceId
         )
@@ -232,10 +256,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun initObserve() {
+
         viewModel.loginFormState.observe(this, Observer {
-            val loginState = it ?: return@Observer
-            binding.etAccount.setError(loginState.accountError, false)
-            binding.etPassword.setError(loginState.passwordError, false)
+            val loginFormState = it ?: return@Observer
+            binding.etAccount.setError(loginFormState.accountError, false)
+            binding.etPassword.setError(loginFormState.passwordError, false)
         })
 
         viewModel.loginResult.observe(this, Observer {
@@ -244,9 +269,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
 
-        viewModel.validCodeResult.observe(this, Observer {
-            updateUiWithResult(it)
-        })
+//        viewModel.validCodeResult.observe(this, Observer {
+//            updateUiWithResult(it)
+//        })
     }
 
     private fun updateUiWithResult(loginResult: LoginResult) {
@@ -264,11 +289,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             }
         } else {
-            updateValidCode()
+            //updateValidCode()
             if (loginResult.code == SELF_LIMIT) {
                 showSelfLimitFrozeErrorDialog(loginResult.msg)
             } else {
-                showPromptDialog(
+                showErrorPromptDialog(
                     getString(R.string.prompt),
                     loginResult.msg
                 ) {}
@@ -276,34 +301,35 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
-        if (validCodeResult?.success == true) {
+//    private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
+//        if (validCodeResult?.success == true) {
 //            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
 //            Glide.with(this)
 //                .load(bitmap)
 //                .into(binding.ivVerification)
-        } else {
-            updateValidCode()
-            //et_verification_code.setVerificationCode(null)
-            ToastUtil.showToastInCenter(
-                this@LoginActivity,
-                getString(R.string.get_valid_code_fail_point)
-            )
-        }
-    }
-
-    private fun showErrorDialog(errorMsg: String?) {
-        val dialog = CustomAlertDialog(this)
-        dialog.setMessage(errorMsg)
-        dialog.setNegativeButtonText(null)
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show(supportFragmentManager, null)
-    }
+//        } else {
+//            updateValidCode()
+//            et_verification_code.setVerificationCode(null)
+//            ToastUtil.showToastInCenter(
+//                this@LoginActivity,
+//                getString(R.string.get_valid_code_fail_point)
+//            )
+//        }
+//    }
 
     private fun showSelfLimitFrozeErrorDialog(errorMsg: String?) {
         val dialog = SelfLimitFrozeErrorDialog()
         dialog.setMessage(errorMsg)
         dialog.show(supportFragmentManager, null)
+    }
+
+    private fun adjustEnableLoginButton(isEnable: Boolean) {
+        if (isEnable) {
+            binding.btnLogin.isEnabled = true
+            binding.btnLogin.alpha = 1.0f
+        } else {
+            binding.btnLogin.isEnabled = false
+            binding.btnLogin.alpha = 0.5f
+        }
     }
 }

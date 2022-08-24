@@ -260,13 +260,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         val bettingStationVisibility = sConfigData?.enableBettingStation == FLAG_OPEN
         when (page) {
             1 -> {
-                System.out.println("============= setPage 111111 ================")
                 btn_register.text = getString(R.string.next_step)
 
                 binding.etFullName.visibility = View.GONE
                 binding.etWithdrawalPwd.visibility = View.GONE
                 binding.etPhone.visibility = View.GONE
                 block_sms_valid_code.visibility = View.GONE
+
 
                 binding.etIdentityType.visibility = View.GONE
                 binding.etIdentityNumber.visibility = View.GONE
@@ -296,7 +296,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etConfirmPassword.visibility = View.VISIBLE
             }
             2 -> {
-                System.out.println("============= setPage 222222 ================")
                 btn_register.text = getString(R.string.next_step)
 
                 binding.clAgreement.visibility = View.GONE
@@ -326,22 +325,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etTelegram.visibility = View.GONE
 
 
-//                binding.etIdentityType.isVisible = isEnableKYCVerify
-//                binding.etIdentityNumber.isVisible = isEnableKYCVerify
-//                binding.etIdentity.isVisible = isEnableKYCVerify
-//
-//                binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-//                binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-//                binding.etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                binding.etIdentityType.isVisible = isEnableKYCVerify
+                binding.etIdentityNumber.isVisible = isEnableKYCVerify
+                binding.etIdentity.isVisible = isEnableKYCVerify
 
-                binding.etIdentityType.visibility = View.VISIBLE
-                binding.etIdentityNumber.visibility = View.VISIBLE
-                binding.etIdentity.visibility = View.VISIBLE
-
-                binding.etIdentityType2.visibility = View.VISIBLE
-                binding.etIdentityNumber2.visibility = View.VISIBLE
-                binding.etIdentity2.visibility = View.VISIBLE
-
+                binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                binding.etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
                 setupFullName()
                 setupWithdrawalPassword()
@@ -356,8 +346,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             }
             else -> {
                 btn_register.text = getString(R.string.btn_register)
-
-                System.out.println("============= setPage 333333 ================")
 
                 setupMail()
                 setupAddress()
@@ -383,6 +371,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etBirth.visibility = View.GONE
                 binding.etSalary.visibility = View.GONE
 
+                binding.etIdentityType.visibility = View.GONE
+                binding.etIdentityNumber.visibility = View.GONE
+                binding.etIdentity.visibility = View.GONE
+
+                binding.etIdentityType2.visibility = View.GONE
+                binding.etIdentityNumber2.visibility = View.GONE
+                binding.etIdentity2.visibility = View.GONE
 
                 if (bettingStationVisibility) {
                     binding.etBettingShop.visibility = View.VISIBLE
@@ -632,6 +627,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             etIdentity.setError("", false)
 
 
+            endButton.visibility =
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
+                        "1"
+                    )
+                ) View.VISIBLE else View.GONE
             endButton.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -639,6 +639,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     PicSelectorDialog.CropType.RECTANGLE
                 ).show(supportFragmentManager, null)
             }
+
+
             endButton2.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
                         "2"
@@ -652,6 +654,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 ).show(supportFragmentManager, null)
             }
         }
+
     }
 
     private fun setupSalarySource() {
@@ -875,9 +878,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             binding.blockSmsValidCode.visibility = View.GONE
         }
 
-        binding.btnSendSms.setOnClickListener {
-            sendSms()
-        }
+//        binding.btnSendSms.setOnClickListener {
+//            sendSms()
+//        }
     }
 
     private fun setupAgreement() {
@@ -1071,7 +1074,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 getString(R.string.hint_phone_number)
             ) {}
         else {
-            binding.btnSendSms.isEnabled = false
+            //binding.btnSendSms.isEnabled = false
             if (phone.substring(0, 1) == "0") {
                 phone = phone.substring(1, phone.length)
             }
@@ -1099,8 +1102,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         setEditTextIme(binding.btnRegister.isEnabled)
 
         viewModel.registerEnable.observe(this) {
-            System.out.println("=========== initObserve it ============"+it)
             binding.btnRegister.isEnabled = it
+            if(it){
+                binding.btnRegister.alpha = 1.0f
+            }else{
+                binding.btnRegister.alpha = 0.5f
+            }
             setEditTextIme(it)
         }
 
@@ -1479,7 +1486,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun updateUiWithResult(smsResult: SmsResult?) {
-        binding.btnSendSms.isEnabled = true
+        //binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
             showSmeTimer300()
         } else {
@@ -1499,20 +1506,20 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 override fun run() {
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
-                            binding.btnSendSms.isEnabled = false
+                            //binding.btnSendSms.isEnabled = false
                             //btn_send_sms.text = getString(R.string.send_timer, sec)
-                            binding.btnSendSms.text = "${sec}s"
-                            binding.btnSendSms.setTextColor(
-                                ContextCompat.getColor(
-                                    this@RegisterOkActivity,
-                                    R.color.color_AEAEAE_404040
-                                )
-                            )
+                            //binding.btnSendSms.text = "${sec}s"
+//                            binding.btnSendSms.setTextColor(
+//                                ContextCompat.getColor(
+//                                    this@RegisterOkActivity,
+//                                    R.color.color_AEAEAE_404040
+//                                )
+//                            )
                         } else {
                             stopSmeTimer()
-                            binding.btnSendSms.isEnabled = true
-                            binding.btnSendSms.text = getString(R.string.get_verification_code)
-                            binding.btnSendSms.setTextColor(Color.WHITE)
+//                            binding.btnSendSms.isEnabled = true
+//                            binding.btnSendSms.text = getString(R.string.get_verification_code)
+//                            binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }
                 }
@@ -1521,8 +1528,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             e.printStackTrace()
 
             stopSmeTimer()
-            binding.btnSendSms.isEnabled = true
-            binding.btnSendSms.text = getString(R.string.get_verification_code)
+//            binding.btnSendSms.isEnabled = true
+//            binding.btnSendSms.text = getString(R.string.get_verification_code)
         }
     }
 
