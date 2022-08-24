@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.common
 
-import android.content.Context
 import android.text.Html
 import android.text.Spanned
 import android.util.Log
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -27,7 +25,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.toJson
 
 
 class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
@@ -54,7 +51,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            Log.d("hjq", "odds=" + value.toJson())
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList(matchOdd).filterOddsStatus().splitPlayCate()
@@ -102,7 +98,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         }
                         gameListFilter
                     }
-            Log.d("hjq", "gameList=" + Gson().toJson(gameList))
 
             data = gameList.withIndex().groupBy {
                 it.index / 1
@@ -562,8 +557,10 @@ class OddButtonPagerViewHolder private constructor(
         )
     }
 
-    private fun <K, V> Map<K, V>.getPlayCateName(context: Context): String {
-        return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
+    private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
+        val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
+            LanguageManager.Language.EN.key)
+        return playCateName.toString()
     }
 
     private fun setupOddsButton(
@@ -578,7 +575,7 @@ class OddButtonPagerViewHolder private constructor(
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
-        matchType: MatchType?
+        matchType: MatchType?,
     ) {
 
         if (matchInfo == null ||
@@ -625,7 +622,7 @@ class OddButtonPagerViewHolder private constructor(
         val replaceScore = odds.second?.firstOrNull()?.replaceScore ?: ""
 
         var playCateName =
-            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+            playCateNameMap[odds.first]?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 ?.replace(": ", " ")
                 ?.replace("||", "\n")
                 ?.replace("{S}", replaceScore)
@@ -637,8 +634,10 @@ class OddButtonPagerViewHolder private constructor(
             playCateName = "-"
         }
 
-        val betPlayCateName = betPlayCateNameMap[odds.first]?.getPlayCateName(itemView.context
-        )?.replace(": ", " ")?.replace("||", "\n") ?: ""
+        val betPlayCateName =
+            betPlayCateNameMap[odds.first]?.getPlayCateName(LanguageManager.getSelectLanguage(
+                itemView.context)
+            )?.replace(": ", " ")?.replace("||", "\n") ?: ""
 
         val playCateCode = odds.first ?: ""
 
@@ -774,7 +773,7 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
         val playCateName =
-            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+            playCateNameMap[odds.first]?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 ?.replace(": ", " ")?.replace("||", "\n") ?: ""
         val playCateCode = odds.first ?: ""
         oddBtnType.text = when {

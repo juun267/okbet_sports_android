@@ -101,7 +101,7 @@
                         android:layout_marginRight="7dp"
                         android:padding="5dp"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/ic_arrow_down_double" />
+                        android:src="@drawable/selector_arrow_blue_double" />
 
                 </LinearLayout>
 

@@ -120,9 +120,11 @@ object OddSpannableString {
     }
 
     private fun setupSpreadSpannableString(context: Context, matchType: MatchType?, matchOdd: MatchOdd, isChanged: Boolean) {
-        val textColor = ContextCompat.getColor(context, if (isChanged) R.color.color_191919_FCFCFC else R.color.color_F75452_b73a20)
+        val textColor = ContextCompat.getColor(context,
+            if (isChanged) R.color.color_191919_FCFCFC else R.color.color_F75452_E23434)
         val backgroundColor =
-            ContextCompat.getColor(context, if (isChanged) R.color.color_FF9143_cb7c2e else R.color.transparent_black_0)
+            ContextCompat.getColor(context,
+                if (isChanged) R.color.color_FF9143_cb7c2e else R.color.transparent_black_0)
 
         if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode) || matchType == MatchType.OUTRIGHT
         ) {

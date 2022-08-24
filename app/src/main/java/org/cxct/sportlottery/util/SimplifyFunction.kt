@@ -76,13 +76,34 @@ fun RecyclerView.addScrollWithItemVisibility(
                     when (currentAdapter) {
                         is LeagueAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
+                                val viewByPosition =
+                                    layoutManager?.findViewByPosition(leaguePosition)
                                 viewByPosition?.let {
                                     if (getChildViewHolder(it) is LeagueAdapter.ItemViewHolder) {
-                                        val viewHolder = getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
-                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                                            visibleRangePair.add(Pair(leaguePosition, matchPosition))
-                                        }
+                                        val viewHolder =
+                                            getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
+                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                            .forEach { matchPosition ->
+                                                visibleRangePair.add(Pair(leaguePosition,
+                                                    matchPosition))
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                        is SportListAdapter -> {
+                            getVisibleRangePosition().forEach { leaguePosition ->
+                                val viewByPosition =
+                                    layoutManager?.findViewByPosition(leaguePosition)
+                                viewByPosition?.let {
+                                    if (getChildViewHolder(it) is SportListAdapter.ItemViewHolder) {
+                                        val viewHolder =
+                                            getChildViewHolder(it) as SportListAdapter.ItemViewHolder
+                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                            .forEach { matchPosition ->
+                                                visibleRangePair.add(Pair(leaguePosition,
+                                                    matchPosition))
+                                            }
                                     }
                                 }
                             }
@@ -226,8 +247,8 @@ fun RecyclerView.firstVisibleRange(adapter: SportListAdapter, activity: Activity
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             viewByPosition?.let { view ->
-                if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                    val viewHolder = getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
+                if (getChildViewHolder(view) is SportListAdapter.ItemViewHolder) {
+                    val viewHolder = getChildViewHolder(view) as SportListAdapter.ItemViewHolder
                     viewHolder.itemView.league_odd_list.getVisibleRangePosition()
                         .forEach { matchPosition ->
                             if (adapter.data.isNotEmpty()) {

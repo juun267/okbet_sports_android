@@ -181,7 +181,6 @@ class SportListAdapter(private val matchType: MatchType) :
     }
 
     private fun updateLeagueByBetInfo(position: Int) {
-        Log.d("hjq", "updateLeagueByBetInfo")
         notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
     }
 
@@ -299,6 +298,7 @@ class SportListAdapter(private val matchType: MatchType) :
                 }
             )
             itemView.iv_country.setImageDrawable(countryIcon)
+            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
@@ -315,6 +315,7 @@ class SportListAdapter(private val matchType: MatchType) :
                 }
             )
             itemView.iv_country.setImageDrawable(countryIcon)
+            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
@@ -403,6 +404,7 @@ class SportListAdapter(private val matchType: MatchType) :
                     expandCheckList[data[adapterPosition].league.id] = true
                     FoldState.UNFOLD.code
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
+                itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
 
 //                notifyItemChanged(adapterPosition)

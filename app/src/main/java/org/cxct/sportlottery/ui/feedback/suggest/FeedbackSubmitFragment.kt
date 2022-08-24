@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_feedback_submit.*
 import kotlinx.android.synthetic.main.view_submit_with_text_count.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -38,7 +36,7 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
             tv_input_count.text = String.format("%d / 500", it)
 
             ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
-            val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.color_F75452_b73a20
+            val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.color_F75452_E23434
             tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
         }
     }
@@ -49,7 +47,8 @@ class FeedbackSubmitFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                 viewModel.fbSave(et_content.text.toString())
             } else {
                 ll_error.visibility = View.VISIBLE
-                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_F75452_b73a20))
+                tv_input_count.setTextColor(ContextCompat.getColor(requireContext(),
+                    R.color.color_F75452_E23434))
             }
         }
         btn_submit.setTitleLetterSpacing()

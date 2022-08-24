@@ -51,12 +51,6 @@ class SportOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
-        set(value) {
-            field = value
-            value?.forEach {
-                Log.d("hjq", "SportOddAdapter=" + it.oddsMap)
-            }
-        }
     var oddsType: OddsType = OddsType.EU
     fun setData(data: List<MatchOdd> = listOf(), oddsType: OddsType = OddsType.EU) {
         this.data = data
