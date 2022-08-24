@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
 /**
  * @app_destination 修改暱稱
@@ -80,7 +81,7 @@ class ModifyProfileInfoActivity :
 
     private fun setupInputFieldVerify() {
         //暱稱
-        setEditTextFocusChangeMethod(et_nickname)
+        setEditTextFocusChangeMethod(eet_nickname)
 //        //真實姓名
 //        setEditTextFocusChangeMethod(et_real_name)
 //        //QQ號碼
@@ -93,7 +94,7 @@ class ModifyProfileInfoActivity :
 //        setEditTextFocusChangeMethod(et_we_chat)
     }
 
-    private fun setEditTextFocusChangeMethod(editText: EditText) {
+    private fun setEditTextFocusChangeMethod(editText: ExtendedEditText) {
         editText.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus)
                 viewModel.checkInput(modifyType as ModifyType, editText.text.toString())
@@ -118,39 +119,39 @@ class ModifyProfileInfoActivity :
 
     private fun checkInputData() {
         val inputText = when (modifyType as ModifyType) {
-            ModifyType.RealName -> et_real_name.getText()
-            ModifyType.QQNumber -> et_qq_number.getText()
-            ModifyType.Email -> et_e_mail.getText()
-            ModifyType.WeChat -> et_we_chat.getText()
-            ModifyType.PhoneNumber -> et_phone_number.getText()
-            ModifyType.NickName -> et_nickname.text
+            ModifyType.RealName -> et_real_name.text
+            ModifyType.QQNumber -> et_qq_number.text
+            ModifyType.Email -> et_e_mail.text
+            ModifyType.WeChat -> et_we_chat.text
+            ModifyType.PhoneNumber -> et_phone_number.text
+            ModifyType.NickName -> eet_nickname.text
         }
         viewModel.confirmProfileInfo(modifyType as ModifyType, inputText.toString())
     }
 
     private fun initObserve() {
-        viewModel.loading.observe(this, Observer {
+        viewModel.loading.observe(this) {
             if (it)
                 loading()
             else
                 hideLoading()
-        })
+        }
 
 //        setupEditTextErrorMsgObserve()
 
-        viewModel.nicknameResult.observe(this, Observer {
+        viewModel.nicknameResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.withdrawInfoResult.observe(this, Observer {
+        viewModel.withdrawInfoResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
     }
 
     private fun setupEditTextErrorMsgObserve() {
         viewModel.apply {
             nickNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_nickname.setError(it)
+                et_nickname.setError(it,false)
             })
 
             fullNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
@@ -189,7 +190,7 @@ class ModifyProfileInfoActivity :
         dialog.setMessage(errorMsg)
         dialog.setNegativeButtonText(null)
         dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
+        dialog.isCancelable = false
         dialog.show(supportFragmentManager, null)
     }
 }
