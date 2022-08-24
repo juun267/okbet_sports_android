@@ -690,10 +690,10 @@ public class TextFormFieldBoxes extends FrameLayout {
                     .alpha(1f)
                     .setDuration(ANIMATION_DURATION);
 
-            ViewCompat.animate(this.floatingLabel)
-                    .scaleX(0.85f)
-                    .scaleY(0.85f)
-                    .setDuration(ANIMATION_DURATION);
+//            ViewCompat.animate(this.floatingLabel)
+//                    .scaleX(0.85f)
+//                    .scaleY(0.85f)
+//                    .setDuration(ANIMATION_DURATION);
 //            ViewCompat.animate(this.floatingHintLabel)
 //                    .scaleX(0.92f)
 //                    .scaleY(0.92f)

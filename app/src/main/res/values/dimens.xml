@@ -108,7 +108,8 @@
     <dimen name="label_space_height">8dp</dimen>
     <dimen name="icon_signifier_width">24dp</dimen>
     <dimen name="icon_signifier_height">24dp</dimen>
-
+    <dimen name="icon_form_signifier_width">18dp</dimen>
+    <dimen name="icon_form_signifier_height">18dp</dimen>
 
     <dimen name="quick_view_horizontal_scroll_height">224dp</dimen>
 

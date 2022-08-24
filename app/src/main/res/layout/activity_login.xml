@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:hintText="@string/account_hint"
-                app:iconSignifier="@drawable/ic_login_account"
+                app:iconSignifier="@drawable/ic_login"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/member_account"
                 app:labelTextStyle="normal"
@@ -169,6 +169,8 @@
                 android:text="@string/btn_login"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize17sp"
+                android:alpha="0.5"
+                android:enabled="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cb_remember_password" />
 
