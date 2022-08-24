@@ -47,7 +47,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mTokenPromptDialog: CustomAlertDialog? = null
     private var mOnNetworkExceptionListener: View.OnClickListener? = null
     private var mPickerView: OptionsPickerView<String>? = null
-    private var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
+    public var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
     private val mHandler = Handler(Looper.getMainLooper())
     private var mRunnable: Runnable? = null
 

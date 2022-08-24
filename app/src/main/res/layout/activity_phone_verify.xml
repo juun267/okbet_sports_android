@@ -5,7 +5,7 @@
     android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
+    android:background="@drawable/okbet_bg_login"
     android:focusableInTouchMode="true"
     tools:context=".ui.login.signIn.PhoneVerifyActivity">
 

@@ -199,6 +199,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     protected boolean isManualValidateError = false;
 
     protected View panel;
+    protected View bottomLine;
     protected Space labelSpace;
     protected Space labelSpaceBelow;
     protected ViewGroup editTextLayout;
@@ -420,6 +421,8 @@ public class TextFormFieldBoxes extends FrameLayout {
         this.rightShell = findViewById(R.id.text_field_boxes_right_shell);
         this.upperPanel = findViewById(R.id.text_field_boxes_upper_panel);
         this.bottomPart = findViewById(R.id.text_field_boxes_bottom);
+        this.bottomLine = findViewById(R.id.bottom_line);
+
         this.clearButton = findViewById(R.id.text_field_boxes_clear_button);
         this.endIconImageButton = findViewById(R.id.text_field_boxes_end_icon_button);
         this.helperLabel = findViewById(R.id.text_field_boxes_helper);
@@ -616,6 +619,7 @@ public class TextFormFieldBoxes extends FrameLayout {
      */
     protected void deactivate() {
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext);
+        this.bottomLine.setBackgroundColor(R.color.color_E3E8EE);
         if (this.editText.getText().toString().isEmpty()) {
 
             if (this.alwaysShowHint && !this.editText.getHint().toString().isEmpty()) {
@@ -681,14 +685,15 @@ public class TextFormFieldBoxes extends FrameLayout {
         //final boolean keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
         if (animated) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
+            this.bottomLine.setBackgroundColor(R.color.color_317FFF_0760D4);
             ViewCompat.animate(this.editTextLayout)
                     .alpha(1f)
                     .setDuration(ANIMATION_DURATION);
 
-            ViewCompat.animate(this.floatingLabel)
-                    .scaleX(0.85f)
-                    .scaleY(0.85f)
-                    .setDuration(ANIMATION_DURATION);
+//            ViewCompat.animate(this.floatingLabel)
+//                    .scaleX(0.85f)
+//                    .scaleY(0.85f)
+//                    .setDuration(ANIMATION_DURATION);
 //            ViewCompat.animate(this.floatingHintLabel)
 //                    .scaleX(0.92f)
 //                    .scaleY(0.92f)
@@ -990,6 +995,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     public void setError(@Nullable String errorText, boolean giveFocus) {
         if (this.enabled && errorText != null) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_error);
+            this.bottomLine.setBackgroundColor(R.color.color_E44438);
             this.onError = true;
             //activate(true);
             setHighlightColor(this.errorColor);
@@ -1020,6 +1026,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     public void removeError() {
         this.onError = false;
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
+        this.bottomLine.setBackgroundColor(R.color.color_317FFF_0760D4);
         if (this.hasFocus) setHighlightColor(this.primaryColor);
         else setHighlightColor(this.secondaryColor);
         this.helperLabel.setTextColor(this.helperTextColor);

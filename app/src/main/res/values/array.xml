@@ -84,4 +84,10 @@
         <item>@string/betting_station_reserve</item>
         <item>@string/betting_station_withdraw</item>
     </string-array>
+
+    <string-array name="register_title_color">
+        <item>@color/color_71ADFF</item>
+        <item>@color/color_1971FD</item>
+    </string-array>
+
 </resources>

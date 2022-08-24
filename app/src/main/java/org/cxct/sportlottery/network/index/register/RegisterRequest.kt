@@ -34,6 +34,8 @@ data class RegisterRequest(
     var verifyPhoto2: String? = null,
     var bettingStationId: String? = null,
     var salarySource: String? = null,
+    var nationCode: String? = null,
+    var currency: String? = null,
     var identityPhoto: String?= null,
     var identityType: Int? = null,
     var identityNumber: String? = null,

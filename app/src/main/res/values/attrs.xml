@@ -86,8 +86,8 @@
             <enum name="spread_inside" value="1" />
             <enum name="packed" value="2" />
         </attr>
-        <attr name="arrowSrc" format="reference"/>
-        <attr name="backgroundFrame" format="reference"/>
+        <attr name="arrowSrc" format="reference" />
+        <attr name="backgroundFrame" format="reference" />
         <attr name="textGravity" format="string">
             <!-- Push object to the top of its container, not changing its size. -->
             <flag name="top" value="0x30" />
@@ -174,7 +174,7 @@
     <declare-styleable name="OddsButton">
         <attr name="ob_fillet" format="boolean" />
         <attr name="ob_background" format="reference" />
-        <attr name="ob_hide_item_flag" format="boolean"/>
+        <attr name="ob_hide_item_flag" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BottomNavigationItem">
@@ -199,10 +199,10 @@
         <!--Texts-->
         <attr name="labelText" format="string" />
         <attr name="labelTextStyle" format="enum">
-            <enum name="normal" value="0"/>
-            <enum name="bold" value="1"/>
-            <enum name="italic" value="2"/>
-            <enum name="bold_italic" value="3"/>
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold_italic" value="3" />
         </attr>
         <attr name="subLabelText" format="string" />
         <attr name="hintText" format="string" />
@@ -210,10 +210,10 @@
         <attr name="singleTextColor" format="color" />
         <attr name="singleTextStartPadding" format="integer" />
         <attr name="singleTextStyle" format="enum">
-            <enum name="normal" value="0"/>
-            <enum name="bold" value="1"/>
-            <enum name="italic" value="2"/>
-            <enum name="bold_italic" value="3"/>
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold_italic" value="3" />
         </attr>
         <attr name="helperText" format="string" />
 
@@ -261,12 +261,24 @@
     </declare-styleable>
 
     <declare-styleable name="HighlightTextView">
-        <attr name="highlightColor" format="color|reference"/>
-        <attr name="highlightText" format="string"/>
-        <attr name="highlightWidth" format="dimension"/>
-        <attr name="highlightRadius" format="dimension"/>
-        <attr name="highlightBold" format="boolean"/>
-        <attr name="highlightTextColor" format="color|reference"/>
+        <attr name="highlightColor" format="color|reference" />
+        <attr name="highlightText" format="string" />
+        <attr name="highlightWidth" format="dimension" />
+        <attr name="highlightRadius" format="dimension" />
+        <attr name="highlightBold" format="boolean" />
+        <attr name="highlightTextColor" format="color|reference" />
+    </declare-styleable>
+
+    <!-- 渐变色TextView -->
+    <declare-styleable name="GradientTextView">
+        <attr name="gt_color_list" format="reference" />
+        <attr name="gt_gradient_direction" format="enum">
+            <enum name="left" value="0" />
+            <enum name="up" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <attr name="gt_gradient_angle" format="integer" />
     </declare-styleable>
 
 </resources>

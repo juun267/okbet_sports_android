@@ -54,13 +54,11 @@ class LoginViewModel(
             loginRepository.isRememberPWD = value
         }
 
-    fun checkInputData(context: Context, account: String, password: String, validCode: String): Boolean {
+    fun checkInputData(context: Context, account: String, password: String): Boolean {
         val accountError = checkAccount(context, account)
         val passwordError = checkPassword(context, password)
-        val validCodeError = checkValidCode(context, validCode)
-        val isDataValid = accountError == null && passwordError == null &&
-                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null)
-        _loginFormState.value = LoginFormState(accountError, passwordError, validCodeError)
+        val isDataValid = accountError == null && passwordError == null
+        _loginFormState.value = LoginFormState(accountError, passwordError)
 
         return isDataValid
     }
@@ -156,7 +154,7 @@ class LoginViewModel(
         }
     }
 
-     fun checkValidCode(context: Context, validCode: String): String? {
+    fun checkValidCode(context: Context, validCode: String): String? {
         return when {
             validCode.isBlank() -> context.getString(R.string.error_input_empty)
             else -> null

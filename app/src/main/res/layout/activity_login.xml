@@ -4,84 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/bg"
-    tools:ignore="SpUsage"
-    tools:context=".ui.login.signIn.LoginActivity">
-
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/ic_logo_21"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@drawable/okbet_bg_login"
+    tools:context=".ui.login.signIn.LoginActivity"
+    tools:ignore="SpUsage">
 
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="26dp"
         android:layout_height="20dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:background="@null"
+        android:contentDescription="@null"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        android:contentDescription="@null"
         android:src="@drawable/ic_arrow_login"
-        app:layout_constraintBottom_toBottomOf="@+id/ivLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ivLogo" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_custom_serivce"
+        android:layout_width="26dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="24dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@drawable/ic_customer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="151dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/okbet_login_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_register"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:text="Hi, 欢迎来到OKBet～"
+        android:textColor="@color/color_414655"
+        android:textSize="@dimen/textSize20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="14dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/okbet_bg_login_card"
         android:overScrollMode="never"
         android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo">
+        app:layout_constraintTop_toBottomOf="@id/label_register">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="24dp">
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="6dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="13dp"
-                android:background="@drawable/bg_login_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/label_register"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:layout_marginLeft="14dp"
-                android:text="@string/btn_login"
-                android:textColor="@color/color_BBBBBB_333333"
-                android:textSize="@dimen/textSize30sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintStart_toEndOf="@+id/view"
-                app:layout_constraintTop_toTopOf="@+id/view" />
-
-            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+            <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                 android:id="@+id/et_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:iconSignifier="@drawable/ic_login_account"
+                android:layout_marginTop="10dp"
+                app:hintText="@string/account_hint"
+                app:iconSignifier="@drawable/ic_login"
                 app:isResponsiveIconColor="false"
-                app:primaryColor="@color/color_AFAFB1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_register"
                 app:labelText="@string/member_account"
                 app:labelTextStyle="normal"
-                app:hintText="@string/account_hint">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_account"
@@ -93,24 +100,24 @@
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
 
-            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
+            </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
 
 
-            <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+            <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
+                app:hintText="@string/password_hint"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:isResponsiveIconColor="false"
-                app:primaryColor="@color/color_AFAFB1"
+                app:labelText="@string/login_password"
+                app:labelTextStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_account"
-                app:labelText="@string/login_password"
-                app:labelTextStyle="normal"
-                app:hintText="@string/password_hint">
+                app:primaryColor="@color/color_AFAFB1">
 
                 <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                     android:id="@+id/eet_password"
@@ -122,86 +129,20 @@
                     android:textColor="@color/color_FFFFFF_DE000000"
                     android:textSize="@dimen/textSize14sp" />
 
-            </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
-
-            <LinearLayout
-                android:id="@+id/block_valid_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_password">
-
-                <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
-                    android:id="@+id/et_verification_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:iconSignifier="@drawable/ic_login_verify"
-                    app:isResponsiveIconColor="false"
-                    app:primaryColor="@color/color_AFAFB1"
-                    app:hideSelectedTitle="true"
-                    app:singleText="@string/verification_code"
-                    app:singleTextStyle="normal">
-
-                    <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
-                        android:id="@+id/eet_verification_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:textColor="@color/color_FFFFFF_DE000000"
-                        android:maxLines="1"
-                        android:textSize="@dimen/textSize14sp" />
-
-                </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
-
-                <LinearLayout
-                    android:id="@+id/llCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/transparent"
-                    android:gravity="center"
-                    android:minWidth="80dp"
-                    android:orientation="horizontal">
-
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/ivVerification"
-                        android:layout_width="109dp"
-                        android:layout_height="40dp"
-                        android:minHeight="32dp"
-                        android:scaleType="fitXY"
-                        android:text="@string/get_verification_code"
-                        app:riv_corner_radius="8dp" />
-
-                    <ImageView
-                        android:id="@+id/ivReturn"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_return" />
-
-                </LinearLayout>
-            </LinearLayout>
-
+            </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
 
             <CheckBox
                 android:id="@+id/cb_remember_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:paddingStart="6dp"
                 android:button="@drawable/effect_login_select_checkbox"
+                android:paddingStart="6dp"
                 android:text="@string/remember_password"
-                android:textColor="@color/color_BBBBBB_333333"
+                android:textColor="@color/color_535D76"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
-
+                app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
             <TextView
                 android:id="@+id/btn_forget_password"
@@ -216,71 +157,61 @@
                 android:textColor="@color/color_F75452_E23434"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/block_valid_code" />
+                app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
             <Button
                 android:id="@+id/btn_login"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="6dp"
-                android:background="@drawable/bg_radius_23_button_dusk"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@drawable/ic_submit"
                 android:text="@string/btn_login"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize17sp"
+                android:alpha="0.5"
+                android:enabled="false"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cb_remember_password" />
 
-            <RelativeLayout
-                android:id="@+id/block_sign_up"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:paddingHorizontal="12dp"
+                android:layout_marginTop="@dimen/margin_14"
                 android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
                 <TextView
-                    android:id="@+id/btn_visit_first"
+                    android:id="@+id/tv_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
                     android:padding="4dp"
-                    android:text="@string/visit_first"
+                    android:text="@string/not_sign_up"
                     android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="gone" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="12dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:background="@color/color_909090_666666"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/textSize12sp" />
 
                 <TextView
-                    android:id="@+id/btn_sign_up"
+                    android:id="@+id/tv_sign_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
                     android:text="@string/sign_up_know"
-                    android:textColor="@color/colorOrange"
+                    android:textColor="@color/color_025BE8"
                     android:textSize="@dimen/textSize12sp" />
-
-                <TextView
-                    android:id="@+id/btn_service"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="4dp"
-                    android:text="@string/btn_service"
-                    android:textColor="@color/colorOrange"
-                    android:textSize="@dimen/textSize12sp" />
-
-            </RelativeLayout>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
+    <include
+        android:id="@+id/bottom_liences"
+        layout="@layout/bottom_register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginBottom="@dimen/margin_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

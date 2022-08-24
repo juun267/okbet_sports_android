@@ -1,23 +1,30 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.fragment_profile_center.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
+import kotlinx.android.synthetic.main.fragment_withdraw.btn_withdraw
+import kotlinx.android.synthetic.main.fragment_withdraw.tv_currency_type
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
+import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
@@ -25,10 +32,12 @@ import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.TransferTypeAddSwitch
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import org.cxct.sportlottery.util.TextUtil
@@ -56,12 +65,36 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         initEvent()
         initObserve(view)
         setupData()
+        setupServiceButton()
     }
 
     private fun setupData() {
         viewModel.apply {
             getMoneyConfigs()
             getUwCheck()
+        }
+    }
+
+    private fun setupServiceButton() {
+        tv_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    activity?.supportFragmentManager?.let { it1 ->
+                        ServiceDialog().show(
+                            it1,
+                            null
+                        )
+                    }
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                }
+            }
         }
     }
 
@@ -475,7 +508,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         view: View,
         bankCardList: MutableList<BankCardList>
     ) { //TODO Dean : 重構BottomSheet
-        bankCardList.addAll(bankCardList)
         bankCardAdapter =
             WithdrawBankCardAdapter(
                 requireContext(),
@@ -580,6 +612,7 @@ class WithdrawBankCardAdapter(
 
     inner class WithdrawBankItemViewHolder(val binding: ItemListviewBankCardBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("NotifyDataSetChanged")
         fun bind(bankCard: BankCardList, position: Int) {
             with(binding) {
                 root.setOnClickListener {
@@ -587,12 +620,14 @@ class WithdrawBankCardAdapter(
                     listener.onClick(bankCard)
                     notifyDataSetChanged()
                 }
-                tvBankCard.text = String.format(
-                    context.getString(org.cxct.sportlottery.R.string.selected_bank_card),
-                    bankCard.bankName,
-                    bankCard.cardNo
-                )
+                checkBank.setOnClickListener {
+                    selectBankCard(position)
+                    listener.onClick(bankCard)
+                    notifyDataSetChanged()
+                }
 
+                tvNumber.text = bankCard.cardNo
+                tvBankCard.text = bankCard.bankName
                 ivBankIcon.setImageResource(
                     when (bankCard.transferType) {
                         TransferType.BANK -> getBankIconByBankName(bankCard.bankName)
@@ -601,15 +636,11 @@ class WithdrawBankCardAdapter(
                         TransferType.STATION -> getBankIconByBankName(bankCard.bankName)
                     }
                 )
-                if (bankCard.isSelected) {
-                    selectedPosition = position
-                    checkBank.isChecked = true
-                } else {
-                    checkBank.isChecked = false
-                }
+                checkBank.isChecked = selectedPosition == position
             }
         }
     }
+
 
     private fun selectBankCard(bankPosition: Int) {
         dataList[selectedPosition].isSelected = false
@@ -618,6 +649,7 @@ class WithdrawBankCardAdapter(
         dataList[bankPosition].isSelected = true
         notifyItemChanged(bankPosition)
     }
+
 }
 
 

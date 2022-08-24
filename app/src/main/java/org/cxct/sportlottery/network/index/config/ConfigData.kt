@@ -112,7 +112,7 @@ data class ConfigData(
     var safeQuestionList: List<SafeQuestion>?, //安全问题选项列表
     val enableNationCurrency: String?, //国家与币种是否需填(1: 是, 0: 否, 默认是null:关闭)
     val handicapShow: String?, //前端展示的盘口（EU,HK,MY,ID）後端沒配置或為空的狀況下，要顯示預設的四個盤口
-    val nationCurrencyList: List<NationCurrency>?, //国家币种列表
+    val nationCurrencyList: List<NationCurrency>? //国家币种列表
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_title"
-    tools:context="org.cxct.sportlottery.ui.common.CustomTopToolbar"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:context="org.cxct.sportlottery.ui.common.CustomTopToolbar">
 
     <TextView
         android:id="@+id/tv_toolbar_title"
@@ -27,6 +27,16 @@
         android:paddingHorizontal="20dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_union" />
+
+    <TextView
+        android:id="@+id/tv_toolbar_title_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|right"
+        android:layout_marginEnd="@dimen/margin_20"
+        android:textColor="@color/color_6C7BA8"
+        android:textSize="@dimen/textSize14sp"
+        android:visibility="gone" />
 
 </FrameLayout>
 

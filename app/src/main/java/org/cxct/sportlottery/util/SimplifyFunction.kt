@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -509,6 +510,75 @@ fun WebView.setWebViewCommonBackgroundColor() {
  * 取自
  * @see org.cxct.sportlottery.ui.component.StatusSpinnerView
  */
+//针对TextFormFieldBoxes和TextFieldBoxes控件类型写的重载方法
+@SuppressLint("ClickableViewAccessibility")
+fun View.setSpinnerView(
+    editText: EditText,
+    textFieldBoxes: TextFormFieldBoxes,
+    spinnerList: List<StatusSheetData>,
+    touchListener: () -> Unit,
+    itemSelectedListener: (data: StatusSheetData?) -> Unit,
+    popupWindowDismissListener: () -> Unit
+) {
+    val spinnerAdapter: StatusSpinnerAdapter?
+
+    var selectItem: StatusSheetData?
+    var mListPop = ListPopupWindow(context)
+
+    setOnClickListener {
+
+        if (mListPop.isShowing) {
+            mListPop.dismiss()
+        } else {
+            mListPop.show()
+        }
+
+        if (!editText.isFocused) {
+            //設置TextFieldBoxes為選中狀態, 但EditText不給予focus(不給予focus以不觸發系統鍵盤出現)
+            textFieldBoxes.setHasFocus(true, false)
+        }
+        //隱藏光標
+        editText.isCursorVisible = false
+
+        touchListener()
+    }
+
+    if (spinnerList.isNotEmpty()) {
+        val first = spinnerList[0]
+        first.isChecked = true
+        selectItem = first
+    }
+    spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
+    mListPop = ListPopupWindow(context)
+    mListPop.width = textFieldBoxes.width
+    mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
+    mListPop.setBackgroundDrawable(
+        ContextCompat.getDrawable(
+            context,
+            R.drawable.bg_play_category_pop
+        )
+    )
+    mListPop.setAdapter(spinnerAdapter)
+    mListPop.anchorView = textFieldBoxes //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+    mListPop.isModal = true //设置是否是模式
+    mListPop.setOnItemClickListener { _, _, position, _ ->
+        //隱藏EditText的光標
+        editText.isCursorVisible = false
+        mListPop.dismiss()
+        selectItem = spinnerList[position]
+        selectItem?.isChecked = true
+        spinnerList.find { it != selectItem && it.isChecked }?.isChecked = false
+        itemSelectedListener.invoke(selectItem)
+    }
+    //PopupWindow關閉時
+    mListPop.setOnDismissListener {
+        textFieldBoxes.hasFocus = false
+        editText.clearFocus()
+        popupWindowDismissListener()
+    }
+}
+
+//针对TextFormFieldBoxes和TextFieldBoxes控件类型写的重载方法
 @SuppressLint("ClickableViewAccessibility")
 fun View.setSpinnerView(
     editText: EditText,
@@ -575,7 +645,6 @@ fun View.setSpinnerView(
         popupWindowDismissListener()
     }
 }
-
 /**
  * 判斷盤口啟用參數是否有配置
  * @return true: 有配置, false: 沒有配置(為空或null)

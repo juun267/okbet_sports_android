@@ -9,11 +9,11 @@
         android:label="WithdrawFragment">
         <action
             android:id="@+id/action_withdrawFragment_to_betstationFragment"
-            app:destination="@+id/BetStationFragment"></action>
+            app:destination="@+id/BetStationFragment" />
     </fragment>
     <fragment
         android:id="@+id/BetStationFragment"
         android:name="org.cxct.sportlottery.ui.withdraw.BetStationFragment"
-        android:label="BetStationFragment"></fragment>
+        android:label="BetStationFragment" />
 
 </navigation>

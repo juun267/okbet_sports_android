@@ -681,6 +681,7 @@ public class TextFieldBoxes extends FrameLayout {
         //final boolean keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
         if (animated) {
             this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
+
             ViewCompat.animate(this.editTextLayout)
                     .alpha(1f)
                     .setDuration(ANIMATION_DURATION);
