@@ -52,6 +52,7 @@ import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
@@ -324,6 +325,8 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+            val px10 = 10f.dpToPx.toInt()
+            addItemDecoration(SpacesItemDecoration(px10,px10, px10, 0))
         }
 
         binding.rvCat.apply {

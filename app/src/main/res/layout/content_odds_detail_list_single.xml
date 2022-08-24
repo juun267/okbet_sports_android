@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:ignore="SpUsage">
+    tools:ignore="SpUsage"
+    android:elevation="5dp"
+    android:background="@drawable/bg_radius_10_fff">
 
 
     <include layout="@layout/content_odds_detail_list_item" />
@@ -15,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
-        android:padding="@dimen/activity_vertical_margin"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"

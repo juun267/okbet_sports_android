@@ -87,9 +87,10 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_191919_FCFCFC"
+                android:background="@color/color_F0F5FA"
                 android:orientation="vertical"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -97,7 +98,6 @@
                     android:id="@+id/rv_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_191919_FCFCFC"
                     android:overScrollMode="never"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 

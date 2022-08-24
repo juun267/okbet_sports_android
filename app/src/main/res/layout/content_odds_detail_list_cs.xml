@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:ignore="HardcodedText,SpUsage">
-
+    tools:ignore="HardcodedText,SpUsage"
+    android:elevation="5dp"
+    android:background="@drawable/bg_radius_10_fff"
+    android:paddingBottom="10dp">
 
     <include layout="@layout/content_odds_detail_list_item" />
 
@@ -14,20 +16,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="@dimen/activity_vertical_margin">
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/activity_horizontal_margin">
+            android:paddingHorizontal="@dimen/odd_item_horizontal">
 
             <TextView
                 android:id="@+id/tv_home_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/odd_item_divide_single"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_CCCCCC_000000"
@@ -38,7 +40,7 @@
                 android:id="@+id/tv_draw"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
+                android:layout_marginHorizontal="@dimen/odd_item_divide_single"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/draw"
@@ -50,7 +52,7 @@
                 android:id="@+id/tv_away_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/odd_item_divide_single"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="@color/color_CCCCCC_000000"
@@ -62,14 +64,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginHorizontal="7dp"
             android:orientation="horizontal">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
@@ -80,7 +81,6 @@
                 android:id="@+id/rv_draw"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
@@ -92,7 +92,6 @@
                 android:id="@+id/rv_away"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
@@ -107,6 +106,8 @@
             android:layout_height="wrap_content"
             android:background="@color/color_191919_FCFCFC"
             android:nestedScrollingEnabled="false"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             android:overScrollMode="never" />
 
     </LinearLayout>

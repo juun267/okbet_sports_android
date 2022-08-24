@@ -25,7 +25,7 @@
             app:layout_constraintWidth_percent="0.392"
             tools:text="Mario Gavranovic" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddsButton
+        <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
             android:id="@+id/button_odds_1st"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -36,7 +36,7 @@
             app:ob_background="@drawable/selector_button_radius_0_odds"
             app:ob_fillet="false" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddsButton
+        <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
             android:id="@+id/button_odds_ant"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -47,7 +47,7 @@
             app:ob_background="@drawable/selector_button_radius_0_odds"
             app:ob_fillet="false" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddsButton
+        <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
             android:id="@+id/button_odds_last"
             android:layout_width="0dp"
             android:layout_height="match_parent"

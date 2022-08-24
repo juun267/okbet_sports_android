@@ -66,6 +66,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="odd_item_horizontal">10dp</dimen>
+    <dimen name="odd_item_horizontal_left">10dp</dimen>
+    <dimen name="odd_item_divide_single">3dp</dimen>
+    <dimen name="odd_item_divide_all">6dp</dimen>
+
+
+
     <dimen name="recyclerview_item_dec_spec_sport_type">10dp</dimen>
     <dimen name="recyclerview_item_dec_spec_date">14dp</dimen>
     <dimen name="recyclerview_item_dec_spec_play_category">12dp</dimen>
