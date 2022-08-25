@@ -52,6 +52,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.ui.statistics.StatisticsFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -85,6 +86,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         })
     }
 
+    private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId)}
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
     lateinit var gameType: GameType
@@ -152,11 +154,12 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             }
 
             override fun showStatistics() {
+//                supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value).commit()
                 //TODO 用不到clickMenu
-                StatisticsDialog.newInstance(
-                    matchId,
-                    StatisticsDialog.StatisticsClickListener { /** clickMenu() **/ })
-                    .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
+//                StatisticsDialog.newInstance(
+//                    matchId,
+//                    StatisticsDialog.StatisticsClickListener { /** clickMenu() **/ })
+//                    .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
             }
         }
     }
@@ -480,6 +483,9 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         }
     }
 
+    /**
+     * 点击事件
+     */
     fun clickButton() {
         binding.btnOdd.setOnClickListener { isShowOdd(true) }
         binding.btnAnalyze.setOnClickListener { isShowOdd(false) }
@@ -495,6 +501,16 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
         binding.btnAnalyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
         binding.viewBtnAnalyze.isVisible = !isShowOdd
+
+        supportFragmentManager.beginTransaction().apply {
+            if (statisticsFrament.value.context == null) {
+                this.add(R.id.frameBottom, statisticsFrament.value)
+            } else {
+                if (isShowOdd) this.hide(statisticsFrament.value)
+                else this.show(statisticsFrament.value)
+            }
+        }.commit()
+
 
 
     }

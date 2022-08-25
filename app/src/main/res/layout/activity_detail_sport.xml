@@ -159,7 +159,7 @@
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +176,12 @@
                     android:overScrollMode="never"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
-            </LinearLayout>
+                <FrameLayout
+                    android:id="@+id/frameBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
