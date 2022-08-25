@@ -244,7 +244,7 @@
                 android:id="@+id/imgYellowScore"
                 android:layout_width="10dp"
                 android:layout_height="12dp"
-                android:background="@drawable/bg_radius_2_025be8"
+                android:background="@drawable/bg_radius_2_ffcc15"
                 android:layout_marginLeft="6dp"
                 android:text="1"
                 android:textSize="@dimen/textSize8sp"

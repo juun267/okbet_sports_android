@@ -118,7 +118,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-        updateOddsTextColor()
+//        updateOddsTextColor()
 
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
@@ -237,7 +237,7 @@ class OddsButtonDetail @JvmOverloads constructor(
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
 
-        updateOddsTextColor()
+//        updateOddsTextColor()
 
 //        isSelected = odds?.isSelected ?: false
         isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
@@ -273,14 +273,24 @@ class OddsButtonDetail @JvmOverloads constructor(
             )
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
-
-        if (getOdds(odd, oddsType) < 0.0) {
+        val diff = getOdds(odd, oddsType)
+        if (diff < 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
                     R.color.selector_button_odd_bottom_text_red
                 )
             )
+            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_down)
+
+        } else if (diff > 0.0) {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_green
+                )
+            )
+            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_up)
         } else {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -288,6 +298,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_eps
                 )
             )
+            iv_arrow.setImageDrawable(null)
         }
 
         isSelected = odd?.isSelected ?: false
@@ -335,40 +346,47 @@ class OddsButtonDetail @JvmOverloads constructor(
 
         when (oddState) {
             OddState.LARGER.state -> {
-                button_odd_detail.background =
-                    ContextCompat.getDrawable(
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
                         context,
-                        if (mFillet) R.drawable.bg_radius_4_button_unselected_green
-                        else R.drawable.bg_radius_0_button_green
+                        R.color.selector_button_odd_bottom_text_green
                     )
-
-                isActivated = true
+                )
+                iv_arrow.apply {
+                    setImageResource(R.drawable.selector_odds_arrow_up)
+                    visibility = View.VISIBLE
+                }
+                isActivated = false
             }
             OddState.SMALLER.state -> {
-                button_odd_detail.background =
-                    ContextCompat.getDrawable(
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
                         context,
-                        if (mFillet) R.drawable.bg_radius_4_button_unselected_red
-                        else R.drawable.bg_radius_0_button_red
+                        R.color.selector_button_odd_bottom_text_red
                     )
-                resources.getColor(R.color.color_E44438_e44438)
-                isActivated = true
-            }
-            else -> {
-                button_odd_detail.background =
-                    ContextCompat.getDrawable(
-                        context,
-                        if (mFillet) {
-                            if (MultiLanguagesApplication.isNightMode) R.drawable.selector_button_radius_4_odds_dark
-                            else R.drawable.selector_button_radius_4_odds
-                        } else R.drawable.selector_button_radius_0_odds
-                    )
-
+                )
+                iv_arrow.apply {
+                    setImageResource(R.drawable.selector_odds_arrow_down)
+                    visibility = View.VISIBLE
+                }
                 isActivated = false
-
-                updateOddsTextColor()
+            }
+            OddState.SAME.state -> {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
+                        else R.color.selector_button_odd_bottom_text
+                    )
+                )
+                iv_arrow.apply {
+                    setImageDrawable(null)
+                    visibility = View.GONE
+                }
+                isActivated = false
             }
         }
+//        updateOddsTextColor()
     }
 
     /**
@@ -376,13 +394,29 @@ class OddsButtonDetail @JvmOverloads constructor(
      */
     private fun updateOddsTextColor() {
         //負盤
-        if (getOdds(mOdd, mOddsType) < 0.0) {
+        val diff = getOdds(mOdd, mOddsType)
+        if (diff < 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
                     R.color.selector_button_odd_bottom_text_red
                 )
             )
+            iv_arrow.apply {
+                setImageResource(R.drawable.selector_odds_arrow_down)
+                visibility = View.VISIBLE
+            }
+        } else if (diff > 0.0) {//正盤
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_green
+                )
+            )
+            iv_arrow.apply {
+                setImageResource(R.drawable.selector_odds_arrow_up)
+                visibility = View.VISIBLE
+            }
         } else {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -391,6 +425,10 @@ class OddsButtonDetail @JvmOverloads constructor(
                     else R.color.selector_button_odd_bottom_text
                 )
             )
+            iv_arrow.apply {
+                setImageDrawable(null)
+                visibility = GONE
+            }
         }
     }
 
@@ -433,3 +471,4 @@ class OddsButtonDetail @JvmOverloads constructor(
     }
 
 }
+

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.detail
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -171,6 +172,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
     }
 
     private fun initData() {
+        clickButton()
         (intent.getSerializableExtra(TYPE_PARAMETER) as DetailParams)?.let {
             gameType = it.gameType
             matchType = it.matchType ?: MatchType.OTHER
@@ -325,8 +327,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-            val px10 = 10f.dpToPx.toInt()
-            addItemDecoration(SpacesItemDecoration(px10,px10, px10, 0))
+
         }
 
         binding.rvCat.apply {
@@ -344,6 +345,9 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         }
     }
 
+    private fun clickDetailHead() {
+
+    }
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.userInfo.observe(this) { userInfo ->
@@ -474,6 +478,25 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
                 binding.liveViewToolBar.setupTrackerUrl(matchTrackerUrl)
             }
         }
+    }
+
+    fun clickButton() {
+        binding.btnOdd.setOnClickListener { isShowOdd(true) }
+        binding.btnAnalyze.setOnClickListener { isShowOdd(false) }
+    }
+
+    private fun isShowOdd(isShowOdd: Boolean) {
+        val selectColor = ContextCompat.getColor(this,R.color.color_025BE8)
+        val nomalColor = ContextCompat.getColor(this, R.color.color_6C7BA8)
+        binding.btnOdd.setTextColor(if (isShowOdd) selectColor else nomalColor)
+        binding.viewBtOdd.isVisible = isShowOdd
+        binding.rvDetail.isVisible = isShowOdd
+        binding.rvCat.isVisible = isShowOdd
+
+        binding.btnAnalyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
+        binding.viewBtnAnalyze.isVisible = !isShowOdd
+
+
     }
 
     /**

@@ -567,10 +567,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun controlExpandBottom(expand: Boolean) {
-//            val param = itemView.layoutParams as RecyclerView.LayoutParams
-//            param.bottomMargin = if (expand) 0.dp else 8.dp
-//            itemView.layoutParams = param
             try {
+                itemView.findViewById<View>(R.id.spaceItemBottom).isVisible = expand
                 itemView.findViewById<View>(R.id.view_line).visibility =
                     if (expand) View.VISIBLE else View.GONE
                 itemView.findViewById<View>(R.id.spaceTitle).visibility =

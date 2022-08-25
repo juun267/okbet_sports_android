@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_gravity="center_vertical"
-        android:paddingHorizontal="6dp"
-        android:background="@drawable/selector_button_radius_4_odds"
         tools:ignore="SpUsage,ContentDescription">
 
 
         <LinearLayout
+            android:paddingHorizontal="6dp"
+            android:background="@drawable/selector_button_radius_4_odds_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -57,6 +57,16 @@
                 android:textSize="@dimen/textSize14sp"
                 android:paddingLeft="10dp"
                 tools:text="1.067" />
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginRight="2dp"
+                tools:src="@drawable/selector_odds_arrow_up"
+                android:visibility="gone"
+                android:layout_marginLeft="2dp"
+                tools:visibility="visible" />
 
         </LinearLayout>
 
