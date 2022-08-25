@@ -64,6 +64,7 @@
             android:background="@color/color_191919_FCFCFC"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
+            android:paddingHorizontal="7dp"
             tools:listitem="@layout/content_type_one_list_item" />
 
         <include layout="@layout/space_content_odds_detail_list"/>
