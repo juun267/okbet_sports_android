@@ -365,12 +365,11 @@ object BetInfoRepository {
             val minParlayBetMoney = betInfo?.minParlayBetMoney ?: 0
 
             if(it.value.num > 1){
-                //大於1 即為組合型串關 最大下注金額有特殊規則
-
-                //賠付額上限計算投注限額
+                //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val parlayPayout =
                     maxParlayPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
-                        .toLong()
+                        .toLong().times(it.value.num)
+
                 val maxParlayBet = if (maxParlayBetMoney == 0L) {
                     //如果 maxParlayBetMoney 為 0 使用最大賠付額
                     parlayPayout
@@ -378,7 +377,7 @@ object BetInfoRepository {
                     //投注額和賠付額取小計算
                     min(maxParlayBetMoney, parlayPayout)
                 }
-                maxBet = calculateComboMaxBet(it.value, maxParlayBet)
+                maxBet = maxParlayBet
                 minBet = minParlayBetMoney
             }else{
                 val payout: Long
@@ -446,14 +445,6 @@ object BetInfoRepository {
             )
         }
     }
-
-    private fun calculateComboMaxBet(
-        parlayBetLimit: ParlayBetLimit,
-        max: Long,
-    ): Long {
-        return max.times(parlayBetLimit.num)
-    }
-
 
     fun saveOddsHasChanged(matchOdd: MatchOdd) {
         val hasChanged = _betInfoList.value?.peekContent()?.find {
