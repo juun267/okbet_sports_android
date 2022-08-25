@@ -1203,7 +1203,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
-    //多投單注
+    //填充單注
     class BatchSingleInMoreOptionViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         private var mUserMoney: Double = 0.0
         private var mUserLogin: Boolean = false
