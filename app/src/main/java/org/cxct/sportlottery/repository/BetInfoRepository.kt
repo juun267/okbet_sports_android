@@ -367,8 +367,14 @@ object BetInfoRepository {
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val parlayPayout =
-                    maxParlayPayout.div(if (it.value.isOnlyEUType) it.value.odds.toDouble() - 1 else it.value.hdOdds.toDouble())
-                        .toLong().times(it.value.num)
+                    maxParlayPayout.div(
+                        if (it.value.isOnlyEUType) {
+                            //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
+                            it.value.odds.toDouble() - it.value.num
+                        } else {
+                            it.value.hdOdds.toDouble()
+                        }
+                    ).times(it.value.num).toLong()
 
                 val maxParlayBet = if (maxParlayBetMoney == 0L) {
                     //如果 maxParlayBetMoney 為 0 使用最大賠付額
