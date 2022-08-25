@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_F0F5FA"
     android:orientation="vertical"
     tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment"
     tools:ignore="ContentDescription, SpUsage">
@@ -13,6 +13,8 @@
         android:id="@+id/ll_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_1"
+        android:background="@color/exo_white"
         android:orientation="vertical"
         android:visibility="gone"
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
@@ -56,233 +58,351 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="14dp"
-        android:paddingTop="14dp"
-        android:paddingEnd="14dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_4"
             android:orientation="vertical">
-            <!-- 銀行卡 -->
+
             <LinearLayout
-                android:id="@+id/block_bank_card_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/exo_white"
                 android:orientation="vertical">
-                <!-- 選擇銀行 -->
+                <!-- 銀行卡 -->
                 <LinearLayout
-                    android:id="@+id/item_bank_selector"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/bg_square_shape_4dp_white"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start|center_vertical"
-                        android:text="@string/create_bank"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        android:textSize="@dimen/textSize13sp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="12dp"
-                        android:background="@color/color_666666_bcbcbc" />
-
-                    <ImageView
-                        android:id="@+id/iv_bank_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="12dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_bank_default" />
-
-                    <TextView
-                        android:id="@+id/tv_bank_name"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:text="@string/select_bank"
-                        android:textColor="@color/color_BBBBBB_333333"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginEnd="6dp"
-                        android:src="@drawable/ic_arrow_down_gray" />
-
-                </LinearLayout>
-                <!-- 開戶名 -->
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_create_name"
+                    android:id="@+id/block_bank_card_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvEnable="false"
-                    app:cvHint="@string/hint_please_enter_create_name"
-                    app:cvInputType="text"
-                    app:cvMarginBottom="8dp"
-                    app:cvTitle="@string/create_name"
-                    app:cvTitleTextStyle="bold" />
-                <!-- 銀行卡號 -->
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_bank_card_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cvHint="@string/please_enter_bank_card_rule"
-                    app:cvInputType="number"
-                    app:cvMarginBottom="8dp"
-                    app:cvTitle="@string/bank_card_number"
-                    app:cvTitleTextStyle="bold" />
-                <!-- 開戶網點 -->
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_network_point"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cvHint="@string/please_enter_network_point"
-                    app:cvInputType="text"
-                    app:cvMarginBottom="8dp"
-                    app:cvTitle="@string/network_point"
-                    app:cvTitleTextStyle="bold" />
-                <!-- 電話號碼 -->
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cvHint="@string/please_enter_wallet_phone_number"
-                    app:cvInputType="number"
-                    app:cvMarginBottom="8dp"
-                    app:cvTitle="@string/wallet_phone_number"
-                    app:cvTitleTextStyle="bold" />
-            </LinearLayout>
-
-            <!-- 虛擬幣 -->
-            <LinearLayout
-                android:id="@+id/block_crypto_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <!-- 協議/幣種 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="@null"
-                    app:cardBackgroundColor="@color/color_191919_FCFCFC"
-                    app:contentPaddingLeft="10dp">
-
+                    android:orientation="vertical">
+                    <!-- 選擇銀行 -->
                     <LinearLayout
+                        android:id="@+id/item_bank_selector"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginEnd="@dimen/margin_16"
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
-                            android:layout_marginBottom="14dp"
-                            android:text="@string/currency_protocol"
-                            android:textColor="@color/color_BBBBBB_333333"
-                            android:textSize="@dimen/textSize13sp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:gravity="start|center_vertical"
+                            android:text="@string/create_bank"
+                            android:textColor="@color/color_535D76"
+                            android:textSize="@dimen/textSize14sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_4"
+                            android:orientation="horizontal">
+
+
+                            <ImageView
+                                android:id="@+id/iv_bank_icon"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="12dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_bank_default" />
+
+                            <TextView
+                                android:id="@+id/tv_bank_name"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="start|center_vertical"
+                                android:text="@string/select_bank"
+                                android:textColor="@color/color_BBBBBB_333333"
+                                android:textSize="@dimen/textSize12sp" />
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_marginEnd="6dp"
+                                android:src="@drawable/ic_arrow_down_gray" />
+                        </LinearLayout>
 
                         <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
-                            android:background="@color/color_666666_bcbcbc" />
-
-                        <org.cxct.sportlottery.ui.component.StatusSelectorView
-                            android:id="@+id/sv_protocol"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="8dp"
-                            app:textGravity="start|center_vertical"
-                            app:defaultBottomSheetTitleText="@string/select_currency_protocol"
-                            app:horizontalChainStyle="spread_inside" />
+                            android:layout_height="@dimen/margin_1"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:background="@color/color_E3E8EE" />
 
                     </LinearLayout>
 
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_create_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        app:hintText="@string/hint_please_enter_create_name"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/create_name"
+                        app:labelTextStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:primaryColor="@color/color_AFAFB1">
 
-                </androidx.cardview.widget.CardView>
-                <!-- 錢包地址 -->
-                <org.cxct.sportlottery.ui.login.LoginEditText
-                    android:id="@+id/et_wallet"
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_create_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_bank_card_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        app:hintText="@string/please_enter_bank_card_rule"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/bank_card_number"
+                        app:labelTextStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_bank_card_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_network_point"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        app:hintText="@string/please_enter_network_point"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/network_point"
+                        app:labelTextStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_network_point"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        app:hintText="@string/please_enter_wallet_phone_number"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/wallet_phone_number"
+                        app:labelTextStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_phone_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                </LinearLayout>
+
+                <!-- 虛擬幣 -->
+                <LinearLayout
+                    android:id="@+id/block_crypto_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cvHint="@string/please_enter_wallet_address"
-                    app:cvInputType="text"
-                    app:cvMarginBottom="8dp"
-                    app:cvTitle="@string/wallet_address"
-                    app:cvTitleTextStyle="bold" />
+                    android:orientation="vertical">
+                    <!-- 協議/幣種 -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/color_191919_FCFCFC"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="@null"
+                        app:contentPaddingLeft="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="14dp"
+                                android:layout_marginBottom="14dp"
+                                android:text="@string/currency_protocol"
+                                android:textColor="@color/color_BBBBBB_333333"
+                                android:textSize="@dimen/textSize13sp"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginBottom="12dp"
+                                android:background="@color/color_666666_bcbcbc" />
+
+                            <org.cxct.sportlottery.ui.component.StatusSelectorView
+                                android:id="@+id/sv_protocol"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="8dp"
+                                app:defaultBottomSheetTitleText="@string/select_currency_protocol"
+                                app:horizontalChainStyle="spread_inside"
+                                app:textGravity="start|center_vertical" />
+
+                        </LinearLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_wallet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_14"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="@dimen/margin_14"
+                        app:hintText="@string/please_enter_wallet_address"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/wallet_address"
+                        app:labelTextStyle="normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_wallet"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                </LinearLayout>
+
+                <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                    android:id="@+id/et_withdrawal_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_14"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="@dimen/margin_14"
+                    app:hintText="@string/hint_please_enter_withdraw_password"
+                    app:isResponsiveIconColor="false"
+                    app:labelText="@string/withdraw_password"
+                    app:labelTextStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:primaryColor="@color/color_AFAFB1">
+
+                    <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                        android:id="@+id/eet_withdrawal_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textColor="@color/color_FFFFFF_DE000000"
+                        android:textSize="@dimen/textSize14sp" />
+
+                </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+
             </LinearLayout>
-            <!-- 提款密碼 -->
-            <org.cxct.sportlottery.ui.login.LoginEditText
-                android:id="@+id/et_withdrawal_password"
+
+
+            <!--  按鈕  -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cvHint="@string/hint_please_enter_withdraw_password"
-                app:cvInputType="textPassword"
-                app:cvMarginBottom="8dp"
-                app:cvTitle="@string/withdraw_password"
-                app:cvTitleTextStyle="bold" />
+                android:layout_height="44dp"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/margin_20">
+
+                <TextView
+                    android:id="@+id/btn_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_submit"
+                    android:gravity="center"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
+                    android:text="@string/submit"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_FFFFFF_FFFFFF"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_delete_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="11dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_radius_20_button_hollow"
+                    android:gravity="center"
+                    android:paddingTop="11dp"
+                    android:paddingBottom="11dp"
+                    android:text="@string/delete_bank_card"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_317FFF_0760D4"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
-
-        <!--  按鈕  -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:id="@+id/btn_submit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_radius_20_button_dusk"
-                android:gravity="center"
-                android:paddingTop="9dp"
-                android:paddingBottom="9dp"
-                android:text="@string/submit"
-                android:textAllCaps="true"
-                android:textColor="@color/color_FFFFFF_FFFFFF"
-                android:textSize="@dimen/textSize16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btn_delete_bank"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="11dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_radius_20_button_hollow"
-                android:gravity="center"
-                android:paddingTop="11dp"
-                android:paddingBottom="11dp"
-                android:text="@string/delete_bank_card"
-                android:textAllCaps="true"
-                android:textColor="@color/color_317FFF_0760D4"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

@@ -48,6 +48,8 @@
         android:dividerHeight="0dp"
         android:overScrollMode="never"
         tools:itemCount="5"
+        android:layout_marginStart="@dimen/margin_10"
+        android:layout_marginEnd="@dimen/margin_10"
         tools:listitem="@layout/item_listview_bank_card" />
 
 </LinearLayout>
