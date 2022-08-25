@@ -149,9 +149,13 @@ object BetInfoRepository {
             _matchOddList.postValue(parlayMatchOddList)
 
             if (!hasPointMark) {
-                val newParlayList = updateParlayOddOrder(
+                /**
+                 * 原在此處有將N串1移至第一項的排序邏輯移動至ParlayLimitUtil.getCom()
+                 * @see ParlayLimitUtil.getCom N串1排序
+                 */
+                val newParlayList =
                     getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, true, betInfo = betInfo).toMutableList()
-                )
+
                 if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
                         newParlayList[index].apply {
