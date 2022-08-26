@@ -1,67 +1,78 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:ignore="SpUsage">
+    android:layout_height="wrap_content">
 
-
-    <include layout="@layout/content_odds_detail_list_item" />
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_tab"
-        android:layout_width="match_parent"
-        android:layout_height="65dp">
-
-        <TextView
-            android:id="@+id/tv_home_name"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:textColor="@color/color_select_blue_black"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
-            app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="瑞士" />
-
-        <TextView
-            android:id="@+id/tv_away_name"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:textColor="@color/color_select_blue_black"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_home_name"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="西班牙" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_404040_cccccc"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_bet"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_191919_FCFCFC"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        tools:itemCount="5"
-        tools:listitem="@layout/content_type_sco_item" />
+        android:orientation="vertical"
+        tools:ignore="SpUsage"
+        style="@style/StyleOddButtonLL"
+        android:background="@drawable/bg_radius_10_fff">
 
 
-</LinearLayout>
+        <include layout="@layout/content_odds_detail_list_item" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_tab"
+            android:layout_width="match_parent"
+            android:layout_height="65dp">
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textColor="@color/color_select_blue_black"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="瑞士" />
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textColor="@color/color_select_blue_black"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="西班牙" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_404040_cccccc"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_191919_FCFCFC"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:paddingRight="7dp"
+            tools:itemCount="5"
+            tools:listitem="@layout/content_type_sco_item" />
+
+        <include layout="@layout/space_content_odds_detail_list"/>
+
+    </LinearLayout>
+</FrameLayout>
+
 

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="3dp">
+
+    <FrameLayout
+        android:id="@+id/button_odd_detail"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_gravity="center_vertical"
+        tools:ignore="SpUsage,ContentDescription">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingHorizontal="6dp"
+            android:background="@drawable/selector_button_radius_4_odds_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="SpUsage">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/selector_button_odd_top_text2"
+                android:textSize="@dimen/textSize14sp"
+                android:paddingRight="5dp"
+                tools:text="义大利义大利"
+                tools:textColor="@color/color_A7B2C"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_spread_2"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/helvetica"-->
+<!--                android:maxLines="1"-->
+<!--                android:textColor="@color/selector_button_odd_top_text2"-->
+<!--                android:textSize="@dimen/textSize13sp"-->
+<!--                tools:text="-0.5/1"-->
+<!--                tools:textColor="@color/color_A7B2C4"-->
+<!--                app:layout_constraintRight_toLeftOf="@+id/tv_odds"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+
+
+            <TextView
+                android:id="@+id/tv_spread"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica"
+                android:maxLines="1"
+                android:textColor="@color/selector_button_odd_top_text2"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="-0.5/1"
+                tools:textColor="@color/color_A7B2C4"
+                app:layout_constraintLeft_toRightOf="@+id/tv_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <View
+                android:id="@+id/space_item_remain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toLeftOf="@+id/tv_spread_space"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/tv_spread_space"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica"
+                android:maxLines="1"
+                android:textColor="@color/selector_button_odd_top_text2"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="-0.5/1"
+                tools:textColor="@color/color_A7B2C4"
+                app:layout_constraintRight_toLeftOf="@+id/tv_odds"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/tv_odds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica"
+                android:textColor="@color/selector_button_odd_bottom_text"
+                android:textSize="@dimen/textSize14sp"
+                android:paddingLeft="10dp"
+                tools:text="1.067"
+                app:layout_constraintRight_toLeftOf="@+id/iv_arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginRight="2dp"
+                tools:src="@drawable/selector_odds_arrow_up"
+                android:visibility="gone"
+                android:layout_marginLeft="2dp"
+                tools:visibility="visible"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/img_odd_lock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_radius_4_button_odds_lock"
+            android:scaleType="center"
+            android:src="@drawable/ic_iconlock"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/img_odd_unknown"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_radius_4_button_odds_lock"
+            android:gravity="center"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/color_7F7F7F_999999"
+            android:text="@string/unknown_data"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</FrameLayout>

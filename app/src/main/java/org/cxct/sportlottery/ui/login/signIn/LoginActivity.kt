@@ -102,13 +102,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                System.out.println("============= s.toString() ============"+s.toString())
                 if(s!= null && s.toString().length > 0){
                     adjustEnableLoginButton(true)
-                    System.out.println("============= afterTextChanged1111 ============"+s.toString())
                 }else{
                     adjustEnableLoginButton(false)
-                    System.out.println("============= afterTextChanged2222 ============"+s.toString())
                 }
             }
 
@@ -145,6 +142,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
         binding.btnLogin.requestFocus()
+        if(binding.eetAccount.text.length > 0){
+            adjustEnableLoginButton(true)
+        }
     }
 
 //    private fun setupValidCode() {

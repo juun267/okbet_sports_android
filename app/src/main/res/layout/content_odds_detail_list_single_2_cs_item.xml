@@ -1,62 +1,71 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:ignore="SpUsage">
-
-
-    <include layout="@layout/content_odds_detail_list_item" />
-
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        tools:ignore="SpUsage"
+        style="@style/StyleOddButtonLL"
+        android:background="@drawable/bg_radius_10_fff">
 
-        <TextView
-            android:id="@+id/tv_home_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="8dp"
-            android:textColor="@color/color_909090_666666"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="皇家马德里" />
 
-        <TextView
-            android:id="@+id/tv_away_name"
-            android:layout_width="0dp"
+        <include layout="@layout/content_odds_detail_list_item" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            android:paddingStart="8dp"
-            android:textColor="@color/color_909090_666666"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="利物浦" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/color_909090_666666"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="皇家马德里" />
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:paddingStart="8dp"
+                android:textColor="@color/color_909090_666666"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="利物浦" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:paddingHorizontal="7dp"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="2"
+            tools:listitem="@layout/content_type_grid_item"
+            style="@style/StyleOddButtonItem"/>
+
+        <include layout="@layout/space_content_odds_detail_list"/>
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_bet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/activity_vertical_margin"
-        android:paddingEnd="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
-        tools:itemCount="2"
-        tools:listitem="@layout/content_type_grid_item" />
+</FrameLayout>
 
-
-</LinearLayout>
 

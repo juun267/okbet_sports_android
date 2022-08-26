@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButton
+import org.cxct.sportlottery.ui.game.detail.recycle.OddStateViewHolderDetail
+import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -20,7 +20,7 @@ class TypeSingleAdapter (
 
 
     private val mOddStateRefreshListener by lazy {
-        object : OddStateViewHolder.OddStateChangeListener {
+        object : OddStateViewHolderDetail.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
             }
@@ -38,9 +38,9 @@ class TypeSingleAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsDetail.gameType, oddsDetail.oddArrayList[position])
 
 
-    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
+    inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
-        private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
+        private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
 
         fun bindModel(gameType: String?, odd: Odd?) {
             btnOdds?.apply {

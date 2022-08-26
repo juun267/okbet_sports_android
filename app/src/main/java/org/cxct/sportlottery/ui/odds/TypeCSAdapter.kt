@@ -10,8 +10,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButton
+import org.cxct.sportlottery.ui.game.detail.recycle.OddStateViewHolderDetail
+import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
@@ -27,7 +27,7 @@ class TypeCSAdapter(
 
 
     private val mOddStateRefreshListener by lazy {
-        object : OddStateViewHolder.OddStateChangeListener {
+        object : OddStateViewHolderDetail.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(oddsList.indexOf(oddsList.find { o -> o == odd }))
             }
@@ -45,9 +45,9 @@ class TypeCSAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsList[position])
 
 
-    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
+    inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
-        private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
+        private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
 
         private fun checkKey(key: String): Boolean {
             return TextUtil.compareWithGameKey(oddsDetail.gameType, key)
