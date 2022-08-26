@@ -57,7 +57,6 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
         })
         rv_list.layoutManager=LinearLayoutManager(this,RecyclerView.VERTICAL,false)
-        rv_list.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(this, R.drawable.divider_color_gray_light2)))
         adapter= TimeZoneAdapter(ItemClickListener {
             selectItem = it
             sortList()

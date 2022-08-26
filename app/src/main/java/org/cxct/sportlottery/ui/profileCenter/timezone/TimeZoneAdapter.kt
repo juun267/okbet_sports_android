@@ -63,11 +63,11 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
             binding.tvDateWeek.text = getDateAndWeek(data.name)
 
             if (data.isSelected){
-               binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
-                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_317FFF_0760D4))
+               binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_025BE8))
+                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_025BE8))
             }else{
-                binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_909090_666666))
-                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_909090_666666))
+                binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_535D76))
+                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_A7B2C))
             }
         }
 

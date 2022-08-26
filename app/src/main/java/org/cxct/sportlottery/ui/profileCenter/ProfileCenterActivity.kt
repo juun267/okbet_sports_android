@@ -375,10 +375,7 @@ class ProfileCenterActivity :
             startActivity(Intent(this, HelpCenterActivity::class.java))
         }
 
-        //建議反饋
-        btn_feedback.setOnClickListener {
-            startActivity(Intent(this, FeedbackMainActivity::class.java))
-        }
+
         //联系客服
         btn_custom_serivce.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl

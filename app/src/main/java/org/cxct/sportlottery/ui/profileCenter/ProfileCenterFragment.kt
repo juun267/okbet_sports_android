@@ -9,7 +9,40 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_about_us
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_account_transfer
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_affiliate
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_appearance
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_custom_serivce
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_edit_nickname
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_feedback
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_fund_detail
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_game_rule
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_game_settlement
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_help_center
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_language
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_member_level
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_news_center
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_other_bet_record
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_promotion
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_recharge
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_refresh_money
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_self_limit
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_time_zone
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_withdraw
+import kotlinx.android.synthetic.main.fragment_profile_center.btn_withdrawal_setting
+import kotlinx.android.synthetic.main.fragment_profile_center.iv_flag
+import kotlinx.android.synthetic.main.fragment_profile_center.iv_head1
+import kotlinx.android.synthetic.main.fragment_profile_center.iv_logout
+import kotlinx.android.synthetic.main.fragment_profile_center.lin_wallet_operation
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_account_balance
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_appearance
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_currency_type
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_language
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_user_id
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_user_nickname
 import kotlinx.android.synthetic.main.view_toolbar_main.iv_menu
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -310,6 +343,12 @@ class ProfileCenterFragment :
         btn_appearance.setOnClickListener {
             startActivity(Intent(requireActivity(), AppearanceActivity::class.java))
         }
+
+        //建議反饋
+        tv_feedback.setOnClickListener {
+            startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
+        }
+
 //        btn_time_zone.visibility = View.GONE
         //时区切换
         btn_time_zone.setOnClickListener {

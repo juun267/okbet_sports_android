@@ -1,56 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/color_191919_FCFCFC"
-    android:paddingHorizontal="@dimen/margin_20"
-    android:paddingVertical="@dimen/margin_8">
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin_20">
 
-    <TextView
-        android:id="@+id/tv_city"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_909090_666666"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="曼谷"
-        tools:text="曼谷" />
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_909090_666666"
-        android:textSize="14sp"
-        android:fontFamily="@font/helvetica_bold"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="GMT+7:00"
-        tools:text="GMT+7:00" />
+        tools:ignore="MissingClass">
 
-    <TextView
-        android:id="@+id/tv_country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_7F7F7F_999999"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_city"
-        android:text="泰国"
-        tools:text="泰国" />
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:text="曼谷"
+            android:textColor="@color/color_909090_666666"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="曼谷" />
 
-    <TextView
-        android:id="@+id/tv_date_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_7F7F7F_999999"
-        android:textSize="12sp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_time"
-        android:text="06-11 (星期六)"
-        tools:text="06-11 (星期六)" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/helvetica_bold"
+            android:text="GMT+7:00"
+            android:layout_marginTop="@dimen/margin_8"
+            android:textColor="@color/color_909090_666666"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="GMT+7:00" />
+
+        <TextView
+            android:id="@+id/tv_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="泰国"
+            android:textColor="@color/color_A7B2C"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_city"
+            tools:text="泰国" />
+
+        <TextView
+            android:id="@+id/tv_date_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="06-11 (星期六)"
+            android:textColor="@color/color_7F7F7F_999999"
+            android:textSize="12sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_time"
+            tools:text="06-11 (星期六)" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_1"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/color_E3E8EE"/>
+</LinearLayout>

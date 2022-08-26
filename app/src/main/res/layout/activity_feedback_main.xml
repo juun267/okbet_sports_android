@@ -18,11 +18,13 @@
         android:id="@+id/custom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/exo_white"
+        android:layout_marginTop="1dp"
         app:firstTabText="@string/feedback_tabName_problem"
-        app:secondTabText="@string/feedback_tabName_record"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/custom_tool_bar" />
+        app:layout_constraintTop_toBottomOf="@id/custom_tool_bar"
+        app:secondTabText="@string/feedback_tabName_record" />
 
     <fragment
         android:id="@+id/myNavHostFragment"

@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_feedback_detail.*
+import kotlinx.android.synthetic.main.fragment_feedback_detail.et_content
+import kotlinx.android.synthetic.main.fragment_feedback_submit.*
 import kotlinx.android.synthetic.main.view_submit_with_text_count.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -68,15 +70,15 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
     }
 
     private fun initDataLive() {
-        viewModel.feedbackDetail.observe(viewLifecycleOwner, {
+        viewModel.feedbackDetail.observe(viewLifecycleOwner) {
             et_content.text.clear()
             adapter?.data = it ?: mutableListOf()
             rv_content.scrollToPosition((adapter?.itemCount ?: 0) - 1)
-        })
+        }
 
-        viewModel.userInfo.observe(this.viewLifecycleOwner,  {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
             adapter?.iconUrl = it?.iconUrl
-        })
+        }
     }
 
 }

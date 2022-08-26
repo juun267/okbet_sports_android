@@ -82,8 +82,8 @@ class ModifyProfileInfoActivity :
     private fun setupInputFieldVerify() {
         //暱稱
         setEditTextFocusChangeMethod(eet_nickname)
-//        //真實姓名
-//        setEditTextFocusChangeMethod(et_real_name)
+        //真實姓名
+        setEditTextFocusChangeMethod(eet_real_name)
 //        //QQ號碼
 //        setEditTextFocusChangeMethod(et_qq_number)
 //        //郵箱
@@ -111,15 +111,15 @@ class ModifyProfileInfoActivity :
         btn_confirm.setOnClickListener {
             checkInputData()
         }
-        et_real_name.afterTextChanged {
-            viewModel.checkFullName(applicationContext, it)
-        }
+//        et_real_name.afterTextChanged {
+//            viewModel.checkFullName(applicationContext, it)
+//        }
         btn_confirm.setTitleLetterSpacing()
     }
 
     private fun checkInputData() {
         val inputText = when (modifyType as ModifyType) {
-            ModifyType.RealName -> et_real_name.text
+            ModifyType.RealName -> eet_real_name.text
             ModifyType.QQNumber -> et_qq_number.text
             ModifyType.Email -> et_e_mail.text
             ModifyType.WeChat -> et_we_chat.text
@@ -155,7 +155,7 @@ class ModifyProfileInfoActivity :
             })
 
             fullNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_real_name.setError(it)
+                et_real_name.setError(it,false)
             })
 
             qqErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
