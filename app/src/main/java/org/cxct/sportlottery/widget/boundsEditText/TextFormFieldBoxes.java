@@ -619,7 +619,7 @@ public class TextFormFieldBoxes extends FrameLayout {
      */
     protected void deactivate() {
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext);
-        this.bottomLine.setBackgroundColor(R.color.color_E3E8EE);
+        this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_E3E8EE));
         if (this.editText.getText().toString().isEmpty()) {
 
             if (this.alwaysShowHint && !this.editText.getHint().toString().isEmpty()) {
@@ -685,7 +685,7 @@ public class TextFormFieldBoxes extends FrameLayout {
         //final boolean keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
         if (animated) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
-            this.bottomLine.setBackgroundColor(R.color.color_317FFF_0760D4);
+            this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_317FFF_0760D4));
             ViewCompat.animate(this.editTextLayout)
                     .alpha(1f)
                     .setDuration(ANIMATION_DURATION);
@@ -995,7 +995,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     public void setError(@Nullable String errorText, boolean giveFocus) {
         if (this.enabled && errorText != null) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_error);
-            this.bottomLine.setBackgroundColor(R.color.color_E44438);
+            this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_E44438));
             this.onError = true;
             //activate(true);
             setHighlightColor(this.errorColor);
@@ -1026,7 +1026,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     public void removeError() {
         this.onError = false;
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
-        this.bottomLine.setBackgroundColor(R.color.color_317FFF_0760D4);
+        this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_317FFF_0760D4));
         if (this.hasFocus) setHighlightColor(this.primaryColor);
         else setHighlightColor(this.secondaryColor);
         this.helperLabel.setTextColor(this.helperTextColor);
