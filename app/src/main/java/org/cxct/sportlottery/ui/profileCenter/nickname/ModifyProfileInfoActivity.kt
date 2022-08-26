@@ -120,10 +120,10 @@ class ModifyProfileInfoActivity :
     private fun checkInputData() {
         val inputText = when (modifyType as ModifyType) {
             ModifyType.RealName -> eet_real_name.text
-            ModifyType.QQNumber -> et_qq_number.text
-            ModifyType.Email -> et_e_mail.text
-            ModifyType.WeChat -> et_we_chat.text
-            ModifyType.PhoneNumber -> et_phone_number.text
+            ModifyType.QQNumber -> eet_qq_number.text
+            ModifyType.Email -> eet_e_mail.text
+            ModifyType.WeChat -> eet_we_chat.text
+            ModifyType.PhoneNumber -> eet_phone_number.text
             ModifyType.NickName -> eet_nickname.text
         }
         viewModel.confirmProfileInfo(modifyType as ModifyType, inputText.toString())
@@ -151,27 +151,27 @@ class ModifyProfileInfoActivity :
     private fun setupEditTextErrorMsgObserve() {
         viewModel.apply {
             nickNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_nickname.setError(it,false)
+                et_nickname.setError(it, false)
             })
 
             fullNameErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_real_name.setError(it,false)
+                et_real_name.setError(it, false)
             })
 
             qqErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_qq_number.setError(it)
+                et_qq_number.setError(it, false)
             })
 
             eMailErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_e_mail.setError(it)
+                et_e_mail.setError(it, false)
             })
 
             phoneErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_phone_number.setError(it)
+                et_phone_number.setError(it, false)
             })
 
             weChatErrorMsg.observe(this@ModifyProfileInfoActivity, Observer {
-                et_we_chat.setError(it)
+                et_we_chat.setError(it, false)
             })
         }
     }
