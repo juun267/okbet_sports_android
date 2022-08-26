@@ -52,7 +52,7 @@
             android:id="@+id/odd_detail_fold"
             android:layout_width="21dp"
             android:layout_height="match_parent"
-            android:padding="5dp"
+            android:padding="2dp"
             android:rotation="180"
             app:tint="@color/color_C9CFD7"
             android:layout_marginEnd="7dp"

@@ -67,7 +67,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="odd_item_horizontal">10dp</dimen>
-    <dimen name="odd_item_horizontal_left">10dp</dimen>
+    <dimen name="odd_item_horizontal_left">7dp</dimen>
     <dimen name="odd_item_divide_single">3dp</dimen>
     <dimen name="odd_item_divide_all">6dp</dimen>
 

@@ -71,6 +71,31 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
+            <View
+                android:id="@+id/space_item_remain"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toLeftOf="@+id/tv_spread_space"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/tv_spread_space"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica"
+                android:maxLines="1"
+                android:textColor="@color/selector_button_odd_top_text2"
+                android:textSize="@dimen/textSize13sp"
+                tools:text="-0.5/1"
+                tools:textColor="@color/color_A7B2C4"
+                app:layout_constraintRight_toLeftOf="@+id/tv_odds"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"/>
+
             <TextView
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"

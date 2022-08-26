@@ -86,7 +86,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         })
     }
 
-    private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId)}
+    private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId) }
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
     lateinit var gameType: GameType
@@ -278,6 +278,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
     }
 
     private fun initUI() {
+        supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value).commit()
         binding.liveViewToolBar.gameType = gameType //賽事動畫icon用，之後用不到可刪
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
@@ -351,6 +352,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
     private fun clickDetailHead() {
 
     }
+
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.userInfo.observe(this) { userInfo ->
@@ -492,7 +494,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
     }
 
     private fun isShowOdd(isShowOdd: Boolean) {
-        val selectColor = ContextCompat.getColor(this,R.color.color_025BE8)
+        val selectColor = ContextCompat.getColor(this, R.color.color_025BE8)
         val nomalColor = ContextCompat.getColor(this, R.color.color_6C7BA8)
         binding.btnOdd.setTextColor(if (isShowOdd) selectColor else nomalColor)
         binding.viewBtOdd.isVisible = isShowOdd
@@ -500,18 +502,8 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         binding.rvCat.isVisible = isShowOdd
 
         binding.btnAnalyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
-        binding.viewBtnAnalyze.isVisible = !isShowOdd
 
-        supportFragmentManager.beginTransaction().apply {
-            if (statisticsFrament.value.context == null) {
-                this.add(R.id.frameBottom, statisticsFrament.value)
-            } else {
-                if (isShowOdd) this.hide(statisticsFrament.value)
-                else this.show(statisticsFrament.value)
-            }
-        }.commit()
-
-
+        binding.frameBottom.isVisible = !isShowOdd
 
     }
 

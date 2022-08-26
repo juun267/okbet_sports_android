@@ -6,10 +6,11 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.button_odd_detail_detail.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -73,6 +74,9 @@ class OddsButtonDetail @JvmOverloads constructor(
         init(attrs)
     }
 
+    private var tvSpreadSpace: TextView ?= null
+    private var spaceItemRemain: View ?= null
+
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
         mFillet = typedArray.getBoolean(R.styleable.OddsButton_ob_fillet, true)
@@ -84,9 +88,15 @@ class OddsButtonDetail @JvmOverloads constructor(
             inflate(context, R.layout.button_odd_detail_detail, this).apply {
                 button_odd_detail.background = mBackground
             }
+            initView()
         } catch (e: Exception) {
             typedArray.recycle()
         }
+    }
+
+    private fun initView() {
+        spaceItemRemain = findViewById(R.id.space_item_remain)
+        tvSpreadSpace = findViewById(R.id.tv_spread_space)
     }
 
     fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage:Boolean? = false) {
@@ -107,6 +117,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         tv_spread.apply {
+            tvSpreadSpace?.text = odd?.spread
             text = odd?.spread
             requestLayout()
             visibility =
@@ -124,6 +135,10 @@ class OddsButtonDetail @JvmOverloads constructor(
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
+
+        spaceItemRemain?.post{
+            tv_name.maxWidth = spaceItemRemain?.width?:0
+        }
 
     }
 

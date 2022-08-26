@@ -584,6 +584,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         val rvBet: RecyclerView? = itemView.findViewById(R.id.rv_bet)
 
+        private val odd_detail_fold = itemView.findViewById<View>(R.id.odd_detail_fold)
+
         //cs
         val rvHome: RecyclerView? = itemView.findViewById(R.id.rv_home)
         val rvDraw: RecyclerView? = itemView.findViewById(R.id.rv_draw)
@@ -694,6 +696,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             clItem?.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(adapterPosition)
+                odd_detail_fold.rotation = if (oddsDetail.isExpand) 180f else 0f
+
             }
 
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
