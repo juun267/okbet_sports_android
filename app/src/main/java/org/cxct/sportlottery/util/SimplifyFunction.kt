@@ -13,10 +13,7 @@ import android.text.Spanned
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ListPopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
@@ -80,13 +77,34 @@ fun RecyclerView.addScrollWithItemVisibility(
                     when (currentAdapter) {
                         is LeagueAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
+                                val viewByPosition =
+                                    layoutManager?.findViewByPosition(leaguePosition)
                                 viewByPosition?.let {
                                     if (getChildViewHolder(it) is LeagueAdapter.ItemViewHolder) {
-                                        val viewHolder = getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
-                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                                            visibleRangePair.add(Pair(leaguePosition, matchPosition))
-                                        }
+                                        val viewHolder =
+                                            getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
+                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                            .forEach { matchPosition ->
+                                                visibleRangePair.add(Pair(leaguePosition,
+                                                    matchPosition))
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                        is SportListAdapter -> {
+                            getVisibleRangePosition().forEach { leaguePosition ->
+                                val viewByPosition =
+                                    layoutManager?.findViewByPosition(leaguePosition)
+                                viewByPosition?.let {
+                                    if (getChildViewHolder(it) is SportListAdapter.ItemViewHolder) {
+                                        val viewHolder =
+                                            getChildViewHolder(it) as SportListAdapter.ItemViewHolder
+                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                            .forEach { matchPosition ->
+                                                visibleRangePair.add(Pair(leaguePosition,
+                                                    matchPosition))
+                                            }
                                     }
                                 }
                             }
@@ -230,8 +248,8 @@ fun RecyclerView.firstVisibleRange(adapter: SportListAdapter, activity: Activity
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             viewByPosition?.let { view ->
-                if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                    val viewHolder = getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
+                if (getChildViewHolder(view) is SportListAdapter.ItemViewHolder) {
+                    val viewHolder = getChildViewHolder(view) as SportListAdapter.ItemViewHolder
                     viewHolder.itemView.league_odd_list.getVisibleRangePosition()
                         .forEach { matchPosition ->
                             if (adapter.data.isNotEmpty()) {
@@ -880,4 +898,16 @@ fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Uni
             callback.invoke(t)
         }
     })
+}
+
+fun ImageView.setSvgDrawable(icon: String?) {
+    val countryIcon = SvgUtil.getSvgDrawable(
+        this.context,
+        if (icon.isNullOrEmpty()) {
+            SvgUtil.defaultIconPath
+        } else {
+            icon
+        }
+    )
+    this.setImageDrawable(countryIcon)
 }

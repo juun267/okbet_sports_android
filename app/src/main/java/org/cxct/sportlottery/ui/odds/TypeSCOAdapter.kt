@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCOCompare
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButton
+import org.cxct.sportlottery.ui.game.detail.recycle.OddStateViewHolderDetail
+import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 
@@ -33,7 +33,7 @@ class TypeSCOAdapter(
 
 
     private val mOddStateRefreshListener by lazy {
-        object : OddStateViewHolder.OddStateChangeListener {
+        object : OddStateViewHolderDetail.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 oddsDetail.scoItem.forEach {
                     if (it.value.any { o -> o == odd }){
@@ -95,11 +95,11 @@ class TypeSCOAdapter(
     }
 
 
-    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
+    inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
-        private val btnOdds1st = itemView.findViewById<OddsButton>(R.id.button_odds_1st)
-        private val btnOddsAnt = itemView.findViewById<OddsButton>(R.id.button_odds_ant)
-        private val btnOddsLast = itemView.findViewById<OddsButton>(R.id.button_odds_last)
+        private val btnOdds1st = itemView.findViewById<OddsButtonDetail>(R.id.button_odds_1st)
+        private val btnOddsAnt = itemView.findViewById<OddsButtonDetail>(R.id.button_odds_ant)
+        private val btnOddsLast = itemView.findViewById<OddsButtonDetail>(R.id.button_odds_last)
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 
@@ -151,9 +151,9 @@ class TypeSCOAdapter(
     }
 
 
-    inner class NoGoalsViewHolder(view: View) : OddStateViewHolder(view) {
+    inner class NoGoalsViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
-        private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
+        private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 

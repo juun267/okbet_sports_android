@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import java.util.*
@@ -49,7 +50,9 @@ import kotlin.collections.HashMap
  * 2021/08/17 玩法六個一組和四個一組的排版改為依順序分組
  */
 @SuppressLint("NotifyDataSetChanged")
-class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) : BaseGameAdapter() {
+class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
+    BaseGameAdapter() {
+
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
@@ -418,9 +421,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         }
 
+
         return when (viewType) {
             BaseItemType.BOTTOM_NAVIGATION.type -> {
-                BottomNavigationViewHolder.from(parent)
+                BottomNavigationViewHolder.from(parent)?.apply {
+                    itemView.visibility = View.GONE
+                }
             }
             else -> {
                 ViewHolder(
@@ -446,53 +452,53 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         LayoutType.GROUP_4.layout,
                         LayoutType.GROUP_6.layout -> {
                             rvBet?.apply {
-                                addItemDecoration(
-                                    DividerItemDecorator(
-                                        ContextCompat.getDrawable(
-                                            context,
-                                            R.drawable.divider_color_white4_2dp
-                                        )
-                                    )
-                                )
+//                                addItemDecoration(
+//                                    DividerItemDecorator(
+//                                        ContextCompat.getDrawable(
+//                                            context,
+//                                            R.drawable.divider_color_white4_2dp
+//                                        )
+//                                    )
+//                                )
                             }
                         }
 
                         LayoutType.CS.layout -> {
                             rvHome?.apply {
-                                addItemDecoration(
-                                    CustomForOddDetailVerticalDivider(
-                                        context,
-                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                                    )
-                                )
+//                                addItemDecoration(
+//                                    CustomForOddDetailVerticalDivider(
+//                                        context,
+//                                        R.dimen.recyclerview_news_item_dec_spec
+//                                    )
+//                                )
                             }
                             rvDraw?.apply {
-                                addItemDecoration(
-                                    CustomForOddDetailVerticalDivider(
-                                        context,
-                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                                    )
-                                )
+//                                addItemDecoration(
+//                                    CustomForOddDetailVerticalDivider(
+//                                        context,
+//                                        R.dimen.recyclerview_news_item_dec_spec
+//                                    )
+//                                )
                             }
                             rvAway?.apply {
-                                addItemDecoration(
-                                    CustomForOddDetailVerticalDivider(
-                                        context,
-                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                                    )
-                                )
+//                                addItemDecoration(
+//                                    CustomForOddDetailVerticalDivider(
+//                                        context,
+//                                        R.dimen.recyclerview_news_item_dec_spec
+//                                    )
+//                                )
                             }
                         }
 
                         LayoutType.ONE_LIST.layout,
                         LayoutType.FG_LG.layout -> {
                             rvBet?.apply {
-                                addItemDecoration(
-                                    CustomForOddDetailVerticalDivider(
-                                        context,
-                                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                                    )
-                                )
+//                                addItemDecoration(
+//                                    CustomForOddDetailVerticalDivider(
+//                                        context,
+//                                        R.dimen.recyclerview_news_item_dec_spec
+//                                    )
+//                                )
                             }
                         }
 
@@ -500,14 +506,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         LayoutType.SINGLE_2_ITEM.layout,
                         LayoutType.SINGLE_2_CS.layout -> {
                             rvBet?.apply {
-                                addItemDecoration(
-                                    GridItemDecoration(
-                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                                        ContextCompat.getColor(context, R.color.color_191919_FCFCFC),
-                                        false
-                                    )
-                                )
+//                                addItemDecoration(
+//                                    GridItemDecoration(
+//                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
+//                                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
+//                                        ContextCompat.getColor(context, R.color.color_FFFFFF),
+//                                        false
+//                                    )
+//                                )
                             }
                         }
                     }
@@ -517,15 +523,17 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     }
 
-
-    override fun getItemCount(): Int = if (oddsDetailDataList.isEmpty()) {
+    override fun getItemCount()
+            : Int = if (oddsDetailDataList.isEmpty()) {
         1
     } else {
         oddsDetailDataList.size + 1
     }
 
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder, position: Int
+    ) {
         when (holder) {
             is ViewHolder -> {
                 if (oddsDetailDataList.isNotEmpty()) holder.bindModel(oddsDetailDataList[position])
@@ -540,7 +548,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     @Suppress("UNCHECKED_CAST")
-    inner class ViewHolder(itemView: View, var viewType: Int) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(
+        itemView: View, var viewType: Int
+    ) : RecyclerView.ViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
             val param = itemView.layoutParams as RecyclerView.LayoutParams
@@ -557,9 +567,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun controlExpandBottom(expand: Boolean) {
-            val param = itemView.layoutParams as RecyclerView.LayoutParams
-            param.bottomMargin = if (expand) 0.dp else 8.dp
-            itemView.layoutParams = param
+            try {
+                itemView.findViewById<View>(R.id.spaceItemBottom).isVisible = expand
+                itemView.findViewById<View>(R.id.view_line).visibility =
+                    if (expand) View.VISIBLE else View.GONE
+                itemView.findViewById<View>(R.id.spaceTitle).visibility =
+                    if (expand) View.VISIBLE else View.GONE
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         private val tvGameName: TextView? = itemView.findViewById(R.id.tv_game_name)
@@ -597,7 +613,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             when (sportCode) {
                 GameType.BK -> {
                     tvGameName?.text = when {
-                        oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
+                        oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains(
+                            "-1ST"
+                        ) || oddsDetail.gameType.contains(
                             "-2ST"
                         ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
@@ -608,7 +626,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         /*PlayCate.needShowCurrentCorner(oddsDetail.gameType) -> {
                             getTotalCornerTitle(oddsDetail)
                         }*/
-                        oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains("-2ST")
+                        oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
+                            "-2ST"
+                        )
                         -> tvGameName?.context?.let {
                             getTitle(it, oddsDetail).let { titleSpannableStringBuilder ->
                                 if (PlayCate.needShowCurrentCorner(oddsDetail.gameType)) {
@@ -631,7 +651,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
                 GameType.TN -> {
                     tvGameName?.text = when {
-                        (oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains("CHAMP") && !oddsDetail.gameType.contains(
+                        (oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains(
+                            "CHAMP"
+                        ) && !oddsDetail.gameType.contains(
                             "CS-SEG"
                         )) || oddsDetail.gameType.contains(
                             "-1ST"
@@ -767,7 +789,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> forSingleCS(oddsDetail, 2)
+                        PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.LCS.ordinal -> forSingleCS(
+                            oddsDetail,
+                            2
+                        )
 
                         PlayCate.EPS.ordinal
                         -> forEPS(oddsDetail)
@@ -977,7 +1002,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     ?.split("-", "–")
             val playName =
                 oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-                    ?.replace("-${statusWord?.last() ?: ""}", "")?.replace("–${statusWord?.last() ?: ""}", "")
+                    ?.replace("-${statusWord?.last() ?: ""}", "")
+                    ?.replace("–${statusWord?.last() ?: ""}", "")
             val stWordSpan = SpannableString(statusWord?.last() ?: "")
             statusWord?.last()?.length?.let {
                 stWordSpan.setSpan(
@@ -1034,9 +1060,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             //region 將PlayCateTitle的文字轉為大寫
             val spans = gameTitle.getSpans<Any>(0, gameTitle.length)
-            val upperCaseSpannableString = SpannableString(gameTitle.toString().toUpperCase(Locale.getDefault()))
+            val upperCaseSpannableString =
+                SpannableString(gameTitle.toString().toUpperCase(Locale.getDefault()))
             spans.forEach {
-                upperCaseSpannableString.setSpan(it, gameTitle.getSpanStart(it), gameTitle.getSpanEnd(it), 0)
+                upperCaseSpannableString.setSpan(
+                    it,
+                    gameTitle.getSpanStart(it),
+                    gameTitle.getSpanEnd(it),
+                    0
+                )
             }
             //endregion
 
@@ -1048,9 +1080,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             if (showSubCornerTitle) {
                 //region 當前總角球數 (角球副標題)
                 val totalCorner = "$homeCornerKicks-$awayCornerKicks"
-                val subCornerTitle = "${itemView.context.getString(R.string.current_corner)} $totalCorner"
+                val subCornerTitle =
+                    "${itemView.context.getString(R.string.current_corner)} $totalCorner"
                 val subCornerTitleTextColor =
-                    ContextCompat.getColor(MultiLanguagesApplication.appContext, R.color.color_FF9143_cb7c2e)
+                    ContextCompat.getColor(
+                        MultiLanguagesApplication.appContext,
+                        R.color.color_FF9143_cb7c2e
+                    )
                 val subCornerTitleSpan = SpannableString(subCornerTitle)
 
                 with(subCornerTitleSpan) {
@@ -1079,14 +1115,20 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         //行高
                         //TODO 低版本問題: 低於VERSION_CODES.Q無法使用LineHeightSpan, setLineSpacing會調整到每一行的距離, 有些本身Title就是兩行的也會跟著被調整
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            setSpan(LineHeightSpan.Standard(16.dp), 0, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            setSpan(
+                                LineHeightSpan.Standard(16.dp),
+                                0,
+                                endIndex,
+                                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
                         } else {
                             tvGameName?.setLineSpacing(4f, 1f)
                         }
                     }
                 }
                 //endregion
-                return cornerTitleContentBuilder.append(upperCaseSpannableString).append("\n")
+                return cornerTitleContentBuilder.append(upperCaseSpannableString)
+                    .append("\n")
                     .append(subCornerTitleSpan)
             } else {
                 return cornerTitleContentBuilder.append(upperCaseSpannableString)
@@ -1110,7 +1152,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     getChildAt(0) as RecyclerView,
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
                 )
-                setCurrentItem(oddsDetail.oddArrayList.indexOf(onOddClickListener.clickOdd), false)
+                setCurrentItem(
+                    oddsDetail.oddArrayList.indexOf(onOddClickListener.clickOdd),
+                    false
+                )
             }
 
             itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)
@@ -1122,7 +1167,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     object : TypeOneListAdapter.OnMoreClickListener {
                         override fun click() {
                             oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
-                            this@OddsDetailListAdapter.notifyItemChanged(bindingAdapterPosition)
+                            this@OddsDetailListAdapter.notifyItemChanged(
+                                bindingAdapterPosition
+                            )
                         }
                     } else null
 
@@ -1306,19 +1353,37 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvHome?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, oddsType, isOddPercentage = true)
+                    TypeCSAdapter(
+                        oddsDetail,
+                        homeList,
+                        onOddClickListener,
+                        oddsType,
+                        isOddPercentage = true
+                    )
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvDraw?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, oddsType, isOddPercentage = true)
+                    TypeCSAdapter(
+                        oddsDetail,
+                        drawList,
+                        onOddClickListener,
+                        oddsType,
+                        isOddPercentage = true
+                    )
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, oddsType, isOddPercentage = true)
+                    TypeCSAdapter(
+                        oddsDetail,
+                        awayList,
+                        onOddClickListener,
+                        oddsType,
+                        isOddPercentage = true
+                    )
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
@@ -1527,7 +1592,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             tvAwayName?.isSelected = teamName != teamNameList[0]
             return oddsDetail.apply {
                 gameTypeSCOSelect = teamName
-                scoItem = if (tvHomeName?.isSelected == true) oddsDetail.homeMap else oddsDetail.awayMap
+                scoItem =
+                    if (tvHomeName?.isSelected == true) oddsDetail.homeMap else oddsDetail.awayMap
             }
         }
 

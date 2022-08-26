@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@color/color_191919_FCFCFC"
         android:nestedScrollingEnabled="false"
+        android:paddingHorizontal="7dp"
+        android:padding="@dimen/odd_item_horizontal_left"
         android:overScrollMode="never" />
 
 

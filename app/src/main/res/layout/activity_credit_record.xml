@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="@string/credit_record_deactivate"
-        android:textColor="@color/color_F75452_b73a20"
+        android:textColor="@color/color_F75452_E23434"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
         app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"

@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.common
 
-import android.content.Context
 import android.text.Html
 import android.text.Spanned
 import android.util.Log
@@ -88,7 +87,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                             }
                             else -> {
                                 val maxCount = if(sizeCount(matchInfo?.gameType) < oddsSortCount) sizeCount(matchInfo?.gameType) else oddsSortCount
-                                val count = if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
+                                val count =
+                                    if (sizeCount(matchInfo?.gameType) > this.size) maxCount - this.size else 0
 
                                 gameListFilter = this.take(this.size + 1).toMutableList()
                                 for (i in 1..count) {
@@ -98,6 +98,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         }
                         gameListFilter
                     }
+
             data = gameList.withIndex().groupBy {
                 it.index / 1
             }.map {
@@ -556,8 +557,10 @@ class OddButtonPagerViewHolder private constructor(
         )
     }
 
-    private fun <K, V> Map<K, V>.getPlayCateName(context: Context): String {
-        return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
+    private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
+        val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
+            LanguageManager.Language.EN.key)
+        return playCateName.toString()
     }
 
     private fun setupOddsButton(
@@ -572,7 +575,7 @@ class OddButtonPagerViewHolder private constructor(
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
-        matchType: MatchType?
+        matchType: MatchType?,
     ) {
 
         if (matchInfo == null ||
@@ -619,7 +622,7 @@ class OddButtonPagerViewHolder private constructor(
         val replaceScore = odds.second?.firstOrNull()?.replaceScore ?: ""
 
         var playCateName =
-            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+            playCateNameMap[odds.first]?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 ?.replace(": ", " ")
                 ?.replace("||", "\n")
                 ?.replace("{S}", replaceScore)
@@ -631,8 +634,10 @@ class OddButtonPagerViewHolder private constructor(
             playCateName = "-"
         }
 
-        val betPlayCateName = betPlayCateNameMap[odds.first]?.getPlayCateName(itemView.context
-        )?.replace(": ", " ")?.replace("||", "\n") ?: ""
+        val betPlayCateName =
+            betPlayCateNameMap[odds.first]?.getPlayCateName(LanguageManager.getSelectLanguage(
+                itemView.context)
+            )?.replace(": ", " ")?.replace("||", "\n") ?: ""
 
         val playCateCode = odds.first ?: ""
 
@@ -768,7 +773,7 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
         val playCateName =
-            playCateNameMap[odds.first]?.getPlayCateName(itemView.context)
+            playCateNameMap[odds.first]?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
                 ?.replace(": ", " ")?.replace("||", "\n") ?: ""
         val playCateCode = odds.first ?: ""
         oddBtnType.text = when {

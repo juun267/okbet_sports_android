@@ -30,10 +30,10 @@
     <color name="color_FF9143_ff9200">@color/color_FF9143</color>
     <color name="color_FF9143_cb7c2e">@color/color_FF9143</color>
     <color name="color_08dc6e_08dc6e">@color/color_08dc6e</color>
-    <color name="color_34CB8A_3db893">@color/color_34CB8A</color>
+    <color name="color_34CB8A_1D9F51">@color/color_34CB8A</color>
     <color name="color_E44438_e44438">@color/color_E44438</color>
-    <color name="color_ce3636_ce3636">@color/color_ce3636</color>
-    <color name="color_F75452_b73a20">@color/color_F75452</color>
+    <color name="color_E23434_E23434">@color/color_ce3636</color>
+    <color name="color_F75452_E23434">@color/color_F75452</color>
     <color name="color_FFFFFF_FFFFFF">@color/color_FFFFFF</color>
     <color name="color_191919_FCFCFC">@color/color_191919</color>
     <color name="color_1C1C1C_FAFAFA">@color/color_1C1C1C</color>
@@ -124,6 +124,7 @@
     <color name="play_category_stroke_color">#317FFF</color>
     <color name="play_category_solid_color">#317FFF</color>
     <!--endregion 特殊處理顏色-->
+    <color name="color_E8EFFD">#E8EFFD</color>
 
 
 </resources>

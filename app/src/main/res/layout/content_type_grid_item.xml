@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <org.cxct.sportlottery.ui.game.widget.OddsButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
         android:id="@+id/button_odds"
         android:layout_width="match_parent"
-        android:layout_height="48dp"/>
+        android:layout_height="36dp" />
 
 </RelativeLayout>

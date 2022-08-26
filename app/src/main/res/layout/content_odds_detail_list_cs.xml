@@ -1,115 +1,127 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:ignore="HardcodedText,SpUsage">
-
-
-    <include layout="@layout/content_odds_detail_list_item" />
-
+    >
 
     <LinearLayout
-        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="@dimen/activity_vertical_margin">
+        tools:ignore="HardcodedText,SpUsage"
+        style="@style/StyleOddButtonLL"
+        android:background="@drawable/bg_radius_10_fff">
+
+        <include layout="@layout/content_odds_detail_list_item" />
+
 
         <LinearLayout
+            android:id="@+id/ll_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/activity_horizontal_margin">
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/tv_home_name"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/color_CCCCCC_000000"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="皇家马德里" />
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/odd_item_horizontal">
 
-            <TextView
-                android:id="@+id/tv_draw"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/draw"
-                android:textColor="@color/color_CCCCCC_000000"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="和" />
+                <TextView
+                    android:id="@+id/tv_home_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/odd_item_divide_single"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_CCCCCC_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="皇家马德里" />
 
-            <TextView
-                android:id="@+id/tv_away_name"
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tv_draw"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/odd_item_divide_single"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/draw"
+                    android:textColor="@color/color_CCCCCC_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="和" />
+
+                <TextView
+                    android:id="@+id/tv_away_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/odd_item_divide_single"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_CCCCCC_000000"
+                    android:textSize="@dimen/textSize14sp"
+                    tools:text="利物浦" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/color_CCCCCC_000000"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="利物浦" />
+                android:layout_marginHorizontal="7dp"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    tools:listitem="@layout/content_type_grid_item" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_draw"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/content_type_grid_item" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_away"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    tools:listitem="@layout/content_type_grid_item" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_191919_FCFCFC"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:overScrollMode="never" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-            android:orientation="horizontal">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_home"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                tools:listitem="@layout/content_type_grid_item" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_draw"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_weight="1"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                tools:itemCount="5"
-                tools:listitem="@layout/content_type_grid_item" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_away"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                tools:listitem="@layout/content_type_grid_item" />
-
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never" />
+        <include layout="@layout/space_content_odds_detail_list"/>
 
     </LinearLayout>
 
-</LinearLayout>
+
+</FrameLayout>
+
 

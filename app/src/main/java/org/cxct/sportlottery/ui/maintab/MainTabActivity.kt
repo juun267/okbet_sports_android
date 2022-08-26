@@ -14,11 +14,13 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -64,6 +66,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setIconSize(30f)
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
+                            if (viewModel.isLogin?.value == false) {
+                                startActivity(Intent(this@MainTabActivity,
+                                    LoginActivity::class.java))
+                                false
+                            }
+                        }
+
+                    }
                     val itemId = menuItem.itemId
                     fragmentHelper?.showFragment(this.getMenuItemPosition(menuItem))
                     true
@@ -248,5 +260,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
+    }
+
+    fun setupBetData(fastBetDataBean: FastBetDataBean) {
+        viewModel.updateMatchBetListData(fastBetDataBean)
     }
 }

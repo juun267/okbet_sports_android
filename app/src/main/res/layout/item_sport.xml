@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/color_bbbbbb_ffffff"
+    tools:ignore="SpUsage,ContentDescription,WebViewLayout,UnusedAttribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_piece_blue"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/iv_country"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="9dp"
+            android:padding="3dp"
+            android:background="@drawable/bg_circle_stroke_team_log"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_earth" />
+
+        <TextView
+            android:id="@+id/league_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="@dimen/margin_10"
+            android:textColor="@color/color_535D76"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="欧洲足球锦标赛2020" />
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="12dp"
+            android:src="@drawable/selector_arrow_gray" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_E8EFFD" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/league_odd_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_sport_odd" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@color/color_E8EFFD" />
+    <!-- 快選元件 -->
+</LinearLayout>

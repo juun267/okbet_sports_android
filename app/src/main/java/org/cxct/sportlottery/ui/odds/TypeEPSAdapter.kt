@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddsButton
+import org.cxct.sportlottery.ui.game.detail.recycle.OddStateViewHolderDetail
+import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -36,7 +36,7 @@ class TypeEPSAdapter : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
 
 
     private val mOddStateRefreshListener by lazy {
-        object : OddStateViewHolder.OddStateChangeListener {
+        object : OddStateViewHolderDetail.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 oddsDetail?.oddArrayList?.apply {
                     notifyItemChanged(indexOf(oddsDetail?.oddArrayList?.find { o -> o == odd }))
@@ -60,11 +60,11 @@ class TypeEPSAdapter : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
     override fun getItemCount(): Int = oddsDetail?.oddArrayList?.size ?: 0
 
 
-    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
+    inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
 
-        private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
+        private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
 
         fun bindModel(odd: Odd?) {
             tvName.text = odd?.name
