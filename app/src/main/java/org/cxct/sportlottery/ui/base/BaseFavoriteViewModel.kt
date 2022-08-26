@@ -237,7 +237,6 @@ abstract class BaseFavoriteViewModel(
 
             result?.t?.let {
                 if (content == null) return@let
-
                 when (type) {
                     FavoriteType.MATCH -> {
                         val list = mFavorMatchOddList.value?.peekContent()?.removeFavorMatchOdd(content)?.removeFavorLeague()

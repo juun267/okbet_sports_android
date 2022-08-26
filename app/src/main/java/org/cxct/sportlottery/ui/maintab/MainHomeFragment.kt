@@ -2,13 +2,13 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.widget.RadioGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +45,10 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.game.publicity.*
+import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
+import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
+import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -221,7 +224,8 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             }
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let { isReload ->
+            event?.peekContent()?.let { isReload ->
+                Log.d("hjq", "setupBanner")
                 if (isReload) {
                     setupBanner()
                 }

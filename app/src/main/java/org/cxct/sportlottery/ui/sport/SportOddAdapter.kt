@@ -217,7 +217,6 @@ class SportOddAdapter(private val matchType: MatchType) :
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?,
         ) {
-
             itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
 
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
@@ -230,12 +229,6 @@ class SportOddAdapter(private val matchType: MatchType) :
                 playSelectedCodeSelectionType)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
-            setQuickListView(item,
-                leagueOddListener,
-                oddsType,
-                playSelectedCodeSelectionType,
-                playSelectedCode)
-            setupCsTextLayout(matchType, item, leagueOddListener)
         }
 
         // region update functions
@@ -252,42 +245,9 @@ class SportOddAdapter(private val matchType: MatchType) :
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
             updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
-
-            setQuickListView(item,
-                leagueOddListener,
-                oddsType,
-                playSelectedCodeSelectionType,
-                playSelectedCode,
-                updateSelected = true)
             setupCsTextLayout(matchType, item, leagueOddListener)
         }
 
-        private fun setQuickListView(
-            item: MatchOdd,
-            leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType,
-            playSelectedCodeSelectionType: Int?,
-            playSelectedCode: String?,
-            updateSelected: Boolean = false,
-        ) {
-            if (item.quickPlayCateList.isNullOrEmpty()) {
-                itemView.quickListView?.visibility = View.GONE
-                itemView.league_odd_quick_cate_divider.visibility = View.GONE
-            } else {
-                itemView.vs_league_quick?.visibility = View.VISIBLE
-                itemView.quickListView?.visibility = View.VISIBLE
-                itemView.league_odd_quick_cate_divider.visibility = View.VISIBLE
-                itemView.quickListView?.setDatas(item,
-                    oddsType,
-                    leagueOddListener,
-                    playSelectedCodeSelectionType,
-                    playSelectedCode)
-                itemView.quickListView?.refreshTab()
-
-                if (updateSelected)
-                    itemView.quickListView?.updateQuickSelected()
-            }
-        }
 
         private fun setupCsTextLayout(
             matchType: MatchType,
@@ -310,35 +270,63 @@ class SportOddAdapter(private val matchType: MatchType) :
                     }
                     tv_correct_2.text = correct2
 
+                    var correct3 = item.playCateNameMap?.get(PlayCate.LCS.value)
+                        ?.getPlayCateName(context) ?: ""
+                    tv_correct_3.text = correct3
                     when (item.csTabSelected) {
                         PlayCate.CS -> {
                             tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_CCCCCC_000000))
+                                R.color.color_535D76))
                             tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_a3a3a3_666666))
+                                R.color.color_6C7BA8))
+                            tv_correct_3.setTextColor(ContextCompat.getColor(context,
+                                R.color.color_6C7BA8))
+                        }
+                        PlayCate.CS_1ST_SD -> {
+                            tv_correct_1.setTextColor(ContextCompat.getColor(context,
+                                R.color.color_6C7BA8))
+                            tv_correct_2.setTextColor(ContextCompat.getColor(context,
+                                R.color.color_535D76))
+                            tv_correct_3.setTextColor(ContextCompat.getColor(context,
+                                R.color.color_6C7BA8))
                         }
                         else -> {
                             tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_a3a3a3_666666))
+                                R.color.color_6C7BA8))
                             tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_CCCCCC_000000))
+                                R.color.color_6C7BA8))
+                            tv_correct_3.setTextColor(ContextCompat.getColor(context,
+                                R.color.color_535D76))
                         }
                     }
 
                     tv_correct_1.setOnClickListener {
                         tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_CCCCCC_000000))
+                            R.color.color_535D76))
                         tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_a3a3a3_666666))
+                            R.color.color_6C7BA8))
+                        tv_correct_3.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_6C7BA8))
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS, item)
                     }
 
                     tv_correct_2.setOnClickListener {
                         tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_a3a3a3_666666))
+                            R.color.color_6C7BA8))
                         tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_CCCCCC_000000))
+                            R.color.color_535D76))
+                        tv_correct_3.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_6C7BA8))
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS_1ST_SD, item)
+                    }
+                    tv_correct_3.setOnClickListener {
+                        tv_correct_1.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_6C7BA8))
+                        tv_correct_2.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_6C7BA8))
+                        tv_correct_3.setTextColor(ContextCompat.getColor(context,
+                            R.color.color_535D76))
+                        leagueOddListener?.onClickCsTabListener(PlayCate.LCS, item)
                     }
                 } else {
                     ll_cs_text_layout.isVisible = false
@@ -346,8 +334,11 @@ class SportOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun <K, V> Map<K, V>.getPlayCateName(context: Context): String {
-            return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
+        private fun <K, V> Map<K, V>?.getPlayCateName(context: Context): String {
+            var selectLanguage = LanguageManager.getSelectLanguage(context)
+            val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
+                LanguageManager.Language.EN.key)
+            return playCateName.toString()
         }
 
         private fun String.updatePlayCateColor(): Spanned {
@@ -404,7 +395,8 @@ class SportOddAdapter(private val matchType: MatchType) :
             showStrongTeam(item)
             setupMatchScore(item, matchType)
             setStatusTextColor(item)
-            itemView.league_odd_match_play_count.text = item.matchInfo?.playCateNum.toString()
+            itemView.league_odd_match_play_count.text =
+                item.matchInfo?.playCateNum.toString() + "+>"
             itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
 //            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             itemView.league_neutral.apply {
@@ -440,7 +432,7 @@ class SportOddAdapter(private val matchType: MatchType) :
             setStatusTextColor(item)
 
             itemView.league_odd_match_play_count.apply {
-                text = item.matchInfo?.playCateNum.toString()
+                text = item.matchInfo?.playCateNum.toString() + "+>"
 
                 setOnClickListener {
                     leagueOddListener?.onClickPlayType(
@@ -451,10 +443,9 @@ class SportOddAdapter(private val matchType: MatchType) :
                     )
                 }
             }
-
+            itemView.league_odd_match_favorite.isSelected = item.matchInfo?.isFavorite ?: false
             itemView.league_odd_match_favorite.apply {
                 isSelected = item.matchInfo?.isFavorite ?: false
-
                 setOnClickListener {
                     leagueOddListener?.onClickFavorite(item.matchInfo?.id)
                 }

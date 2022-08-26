@@ -12,8 +12,8 @@
     <View
         android:id="@+id/v_top"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/color_1F1F1F_e6e6e6"
+        android:layout_height="0.5dp"
+        android:background="@drawable/bg_dash"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45" />
+        app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_game_start"
@@ -73,8 +73,8 @@
 
             <ImageView
                 android:id="@+id/league_odd_match_favorite"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginRight="@dimen/margin_10"
                 android:src="@drawable/selector_star_v4"
                 tools:ignore="ContentDescription" />
@@ -165,6 +165,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintLeft_toRightOf="@+id/guide_game_start"
         app:layout_constraintTop_toBottomOf="@+id/guide_game_top"
         app:layout_constraintBottom_toTopOf="@+id/guide_game_center"
@@ -225,7 +226,7 @@
                 android:id="@+id/league_odd_match_score_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/color_414655"
                 android:textSize="16sp"
                 android:fontFamily="@font/helvetica"
@@ -339,7 +340,7 @@
                 android:id="@+id/league_odd_match_score_away"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="10dp"
                 android:textColor="@color/color_414655"
                 android:textSize="16sp"
                 android:fontFamily="@font/helvetica"
@@ -391,7 +392,7 @@
         android:gravity="center_vertical"
         app:layout_constraintLeft_toRightOf="@+id/guide_game_start"
         app:layout_constraintTop_toBottomOf="@+id/guide_game_bottom"
-        app:layout_constraintBottom_toTopOf="@id/league_odd_quick_cate_divider"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/guide_content">
 
         <ImageView
@@ -447,70 +448,68 @@
         android:nestedScrollingEnabled="false"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@id/league_odd_quick_cate_divider"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guide_content"
         app:layout_constraintTop_toTopOf="@+id/v_top"
         tools:itemCount="5"
         tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
 
-    <LinearLayout
-        android:id="@+id/ll_cs_text_layout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/color_191919_FCFCFC"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        android:layout_marginTop="2dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="@+id/guide_game_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guide_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_correct_1"
-            android:layout_width="wrap_content"
-            android:minWidth="70dp"
+        <LinearLayout
+            android:id="@+id/ll_cs_text_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/color_6C7BA8"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="abc" />
+            android:background="@color/color_191919_FCFCFC"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:layout_marginTop="2dp"
+            tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_correct_2"
-            android:layout_width="wrap_content"
-            android:minWidth="70dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/color_6C7BA8"
-            android:textSize="@dimen/textSize14sp"
-            android:maxLines="1"
-            tools:text="abc" />
+            <TextView
+                android:id="@+id/tv_correct_1"
+                android:layout_width="wrap_content"
+                android:minWidth="60dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/color_6C7BA8"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="abc" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_correct_2"
+                android:layout_width="wrap_content"
+                android:minWidth="60dp"
+                android:layout_marginEnd="8dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/color_6C7BA8"
+                android:textSize="@dimen/textSize14sp"
+                android:maxLines="1"
+                tools:text="abc" />
 
-    <View
-        android:id="@+id/league_odd_quick_cate_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_1F1F1F_e6e6e6"
-        app:layout_constraintTop_toBottomOf="@id/rv_league_odd_btn_pager_main"
-        app:layout_constraintBottom_toTopOf="@id/vs_league_quick" />
+            <TextView
+                android:id="@+id/tv_correct_3"
+                android:layout_width="wrap_content"
+                android:minWidth="60dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/color_6C7BA8"
+                android:textSize="@dimen/textSize14sp"
+                android:maxLines="1"
+                tools:text="abc" />
 
-    <!-- 快選元件 -->
-    <ViewStub
-        android:id="@+id/vs_league_quick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorOrange"
-        android:layout="@layout/itemview_league_quick"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/league_odd_quick_cate_divider"
-        tools:visibility="visible" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

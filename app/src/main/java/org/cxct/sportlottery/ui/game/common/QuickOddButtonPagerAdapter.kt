@@ -446,8 +446,11 @@ class QuickOddButtonPagerViewHolder private constructor(
         )
     }
 
-    private fun <K, V> Map<K, V>.getPlayCateName(context: Context): String {
-        return this[LanguageManager.getSelectLanguage(context).key as Nothing].toString()
+    private fun <K, V> Map<K, V>?.getPlayCateName(context: Context): String {
+        var selectLanguage = LanguageManager.getSelectLanguage(context)
+        val playCateName = this?.get<Any?, V>(selectLanguage.key) ?: this?.get<Any?, V>(
+            LanguageManager.Language.EN.key)
+        return playCateName.toString()
     }
 
     private fun setupOddsButton(

@@ -45,32 +45,29 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
         }
 
         enum class DateSplitPart(val part: Int) {
-            MONTH(1), DATE(2), WEEKDAY(3)
+            MONTH_DATE(1), WEEKDAY(2)
         }
 
         private fun setupCalendarView(item: Date) {
             itemView.date_text_other.visibility = View.GONE
 
             //格式: 2021-December-28-Tue
-            itemView.date_text_date.text = item.display.split("-")[DateSplitPart.DATE.part]
+            itemView.date_text_date.text = item.display.split("-")[DateSplitPart.MONTH_DATE.part]
 
-            when(LanguageManager.getSelectLanguage(itemView.date_text_month.context)){
+            when (LanguageManager.getSelectLanguage(itemView.context)) {
                 LanguageManager.Language.VI -> {
-                    itemView.date_text_month.text = item.display.split("-")[DateSplitPart.MONTH.part]
-                        .replace("tháng","TH.")
-                        .replace(" ","")
-                    itemView.date_text_week.text = item.display.split("-")[DateSplitPart.WEEKDAY.part]
-                        .replace("Th","Thứ")
+                    itemView.date_text_week.text =
+                        item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                            .replace("Th", "Thứ")
                 }
                 LanguageManager.Language.EN -> {
-                    itemView.date_text_month.text = item.display.split("-")[DateSplitPart.MONTH.part]
-                        .substring(0,3)
-                    itemView.date_text_week.text = item.display.split("-")[DateSplitPart.WEEKDAY.part]
-                        .substring(0,3)
+                    itemView.date_text_week.text =
+                        item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                            .substring(0, 3)
                 }
                 else -> {
-                    itemView.date_text_month.text = item.display.split("-")[DateSplitPart.MONTH.part]
-                    itemView.date_text_week.text = item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                    itemView.date_text_week.text =
+                        item.display.split("-")[DateSplitPart.WEEKDAY.part]
                 }
             }
         }

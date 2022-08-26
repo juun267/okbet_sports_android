@@ -56,7 +56,6 @@
         android:layout_height="0.5dp"
         android:background="@color/color_E8EFFD" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/league_odd_list"
         android:layout_width="match_parent"
@@ -66,9 +65,4 @@
         tools:itemCount="1"
         tools:listitem="@layout/item_sport_odd" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="6dp"
-        android:background="@color/color_E8EFFD" />
-    <!-- 快選元件 -->
 </LinearLayout>

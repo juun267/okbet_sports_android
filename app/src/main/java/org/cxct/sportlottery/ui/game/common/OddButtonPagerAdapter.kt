@@ -98,7 +98,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                         }
                         gameListFilter
                     }
-
             data = gameList.withIndex().groupBy {
                 it.index / 1
             }.map {

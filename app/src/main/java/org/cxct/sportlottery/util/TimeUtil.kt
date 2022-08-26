@@ -25,8 +25,8 @@ object TimeUtil {
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val MD_HM_FORMAT = "MM/dd HH:mm"
     const val DM_HM_FORMAT = "MM/dd HH:mm"
-    private const val YMDE_FORMAT = "yyyy-MMMM-dd-EEE"
-    private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
+    private const val YMDE_FORMAT = "yyyy-MM/dd-EEE"
+    private const val YMDE_HMS_FORMAT = "yyyy-MM/dd-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
     private const val BIRTHDAY_FORMAT = "yyyy / MM / dd"
 

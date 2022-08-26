@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.FLAG_OPEN
@@ -47,6 +48,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListAdapter
+import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -111,6 +113,12 @@ fun RecyclerView.addScrollWithItemVisibility(
                         }
                         //冠軍
                         is OutrightLeagueOddAdapter -> {
+                            getVisibleRangePosition().forEach { leaguePosition ->
+                                visibleRangePair.add(Pair(leaguePosition, -1))
+                            }
+                        }
+                        //新版冠軍
+                        is SportOutrightAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 visibleRangePair.add(Pair(leaguePosition, -1))
                             }
@@ -304,6 +312,42 @@ fun RecyclerView.firstVisibleRange(
                             }
                         }
 
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun RecyclerView.firstVisibleRange(
+    gameType: String?,
+    sportOutrightAdapter: SportOutrightAdapter,
+    activity: Activity,
+) {
+    post {
+        getVisibleRangePosition().forEach { leaguePosition ->
+            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
+            viewByPosition?.let { view ->
+                when (getChildViewHolder(view)) {
+                    is SportOutrightAdapter.OutrightLeagueViewHolder -> {
+                        when (val outrightLeagueData =
+                            sportOutrightAdapter.data[leaguePosition]) {
+                            is OutrightItem -> {
+                                outrightLeagueData.matchOdd.apply {
+                                    Log.d(
+                                        "[subscribe]",
+                                        "訂閱 ${matchInfo?.name} -> " +
+                                                "${matchInfo?.homeName} vs " +
+                                                "${matchInfo?.awayName}"
+                                    )
+                                    (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                        gameType,
+                                        matchInfo?.id
+                                    )
+                                }
+
+                            }
+                        }
                     }
                 }
             }

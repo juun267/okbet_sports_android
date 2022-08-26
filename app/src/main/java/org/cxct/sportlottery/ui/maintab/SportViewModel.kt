@@ -43,10 +43,9 @@ import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.outright.odds.OutrightShowMoreItem
-import org.cxct.sportlottery.network.outright.odds.OutrightSubTitleItem
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -1222,21 +1221,20 @@ class SportViewModel(
                     )
                 }
                 MatchType.TODAY -> {
-                    getLeagueList(
+                    getOddsList(
                         gameType = code,
-                        matchType = nowChildMatchType.postValue,
-                        startTime = TimeUtil.getTodayStartTimeStamp().toString(),
-                        endTime = TimeUtil.getTodayEndTimeStamp().toString(),
+                        matchType.postValue,
+                        getCurrentTimeRangeParams(),
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.EARLY -> {
-                    getLeagueList(
+                    getOddsList(
                         gameType = code,
-                        matchType = nowChildMatchType.postValue,
-                        startTime = reloadedTimeRange?.startTime
-                            ?: getCurrentTimeRangeParams()?.startTime ?: "",
-                        endTime = reloadedTimeRange?.endTime
-                            ?: getCurrentTimeRangeParams()?.endTime,
+                        matchType.postValue,
+                        reloadedTimeRange,
+                        leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
                 }
@@ -1447,71 +1445,74 @@ class SportViewModel(
                     //region 先處理頁面顯示需要的資料結構
                     matchOdd?.let { matchOddNotNull ->
                         //聯賽標題
-                        oddsList.add(matchOddNotNull)
-
+//                        oddsList.add(matchOddNotNull)
+                        var playCateCodeList = mutableListOf<String>()
+                        var subTitleList = mutableListOf<String>()
+                        var odds = mutableListOf<List<Odd>>()
                         matchOddNotNull.oddsMap?.forEach { oddMap ->
                             val playCateExpand =
                                 matchOddNotNull.oddsExpand?.get(oddMap.key) ?: false
+                            playCateCodeList.add(oddMap.key)
+                            subTitleList.add(matchOddNotNull.dynamicMarkets[oddMap.key]?.let {
+                                when (LanguageManager.getSelectLanguage(LocalUtils.getLocalizedContext())) {
+                                    LanguageManager.Language.ZH -> {
+                                        it.zh
+                                    }
+                                    LanguageManager.Language.VI -> {
+                                        it.vi
+                                    }
+                                    else -> {
+                                        it.en
+                                    }
+                                }
+                            } ?: "")
 
-                            //region 玩法標題
-                            oddsList.add(
-                                OutrightSubTitleItem(
-                                    belongMatchOdd = matchOddNotNull,
-                                    playCateCode = oddMap.key,
-                                    subTitle = matchOddNotNull.dynamicMarkets[oddMap.key]?.let {
-                                        when (LanguageManager.getSelectLanguage(LocalUtils.getLocalizedContext())) {
-                                            LanguageManager.Language.ZH -> {
-                                                it.zh
-                                            }
-                                            LanguageManager.Language.VI -> {
-                                                it.vi
-                                            }
-                                            else -> {
-                                                it.en
-                                            }
-                                        }
-                                    } ?: "",
-                                    leagueExpanded = matchOddNotNull.isExpand))
                             //endregion
 
                             //region 玩法賠率項
-                            oddsList.addAll(
-                                oddMap.value?.filterNotNull()
-                                    ?.mapIndexed { index, odd ->
-                                        odd.outrightCateKey = oddMap.key
-                                        odd.playCateExpand = playCateExpand
-                                        odd.leagueExpanded = matchOddNotNull.isExpand
-                                        odd.belongMatchOdd = matchOddNotNull
-                                        if (index < 5) odd.isExpand = true
-                                        odd
-                                    } ?: listOf()
-                            )
+                            odds.add(oddMap.value?.filterNotNull()
+                                ?.mapIndexed { index, odd ->
+                                    odd.outrightCateKey = oddMap.key
+                                    odd.playCateExpand = playCateExpand
+                                    odd.leagueExpanded = matchOddNotNull.isExpand
+                                    odd.belongMatchOdd = matchOddNotNull
+                                    odd.isExpand = true
+                                    odd
+                                } ?: listOf<Odd>())
                             //endregion
 
                             //region 顯示更多選項(大於五項才需要此功能)
-                            if (oddMap.value?.filterNotNull()?.size ?: 0 > 5) {
-                                //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
-                                oddsList.add(
-                                    OutrightShowMoreItem(
-                                        oddMap.key,
-                                        matchOddNotNull,
-                                        playCateExpand,
-                                        isExpanded = false,
-                                        leagueExpanded = matchOddNotNull.isExpand
-                                    )
-                                )
-                            }
+//                            if (oddMap.value?.filterNotNull()?.size ?: 0 > 5) {
+//                                //Triple(玩法key, MatchOdd, 該玩法是否需要展開)
+//                                oddsList.add(
+//                                    OutrightShowMoreItem(
+//                                        oddMap.key,
+//                                        matchOddNotNull,
+//                                        playCateExpand,
+//                                        isExpanded = false,
+//                                        leagueExpanded = matchOddNotNull.isExpand
+//                                    )
+//                                )
+//                            }
                             //endregion
                         }
+                        //region 玩法標題
+                        oddsList.add(
+                            OutrightItem(
+                                matchOdd = matchOddNotNull,
+                                playCateCodeList = playCateCodeList,
+                                subTitleList = subTitleList,
+                                leagueExpanded = matchOddNotNull.isExpand,
+                                oddsList = odds
+                            )
+                        )
 //                        matchOddNotNull.outrightOddsList = oddsList
                         outrightMatchList.add(matchOddNotNull)
                     }
                     //endregion
                 }
             }
-
             withContext(Dispatchers.Main) {
-//                _outrightMatchList.value = Event(outrightMatchList)
                 _outrightMatchList.value = Event(oddsList)
             }
         }
@@ -1536,12 +1537,11 @@ class SportViewModel(
     fun updateOutrightOddsChange(context: Context?, oddsChangeEvent: OddsChangeEvent) {
         viewModelScope.launch(Dispatchers.IO) {
             outrightMatchList.value?.peekContent()?.let { outrightList ->
-                outrightList.filterIsInstance<MatchOdd>().forEach { matchOdd ->
+                outrightList.filterIsInstance<OutrightItem>().forEach { outrightItem ->
                     SocketUpdateUtil.updateMatchOdds(
-                        context, matchOdd, oddsChangeEvent
+                        context, outrightItem.matchOdd, oddsChangeEvent
                     )
                 }
-
                 withContext(Dispatchers.Main) {
                     _outrightMatchList.value = Event(outrightList)
                 }
@@ -1645,9 +1645,12 @@ class SportViewModel(
                 }
             }
             result?.oddsListData.getPlayCateNameMap(matchType)
-
             when (matchType) {
-                MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                MatchType.IN_PLAY.postValue,
+                MatchType.TODAY.postValue,
+                MatchType.AT_START.postValue,
+                MatchType.EARLY.postValue,
+                -> {
                     if (_leagueFilterList.value?.isNotEmpty() == true) {
                         result?.oddsListData?.leagueOddsFilter =
                             result?.oddsListData?.leagueOdds?.filter {
@@ -1671,7 +1674,7 @@ class SportViewModel(
                     }
                 }
 
-                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue, MatchType.OTHER.postValue -> {
+                MatchType.PARLAY.postValue, MatchType.OTHER.postValue -> {
                     if (isIncrement)
                         _oddsListGameHallIncrementResult.postValue(
                             Event(
@@ -2010,18 +2013,7 @@ class SportViewModel(
         )
 
         dateRow.addAll(1, TimeUtil.getFutureDate(
-            7,
-            when (LanguageManager.getSelectLanguage(androidContext)) {
-                LanguageManager.Language.ZH -> {
-                    Locale.CHINA
-                }
-                LanguageManager.Language.VI -> {
-                    Locale("vi")
-                }
-                else -> {
-                    Locale.getDefault()
-                }
-            }
+            7
         ).map {
             Date(it, TimeUtil.getDayDateTimeRangeParams(it, locale), isDateFormat = true)
         })
@@ -3443,7 +3435,7 @@ class SportViewModel(
                     gameType,
                     matchType,
                     leagueIdList = leagueIdList,
-                    playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+                    playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code,
                 )
             )
         }
@@ -3594,10 +3586,10 @@ class SportViewModel(
                 return@launch
             }
 
-            // 今日、串關頁面下賽事選擇 (今日、所有)
-            if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
-                getMatchCategory(matchType)
-            }
+//            // 今日、串關頁面下賽事選擇 (今日、所有)
+//            if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
+//                getMatchCategory(matchType)
+//            }
 
             clearGameHallContentBySwitchGameType()
 

@@ -48,6 +48,7 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
+import org.cxct.sportlottery.ui.sport.SportOutrightFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
@@ -245,19 +246,16 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
                 tv_number?.text = countEarly.toString()
             }
-
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 5)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
-                tv_number?.text = countCS.toString()
-            }
-
             tabLayout.getTabAt(
-                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 6
+                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5
             )?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
-
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 6)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
+                tv_number?.text = countCS.toString()
+            }
 
             //0401需求先隱藏特優賠率
 //            val tabEps = tabLayout.getTabAt(7)?.customView
@@ -291,8 +289,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
-        MatchType.CS to 4,
-        MatchType.OUTRIGHT to 5,
+        MatchType.OUTRIGHT to 4,
+        MatchType.CS to 5,
 //        MatchType.PARLAY to 6,
 //        MatchType.EPS to 7,
         MatchType.MAIN to 99
@@ -643,8 +641,14 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
     }
 
     private fun navGameFragment(matchType: MatchType) {
+        val fragment = when (matchType) {
+            MatchType.OUTRIGHT ->
+                SportOutrightFragment.newInstance()
+            else ->
+                SportListFragment.newInstance(matchType = matchType)
+        }
         childFragmentManager.beginTransaction()
-            .replace(R.id.fl_content, SportListFragment.newInstance(matchType = matchType))
+            .replace(R.id.fl_content, fragment)
             .commit()
 
     }

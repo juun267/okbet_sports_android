@@ -9,7 +9,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -37,7 +37,7 @@ import org.cxct.sportlottery.util.getOdds
  * 2021/08/16 新增isSelect判斷
  * 2022/06/16 大廳賠率按鈕顯示邏輯搬移至OddsButton
  */
-open class OddsButton @JvmOverloads constructor(
+open class OddsOutrightButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -79,9 +79,9 @@ open class OddsButton @JvmOverloads constructor(
         hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
-                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds_outright)
         try {
-            inflate(context, R.layout.button_odd_detail, this).apply {
+            inflate(context, R.layout.button_odd_outright, this).apply {
                 button_odd_detail.background = mBackground
             }
         } catch (e: Exception) {
@@ -89,7 +89,12 @@ open class OddsButton @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage:Boolean? = false) {
+    fun setupOdd(
+        odd: Odd?,
+        oddsType: OddsType,
+        gameType: String? = null,
+        isOddPercentage: Boolean? = false,
+    ) {
         mOdd = odd
         mOddsType = oddsType
         tv_name.apply {
@@ -113,7 +118,7 @@ open class OddsButton @JvmOverloads constructor(
                 if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
 
-        if(isOddPercentage == true) //反波膽顯示 %
+        if (isOddPercentage == true) //反波膽顯示 %
             tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
@@ -127,7 +132,14 @@ open class OddsButton @JvmOverloads constructor(
 
     }
 
-    fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false, isOtherBtn: Boolean? = false) {
+    fun setupOdd4hall(
+        playCateCode: String,
+        odds: Odd?,
+        oddList: List<Odd?>?,
+        oddsType: OddsType,
+        isDrawBtn: Boolean? = false,
+        isOtherBtn: Boolean? = false,
+    ) {
         mOdd = odds
         mOddsType = oddsType
 
@@ -157,7 +169,7 @@ open class OddsButton @JvmOverloads constructor(
         }
 
         tv_name.apply {
-            if(isDrawBtn == true){
+            if (isDrawBtn == true) {
                 visibility = View.VISIBLE
 
                 text = when {
@@ -461,7 +473,7 @@ open class OddsButton @JvmOverloads constructor(
     /**
      * 足球：下個進球玩法會使用到
      */
-    private fun getOrdinalNumbers(number:String):String {
+    private fun getOrdinalNumbers(number: String): String {
         return when (number) {
             "1" -> "1st"
             "2" -> "2nd"
