@@ -20,6 +20,7 @@
         app:srlDragRate="0.3"
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_account_history"
         android:layout_width="match_parent"
