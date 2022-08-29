@@ -154,16 +154,16 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
     }
 
     private fun initObserve() {
-        viewModel.docUrlResult.observe(viewLifecycleOwner, {
+        viewModel.docUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 if (!result.success) {
                     hideLoading()
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
-        })
+        }
 
-        viewModel.photoUrlResult.observe(viewLifecycleOwner, {
+        viewModel.photoUrlResult.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (!result.success)
@@ -178,12 +178,12 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
                     ) {
                         activity?.onBackPressed()
                     }*/
-                    
+
                 }
             }
-        })
+        }
 
-        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, { event ->
+        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (result.success) {
@@ -198,7 +198,7 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
-        })
+        }
     }
 
     private fun setupButton() {

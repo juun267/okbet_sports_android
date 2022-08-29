@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="14dp"
-    android:background="@color/color_191919_FCFCFC">
+    android:background="@color/color_F0F5FA"
+    android:paddingBottom="14dp">
 
     <ImageView
         android:id="@+id/img_ic_kyc"
@@ -22,13 +22,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
+        android:text="@string/kyc_valid"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/img_ic_kyc"
         app:layout_constraintStart_toEndOf="@+id/img_ic_kyc"
         app:layout_constraintTop_toTopOf="@+id/img_ic_kyc"
-        android:text="@string/kyc_valid"
         tools:text="有效证件" />
 
     <TextView
@@ -36,42 +36,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:text="@string/kyc_type"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize14sp"
-        android:text="@string/kyc_type"
         app:layout_constraintStart_toStartOf="@+id/img_ic_kyc"
         app:layout_constraintTop_toBottomOf="@+id/img_ic_kyc"
         tools:text="证件类型" />
 
-
-    <!--    <androidx.appcompat.widget.AppCompatSpinner-->
-    <!--        android:id="@+id/sp_play"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="50dp"-->
-    <!--        android:layout_marginEnd="18dp"-->
-    <!--        android:background="@drawable/bg_radius_4_edittext_unfocus"-->
-    <!--        android:popupBackground="@drawable/bg_radius_4_button_1053af"-->
-    <!--        android:popupElevation="6dp"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:visibility="visible"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/txv_title_type"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/txv_title_type" />-->
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="50dp"-->
-    <!--        android:background="@drawable/bg_radius_4_edittext_unfocus"-->
-    <!--        android:layout_marginTop="8dp"-->
-    <!--        android:layout_marginEnd="18dp"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/txv_title_type"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/txv_title_type">-->
-
-
-    <!--        -->
-    <!--    </LinearLayout>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_type"
@@ -81,47 +52,25 @@
         android:layout_marginEnd="18dp"
         android:background="@drawable/bg_radius_4_edittext_unfocus"
         android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/txv_title_type"
-        app:layout_constraintTop_toBottomOf="@+id/txv_title_type"
-        android:visibility="visible">
+        app:layout_constraintTop_toBottomOf="@+id/txv_title_type">
 
-<!--        <TextView-->
-<!--            android:id="@+id/txv_type"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:layout_marginStart="12dp"-->
-<!--            android:textColor="@color/color_cccccc"-->
-<!--            android:textSize="@dimen/textSize12sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="请选择证件类型" />-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_vertical|end"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:src="@drawable/arrow_gray"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/txv_type"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/txv_type" />-->
 
         <org.cxct.sportlottery.ui.component.StatusSpinnerView
             android:id="@+id/selector_type"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:defaultStatusText="请选择证件类型"
-            app:textGravity="left|center_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:textGravity="left|center_vertical" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,9 +79,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:text="@string/kyc_num"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize14sp"
-        android:text="@string/kyc_num"
         app:layout_constraintStart_toStartOf="@+id/cl_type"
         app:layout_constraintTop_toBottomOf="@+id/cl_type"
         tools:text="证件号码" />
@@ -156,12 +105,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             android:background="@null"
+            android:hint="@string/kyc_enter_id_num"
             android:inputType="number"
             android:letterSpacing="0.05"
             android:textColor="@color/color_cccccc"
             android:textColorHint="@color/color_cccccc"
             android:textSize="@dimen/textSize12sp"
-            android:hint="@string/kyc_enter_id_num"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -169,6 +118,72 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_etIdentityType"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginTop="1dp"
+        app:layout_constraintTop_toBottomOf="@+id/cl_num">
+
+
+        <RelativeLayout
+            android:id="@+id/etIdentityType"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/exo_white"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/margin_14"
+                android:text="@string/type_of_certificate"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize14sp" />
+
+            <ImageView
+                android:id="@+id/iv_recharge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_toEndOf="@+id/tv_title"
+                android:src="@drawable/ic_recharge_copy_30_2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_4"
+                android:layout_toEndOf="@+id/iv_recharge"
+                android:text="@string/pls_file_type"
+                android:textColor="@color/color_C9CFD7"
+                android:textSize="@dimen/textSize14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_20"
+                android:src="@drawable/ic_arrow_gray" />
+        </RelativeLayout>
+
+
+        <View
+            android:id="@+id/identityTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@id/etIdentityType"
+            app:layout_constraintTop_toTopOf="@id/etIdentityType" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -179,10 +194,9 @@
         android:layout_marginEnd="18dp"
         android:background="@drawable/bg_radius_4_kyc_selected_frame"
         android:orientation="horizontal"
-        tools:background="@drawable/bg_radius_4_edittext_focus_ff9200"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/cl_num"
-        app:layout_constraintTop_toBottomOf="@+id/cl_num">
+        app:layout_constraintTop_toBottomOf="@+id/cl_etIdentityType"
+        tools:background="@drawable/bg_radius_4_edittext_focus_ff9200">
 
         <View
             android:id="@+id/pic_frame"
@@ -212,21 +226,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--        <Button-->
-        <!--            android:layout_width="54dp"-->
-        <!--            android:layout_height="26dp"-->
-        <!--            android:background="@drawable/bg_radius_4_button_1053af"-->
-        <!--            android:drawableLeft="@drawable/ic_plus"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            android:padding="@dimen/margin_5"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            android:text="添加"-->
-        <!--            tools:textSize="@dimen/textSize12sp"-->
-
-
-        <!--      #2B87FF      />-->
 
         <LinearLayout
             android:id="@+id/btn_add_pic"
@@ -249,10 +248,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
+                android:text="@string/kyc_add"
                 android:textColor="@color/home_card_text_color"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
-                android:text="@string/kyc_add"
                 tools:text="添加" />
 
         </LinearLayout>
@@ -263,12 +262,11 @@
         android:id="@+id/img_tri"
         android:layout_width="22dp"
         android:layout_height="16dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/ic_check_cart"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/cl_num"
-        app:layout_constraintTop_toBottomOf="@+id/cl_num"
-        android:layout_marginTop="8dp"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_num" />
 
     <TextView
         android:id="@+id/tvUploadTip"
@@ -296,9 +294,9 @@
         android:textColor="@color/color_D65752"
         android:textSize="@dimen/textSize12sp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvUploadTip"
         app:layout_constraintTop_toBottomOf="@+id/tvUploadTip"
-        app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
