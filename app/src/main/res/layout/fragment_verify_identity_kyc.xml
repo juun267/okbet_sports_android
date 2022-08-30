@@ -3,19 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_F0F5FA"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.identity.VerifyIdentityFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_141414_F3F4F5"
+            android:layout_marginTop="@dimen/margin_10"
             android:orientation="vertical">
 
             <include
@@ -52,13 +48,32 @@
                     android:textColor="@color/color_FFFFFF_FFFFFF"
                     android:textSize="@dimen/textSize16sp" />
 
-                <include
-                    android:id="@+id/btn_service"
-                    layout="@layout/content_verify_identity_kyc_service" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/customer_service"
+                        android:textColor="@color/color_A5A9B3"
+                        android:textSize="@dimen/textSize14sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_service"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/btn_service"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize14sp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
 
-    </ScrollView>
 
 </LinearLayout>

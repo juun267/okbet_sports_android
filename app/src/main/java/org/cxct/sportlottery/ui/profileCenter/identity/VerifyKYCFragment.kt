@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.content_security_code_style_edittext.view.*
+import kotlinx.android.synthetic.main.content_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.content_verify_identity_kyc.view.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.view_bottom_navigation.view.*
@@ -37,7 +38,8 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class VerifyKYCFragment :
+    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
     private var firstFile: File? = null
     private var secondFile: File? = null
     private var dataList = mutableListOf<StatusSheetData>()
@@ -205,24 +207,41 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
         btn_submit.setOnClickListener {
             when {
                 firstFile == null -> {
-                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
+                    showErrorPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.upload_fail)
+                    ) {}
                 }
                 secondFile == null && identity_2nd.isVisible -> {
-                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
+                    showErrorPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.upload_fail)
+                    ) {}
                 }
                 else -> {
                     loading()
-                    if(identity_2nd.isVisible)
-                        viewModel.uploadVerifyPhoto(firstFile!!,identity_1st.selector_type.selectedCode?.toInt(),identity_1st.ed_num.text.toString(), secondFile!!, identity_2nd.selector_type.selectedCode?.toInt(), identity_2nd.ed_num.text.toString())
+                    if (identity_2nd.isVisible)
+                        viewModel.uploadVerifyPhoto(
+                            firstFile!!,
+                            identity_1st.selector_type.selectedCode?.toInt(),
+                            identity_1st.ed_num.text.toString(),
+                            secondFile!!,
+                            identity_2nd.selector_type.selectedCode?.toInt(),
+                            identity_2nd.ed_num.text.toString()
+                        )
                     else
-                        viewModel.uploadVerifyPhoto(firstFile!!,identity_1st.selector_type.selectedCode?.toInt(),identity_1st.ed_num.text.toString())
+                        viewModel.uploadVerifyPhoto(
+                            firstFile!!,
+                            identity_1st.selector_type.selectedCode?.toInt(),
+                            identity_1st.ed_num.text.toString()
+                        )
                 }
             }
         }
 
         btn_submit.setTitleLetterSpacing()
 
-        btn_service.setOnClickListener {
+        tv_service.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
@@ -270,16 +289,20 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
                 }
             }
         }
+
+
     }
 
     private fun setupDocFile() {
         firstFile?.let { file ->
             identity_1st.apply {
-                this.btn_add_pic.isVisible = false
-                Glide.with( this.img_pic.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.img_pic)
+                this.btn_add_pic.isVisible = true
+                tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
+                Glide.with(this.img_pic.context).load(file.absolutePath)
+                    .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+                    .into(this.img_pic)
                 cl_pic.isSelected = true
                 img_tri.isVisible = true
-                pic_frame.isVisible = false
             }
         }
     }
@@ -287,17 +310,20 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
     private fun setupPhotoFile() {
         secondFile?.let { file ->
             identity_2nd.apply {
-                this.btn_add_pic.isVisible = false
-                Glide.with( this.img_pic.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.img_pic)
+                this.btn_add_pic.isVisible = true
+                tv_upload_id_photo.text = getString(R.string.change_other_ID_photos)
+                Glide.with(this.img_pic.context).load(file.absolutePath)
+                    .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+                    .into(this.img_pic)
                 cl_pic.isSelected = true
                 img_tri.isVisible = true
-                pic_frame.isVisible = false
             }
         }
     }
 
     private fun checkSubmitStatus() {
-        btn_submit.isEnabled = (firstFile != null && identity_1st.ed_num.text.isNotEmpty()) && ((secondFile != null && identity_2nd.isVisible && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
+        btn_submit.isEnabled =
+            (firstFile != null && identity_1st.ed_num.text.isNotEmpty()) && ((secondFile != null && identity_2nd.isVisible && identity_2nd.ed_num.text.isNotEmpty()) || !identity_2nd.isVisible)
     }
 
     private fun setEdittext() {
@@ -325,7 +351,7 @@ class VerifyKYCFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCent
         })
     }
 
-    private fun getIdentityType(){
+    private fun getIdentityType() {
         //根據config配置薪資來源選項
         val identityTypeList = mutableListOf<StatusSheetData>()
         sConfigData?.identityTypeList?.map { identityType ->

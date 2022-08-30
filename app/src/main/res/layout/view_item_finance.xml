@@ -16,6 +16,7 @@
             android:layout_height="22dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="18dp"
+            android:visibility="gone"
             android:src="@mipmap/ic_launcher" />
 
         <TextView

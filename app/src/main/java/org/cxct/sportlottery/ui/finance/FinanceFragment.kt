@@ -55,12 +55,6 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
             this.adapter = recordAdapter
 
-            addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
         }
 
         view.tv_currency_type.text = sConfigData?.systemCurrencySign

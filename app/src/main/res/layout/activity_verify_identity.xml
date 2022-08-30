@@ -19,5 +19,4 @@
         app:navGraph="@navigation/identity_navigation"
         tools:layout="@layout/fragment_verify_identity_new"
         tools:layout_editor_absoluteX="0dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
