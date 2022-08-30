@@ -196,29 +196,29 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 when (gameType) {
                     GameType.FT.key -> { //上半場, 全場
                         tv_first_half.visibility = View.VISIBLE
-                        tv_second_half.visibility = View.GONE
-                        tv_end_game.visibility = View.GONE
+//                        tv_second_half.visibility = View.GONE
+//                        tv_end_game.visibility = View.GONE
                         tv_full_game.visibility = View.VISIBLE
                     }
                     GameType.BK.key -> { //上半場, 下半場, 賽果
                         tv_first_half.visibility = View.VISIBLE
-                        tv_second_half.visibility = View.VISIBLE
-                        tv_end_game.visibility = View.VISIBLE
+//                        tv_second_half.visibility = View.VISIBLE
+//                        tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
 
-                        tv_end_game.text = context.getString(R.string.full_game)
+//                        tv_end_game.text = context.getString(R.string.full_game)
                     }
                     GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
                     GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key -> {
                         tv_first_half.visibility = View.GONE
-                        tv_second_half.visibility = View.GONE
-                        tv_end_game.visibility = View.VISIBLE
+//                        tv_second_half.visibility = View.GONE
+//                        tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
                     }
                     else -> {
                         tv_first_half.visibility = View.GONE
-                        tv_second_half.visibility = View.GONE
-                        tv_end_game.visibility = View.GONE
+//                        tv_second_half.visibility = View.GONE
+//                        tv_end_game.visibility = View.GONE
                         tv_full_game.visibility = View.GONE
                     }
                 }
@@ -262,7 +262,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view =
-                    layoutInflater.inflate(R.layout.item_match_result_match, viewGroup, false)
+                    layoutInflater.inflate(R.layout.item_match_result_match_new, viewGroup, false)
                 return MatchViewHolder(view)
             }
         }

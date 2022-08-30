@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="3dp"
-    android:minWidth="80dp"
+    android:minWidth="63dp"
     android:background="@drawable/effect_select_date_frame_5dp"
     android:button="@null"
     android:gravity="center"
-    android:minHeight="38dp"
+    android:minHeight="36dp"
     android:orientation="vertical"
     android:textAlignment="center"
     android:textAllCaps="true"
@@ -20,4 +20,4 @@
     android:paddingEnd="3dp"
     tools:checked="true"
     tools:ignore="SpUsage"
-    tools:text="星期一\n10月20日" />
+    tools:text="10月20日" />
