@@ -78,6 +78,7 @@
     <declare-styleable name="StatusBottomSheetStyle">
         <attr name="sheetLayout" format="reference" />
         <attr name="defaultStatusText" format="string" />
+        <attr name="textColor" format="reference|color" />
         <attr name="defaultBottomSheetTitleText" format="string" />
         <attr name="bottomSheetShowCloseButton" format="boolean" />
         <attr name="arrowAtEnd" format="boolean" />
