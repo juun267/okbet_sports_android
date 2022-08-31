@@ -24,7 +24,7 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
 
         setupToolbarTitle(getString(R.string.fund_detail))
 
-        viewModel.recordType.observe(this, {
+        viewModel.recordType.observe(this) {
             setupToolbarTitle(it)
 
             when (it) {
@@ -44,7 +44,7 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
                     navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToRedEnvelopeFragment())
                 }
             }
-        })
+        }
 
         checkQuickJump()
     }
