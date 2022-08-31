@@ -79,6 +79,8 @@
         <attr name="sheetLayout" format="reference" />
         <attr name="defaultStatusText" format="string" />
         <attr name="textColor" format="reference|color" />
+        <attr name="listWidth" format="dimension" />
+        <attr name="listBackground" format="reference" />
         <attr name="defaultBottomSheetTitleText" format="string" />
         <attr name="bottomSheetShowCloseButton" format="boolean" />
         <attr name="arrowAtEnd" format="boolean" />

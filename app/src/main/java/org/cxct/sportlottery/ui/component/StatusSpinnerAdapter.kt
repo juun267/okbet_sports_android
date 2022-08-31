@@ -4,6 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
+import kotlinx.android.synthetic.main.item_play_spinner.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemPlaySpinnerBinding
 import org.cxct.sportlottery.network.sport.query.PlayCate
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -12,6 +15,8 @@ class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableList
 
     //加一項作為預設項目
     private val itemList = dataItems
+
+    private var color = 0;
 
     //最後一項為預設項目，不顯示
     override fun getCount(): Int = itemList.size
@@ -33,10 +38,14 @@ class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableList
             view = convertView
             viewHolder = view.tag as PlayItemViewHolder
         }
-
+        view.tvPlay.setTextColor(color)
         viewHolder.bind(itemList[position], position)
 
         return view
+    }
+
+    fun setItmeColor(itemColor: Int){
+        this.color = itemColor
     }
 
     inner class PlayItemViewHolder(private val binding: ItemPlaySpinnerBinding) {

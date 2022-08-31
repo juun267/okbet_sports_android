@@ -30,7 +30,9 @@
             android:background="#F3F9FF"
             app:defaultStatusText="@string/all_order_status"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-            app:textColor="#6C7BA8" />
+            app:textColor="#6C7BA8"
+            app:listBackground="@drawable/bg_status_spinner_list_stroke"
+            app:listWidth="120dp"/>
 
         <org.cxct.sportlottery.ui.component.StatusSpinnerView
             android:id="@+id/selector_method_status"
@@ -40,8 +42,8 @@
             android:background="#F3F9FF"
             app:defaultStatusText="@string/log_type_all"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-            app:textColor="#6C7BA8" />
-
+            app:textColor="#6C7BA8"
+            app:listBackground="@drawable/bg_status_spinner_list_stroke"/>
     </LinearLayout>
 
     <LinearLayout

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.component
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,18 +79,39 @@ class StatusSpinnerView @JvmOverloads constructor(
             setSelectCode(first.code)
         }
         spinnerAdapter = StatusSpinnerAdapter(dataList)
+        spinnerAdapter!!.setItmeColor(context.resources.getColor(R.color.colorBackground,null))
         mListPop = ListPopupWindow(context)
-        mListPop.width = ScreenUtils.getScreenWidth(context) / 2
-        mListPop.height = LayoutParams.WRAP_CONTENT
-        mListPop.setBackgroundDrawable(
-            ContextCompat.getDrawable(
-                context,
-                R.drawable.bg_play_category_pop
-            )
+        var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
+            0F
         )
+        if(listWidth > 0){
+            mListPop.width = listWidth.toInt()
+        } else {
+            mListPop.width = ScreenUtils.getScreenWidth(context) / 2
+        }
+        mListPop.height = LayoutParams.WRAP_CONTENT
+
+        var listBackResource = typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_listBackground,0)
+        if(listBackResource != 0){
+            mListPop.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    listBackResource
+                )
+            )
+        }else{
+            mListPop.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.bg_play_category_pop
+                )
+            )
+        }
+
         mListPop.setAdapter(spinnerAdapter)
-        mListPop.setAnchorView(cl_root) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.anchorView = cl_root  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
+        mListPop.setHorizontalOffset(ScreenUtils.getScreenWidth(context) / 16)
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
