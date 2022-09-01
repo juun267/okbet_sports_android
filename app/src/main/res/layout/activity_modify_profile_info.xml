@@ -5,7 +5,7 @@
     android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_F0F5FA"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.nickname.ModifyProfileInfoActivity">
 
@@ -33,7 +33,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                     android:id="@+id/et_nickname"
@@ -76,7 +77,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -119,7 +121,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -171,7 +174,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -215,7 +219,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -258,7 +263,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -290,24 +296,20 @@
 
             </LinearLayout>
 
-
+            <Button
+                android:id="@+id/btn_confirm"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_submit"
+                android:text="@string/btn_confirm"
+                android:textColor="@color/color_FCFCFC"
+                android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
     </ScrollView>
 
-
-    <Button
-        android:id="@+id/btn_confirm"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/ic_submit"
-        android:minWidth="135dp"
-        android:minHeight="36dp"
-        android:text="@string/btn_confirm"
-        android:textColor="@color/color_FCFCFC"
-        android:textSize="@dimen/textSize14sp" />
 
 </LinearLayout>

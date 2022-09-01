@@ -67,6 +67,9 @@
             android:name=".ui.main.accountHistory.AccountHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.main.accountHistory.BetListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.vip.VipActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -12,11 +12,21 @@ import kotlinx.android.synthetic.main.fragment_account_history.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.maintab.SportFragment
 
 /**
  * @app_destination 帳戶歷史
  */
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
+
+    companion object {
+        fun newInstance(): AccountHistoryFragment {
+            val args = Bundle()
+            val fragment = AccountHistoryFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     private var isFirstTime = true //避免重複call兩次api
 
@@ -39,6 +49,8 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
             else viewModel.setSelectedSport(it)
         })
     }
+
+
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

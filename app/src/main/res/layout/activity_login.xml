@@ -110,7 +110,7 @@
                 android:layout_marginTop="4dp"
                 app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/password_hint"
-                app:iconSignifier="@drawable/ic_login_password"
+                app:iconSignifier="@drawable/ic_icon_okbet_login_password"
                 app:isResponsiveIconColor="false"
                 app:labelText="@string/login_password"
                 app:labelTextStyle="normal"

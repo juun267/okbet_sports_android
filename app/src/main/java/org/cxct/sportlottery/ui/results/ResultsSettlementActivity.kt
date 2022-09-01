@@ -70,7 +70,7 @@ class ResultsSettlementActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_results_settlement)
+        setContentView(R.layout.activity_results_settlement_new)
 
         initData()
         setupToolbar()
@@ -343,7 +343,7 @@ class ResultsSettlementActivity :
                 6 to getString(R.string.friday2),
                 7 to getString(R.string.saturday2)
             ) //1:星期日, 2:星期一, ...
-            weekList.add("${weekName[week]}\n${String.format("%02d", month)}-${String.format("%02d", day)}")
+            weekList.add("${String.format("%02d", month)}/${String.format("%02d", day)}")
         }
         weekList.add(getString(R.string.champion))
         return weekList

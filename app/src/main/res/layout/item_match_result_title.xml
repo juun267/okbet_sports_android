@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_262626_edf4ff"
+        android:background="#F3F9FF"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -24,10 +24,10 @@
             <ImageView
                 android:id="@+id/iv_arrow"
                 android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:padding="1dp"
+                android:layout_height="6dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginEnd="8dp"
+                android:padding="1dp"
                 android:src="@drawable/ic_arrow_down_dark" />
 
             <TextView
@@ -37,7 +37,7 @@
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/color_BBBBBB_333333"
+                android:textColor="#025BE8"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="Miền Bắc" />
 
@@ -60,16 +60,6 @@
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/first_half_game" />
 
-            <TextView
-                android:id="@+id/tv_second_half"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/second_half_game"
-                android:textColor="@color/color_BBBBBB_333333"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="@string/second_half_game" />
 
             <TextView
                 android:id="@+id/tv_full_game"
@@ -82,15 +72,6 @@
                 android:textSize="@dimen/textSize14sp"
                 tools:text="@string/full_game" />
 
-            <TextView
-                android:id="@+id/tv_end_game"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/game_result"
-                android:textColor="@color/color_BBBBBB_333333"
-                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
     </LinearLayout>

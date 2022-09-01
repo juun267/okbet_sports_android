@@ -1218,6 +1218,10 @@
     <string name="error_recommend_agent">No matched</string>
     <string name="local_time">当地时间:</string>
     <string name="register_title">Register</string>
+    <string name="pls_file_type">请选择文件的类型</string>
+    <string name="click_upload_id_photo">点击上传证件照片</string>
+    <string name="change_other_ID_photos">变更其他证件照</string>
+    <string name="customer_service_help">如需帮助，请联系客服</string>
     <string name="league_filter">select matches</string>
     <string name="reverse_select">reverse select</string>
 </resources>
