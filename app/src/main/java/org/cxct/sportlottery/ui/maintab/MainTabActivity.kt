@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
 import BetRecordFragment
-import FavoriteFragment
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -25,6 +24,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
+import org.cxct.sportlottery.ui.sport.FavoriteFragment
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.MetricsUtil
 import org.greenrobot.eventbus.Subscribe
@@ -183,7 +183,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
             return
         }
-        return onBackPressed()
+        super.onBackPressed()
     }
 
     override fun getBetListPageVisible(): Boolean {

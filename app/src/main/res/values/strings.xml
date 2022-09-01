@@ -1218,4 +1218,6 @@
     <string name="error_recommend_agent">No matched</string>
     <string name="local_time">当地时间:</string>
     <string name="register_title">Register</string>
+    <string name="league_filter">select matches</string>
+    <string name="reverse_select">reverse select</string>
 </resources>

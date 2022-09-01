@@ -357,7 +357,7 @@ class SportViewModel(
 
     private var sportMenuData: SportMenuData? = null //球種菜單資料
 
-    private var outrightMatchDiscount = userInfo.value?.discount ?: 1.0F //當前冠軍頁面適配的折扣率
+    private var outrightMatchDiscount = userInfo.value?.discount ?: 1.0F //當前冠軍頁面適配的折扣率'
 
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
@@ -668,7 +668,7 @@ class SportViewModel(
                                 matchType = MatchType.OTHER,
                                 isReloadDate = true,
                                 isReloadPlayCate = true,
-                                isLastSportType = true
+                                isLastSportType = true,
                             )
                         }
                     }
@@ -1117,7 +1117,7 @@ class SportViewModel(
                 matchType = matchType,
                 isReloadDate = false,
                 isReloadPlayCate = false,
-                isLastSportType = true
+                isLastSportType = true,
             )
         }
     }
@@ -1180,7 +1180,6 @@ class SportViewModel(
         if (getMatchCount(matchType) < 1) {
             return
         }
-
         val nowMatchType = curMatchType.value ?: matchType
         val nowChildMatchType = curChildMatchType.value ?: matchType
 
@@ -1191,23 +1190,27 @@ class SportViewModel(
         var reloadedDateRow: List<Date>? = null
 
         if (isReloadDate) {
-            reloadedDateRow = getDateRow(nowChildMatchType)
+            reloadedDateRow = getDateRow(matchType)
         }
 
         //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間
-        val reloadedTimeRange = reloadedDateRow?.find { it.isSelected }?.timeRangeParams
+        val reloadedTimeRange = reloadedDateRow?.find {
+            it.isSelected
+        }?.timeRangeParams
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
         val mt = if (matchType == nowChildMatchType) matchType else nowChildMatchType
 
+        //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間\
+        val requestTimeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams()
         sportCode?.let { code ->
             when (mt) {
                 MatchType.MAIN -> {
                     getOddsList(
                         code,
                         specialEntrance.value?.couponCode ?: "",
-                        reloadedTimeRange ?: getCurrentTimeRangeParams(),
+                        requestTimeRangeParams,
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1233,7 +1236,7 @@ class SportViewModel(
                     getOddsList(
                         gameType = code,
                         matchType.postValue,
-                        reloadedTimeRange,
+                        requestTimeRangeParams,
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
@@ -1242,14 +1245,15 @@ class SportViewModel(
                     getOddsList(
                         code,
                         matchType.postValue,
-                        getCurrentTimeRangeParams(),
+                        requestTimeRangeParams,
+                        leagueIdList = leagueIdList,
                     )
                 }
                 MatchType.PARLAY -> {
                     getLeagueList(
                         code,
                         nowChildMatchType.postValue,
-                        reloadedTimeRange ?: getCurrentTimeRangeParams(),
+                        requestTimeRangeParams,
                         date,
                         isIncrement = isIncrement
                     )
@@ -1402,11 +1406,11 @@ class SportViewModel(
         }
     }
 
-    fun getOutrightOddsList(gameType: String, outrightLeagueId: String? = null) {
+    fun getOutrightOddsList(gameType: String, leagueIdList: List<String>? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
-                    if (outrightLeagueId.isNullOrEmpty()) {
+                    if (leagueIdList.isNullOrEmpty()) {
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue
@@ -1415,7 +1419,7 @@ class SportViewModel(
                         OutrightOddsListRequest(
                             gameType,
                             matchType = MatchType.OUTRIGHT.postValue,
-                            leagueIdList = listOf(outrightLeagueId)
+                            leagueIdList = leagueIdList
                         )
                     }
                 )
@@ -1616,6 +1620,7 @@ class SportViewModel(
             }?.updateMatchType()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.unfold = 1
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
@@ -2017,7 +2022,6 @@ class SportViewModel(
         ).map {
             Date(it, TimeUtil.getDayDateTimeRangeParams(it, locale), isDateFormat = true)
         })
-
         return dateRow
     }
 
@@ -2068,7 +2072,7 @@ class SportViewModel(
         return dateRow
     }
 
-    private fun getCurrentTimeRangeParams(): TimeRangeParams? {
+    fun getCurrentTimeRangeParams(): TimeRangeParams? {
         return _curDate.value?.find {
             it.isSelected
         }?.timeRangeParams
@@ -2099,7 +2103,6 @@ class SportViewModel(
 
     fun filterLeague(leagueList: List<League>) {
         _leagueFilterList.postValue(leagueList)
-
         clearSelectedLeague()
     }
 
@@ -3740,5 +3743,4 @@ class SportViewModel(
             }
         }
     }
-
 }

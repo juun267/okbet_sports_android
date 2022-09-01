@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.itemview_date_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
 
 class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
@@ -51,23 +52,25 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
         private fun setupCalendarView(item: Date) {
             itemView.date_text_other.visibility = View.GONE
 
+            val dateStr = TimeUtil.timeFormat(item.timeRangeParams.startTime?.toLong(),
+                TimeUtil.YMDE_FORMAT_1)
             //格式: 2021-December-28-Tue
-            itemView.date_text_date.text = item.display.split("-")[DateSplitPart.MONTH_DATE.part]
+            itemView.date_text_date.text = dateStr.split("-")[DateSplitPart.MONTH_DATE.part]
 
             when (LanguageManager.getSelectLanguage(itemView.context)) {
                 LanguageManager.Language.VI -> {
                     itemView.date_text_week.text =
-                        item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
                             .replace("Th", "Thứ")
                 }
                 LanguageManager.Language.EN -> {
                     itemView.date_text_week.text =
-                        item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
                             .substring(0, 3)
                 }
                 else -> {
                     itemView.date_text_week.text =
-                        item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
                 }
             }
         }

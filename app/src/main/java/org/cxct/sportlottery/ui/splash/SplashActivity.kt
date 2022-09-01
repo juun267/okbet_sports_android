@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -31,8 +32,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ImmersionBar.with(this)
+            .fullScreen(true)
+            .statusBarDarkFont(true)
+            .init()
         setContentView(R.layout.activity_splash)
-
         setupVersion()
         //checkPermissionGranted()
         initObserve()

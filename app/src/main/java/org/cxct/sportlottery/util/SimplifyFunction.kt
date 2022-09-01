@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -47,7 +48,8 @@ import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.sport.SportListAdapter
+import org.cxct.sportlottery.ui.sport.FavoriteAdapter
+import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
@@ -94,15 +96,32 @@ fun RecyclerView.addScrollWithItemVisibility(
                                 }
                             }
                         }
-                        is SportListAdapter -> {
+                        is SportLeagueAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 val viewByPosition =
                                     layoutManager?.findViewByPosition(leaguePosition)
                                 viewByPosition?.let {
-                                    if (getChildViewHolder(it) is SportListAdapter.ItemViewHolder) {
+                                    if (getChildViewHolder(it) is SportLeagueAdapter.ItemViewHolder) {
                                         val viewHolder =
-                                            getChildViewHolder(it) as SportListAdapter.ItemViewHolder
+                                            getChildViewHolder(it) as SportLeagueAdapter.ItemViewHolder
                                         viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                            .forEach { matchPosition ->
+                                                visibleRangePair.add(Pair(leaguePosition,
+                                                    matchPosition))
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                        is FavoriteAdapter -> {
+                            getVisibleRangePosition().forEach { leaguePosition ->
+                                val viewByPosition =
+                                    layoutManager?.findViewByPosition(leaguePosition)
+                                viewByPosition?.let {
+                                    if (getChildViewHolder(it) is FavoriteAdapter.ItemViewHolder) {
+                                        val viewHolder =
+                                            getChildViewHolder(it) as FavoriteAdapter.ItemViewHolder
+                                        viewHolder.itemView.rv_league.getVisibleRangePosition()
                                             .forEach { matchPosition ->
                                                 visibleRangePair.add(Pair(leaguePosition,
                                                     matchPosition))
@@ -251,13 +270,13 @@ fun RecyclerView.firstVisibleRange(leagueAdapter: LeagueAdapter, activity: Activ
 }
 
 @SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(adapter: SportListAdapter, activity: Activity) {
+fun RecyclerView.firstVisibleRange(adapter: SportLeagueAdapter, activity: Activity) {
     post {
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             viewByPosition?.let { view ->
-                if (getChildViewHolder(view) is SportListAdapter.ItemViewHolder) {
-                    val viewHolder = getChildViewHolder(view) as SportListAdapter.ItemViewHolder
+                if (getChildViewHolder(view) is SportLeagueAdapter.ItemViewHolder) {
+                    val viewHolder = getChildViewHolder(view) as SportLeagueAdapter.ItemViewHolder
                     viewHolder.itemView.league_odd_list.getVisibleRangePosition()
                         .forEach { matchPosition ->
                             if (adapter.data.isNotEmpty()) {
@@ -349,6 +368,35 @@ fun RecyclerView.firstVisibleRange(
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@SuppressLint("LogNotTimber")
+fun RecyclerView.firstVisibleRange(adapter: FavoriteAdapter, activity: Activity) {
+    post {
+        getVisibleRangePosition().forEach { leaguePosition ->
+            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
+            viewByPosition?.let { view ->
+                if (getChildViewHolder(view) is FavoriteAdapter.ItemViewHolder) {
+                    val viewHolder = getChildViewHolder(view) as FavoriteAdapter.ItemViewHolder
+                    viewHolder.itemView.rv_league.getVisibleRangePosition()
+                        .forEach { matchPosition ->
+                            if (adapter.data.isNotEmpty()) {
+                                Log.d(
+                                    "[subscribe]",
+                                    "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
+                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
+                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
+                                )
+                                (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                    adapter.data[leaguePosition].gameType?.key,
+                                    adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
+                                )
+                            }
+                        }
                 }
             }
         }

@@ -15,4 +15,6 @@ data class League(
 ) {
     var isPin = false
     var isSelected = false
+    var firstCap = ""
+    var icon = ""
 }

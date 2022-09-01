@@ -98,13 +98,13 @@ abstract class BaseFavoriteViewModel(
             mNotifyLogin.postValue(true)
             return
         }
-
-        if (gameType == null || playCateMenu == null) {
-            mFavorMatchOddList.postValue(Event(listOf()))
-            return
-        }
-
-        getMyFavoriteMatch(gameType, playCateMenu, playCateCode)
+//        if (gameType == null || playCateMenu == null) {
+//            mFavorMatchOddList.postValue(Event(listOf()))
+//            return
+//        }
+        getMyFavoriteMatch(gameType ?: GameType.FT.key,
+            playCateMenu ?: MenuCode.MAIN.code,
+            playCateCode)
     }
 
     private fun getMyFavoriteMatch(

@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
@@ -51,6 +52,7 @@ import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.VerticalDecoration
+import org.greenrobot.eventbus.Subscribe
 import java.util.*
 
 /**
@@ -82,6 +84,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
     private var mView: View? = null
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
+    var leagueIdList = mutableListOf<String>()
 
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
@@ -236,7 +239,14 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
             }
         }
         lin_filter.setOnClickListener {
-
+            gameType?.let {
+                LeagueSelectActivity.start(requireContext(),
+                    it,
+                    matchType,
+                    null,
+                    null,
+                    leagueIdList)
+            }
         }
         iv_arrow.setOnClickListener {
             iv_arrow.isSelected = !iv_arrow.isSelected
@@ -574,7 +584,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
                     } else if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
                         gameType?.let { gameType ->
                             viewModel.getOutrightOddsList(gameType = gameType,
-                                outrightLeagueId = outrightLeagueId)
+                                leagueIdList = leagueIdList)
                         }
                     } else {
                         viewModel.getGameHallList(
@@ -602,7 +612,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
         receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 when (game_list.adapter) {
-                    is SportListAdapter -> {
+                    is SportLeagueAdapter -> {
 
                     }
                 }
@@ -622,7 +632,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 when (game_list.adapter) {
-                    is SportListAdapter -> {
+                    is SportLeagueAdapter -> {
                     }
                 }
             }
@@ -632,7 +642,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
             it?.let { globalStopEvent ->
 
                 when (game_list.adapter) {
-                    is SportListAdapter -> {
+                    is SportLeagueAdapter -> {
 
                     }
 
@@ -645,7 +655,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
                 unSubscribeChannelHallAll()
 
                 when (game_list.adapter) {
-                    is SportListAdapter -> {
+                    is SportLeagueAdapter -> {
 
                     }
                 }
@@ -1006,5 +1016,21 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
                 }
             }
         }
+    }
+
+    @Subscribe
+    fun onSelectLeague(leagueList: List<League>) {
+        viewModel.filterLeague(leagueList)
+        leagueIdList.clear()
+        leagueList.forEach {
+            leagueIdList.add(it.id)
+        }
+        viewModel.getGameHallList(
+            matchType = matchType,
+            isReloadDate = true,
+            isReloadPlayCate = false,
+            isLastSportType = true,
+            leagueIdList = leagueIdList
+        )
     }
 }

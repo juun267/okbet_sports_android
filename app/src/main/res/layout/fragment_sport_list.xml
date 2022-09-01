@@ -138,7 +138,7 @@
             android:overScrollMode="never"
             android:paddingTop="0dp"
             tools:itemCount="1"
-            tools:listitem="@layout/item_sport" />
+            tools:listitem="@layout/item_league" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

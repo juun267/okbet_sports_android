@@ -386,5 +386,9 @@
     <color name="color_F4F4F4">#F4F4F4</color>
     <color name="color_D4E1F1">#D4E1F1</color>
     <color name="color_FAFCFF">#FAFCFF</color>
+    <color name="color_F3F9FF">#F3F9FF</color>
+    <color name="color_F6FBFF">#F6FBFF</color>
+    <color name="color_D35555">#D35555</color>
+    <color name="color_E9EAEB">#E9EAEB</color>
 
 </resources>

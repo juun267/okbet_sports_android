@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_sport.view.*
+import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
@@ -28,7 +28,7 @@ import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
-class SportListAdapter(private val matchType: MatchType) :
+class SportLeagueAdapter(private val matchType: MatchType) :
     BaseGameAdapter() {
 
     private fun refreshByBetInfo() {
@@ -168,7 +168,7 @@ class SportListAdapter(private val matchType: MatchType) :
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_sport, parent, false)) //itemview_league_v5
+                    .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
             }
 
             else -> initBaseViewHolders(parent, viewType)
@@ -343,12 +343,8 @@ class SportListAdapter(private val matchType: MatchType) :
         }
 
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
-            expandCheckList[data[adapterPosition].league.id].apply {
-                if (this != null) {
-                    data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
-                }
-            }
-            itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            itemView.league_odd_list.visibility =
+                if (item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
 
@@ -420,8 +416,4 @@ class SportListAdapter(private val matchType: MatchType) :
         }
     }
 
-}
-
-class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit) {
-    fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
 }

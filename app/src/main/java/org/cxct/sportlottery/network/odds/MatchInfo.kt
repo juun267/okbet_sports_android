@@ -96,12 +96,17 @@ data class MatchInfo(
     override var firstBaseBag: Int? = null
     override var secBaseBag: Int? = null
     override var thirdBaseBag: Int? = null
-    override var outNumber:Int? = null
+    override var outNumber: Int? = null
 
     //999
-    var scoreStatus:Int? = 0
+    var scoreStatus: Int? = 0
 
     // For Android use
     var isStartPosition: Boolean = false
     var isLastPosition: Boolean = false
+
+    //联赛图标
+    var categoryIcon: String? = null
+
+
 }

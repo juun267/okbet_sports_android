@@ -111,7 +111,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 IH -> R.drawable.selector_sport_icehockey
                 BX -> R.drawable.selector_sport_boxing
                 CB -> R.drawable.selector_sport_snooker
-                CK -> R.drawable.ic_sport_cricket
+                CK -> R.drawable.selector_sport_electronic
                 BB -> R.drawable.selector_sport_baseball
                 RB -> R.drawable.selector_sport_rugby
                 AFT -> R.drawable.selector_sport_amfootball
@@ -137,7 +137,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 IH.key -> R.drawable.selector_sport_icehockey
                 BX.key -> R.drawable.selector_sport_boxing
                 CB.key -> R.drawable.selector_sport_snooker
-                CK.key -> R.drawable.ic_home_cricket
+                CK.key -> R.drawable.selector_sport_electronic
                 BB.key -> R.drawable.selector_sport_baseball
                 RB.key -> R.drawable.selector_sport_rugby
                 AFT.key -> R.drawable.selector_sport_amfootball
@@ -252,5 +252,28 @@ enum class GameType(val key: String, @StringRes val string: Int) {
             }
         }
 
+        fun getGameTypeBannerBg(gameType: GameType): Int {
+            return when (gameType) {
+                FT -> R.drawable.card_sport_football
+                BK -> R.drawable.card_sport_basketball
+                TN -> R.drawable.card_sport_tennis
+                VB -> R.drawable.card_sport_volleyball
+                BM -> R.drawable.card_sport_badminton
+                TT -> R.drawable.card_sport_pingpong
+                IH -> R.drawable.card_sport_icehockey
+                BX -> R.drawable.card_sport_boxing
+                CB -> R.drawable.card_sport_snooker
+                CK -> R.drawable.card_sport_cricket
+                BB -> R.drawable.card_sport_baseball
+                RB -> R.drawable.card_sport_rugby
+                AFT -> R.drawable.card_sport_amfootball
+                MR -> R.drawable.card_sport_racing
+                GF -> R.drawable.card_sport_golf
+                ES -> R.drawable.card_sport_esports
+                else ->
+                    R.drawable.card_sport_football
+            }
+        }
     }
+
 }

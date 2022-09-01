@@ -25,8 +25,11 @@ object TimeUtil {
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val MD_HM_FORMAT = "MM/dd HH:mm"
     const val DM_HM_FORMAT = "MM/dd HH:mm"
-    private const val YMDE_FORMAT = "yyyy-MM/dd-EEE"
-    private const val YMDE_HMS_FORMAT = "yyyy-MM/dd-EEE HH:mm:ss"
+    private const val YMDE_FORMAT = "yyyy-MM-dd"
+    private const val YMDE_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const val YMDE_FORMAT_1 = "yyyy-MM/dd-EEE"
+
+    //    private const val YMDE_HMS_FORMAT = "yyyy-MM/dd-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
     private const val BIRTHDAY_FORMAT = "yyyy / MM / dd"
 
@@ -171,7 +174,7 @@ object TimeUtil {
         locale: Locale = Locale.getDefault()
     ): Long? {
         if (date.isNullOrEmpty()) return null
-        val formatter = SimpleDateFormat("$dateFormatPattern S", locale)
+        val formatter = SimpleDateFormat("$dateFormatPattern", locale)
         formatter.timeZone = timeZone
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
@@ -424,20 +427,18 @@ object TimeUtil {
         //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd
         return object : TimeRangeParams {
-            override val startTime: String
-                get() = dateToTimeStamp(
-                    date,
-                    TimeType.START_OF_DAY,
-                    dateFormatPattern = YMDE_HMS_FORMAT,
-                    locale = locale
-                ).toString()
-            override val endTime: String
-                get() = dateToTimeStamp(
-                    date,
-                    TimeType.END_OF_DAY,
-                    dateFormatPattern = YMDE_HMS_FORMAT,
-                    locale = locale
-                ).toString()
+            override val startTime = dateToTimeStamp(
+                date,
+                TimeType.START_OF_DAY,
+                dateFormatPattern = YMDE_HMS_FORMAT,
+                locale = locale
+            ).toString()
+            override val endTime = dateToTimeStamp(
+                date,
+                TimeType.END_OF_DAY,
+                dateFormatPattern = YMDE_HMS_FORMAT,
+                locale = locale
+            ).toString()
         }
     }
 
@@ -480,10 +481,8 @@ object TimeUtil {
         val endTimeStamp = calendar.timeInMillis
 
         return object : TimeRangeParams {
-            override val startTime: String
-                get() = startTimeStamp.toString()
-            override val endTime: String
-                get() = endTimeStamp.toString()
+            override val startTime = startTimeStamp.toString()
+            override val endTime = endTimeStamp.toString()
         }
     }
 

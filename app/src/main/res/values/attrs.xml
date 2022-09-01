@@ -280,5 +280,23 @@
         </attr>
         <attr name="gt_gradient_angle" format="integer" />
     </declare-styleable>
-
+    <declare-styleable name="RadiusCardView">
+        <!--        左上圆角大小-->
+        <attr name="rcv_topLeftRadiu" format="dimension" />
+        <!--        右上圆角大小-->
+        <attr name="rcv_topRightRadiu" format="dimension" />
+        <!--        右下圆角大小-->
+        <attr name="rcv_bottomRightRadiu" format="dimension" />
+        <!--        左下圆角大小-->
+        <attr name="rcv_bottomLeftRadiu" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="IndexBar">
+        <attr name="text_size_normal" format="dimension" />
+        <attr name="text_size_pressed" format="dimension" />
+        <attr name="text_color_normal" format="color" />
+        <attr name="text_color_pressed" format="color" />
+        <attr name="bg_color_normal" format="color" />
+        <attr name="bg_color_pressed" format="color" />
+        <attr name="text_array" format="reference" />
+    </declare-styleable>
 </resources>
