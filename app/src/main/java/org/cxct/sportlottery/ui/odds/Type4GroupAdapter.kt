@@ -35,7 +35,7 @@ class Type4GroupAdapter(
     private val keys = oddsDetail.oddArrayList
         .groupBy { it?.spread }
         .filter { it.key != null }
-        .mapTo(mutableListOf(), { it.key })
+        .mapTo(mutableListOf()) { it.key }
 
 
     private val groupList = oddsDetail.oddArrayList.chunked(4)
