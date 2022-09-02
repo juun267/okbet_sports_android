@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.filter
 
 import android.content.Context
 import android.content.Intent
@@ -145,9 +145,12 @@ class LeagueSelectActivity :
                     it.firstCap
                 }
                 map.keys.forEach { name ->
-                    itemData.add(LeagueSection(true, name))
+                    itemData.add(LeagueSection(
+                        true,
+                        name))
                     map.get(name)?.forEach {
-                        itemData.add(LeagueSection(it))
+                        itemData.add(LeagueSection(
+                            it))
                     }
                 }
                 leagueSelectAdapter.setNewData(itemData)

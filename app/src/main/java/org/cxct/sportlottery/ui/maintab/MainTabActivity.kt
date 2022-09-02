@@ -24,7 +24,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
-import org.cxct.sportlottery.ui.sport.FavoriteFragment
+import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.MetricsUtil
 import org.greenrobot.eventbus.Subscribe

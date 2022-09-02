@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.favorite
 
 import android.annotation.SuppressLint
 import android.util.Log

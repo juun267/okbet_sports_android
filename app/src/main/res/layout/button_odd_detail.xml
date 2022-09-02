@@ -84,10 +84,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_radius_4_button_odds_lock"
-        android:padding="@dimen/margin_15"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_lock"
         android:visibility="gone"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
     <TextView
         android:id="@+id/img_odd_unknown"
         android:layout_width="match_parent"

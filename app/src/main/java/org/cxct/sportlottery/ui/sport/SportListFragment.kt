@@ -42,12 +42,16 @@ import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.SportViewModel
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
+import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.VerticalDecoration
@@ -145,7 +149,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
             }
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
-                    navMatchDetailPage(matchId, matchInfoList, liveVideo)
+                    navMatchDetailPage(matchId, 0)
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -173,7 +177,9 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                     }
                 },
                 clickListenerStatistics = { matchId ->
-                    navStatistics(matchId)
+                    if (viewModel.checkLoginStatus()) {
+                        navMatchDetailPage(matchId, 0)
+                    }
                 },
                 refreshListener = { matchId ->
                     loading()
@@ -185,12 +191,12 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 },
                 clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, matchInfoList, liveVideo)
+                        navMatchDetailPage(matchId, liveVideo)
                     }
                 },
                 clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, matchInfoList, liveVideo)
+                        navMatchDetailPage(matchId, liveVideo)
                     }
                 },
                 clickCsTabListener = { playCate, matchOdd ->
@@ -209,7 +215,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 
     private fun navMatchDetailPage(
         matchId: String?,
-        matchInfoList: List<MatchInfo>,
         liveVideo: Int,
     ) {
         matchId?.let {
@@ -666,11 +671,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 
         }
         viewModel.leagueSubmitList.observe(this.viewLifecycleOwner) {
-            it.peekContent()?.let { leagueList ->
-                navGameLeague(leagueIdList = leagueList.map { league ->
-                    league.id
-                })
-            }
+
         }
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
@@ -1070,47 +1071,17 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         startActivity(intent)
     }
 
-    private fun navGameLeague(
-        leagueIdList: List<String> = listOf(),
-        matchIdList: List<String> = listOf(),
-        matchCategoryName: String? = null,
-    ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        val matchType = when (dateAdapter.data.find {
-            it.isSelected
-        }?.date) {
-            MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
-            else -> null
-        }
-
-//        gameType?.let {
-//            val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
-//                matchType ?: matchType,
-//                gameType,
-//                leagueIdList.toTypedArray(),
-//                matchIdList.toTypedArray(),
-//                matchCategoryName
-//            )
-//            findNavController().navigate(action)
-//        }
-    }
 
     private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
-//        gameType?.let {
-//            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
-//                matchType,
-//                gameType,
-//                matchId,
-//                liveVideo
-//            )
-//
-//            findNavController().navigate(action)
-//        }
+        gameType?.let {
+            if (gameType != null && matchId != null) {
+                SportDetailActivity.startActivity(requireContext(),
+                    DetailParams(matchType = matchType, gameType = gameType, matchId = matchId))
+            }
+        }
     }
 
     private fun navStatistics(matchId: String?) {

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.outright
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -44,12 +44,17 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.SportViewModel
-import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.ui.sport.OutrightOddListener
+import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
+import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
@@ -135,10 +140,9 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
                     }
                 },
                 onClickMatch = { outrightItem ->
-                    outrightItem.leagueExpanded = !outrightItem.leagueExpanded
-                    outrightItem.matchOdd.isExpand = outrightItem.leagueExpanded
-                    subscribeChannelHall(outrightItem?.matchOdd)
-                    updateOutrightAdapterInMain(outrightItem)
+                    outrightItem.matchOdd.matchInfo?.let {
+                        navMatchDetailPage(it.id, 0)
+                    }
                 },
                 clickExpand = { outrightItem ->
                     outrightItem.leagueExpanded = !outrightItem.leagueExpanded
@@ -160,7 +164,6 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
 
     private fun navMatchDetailPage(
         matchId: String?,
-        matchInfoList: List<MatchInfo>,
         liveVideo: Int,
     ) {
         matchId?.let {
@@ -523,11 +526,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
 
         }
         viewModel.leagueSubmitList.observe(this.viewLifecycleOwner) {
-            it.peekContent()?.let { leagueList ->
-                navGameLeague(leagueIdList = leagueList.map { league ->
-                    league.id
-                })
-            }
+
         }
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
@@ -773,53 +772,16 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
         startActivity(intent)
     }
 
-    private fun navGameLeague(
-        leagueIdList: List<String> = listOf(),
-        matchIdList: List<String> = listOf(),
-        matchCategoryName: String? = null,
-    ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        val matchType = when (dateAdapter.data.find {
-            it.isSelected
-        }?.date) {
-            MatchType.IN_PLAY.postValue -> MatchType.IN_PLAY
-            else -> null
-        }
-
-//        gameType?.let {
-//            val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
-//                matchType ?: matchType,
-//                gameType,
-//                leagueIdList.toTypedArray(),
-//                matchIdList.toTypedArray(),
-//                matchCategoryName
-//            )
-//            findNavController().navigate(action)
-//        }
-    }
-
     private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
-//        gameType?.let {
-//            val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
-//                matchType,
-//                gameType,
-//                matchId,
-//                liveVideo
-//            )
-//
-//            findNavController().navigate(action)
-//        }
-    }
-
-    private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId,
-            StatisticsDialog.StatisticsClickListener { clickMenu() })
-            .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
+        gameType?.let {
+            if (gameType != null && matchId != null) {
+                SportDetailActivity.startActivity(requireContext(),
+                    DetailParams(matchType = matchType, gameType = gameType, matchId = matchId))
+            }
+        }
     }
 
     private fun addOutRightOddsDialog(

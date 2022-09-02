@@ -60,8 +60,8 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
-import org.cxct.sportlottery.ui.sport.FavoriteViewModel
-import org.cxct.sportlottery.ui.sport.LeagueSelectViewModel
+import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
+import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel

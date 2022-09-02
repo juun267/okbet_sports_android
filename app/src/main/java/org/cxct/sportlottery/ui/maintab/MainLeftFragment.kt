@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.util.*
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -146,6 +147,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getFAQsUrl(requireContext()),
                 getString(R.string.faqs)
             )
+        }
+        //常見問題
+        lin_timezone.setOnClickListener {
+            startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
         }
         //代理加盟
         tv_affiliate.setOnClickListener {

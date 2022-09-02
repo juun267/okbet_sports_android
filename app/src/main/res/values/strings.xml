@@ -1224,4 +1224,6 @@
     <string name="customer_service_help">如需帮助，请联系客服</string>
     <string name="league_filter">select matches</string>
     <string name="reverse_select">reverse select</string>
+    <string name="video">video</string>
+    <string name="anime">anim</string>
 </resources>

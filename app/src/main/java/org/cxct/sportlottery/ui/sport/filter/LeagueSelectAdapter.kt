@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.filter
 
 import android.widget.ImageView
 import com.chad.library.adapter.base.BaseSectionQuickAdapter

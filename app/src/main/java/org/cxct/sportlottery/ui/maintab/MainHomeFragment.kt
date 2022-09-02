@@ -43,8 +43,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.DetailParams
-import org.cxct.sportlottery.ui.game.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
 import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
@@ -54,6 +52,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
@@ -623,7 +622,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     playCateMenuCode
                 )
                 when (val fragmentActivity = activity) {
-                    is GamePublicityActivity -> fragmentActivity.setupBetData(fastBetDataBean)
+                    is MainTabActivity -> fragmentActivity.setupBetData(fastBetDataBean)
                 }
             }
         }
@@ -647,13 +646,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         if (gameType != null && matchId != null) {
             SportDetailActivity.startActivity(requireContext(),
                 DetailParams(matchType = navMatchType, gameType = gameType, matchId = matchId))
-//            findNavController().navigate(
-//                PublicityFragmentDirections.actionPublicityFragmentToOddsDetailLiveFragment(
-//                    navMatchType,
-//                    gameType,
-//                    matchId
-//                )
-//            )
         }
     }
 

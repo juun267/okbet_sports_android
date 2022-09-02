@@ -1,4 +1,3 @@
 include ':stomp_protocol_android'
 include ':awesome-calendar'
-rootProject.name='SportLottery'
 include ':app'

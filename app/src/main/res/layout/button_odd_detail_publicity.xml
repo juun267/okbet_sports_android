@@ -110,7 +110,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_radius_4_button_odds_lock"
         android:scaleType="center"
-        android:src="@drawable/ic_iconlock"
+        android:src="@drawable/ic_lock"
         android:visibility="gone" />
 
     <TextView

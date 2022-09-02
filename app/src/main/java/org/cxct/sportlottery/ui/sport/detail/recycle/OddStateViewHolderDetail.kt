@@ -1,16 +1,10 @@
-package org.cxct.sportlottery.ui.game.detail.recycle
+package org.cxct.sportlottery.ui.sport.detail.recycle
 
 import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 
 abstract class OddStateViewHolderDetail(itemView: View) : RecyclerView.ViewHolder(itemView) {

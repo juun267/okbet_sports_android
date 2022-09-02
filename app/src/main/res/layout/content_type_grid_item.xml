@@ -6,6 +6,6 @@
     <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
         android:id="@+id/button_odds"
         android:layout_width="match_parent"
-        android:layout_height="36dp" />
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

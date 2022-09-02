@@ -1,9 +1,8 @@
-package org.cxct.sportlottery.ui.game.detail
+package org.cxct.sportlottery.ui.sport.detail
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -11,27 +10,26 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.item_sport_odd.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
-import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
-import kotlinx.android.synthetic.main.view_odds_detail_toolbar.ll_time
-import kotlinx.android.synthetic.main.view_odds_detail_toolbar.tv_away_name
-import kotlinx.android.synthetic.main.view_odds_detail_toolbar.tv_home_name
-import kotlinx.android.synthetic.main.view_odds_detail_toolbar.tv_time_bottom
-import kotlinx.android.synthetic.main.view_odds_detail_toolbar.tv_time_top
-import kotlinx.android.synthetic.main.view_toolbar_live.view.*
+import kotlinx.android.synthetic.main.view_detail_head_toolbar.tv_away_name
+import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
+import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityDetailSportBinding
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.MatchSource
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -42,37 +40,38 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
-import org.cxct.sportlottery.ui.component.LiveViewToolbar
-import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
 import org.cxct.sportlottery.ui.game.data.DetailParams
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.SportViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
-import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.ui.statistics.StatisticsFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import java.util.*
 
-/**
- * @app_destination 全部玩法(包含直播)
- */
-//TODO 即將開賽轉滾球時會短暫顯示完賽的狀態, 已通報後端進行溝通
+
 @Suppress("DEPRECATION", "SetTextI18n")
-class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class), TimerManager {
-    /** Animation.AnimationListener **/
+class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel::class),
+    TimerManager {
+    companion object {
+        private val TYPE_PARAMETER = "type_parameter"
+        fun startActivity(context: Context, params: DetailParams) {
+            val intent = Intent(context, SportDetailActivity::class.java)
+            intent.putExtra(TYPE_PARAMETER, params)
+            context.startActivity(intent)
+        }
+    }
 
-//    private val args: OddsDetailActivityArgs by navArgs()
     private var matchType: MatchType = MatchType.OTHER
-
-    private lateinit var binding: ActivityDetailSportBinding
-
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var isLogin: Boolean = false
     private val tabCateAdapter: TabCateAdapter by lazy {
@@ -144,34 +143,96 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         }
         return@Handler false
     }
-
     private val liveToolBarListener by lazy {
-        object : LiveViewToolbar.LiveToolBarListener {
+        object : DetailLiveViewToolbar.LiveToolBarListener {
             override fun getLiveInfo(newestUrl: Boolean) {
                 matchId?.let {
                     viewModel.getLiveInfo(it, newestUrl)
                 }
-            }
-
-            override fun showStatistics() {
-//                supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value).commit()
-                //TODO 用不到clickMenu
-//                StatisticsDialog.newInstance(
-//                    matchId,
-//                    StatisticsDialog.StatisticsClickListener { /** clickMenu() **/ })
-//                    .show(supportFragmentManager, StatisticsDialog::class.java.simpleName)
             }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailSportBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+        setContentView(R.layout.activity_detail_sport)
+        initToolBar()
         initData()
         initAllObserve()
         initUI()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
+        }
+    }
+
+    override fun initToolBar() {
+        iv_back.setOnClickListener {
+            onBackPressed()
+        }
+        iv_toolback.setOnClickListener {
+            onBackPressed()
+        }
+        iv_refresh.setOnClickListener {
+            iv_refresh.animate().rotation(720f).setDuration(1000).start()
+            getData()
+        }
+        ImmersionBar.with(this)
+            .statusBarView(v_statusbar)
+            .statusBarDarkFont(false)
+            .fitsSystemWindows(true)
+            .init()
+        ImmersionBar.with(this)
+            .statusBarView(v_statusbar_1)
+            .statusBarDarkFont(false)
+            .fitsSystemWindows(true)
+            .init()
+//        collaps_layout.minimumHeight = ImmersionBar.getStatusBarHeight(this)+54.dp
+        app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
+                if (state === State.COLLAPSED) {
+                    //折叠状态
+                    collaps_toolbar.visibility = View.VISIBLE
+                } else {
+                    collaps_toolbar.visibility = View.GONE
+                }
+            }
+        })
+    }
+
+    override fun initMenu() {
+    }
+
+    override fun clickMenuEvent() {
+    }
+
+    override fun initBottomNavigation() {
+    }
+
+    override fun showBetListPage() {
+    }
+
+    override fun updateUiWithLogin(isLogin: Boolean) {
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+    }
+
+    override fun updateBetListCount(num: Int) {
+    }
+
+    override fun showLoginNotify() {
+    }
+
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        TODO("Not yet implemented")
     }
 
     private fun initData() {
@@ -181,94 +242,37 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             matchType = it.matchType ?: MatchType.OTHER
             matchId = it.matchId
         }
-
-        binding.apply {
-            fragment = this@SportDetailActivity
-            gameViewModel = this@SportDetailActivity.viewModel
-            lifecycleOwner = this@SportDetailActivity
-            executePendingBindings()
-//            binding.vToolbar.ivTitleBar.setImageResource(
-//                GameConfigManager.getTitleBarBackground(gameType?.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
-//            )
-        }
-
-    }
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?,
-//    ): View = FragmentOddsDetailLiveBinding.inflate(inflater, container, false).apply {
-//        fragment = this@SportDetailActivity
-//        gameViewModel = this@SportDetailActivity.viewModel
-//        lifecycleOwner = this@SportDetailActivity.viewLifecycleOwner
-//        executePendingBindings()
-//        vToolbar.ivTitleBar.setImageResource(
-//            GameConfigManager.getTitleBarBackground(TYPE_gameType.key, MultiLanguagesApplication.isNightMode) ?: R.drawable.img_home_title_soccer_background
-//        )
-//    }.root
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        initUI()
-//    }
-
-    override fun onStart() {
-        super.onStart()
-
-        if (Util.SDK_INT >= 24) {
-            binding.liveViewToolBar.startPlayer(
-                matchId,
-                matchOdd?.matchInfo?.trackerId,
-                null,
-                isLogin
-            )
-        }
     }
 
     override fun onResume() {
         super.onResume()
         startTimer()
         isLogin = viewModel.loginRepository.isLogin.value == true
-        binding.liveViewToolBar.initLoginStatus(isLogin)
-
-        if ((Util.SDK_INT < 24) || binding.liveViewToolBar.getExoPlayer() == null) {
-            binding.liveViewToolBar.startPlayer(
-                matchId,
-                matchOdd?.matchInfo?.trackerId,
-                null,
-                isLogin
-            )
-        }
-
-//        if(args.liveVideo == 0) binding.liveViewToolBar.setUnLiveState()
-
-        matchOdd?.matchInfo?.let { matchInfo ->
-            binding.liveViewToolBar.setStatisticsState(matchInfo.source == MatchSource.SHOW_STATISTICS.code)
-        }
-
         if (MultiLanguagesApplication.colorModeChanging) {
             initObserve()
             initSocketObserver()
             MultiLanguagesApplication.colorModeChanging = false
         }
+        live_view_tool_bar.initLoginStatus(isLogin)
+
+        if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
+        }
     }
 
     override fun onPause() {
-        if (Util.SDK_INT < 24) {
-            binding.liveViewToolBar.stopPlayer()
-        }
         super.onPause()
-
+        if (Util.SDK_INT < 24) {
+            live_view_tool_bar.stopPlayer()
+        }
         cancelTimer()
     }
 
     override fun onStop() {
-        if (Util.SDK_INT >= 24) {
-            binding.liveViewToolBar.stopPlayer()
-        }
         super.onStop()
-
+        if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.stopPlayer()
+        }
         unSubscribeChannelEventAll()
     }
 
@@ -278,8 +282,9 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
     }
 
     private fun initUI() {
-        supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value).commit()
-        binding.liveViewToolBar.gameType = gameType //賽事動畫icon用，之後用不到可刪
+        live_view_tool_bar.gameType = gameType //賽事動畫icon用，之後用不到可刪
+        supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value)
+            .commit()
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
@@ -303,18 +308,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
                             betPlayCateNameMap = matchOdd.betPlayCateNameMap,
                             otherPlayCateName = scoPlayCateNameForBetInfo
                         )
-                        // TODO 暂时隐藏 投注相关的的代码
-//                        when (activity) {
-//                            is GameActivity -> (activity as GameActivity).setupBetData(
-//                                fastBetDataBean
-//                            )
-//                            is GamePublicityActivity -> (activity as GamePublicityActivity).setupBetData(
-//                                fastBetDataBean
-//                            )
-//                            is MyFavoriteActivity -> (activity as MyFavoriteActivity).setupBetData(
-//                                fastBetDataBean
-//                            )
-//                        }
+                        viewModel.updateMatchBetListData(fastBetDataBean)
                     }
                 }
             }
@@ -334,23 +328,22 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
         }
 
-        binding.rvCat.apply {
+        rv_cat.apply {
             adapter = tabCateAdapter
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
-
-        binding.rvDetail.post {
-            val screenWidth = MetricsUtil.getScreenWidth()
-            binding.vToolbar.constraintHeadToobar.layoutParams = FrameLayout.LayoutParams(
-                screenWidth,
-                LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
-            )
+        iv_arrow.setOnClickListener {
+            iv_arrow.isSelected = !iv_arrow.isSelected
+            oddsDetailListAdapter?.apply {
+                oddsDetailDataList.forEach {
+                    it.isExpand = iv_arrow.isSelected
+                }
+                notifyDataSetChanged()
+            }
         }
-    }
-
-    private fun clickDetailHead() {
-
+        iv_arrow.isSelected = true
+        isShowOdd(true)
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
@@ -392,11 +385,9 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         }
 
         viewModel.oddsDetailList.observe(this) {
-            it.getContentIfNotHandled()?.let { list ->
+            it.peekContent()?.let { list ->
                 if (list.isNotEmpty()) {
                     oddsDetailListAdapter?.oddsDetailDataList = list
-                    v_loading.visibility = View.GONE
-                    cl_content.visibility = View.VISIBLE
                 }
             }
         }
@@ -469,7 +460,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
         viewModel.matchLiveInfo.observe(this) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                binding.liveViewToolBar.startPlayer(
+                live_view_tool_bar.startPlayer(
                     matchId,
                     matchOdd?.matchInfo?.trackerId,
                     liveStreamInfo.streamUrl, isLogin
@@ -479,8 +470,30 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
         viewModel.matchTrackerUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { matchTrackerUrl ->
-//                binding.liveViewToolBar.setupTrackerUrl(matchTrackerUrl.h5Url)
-                binding.liveViewToolBar.setupTrackerUrl(matchTrackerUrl)
+                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl)
+            }
+        }
+    }
+
+    private fun setupInitShowView(matchInfo: MatchInfo?) {
+        live_view_tool_bar.initLiveType(
+            matchInfo?.liveVideo.toString() == FLAG_LIVE,
+            !matchOdd?.matchInfo?.trackerId.isNullOrEmpty()
+        )
+    }
+
+    private fun setupLiveView(liveVideo: Int?) {
+        with(live_view_tool_bar) {
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    setupToolBarListener(liveToolBarListener)
+                    setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
+                    startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
+                }
+                else -> {
+                    setupToolBarListener(liveToolBarListener)
+                    setupPlayerControl(false)
+                }
             }
         }
     }
@@ -489,21 +502,21 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
      * 点击事件
      */
     fun clickButton() {
-        binding.btnOdd.setOnClickListener { isShowOdd(true) }
-        binding.btnAnalyze.setOnClickListener { isShowOdd(false) }
+        btn_odd.setOnClickListener { isShowOdd(true) }
+        btn_analyze.setOnClickListener { isShowOdd(false) }
     }
 
     private fun isShowOdd(isShowOdd: Boolean) {
         val selectColor = ContextCompat.getColor(this, R.color.color_025BE8)
         val nomalColor = ContextCompat.getColor(this, R.color.color_6C7BA8)
-        binding.btnOdd.setTextColor(if (isShowOdd) selectColor else nomalColor)
-        binding.viewBtOdd.isVisible = isShowOdd
-        binding.rvDetail.isVisible = isShowOdd
-        binding.rvCat.isVisible = isShowOdd
+        btn_odd.setTextColor(if (isShowOdd) selectColor else nomalColor)
+        viewBtOdd.isVisible = isShowOdd
+        rv_detail.isVisible = isShowOdd
+        lin_categroy.isVisible = isShowOdd
 
-        binding.btnAnalyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
-
-        binding.frameBottom.isVisible = !isShowOdd
+        btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
+        viewBtnAnalyze.isVisible = !isShowOdd
+        frameBottom.isVisible = !isShowOdd
 
     }
 
@@ -512,15 +525,22 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
      */
     private fun setupMatchInfo(matchInfo: MatchInfo) {
         //region 隊伍名稱
+        tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
         tv_away_name.text = matchInfo.awayName ?: ""
+        Glide.with(this)
+            .load(matchInfo.homeIcon)
+            .into(img_home_logo)
+        Glide.with(this)
+            .load(matchInfo.awayIcon)
+            .into(img_away_logo)
         //endregion
-
+        Log.d("hjq", Gson().toJson(matchInfo))
         //region 比賽延期判斷
         if (matchInfo.status == GameStatus.POSTPONED.code
             && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
         ) {
-            binding.vToolbar.tvStatusLeft.text = getString(R.string.game_postponed)
+            toolBar.tv_score.text = getString(R.string.game_postponed)
         }
         //endregion
 
@@ -529,12 +549,13 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             (gameType == GameType.TN || gameType == GameType.VB || gameType == GameType.TT || gameType == GameType.BM)
             && (matchInfo.spt != null)
         ) {
-            binding.vToolbar.tvSpt.visibility = View.VISIBLE
-            binding.vToolbar.tvSpt.text = " / ${(matchInfo.spt)}"
+            toolBar.tv_spt.visibility = View.VISIBLE
+            toolBar.tv_spt.text = " / ${(matchInfo.spt)}"
         } else {
-            binding.vToolbar.tvSpt.visibility = View.GONE
+            toolBar.tv_spt.visibility = View.GONE
         }
         //endregion
+        updateMenu(matchInfo)
     }
 
     private fun initSocketObserver() {
@@ -557,12 +578,13 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
                             getData()
                         }
 
-                        tv_time_top?.let { tv ->
+                        tv_score?.let { tv ->
                             val statusValue =
                                 statusNameI18n?.get(getSelectLanguage(this@SportDetailActivity).key)
                                     ?: statusName
                             tv.text = statusValue
                         }
+                        tv_toolbar_top.text = tv_time_top.text
 
                         curHomeScore = homeScore
                         curAwayScore = awayScore
@@ -686,7 +708,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
      */
     private fun updateBetInfo(
         oddsDetailListData: OddsDetailListData,
-        matchOddsChangeEvent: MatchOddsChangeEvent
+        matchOddsChangeEvent: MatchOddsChangeEvent,
     ) {
         if (!getBetListPageVisible()) {
             //尋找是否有加入注單的賠率項
@@ -699,7 +721,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
     }
 
     //TODO 底部注单是否显示
-    private fun getBetListPageVisible(): Boolean {
+    override fun getBetListPageVisible(): Boolean {
 
         return false
     }
@@ -746,31 +768,6 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         }
     }
 
-    private fun setupInitShowView(matchInfo: MatchInfo?) {
-        binding.liveViewToolBar.initLiveType(
-            matchInfo?.liveVideo.toString() == FLAG_LIVE,
-            !matchOdd?.matchInfo?.trackerId.isNullOrEmpty()
-        )
-    }
-
-    private fun setupLiveView(liveVideo: Int?) {
-        with(binding.liveViewToolBar) {
-            when (matchType) {
-                MatchType.IN_PLAY -> {
-                    setupToolBarListener(liveToolBarListener)
-                    setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
-                    setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-                    startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
-                }
-                else -> {
-                    setupToolBarListener(liveToolBarListener)
-                    setStatisticsState(matchOdd?.matchInfo?.source == MatchSource.SHOW_STATISTICS.code)
-                    setupPlayerControl(false)
-                }
-            }
-        }
-    }
-
     private fun getData() {
         matchId?.let { matchId ->
             viewModel.getOddsDetail(matchId).run {
@@ -785,7 +782,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         if (playCateTypeList?.isNotEmpty() == true) {
             tabCateAdapter.dataList = playCateTypeList
         } else {
-            binding.rvCat.visibility = View.GONE
+            rv_cat.visibility = View.GONE
         }
     }
 
@@ -793,24 +790,17 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         tv_score.visibility = View.VISIBLE
         tv_score.text = (event.matchStatusCO?.homeTotalScore
             ?: 0).toString() + " - " + (event.matchStatusCO?.awayTotalScore ?: 0).toString()
-
-//        tv_away_score.visibility = View.VISIBLE
-//        tv_away_score.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
+        tv_toolbar_home_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString()
+        tv_toolbar_away_score.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
     }
 
     private fun setupBackScore(event: MatchStatusChangeEvent) {
         tv_score.visibility = View.VISIBLE
         tv_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString() +
                 " - " + (event.matchStatusCO?.awayTotalScore ?: 0).toString()
+        tv_toolbar_home_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString()
+        tv_toolbar_away_score.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
 
-//        tv_away_score_total.visibility = View.VISIBLE
-//        tv_away_score_total.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
-
-//        tv_home_score_live.visibility = View.VISIBLE
-//        tv_home_score_live.text = (event.matchStatusCO?.homeScore ?: 0).toString()
-//
-//        tv_away_score_live.visibility = View.VISIBLE
-//        tv_away_score_live.text = (event.matchStatusCO?.awayScore ?: 0).toString()
     }
 
     private fun showBackTimeBlock(show: Boolean) {
@@ -837,7 +827,8 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             else -> {
                 when (gameType) {
                     GameType.FT,
-                    GameType.IH -> {
+                    GameType.IH,
+                    -> {
                         setCardText(event)
                         setupFrontScore(event)
                     }
@@ -850,7 +841,8 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
                         setupBackScore(event)
                     }
                     GameType.VB,
-                    GameType.TT -> {
+                    GameType.TT,
+                    -> {
                         setupBackScore(event)
                     }
                     GameType.RB, GameType.AFT -> {
@@ -939,12 +931,12 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
         val statusBuilder = SpannableStringBuilder()
 
-        binding.vToolbar.tvStatusLeft.visibility = View.VISIBLE
-        binding.vToolbar.tvSpt.visibility = View.GONE
-        binding.vToolbar.tvStatusRight.visibility = View.GONE
-        binding.vToolbar.tvStatusLeft.setTextColor(
+        toolBar.tv_status_left.visibility = View.VISIBLE
+        toolBar.tv_spt.visibility = View.GONE
+        toolBar.tv_status_right.visibility = View.GONE
+        toolBar.tv_status_left.setTextColor(
             ContextCompat.getColor(
-                binding.vToolbar.tvStatusLeft.context,
+                toolBar.tv_status_left.context,
                 R.color.color_FFFFFF
             )
         )
@@ -972,16 +964,16 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             statusBuilder.append(spanStatusName).append(spanScore)
         }
 
-        binding.vToolbar.tvStatusLeft.text = statusBuilder
+        toolBar.tv_status_left.text = statusBuilder
     }
 
     private fun setupStatusBB(event: MatchStatusChangeEvent) {
-        binding.vToolbar.tvStatusLeft.visibility = View.INVISIBLE
-        binding.vToolbar.tvSpt.visibility = View.GONE
-        binding.vToolbar.tvStatusRight.visibility = View.GONE
+        toolBar.tv_status_left.visibility = View.INVISIBLE
+        toolBar.tv_spt.visibility = View.GONE
+        toolBar.tv_status_right.visibility = View.GONE
         ll_time.visibility = View.GONE
 
-        ll_status_bb.visibility = View.VISIBLE
+//        tv_time_top.visibility = View.VISIBLE
 //        league_odd_match_basebag.visibility = View.VISIBLE
 
         if (event.matchStatusCO?.attack.equals("H")) {
@@ -992,7 +984,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
             ic_attack_c.visibility = View.VISIBLE
         }
 
-        league_odd_match_bb_status.apply {
+        tv_score.apply {
             text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
             isVisible = true
         }
@@ -1003,11 +995,11 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
         val statusBuilder = SpannableStringBuilder()
 
-        binding.vToolbar.tvStatusLeft.visibility = View.VISIBLE
-        binding.vToolbar.tvStatusLeft.text =
+        toolBar.tv_status_left.visibility = View.VISIBLE
+        toolBar.tv_status_left.text =
             event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(this).key) ?: ""
 
-        binding.vToolbar.tvStatusRight.visibility = if (showScore) View.VISIBLE else View.GONE
+        toolBar.tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
 
         event.matchStatusList?.forEachIndexed { index, it ->
             if (index != event.matchStatusList.lastIndex) {
@@ -1019,7 +1011,7 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
                 statusBuilder.append("  ")
             }
         }
-        binding.vToolbar.tvStatusRight.text = statusBuilder
+        toolBar.tv_status_right.text = statusBuilder
     }
 
 
@@ -1033,7 +1025,6 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
                 startTime,
                 DM_FORMAT
             )
-
         if (TimeUtil.isTimeAtStart(startTime)) {
             //即將開賽時間格式
             tv_time_bottom.text =
@@ -1055,6 +1046,12 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
 
             tv_time_top.visibility = View.VISIBLE
         }
+        tv_toolbar_top.visibility = tv_time_top.visibility
+        tv_toolbar_top.text = tv_time_top.text
+
+        tv_toolbar_bottom.visibility = tv_time_bottom.visibility
+        tv_toolbar_bottom.text = tv_time_bottom.text
+
     }
 
     /** 初始化监听 **/
@@ -1063,33 +1060,40 @@ class SportDetailActivity : BaseSocketActivity<GameViewModel>(GameViewModel::cla
         initSocketObserver()
 
     }
-    //作用於頁面轉場流暢性
-//    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-//        return if (enter) {
-//            AnimationUtils.loadAnimation(this, nextAnim).apply {
-//                setAnimationListener(this@SportDetailActivity)
-//            }
-//        } else {
-//            super.onCreateAnimation(transit, enter, nextAnim)
-//        }
-//    }
-//
-//    override fun onAnimationStart(animation: Animation?) {}
-//
-//    override fun onAnimationEnd(animation: Animation?) {
-//        initObserve()
-//        initSocketObserver()
-//    }
-//
-//    override fun onAnimationRepeat(animation: Animation?) {}
 
+    fun refresh() {
 
-    companion object {
-        private val TYPE_PARAMETER = "type_parameter"
-        fun startActivity(context: Context, params: DetailParams) {
-            val intent = Intent(context, SportDetailActivity::class.java)
-            intent.putExtra(TYPE_PARAMETER, params)
-            context.startActivity(intent)
+    }
+
+    fun updateMenu(matchInfo: MatchInfo) {
+        toolBar.apply {
+            lin_video.isVisible =
+                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+            lin_anime.isVisible =
+                TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                    ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
+            lin_video.setOnClickListener {
+                toolBar.isVisible = false
+                live_view_tool_bar.isVisible = true
+                live_view_tool_bar.showLiveView(true)
+                live_view_tool_bar.showVideo()
+            }
+            lin_anime.setOnClickListener {
+                toolBar.isVisible = false
+                live_view_tool_bar.isVisible = true
+                live_view_tool_bar.showLiveView(false)
+                live_view_tool_bar.showAnime()
+            }
+            if (lin_video.isVisible && lin_anime.isVisible) {
+                lin_menu.isVisible = true
+                v_menu_1.isVisible = true
+            } else if (!lin_video.isVisible && !lin_anime.isVisible) {
+                lin_menu.isVisible = false
+            } else {
+                lin_menu.isVisible = true
+                v_menu_1.isVisible = false
+            }
         }
     }
+
 }

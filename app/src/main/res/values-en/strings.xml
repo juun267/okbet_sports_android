@@ -1193,4 +1193,6 @@
     <string name="correct">Correct</string>
     <string name="league_filter">select matches</string>
     <string name="reverse_select">reverse select</string>
+    <string name="video">video</string>
+    <string name="anime">anim</string>
 </resources>

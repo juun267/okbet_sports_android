@@ -88,7 +88,7 @@
             android:name=".ui.profileCenter.otherBetRecord.OtherBetRecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="org.cxct.sportlottery.ui.game.detail.SportDetailActivity"
+            android:name="org.cxct.sportlottery.ui.sport.detail.SportDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.maintenance.MaintenanceActivity"
@@ -182,7 +182,7 @@
             android:name=".ui.profileCenter.timezone.TimeZoneActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.sport.LeagueSelectActivity"
+            android:name=".ui.sport.filter.LeagueSelectActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"

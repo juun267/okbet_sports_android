@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport;
+package org.cxct.sportlottery.ui.sport.filter;
 
 import com.chad.library.adapter.base.entity.SectionEntity;
 

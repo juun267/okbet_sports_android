@@ -1199,4 +1199,6 @@
     <string name="register_title">注 册</string>
     <string name="league_filter">赛事筛选</string>
     <string name="reverse_select">反选</string>
+    <string name="video">视频</string>
+    <string name="anime">动画</string>
 </resources>

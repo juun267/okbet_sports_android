@@ -44,7 +44,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_massage" />
+                        android:src="@drawable/ic_message" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -105,7 +105,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_massage" />
+                        android:src="@drawable/ic_odd_type" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -159,7 +159,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_massage" />
+                        android:src="@drawable/ic_betting" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -213,7 +213,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_massage" />
+                        android:src="@drawable/ic_language" />
 
                     <TextView
                         android:id="@+id/tv_language"
@@ -275,7 +275,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_massage" />
+                        android:src="@drawable/ic_skin" />
 
                     <TextView
                         android:id="@+id/tv_appearance"
@@ -319,7 +319,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_customer" />
+                        android:src="@drawable/ic_customer_white" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -361,7 +361,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/icon_massage" />
+                        android:src="@drawable/ic_problem" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -369,6 +369,48 @@
                         android:layout_marginHorizontal="@dimen/margin_10"
                         android:layout_weight="1"
                         android:text="@string/faqs"
+                        android:textColor="@color/color_2b2b2b_ffffff"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_arrow_01" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginRight="64dp"
+                    android:alpha="0.1"
+                    android:background="@color/color_FFFFFF" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_timezone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="26dp"
+                    android:paddingRight="26dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin_20"
+                        android:layout_height="@dimen/margin_20"
+                        android:src="@drawable/ic_timezone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_10"
+                        android:layout_weight="1"
+                        android:text="@string/timezone_change"
                         android:textColor="@color/color_2b2b2b_ffffff"
                         android:textSize="@dimen/textSize14sp" />
 

@@ -8,7 +8,7 @@
 
         <variable
             name="fragment"
-            type="org.cxct.sportlottery.ui.game.detail.SportDetailActivity" />
+            type="org.cxct.sportlottery.ui.sport.detail.SportDetailActivity" />
 
         <variable
             name="gameViewModel"

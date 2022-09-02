@@ -40,6 +40,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -48,7 +49,8 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
-import org.cxct.sportlottery.ui.sport.SportOutrightFragment
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
@@ -94,7 +96,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
     override fun onStart() {
         super.onStart()
 
-//        if (isFromPublicity) {
         arguments?.let {
             val matchId = it.getString(GamePublicityActivity.PUBLICITY_MATCH_ID)
             val gameTypeCode = it.getString(GamePublicityActivity.PUBLICITY_GAME_TYPE)
@@ -104,13 +105,16 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             val matchList =
                 it.getParcelableArrayList<MatchInfo>(GamePublicityActivity.PUBLICITY_MATCH_LIST)
             matchId?.let {
-//                   navDetailLiveFragment(
-//                       matchID = matchId, gameType = gameType, matchType = matchType, matchList = matchList
-//                   )
+                val gameType = GameType.getGameType(gameTypeCode)
+                val navMatchType = matchType ?: MatchType.DETAIL
+                if (gameType != null && matchId != null) {
+                    SportDetailActivity.startActivity(requireContext(),
+                        DetailParams(matchType = navMatchType,
+                            gameType = gameType,
+                            matchId = matchId))
+                }
             }
         }
-
-//        }
     }
 
     fun initToolBar() {
