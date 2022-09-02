@@ -379,7 +379,7 @@ object BetInfoRepository {
                         }.toBigDecimal()
                     ).times(it.value.num.toBigDecimal()).toLong().toBigDecimal()
 
-                val maxParlayBet = if (maxParlayBetMoney.equals(0)) {
+                val maxParlayBet = if (maxParlayBetMoney == BigDecimal(0)) {
                     //如果 maxParlayBetMoney 為 0 使用最大賠付額
                     parlayPayout
                 } else {
@@ -412,7 +412,7 @@ object BetInfoRepository {
                 val oddsPayout =
                     payout.div(if (it.value.isOnlyEUType) it.value.odds - BigDecimal(1) else it.value.hdOdds)
 
-                maxBet = if (matchTypeMaxBetMoney.equals(0)) {
+                maxBet = if (matchTypeMaxBetMoney == BigDecimal(0)) {
                     //如果 matchTypeMaxBetMoney 為 0 使用最大賠付額
                     oddsPayout
                 } else {
