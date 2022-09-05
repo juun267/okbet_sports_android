@@ -17,20 +17,17 @@
 
     </data>
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_26"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="1dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_item_background_single"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_202020_fcfcfc"
-            android:paddingBottom="@dimen/margin_10"
+            android:paddingTop="20dp"
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="@dimen/margin_24"
             app:layout_constraintHeight_default="wrap">
 
             <!--            <View-->
@@ -40,61 +37,65 @@
             <!--                android:background="@color/color_1F1F1F_e6e6e6"-->
             <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <ImageView
-                android:id="@+id/btn_rule_single"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_4"
-                android:padding="@dimen/margin_4"
-                android:src="@drawable/ic_question_mark"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/titleLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/titleLayout" />
-
-            <LinearLayout
-                android:id="@+id/titleLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_8"
-                android:layout_marginTop="@dimen/margin_8"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvSingle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/margin_5"
-                    android:text="@string/bet_list_single"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize15sp"
-                    app:drawableStartCompat="@drawable/ic_singles" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_6"
-                    android:text="X"
-                    android:textColor="@color/color_A0B4D4_060F20"
-                    android:textSize="@dimen/textSize13sp" />
-
-                <TextView
-                    android:id="@+id/tv_single_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_A0B4D4_060F20"
-                    android:textSize="@dimen/textSize13sp"
-                    tools:text="3" />
-            </LinearLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/btn_rule_single"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/margin_4"-->
+<!--                android:padding="@dimen/margin_4"-->
+<!--                android:src="@drawable/ic_question_mark"-->
+<!--                android:visibility="visible"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/titleLayout"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/titleLayout" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/et_bet_height"
-                android:layout_marginHorizontal="@dimen/margin_8"
-                android:layout_marginTop="@dimen/margin_10"
-                app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.24" />
+
+                <LinearLayout
+                    android:id="@+id/titleLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/et_bet_single"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_single">
+
+                    <TextView
+                        android:id="@+id/tvSingle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bet_list_single"
+                        android:textColor="@color/color_BBBBBB_333333"
+                        android:textSize="@dimen/textSize12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="*"
+                        android:textColor="@color/color_A0B4D4_060F20"
+                        android:textSize="@dimen/textSize12sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_single_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_A0B4D4_060F20"
+                        android:textSize="@dimen/textSize12sp"
+                        android:textStyle="bold"
+                        tools:text="5" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/et_bet_single"
@@ -109,8 +110,8 @@
                     android:textColor="@color/color_BBBBBB_333333"
                     android:textSize="@dimen/textSize16sp"
                     android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/et_win_single"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -140,65 +141,18 @@
                     app:layout_constraintStart_toStartOf="@+id/et_bet_single"
                     app:layout_constraintTop_toTopOf="@+id/et_bet_single" />
 
-                <EditText
-                    android:id="@+id/et_win_single"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/et_bet_height"
-                    android:layout_marginStart="@dimen/margin_6"
-                    android:background="@drawable/bg_radius_2_edittext_unfocus"
-                    android:enabled="false"
-                    android:gravity="end|center_vertical"
-                    android:inputType="numberDecimal"
-                    android:letterSpacing="0.05"
-                    android:maxLength="7"
-                    android:paddingHorizontal="15dp"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize16sp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@id/et_bet_single"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/et_bet_single"
-                    app:layout_constraintTop_toTopOf="@+id/et_bet_single" />
-
-                <TextView
-                    android:id="@+id/tv_win_hint_single_default"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/win"
-                    android:textColor="@color/color_7F7F7F_999999"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="@+id/et_win_single"
-                    app:layout_constraintTop_toTopOf="@+id/et_win_single" />
-
-                <TextView
-                    android:id="@+id/tv_win_hint_single_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="6dp"
-                    android:paddingTop="3dp"
-                    android:text="@string/win"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="@+id/et_win_single"
-                    app:layout_constraintTop_toTopOf="@+id/et_win_single" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <org.cxct.sportlottery.util.KeyboardView
                 android:id="@+id/layoutKeyBoard"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/keyboard_height"
-                android:layout_marginHorizontal="@dimen/margin_8"
                 android:paddingTop="@dimen/margin_10"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/clInputLayout"
                 tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 
 </layout>

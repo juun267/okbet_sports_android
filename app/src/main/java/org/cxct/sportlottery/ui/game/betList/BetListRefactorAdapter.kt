@@ -1471,12 +1471,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     clearFocus()
                 }
 
-                btn_rule_single.setOnClickListener {
-                    onItemClickListener.showParlayRule(
-                        ParlayType.SINGLE.key,
-                        context.getString(ParlayType.SINGLE.ruleStringRes ?: 0)
-                    )
-                }
+//                btn_rule_single.setOnClickListener {
+//                    onItemClickListener.showParlayRule(
+//                        ParlayType.SINGLE.key,
+//                        context.getString(ParlayType.SINGLE.ruleStringRes ?: 0)
+//                    )
+//                }
             }
         }
 
@@ -1486,7 +1486,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
 //                ll_winnable.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
 
-                btn_rule_single.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+//                btn_rule_single.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
                 //et_container.isEnabled = !hasBetClosed //EditText的click事件
             }
@@ -1686,7 +1686,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
 //                iv_bet_lock.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
                 //viewGrey.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
-                btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+//                btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
                 ll_hint_container.isVisible = !hasBetClosed
             }
         }
@@ -1877,16 +1877,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             data: ParlayOdd,
             onItemClickListener: OnItemClickListener
         ) {
-            itemView.btn_rule.setOnClickListener {
-                onItemClickListener.showParlayRule(
-                    data.parlayType,
-                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes ->
-                        itemView.context.getString(
-                            ruleRes
-                        )
-                    }
-                        ?: "")
-            }
+//            itemView.btn_rule.setOnClickListener {
+//                onItemClickListener.showParlayRule(
+//                    data.parlayType,
+//                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes ->
+//                        itemView.context.getString(
+//                            ruleRes
+//                        )
+//                    }
+//                        ?: "")
+//            }
         }
     }
 

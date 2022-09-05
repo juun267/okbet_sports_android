@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/button_radius_4_0065e9_3b78ff" android:state_selected="true" />
-    <item android:drawable="@drawable/button_radius_4_303030_d2d2d2" android:state_selected="false" />
-    <item android:drawable="@drawable/button_radius_4_303030_d2d2d2" />
+    <item android:drawable="@drawable/button_radius_8_bet_button" android:state_selected="true" />
+    <item android:drawable="@drawable/button_radius_8_bet_button_disable" android:state_selected="false" />
+    <item android:drawable="@drawable/button_radius_8_bet_button_disable" />
 </selector>

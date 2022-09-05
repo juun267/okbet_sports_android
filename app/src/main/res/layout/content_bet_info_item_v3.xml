@@ -22,13 +22,13 @@
         <View
             android:id="@+id/top_space"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_9" />
+            android:layout_height="@dimen/margin_14" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_10"
-            android:layout_marginBottom="@dimen/margin_9"
+            android:layout_marginHorizontal="@dimen/margin_14"
+            android:layout_marginBottom="@dimen/margin_14"
             app:cardCornerRadius="4dp"
             app:cardElevation="1dp">
 
@@ -240,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="12dp"
                         android:paddingTop="8dp"
-                        android:text="@string/win"
+                        android:text="@string/bet_win"
                         android:textColor="@color/color_7F7F7F_999999"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
@@ -253,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="6dp"
                         android:paddingTop="3dp"
-                        android:text="@string/win"
+                        android:text="@string/bet_win"
                         android:textColor="@color/color_BBBBBB_333333"
                         android:textSize="@dimen/textSize10sp"
                         android:visibility="gone"

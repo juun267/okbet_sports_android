@@ -1088,9 +1088,10 @@
     <string name="current_time">Thời gian</string>
 
     <!--region 20220714 新版投注單-->
+    <string name="bet_win">Thắng</string>
     <string name="bet_stake">Tiền Cược</string>
-    <string name="total_capital">Tổng tiền đặt cược</string>
-    <string name="total_win_amount">Tổng Số tiền có thể thắng</string>
+    <string name="total_capital">Tiền Cược(%s)：</string>
+    <string name="total_win_amount">Thắng(%s)：</string>
     <string name="delete_bet">Xóa bỏ</string>
     <string name="btn_login_bet">Đăng nhập để đặt cược</string>
     <string name="confirm_single_bets">Xác nhận %d Cược đơn</string>

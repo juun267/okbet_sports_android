@@ -214,6 +214,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
         binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
         binding.clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
+
+        //設定本金, 可贏的systemCurrencySign
+        binding.apply {
+            titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
+            titleWinnableAmount.text = getString(R.string.total_win_amount, sConfigData?.systemCurrencySign)
+        }
     }
 
     private fun initBtnView() {
@@ -243,19 +249,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         /*ll_odds_close_warn.setOnClickListener {
             removeClosedPlat()
         }*/
-
-        binding.apply {
-            llMoreOption.setOnClickListener {
-                if (clParlayList.isVisible) {
-                    ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
-                    clParlayList.visibility = View.GONE
-                } else {
-                    tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
-                    ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
-                    clParlayList.visibility = View.VISIBLE
-                }
-            }
-        }
     }
 
     private fun initTabLayout() {
@@ -299,7 +292,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         tabPosition = 0
                         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                         binding.apply {
-                            llMoreOption.visibility = View.GONE
                             clParlayList.visibility = View.GONE
                         }
                         checkAllAmountCanBet()
@@ -334,13 +326,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
              * @see singleParlayList
              */
             if (getCurrentParlayList().any { it.parlayType.isNotEmpty() && it.parlayType != "1C1" }) {
-                llMoreOption.visibility = View.VISIBLE
-                tvMoreOptionsCount.text = "(${getCurrentParlayList().size})"
                 if (showParlayList) clParlayList.visibility = View.VISIBLE
-                if (clParlayList.isVisible) ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_down)
-                else ivArrowMoreOptions.setImageResource(R.drawable.ic_arrow_gray_top)
             } else {
-                llMoreOption.visibility = View.GONE
                 clParlayList.visibility = View.GONE
             }
         }
@@ -588,10 +575,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         binding.apply {
-            tvTotalBetAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(totalBetAmount)}"
-            tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(winnableAmount)}"
+            tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
+            tvTotalWinnableAmount.text = TextUtil.formatForOdd(winnableAmount)
         }
 
         val betCount = if (tabPosition == 0) {
@@ -735,14 +720,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     binding.betTypeTabLayout.selectTab(binding.betTypeTabLayout.getTabAt(0))
                     binding.betTypeTabLayout.isVisible = false
                     binding.clTotalInfo.isVisible = false
-                    binding.lineShadow.isVisible = false
                     isMultiBet = false
                 } else if (!isAutoCloseWhenNoData) {
                     //多筆注單 or 空注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
                     binding.betTypeTabLayout.isVisible = true
                     binding.clTotalInfo.isVisible = true
-                    binding.lineShadow.isVisible = true
                     isMultiBet = true
                 }
 
@@ -1098,7 +1081,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             //單項投注
             0 -> {
                 with(binding) {
-                    llMoreOption.visibility = View.GONE
                     clParlayList.visibility = View.GONE
                 }
             }
