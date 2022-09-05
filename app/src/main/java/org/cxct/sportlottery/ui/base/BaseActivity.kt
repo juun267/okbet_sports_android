@@ -29,7 +29,7 @@ import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.RedEnvelopeManager
@@ -101,7 +101,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 //                        if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                            MainActivity.reStart(this)
 //                        else
-                        GamePublicityActivity.reStart(this)
+                        MainTabActivity.reStart(this)
                     }
                 }
             }
@@ -134,7 +134,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     viewModel.loginRepository._isLogin.postValue(false)
                     viewModel.doLogoutCleanUser {
                         run {
-                            GamePublicityActivity.reStart(this)
+                            MainTabActivity.reStart(this)
                         }
                     }
                 }
