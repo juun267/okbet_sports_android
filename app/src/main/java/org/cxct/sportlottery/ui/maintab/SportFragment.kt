@@ -509,12 +509,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
         }
-
-        viewModel.showBetInfoSingle.observe(viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let {
-                showBetListPage()
-            }
-        }
     }
 
     /**

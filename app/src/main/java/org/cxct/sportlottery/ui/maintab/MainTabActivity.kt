@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -27,6 +29,8 @@ import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.FragmentHelper
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -54,6 +58,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initDrawerLayout()
         initMenu()
         initBottomFragment()
+        initBottomNavigation()
+        initObserve()
+    }
+
+    private fun initObserve() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
+        viewModel.showBetInfoSingle.observe(this) {
+            it?.getContentIfNotHandled()?.let {
+                showBetListPage()
+            }
+        }
     }
 
     private fun initBottomFragment() {
@@ -191,7 +210,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun updateBetListCount(num: Int) {
-//        sport_bottom_navigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
+        tv_bet_list_count.text = num.toString()
+        if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
@@ -235,6 +256,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun initBottomNavigation() {
+        tv_balance_currency.text = sConfigData?.systemCurrencySign
+        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
     }
 
     override fun showBetListPage() {
