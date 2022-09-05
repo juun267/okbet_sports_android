@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
@@ -65,11 +67,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun initObserve() {
         viewModel.userMoney.observe(this) {
             it?.let { money ->
-                tv_balance.text = TextUtil.formatMoney(money)
+                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
             }
         }
         viewModel.showBetInfoSingle.observe(this) {
-            it?.getContentIfNotHandled()?.let {
+            it.getContentIfNotHandled()?.let {
                 showBetListPage()
             }
         }
@@ -211,7 +213,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun updateBetListCount(num: Int) {
         cl_bet_list_bar.isVisible = num > 0
-        tv_bet_list_count.text = num.toString()
+        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+        Timber.e("num: $num")
         if (num > 0) viewModel.getMoney()
     }
 
@@ -256,8 +259,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun initBottomNavigation() {
-        tv_balance_currency.text = sConfigData?.systemCurrencySign
-        tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
+        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
         cl_bet_list_bar.setOnClickListener {
             showBetListPage()
         }
