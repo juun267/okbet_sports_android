@@ -7,11 +7,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.exception.DoNoConnectException
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.NetworkUtil
+import timber.log.Timber
 
 class VersionUpdateViewModel(
     private val androidContext: Context,
@@ -86,43 +89,52 @@ class VersionUpdateViewModel(
         serverUrlStatusMap.toMap().forEach { (serverUrl, status) ->
             val url = Constants.getCheckAppUpdateUrl(serverUrl)
             viewModelScope.launch {
-                val response = OneBoSportApi.appUpdateService.checkAppVersion(url)
-                val result = response.body()
+                try {
+                    if (!NetworkUtil.isAvailable(androidContext))
+                        throw DoNoConnectException()
+                    val response = OneBoSportApi.appUpdateService.checkAppVersion(url)
+                    val result = response.body()
 
-                serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
+                    serverUrlStatusMap[serverUrl] = true //標記該伺服器已檢查過
 
-                //已有獲取的最新版本資訊
-                if (appVersionChecked) {
-                    return@launch
-                } else {
-                    when {
-                        response.isSuccessful && result != null -> {
-                            appVersionChecked = true
-                            Constants.currentServerUrl = serverUrl //紀錄成功獲取檢查版本的 serverUrl
-                            compareFun(result)
-                        }
-                        else -> {
-                            //如果每一個伺服器網址都已檢查過
-                            if (serverUrlStatusMap.all { it.value }) {
-                                _appVersionState.postValue(
-                                    AppVersionState(
-                                        false,
-                                        BuildConfig.VERSION_CODE.toString(),
-                                        BuildConfig.VERSION_NAME
+                    //已有獲取的最新版本資訊
+                    if (appVersionChecked) {
+                        return@launch
+                    } else {
+                        when {
+                            response.isSuccessful && result != null -> {
+                                appVersionChecked = true
+                                Constants.currentServerUrl = serverUrl //紀錄成功獲取檢查版本的 serverUrl
+                                compareFun(result)
+                            }
+                            else -> {
+                                //如果每一個伺服器網址都已檢查過
+                                if (serverUrlStatusMap.all { it.value }) {
+                                    _appVersionState.postValue(
+                                        AppVersionState(
+                                            false,
+                                            BuildConfig.VERSION_CODE.toString(),
+                                            BuildConfig.VERSION_NAME
+                                        )
                                     )
-                                )
 
-                                val version = "${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
-                                _appMinVersionState.postValue(
-                                    AppMinVersionState(
-                                        isShowUpdateDialog = false,
-                                        isForceUpdate = false,
-                                        version = version
+                                    val version =
+                                        "${BuildConfig.VERSION_CODE}_${BuildConfig.VERSION_NAME}"
+                                    _appMinVersionState.postValue(
+                                        AppMinVersionState(
+                                            isShowUpdateDialog = false,
+                                            isForceUpdate = false,
+                                            version = version,
+                                            checkAppVersionResult = result
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
                     }
+                } catch (e: Exception) {
+                    Timber.e("checkAppVersion exception e: ${e.message}")
+                    return@launch
                 }
             }
         }
@@ -153,7 +165,8 @@ class VersionUpdateViewModel(
             AppMinVersionState(
                 isShowUpdateDialog,
                 isForceUpdate,
-                result.version ?: ""
+                result.version ?: "",
+                result
             )
         )
     }
