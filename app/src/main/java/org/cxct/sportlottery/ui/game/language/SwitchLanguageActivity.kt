@@ -9,9 +9,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivitySwitchLanguageBinding
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.game.Page
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SPUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -125,22 +124,10 @@ class SwitchLanguageActivity : BaseActivity<LoginViewModel>(LoginViewModel::clas
 
     private fun selectLanguage(select: LanguageManager.Language) {
         if (SPUtil.getInstance(applicationContext).getSelectLanguage() != select.key) {
-            this?.run {
+            this.run {
                 LanguageManager.saveSelectLanguage(this, select)
-//                if (sConfigData?.thirdOpen == FLAG_OPEN)
-//                    MainActivity.reStart(this)
-//                else {
-                when (intent.getSerializableExtra(FROM_ACTIVITY)) {
-                    Page.PUBLICITY -> goGamePublicityPage()
-                    else -> GamePublicityActivity.reStart(this)
-                }
-//                }
+                MainTabActivity.reStart(this)
             }
         }
     }
-
-    private fun goGamePublicityPage() {
-        GamePublicityActivity.reStart(this)
-    }
-
 }

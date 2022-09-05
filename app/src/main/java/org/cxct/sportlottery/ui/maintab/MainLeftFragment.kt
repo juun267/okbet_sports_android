@@ -309,12 +309,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun selectLanguage(select: LanguageManager.Language) {
         if (SPUtil.getInstance(context).getSelectLanguage() != select.key) {
-            this?.run {
-                LanguageManager.saveSelectLanguage(context, select)
-                val intent = Intent(context, MainTabActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                requireActivity().finish()
+            context?.let {
+                LanguageManager.saveSelectLanguage(it, select)
+                MainTabActivity.reStart(it)
             }
         }
     }

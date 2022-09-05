@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.*
 
@@ -88,7 +88,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
 //                if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                    MainActivity.reStart(this)
 //                else
-                GamePublicityActivity.reStart(this)
+                MainTabActivity.reStart(this)
             } else {
                 binding.etVerificationCode.setError(
                     getString(R.string.dialog_security_error),
@@ -105,7 +105,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
 //            if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                MainActivity.reStart(this)
 //            else
-            GamePublicityActivity.reStart(this)
+            MainTabActivity.reStart(this)
         }
     }
 
