@@ -212,7 +212,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.closeAllKeyboard()
             betParlayListRefactorAdapter?.closeAllKeyboard()
         }
-        tv_balance.text = TextUtil.formatMoney(0.0)
+        binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
+        binding.clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
     }
 
     private fun initBtnView() {
@@ -437,14 +438,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initToolBar() {
-        binding.clTitle.setOnClickListener {
+        binding.clTitle.root.setOnClickListener {
             activity?.onBackPressed()
         }
 
-        binding.ivArrow.setOnClickListener {
+        binding.clTitle.ivArrow.setOnClickListener {
             activity?.onBackPressed()
         }
-        binding.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
+        binding.clTitle.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
         initDeleteAllOnClickEvent()
     }
 
@@ -693,7 +694,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->
-                tv_balance.text = TextUtil.formatMoney(money ?: 0.0)
+                binding.clTitle.tvBalance.text = TextUtil.formatMoney(money ?: 0.0)
                 betListRefactorAdapter?.userMoney = money
                 betParlayListRefactorAdapter?.userMoney = money
             }
@@ -746,7 +747,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
-                tv_bet_list_count.text = list.size.toString()
+                binding.clTitle.tvBetListCount.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
 

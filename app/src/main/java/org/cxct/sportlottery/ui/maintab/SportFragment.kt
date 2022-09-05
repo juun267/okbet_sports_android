@@ -15,10 +15,6 @@ import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.sport_bottom_navigation.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance
-import kotlinx.android.synthetic.main.view_bottom_navigation_sport.tv_balance_currency
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
@@ -131,42 +127,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
-    }
-
-
-    fun showBetListPage() {
-        val transaction = childFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-
-        betListFragment =
-            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(
-                    betResultData: Receipt?,
-                    betParlayList: List<ParlayOdd>,
-                    isMultiBet: Boolean,
-                ) {
-//                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
-                }
-            })
-
-        transaction
-            .add(R.id.fl_bet_list, betListFragment, BetListFragment::class.java.simpleName)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
-
-    }
-
-    fun updateBetListCount(num: Int) {
-        sport_bottom_navigation.setBetCount(num)
-        cl_bet_list_bar.isVisible = num > 0
-        line_shadow.isVisible = !cl_bet_list_bar.isVisible
-        tv_bet_list_count.text = num.toString()
-        if (num > 0) viewModel.getMoney()
     }
 
     fun showLoginNotify() {
@@ -432,10 +392,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 //                }
         }
 
-        viewModel.nowTransNum.observe(viewLifecycleOwner) {
-            navigation_transaction_status.trans_number.text = it.toString()
-        }
-
         viewModel.specialEntrance.observe(viewLifecycleOwner) {
             hideLoading()
             if (it?.couponCode.isNullOrEmpty()) {
@@ -508,12 +464,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             it.getContentIfNotHandled()
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
-        }
-
-        viewModel.showBetInfoSingle.observe(viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let {
-                showBetListPage()
-            }
         }
     }
 

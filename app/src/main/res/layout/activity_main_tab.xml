@@ -20,17 +20,42 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-8dp">
+
         <org.cxct.sportlottery.widget.bottomnavigationview.BottomNavigationViewEx
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
-            android:layout_marginTop="-10dp"
             android:layout_height="64dp"
             android:background="@drawable/bg_icon_bottom_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:itemTextColor="@color/main_tab_text_selector"
             app:itemIconSize="30dp"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/main_menu_navigation" />
+
+            <include
+                android:id="@+id/cl_bet_list_bar"
+                layout="@layout/bet_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bet_list_bar_height"
+                android:layout_marginBottom="58dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <!-- 投注單列表 & 快捷投注單 -->
+    <FrameLayout
+        android:id="@+id/fl_bet_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="gone" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/left_menu"
