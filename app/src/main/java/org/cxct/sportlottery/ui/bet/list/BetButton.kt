@@ -99,11 +99,18 @@ class BetButton @JvmOverloads constructor(
     }
 
     private fun setUpBetContent() {
-        val betContent = if (isParlay) {
-            context.getString(R.string.confirm_multiple_bets, betCounts)
-        } else {
-            context.getString(R.string.confirm_single_bets, betCounts)
-        }
+        val betContent =
+            when {
+                betCounts == 0 -> {
+                    context.getString(R.string.bet_info_list_bet)
+                }
+                isParlay -> {
+                    context.getString(R.string.confirm_multiple_bets, betCounts)
+                }
+                else -> {
+                    context.getString(R.string.confirm_single_bets, betCounts)
+                }
+            }
         tv_bet.text = betContent
         setupBetClickable()
     }
@@ -140,7 +147,7 @@ class BetButton @JvmOverloads constructor(
     private fun setupRemoveButtonVisible() {
         //不管單項還是串關，當盤口關閉，會展示[移除已关闭的选项]
         val showRemoveButton = hasPlatClose == true
-        tv_remove_closed_selections.isVisible = showRemoveButton
+//        tv_remove_closed_selections.isVisible = showRemoveButton //暫時不支援移除關閉盤口的按鈕
     }
 
     private fun setupBetClickable() {

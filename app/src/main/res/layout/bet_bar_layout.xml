@@ -21,8 +21,8 @@
 
     <ImageView
         android:id="@+id/viewLeftLine"
-        android:layout_width="3dp"
-        android:layout_height="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:src="@drawable/ic_detail_odd_title_line"
         app:layout_constraintBottom_toBottomOf="parent"

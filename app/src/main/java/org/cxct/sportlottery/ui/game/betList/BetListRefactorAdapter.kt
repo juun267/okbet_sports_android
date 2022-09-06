@@ -904,10 +904,23 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
 
-                //隊伍名稱 (改為不主動換行)
-                tv_match.text = when (itemData.matchType) {
-                    MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
-                    else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_3)}${itemData.matchOdd.awayName}"
+                //設定隊伍名稱, 聯賽名稱, 開賽時間
+                when (itemData.matchType) {
+                    MatchType.OUTRIGHT -> {
+                        tv_match.text = itemData.outrightMatchInfo?.name
+                        tv_league_name.isVisible = false
+                        tv_start_time.isVisible = false
+                    }
+                    else -> {
+                        val matchName = "${itemData.matchOdd.homeName}${context.getString(R.string.verse_3)}${itemData.matchOdd.awayName}"
+                        tv_match.text = matchName
+                        tv_league_name.text = itemData.matchOdd.leagueName
+                        tv_league_name.isVisible = true
+                        itemData.matchOdd.startTime?.let {
+                            tv_start_time.text = TimeUtil.stampToDateHMS(it)
+                            tv_start_time.isVisible = true
+                        }
+                    }
                 }
 
                 //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
@@ -994,6 +1007,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //加上OddsType名稱
                 val tvNamePlusOddsTypeName = "${tv_name.text} [${context.getString(currentOddsType.res)}]"
                 tv_name.text = tvNamePlusOddsTypeName
+
+                //前面加上MatchType名稱
+                itemData.matchType?.let {
+                    val matchTypeName = context.getString(it.resId)
+                    tv_name.text = matchTypeName.plus(" ${tv_name.text}")
+                }
             }
         }
 

@@ -310,7 +310,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         refreshAllAmount()
                     }
                 }
-                setSingleBetLayoutVisible()
+                checkSingleAndParlayBetLayoutVisible()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -322,9 +322,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         })
     }
 
-    private fun setSingleBetLayoutVisible() {
+    /**
+     * 檢查是否顯示填充單注or串關layout
+     */
+    private fun checkSingleAndParlayBetLayoutVisible() {
         rv_single_list.isVisible =
             getCurrentBetList().size > 1 && binding.betTypeTabLayout.selectedTabPosition == 0
+        if (binding.betTypeTabLayout.selectedTabPosition == 1) refreshLlMoreOption()
     }
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {
@@ -758,7 +762,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betListRefactorAdapter?.betList = list
                 betSingleListAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
-                setSingleBetLayoutVisible()
+                checkSingleAndParlayBetLayoutVisible()
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
