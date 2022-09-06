@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/bet_list_single"
-                        android:textColor="@color/color_BBBBBB_333333"
+                        android:textColor="@color/color_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"/>
 
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="*"
-                        android:textColor="@color/color_A0B4D4_060F20"
+                        android:textColor="@color/color_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"/>
 
@@ -91,7 +91,7 @@
                         android:id="@+id/tv_single_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_A0B4D4_060F20"
+                        android:textColor="@color/color_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         tools:text="5" />
@@ -106,9 +106,10 @@
                     android:inputType="numberDecimal"
                     android:letterSpacing="0.05"
                     android:maxLength="14"
-                    android:paddingHorizontal="15dp"
+                    android:paddingHorizontal="10dp"
                     android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textStyle="bold"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
@@ -119,27 +120,14 @@
                     android:id="@+id/tv_hint_single_default"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
-                    android:paddingTop="8dp"
-                    android:text="@string/bet_stake"
-                    android:textColor="@color/color_7F7F7F_999999"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="@color/color_C9CFD7"
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="@+id/et_bet_single"
-                    app:layout_constraintTop_toTopOf="@+id/et_bet_single" />
-
-                <TextView
-                    android:id="@+id/tv_hint_single_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="6dp"
-                    android:paddingTop="3dp"
-                    android:text="@string/bet_stake"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize10sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="@+id/et_bet_single"
-                    app:layout_constraintTop_toTopOf="@+id/et_bet_single" />
+                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_single"
+                    app:layout_constraintEnd_toEndOf="@+id/et_bet_single"
+                    app:layout_constraintTop_toTopOf="@+id/et_bet_single"
+                    tools:text="@string/hint_bet_limit_range" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,7 +138,7 @@
                 android:paddingTop="@dimen/margin_10"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/clInputLayout"
-                tools:visibility="visible" />
+                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>

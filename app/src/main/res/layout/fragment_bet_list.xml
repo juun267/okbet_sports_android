@@ -183,7 +183,7 @@
                         android:visibility="gone"
                         android:clipToPadding="false"
                         android:clipChildren="false"
-                        tools:visibility="visible">
+                        tools:visibility="gone">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_parlay_list"
@@ -196,6 +196,17 @@
                             tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_single_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_bet_list_batch_control_v3" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_total_info"

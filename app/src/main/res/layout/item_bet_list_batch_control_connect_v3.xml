@@ -44,16 +44,18 @@
 
                 <TextView
                     android:id="@+id/tv_parlay_type"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_24"
+                    android:layout_marginEnd="5dp"
                     android:textColor="@color/color_535D76"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline_start"
                     app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"
                     app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
-                    tools:text="3串1" />
+                    tools:text="3串1*26" />
 
 <!--                <ImageView-->
 <!--                    android:id="@+id/btn_rule"-->
@@ -89,7 +91,6 @@
                     android:layout_marginEnd="24dp"
                     android:layout_weight="6"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"
-                    android:hint="@string/bet_info_input_quota"
                     android:inputType="numberDecimal"
                     android:letterSpacing="0.05"
                     android:maxLength="14"
@@ -106,29 +107,42 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_symbol_count"
+                    android:id="@+id/tv_hint_parlay_default"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="*"
-                    android:textColor="@color/color_535D76"
+                    android:paddingHorizontal="10dp"
+                    android:textColor="@color/color_C9CFD7"
                     android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/tv_parlay_type"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
-                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay" />
-
-                <TextView
-                    android:id="@+id/tv_com_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_24"
-                    android:textColor="@color/color_535D76"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/et_bet_parlay"
-                    app:layout_constraintStart_toEndOf="@+id/tv_symbol_count"
+                    app:layout_constraintEnd_toEndOf="@+id/et_bet_parlay"
                     app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"
-                    tools:text="26" />
+                    tools:text="@string/hint_bet_limit_range" />
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_symbol_count"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="*"-->
+<!--                    android:textColor="@color/color_535D76"-->
+<!--                    android:textSize="@dimen/textSize12sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/tv_parlay_type"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_com_count"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="@dimen/margin_24"-->
+<!--                    android:textColor="@color/color_535D76"-->
+<!--                    android:textSize="@dimen/textSize12sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/et_bet_parlay"-->
+<!--                    app:layout_constraintStart_toEndOf="@+id/tv_symbol_count"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"-->
+<!--                    tools:text="26" />-->
 
                 <LinearLayout
                     android:id="@+id/ll_hint_container"
@@ -143,11 +157,12 @@
                         android:id="@+id/tvBalanceInsufficientMessageParlay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:includeFontPadding="false"
                         android:paddingTop="@dimen/margin_8"
                         android:text="@string/bet_info_bet_balance_insufficient"
                         android:textColor="@color/color_E44438_e44438"
-                        android:textSize="@dimen/textSize13sp"
+                        android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
 
@@ -155,23 +170,25 @@
                         android:id="@+id/tvErrorMessageParlay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:includeFontPadding="false"
                         android:paddingTop="@dimen/margin_8"
-                        android:textColor="@color/color_E44438_e44438"
-                        android:textSize="@dimen/textSize13sp"
-                        android:visibility="gone"
                         android:text="@string/bet_info_list_minimum_limit_amount"
+                        android:textColor="@color/color_E44438_e44438"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="gone"
                         tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tvPleaseEnterCorrectAmountParlay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:includeFontPadding="false"
                         android:paddingTop="@dimen/margin_8"
                         android:text="@string/please_enter_correct_amount"
                         android:textColor="@color/color_E44438_e44438"
-                        android:textSize="@dimen/textSize13sp"
+                        android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
                 </LinearLayout>

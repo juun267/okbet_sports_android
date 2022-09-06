@@ -74,6 +74,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var betParlayListRefactorAdapter: BetListRefactorAdapter? = null
 
+    private var betSingleListAdapter: BetSingleListAdapter? = null
+
     private var betAllAmount = 0.0
 
     private var betResultListener: BetResultListener? = null
@@ -210,6 +212,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         ll_root.setOnClickListener {
             betListRefactorAdapter?.closeAllKeyboard()
+            betSingleListAdapter?.closeAllKeyboard()
             betParlayListRefactorAdapter?.closeAllKeyboard()
         }
         binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
@@ -285,6 +288,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.betTypeTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 betListRefactorAdapter?.closeAllKeyboard()
+                betSingleListAdapter?.closeAllKeyboard()
                 betParlayListRefactorAdapter?.closeAllKeyboard()
                 when (tab?.position) {
                     //單項投注
@@ -306,6 +310,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         refreshAllAmount()
                     }
                 }
+                setSingleBetLayoutVisible()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -315,6 +320,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
         })
+    }
+
+    private fun setSingleBetLayoutVisible() {
+        rv_single_list.isVisible =
+            getCurrentBetList().size > 1 && binding.betTypeTabLayout.selectedTabPosition == 0
     }
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {
@@ -340,6 +350,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
+
+        val singleLayoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_single_list.layoutManager = singleLayoutManager
+        betSingleListAdapter?.setHasStableIds(true)
+        rv_single_list.adapter = betSingleListAdapter
 
         val parlayLayoutManager = ScrollCenterLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_parlay_list.layoutManager = parlayLayoutManager
@@ -441,6 +456,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                     isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size ?: 0 <= 1
                     betListRefactorAdapter?.closeAllKeyboard()
+                    betSingleListAdapter?.closeAllKeyboard()
                     betParlayListRefactorAdapter?.closeAllKeyboard()
                     viewModel.removeBetInfoItem(oddsId)
                 }
@@ -468,6 +484,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         it.isInputBet = false; it.isInputWin = false
                     }
                     betListRefactorAdapter?.closeAllKeyboard()
+                    betSingleListAdapter?.closeAllKeyboard()
                     betParlayListRefactorAdapter?.closeAllKeyboard()
                 }
 
@@ -475,7 +492,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     viewModel.saveOddsHasChanged(matchOdd)
                 }
 
-                override fun refreshBetInfoTotal() {
+                override fun refreshBetInfoTotal(isSingleAdapter: Boolean) {
+                    if (isSingleAdapter) {
+                        betListRefactorAdapter?.notifyDataSetChanged()
+                    }
                     checkAllAmountCanBet()
                     refreshAllAmount()
 //                    btn_bet.isOddsChanged = false //輸入金額一樣顯示接受的文案
@@ -493,6 +513,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
         betListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener)
+        betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener)
         betParlayListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener).apply {
             adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
         }
@@ -670,6 +691,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 needUpdateBetLimit = false
             }
             betListRefactorAdapter?.userLogin = it
+            betSingleListAdapter?.userLogin = it
             betParlayListRefactorAdapter?.userLogin = it
         }
 
@@ -681,6 +703,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it?.let { money ->
                 binding.clTitle.tvBalance.text = TextUtil.formatMoney(money ?: 0.0)
                 betListRefactorAdapter?.userMoney = money
+                betSingleListAdapter?.userMoney = money
                 betParlayListRefactorAdapter?.userMoney = money
             }
         }
@@ -688,6 +711,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.oddsType.observe(viewLifecycleOwner) {
             //keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
+            betSingleListAdapter?.oddsType = it
             betParlayListRefactorAdapter?.oddsType = it
             oddsType = it
         }
@@ -732,7 +756,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
                 binding.clTitle.tvBetListCount.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
+                betSingleListAdapter?.betList = list
                 betParlayListRefactorAdapter?.betList = list
+                setSingleBetLayoutVisible()
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
@@ -746,6 +772,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 unSubscribeChannelEvent(it)
             }
             betListRefactorAdapter?.notifyDataSetChanged()
+            betSingleListAdapter?.notifyDataSetChanged()
             betParlayListRefactorAdapter?.notifyDataSetChanged()
         }
 
@@ -754,11 +781,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (it.size == 0) {
                 betListRefactorAdapter?.hasParlayList = false
                 betListRefactorAdapter?.parlayList = singleParlayList
+                betSingleListAdapter?.parlayList = singleParlayList
 
                 betParlayListRefactorAdapter?.hasParlayList = false
             } else {
                 betListRefactorAdapter?.hasParlayList = true
                 betListRefactorAdapter?.parlayList = it
+                betSingleListAdapter?.hasParlayList = true
+                betSingleListAdapter?.parlayList = it
 
                 betParlayListRefactorAdapter?.hasParlayList = true
                 betParlayListRefactorAdapter?.parlayList = it
@@ -861,6 +891,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                 }
                 betListRefactorAdapter?.betList = betRefactorList
+                betSingleListAdapter?.betList = betRefactorList
                 betParlayListRefactorAdapter?.betList = betRefactorList
             }
         }
