@@ -403,4 +403,13 @@
     <color name="color_99FFFFFF">#99FFFFFF</color>
     <color name="color_80000000">#80000000</color>
     <color name="color_DFE8F2">#DFE8F2</color>
+
+    <!--region keyboard-->
+    <color name="color_43546F">#43546F</color>
+    <color name="color_5A799E">#5A799E</color>
+    <color name="color_46D980">#46D980</color>
+    <color name="color_32BE8C">#32BE8C</color>
+    <color name="color_FDFBFA">#FDFBFA</color>
+    <color name="color_EDEEF5">#EDEEF5</color>
+    <!--endregion keyboard-->
 </resources>
