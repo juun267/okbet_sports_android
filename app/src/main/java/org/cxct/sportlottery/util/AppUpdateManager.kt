@@ -3,7 +3,6 @@ package org.cxct.sportlottery.util
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -11,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
 import androidx.core.content.FileProvider
+import org.cxct.sportlottery.BuildConfig
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -131,5 +131,30 @@ object AppUpdateManager {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun jumpMarketApp(context: Context, url: String) {
+        when (BuildConfig.STORE_NAME) {
+            "google" -> {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(url)
+                    setPackage("com.android.vending")
+                }
+                context.startActivity(intent)
+            }
+            "huawei" -> {
+                val intent = Intent("com.huawei.appmarket.intent.action.AppDetail")
+                intent.setPackage("com.huawei.appmarket")
+                intent.putExtra("APP_PACKAGENAME", context.packageName)
+                context.startActivity(intent)
+            }
+            else -> {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(url)
+                }
+                context.startActivity(intent)
+            }
+        }
+
     }
 }

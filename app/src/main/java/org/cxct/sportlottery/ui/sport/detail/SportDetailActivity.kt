@@ -12,6 +12,7 @@ import android.text.Spanned
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -150,6 +151,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     viewModel.getLiveInfo(it, newestUrl)
                 }
             }
+
+            override fun onFullScreen(landscape: Boolean) {
+                showFullScreen(landscape)
+            }
         }
     }
 
@@ -162,12 +167,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initUI()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
-        }
-    }
 
     override fun initToolBar() {
         iv_back.setOnClickListener {
@@ -459,7 +458,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.matchLiveInfo.observe(this) {
-            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
+            Log.d("hjq", "matchLiveInfo=" + Gson().toJson(it))
+            it?.peekContent()?.let { liveStreamInfo ->
                 live_view_tool_bar.startPlayer(
                     matchId,
                     matchOdd?.matchInfo?.trackerId,
@@ -535,7 +535,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .load(matchInfo.awayIcon)
             .into(img_away_logo)
         //endregion
-        Log.d("hjq", Gson().toJson(matchInfo))
         //region 比賽延期判斷
         if (matchInfo.status == GameStatus.POSTPONED.code
             && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
@@ -1077,6 +1076,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.isVisible = true
                 live_view_tool_bar.showLiveView(true)
                 live_view_tool_bar.showVideo()
+//                live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
+
             }
             lin_anime.setOnClickListener {
                 toolBar.isVisible = false
@@ -1096,4 +1097,19 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
+    fun showFullScreen(landscape: Boolean) {
+        sv_content.isVisible = false
+        toolBar.isVisible = false
+        collaps_toolbar.isVisible = true
+        app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        live_view_tool_bar.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+    }
+
+    fun closeFullScreen() {
+        sv_content.isVisible = true
+        toolBar.isVisible = true
+        collaps_toolbar.isVisible = false
+        app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        live_view_tool_bar.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+    }
 }

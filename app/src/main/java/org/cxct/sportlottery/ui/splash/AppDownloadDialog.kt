@@ -7,12 +7,13 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.tbruyelle.rxpermissions2.RxPermissions
-import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.util.AppUpdateManager
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
@@ -20,6 +21,7 @@ class AppDownloadDialog(
     val activity: FragmentActivity,
     private val mIsForce: Boolean,
     private val mLastVersion: String,
+    private val checkAppVersionResult: CheckAppVersionResult?,
     private val mOnDownloadCallBack: OnDownloadCallBack,
 ) : AlertDialog(activity) {
 
@@ -48,10 +50,21 @@ class AppDownloadDialog(
         }
 
         btn_download.setOnClickListener {
-            if (btn_download.text == context.getString(R.string.update))
-                doInternalDownload()
-            else
-                doUpdate(mFileUrl)
+            if (BuildConfig.STORE_NAME.isNullOrEmpty()) {
+                if (btn_download.text == context.getString(R.string.update))
+                    doInternalDownload()
+                else
+                    doUpdate(mFileUrl)
+            } else {
+                checkAppVersionResult?.let {
+                    try {
+                        AppUpdateManager.jumpMarketApp(context, it.storeURL ?: "")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        JumpUtil.toExternalWeb(context, it.storeURL1 ?: "")
+                    }
+                }
+            }
         }
 
         block_progress_bar.visibility = View.GONE

@@ -181,16 +181,6 @@ class FavoriteViewModel(
         }
     }
 
-    fun getFavoriteMatch(getLastPick: Boolean? = false) {
-        val gameType =
-            if (getLastPick == true) lastSportType.value?.code else sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
-        val playCateMenu =
-            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.code
-        val playCateCode =
-            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.find { it.isSelected }?.code
-
-        getFavoriteMatch(gameType, playCateMenu, playCateCode)
-    }
 
     fun switchGameType(item: Item) {
         _sportQueryData.postValue(
@@ -204,7 +194,6 @@ class FavoriteViewModel(
                 }
             )
         )
-
         favoriteRepository.setLastSportType(item)
         getFavoriteMatch(item.code, playCateMenu = MenuCode.MAIN.code)
 

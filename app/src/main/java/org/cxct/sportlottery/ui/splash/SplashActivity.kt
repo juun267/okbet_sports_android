@@ -10,6 +10,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -122,7 +123,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
         mVersionUpdateViewModel.appMinVersionState.observe(this) {
             if (it.isForceUpdate || it.isShowUpdateDialog)
-                showAppDownloadDialog(it.isForceUpdate, it.version)
+                showAppDownloadDialog(it.isForceUpdate, it.version, it.checkAppVersionResult)
             else
                 viewModel.goNextPage()
         }
@@ -150,11 +151,16 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     //提示APP更新對話框
-    private fun showAppDownloadDialog(isForceUpdate: Boolean, lastVersion: String) {
+    private fun showAppDownloadDialog(
+        isForceUpdate: Boolean,
+        lastVersion: String,
+        checkAppVersionResult: CheckAppVersionResult?,
+    ) {
         AppDownloadDialog(
             this,
             isForceUpdate,
             lastVersion,
+            checkAppVersionResult,
             object : AppDownloadDialog.OnDownloadCallBack {
                 override fun onDownloadError() {
                     startActivity(Intent(this@SplashActivity, SplashActivity::class.java))

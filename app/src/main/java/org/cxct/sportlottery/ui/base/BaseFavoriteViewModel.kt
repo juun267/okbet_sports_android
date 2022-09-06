@@ -93,16 +93,16 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
-    fun getFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String? = null) {
+    fun getFavoriteMatch(
+        gameType: String? = null,
+        playCateMenu: String? = MenuCode.MAIN.code,
+        playCateCode: String? = null,
+    ) {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
             return
         }
-//        if (gameType == null || playCateMenu == null) {
-//            mFavorMatchOddList.postValue(Event(listOf()))
-//            return
-//        }
-        getMyFavoriteMatch(gameType ?: GameType.FT.key,
+        getMyFavoriteMatch(gameType ?: "",
             playCateMenu ?: MenuCode.MAIN.code,
             playCateCode)
     }
@@ -114,9 +114,15 @@ abstract class BaseFavoriteViewModel(
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavoriteMatch(
-                    MyFavoriteMatchRequest(gameType, playCateMenu)
-                )
+                if (gameType.isNullOrEmpty()) {
+                    OneBoSportApi.favoriteService.getMyFavoriteQueryAll(
+                        MyFavoriteMatchRequest(gameType, playCateMenu)
+                    )
+                } else {
+                    OneBoSportApi.favoriteService.getMyFavoriteMatch(
+                        MyFavoriteMatchRequest(gameType, playCateMenu)
+                    )
+                }
             }
 
             result?.sortOdds()
@@ -126,6 +132,9 @@ abstract class BaseFavoriteViewModel(
                 it.forEach { leagueOdd ->
                     leagueOdd.apply {
                         this.gameType = GameType.getGameType(gameType)
+                        if (this.gameType == null) {
+                            this.gameType = GameType.getGameType(matchOdds[0].matchInfo?.gameType!!)
+                        }
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {

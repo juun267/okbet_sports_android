@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -2767,9 +2768,11 @@ class SportViewModel(
     fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
         //同樣賽事已經請求過最新地址則不再請求
         val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
+        Log.d("hjq", "getLiveInfo=" + matchId)
         if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest && getNewest) return
 
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
+        Log.d("hjq", "tempLiveStreamUrl=" + tempLiveStreamUrl)
         // Todo 暫停使用，每次都請求最新的，確保沒問題
         //沒有暫存網址時請求最新網址
         if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {

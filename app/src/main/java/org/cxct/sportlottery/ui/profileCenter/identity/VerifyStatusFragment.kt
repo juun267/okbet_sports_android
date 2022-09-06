@@ -10,7 +10,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.util.JumpUtil
@@ -52,11 +51,7 @@ class VerifyStatusFragment :
                         img_status.setImageResource(R.drawable.ic_waiting_time)
                         txv_status.text = resources.getText(R.string.kyc_you_wait)
                         btn_kyc_verify.setOnClickListener {
-                            JumpUtil.toInternalWeb(
-                                requireContext(),
-                                Constants.getKYVUrl(requireContext()),
-                                resources.getString(R.string.identity)
-                            )
+                            openService()
                         }
                     }
                 }
@@ -83,23 +78,9 @@ class VerifyStatusFragment :
     }
 
     fun openService() {
-        val serviceUrl = sConfigData?.customerServiceUrl
-        val serviceUrl2 = sConfigData?.customerServiceUrl2
-        when {
-            !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                activity?.supportFragmentManager?.let { it1 ->
-                    ServiceDialog().show(
-                        it1,
-                        null
-                    )
-                }
-            }
-            serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-            }
-            !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-            }
+        val serviceUrl = sConfigData?.customerServicveVideoUrl
+        if (!serviceUrl.isNullOrBlank()) {
+            activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
         }
     }
 

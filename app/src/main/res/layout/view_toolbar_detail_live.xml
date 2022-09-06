@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_000000"
     android:orientation="vertical"
     tools:ignore="UseAppTint">
 
@@ -12,6 +12,7 @@
         android:id="@+id/expand_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         app:el_duration="500"
         app:el_expanded="true"
         app:el_parallax="0.5">
@@ -99,4 +100,30 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/margin_15"
+        android:layout_marginHorizontal="@dimen/margin_15">
+
+        <ImageView
+            android:id="@+id/iv_sound"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:padding="@dimen/margin_5"
+            android:src="@drawable/ic_sound" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/iv_fullscreen"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:padding="@dimen/margin_5"
+            android:src="@drawable/ic_fullscreen" />
+    </LinearLayout>
 </FrameLayout>

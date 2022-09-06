@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_favorite.view.*
@@ -21,8 +22,6 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.util.SvgUtil
-import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
 import org.cxct.sportlottery.widget.VerticalDecoration
 import java.util.*
 
@@ -292,17 +291,15 @@ class FavoriteAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType,
         ) {
+            val position = data.indexOf(item)
+            var gameType =
+                if (item.gameType != null) item.gameType!!.key else item.matchOdds[0].matchInfo?.gameType!!
+            itemView.lin_sport_title.isVisible =
+                (position == 0 || data[position - 1].gameType != item.gameType)
             itemView.tv_sport_type.text =
-                GameType.getGameTypeString(itemView.context, item.gameType?.key)
-//            val countryIcon = SvgUtil.getSvgDrawable(
-//                itemView.context,
-//                if (item.league.categoryIcon.isEmpty()) {
-//                    defaultIconPath
-//                } else {
-//                    item.league.categoryIcon
-//                }
-//            )
-            itemView.iv_sport.setImageResource(GameType.getGameTypeIcon(item.gameType!!))
+                GameType.getGameTypeString(itemView.context, gameType)
+            itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
+            itemView.iv_sport.isSelected = true
             itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
@@ -310,17 +307,15 @@ class FavoriteAdapter(private val matchType: MatchType) :
 
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
+            var gameType =
+                if (item.gameType != null) item.gameType!!.key else item.matchOdds[0].matchInfo?.gameType!!
+            val position = data.indexOf(item)
+            itemView.lin_sport_title.isVisible =
+                (position == 0 || data[position - 1].gameType != item.gameType)
             itemView.tv_sport_type.text =
-                GameType.getGameTypeString(itemView.context, item.gameType?.key)
-            val countryIcon = SvgUtil.getSvgDrawable(
-                itemView.context,
-                if (item.league.categoryIcon.isEmpty()) {
-                    defaultIconPath
-                } else {
-                    item.league.categoryIcon
-                }
-            )
-            itemView.iv_sport.setImageResource(GameType.getGameTypeIcon(item.gameType!!))
+                GameType.getGameTypeString(itemView.context, gameType)
+            itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
+            itemView.iv_sport.isSelected = true
             itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
@@ -418,12 +413,15 @@ class FavoriteAdapter(private val matchType: MatchType) :
                         expandCheckList[data[adapterPosition].league.id] = true
                         FoldState.UNFOLD.code
                     } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
+
                 itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
-
-//                notifyItemChanged(adapterPosition)
-                updateLeagueByExpand(bindingAdapterPosition)
-
+                data.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.gameType == data[adapterPosition].gameType) {
+                        leagueOdd.unfold = data[adapterPosition].unfold
+                    }
+                    updateLeagueByExpand(index)
+                }
                 leagueListener?.onClickLeague(item)
             }
         }

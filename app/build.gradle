@@ -43,6 +43,7 @@ android {
 
             versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+            buildConfigField "String", "STORE_NAME", "\"\""   //google huawei,默认空字符串
         }
 
         release {
@@ -52,6 +53,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+            buildConfigField "String", "STORE_NAME", "\"\""
         }
     }
 

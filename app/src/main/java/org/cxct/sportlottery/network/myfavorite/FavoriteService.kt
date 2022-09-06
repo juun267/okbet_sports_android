@@ -17,12 +17,17 @@ interface FavoriteService {
 
     @POST(Constants.MYFAVORITE_MATCH_QUERY)
     suspend fun getMyFavoriteMatch(
-        @Body myFavoriteMatchRequest: MyFavoriteMatchRequest
+        @Body myFavoriteMatchRequest: MyFavoriteMatchRequest,
     ): Response<MyFavoriteMatchResult>
 
     @POST(Constants.MYFAVORITE_SAVE)
     suspend fun saveMyFavorite(
-        @Body saveMyFavoriteRequest: SaveMyFavoriteRequest
+        @Body saveMyFavoriteRequest: SaveMyFavoriteRequest,
     ): Response<MyFavoriteBaseResult>
+
+    @POST(Constants.MYFAVORITE_QUERY_ALL)
+    suspend fun getMyFavoriteQueryAll(
+        @Body myFavoriteMatchRequest: MyFavoriteMatchRequest,
+    ): Response<MyFavoriteMatchResult>
 
 }

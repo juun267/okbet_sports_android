@@ -2,8 +2,11 @@ package org.cxct.sportlottery.ui.component
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.media.AudioManager
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebResourceRequest
@@ -142,6 +145,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     interface LiveToolBarListener {
         fun getLiveInfo(newestUrl: Boolean = false)
+        fun onFullScreen(fullScreen: Boolean)
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -175,6 +179,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
+            Log.d("hjq", "setOnClickListener")
             lastLiveType = LiveType.LIVE
             if (!iv_play.isSelected) {
                 setLiveViewHeight()
@@ -232,31 +237,26 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         }
 
         iv_arrow.setOnClickListener {
-            when {
-                iv_play.isSelected -> {
-                    switchLiveView(false)
-                }
-                iv_animation.isSelected -> {
-                    lastLiveType = LiveType.ANIMATION
-                    hideWebView()
-                }
-                else -> {
-                    when (lastLiveType) {
-                        LiveType.LIVE -> {
-                            switchLiveView(true)
-                        }
-                        LiveType.ANIMATION -> {
-                            iv_animation.isSelected = true
-                            if (isLogin) {
-                                openWebView()
-                            } else {
-                                setupNotLogin()
-                            }
-                        }
-                    }
-                }
+            unmute(context)
+            if (iv_fullscreen.isSelected) {
+                liveToolBarListener?.onFullScreen(false)
             }
-            checkExpandLayoutStatus()
+        }
+        iv_sound.setOnClickListener {
+            iv_sound.isSelected = !iv_sound.isSelected
+            if (iv_sound.isSelected) {
+                unmute(context)
+            } else {
+                mute(context)
+            }
+        }
+        iv_fullscreen.setOnClickListener {
+            iv_fullscreen.isSelected = !iv_fullscreen.isSelected
+            if (iv_fullscreen.isSelected) {//全屏
+                liveToolBarListener?.onFullScreen(true)
+            } else {
+                liveToolBarListener?.onFullScreen(false)
+            }
         }
     }
 
@@ -452,6 +452,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?, isLogin: Boolean) {
+        Log.d("hjq", "streamUrl=" + streamUrl)
         mMatchId = matchId
         if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
             mEventId = eventId
@@ -586,5 +587,30 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             if (!iv_play.isVisible && !iv_animation.isVisible) View.GONE else View.VISIBLE
         cl_control.visibility =
             if (!iv_play.isVisible && !iv_animation.isVisible) View.GONE else View.VISIBLE
+    }
+
+    var defaultVolume = 0;
+    fun mute(context: Context) {
+        val mAudioManager: AudioManager =
+            context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        defaultVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        val mute_volume = 0
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mute_volume, 0)
+    }
+
+    fun unmute(context: Context) {
+        if (defaultVolume == 0) {
+            return
+        }
+        val mAudioManager: AudioManager =
+            context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, defaultVolume, 0)
+    }
+
+    /**
+     * 是否水平放心
+     */
+    fun isLandscape(): Boolean {
+        return context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 }

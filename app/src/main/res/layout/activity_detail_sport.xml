@@ -24,35 +24,37 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6"
                 android:orientation="vertical">
 
                 <include
                     android:id="@+id/toolBar"
-                    layout="@layout/view_detail_head_toolbar" />
+                    layout="@layout/view_detail_head_toolbar"
+                    android:visibility="visible" />
 
                 <org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:layout_height="220dp" />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <include
                 android:id="@+id/collaps_toolbar"
                 layout="@layout/view_toolbar_detail_collaps"
                 app:layout_collapseMode="pin"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/sv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout

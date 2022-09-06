@@ -146,8 +146,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         initObserver()
         initSocketObserver()
         initBottomNavigation()
-        viewModel.getFavoriteMatch(false)
-        GameType.FT
+        viewModel.getFavoriteMatch()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -176,6 +175,9 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     }
 
     private fun showSportType() {
+        if (dataSport.isEmpty()) {
+            return
+        }
         mListPop.width = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.setBackgroundDrawable(
@@ -191,11 +193,13 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             override fun onItemClick(
                 parent: AdapterView<*>?,
                 view: View?,
+
                 position: Int,
                 id: Long,
             ) {
                 mListPop.dismiss()
                 var sportItem = dataSport[position]
+                sportItem.isSelected = true
                 btn_sport.text = sportItem.name
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(sportItem)
@@ -217,13 +221,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         view.favorite_game_list.apply {
             adapter = favoriteAdapter
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-            addItemDecoration(
-                SpaceItemDecoration(
-                    context,
-                    R.dimen.recyclerview_item_dec_spec_sport_type
-                )
-            )
 
             addScrollWithItemVisibility(
                 onScrolling = {
@@ -447,7 +444,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         play = null,
                         sortNum = item.sortNum ?: 0
                     ).apply {
-                        this.isSelected = item.isSelected
+                        isSelected = true
                     }
                 })
 
@@ -556,32 +553,18 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun updateGameTypeList(items: List<Item>?) {
         dataSport = mutableListOf<Item>().apply {
-//            add(Item(code="",name = getString(R.string.all_sport),0,null,0))
+            add(Item(code = "", name = getString(R.string.all_sport), 0, null, 0))
             items?.let {
                 addAll(it)
             }
         }
-//        dataSport[0].isSelected=true
-        btn_sport.text = when (items?.find {
+        //如果没有选中的就默认选中第一个
+        items?.find {
             it.isSelected
-        }?.code) {
-            GameType.FT.key -> getString(GameType.FT.string)
-            GameType.BK.key -> getString(GameType.BK.string)
-            GameType.TN.key -> getString(GameType.TN.string)
-            GameType.VB.key -> getString(GameType.VB.string)
-            GameType.BM.key -> getString(GameType.BM.string)
-            GameType.TT.key -> getString(GameType.TT.string)
-            GameType.BX.key -> getString(GameType.BX.string)
-            GameType.CB.key -> getString(GameType.CB.string)
-            GameType.CK.key -> getString(GameType.CK.string)
-            GameType.BB.key -> getString(GameType.BB.string)
-            GameType.RB.key -> getString(GameType.RB.string)
-            GameType.AFT.key -> getString(GameType.AFT.string)
-            GameType.IH.key -> getString(GameType.IH.string)
-            GameType.MR.key -> getString(GameType.MR.string)
-            GameType.GF.key -> getString(GameType.GF.string)
-            GameType.ES.key -> getString(GameType.ES.string)
-            else -> getString(R.string.all_sport)
+        }.let {
+            if (it == null) {
+                dataSport[0].isSelected = true
+            }
         }
     }
 
