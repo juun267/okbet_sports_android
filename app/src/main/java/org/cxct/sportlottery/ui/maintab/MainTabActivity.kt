@@ -1,21 +1,26 @@
 package org.cxct.sportlottery.ui.maintab
 
 import BetRecordFragment
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
+import kotlinx.android.synthetic.main.bet_bar_layout.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -25,10 +30,10 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
@@ -43,6 +48,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     )
     private var betListFragment = BetListFragment()
 
+    companion object {
+        fun reStart(context: Context) {
+            if (MultiLanguagesApplication.mInstance.doNotReStartPublicity) {
+                MultiLanguagesApplication.mInstance.doNotReStartPublicity = false
+                AppManager.currentActivity().finish()
+                return
+            }
+            val intent = Intent(context, MainTabActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_tab)
@@ -54,6 +72,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initDrawerLayout()
         initMenu()
         initBottomFragment()
+        initBottomNavigation()
+        initObserve()
+    }
+
+    private fun initObserve() {
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
+        viewModel.showBetInfoSingle.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                showBetListPage()
+            }
+        }
     }
 
     private fun initBottomFragment() {
@@ -68,17 +101,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
-                            if (viewModel.isLogin?.value == false) {
+                            if (viewModel.isLogin.value == false) {
                                 startActivity(Intent(this@MainTabActivity,
                                     LoginActivity::class.java))
-                                false
+                                return@OnNavigationItemSelectedListener false
                             }
                         }
-
                     }
-                    val itemId = menuItem.itemId
-                    fragmentHelper?.showFragment(this.getMenuItemPosition(menuItem))
-                    true
+                    fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
+                    return@OnNavigationItemSelectedListener true
                 }
         }
         bottom_navigation_view.currentItem = 0
@@ -191,7 +222,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun updateBetListCount(num: Int) {
-//        sport_bottom_navigation.setBetCount(num)
+        cl_bet_list_bar.isVisible = num > 0
+        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+        Timber.e("num: $num")
+        if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
@@ -235,6 +269,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun initBottomNavigation() {
+        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
+        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
     }
 
     override fun showBetListPage() {

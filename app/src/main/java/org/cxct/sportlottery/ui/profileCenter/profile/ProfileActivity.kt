@@ -25,7 +25,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
@@ -114,7 +114,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                    GamePublicityActivity.reStart(this)
+                    MainTabActivity.reStart(this)
                 }
             }
         }

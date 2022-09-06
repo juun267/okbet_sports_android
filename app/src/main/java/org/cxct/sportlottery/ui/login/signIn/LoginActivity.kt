@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
@@ -284,7 +285,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                    GamePublicityActivity.reStart(this)
+                    MainTabActivity.reStart(this)
 //                        finish()
                 }
             }

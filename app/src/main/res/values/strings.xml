@@ -725,7 +725,8 @@
     <string name="myfavorite_notify_detail_add">Added to My bets</string>
     <string name="myfavorite_notify_detail_remove">Remove from My bets</string>
     <string name="statistics_title">Data statistics</string>
-    <string name="bet_info_list_minimum_limit_amount">The betting amount is smaller than the limit</string>
+    <string name="bet_info_list_minimum_limit_amount">The stake is below the min limited bet</string>
+    <string name="bet_info_list_maximum_limit_amount">The stake exceeds the limited bet</string> <!--F039-->
     <string name="actual_bet">actual bet</string>
     <string name="bet_receipt_all_bet">Total stake</string>
     <string name="third_game_vncp">CG Vietnamese Lottery</string>

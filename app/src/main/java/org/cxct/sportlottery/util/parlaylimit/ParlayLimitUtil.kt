@@ -153,12 +153,19 @@ object ParlayLimitUtil {
         }
 
 
-        parlayComSOList.apply {
-            sortBy { it.parlayType.split("C")[1].toInt() }
-            reverse()
+        //region N串1排序
+        //跟當前串關單數相同的, N串1移動至第一項, 其餘的按照N的順序排序
+        //舉例: 5單串關則排序為 5串1 - 2串1 - 3串1 - 4串1
+        parlayComSOList.sortWith { o1, o2 ->
+            when (matchIdArray.size) {
+                o1.parlayType.split("C")[0].toInt() -> -1
+                o2.parlayType.split("C")[0].toInt() -> 1
+                else -> {
+                    compareValuesBy(o1, o2) { it.parlayType.split("C")[0].toInt() }
+                }
+            }
         }
-
-        parlayComSOList.reverse()
+        //endregion
 
         if (all.size > 2) {
             //N串M场景

@@ -9,9 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.activity_recharge_log.view.*
+import kotlinx.android.synthetic.main.component_date_range_new_selector.*
+import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
-import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_search_bar
+import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_range_selector
+
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.rv_record
 import org.cxct.sportlottery.R
@@ -90,9 +94,9 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
             rv_record.smoothScrollToPosition(0)
         }
 
-        date_search_bar.setOnClickSearchListener {
-            viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(),
-                                     endTime = date_search_bar.endTime.toString(),
+        date_range_selector.btn_search.setOnClickListener  {
+            viewModel.queryTransfers(startTime = date_range_selector.startTime.toString(),
+                                     endTime = date_range_selector.endTime.toString(),
                                      firmTypeIn = selector_in_plat.selectedTag,
                                      firmTypeOut = selector_out_plat.selectedTag,
                                      status = selector_transfer_status.selectedTag)

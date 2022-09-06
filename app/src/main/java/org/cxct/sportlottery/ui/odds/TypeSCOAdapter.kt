@@ -51,14 +51,14 @@ class TypeSCOAdapter(
     }
 
 
-    private var keys = oddsDetail.scoItem.mapTo(mutableListOf(), { it.key })
+    private var keys = oddsDetail.scoItem.mapTo(mutableListOf()) { it.key }
 
 
     var mOddsDetail: OddsDetailListData? = null
         set(value) {
             field = value
             oddsDetail = value as OddsDetailListData
-            keys = oddsDetail.scoItem.mapTo(mutableListOf(), { it.key })
+            keys = oddsDetail.scoItem.mapTo(mutableListOf()) { it.key }
             notifyDataSetChanged()
         }
 

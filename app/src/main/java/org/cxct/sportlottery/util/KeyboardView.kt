@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.sConfigData
 import java.lang.reflect.Method
@@ -140,25 +139,10 @@ class KeyboardView @JvmOverloads constructor(
     private var mPosition: Int? = 0
     private var isParlay: Boolean = false
     //最大限額
+    private var _maxBetMoney: String = "9999999"
     private val maxBetMoney: String
-        get() {
-            val maxBetMoney = mPosition?.let {
-                if (!isParlay) {
-                    val betInfoList = BetInfoRepository.betInfoList.value?.peekContent()
-                    if (it == (betInfoList?.size ?: 0)) {
-                        betInfoList?.first()?.parlayOdds?.max //多投單注
-                    } else {
-                        betInfoList?.get(it)?.parlayOdds?.max
-                    }
-                } else {
-                    val parlayList = BetInfoRepository.parlayList.value
-//                    Timber.e("parlayList: $parlayList")
-                    parlayList?.get(it)?.max
-                }
-            } ?: 9999999
-//            Timber.e("maxBetMoney: $maxBetMoney")
-            return TextUtil.formatInputMoney(maxBetMoney)
-        }
+        get() = _maxBetMoney
+
     private var isShow = false
 
     //是否登入
@@ -167,6 +151,10 @@ class KeyboardView @JvmOverloads constructor(
 
     //提示未登入
     private var snackBarNotify: Snackbar? = null
+
+    fun setupMaxBetMoney(max: Double) {
+        _maxBetMoney = TextUtil.formatInputMoney(max)
+    }
 
     fun showKeyboard(
         editText: EditText,

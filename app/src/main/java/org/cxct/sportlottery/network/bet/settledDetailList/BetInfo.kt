@@ -6,23 +6,34 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class BetInfo(
     @Json(name = "playMaxBetSingleBet")
-    val playMaxBetSingleBet: Long?,
+    private val playMaxBetSingleBetString: String?,
     @Json(name = "maxBetMoney")
-    val maxBetMoney: Long?,
+    private val maxBetMoneyString: String?,
     @Json(name = "minBetMoney")
-    val minBetMoney: Long?,
+    private val minBetMoneyString: String?,
     @Json(name = "maxPayout")
-    val maxPayout: Long?,
+    private val maxPayoutString: String?,
     @Json(name = "maxParlayBetMoney")
-    val maxParlayBetMoney: Long?,
+    private val maxParlayBetMoneyString: String?,
     @Json(name = "minParlayBetMoney")
-    val minParlayBetMoney: Long?,
+    private val minParlayBetMoneyString: String?,
     @Json(name = "maxParlayPayout")
-    val maxParlayPayout: Long?,
+    private val maxParlayPayoutString: String?,
     @Json(name = "maxCpBetMoney")
-    val maxCpBetMoney: Long?,
+    private val maxCpBetMoneyString: String?,
     @Json(name = "minCpBetMoney")
-    val minCpBetMoney: Long?,
+    private val minCpBetMoneyString: String?,
     @Json(name = "maxCpPayout")
-    val maxCpPayout: Long?
-)
+    private val maxCpPayoutString: String?
+) {
+    val playMaxBetSingleBet get() = playMaxBetSingleBetString?.toBigDecimal()
+    val maxBetMoney get() = maxBetMoneyString?.toBigDecimal()
+    val minBetMoney get() = minBetMoneyString?.toBigDecimal()
+    val maxPayout get() = maxPayoutString?.toBigDecimal()
+    val maxParlayBetMoney get() = maxParlayBetMoneyString?.toBigDecimal()
+    val minParlayBetMoney get() = minParlayBetMoneyString?.toBigDecimal()
+    val maxParlayPayout get() = maxParlayPayoutString?.toBigDecimal()
+    val maxCpBetMoney get() = maxCpBetMoneyString?.toBigDecimal()
+    val minCpBetMoney get() = minCpBetMoneyString?.toBigDecimal()
+    val maxCpPayout get() = maxCpPayoutString?.toBigDecimal()
+}
