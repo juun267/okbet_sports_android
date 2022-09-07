@@ -16,7 +16,6 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.TimeZone.getTimeZone
 
 class TimeZoneAdapter(private val clickListener: ItemClickListener) :
     ListAdapter<TimeZone, RecyclerView.ViewHolder>(DiffCallback()) {
@@ -67,7 +66,7 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
                 binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_025BE8))
             }else{
                 binding.tvCity.setTextColor(itemView.context.getColor(R.color.color_535D76))
-                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_A7B2C))
+                binding.tvTime.setTextColor(itemView.context.getColor(R.color.color_A7B2C4))
             }
         }
 

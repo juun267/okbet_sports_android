@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/color_000000"
     android:orientation="vertical"
     tools:ignore="UseAppTint">
@@ -19,8 +19,8 @@
 
         <RelativeLayout
             android:id="@+id/web_view_layout"
-            android:layout_width="match_parent"
-            android:layout_height="232dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical">
 
@@ -62,15 +62,6 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
-    <ImageView
-        android:id="@+id/iv_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/tool_bar_height"
-        android:layout_marginLeft="@dimen/margin_10"
-        android:layout_marginTop="@dimen/margin_25"
-        android:contentDescription="@null"
-        android:paddingHorizontal="16dp"
-        android:src="@drawable/ic_arrow_white" />
 
     <LinearLayout
         android:id="@+id/cl_control"
@@ -124,6 +115,6 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:padding="@dimen/margin_5"
-            android:src="@drawable/ic_fullscreen" />
+            android:src="@drawable/selector_fullscreen" />
     </LinearLayout>
 </FrameLayout>

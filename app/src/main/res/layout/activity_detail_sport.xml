@@ -2,29 +2,31 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:fitsSystemWindows="false">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:elevation="0dp">
+        android:fitsSystemWindows="false"
+        android:background="@color/color_000000">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collaps_layout"
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="0dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:statusBarScrim="@android:color/transparent"
-            app:titleEnabled="false">
+            android:minHeight="25dp"
+            android:fitsSystemWindows="false"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6"
                 android:orientation="vertical">
@@ -32,28 +34,143 @@
                 <include
                     android:id="@+id/toolBar"
                     layout="@layout/view_detail_head_toolbar"
-                    android:visibility="visible" />
+                    android:visibility="visible"
+                    tools:visibility="gone" />
 
                 <org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:layout_height="232dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
             </LinearLayout>
 
             <include
                 android:id="@+id/collaps_toolbar"
                 layout="@layout/view_toolbar_detail_collaps"
-                app:layout_collapseMode="pin"
-                android:visibility="gone" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_191919_FCFCFC"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E3E8EE"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/btn_odd"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="投注"
+                    android:textColor="@color/main_tab_text_selector"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="@+id/iv_center"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/viewBtOdd"
+                    android:layout_width="62dp"
+                    android:layout_height="2dp"
+                    android:background="@drawable/bg_radius_2_025be8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="@+id/iv_center" />
+
+                <ImageView
+                    android:id="@+id/iv_center"
+                    android:layout_width="1dp"
+                    android:layout_height="24dp"
+                    android:background="@color/color_E3E8EE"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/btn_analyze"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="赛事分析"
+                    android:textColor="@color/color_6C7BA8"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_center"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/viewBtnAnalyze"
+                    android:layout_width="62dp"
+                    android:layout_height="2dp"
+                    android:background="@drawable/bg_radius_2_025be8"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_center"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_categroy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_40">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_cat"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_10"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/tab_odds_detail" />
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#F1F0F0" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="@dimen/margin_40"
+                    android:layout_height="match_parent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:padding="@dimen/margin_10"
+                    android:src="@drawable/selector_arrow_blue_double" />
+            </LinearLayout>
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/sv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         tools:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -63,112 +180,6 @@
             android:layout_height="match_parent"
             android:background="@color/color_F0F5FA"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_191919_FCFCFC"
-                android:orientation="vertical">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/color_E3E8EE"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent" />
-
-                    <TextView
-                        android:id="@+id/btn_odd"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="投注"
-                        android:textColor="@color/main_tab_text_selector"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="@+id/iv_center"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:id="@+id/viewBtOdd"
-                        android:layout_width="62dp"
-                        android:layout_height="2dp"
-                        android:background="@drawable/bg_radius_2_025be8"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="@+id/iv_center" />
-
-                    <ImageView
-                        android:id="@+id/iv_center"
-                        android:layout_width="1dp"
-                        android:layout_height="24dp"
-                        android:background="@color/color_E3E8EE"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/btn_analyze"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="赛事分析"
-                        android:textColor="@color/color_6C7BA8"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="@+id/iv_center"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:id="@+id/viewBtnAnalyze"
-                        android:layout_width="62dp"
-                        android:layout_height="2dp"
-                        android:background="@drawable/bg_radius_2_025be8"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="@+id/iv_center"
-                        app:layout_constraintRight_toRightOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
-                    android:id="@+id/lin_categroy"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_40">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_cat"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="@dimen/margin_10"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/tab_odds_detail" />
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:background="#F1F0F0" />
-
-                    <ImageView
-                        android:id="@+id/iv_arrow"
-                        android:layout_width="@dimen/margin_40"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/margin_10"
-                        android:src="@drawable/selector_arrow_blue_double" />
-                </LinearLayout>
-            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detail"
@@ -187,4 +198,16 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/lin_fullscreen"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        app:layout_collapseMode="pin">-->
+    <!--      -->
+    <!--        <FrameLayout-->
+    <!--            android:id="@+id/fl_video"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"/>-->
+    <!--    </FrameLayout>-->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

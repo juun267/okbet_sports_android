@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.media.AudioManager
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.WebResourceRequest
@@ -75,6 +74,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         }
 
     private var mLiveShowTag = true
+    var isFullScreen = false
 
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
@@ -179,7 +179,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
-            Log.d("hjq", "setOnClickListener")
             lastLiveType = LiveType.LIVE
             if (!iv_play.isSelected) {
                 setLiveViewHeight()
@@ -236,12 +235,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }*/
         }
 
-        iv_arrow.setOnClickListener {
-            unmute(context)
-            if (iv_fullscreen.isSelected) {
-                liveToolBarListener?.onFullScreen(false)
-            }
-        }
         iv_sound.setOnClickListener {
             iv_sound.isSelected = !iv_sound.isSelected
             if (iv_sound.isSelected) {
@@ -252,11 +245,19 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         }
         iv_fullscreen.setOnClickListener {
             iv_fullscreen.isSelected = !iv_fullscreen.isSelected
+            isFullScreen = iv_fullscreen.isSelected
             if (iv_fullscreen.isSelected) {//全屏
                 liveToolBarListener?.onFullScreen(true)
             } else {
                 liveToolBarListener?.onFullScreen(false)
             }
+        }
+    }
+
+    fun onBackPressed() {
+        unmute(context)
+        if (iv_fullscreen.isSelected) {
+            liveToolBarListener?.onFullScreen(false)
         }
     }
 
@@ -278,69 +279,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 stopPlayer()
                 iv_play.isSelected = false
                 checkExpandLayoutStatus()
-            }
-        }
-    }
-
-    private fun ImageView.setLiveImxg() {
-        when (gameType) {
-            GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
-            GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_unselected)
-            GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_unselected)
-            GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_unselected)
-            GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_unselected)
-            GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_unselected)
-            GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_unselected)
-            GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_unselected)
-            GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_unselected)
-            GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_unselected)
-            GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_unselected)
-            GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_unselected)
-            GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_unselected)
-            GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_unselected)
-            GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_unselected)
-            GameType.ES -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_esport_unselected)
-        }
-    }
-
-    private fun setAnimationImgIcon(isOn: Boolean) {
-        if (isOn) {
-            when (gameType) {
-                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
-                GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_selected)
-                GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_selected)
-                GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_selected)
-                GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_selected)
-                GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_selected)
-                GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_selected)
-                GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_selected)
-                GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_selected)
-                GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_selected)
-                GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_selected)
-                GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_selected)
-                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_selected)
-                GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_selected)
-                GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_selected)
-                GameType.ES -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_esport_selected)
-            }
-        } else {
-            when (gameType) {
-                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
-                GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_unselected)
-                GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_unselected)
-                GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_unselected)
-                GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_unselected)
-                GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_unselected)
-                GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_unselected)
-                GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_unselected)
-                GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_unselected)
-                GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_unselected)
-                GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_unselected)
-                GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_unselected)
-                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_unselected)
-                GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_unselected)
-                GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_unselected)
-                GameType.ES -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_esport_unselected)
             }
         }
     }
@@ -415,7 +353,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         streamUrl?.let {
             iv_play.isSelected = true
             iv_animation.isSelected = false
-            iv_animation.setLiveImxg()
             if (exoPlayer == null) {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
@@ -452,7 +389,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?, isLogin: Boolean) {
-        Log.d("hjq", "streamUrl=" + streamUrl)
         mMatchId = matchId
         if (MultiLanguagesApplication.getInstance()?.getGameDetailAnimationNeedShow() == true) {
             mEventId = eventId
@@ -481,8 +417,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         expand_layout.visibility = View.GONE
         iv_play.visibility = View.GONE
         iv_animation.visibility = View.GONE
-        iv_arrow.visibility = View.GONE
-
         checkControlBarVisibility()
     }
 
@@ -490,8 +424,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         expand_layout.visibility = View.VISIBLE
         iv_play.visibility = View.VISIBLE
         iv_animation.visibility = View.VISIBLE
-        iv_arrow.visibility = View.VISIBLE
-
         checkControlBarVisibility()
     }
 
@@ -501,7 +433,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         lastLiveType = LiveType.ANIMATION
 //        setLivePlayImg()
         web_view.isVisible = true
-        setAnimationImgIcon(true)
         player_view.isVisible = false
 
         web_view.settings.apply {
@@ -545,7 +476,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         web_view.isVisible = false
         web_view.onPause()
         checkExpandLayoutStatus()
-        setAnimationImgIcon(false)
     }
 
     /**
@@ -583,8 +513,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private fun checkControlBarVisibility() {
         iv_play.visibility = if (!mIsLive) View.GONE else View.VISIBLE
         iv_animation.visibility = if (mEventId.isNullOrEmpty()) View.GONE else View.VISIBLE
-        iv_arrow.visibility =
-            if (!iv_play.isVisible && !iv_animation.isVisible) View.GONE else View.VISIBLE
         cl_control.visibility =
             if (!iv_play.isVisible && !iv_animation.isVisible) View.GONE else View.VISIBLE
     }

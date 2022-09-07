@@ -183,11 +183,12 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         mListPop.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
-                R.drawable.bg_sport_type_pop
+                R.drawable.bg_pop_up_arrow
             )
         )
         mListPop.setAdapter(SportTypeTextAdapter(dataSport))
         mListPop.setAnchorView(btn_sport) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.verticalOffset = 5
         mListPop.setModal(true) //设置是否是模式
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(

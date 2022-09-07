@@ -33,7 +33,7 @@
                 android:textSize="@dimen/textSize14sp"
                 android:paddingRight="5dp"
                 tools:text="义大利义大利"
-                tools:textColor="@color/color_A7B2C"
+                tools:textColor="@color/color_A7B2C4"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
-import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
@@ -24,8 +23,6 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
-import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -47,6 +44,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
+import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
@@ -126,6 +124,9 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
+        }
+        lin_search.setOnClickListener {
+            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
         }
     }
 

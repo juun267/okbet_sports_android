@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/color_A7B2C"
+                android:textColor="@color/color_A7B2C4"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="2019-01-01 12:00:00" />
 

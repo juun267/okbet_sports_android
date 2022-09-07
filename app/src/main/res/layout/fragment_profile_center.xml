@@ -315,7 +315,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/deposits"
-                        android:textColor="@color/color_A7B2C"
+                        android:textColor="@color/color_A7B2C4"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -360,7 +360,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/withdraw_down"
-                        android:textColor="@color/color_A7B2C"
+                        android:textColor="@color/color_A7B2C4"
                         android:textSize="@dimen/textSize12sp" />
 
 
@@ -439,7 +439,7 @@
                                 android:layout_marginEnd="@dimen/margin_5"
                                 android:layout_toStartOf="@+id/iv_line"
                                 android:text="@string/transaction_record"
-                                android:textColor="@color/color_A7B2C"
+                                android:textColor="@color/color_A7B2C4"
                                 android:textSize="@dimen/textSize12sp" />
 
                             <View
@@ -656,7 +656,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/tv_feedback"
                                 android:text="常见问题  |  游戏规则  |  "
-                                android:textColor="@color/color_A7B2C"
+                                android:textColor="@color/color_A7B2C4"
                                 android:textSize="@dimen/textSize12sp" />
 
 
@@ -665,7 +665,7 @@
                                 android:id="@+id/tv_feedback"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/color_A7B2C"
+                                android:textColor="@color/color_A7B2C4"
                                 android:textSize="@dimen/textSize12sp"
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/iv_line2"
@@ -791,7 +791,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/updatable_version"
-                                    android:textColor="@color/color_A7B2C"
+                                    android:textColor="@color/color_A7B2C4"
                                     android:textSize="@dimen/textSize12sp" />
 
                                 <ImageView
@@ -856,7 +856,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/iv_line4"
                                 android:text="@string/join_us_win_wealth"
-                                android:textColor="@color/color_A7B2C"
+                                android:textColor="@color/color_A7B2C4"
                                 android:textSize="@dimen/textSize12sp" />
 
                         </RelativeLayout>

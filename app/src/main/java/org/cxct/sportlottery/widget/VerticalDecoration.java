@@ -14,5 +14,10 @@ public class VerticalDecoration extends DividerItemDecoration {
         setDrawable(ContextCompat.getDrawable(context, drawableId));
     }
 
+    public VerticalDecoration(Context context, int orientation, int drawableId) {
+        super(context, orientation);
+        setDrawable(ContextCompat.getDrawable(context, drawableId));
+    }
+
 
 }

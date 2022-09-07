@@ -42,7 +42,6 @@
             android:id="@+id/odd_detail_pin"
             android:layout_width="22dp"
             android:layout_height="match_parent"
-            app:tint="@color/color_C9CFD7"
             android:padding="5dp"
             android:layout_marginEnd="5dp"
             android:src="@drawable/selector_item_country_league_pin_v4"
@@ -56,7 +55,7 @@
             android:padding="2dp"
             app:tint="@color/color_C9CFD7"
             android:layout_marginEnd="7dp"
-            android:src="@drawable/ic_arrow_down_double"
+            android:src="@drawable/selector_arrow_blue_double"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

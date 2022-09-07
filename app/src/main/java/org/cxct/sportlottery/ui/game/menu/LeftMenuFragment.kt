@@ -899,7 +899,8 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class), OnCl
                                     time.setSpan(ForegroundColorSpan(ContextCompat.getColor(holder.convertView.context, R.color.color_909090_666666)),
                                         0, time.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-                                    val tvTimeAndMatch = holder.getView<HighlightTextView>(R.id.tv_time_and_match)
+                                    val tvTimeAndMatch =
+                                        holder.getView<HighlightTextView>(R.id.tv_time)
                                     tvTimeAndMatch.setCustomText(itt.homeName + " v " + itt.awayName)
                                     tvTimeAndMatch.setSpannableTextWithoutHighlight(time)
                                     tvTimeAndMatch.needDivider(true)

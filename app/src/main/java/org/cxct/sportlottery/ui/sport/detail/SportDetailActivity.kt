@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.sport.detail
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -20,7 +22,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
-import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.item_sport_odd.*
@@ -54,6 +55,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.ui.statistics.StatisticsFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
@@ -152,8 +154,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
 
-            override fun onFullScreen(landscape: Boolean) {
-                showFullScreen(landscape)
+            override fun onFullScreen(enable: Boolean) {
+                if (enable) {
+                    showFullScreen(enable, Configuration.ORIENTATION_PORTRAIT)
+                } else {
+                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    showFullScreen(enable, Configuration.ORIENTATION_PORTRAIT)
+                }
             }
         }
     }
@@ -165,6 +172,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initData()
         initAllObserve()
         initUI()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (live_view_tool_bar.isFullScreen) {
+            showFullScreen(true, newConfig.orientation)
+        }
     }
 
 
@@ -180,16 +194,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             getData()
         }
         ImmersionBar.with(this)
-            .statusBarView(v_statusbar)
             .statusBarDarkFont(false)
-            .fitsSystemWindows(true)
             .init()
-        ImmersionBar.with(this)
-            .statusBarView(v_statusbar_1)
-            .statusBarDarkFont(false)
-            .fitsSystemWindows(true)
-            .init()
-//        collaps_layout.minimumHeight = ImmersionBar.getStatusBarHeight(this)+54.dp
+        v_statusbar.minimumHeight = ImmersionBar.getStatusBarHeight(this)
+        v_statusbar_1.minimumHeight = ImmersionBar.getStatusBarHeight(this)
+        toolbar_layout.minimumHeight = ImmersionBar.getStatusBarHeight(this)
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 if (state === State.COLLAPSED) {
@@ -224,10 +233,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.game_bottom_navigation)
+            show()
+        }
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-        TODO("Not yet implemented")
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+//        snackBarMyFavoriteNotify?.apply {
+//            setAnchorView(R.id.game_bottom_navigation)
+//            show()
+//        }
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
@@ -332,16 +349,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
-        iv_arrow.setOnClickListener {
-            iv_arrow.isSelected = !iv_arrow.isSelected
-            oddsDetailListAdapter?.apply {
-                oddsDetailDataList.forEach {
-                    it.isExpand = iv_arrow.isSelected
+        iv_arrow.apply {
+            isSelected = false
+            setOnClickListener {
+                isSelected = !isSelected
+                oddsDetailListAdapter?.apply {
+                    oddsDetailDataList.forEach {
+                        it.isExpand = isSelected
+                    }
+                    notifyDataSetChanged()
                 }
-                notifyDataSetChanged()
             }
         }
-        iv_arrow.isSelected = true
         isShowOdd(true)
     }
 
@@ -458,7 +477,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.matchLiveInfo.observe(this) {
-            Log.d("hjq", "matchLiveInfo=" + Gson().toJson(it))
             it?.peekContent()?.let { liveStreamInfo ->
                 live_view_tool_bar.startPlayer(
                     matchId,
@@ -1066,18 +1084,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-            lin_video.isVisible =
-                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
-            lin_anime.isVisible =
-                TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
+//            lin_video.isVisible =
+//                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+//            lin_anime.isVisible =
+//                TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+//                    ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
             lin_video.setOnClickListener {
                 toolBar.isVisible = false
                 live_view_tool_bar.isVisible = true
                 live_view_tool_bar.showLiveView(true)
                 live_view_tool_bar.showVideo()
-//                live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
-
             }
             lin_anime.setOnClickListener {
                 toolBar.isVisible = false
@@ -1097,19 +1113,44 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    fun showFullScreen(landscape: Boolean) {
-        sv_content.isVisible = false
-        toolBar.isVisible = false
-        collaps_toolbar.isVisible = true
-        app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-        live_view_tool_bar.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+    fun showFullScreen(enable: Boolean, orientation: Int) {
+        Log.d("hjq", "showFullScreen=" + enable + "," + orientation)
+        if (enable) {
+            sv_content.isVisible = false
+            lin_center.isVisible = false
+            toolBar.isVisible = false
+            live_view_tool_bar.isVisible = true
+            collaps_toolbar.isVisible = true
+            app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            setScrollEnable(false)
+        } else {
+            sv_content.isVisible = true
+            lin_center.isVisible = true
+            toolBar.isVisible = false
+            live_view_tool_bar.isVisible = true
+            collaps_toolbar.isVisible = false
+            app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            setScrollEnable(true)
+        }
+        live_view_tool_bar.layoutParams.apply {
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                width = ViewGroup.LayoutParams.MATCH_PARENT
+                height = 232.dp
+            } else {
+                width = ViewGroup.LayoutParams.MATCH_PARENT
+                height = ViewGroup.LayoutParams.MATCH_PARENT
+            }
+        }
     }
 
-    fun closeFullScreen() {
-        sv_content.isVisible = true
-        toolBar.isVisible = true
-        collaps_toolbar.isVisible = false
-        app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-        live_view_tool_bar.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+    private fun setScrollEnable(enable: Boolean) {
+        (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
+            scrollFlags = if (enable)
+                (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+                        or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
+            else
+                AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+        }
     }
 }

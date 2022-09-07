@@ -7,11 +7,16 @@ import android.os.Build
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.*
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.LineHeightSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.getSpans
@@ -22,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.common.ComparePlayCate
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -33,14 +37,11 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.DisplayUtil.dpToPx
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 /**
  * @author Kevin
@@ -682,21 +683,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
 
-
             oddsDetailPin?.apply {
                 isActivated = oddsDetail.isPin
-
                 setOnClickListener {
                     oddsDetailListener?.onClickFavorite(oddsDetail.gameType)
                 }
             }
 
             controlExpandBottom(oddsDetail.isExpand)
-
+            odd_detail_fold.isSelected = oddsDetail.isExpand
             clItem?.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(adapterPosition)
-                odd_detail_fold.rotation = if (oddsDetail.isExpand) 180f else 0f
+                odd_detail_fold.isSelected = oddsDetail.isExpand
 
             }
 

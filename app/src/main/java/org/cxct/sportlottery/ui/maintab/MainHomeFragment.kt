@@ -9,8 +9,6 @@ import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -53,8 +51,11 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.widget.GalleryLayoutManager
+import org.cxct.sportlottery.widget.Transformer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -128,7 +129,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
@@ -175,6 +176,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
+        }
+        lin_search.setOnClickListener {
+            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
         }
     }
     private fun initObservable() {
@@ -308,7 +312,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     holder: BannerImageHolder,
                     data: ImageData?,
                     position: Int,
-                    size: Int
+                    size: Int,
                 ) {
                     val url = sConfigData?.resServerHost + data?.imageName1
                     Glide.with(holder.itemView)
@@ -369,11 +373,15 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             }
         })
         mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
-        rv_type_list.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        rv_type_list.adapter = mainHomeMenuAdapter
         rv_type_list.onFlingListener = null
-        PagerSnapHelper().attachToRecyclerView(rv_type_list)
+        val manager = GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL)
+        manager.attach(rv_type_list, 0)
+        manager.setItemTransformer(Transformer())
+        manager.setOnItemSelectedListener { recyclerView, item, position ->
+
+        }
+        rv_type_list.adapter = mainHomeMenuAdapter
+
         publicityMenuData?.sportMenuDataList?.let {
             mainHomeMenuAdapter.setNewData(it.toMutableList())
         }
@@ -604,7 +612,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         playCateCode: String,
         playCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        playCateMenuCode: String?
+        playCateMenuCode: String?,
     ) {
         val gameType = GameType.getGameType(gameTypeCode)
         gameType?.let {
@@ -639,7 +647,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         gameTypeCode: String,
         matchType: MatchType?,
         matchId: String?,
-        matchInfoList: List<MatchInfo>
+        matchInfoList: List<MatchInfo>,
     ) {
         val gameType = GameType.getGameType(gameTypeCode)
         val navMatchType = matchType ?: MatchType.DETAIL

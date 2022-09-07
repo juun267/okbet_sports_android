@@ -30,10 +30,13 @@
         android:scaleType="fitStart"
         android:src="@drawable/logo_okbet_color" />
 
-    <androidx.legacy.widget.Space
+    <include
+        android:id="@+id/lin_search"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="@dimen/margin_26"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="@dimen/margin_12"
+        layout="@layout/view_search" />
 
     <LinearLayout
         android:id="@+id/lin_money"

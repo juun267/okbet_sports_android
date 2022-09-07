@@ -221,8 +221,8 @@
             android:background="@drawable/bg_trans_radius_15"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:visibility="gone"
-            tools:visibility="gone">
+            android:visibility="visible"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/lin_video"

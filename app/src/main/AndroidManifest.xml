@@ -17,12 +17,19 @@
     <uses-permission android:name="android.webkit.PermissionRequest" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.webkit.resource.VIDEO_CAPTURE"/>
+    <uses-permission android:name="android.webkit.resource.VIDEO_CAPTURE" />
     <uses-permission android:name="android.webkit.resource.AUDIO_CAPTURE" />
     <uses-permission android:name="android.permission.MICROPHONE" />
-    <uses-feature android:name="android.hardware.microphone" android:required="true"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true" /> <!-- 使用照相機權限 -->
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="true"/> <!-- 自動聚焦權限 -->
+
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" /> <!-- 使用照相機權限 -->
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="true" />
 
     <application
         android:name=".MultiLanguagesApplication"
@@ -88,8 +95,8 @@
             android:name=".ui.profileCenter.otherBetRecord.OtherBetRecordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="org.cxct.sportlottery.ui.sport.detail.SportDetailActivity"
-            android:screenOrientation="portrait" />
+            android:name=".ui.sport.detail.SportDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ui.maintenance.MaintenanceActivity"
             android:launchMode="singleTask"
@@ -151,7 +158,6 @@
             android:name=".ui.login.signUp.RegisterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-
         <activity
             android:name=".ui.profileCenter.profile.ProfileActivity"
             android:screenOrientation="portrait" />
@@ -183,6 +189,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.sport.filter.LeagueSelectActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.sport.search.SportSearchtActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"
@@ -228,13 +237,10 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-        </provider>
-
-        <!--适配华为（huawei）刘海屏-->
+        </provider> <!-- 适配华为（huawei）刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true" />
-        <!--适配小米（xiaomi）刘海屏-->
+            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
