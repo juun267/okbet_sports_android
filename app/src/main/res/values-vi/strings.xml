@@ -1088,15 +1088,17 @@
     <string name="current_time">Thời gian</string>
 
     <!--region 20220714 新版投注單-->
+    <string name="bet_win">Thắng</string>
     <string name="bet_stake">Tiền Cược</string>
-    <string name="total_capital">Tổng tiền đặt cược</string>
-    <string name="total_win_amount">Tổng Số tiền có thể thắng</string>
+    <string name="total_capital">Tiền Cược(%s)：</string>
+    <string name="total_win_amount">Thắng(%s)：</string>
     <string name="delete_bet">Xóa bỏ</string>
     <string name="btn_login_bet">Đăng nhập để đặt cược</string>
     <string name="confirm_single_bets">Xác nhận %d Cược đơn</string>
     <string name="confirm_multiple_bets">Xác nhận %d Cược xâu</string>
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="please_enter_correct_amount">Vui lòng nhập số tiền đặt cược chính xác</string>
+    <string name="bet_info_list_bet">Đặt cược</string>
     <!--endregion-->
 
     <string name="publicity_contact">lLiên hệ</string>
@@ -1181,4 +1183,7 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Kết Quả Đúng</string>
+
+    <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
+    <string name="submitting">Submitting</string>
 </resources>
