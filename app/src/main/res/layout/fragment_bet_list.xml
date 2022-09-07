@@ -175,45 +175,55 @@
                     android:background="@drawable/bg_gradient_bet_total"
                     android:orientation="vertical">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/cl_parlay_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"
-                        android:clipToPadding="false"
                         android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:visibility="gone"
                         tools:visibility="gone">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_parlay_list"
                             android:layout_width="match_parent"
                             android:layout_height="246dp"
+                            android:layout_marginTop="12.5dp"
+                            android:layout_marginBottom="10.5dp"
                             android:overScrollMode="never"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_marginTop="12.5dp"
-                            android:layout_marginBottom="8.5dp"
+                            tools:itemCount="2"
                             tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_single_list"
+                    <FrameLayout
+                        android:id="@+id/cl_single_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:overScrollMode="never"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
                         android:visibility="gone"
-                        tools:visibility="gone"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/item_bet_list_batch_control_v3" />
+                        tools:visibility="gone">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_single_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12.5dp"
+                            android:layout_marginBottom="10.5dp"
+                            android:overScrollMode="never"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/item_bet_list_batch_control_v3" />
+                    </FrameLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_total_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="24dp"
-                        android:paddingVertical="4dp">
+                        android:paddingVertical="2dp">
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/total_info_guide_line"

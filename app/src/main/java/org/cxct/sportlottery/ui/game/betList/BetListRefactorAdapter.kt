@@ -1116,11 +1116,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //限額用整數提示
                 tv_hint_default.text = betHint
                 val etBetHasInput = !et_bet.text.isNullOrEmpty()
-                if (etBetHasInput) {
-                    tv_hint_default.isVisible = !etBetHasInput
-                } else {
-                    tv_hint_default.isVisible = !itemData.isInputBet
-                }
+//                if (etBetHasInput) {
+                    tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_default.isVisible = !itemData.isInputBet
+//                }
 
                 //更新win editText hint
                 val winHint = context.getString(
@@ -1131,11 +1131,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //限額用整數提示
                 tv_win_hint_default.text = winHint
                 val etWinHasInput = !et_win.text.isNullOrEmpty()
-                if (etWinHasInput) {
-                    tv_win_hint_default.isVisible = !etWinHasInput
-                } else {
-                    tv_win_hint_default.isVisible = !itemData.isInputWin
-                }
+//                if (etWinHasInput) {
+                    tv_win_hint_default.isVisible = !etWinHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_win_hint_default.isVisible = !itemData.isInputWin
+//                }
             }
         }
 
@@ -1629,11 +1629,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //限額用整數提示
                 tv_hint_single_default.text = hint
                 val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
-                if (etBetHasInput) {
-                    tv_hint_single_default.isVisible = !etBetHasInput
-                } else {
-                    tv_hint_single_default.isVisible = !itemData.isInputBet
-                }
+//                if (etBetHasInput) {
+                    tv_hint_single_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_single_default.isVisible = !itemData.isInputBet
+//                }
             }
         }
     }
@@ -1860,11 +1860,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //限額用整數提示
                 tv_hint_parlay_default.text = betHint
                 val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
-                if (etBetHasInput) {
-                    tv_hint_parlay_default.isVisible = !etBetHasInput
-                } else {
-                    tv_hint_parlay_default.isVisible = !itemData.isInputBet
-                }
+//                if (etBetHasInput) {
+                    tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_parlay_default.isVisible = !itemData.isInputBet
+//                }
             }
         }
 

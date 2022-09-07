@@ -326,9 +326,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * 檢查是否顯示填充單注or串關layout
      */
     private fun checkSingleAndParlayBetLayoutVisible() {
-        rv_single_list.isVisible =
-            getCurrentBetList().size > 1 && binding.betTypeTabLayout.selectedTabPosition == 0
-        if (binding.betTypeTabLayout.selectedTabPosition == 1) refreshLlMoreOption()
+        binding.apply {
+            clSingleList.isVisible =
+                getCurrentBetList().size > 1 && betTypeTabLayout.selectedTabPosition == 0
+            if (betTypeTabLayout.selectedTabPosition == 1) refreshLlMoreOption()
+        }
     }
 
     private fun refreshLlMoreOption(showParlayList: Boolean = true) {

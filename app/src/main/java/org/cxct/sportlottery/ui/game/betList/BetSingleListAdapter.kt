@@ -500,11 +500,11 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
                 //限額用整數提示
                 tv_hint_single_default.text = hint
                 val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
-                if (etBetHasInput) {
-                    tv_hint_single_default.isVisible = !etBetHasInput
-                } else {
-                    tv_hint_single_default.isVisible = !itemData.isInputBet
-                }
+//                if (etBetHasInput) {
+                    tv_hint_single_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_single_default.isVisible = !itemData.isInputBet
+//                }
             }
         }
     }

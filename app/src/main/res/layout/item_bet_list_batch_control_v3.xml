@@ -25,9 +25,7 @@
             android:id="@+id/cl_item_background_single"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:paddingBottom="16dp"
-            android:paddingHorizontal="@dimen/margin_24"
+            android:paddingVertical="7.5dp"
             app:layout_constraintHeight_default="wrap">
 
             <!--            <View-->
@@ -66,6 +64,7 @@
                     android:id="@+id/titleLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_24"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/et_bet_single"
                     app:layout_constraintBottom_toBottomOf="@+id/et_bet_single">
@@ -101,6 +100,7 @@
                     android:id="@+id/et_bet_single"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginEnd="@dimen/margin_24"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"
                     android:gravity="end|center_vertical"
                     android:inputType="numberDecimal"
@@ -134,11 +134,12 @@
             <org.cxct.sportlottery.util.KeyboardView
                 android:id="@+id/layoutKeyBoard"
                 android:layout_width="match_parent"
+                android:layout_marginHorizontal="@dimen/margin_24"
                 android:layout_height="@dimen/keyboard_height"
                 android:paddingTop="@dimen/margin_10"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/clInputLayout"
-                tools:visibility="gone" />
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
