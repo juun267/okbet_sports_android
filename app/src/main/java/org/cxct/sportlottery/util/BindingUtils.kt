@@ -2,6 +2,8 @@ package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.Typeface
 import android.text.*
 import android.text.method.LinkMovementMethod
@@ -9,6 +11,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
@@ -175,10 +178,27 @@ fun TextView.setHideByStatus(status: Int?) {
 fun TextView.setReceiptStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            7 -> R.color.color_E44438_e44438
-            else -> R.color.color_317FFF_1053af
+            7 -> R.color.color_E23434_E23434
+            else -> R.color.color_1D9F51_1D9F51
         }
         this.setTextColor(ContextCompat.getColor(context, color))
+        this.setStartDrawable(R.drawable.ic_bet_lock_tip)
+        this.setTextViewDrawableColor(color)
+    }
+}
+
+fun TextView.setStartDrawable(@DrawableRes id: Int = 0) {
+    this.setCompoundDrawablesWithIntrinsicBounds(id, 0, 0, 0)
+}
+
+fun TextView.setTextViewDrawableColor(colorRes: Int) {
+    for (drawable in this.compoundDrawables) {
+        if (drawable != null) {
+            drawable.colorFilter = PorterDuffColorFilter(
+                ContextCompat.getColor(this.context, colorRes),
+                PorterDuff.Mode.SRC_IN
+            )
+        }
     }
 }
 

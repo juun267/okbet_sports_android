@@ -11,8 +11,8 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
+import kotlinx.android.synthetic.main.item_match_receipt.view.top_space
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -27,10 +27,10 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
-import java.util.*
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
@@ -174,9 +174,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         when (holder) {
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
-                holder.bind(itemData.result, currentOddsType, interfaceStatusChangeListener)
+                holder.bind(itemData.result, currentOddsType, interfaceStatusChangeListener, position)
                 if (itemData.result.status == 0) {
-                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
+                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status_single)
                 }
             }
 
@@ -204,8 +204,14 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             }
         }
 
-        fun bind(itemData: BetResult, oddsType: OddsType,  interfaceStatusChangeListener:InterfaceStatusChangeListener?) {
+        fun bind(itemData: BetResult, oddsType: OddsType,  interfaceStatusChangeListener:InterfaceStatusChangeListener?, position: Int) {
             itemView.apply {
+                top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
+
+                val currencySign = sConfigData?.systemCurrencySign
+                tv_winnable_amount_title.text = context.getString(R.string.total_win_amount, currencySign)
+                tv_bet_amount_title.text = context.getString(R.string.total_capital, currencySign)
+
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
                         val formatForOdd = if(this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(getOdds(this, oddsType ?: OddsType.EU) - 1) else TextUtil.formatForOdd(getOdds(this, oddsType))
@@ -216,6 +222,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                             formatForOdd,
                             context.getString(getOddTypeRes(this, oddsType))
                         )
+                        tv_odds.text = "@ $formatForOdd"
 
                         tv_league.text = leagueName
                         tv_team_names.setTeamNames(15, homeName, awayName)
@@ -228,13 +235,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
 
                     if (status != 0)
-                        tv_bet_status.setBetReceiptStatus(status)
+                        tv_bet_status_single.setBetReceiptStatus(status)
 
                     //"status": 7 顯示賠率已改變
                     if (status == 7)
                         interfaceStatusChangeListener?.onChange()
 
-                    tv_bet_status.setReceiptStatusColor(status)
+                    tv_bet_status_single.setReceiptStatusColor(status)
 
                     if (matchType == MatchType.OUTRIGHT) {
                         tv_team_names.visibility = View.GONE
@@ -250,17 +257,19 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             formatForOdd: String,
             oddsType: String
         ): Spanned {
-            val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
-            val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
+            val color_FFFFFF_414655 = MultiLanguagesApplication.getChangeModeColorCode("#414655", "#FFFFFF")
+//            val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
+//            val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
 
-            val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_e5e5e5_333333>$playName</font> " else ""
-            val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_F75452_b73a20>$spread</font> " else ""
+            val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_FFFFFF_414655>$playName</font> " else ""
+            val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_FFFFFF_414655>$spread</font> " else ""
 
-            return HtmlCompat.fromHtml(
-                playNameStr +
-                        spreadStr +
-                        "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
+//            return HtmlCompat.fromHtml(
+//                playNameStr +
+//                        spreadStr +
+//                        "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
+//            )
+            return HtmlCompat.fromHtml(playNameStr + spreadStr, HtmlCompat.FROM_HTML_MODE_LEGACY)
         }
     }
 
@@ -282,6 +291,11 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             interfaceStatusChangeListener:InterfaceStatusChangeListener?
         ) {
             itemView.apply {
+
+                val currencySign = sConfigData?.systemCurrencySign
+                tv_winnable_amount_title.text = context.getString(R.string.total_win_amount, currencySign)
+                tv_bet_amount_title.text = context.getString(R.string.total_capital, currencySign)
+
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
                         parlayType?.let { parlayTypeCode ->

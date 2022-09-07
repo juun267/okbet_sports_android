@@ -53,6 +53,22 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_bet_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="11dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutTitle"
+                    android:textSize="@dimen/textSize12sp"
+                    android:visibility="visible"
+                    android:drawablePadding="6dp"
+                    tools:text="已确认"
+                    tools:textColor="@color/color_1D9F51_1D9F51"
+                    tools:drawableStart="@drawable/ic_bet_lock_tip"
+                    tools:drawableTint="@color/color_1D9F51_1D9F51" />
+
+                <TextView
                     android:id="@+id/tv_play_name_parlay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
