@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:background="@color/color_141414_F3F4F5">
+                    android:background="@color/color_202541_FFFFFF">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/color_191919_FCFCFC">
+                            android:background="@color/color_202541_FFFFFF">
 
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/betTypeTabLayout"
@@ -87,7 +87,7 @@
                             app:tabPaddingEnd="0dp"
                             app:tabPaddingStart="0dp"
                             app:tabRippleColor="@null"
-                            app:tabSelectedTextColor="@color/color_414655"
+                            app:tabSelectedTextColor="@color/color_FFFFFF_414655"
                             app:tabTextAppearance="@style/NoUppercaseTab"
                             app:tabTextColor="@color/color_A7B2C4">
 
@@ -110,7 +110,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/transparent_black_1" />
+                            android:background="@color/color_212121_eeeeee" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_bet_list"
@@ -244,7 +244,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/total_capital"
-                                android:textColor="@color/color_535D76"
+                                android:textColor="@color/color_9BB3D9_535D76"
                                 android:textSize="@dimen/textSize12sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -255,7 +255,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="start"
-                                android:textColor="@color/color_414655"
+                                android:textColor="@color/color_FFFFFF_414655"
                                 android:textSize="@dimen/textSize12sp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
@@ -278,7 +278,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/total_win_amount"
-                                android:textColor="@color/color_535D76"
+                                android:textColor="@color/color_9BB3D9_535D76"
                                 android:textSize="@dimen/textSize12sp"
                                 android:textStyle="bold"
                                 app:layout_constraintBottom_toBottomOf="parent"

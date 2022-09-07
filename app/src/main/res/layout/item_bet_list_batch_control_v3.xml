@@ -74,7 +74,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/bet_list_single"
-                        android:textColor="@color/color_535D76"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"/>
 
@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="*"
-                        android:textColor="@color/color_535D76"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"/>
 
@@ -90,7 +90,7 @@
                         android:id="@+id/tv_single_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_535D76"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         tools:text="5" />
@@ -107,7 +107,7 @@
                     android:letterSpacing="0.05"
                     android:maxLength="14"
                     android:paddingHorizontal="10dp"
-                    android:textColor="@color/color_BBBBBB_333333"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:visibility="visible"
@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
-                    android:textColor="@color/color_C9CFD7"
+                    android:textColor="@color/color_455074_C9CFD7"
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/et_bet_single"

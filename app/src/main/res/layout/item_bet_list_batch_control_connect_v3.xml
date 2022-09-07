@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_24"
                     android:layout_marginEnd="5dp"
-                    android:textColor="@color/color_535D76"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -95,8 +95,7 @@
                     android:letterSpacing="0.05"
                     android:maxLength="14"
                     android:paddingHorizontal="10dp"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textColorHint="@color/color_404040_cccccc"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:gravity="end|center_vertical"
@@ -111,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
-                    android:textColor="@color/color_C9CFD7"
+                    android:textColor="@color/color_455074_C9CFD7"
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
@@ -144,6 +143,7 @@
 <!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"-->
 <!--                    tools:text="26" />-->
 
+                <!--region 提示文字 -->
                 <LinearLayout
                     android:id="@+id/ll_hint_container"
                     android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                         android:includeFontPadding="false"
                         android:paddingTop="@dimen/margin_8"
                         android:text="@string/bet_info_bet_balance_insufficient"
-                        android:textColor="@color/color_E44438_e44438"
+                        android:textColor="@color/color_E23434_E23434"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
@@ -174,7 +174,7 @@
                         android:includeFontPadding="false"
                         android:paddingTop="@dimen/margin_8"
                         android:text="@string/bet_info_list_minimum_limit_amount"
-                        android:textColor="@color/color_E44438_e44438"
+                        android:textColor="@color/color_E23434_E23434"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
@@ -187,11 +187,12 @@
                         android:includeFontPadding="false"
                         android:paddingTop="@dimen/margin_8"
                         android:text="@string/please_enter_correct_amount"
-                        android:textColor="@color/color_E44438_e44438"
+                        android:textColor="@color/color_E23434_E23434"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="gone"
                         tools:visibility="visible" />
                 </LinearLayout>
+                <!--endregion 提示文字 -->
 
                 <org.cxct.sportlottery.util.KeyboardView
                     android:id="@+id/layoutKeyBoard"
