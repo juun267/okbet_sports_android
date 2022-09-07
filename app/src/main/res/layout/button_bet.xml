@@ -3,19 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="44dp"
+    android:layout_height="@dimen/bet_button_height"
     android:layout_gravity="bottom"
-    android:minHeight="44dp"
     tools:ignore="SpUsage,HardcodedText">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_bet"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/selector_button_radius_5_bet"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_button_radius_5_bet">
 
         <TextView
             android:id="@+id/tv_bet"
@@ -23,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="@string/bet_info_list_bet"
             android:textColor="@color/color_FFFFFF_FFFFFF"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,13 +38,9 @@
         android:gravity="center"
         android:text="@string/btn_remove_closed_selections"
         android:textColor="@color/color_FFFFFF_FFFFFF"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize16sp"
         android:visibility="gone"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
     <TextView
@@ -58,13 +51,9 @@
         android:gravity="center"
         android:text="@string/btn_login_bet"
         android:textColor="@color/color_FFFFFF_FFFFFF"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize16sp"
         android:visibility="visible"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

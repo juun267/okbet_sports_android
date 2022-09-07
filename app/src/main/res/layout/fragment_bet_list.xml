@@ -321,8 +321,7 @@
                     android:visibility="gone"
                     tools:visibility="gone" />-->
 
-                <LinearLayout
-                    android:id="@+id/ll_bet"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_gradient_bet_total"
@@ -340,16 +339,62 @@
                         android:textColor="@color/color_E23434_E23434"
                         android:textSize="@dimen/textSize16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <org.cxct.sportlottery.ui.bet.list.BetButton
                         android:id="@+id/btn_bet"
                         android:layout_width="0dp"
-                        android:layout_height="45dp"
+                        android:layout_height="@dimen/bet_button_height"
                         android:layout_marginStart="6dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/btn_delete_all"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--region bet loading view-->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/betLoadingView"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/button_radius_8_bet_button"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/btn_bet"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_bet"
+                        app:layout_constraintStart_toStartOf="@+id/btn_bet"
+                        app:layout_constraintTop_toTopOf="@+id/btn_bet">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/submitting"
+                                android:textColor="@color/color_FFFFFF_FFFFFF"
+                                android:textSize="@dimen/textSize16sp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <ProgressBar
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="12dp"
+                                android:indeterminateDrawable="@drawable/rotate_bet_loading_view" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!--endregion bet loading view-->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- 選項關閉提示 -->
                 <!--<LinearLayout
@@ -398,9 +443,15 @@
 
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/blockTouchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            android:background="@color/transparent_black_1"/>
+
     </FrameLayout>
-
-
-
 
 </layout>

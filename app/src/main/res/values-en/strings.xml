@@ -1200,4 +1200,5 @@
     <string name="anime">anim</string>
 
     <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
+    <string name="submitting">Submitting</string>
 </resources>

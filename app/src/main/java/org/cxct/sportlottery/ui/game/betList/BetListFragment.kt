@@ -810,7 +810,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.getContentIfNotHandled().let { result ->
                 showReceipt = result != null
                 result?.let { resultNotNull ->
-                    hideLoading()
+                    //隱藏betLoading
+                    binding.apply {
+                        blockTouchView.isVisible = false
+                        betLoadingView.isVisible = false
+                    }
                     if (resultNotNull.success) {
                         //多筆和單筆投注單，下注成功後的行為不同
                         if (isMultiBet) {
@@ -924,7 +928,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun addBet() {
-        loading()
+        //顯示betLoading
+        binding.apply {
+            blockTouchView.isVisible = true
+            betLoadingView.isVisible = true
+        }
         val betList = getCurrentBetList()
         val betListFilter = betList.filter { it.matchOdd.status == BetStatus.ACTIVATED.code }
 

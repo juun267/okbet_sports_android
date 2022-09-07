@@ -1185,4 +1185,5 @@
     <string name="correct">Kết Quả Đúng</string>
 
     <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
+    <string name="submitting">Submitting</string>
 </resources>
