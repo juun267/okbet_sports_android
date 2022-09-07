@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/keyboard_height"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +8,8 @@
     android:paddingStart="@dimen/margin_3"
     android:paddingTop="@dimen/margin_3"
     android:paddingEnd="@dimen/margin_3"
-    android:paddingBottom="@dimen/margin_3">
+    android:paddingBottom="@dimen/margin_3"
+    tools:ignore="SpUsage, HardcodedText">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,27 +17,14 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/tvMax"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_345577"
-            android:gravity="center"
-            android:text="@string/keyboard_max"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textSize14sp" />
-
-
-        <TextView
             android:id="@+id/tvPlus1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_345577"
+            android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
             android:text="+25"
-            android:textColor="@color/white"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             android:visibility="gone"
             tools:visibility="visible"/>
@@ -49,10 +35,10 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_345577"
+            android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
             android:text="+50"
-            android:textColor="@color/white"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             android:visibility="gone"
             tools:visibility="visible"/>
@@ -63,14 +49,25 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_345577"
+            android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
             android:text="+75"
-            android:textColor="@color/white"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             android:visibility="gone"
             tools:visibility="visible"/>
 
+        <TextView
+            android:id="@+id/tvMax"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_weight="1"
+            android:background="@drawable/bg_radius_2_keyboard_gradient_green"
+            android:gravity="center"
+            android:text="@string/keyboard_max"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="@dimen/textSize14sp" />
 
         <ImageView
             android:id="@+id/tvClear"
@@ -82,21 +79,19 @@
             android:gravity="center"
             android:padding="@dimen/margin_6"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_close_dark" />
+            android:src="@drawable/ic_close_dark_v2" />
 
-        <TextView
+        <ImageView
+            android:id="@+id/ivClose"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
-            android:layout_marginEnd="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_white"
+            android:background="@drawable/bg_radius_4_button_345577"
             android:gravity="center"
-            android:text="+100"
-            android:textColor="@color/color_060F20"
-            android:textSize="@dimen/textSize14sp"
-            android:visibility="gone" />
-
+            android:padding="@dimen/margin_6"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_keyboard" />
 
     </LinearLayout>
 
@@ -113,8 +108,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
@@ -123,8 +118,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="2"
             android:textSize="@dimen/textSize14sp" />
@@ -135,8 +130,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="3"
             android:textSize="@dimen/textSize14sp" />
@@ -147,8 +142,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="4"
             android:textSize="@dimen/textSize14sp" />
@@ -159,8 +154,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="5"
             android:textSize="@dimen/textSize14sp" />
@@ -171,8 +166,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="6"
             android:textSize="@dimen/textSize14sp" />
@@ -194,8 +189,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="7"
             android:textSize="@dimen/textSize14sp" />
@@ -206,8 +201,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="8"
             android:textSize="@dimen/textSize14sp" />
@@ -218,10 +213,10 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
+            android:background="@drawable/bg_button_keyboard"
             android:gravity="center"
             android:text="9"
-            android:textColor="@color/color_333333"
+            android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize14sp" />
 
 
@@ -233,8 +228,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="0"
             android:textSize="@dimen/textSize14sp" />
@@ -245,8 +240,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
-            android:background="@drawable/bg_radius_4_button_fffdfe"
-            android:textColor="@color/color_333333"
+            android:background="@drawable/bg_button_keyboard"
+            android:textColor="@color/color_414655"
             android:gravity="center"
             android:text="."
             android:textSize="@dimen/textSize14sp" />

@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
+import timber.log.Timber
 import kotlin.math.abs
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -247,16 +248,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     override fun getItemViewType(position: Int): Int {
         //region 20220607 投注單版面調整
         return when (adapterBetType) {
-            BetRvType.SINGLE -> {
-                when {
-                    betList?.size ?: 0 > 1 && position == itemCount - 1 -> {
-                        ViewType.Single.ordinal
-                    }
-                    else -> {
-                        ViewType.Bet.ordinal
-                    }
-                }
-            }
+//            BetRvType.SINGLE -> {
+//                when {
+//                    betList?.size ?: 0 > 1 && position == itemCount - 1 -> {
+//                        ViewType.Single.ordinal
+//                    }
+//                    else -> {
+//                        ViewType.Bet.ordinal
+//                    }
+//                }
+//            }
             BetRvType.PARLAY_SINGLE -> {
                 when {
                     isCantParlayWarn && position == itemCount - 1 -> {
@@ -375,11 +376,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return when (adapterBetType) {
             BetRvType.SINGLE -> {
 
-                if (betListSize > 1) {
-                    betListSize + 1
-                } else {
+//                if (betListSize > 1) {
+//                    betListSize + 1
+//                } else {
                     betListSize
-                }
+//                }
             }
             BetRvType.PARLAY_SINGLE -> {
                 if (isCantParlayWarn) {
@@ -428,6 +429,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private var inputMaxMoney: Double = 0.0
         private var inputMinMoney: Double = 0.0
         private var inputWinMaxMoney: Double = 0.0
+        private var inputWinMinMoney: Double = 0.0
         private var mUserMoney: Double = 0.0
         private var mUserLogin: Boolean = false
         fun bind(
@@ -446,10 +448,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mUserMoney = userMoney
             mUserLogin = userLogin
 
-            //設置輸入投注上限額
+            //設置投注限額
             setupInputLimit(itemData)
-            //設置可贏額上限
+            //設置可贏限額
             inputWinMaxMoney = inputMaxMoney * getOddsAndSaveRealAmount(itemData, currentOddsType)
+            inputWinMinMoney = inputMinMoney * getOddsAndSaveRealAmount(itemData, currentOddsType)
 //            Timber.e("inputMaxMoney: $inputMaxMoney")
 //            Timber.e("inputWinMaxMoney: $inputWinMaxMoney")
 
@@ -779,11 +782,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
                     if (isUp) {
-                        ivArrow.setImageResource(R.drawable.ic_arrow_up)
-                        tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_15B63A_0C8A29))
+                        ivArrow.setImageResource(R.drawable.selector_odds_arrow_up)
+                        tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_34CB8A_1D9F51))
                     } else {
-                        ivArrow.setImageResource(R.drawable.ic_arrow_down)
-                        tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_F75452_ce3636))
+                        ivArrow.setImageResource(R.drawable.selector_odds_arrow_down)
+                        tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_D35555))
                     }
                     ivArrow.isVisible = true
                     repeatCount += 1
@@ -810,7 +813,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 ivOddsArrow.clearAnimation()
                 ivOddsArrow.isVisible = false
-                tvOdds.setTextColor(ContextCompat.getColor(context, R.color.color_BBBBBB_333333))
+                tvOdds.setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
             }
         }
 
@@ -901,10 +904,23 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
 
-                //隊伍名稱 (改為不主動換行)
-                tv_match.text = when (itemData.matchType) {
-                    MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
-                    else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+                //設定隊伍名稱, 聯賽名稱, 開賽時間
+                when (itemData.matchType) {
+                    MatchType.OUTRIGHT -> {
+                        tv_match.text = itemData.outrightMatchInfo?.name
+                        tv_league_name.isVisible = false
+                        tv_start_time.isVisible = false
+                    }
+                    else -> {
+                        val matchName = "${itemData.matchOdd.homeName}${context.getString(R.string.verse_3)}${itemData.matchOdd.awayName}"
+                        tv_match.text = matchName
+                        tv_league_name.text = itemData.matchOdd.leagueName
+                        tv_league_name.isVisible = true
+                        itemData.matchOdd.startTime?.let {
+                            tv_start_time.text = TimeUtil.stampToDateHMS(it)
+                            tv_start_time.isVisible = true
+                        }
+                    }
                 }
 
                 //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
@@ -991,6 +1007,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //加上OddsType名稱
                 val tvNamePlusOddsTypeName = "${tv_name.text} [${context.getString(currentOddsType.res)}]"
                 tv_name.text = tvNamePlusOddsTypeName
+
+                //前面加上MatchType名稱
+                itemData.matchType?.let {
+                    val matchTypeName = context.getString(it.resId)
+                    tv_name.text = matchTypeName.plus(" ${tv_name.text}")
+                }
             }
         }
 
@@ -1065,7 +1087,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
             itemData.realAmount = realAmount
             odds = ArithUtil.toOddFormat(odds).toDouble()
-//            Timber.e("odds: $odds")
+            Timber.e("odds: $odds")
             return odds
         }
 
@@ -1086,24 +1108,34 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 )
 
                 //更新bet editText hint
+                val betHint = context.getString(
+                    R.string.hint_bet_limit_range,
+                    inputMinMoney.toLong().toString(),
+                    inputMaxMoney.toLong().toString()
+                )
+                //限額用整數提示
+                tv_hint_default.text = betHint
                 val etBetHasInput = !et_bet.text.isNullOrEmpty()
-                if (etBetHasInput) {
-                    tv_hint_default.isVisible = !etBetHasInput
-                    tv_hint_amount.isVisible = etBetHasInput
-                } else {
-                    tv_hint_default.isVisible = !itemData.isInputBet
-                    tv_hint_amount.isVisible = itemData.isInputBet
-                }
+//                if (etBetHasInput) {
+                    tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_default.isVisible = !itemData.isInputBet
+//                }
 
                 //更新win editText hint
+                val winHint = context.getString(
+                    R.string.hint_bet_limit_range,
+                    inputWinMinMoney.toLong().toString(),
+                    inputWinMaxMoney.toLong().toString()
+                )
+                //限額用整數提示
+                tv_win_hint_default.text = winHint
                 val etWinHasInput = !et_win.text.isNullOrEmpty()
-                if (etWinHasInput) {
-                    tv_win_hint_default.isVisible = !etWinHasInput
-                    tv_win_hint_amount.isVisible = etWinHasInput
-                } else {
-                    tv_win_hint_default.isVisible = !itemData.isInputWin
-                    tv_win_hint_amount.isVisible = itemData.isInputWin
-                }
+//                if (etWinHasInput) {
+                    tv_win_hint_default.isVisible = !etWinHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_win_hint_default.isVisible = !itemData.isInputWin
+//                }
             }
         }
 
@@ -1208,6 +1240,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private var mUserMoney: Double = 0.0
         private var mUserLogin: Boolean = false
         private var mHasBetClosedForSingle: Boolean = false
+        private var maxBet: Double = 0.0
+        private var minBet: Double = 0.0
         fun bind(
             itemData: ParlayOdd?,
             betList: MutableList<BetInfoListData>,
@@ -1225,6 +1259,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mUserMoney = userMoney
             mUserLogin = userLogin
             mHasBetClosedForSingle = hasBetClosedForSingle
+            maxBet = getMaxOrMinAmount(true, betList)
+            minBet = getMaxOrMinAmount(false, betList)
 
             itemView.apply {
 
@@ -1471,12 +1507,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     clearFocus()
                 }
 
-                btn_rule_single.setOnClickListener {
-                    onItemClickListener.showParlayRule(
-                        ParlayType.SINGLE.key,
-                        context.getString(ParlayType.SINGLE.ruleStringRes ?: 0)
-                    )
-                }
+//                btn_rule_single.setOnClickListener {
+//                    onItemClickListener.showParlayRule(
+//                        ParlayType.SINGLE.key,
+//                        context.getString(ParlayType.SINGLE.ruleStringRes ?: 0)
+//                    )
+//                }
             }
         }
 
@@ -1486,7 +1522,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
 //                ll_winnable.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
 
-                btn_rule_single.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+//                btn_rule_single.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
 
                 //et_container.isEnabled = !hasBetClosed //EditText的click事件
             }
@@ -1589,19 +1625,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 //更新bet single editText hint
+                val hint = context.getString(R.string.hint_bet_limit_range, minBet.toLong().toString(), maxBet.toLong().toString())
+                //限額用整數提示
+                tv_hint_single_default.text = hint
                 val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
-                if (etBetHasInput) {
-                    tv_hint_single_default.isVisible = !etBetHasInput
-                    tv_hint_single_amount.isVisible = etBetHasInput
-                } else {
-                    tv_hint_single_default.isVisible = !itemData.isInputBet
-                    tv_hint_single_amount.isVisible = itemData.isInputBet
-                }
-
-                //更新win single editText hint
-//                val etWinHasInput = !et_win_single.text.isNullOrEmpty()
-//                tv_win_hint_single_default.isVisible = !etWinHasInput
-//                tv_win_hint_single_amount.isVisible = etWinHasInput
+//                if (etBetHasInput) {
+                    tv_hint_single_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_single_default.isVisible = !itemData.isInputBet
+//                }
             }
         }
     }
@@ -1637,7 +1669,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 setupItemEnable(hasBetClosed)
 
                 itemData?.let { data ->
-                    tv_parlay_type.text = getParlayName(data.parlayType)
+                    tv_parlay_type.text = getParlayName(data.parlayType).plus("*").plus(data.num.toString())
 
 //                    //item_bet_list_batch_control_connect_v3 無 tv_parlay_odd, tv_symbol_odd
 //                    tv_parlay_odd.apply {
@@ -1651,7 +1683,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    tv_symbol_odd.visibility =
 //                        if (firstItem && !hasBetClosed) View.VISIBLE else View.GONE
 
-                    tv_com_count.text = data.num.toString()
+//                    tv_com_count.text = data.num.toString()
 
                     setupBetAmountInput(
                         data,
@@ -1686,7 +1718,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
 //                iv_bet_lock.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
                 //viewGrey.visibility = if (hasBetClosed) View.INVISIBLE else View.VISIBLE
-                btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+//                btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
                 ll_hint_container.isVisible = !hasBetClosed
             }
         }
@@ -1818,6 +1850,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
                     }
                 }
+
+                //更新bet parlay editText hint
+                val betHint = context.getString(
+                    R.string.hint_bet_limit_range,
+                    inputMinMoney.toLong().toString(),
+                    inputMaxMoney.toLong().toString()
+                )
+                //限額用整數提示
+                tv_hint_parlay_default.text = betHint
+                val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
+//                if (etBetHasInput) {
+                    tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+//                } else {
+//                    tv_hint_parlay_default.isVisible = !itemData.isInputBet
+//                }
             }
         }
 
@@ -1877,16 +1924,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             data: ParlayOdd,
             onItemClickListener: OnItemClickListener
         ) {
-            itemView.btn_rule.setOnClickListener {
-                onItemClickListener.showParlayRule(
-                    data.parlayType,
-                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes ->
-                        itemView.context.getString(
-                            ruleRes
-                        )
-                    }
-                        ?: "")
-            }
+//            itemView.btn_rule.setOnClickListener {
+//                onItemClickListener.showParlayRule(
+//                    data.parlayType,
+//                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes ->
+//                        itemView.context.getString(
+//                            ruleRes
+//                        )
+//                    }
+//                        ?: "")
+//            }
         }
     }
 
@@ -1903,7 +1950,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         fun onHideKeyBoard()
         fun saveOddsHasChanged(matchOdd: MatchOdd)
-        fun refreshBetInfoTotal()
+        fun refreshBetInfoTotal(isSingleAdapter: Boolean = false)
         fun showParlayRule(parlayType: String, parlayRule: String)
         fun onMoreOptionClick()
     }

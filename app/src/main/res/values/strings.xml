@@ -1102,15 +1102,17 @@
     <string name="current_time">Time</string>
 
     <!--region 20220714 新版投注單-->
+    <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
-    <string name="total_capital">Total Stake</string>
-    <string name="total_win_amount">Total Win</string>
+    <string name="total_capital">Stake(%s)：</string>
+    <string name="total_win_amount">Win(%s)：</string>
     <string name="delete_bet">Delete</string>
     <string name="btn_login_bet">Log in to Bet</string>
     <string name="confirm_single_bets">Confirm %d Single Bets</string>
     <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
+    <string name="bet_info_list_bet">Place Bet</string>
     <!--endregion-->
 
     <string name="publicity_contact">Contact</string>
@@ -1227,6 +1229,9 @@
     <string name="reverse_select">reverse select</string>
     <string name="video">video</string>
     <string name="anime">anim</string>
+
+    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
+    <string name="submitting">Submitting</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

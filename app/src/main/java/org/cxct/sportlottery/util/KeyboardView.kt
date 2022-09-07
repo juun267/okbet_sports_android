@@ -40,39 +40,30 @@ class KeyboardView @JvmOverloads constructor(
 
     @SuppressLint("SetTextI18n")
     private fun initView() {
-//        Timber.d("presetBetAmount: ${sConfigData?.presetBetAmount}")
         //20220610 預設下注金額, 改為三個按鈕顯示 (順序依照後台設置)
         sConfigData?.presetBetAmount?.let {
-//            Timber.d("presetBetAmount reversed: $it")
             it.forEachIndexed { index, i ->
                 if (index == 0) {
-                    tvPlus1.text = "+ $i"
+                    tvPlus1.text = "+$i"
                     tvPlus1.visibility = View.VISIBLE
                     tvPlus1.setOnClickListener {
                         plus(i.toLong())
                     }
                 }
                 if (index == 1) {
-                    tvPlus2.text = "+ $i"
+                    tvPlus2.text = "+$i"
                     tvPlus2.visibility = View.VISIBLE
                     tvPlus2.setOnClickListener {
                         plus(i.toLong())
                     }
                 }
                 if (index == 2) {
-                    tvPlus3.text = "+ $i"
+                    tvPlus3.text = "+$i"
                     tvPlus3.visibility = View.VISIBLE
                     tvPlus3.setOnClickListener {
                         plus(i.toLong())
                     }
                 }
-//                if (index == 3) {
-//                    tvPlus4.text = "+ $i"
-//                    tvPlus4.visibility = View.VISIBLE
-//                    tvPlus4.setOnClickListener {
-//                        plus(i.toLong())
-//                    }
-//                }
             }
         }
         tvNum0.setOnClickListener {
@@ -112,6 +103,10 @@ class KeyboardView @JvmOverloads constructor(
             insertDot()
         }
         tvClear.setOnClickListener {
+            //清除
+            mEditText.text.clear()
+        }
+        ivClose.setOnClickListener {
             //關閉鍵盤
             hideKeyboard()
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="tool_bar_height">54dp</dimen>
-    <dimen name="bet_list_top_padding_height">48dp</dimen>
+    <dimen name="bet_list_top_padding_height">88dp</dimen>
     <dimen name="bet_list_bar_height">44dp</dimen>
     <dimen name="bottom_nav_bar_height">55dp</dimen>
 
@@ -72,6 +72,7 @@
     <dimen name="odd_item_divide_all">6dp</dimen>
 
 
+
     <dimen name="recyclerview_item_dec_spec_sport_type">10dp</dimen>
     <dimen name="recyclerview_item_dec_spec_date">12dp</dimen>
     <dimen name="recyclerview_item_dec_spec_play_category">12dp</dimen>
@@ -121,14 +122,15 @@
 
     <dimen name="live_player_height">232dp</dimen>
 
-    <dimen name="et_bet_height">34dp</dimen>
+    <dimen name="et_bet_height">30dp</dimen>
 
-    <dimen name="bet_info_hint_view_height">32dp</dimen>
+    <dimen name="bet_info_hint_view_height">25dp</dimen>
 
     <dimen name="keyboard_radius">2dp</dimen>
-    <dimen name="keyboard_height">108dp</dimen>
+    <dimen name="keyboard_height">123dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+    <dimen name="bet_button_height">45dp</dimen>
 </resources>

@@ -555,8 +555,8 @@
     <string name="bet_info_odd_content_changed2">赔率已变更，从 %1$s 至 %2$s 。</string>
     <string name="bet_list_single_warn">可用相同的投注额填充所有单项选择</string>
     <string name="bet_list_single">单注</string>
-    <string name="bet_list_single_type">单项</string>
-    <string name="bet_list_parlay_type">串关</string>
+    <string name="bet_list_single_type">单项投注</string>
+    <string name="bet_list_parlay_type">串关投注</string>
     <string name="bet_list_view_more_options">更多投注选项</string>
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
     <string name="bet_list_receipt">注单收据</string>
@@ -1101,15 +1101,17 @@
     <string name="current_time">当前时间</string>
 
     <!--region 20220714 新版投注單-->
+    <string name="bet_win">可赢</string>
     <string name="bet_stake">本金</string>
-    <string name="total_capital">本金总额</string>
-    <string name="total_win_amount">可赢总额</string>
+    <string name="total_capital">本金(%s)：</string>
+    <string name="total_win_amount">可赢(%s)：</string>
     <string name="delete_bet">删除</string>
     <string name="btn_login_bet">登录并投注</string>
     <string name="confirm_single_bets">确认%d单注投注</string>
     <string name="confirm_multiple_bets">确认%d串关投注</string>
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>
     <string name="please_enter_correct_amount">请输入正确投注额</string>
+    <string name="bet_info_list_bet">投注</string>
     <!--endregion-->
 
     <string name="publicity_contact">联络</string>
@@ -1202,4 +1204,7 @@
     <string name="reverse_select">反选</string>
     <string name="video">视频</string>
     <string name="anime">动画</string>
+
+    <string name="hint_bet_limit_range">限额%1$s-%2$s</string>
+    <string name="submitting">注单提交中</string>
 </resources>
