@@ -323,6 +323,7 @@
     <color name="color_F75452_B73A20">@color/color_B73A20</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_black_0">#00000000</color>
+    <color name="transparent_black_1">#03000000</color>
     <color name="transparent_black_8">#14000000</color>
     <color name="transparent_black_40">#66000000</color>
     <color name="transparent_black_50">#80000000</color>
