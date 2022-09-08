@@ -1232,6 +1232,9 @@
 
     <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
+    <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
+    <string name="bet_receipt_win_quota_with_sign">EST winning(%s)：</string>
+
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

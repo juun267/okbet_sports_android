@@ -69,14 +69,14 @@ class BetInfoCarReceiptDialog(val receipt: Receipt?) :
                 view.tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                 mOrderNo = orderNo
                 view.tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
-                view.tv_bet_status.setBetReceiptStatus(status)
+//                view.tv_bet_status.setBetReceiptStatus(status)
                 if(status == 0){
                     startTimer(
                         (receipt.betConfirmTime?.minus(System.currentTimeMillis())) ?: 0,
                         view
                     )
                 }
-                view.tv_bet_status.setReceiptStatusColor(status)
+//                view.tv_bet_status.setReceiptStatusColor(status)
                 //view.tv_receipt_status.setSingleReceiptStatusTips(status)
 
                 if (matchType == MatchType.OUTRIGHT) {
@@ -170,10 +170,10 @@ class BetInfoCarReceiptDialog(val receipt: Receipt?) :
                         if (orderStatus != Status.UN_CHECK.code) {
                             stopTimer()
                         }
-                        with(tv_bet_status) {
-                            setBetReceiptStatus(orderStatus)
-                            setReceiptStatusColor(orderStatus)
-                        }
+//                        with(tv_bet_status) {
+//                            setBetReceiptStatus(orderStatus)
+//                            setReceiptStatusColor(orderStatus)
+//                        }
                     }
                 }
             }
@@ -211,7 +211,7 @@ class BetInfoCarReceiptDialog(val receipt: Receipt?) :
         timer.schedule(object :TimerTask(){
             override fun run() {
                 mHandler.post {
-                    view.tv_bet_status.text = String.format(view.context.getString(R.string.pending), timeMillis)
+//                    view.tv_bet_status.text = String.format(view.context.getString(R.string.pending), timeMillis)
                     timeMillis --
                     if(timeMillis < 0 ) stopTimer()
                 }

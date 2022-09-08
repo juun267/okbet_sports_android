@@ -92,8 +92,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var tabPosition = 0 //tab的位置
 
-    private var isMultiBet = false //是否為多筆注單
-
     private var needUpdateBetLimit = false //是否需要更新投注限額
 
     private val mHandler = object : Handler(Looper.getMainLooper()) {
@@ -750,13 +748,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     binding.betTypeTabLayout.selectTab(binding.betTypeTabLayout.getTabAt(0))
                     binding.betTypeTabLayout.isVisible = false
                     binding.clTotalInfo.isVisible = false
-                    isMultiBet = false
                 } else if (!isAutoCloseWhenNoData) {
                     //多筆注單 or 空注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
                     binding.betTypeTabLayout.isVisible = true
                     binding.clTotalInfo.isVisible = true
-                    isMultiBet = true
                 }
 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
@@ -817,17 +813,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                     if (resultNotNull.success) {
                         //多筆和單筆投注單，下注成功後的行為不同
-                        if (isMultiBet) {
+//                        if (isMultiBet) {
                             //多筆的是直接 replace fragment
                             viewModel.betInfoList.removeObservers(this.viewLifecycleOwner)
-                        } else {
-                            //單筆的要關掉再顯示 dialog
-                            isAutoCloseWhenNoData = true
-                        }
+//                        } else {
+//                            //單筆的要關掉再顯示 dialog
+//                            isAutoCloseWhenNoData = true
+//                        }
                         betResultListener?.onBetResult(
                             resultNotNull.receipt,
                             betParlayList ?: listOf(),
-                            isMultiBet
+                            true
                         )
                         refreshAllAmount()
                         showOddChangeWarn = false
