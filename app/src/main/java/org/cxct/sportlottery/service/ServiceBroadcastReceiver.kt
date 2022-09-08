@@ -149,7 +149,7 @@ open class ServiceBroadcastReceiver(
     private fun receiveConnectStatus(bundle: Bundle?) {
         val connectStatus = bundle?.get(CONNECT_STATUS) as ServiceConnectStatus?
         connectStatus?.let { status ->
-            _serviceConnectStatus.value = status
+            _serviceConnectStatus.postValue(status)
         }
     }
 
@@ -186,62 +186,62 @@ open class ServiceBroadcastReceiver(
         when (val eventType = EventType.getEventType(jObj.optString("eventType"))) {
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
-                _notice.value = data
+                _notice.postValue(data)
             }
             EventType.GLOBAL_STOP -> {
                 val data = ServiceMessage.getGlobalStop(jObjStr)
-                _globalStop.value = data
+                _globalStop.postValue(data)
 
             }
             EventType.PRODUCER_UP -> {
                 val data = ServiceMessage.getProducerUp(jObjStr)
-                _producerUp.value = data
+                _producerUp.postValue(data)
             }
 
             //公共频道(这个通道会通知主站平台维护)
             EventType.SYS_MAINTENANCE -> {
                 val data = ServiceMessage.getSysMaintenance(jObjStr)
-                _sysMaintenance.value = data
+                _sysMaintenance.postValue(data)
             }
 
             //公共频道
             EventType.DATA_SOURCE_CHANGE -> {
-                _dataSourceChange.value = true
+                _dataSourceChange.postValue(true)
             }
             EventType.CLOSE_PLAY_CATE -> {
-                _closePlayCate.value = Event(ServiceMessage.getClosePlayCate(jObjStr))
+                _closePlayCate.postValue(Event(ServiceMessage.getClosePlayCate(jObjStr)))
             }
 
             //用户私人频道
             EventType.USER_MONEY -> {
                 val data = ServiceMessage.getUserMoney(jObjStr)
-                _userMoney.value = data?.money
+                _userMoney.postValue(data?.money)
             }
             EventType.LOCK_MONEY -> {
                 val data = ServiceMessage.getLockMoney(jObjStr)
-                _lockMoney.value = data?.lockMoney
+                _lockMoney.postValue(data?.lockMoney)
             }
             EventType.USER_NOTICE -> {
                 val data = ServiceMessage.getUserNotice(jObjStr)
-                _userNotice.value = data
+                _userNotice.postValue(data)
             }
             EventType.ORDER_SETTLEMENT -> {
                 val data = ServiceMessage.getOrderSettlement(jObjStr)
-                _orderSettlement.value = data
+                _orderSettlement.postValue(data)
             }
             EventType.PING_PONG -> {
                 val data = ServiceMessage.getPingPong(jObjStr)
-                _pingPong.value = data
+                _pingPong.postValue(data)
             }
 
             //大廳賠率
             EventType.MATCH_STATUS_CHANGE -> {
                 val data = ServiceMessage.getMatchStatusChange(jObjStr)
-                _matchStatusChange.value = data
+                _matchStatusChange.postValue(data)
             }
             EventType.MATCH_CLOCK -> {
                 val data = ServiceMessage.getMatchClock(jObjStr)
-                _matchClock.value = data
+                _matchClock.postValue(data)
             }
             EventType.ODDS_CHANGE -> {
                 val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
@@ -275,53 +275,47 @@ open class ServiceBroadcastReceiver(
             }
             EventType.LEAGUE_CHANGE -> {
                 val data = ServiceMessage.getLeagueChange(jObjStr)
-                _leagueChange.value = data
+                _leagueChange.postValue(data)
             }
             EventType.MATCH_ODDS_LOCK -> {
                 val data = ServiceMessage.getMatchOddsLock(jObjStr)
-                _matchOddsLock.value = data
+                _matchOddsLock.postValue(data)
             }
             //具体赛事/赛季频道
             EventType.MATCH_ODDS_CHANGE -> {
                 val data = ServiceMessage.getMatchOddsChange(jObjStr)
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        mUserId?.let { userId ->
-                            val discount = userInfoRepository?.getDiscount(userId)
-                            data?.let {
-                                it.setupOddDiscount(discount ?: 1.0F)
-                                it.updateOddsSelectedState()
-                            }
+                mUserId?.let { userId ->
+                    val discount = userInfoRepository?.getDiscount(userId)
+                    data?.let {
+                        it.setupOddDiscount(discount ?: 1.0F)
+                        it.updateOddsSelectedState()
+                    }
+                    _matchOddsChange.postValue(Event(data))
+                    data?.let { socketEvent ->
+                        betInfoRepository.updateMatchOdd(socketEvent)
+                    }
 
-                            withContext(Dispatchers.Main) {
-                                _matchOddsChange.value = Event(data)
-                                data?.let { socketEvent ->
-                                    betInfoRepository.updateMatchOdd(socketEvent)
-                                }
-                            }
-                        } ?: run {
-                            _matchOddsChange.value = Event(data)
-                            data?.let { socketEvent ->
-                                betInfoRepository.updateMatchOdd(socketEvent)
-                            }
-                        }
+                } ?: run {
+                    _matchOddsChange.postValue(Event(data))
+                    data?.let { socketEvent ->
+                        betInfoRepository.updateMatchOdd(socketEvent)
                     }
                 }
             }
             //賠率折扣
             EventType.USER_DISCOUNT_CHANGE -> {
                 val data = ServiceMessage.getUserDiscountChange(jObjStr)
-                _userDiscountChange.value = data
+                _userDiscountChange.postValue(data)
             }
             //特定VIP层级的最新设定内容(會影響最大下注金額)
             EventType.USER_LEVEL_CONFIG_CHANGE -> {
                 val data = ServiceMessage.getUserMaxBetMoney(jObjStr)
-                _userMaxBetMoneyChange.value = data
+                _userMaxBetMoneyChange.postValue(data)
             }
             //用戶資訊成功
             EventType.USER_INFO_CHANGE -> {
-                _userInfoChange.value = true
+                _userInfoChange.postValue(true)
             }
             EventType.UNKNOWN -> {
                 Timber.i("Receive UnKnown EventType : ${eventType.value}")

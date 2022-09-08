@@ -168,11 +168,11 @@ object BetInfoRepository {
                         }
                     }
                 }
-                _parlayList.value = newParlayList
-                _betParlaySuccess.value = true
+                _parlayList.postValue(newParlayList)
+                _betParlaySuccess.postValue(true)
             } else {
-                _parlayList.value = mutableListOf()
-                _betParlaySuccess.value = false
+                _parlayList.postValue(mutableListOf())
+                _betParlaySuccess.postValue(false)
             }
         }
     }
@@ -486,17 +486,8 @@ object BetInfoRepository {
 
         checkBetInfoContent(updateBetInfoList)
         updateBetOrderParlay(updateBetInfoList)
-        _betInfoList.value = Event(updateBetInfoList)
+        _betInfoList.postValue(Event(updateBetInfoList))
     }
-
-    fun notifyBetInfoChanged(newList: MutableList<BetInfoListData>) {
-
-        updateQuickListManager(newList)
-
-        checkBetInfoContent(newList)
-        _betInfoList.value = Event(newList)
-    }
-
 
     /**
      * 檢查注單中賠率、盤口狀態

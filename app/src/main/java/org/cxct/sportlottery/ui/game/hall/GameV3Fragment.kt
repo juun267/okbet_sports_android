@@ -152,7 +152,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                     //當前已選中下拉選單不用重新要資料
                     if (hasItemSelect) {
                         leagueAdapter.data.updateOddsSort(
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                            viewModel.getSportSelectedCode(),
                             this
                         )
                         leagueAdapter.updateLeagueByPlayCate()
@@ -533,8 +533,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //若為起始fragment不會有轉場動畫, 故無法透過afterAnimateListener動作
-            initObserve()
-            initSocketObserver()
+        initObserve()
+        initSocketObserver()
     }
 
     private fun setupSportTypeList() {
@@ -792,7 +792,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                                     "${itemMatchOdd.matchInfo?.awayName}"
                                         )
                                         subscribeChannelHall(
-                                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                                            viewModel.getSportSelectedCode(),
                                             itemMatchOdd.matchInfo?.id
                                         )
                                     }
@@ -824,7 +824,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             Handler().postDelayed(
                 {
                     game_list?.firstVisibleRange(
-                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                        viewModel.getSportSelectedCode(),
                         outrightLeagueOddAdapter,
                         activity ?: requireActivity()
                     )
@@ -985,8 +985,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                             ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
                     )
 
-                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
-
                     if (mLeagueOddList.isNotEmpty()) {
                         leagueAdapter.playSelectedCodeSelectionType =
                             getPlaySelectedCodeSelectionType()
@@ -1000,7 +998,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                         leagueOddFromMap.matchOdds.find { matchOdd -> mMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
                                 }
                             }
-                            leagueOdd.gameType = gameType
+                            leagueOdd.gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                         }.toMutableList()
                         leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
                         leagueAdapter.playSelectedCode = getPlaySelectedCode()
@@ -1086,10 +1084,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         val changedLeague =
                             leagueListIncrement?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.league.id == leagueId }
                         changedLeague?.let { changedLeagueOdd ->
-                            val gameType =
-                                GameType.getGameType(leagueListIncrement.oddsListData.sport.code)
                             val insertLeagueOdd = changedLeagueOdd.apply {
-                                this.gameType = gameType
+                                this.gameType = GameType.getGameType(leagueListIncrement.oddsListData.sport.code)
                             }
                             //更新快捷玩法
                             changedLeagueOdd.matchOdds.forEachIndexed { _, matchOdd ->
@@ -1347,11 +1343,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                         isUpdatingLeague = true
 
                         //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
-                        val nowGameType =
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
-
                         if (leagueAdapter.data.isNotEmpty()) {
-                            if (nowGameType == leagueChangeEvent.gameType && leagueChangeEvent.leagueIdList?.isNotEmpty() == true) {
+                            if (viewModel.getSportSelectedCode() == leagueChangeEvent.gameType && leagueChangeEvent.leagueIdList?.isNotEmpty() == true) {
                                 //不管是否相同聯賽，也要確認是否要更新賽事資訊
                                 withContext(Dispatchers.Main) {
                                     if (args.matchType == MatchType.OTHER) {
@@ -1495,7 +1488,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (SocketUpdateUtil.updateMatchStatus(
-                                    gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
+                                    viewModel.getSportSelectedCode(),
                                     leagueOdd.matchOdds.toMutableList(),
                                     matchStatusChangeEvent,
                                     context
@@ -1695,7 +1688,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
         receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
-                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
+                if (viewModel.getSportSelectedCode() != it.gameType) return@observe
                 leagueAdapter.data.closePlayCate(it)
                 leagueAdapter.notifyDataSetChanged()
             }
@@ -2029,8 +2022,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         matchIdList: List<String> = listOf(),
         matchCategoryName: String? = null
     ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = GameType.getGameType(viewModel.getSportSelectedCode())
 
         val matchType = when (dateAdapter.data.find {
             it.isSelected
@@ -2058,7 +2050,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 GameType.FT
             }
             else -> {
-                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+                GameType.getGameType(viewModel.getSportSelectedCode())
             }
         }
 
@@ -2084,8 +2076,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         odd: Odd,
         playCateCode: String
     ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = GameType.getGameType(viewModel.getSportSelectedCode())
         gameType?.let {
             val fastBetDataBean = FastBetDataBean(
                 matchType = MatchType.OUTRIGHT,
@@ -2115,7 +2106,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 GameType.FT
             }
             else -> {
-                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+                GameType.getGameType(viewModel.getSportSelectedCode())
             }
         }
 
@@ -2165,8 +2156,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
 
     private fun subscribeChannelHall(matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd?) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = GameType.getGameType(viewModel.getSportSelectedCode())
         gameType?.let {
             subscribeChannelHall(
                 it.key,
@@ -2229,8 +2219,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
     }
 
     private fun subscribeChannelHall(epsLeagueOddsItem: EpsLeagueOddsItem) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = GameType.getGameType(viewModel.getSportSelectedCode())
 
         epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
             when (epsLeagueOddsItem.isClose) {

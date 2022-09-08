@@ -623,9 +623,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
         leagueAdapter.data[index] = leagueOdd
-        if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
-            leagueAdapter.updateLeague(index, leagueOdd)
-        }
     }
 
     private fun updateGameListBySubscribePosition(matchId: String?) {

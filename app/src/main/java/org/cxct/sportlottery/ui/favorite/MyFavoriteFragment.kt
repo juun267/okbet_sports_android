@@ -81,7 +81,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     upDateSelectPlay(play)
                     if (hasItemSelect) {
                         leagueAdapter.data.updateOddsSort(
-                            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                            viewModel.getSportSelectedCode(),
                             this
                         )
                         leagueAdapter.updateLeagueByPlayCate()
@@ -415,7 +415,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
 
         receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
-                if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
+                if (viewModel.getSportSelectedCode() != it.gameType) return@observe
                 leagueAdapter.data.closePlayCate(it)
                 leagueAdapter.notifyDataSetChanged()
             }
@@ -510,7 +510,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                 favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 val leagueData = leagueOddList.toMutableList()
                 leagueData.updateOddsSort(
-                    GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
+                    viewModel.getSportSelectedCode(),
                     playCategoryAdapter
                 )
 
@@ -680,7 +680,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            GameType.getGameType(viewModel.getSportSelectedCode())
 
         if (gameType == null || matchInfo == null) {
             return
@@ -773,7 +773,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
 
     private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
         val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            GameType.getGameType(viewModel.getSportSelectedCode())
 
         gameType?.let {
             val action =
@@ -799,9 +799,6 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
         leagueAdapter.data[index] = leagueOdd
-        if (favorite_game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !favorite_game_list.isComputingLayout) {
-            leagueAdapter.updateLeague(index, leagueOdd)
-        }
     }
 
     private fun updateGameListBySubscribePosition(matchId: String?) {

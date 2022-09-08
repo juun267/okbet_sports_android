@@ -266,7 +266,6 @@ class BackService : Service() {
         mStompClient?.run {
             this.topic(url, mHeader)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ topicMessage ->
                     Timber.v("[$url] 訂閱接收訊息: ${EncryptUtil.uncompress(topicMessage.payload)}")
                     sendMessageToActivity(url, topicMessage.payload)

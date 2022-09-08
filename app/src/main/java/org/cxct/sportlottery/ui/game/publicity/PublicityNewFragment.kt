@@ -214,7 +214,6 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         receiver.serviceConnectStatus.removeObservers(viewLifecycleOwner)
         receiver.matchStatusChange.removeObservers(viewLifecycleOwner)
         receiver.matchClock.removeObservers(viewLifecycleOwner)
-        receiver.oddsChange.removeObservers(viewLifecycleOwner)
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
         receiver.leagueChange.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
