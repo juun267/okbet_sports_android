@@ -28,6 +28,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="9dp"
                 android:background="@drawable/bg_square_shape_8dp_blue_stroke_white_solid">
 <!--                <LinearLayout-->
 <!--                    android:layout_width="match_parent"-->
@@ -67,10 +68,9 @@
                     android:textSize="@dimen/textSize12sp"
                     android:visibility="visible"
                     android:drawablePadding="6dp"
+                    tools:drawableStart="@drawable/ic_bet_check_tip"
                     tools:text="已确认"
-                    tools:textColor="@color/color_1D9F51_1D9F51"
-                    tools:drawableStart="@drawable/ic_bet_lock_tip"
-                    tools:drawableTint="@color/color_1D9F51_1D9F51"/>
+                    tools:textColor="@color/color_1D9F51_1D9F51" />
 
                 <TextView
                     android:id="@+id/tv_match_type"
@@ -91,10 +91,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_shape_top_8dp_blue_stroke_no_bottom_stroke"
+                    android:paddingVertical="6dp"
                     android:paddingStart="10dp"
-                    android:paddingTop="8dp"
                     android:paddingEnd="11dp"
-                    android:paddingBottom="6dp"
                     app:layout_constraintTop_toTopOf="parent">
 
                 <!--playName + spread + @ + odds + (oddsType)--> <!--old-->
@@ -148,9 +147,10 @@
                     tools:text="日本奥运队 v 纽西兰奥运队" />
 
                 <include
+                    android:id="@+id/match_receipt_bet_layout"
                     layout="@layout/view_match_receipt_bet"
+                    android:visibility="visible"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginBottom="9dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"

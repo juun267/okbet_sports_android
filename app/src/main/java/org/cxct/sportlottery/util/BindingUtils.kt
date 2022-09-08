@@ -124,10 +124,14 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
 
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
-        else -> if (parlayNum == 1) {
-            itemData.stake?.let { TextUtil.formatMoney(it) }
-        } else {
-            itemData.stake?.let { "${TextUtil.formatMoney(it)} * $parlayNum" }
+        else -> {
+//            if (parlayNum == 1) {
+//                itemData.stake?.let { TextUtil.formatMoney(it) }
+//            } else {
+//                itemData.stake?.let { "${TextUtil.formatMoney(it)} * $parlayNum" }
+//            }
+            val number = parlayNum ?: 1
+            itemData.stake?.let { TextUtil.formatForOdd(it * number) }
         }
     }
 }
@@ -177,12 +181,19 @@ fun TextView.setHideByStatus(status: Int?) {
 @BindingAdapter("receiptStatusColor") //状态 1-处理中;2-成功;3-失败
 fun TextView.setReceiptStatusColor(status: Int?) {
     status?.let {
+        val drawableRes: Int
         val color = when (it) {
-            7 -> R.color.color_E23434_E23434
-            else -> R.color.color_1D9F51_1D9F51
+            7 -> {
+                drawableRes = R.drawable.ic_bet_lock_tip
+                R.color.color_E23434_E23434
+            }
+            else -> {
+                drawableRes = R.drawable.ic_bet_check_tip
+                R.color.color_1D9F51_1D9F51
+            }
         }
         this.setTextColor(ContextCompat.getColor(context, color))
-        this.setStartDrawable(R.drawable.ic_bet_lock_tip)
+        this.setStartDrawable(drawableRes)
         this.setTextViewDrawableColor(color)
     }
 }

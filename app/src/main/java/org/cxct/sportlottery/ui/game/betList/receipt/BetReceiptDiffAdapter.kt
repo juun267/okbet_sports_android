@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
@@ -48,7 +50,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     var betConfirmTime: Long? = 0
 
-    enum class ItemType { SINGLE, PARLAY_TITLE, PARLAY }
+    enum class ItemType { SINGLE, PARLAY }
 
     val mHandler = Handler(Looper.getMainLooper())
 
@@ -75,7 +77,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             val parlayItem =
                 if (parlayList.isNotEmpty())
-                    listOf(DataItem.ParlayTitle) + parlayList.map {
+                    parlayList.map {
                         //標記串關第一項(NC1), 第一項需顯示賠率, 以parlayType做比對, 有投注的第一項不一定是NC1
                         if (betParlayList.first().parlayType == it.parlayType) DataItem.ParlayData(
                             it,
@@ -148,7 +150,6 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         return when (getItem(position)) {
             is DataItem.SingleData -> ItemType.SINGLE.ordinal
             is DataItem.ParlayData -> ItemType.PARLAY.ordinal
-            is DataItem.ParlayTitle -> ItemType.PARLAY_TITLE.ordinal
             else -> ItemType.SINGLE.ordinal
         }
     }
@@ -158,7 +159,6 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         return when (viewType) {
             ItemType.SINGLE.ordinal -> SingleViewHolder.from(parent)
             ItemType.PARLAY.ordinal -> ParlayViewHolder.from(parent)
-            ItemType.PARLAY_TITLE.ordinal -> ParlayTitleViewHolder.from(parent)
             else -> SingleViewHolder.from(parent)
         }
     }
@@ -182,15 +182,11 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList,interfaceStatusChangeListener)
+                holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList,interfaceStatusChangeListener, position)
                 if (itemData.result.status == 0) {
                     starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
                 }
             }
-
-            is ParlayTitleViewHolder -> {
-            }
-
         }
     }
 
@@ -209,8 +205,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                 top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
                 val currencySign = sConfigData?.systemCurrencySign
-                tv_winnable_amount_title.text = context.getString(R.string.total_win_amount, currencySign)
-                tv_bet_amount_title.text = context.getString(R.string.total_capital, currencySign)
+                tv_winnable_amount_title.text = context.getString(R.string.bet_receipt_win_quota_with_sign, currencySign)
+                tv_bet_amount_title.text = context.getString(R.string.bet_receipt_bet_quota_with_sign, currencySign)
 
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
@@ -229,9 +225,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
                     }
 
-                    itemView.setBetReceiptBackground(status)
-                    tv_bet_amount.text = TextUtil.formatMoney(itemData.stake ?: 0.0)
-                    tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
+                    tv_bet_amount.text = TextUtil.formatForOdd(itemData.stake ?: 0.0)
+                    tv_winnable_amount.text = TextUtil.formatForOdd(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
 
                     if (status != 0)
@@ -288,13 +283,14 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             firstItem: Boolean,
             oddsType: OddsType,
             betParlay: List<ParlayOdd>?,
-            interfaceStatusChangeListener:InterfaceStatusChangeListener?
+            interfaceStatusChangeListener:InterfaceStatusChangeListener?,
+            position: Int
         ) {
             itemView.apply {
 
                 val currencySign = sConfigData?.systemCurrencySign
-                tv_winnable_amount_title.text = context.getString(R.string.total_win_amount, currencySign)
-                tv_bet_amount_title.text = context.getString(R.string.total_capital, currencySign)
+                tv_winnable_amount_title.text = context.getString(R.string.bet_receipt_win_quota_with_sign, currencySign)
+                tv_bet_amount_title.text = context.getString(R.string.bet_receipt_bet_quota_with_sign, currencySign)
 
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
@@ -304,27 +300,45 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                                     ?: ""
                         }
                     }
+                    tv_multiplier.text = " x ${betParlay?.find { parlayType == it.parlayType }?.num ?: 1}"
 
-                    tv_match_at.visibility = if (firstItem) View.VISIBLE else View.GONE
-                    tv_match_odd_parlay.apply {
-                        visibility = if (firstItem) View.VISIBLE else View.GONE
-                        text = (betParlay?.getOrNull(0)
-                            ?.let { parlayOdd ->
-                                TextUtil.formatForOdd(
-                                    getOdds(
-                                        parlayOdd,
-                                        oddsType
-                                    )
+                    if (position == 0) { //僅有第一項item的上方，要顯示組合成串關的資料(matchOdds)
+                        rv_show_singles_list.isVisible = true
+                        rv_show_singles_list.apply {
+                            layoutManager =
+                                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                            adapter = BetReceiptDiffForParlayShowSingleAdapter().apply {
+                                submit(
+                                    matchOdds ?: listOf(),
+                                    betParlayList ?: listOf(),
+                                    matchType
                                 )
-                            }) ?: "0.0"
+                            }
+                        }
+                    } else {
+                        rv_show_singles_list.isVisible = false
                     }
 
-                    itemView.setBetReceiptBackground(status)
+                    //不顯示 "@ 組合賠率"
+//                    tv_match_at.visibility = if (firstItem) View.VISIBLE else View.GONE
+//                    tv_match_odd_parlay.apply {
+//                        visibility = if (firstItem) View.VISIBLE else View.GONE
+//                        text = (betParlay?.getOrNull(0)
+//                            ?.let { parlayOdd ->
+//                                TextUtil.formatForOdd(
+//                                    getOdds(
+//                                        parlayOdd,
+//                                        oddsType
+//                                    )
+//                                )
+//                            }) ?: "0.0"
+//                    }
+
                     tv_bet_amount.setBetParlayReceiptAmount(
                         itemData,
                         betParlay?.find { parlayType == it.parlayType }?.num ?: 0
                     )
-                    tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
+                    tv_winnable_amount.text = TextUtil.formatForOdd(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     if (status != 0)
                         tv_bet_status.setBetReceiptStatus(status)
@@ -335,18 +349,6 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
                     tv_bet_status.setReceiptStatusColor(status)
                 }
-            }
-        }
-    }
-
-    class ParlayTitleViewHolder private constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view =
-                    layoutInflater.inflate(R.layout.item_parlay_receipt_title, viewGroup, false)
-                return ParlayTitleViewHolder(view)
             }
         }
     }
@@ -380,10 +382,4 @@ sealed class DataItem {
         override val orderNo = result.orderNo
         override val status = result.status
     }
-
-    object ParlayTitle : DataItem() {
-        override val orderNo: String = ""
-        override val status: Int? = null
-    }
-
 }

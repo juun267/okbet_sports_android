@@ -108,15 +108,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_025BE8_025BE8"
-                        android:textSize="@dimen/margin_14"
-                        android:textStyle="bold"
+                        android:textSize="@dimen/textSize16sp"
                         tools:text="\@ 0.89" />
 
                     <ImageView
                         android:id="@+id/ivOddsArrow"
                         android:layout_width="8dp"
                         android:layout_height="8dp"
-                        android:layout_marginStart="2dp"
+                        android:layout_marginStart="4dp"
                         android:visibility="gone"
                         tools:src="@drawable/selector_odds_arrow_up"
                         tools:visibility="visible" />
