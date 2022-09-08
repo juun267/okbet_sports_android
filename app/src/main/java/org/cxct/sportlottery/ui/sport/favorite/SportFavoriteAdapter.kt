@@ -994,6 +994,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
 
                 OverScrollDecoratorHelper.setUpOverScroll(this,
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                itemView.hIndicator.bindRecyclerView(this)
             }
         }
 

@@ -302,4 +302,8 @@
         <attr name="bg_color_pressed" format="color" />
         <attr name="text_array" format="reference" />
     </declare-styleable>
+    <declare-styleable name="HIndicator">
+        <attr name="hi_bgColor" format="color" />
+        <attr name="hi_indicatorColor" format="color" />
+    </declare-styleable>
 </resources>
