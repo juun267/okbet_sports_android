@@ -2349,7 +2349,7 @@ class GameViewModel(
         else -> null
     }
 
-    fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
+    fun getSportSelectedCode(matchType: MatchType? = curMatchType.value): String? = when (matchType) {
         MatchType.MAIN -> {
             specialMenuData?.items?.find { it.isSelected }?.code
         }

@@ -53,6 +53,7 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -1527,86 +1528,81 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             }
         }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                when (game_list.adapter) {
-                    is LeagueAdapter -> {
-                        leagueAdapter.data.forEach { leagueOdd ->
-                            leagueOdd.matchOdds.forEach { matchOdd ->
-                                matchOdd.quickPlayCateList =
-                                    mQuickOddListMap[matchOdd.matchInfo?.id]
-                            }
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            when (game_list?.adapter) {
+                is LeagueAdapter -> {
+                    leagueAdapter.data.forEach { leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            matchOdd.quickPlayCateList =
+                                mQuickOddListMap[matchOdd.matchInfo?.id]
                         }
+                    }
 
-                        val leagueOdds = leagueAdapter.data
-                        leagueOdds.sortOddsMap()
+                    val leagueOdds = leagueAdapter.data
+                    leagueOdds.sortOddsMap()
 
-                        //MatchType為波膽時, 不透過playCategory選中狀態進行更新, 於下方翻譯更新直接更新
-                        if (args.matchType != MatchType.CS) {
-                            leagueOdds.updateOddsSort(
-                                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
-                                playCategoryAdapter
-                            ) //篩選玩法
+                    //MatchType為波膽時, 不透過playCategory選中狀態進行更新, 於下方翻譯更新直接更新
+                    if (args.matchType != MatchType.CS) {
+                        leagueOdds.updateOddsSort(
+                            viewModel.getSportSelectedCode(),
+                            playCategoryAdapter
+                        ) //篩選玩法
+                    }
+
+                    //翻譯更新
+                    leagueOdds.forEach { LeagueOdd ->
+                        //波膽 玩法名稱翻譯更新
+                        if (args.matchType == MatchType.CS) {
+                            LeagueOdd.playCateNameMap = PlayCateMenuFilterUtils.filterPlayCateNameMap(GameType.FT.name, PlayCate.CS.value)
                         }
-
-                        //翻譯更新
-                        leagueOdds.forEach { LeagueOdd ->
-                            //波膽 玩法名稱翻譯更新
-                            if (args.matchType == MatchType.CS) {
-                                LeagueOdd.playCateNameMap = PlayCateMenuFilterUtils.filterPlayCateNameMap(GameType.FT.name, PlayCate.CS.value)
-                            }
-                            LeagueOdd.matchOdds.forEach { MatchOdd ->
-                                if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                                    //馬克說betPlayCateNameMap還是由socket更新
-                                    oddsChangeEvent.betPlayCateNameMap?.let {
-                                        MatchOdd.betPlayCateNameMap?.putAll(it)
-                                    }
+                        LeagueOdd.matchOdds.forEach { MatchOdd ->
+                            if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                                //馬克說betPlayCateNameMap還是由socket更新
+                                oddsChangeEvent.betPlayCateNameMap?.let {
+                                    MatchOdd.betPlayCateNameMap?.putAll(it)
                                 }
                             }
                         }
+                    }
 
+                    leagueAdapter.playSelectedCodeSelectionType = getPlaySelectedCodeSelectionType()
+                    leagueAdapter.playSelectedCode = getPlaySelectedCode()
 
-                        leagueAdapter.playSelectedCodeSelectionType =
-                            getPlaySelectedCodeSelectionType()
-                        leagueAdapter.playSelectedCode = getPlaySelectedCode()
-
-                        leagueOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent, args.matchType
-                                    )
-                                } &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code
-                            ) {
-                                leagueOddMap[leagueOdd.league.id] = leagueOdd
-                                updateBetInfo(leagueOdd, oddsChangeEvent)
-                            }
-                            leagueAdapter.data[index] = leagueOdd
+                    leagueOdds.forEachIndexed { index, leagueOdd ->
+                        if (leagueOdd.matchOdds.any { matchOdd ->
+                                SocketUpdateUtil.updateMatchOdds(
+                                    context, matchOdd, oddsChangeEvent, args.matchType
+                                )
+                            } &&
+                            leagueOdd.unfold == FoldState.UNFOLD.code
+                        ) {
+                            leagueOddMap[leagueOdd.league.id] = leagueOdd
+                            updateBetInfo(leagueOdd, oddsChangeEvent)
                         }
-
+                        leagueAdapter.data[index] = leagueOdd
                         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
                             leagueAdapter.updateLeagueByPosition(oddsChangeEvent.eventId)
                         }
                     }
+                }
 
-                    is EpsListAdapter -> {
-                        val epsOdds = epsListAdapter.dataList
+                is EpsListAdapter -> {
+                    val epsOdds = epsListAdapter.dataList
 
-                        epsOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
-                                    SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent, args.matchType
-                                    )
-                                } == true && !leagueOdd.isClose) {
-                                updateBetInfo(leagueOdd, oddsChangeEvent)
-                                epsListAdapter.notifyItemChanged(index)
-                            }
+                    epsOdds.forEachIndexed { index, leagueOdd ->
+                        if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
+                                SocketUpdateUtil.updateMatchOdds(
+                                    context, matchOdd, oddsChangeEvent, args.matchType
+                                )
+                            } == true && !leagueOdd.isClose) {
+                            updateBetInfo(leagueOdd, oddsChangeEvent)
+                            epsListAdapter.notifyItemChanged(index)
                         }
                     }
+                }
 
-                    is OutrightLeagueOddAdapter -> {
-                        viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
-                    }
+                is OutrightLeagueOddAdapter -> {
+                    viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
                 }
             }
         }

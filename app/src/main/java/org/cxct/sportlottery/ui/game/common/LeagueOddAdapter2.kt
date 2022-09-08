@@ -100,6 +100,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
     }
 
+    fun updateByMatchIdForOdds(matchOdd: MatchOdd){
+        val index =  data.indexOf(data.find { it == matchOdd })
+        notifyItemChanged(index, matchOdd)
+    }
+
     fun updateBySelectCsTab(matchOdd: MatchOdd){
         val index =  data.indexOf(data.find { it == matchOdd })
         notifyItemChanged(index, matchOdd)

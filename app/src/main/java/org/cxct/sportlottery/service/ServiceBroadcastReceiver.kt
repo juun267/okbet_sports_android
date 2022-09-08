@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.service.EventType
@@ -157,33 +154,35 @@ open class ServiceBroadcastReceiver(
     }
 
     private fun receiveMessage(bundle: Bundle?) {
-        val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
-        val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
-        val decryptMessage = EncryptUtil.uncompress(messageStr)
-        try {
-            decryptMessage?.let {
-                if (it.isNotEmpty()) {
-                    val json = JSONTokener(it).nextValue()
-                    if (json is JSONArray) {
-                        var jsonArray = JSONArray(it)
-                        for (i in 0 until jsonArray.length()) {
-                            var jObj = jsonArray.optJSONObject(i)
-                            val jObjStr = jObj.toString()
-                            handleEvent(jObj, jObjStr, channelStr)
+        CoroutineScope(Dispatchers.IO).launch {
+            val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
+            val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
+            val decryptMessage = EncryptUtil.uncompress(messageStr)
+            try {
+                decryptMessage?.let {
+                    if (it.isNotEmpty()) {
+                        val json = JSONTokener(it).nextValue()
+                        if (json is JSONArray) {
+                            var jsonArray = JSONArray(it)
+                            for (i in 0 until jsonArray.length()) {
+                                var jObj = jsonArray.optJSONObject(i)
+                                val jObjStr = jObj.toString()
+                                handleEvent(jObj, jObjStr, channelStr)
+                            }
+                        } else if (json is JSONObject) {
+                            val jObjStr = json.toString()
+                            handleEvent(json, jObjStr, channelStr)
                         }
-                    } else if (json is JSONObject) {
-                        val jObjStr = json.toString()
-                        handleEvent(json, jObjStr, channelStr)
                     }
                 }
+            } catch (e: JSONException) {
+                Log.e("JSONException", "WS格式出問題 $messageStr")
+                e.printStackTrace()
             }
-        } catch (e: JSONException) {
-            Log.e("JSONException", "WS格式出問題 $messageStr")
-            e.printStackTrace()
         }
     }
 
-    private fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
+    private suspend fun handleEvent(jObj: JSONObject, jObjStr: String, channelStr: String) {
         when (val eventType = EventType.getEventType(jObj.optString("eventType"))) {
             EventType.NOTICE -> {
                 val data = ServiceMessage.getNotice(jObjStr)
@@ -249,30 +248,28 @@ open class ServiceBroadcastReceiver(
                     channel = channelStr
                 }
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
-                GlobalScope.launch(Dispatchers.Main) {
-                    withContext(Dispatchers.IO) {
-                        mUserId?.let { userId ->
-                            val discount = userInfoRepository?.getDiscount(userId)
-                            data?.let {
-                                it.setupOddDiscount(discount ?: 1.0F)
-                                SocketUpdateUtil.updateMatchOdds(it)
-                                it.updateOddsSelectedState()
-                                it.filterMenuPlayCate()
-                                it.sortOddsMap()
-                            }
-
-                            withContext(Dispatchers.Main) {
-                                _oddsChange.value = Event(data)
-                                data?.let { socketEvent ->
-                                    betInfoRepository.updateMatchOdd(socketEvent)
-                                }
-                            }
-                        } ?: run {
-                            _oddsChange.value = Event(data)
-                            data?.let { socketEvent ->
-                                betInfoRepository.updateMatchOdd(socketEvent)
-                            }
+                mUserId?.let { userId ->
+                    val discount = userInfoRepository?.getDiscount(userId)
+                    data?.let {
+                        it.setupOddDiscount(discount ?: 1.0F)
+                        SocketUpdateUtil.updateMatchOdds(it)
+                        it.updateOddsSelectedState()
+                        it.filterMenuPlayCate()
+                        it.sortOddsMap()
+                    }
+                    data?.let { socketEvent ->
+                        withContext(Dispatchers.Main) {
+                            oddsChangeListener?.onChange(socketEvent)
                         }
+                        betInfoRepository.updateMatchOdd(socketEvent)
+                    }
+
+                } ?: run {
+                    data?.let { socketEvent ->
+                        withContext(Dispatchers.Main) {
+                            oddsChangeListener?.onChange(socketEvent)
+                        }
+                        betInfoRepository.updateMatchOdd(socketEvent)
                     }
                 }
             }
@@ -432,5 +429,13 @@ open class ServiceBroadcastReceiver(
         }
 
         return this
+    }
+
+    var oddsChangeListener: OddsChangeListener? = null
+
+    class OddsChangeListener(
+        val onOddsChangeListener: (oddsChangeEvent: OddsChangeEvent) -> Unit
+    ) {
+        fun onChange(oddsChangeEvent: OddsChangeEvent) = onOddsChangeListener(oddsChangeEvent)
     }
 }

@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -497,40 +498,37 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             }
         }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                val leagueOdds = leagueAdapter.data
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener{ oddsChangeEvent ->
+            val leagueOdds = leagueAdapter.data
 
-                leagueOdds.updateOddsSort(args.gameType.key, playCategoryAdapter) //篩選玩法
+            leagueOdds.updateOddsSort(args.gameType.key, playCategoryAdapter) //篩選玩法
 
-                //翻譯更新
-                leagueOdds.forEach { LeagueOdd ->
-                    LeagueOdd.matchOdds.forEach { MatchOdd ->
-                        if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                            //馬克說betPlayCateNameMap還是由socket更新
-                            oddsChangeEvent.betPlayCateNameMap?.let {
-                                MatchOdd.betPlayCateNameMap?.putAll(it)
-                            }
+            //翻譯更新
+            leagueOdds.forEach { LeagueOdd ->
+                LeagueOdd.matchOdds.forEach { MatchOdd ->
+                    if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                        //馬克說betPlayCateNameMap還是由socket更新
+                        oddsChangeEvent.betPlayCateNameMap?.let {
+                            MatchOdd.betPlayCateNameMap?.putAll(it)
                         }
                     }
                 }
-
-                leagueOdds.forEachIndexed { index, leagueOdd ->
-                    if (leagueOdd.matchOdds.any { matchOdd ->
-                            SocketUpdateUtil.updateMatchOdds(
-                                context, matchOdd, oddsChangeEvent
-                            )
-                        } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
-                    ) {
-                        leagueOddMap[leagueOdd.league.id] = leagueOdd
-                        updateGameList(index, leagueOdd)
-                        updateBetInfo(leagueOdd, oddsChangeEvent)
-                    } else {
-                        updateGameList(index, leagueOdd)
-                    }
-                }
             }
+
+            leagueOdds.forEachIndexed { index, leagueOdd ->
+                if (leagueOdd.matchOdds.any { matchOdd ->
+                        SocketUpdateUtil.updateMatchOdds(
+                            context, matchOdd, oddsChangeEvent
+                        )
+                    } &&
+                    leagueOdd.unfold == FoldState.UNFOLD.code
+                ) {
+                    leagueOddMap[leagueOdd.league.id] = leagueOdd
+                    updateBetInfo(leagueOdd, oddsChangeEvent)
+                }
+                updateGameList(index, leagueOdd)
+            }
+            updateGameListBySubscribePosition(oddsChangeEvent.eventId)
         }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
@@ -627,6 +625,14 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         leagueAdapter.data[index] = leagueOdd
         if (game_league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_league_odd_list.isComputingLayout) {
             leagueAdapter.updateLeague(index, leagueOdd)
+        }
+    }
+
+    private fun updateGameListBySubscribePosition(matchId: String?) {
+        game_league_odd_list?.let {
+            if (it.scrollState == RecyclerView.SCROLL_STATE_IDLE && !it.isComputingLayout) {
+                leagueAdapter.updateLeagueByPosition(matchId)
+            }
         }
     }
 

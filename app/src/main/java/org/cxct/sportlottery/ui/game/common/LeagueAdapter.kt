@@ -227,30 +227,32 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         } else {
             // Update with payload
-            when (payloads.first()) {
-                is LeagueOdd -> {
-                    val leagueOdd = payloads.first() as LeagueOdd
-                    (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
-                }
+            payloads.forEach {
+                when (it) {
+                    is LeagueOdd -> {
+                        (holder as ItemViewHolder).update(it, matchType, oddsType)
+                    }
 
-                is PayLoadEnum -> {
-                    (payloads.first() as PayLoadEnum).apply {
-                        when (this) {
-                            PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                (holder as ItemViewHolder).updateByBetInfo()
-                            }
-                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                (holder as ItemViewHolder).updateByPlayCate()
-                            }
-                            PayLoadEnum.EXPAND -> {
-                                (holder as ItemViewHolder).updateLeagueExpand(data[position], matchType)
+                    is PayLoadEnum -> {
+                        it.apply {
+                            when (this) {
+                                PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                    (holder as ItemViewHolder).updateByBetInfo()
+                                }
+                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                    (holder as ItemViewHolder).updateByPlayCate()
+                                }
+                                PayLoadEnum.EXPAND -> {
+                                    (holder as ItemViewHolder).updateLeagueExpand(data[position], matchType)
+                                }
                             }
                         }
                     }
-                }
 
-                is MatchOdd -> {
-                    (holder as ItemViewHolder).updateBySelectCsTab(payloads.first() as MatchOdd)
+                    // 作用於賠率刷新、波坦tab切換
+                    is MatchOdd -> {
+                        (holder as ItemViewHolder).updateByMatchIdForOdds(it)
+                    }
                 }
             }
         }
@@ -336,6 +338,12 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
 
         fun updateByPlayCate() {
             leagueOddAdapter.updateByPlayCate()
+        }
+
+        fun updateByMatchIdForOdds(matchOdd: MatchOdd){
+            if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
+                leagueOddAdapter.updateByMatchIdForOdds(matchOdd)
+            }
         }
 
         fun updateBySelectCsTab(matchOdd: MatchOdd){

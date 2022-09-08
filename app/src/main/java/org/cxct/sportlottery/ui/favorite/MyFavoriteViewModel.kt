@@ -306,4 +306,5 @@ class MyFavoriteViewModel(
         return this
     }
 
+    fun getSportSelectedCode(): String? = sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
 }
