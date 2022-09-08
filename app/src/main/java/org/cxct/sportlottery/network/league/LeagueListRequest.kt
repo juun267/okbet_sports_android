@@ -5,5 +5,6 @@ data class LeagueListRequest(
     val matchType: String,
     val date: String? = null,
     val startTime: String? = null,
-    val endTime: String? = null
+    val endTime: String? = null,
+    var playCateMenuCode: String? = null,
 )

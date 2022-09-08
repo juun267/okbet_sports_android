@@ -50,7 +50,11 @@ class LeagueSelectViewModel(
         date: String? = null,
         leagueIdList: List<String>? = null,
     ) {
-
+        //波胆要传 playCateMenuCode
+//        var playCateMenuCode:String?=null
+//        if (matchType == MatchType.CS.postValue) {
+//            playCateMenuCode = MenuCode.CS.code
+//        }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.leagueService.getLeagueList(
@@ -59,7 +63,8 @@ class LeagueSelectViewModel(
                         matchType,
                         startTime = startTime,
                         endTime = endTime,
-                        date = date
+                        date = date,
+//                        playCateMenuCode = playCateMenuCode
                     )
                 )
             }

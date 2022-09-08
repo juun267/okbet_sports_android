@@ -35,57 +35,18 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/margin_26"
         android:layout_weight="1"
-        android:layout_marginHorizontal="@dimen/margin_12"
+        android:layout_marginLeft="@dimen/margin_12"
         layout="@layout/view_search" />
-
-    <LinearLayout
-        android:id="@+id/lin_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-
-
-        <TextView
-            android:id="@+id/tv_balance_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginEnd="@dimen/margin_5"
-            android:textStyle="bold"
-            android:fontFamily="@font/helvetica_bold"
-            android:textColor="@color/color_414655"
-            android:textSize="@dimen/textSize16sp"
-            tools:text="₱" />
-
-        <TextView
-            android:id="@+id/tv_balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_4"
-            android:fontFamily="@font/helvetica_bold"
-            android:textColor="@color/color_414655"
-            android:textSize="@dimen/textSize18sp"
-            android:textStyle="bold"
-            android:text="12,600.000"
-            tools:text="12,600.000" />
-
-        <ImageView
-            android:id="@+id/iv_money_refresh"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:minWidth="30dp"
-            android:src="@drawable/ic_refresh_blue"
-            tools:visibility="visible" />
-    </LinearLayout>
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginLeft="@dimen/margin_12"
         android:background="@drawable/bg_btn_login_radius_11"
         android:textColor="@color/color_FFFFFF"
         android:textSize="12sp"
-        android:text="注册/登录"
+        android:text="@string/register_and_login"
         android:visibility="gone"
         tools:visibility="visible" />
 </LinearLayout>

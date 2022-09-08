@@ -197,6 +197,7 @@
                 android:visibility="gone" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
     <!--    <FrameLayout-->
     <!--        android:id="@+id/lin_fullscreen"-->
@@ -210,4 +211,21 @@
     <!--            android:layout_height="match_parent"/>-->
     <!--    </FrameLayout>-->
 
+    <!-- 投注單列表 & 快捷投注單 -->
+    <include
+        android:id="@+id/cl_bet_list_bar"
+        layout="@layout/bet_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bet_list_bar_height"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/fl_bet_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

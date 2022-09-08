@@ -12,7 +12,6 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -24,6 +23,7 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.item_sport_odd.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.tv_away_name
@@ -33,6 +33,8 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
@@ -42,12 +44,14 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.FLAG_LIVE
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
+import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.SportViewModel
@@ -59,6 +63,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
+import timber.log.Timber
 import java.util.*
 
 
@@ -87,7 +92,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         })
     }
-
+    private var betListFragment = BetListFragment()
     private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId) }
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
@@ -172,6 +177,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initData()
         initAllObserve()
         initUI()
+        initBottomNavigation()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -191,7 +197,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         iv_refresh.setOnClickListener {
             iv_refresh.animate().rotation(720f).setDuration(1000).start()
-            getData()
+            initAllObserve()
         }
         ImmersionBar.with(this)
             .statusBarDarkFont(false)
@@ -218,9 +224,36 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun initBottomNavigation() {
+        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
+        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
+        cl_bet_list_bar.setOnClickListener {
+            showBetListPage()
+        }
     }
 
     override fun showBetListPage() {
+        betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(
+                    betResultData: Receipt?,
+                    betParlayList: List<ParlayOdd>,
+                    isMultiBet: Boolean,
+                ) {
+                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
+                }
+
+            })
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
@@ -230,6 +263,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun updateBetListCount(num: Int) {
+        cl_bet_list_bar.isVisible = num > 0
+        cl_bet_list_bar.tv_bet_list_count.text = num.toString()
+        Timber.e("num: $num")
+        if (num > 0) viewModel.getMoney()
     }
 
     override fun showLoginNotify() {
@@ -369,7 +406,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.userInfo.observe(this) { userInfo ->
             oddsDetailListAdapter?.discount = userInfo?.discount ?: 1.0F
         }
-
+        viewModel.showBetInfoSingle.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                showBetListPage()
+            }
+        }
         viewModel.oddsDetailResult.observe(this) {
             it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
@@ -739,8 +780,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     //TODO 底部注单是否显示
     override fun getBetListPageVisible(): Boolean {
-
-        return false
+        return betListFragment.isVisible
     }
 
     /**
@@ -1078,10 +1118,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     }
 
-    fun refresh() {
-
-    }
-
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
 //            lin_video.isVisible =
@@ -1114,7 +1150,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     fun showFullScreen(enable: Boolean, orientation: Int) {
-        Log.d("hjq", "showFullScreen=" + enable + "," + orientation)
         if (enable) {
             sv_content.isVisible = false
             lin_center.isVisible = false

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.activity_sport_search.*
-import kotlinx.android.synthetic.main.dialog_password_verify.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -85,7 +84,7 @@ class SportSearchtActivity :
             MultiLanguagesApplication.saveSearchHistory(searchHistoryList)
             searchHistoryAdapter?.notifyDataSetChanged()
         }
-        tv_close.setOnClickListener {
+        btn_close.setOnClickListener {
             etSearch.text = null
         }
     }

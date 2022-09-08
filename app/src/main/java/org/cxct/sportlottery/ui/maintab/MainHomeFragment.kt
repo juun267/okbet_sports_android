@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.view.animation.LinearInterpolator
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -165,14 +163,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        tv_balance_currency.text = sConfigData?.systemCurrencySign
         setupLogin()
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
-        }
-        iv_money_refresh.setOnClickListener {
-            refreshMoneyLoading()
-            viewModel.getMoney()
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -194,10 +187,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 //            mPublicityAdapter.discount = newDiscount
         }
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let {
-                refreshMoneyHideLoading()
-                tv_balance.text = TextUtil.format(it)
-            }
+
         }
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
@@ -759,17 +749,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             )
         )
     }
-
-    private fun refreshMoneyLoading() {
-        var anim = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate)
-        anim.interpolator = LinearInterpolator()
-        iv_money_refresh.startAnimation(anim)
-    }
-
-    private fun refreshMoneyHideLoading() {
-        iv_money_refresh.clearAnimation()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         clearObservers()
@@ -797,7 +776,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun setupLogin() {
         if(viewModel != null && viewModel.isLogin!=null && viewModel.isLogin.value!!){
             val isLogin = viewModel.isLogin != null
-            lin_money.visibility = if (isLogin) View.VISIBLE else View.GONE
             btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
         }
     }

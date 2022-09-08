@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.view.animation.LinearInterpolator
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
@@ -29,7 +27,6 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
@@ -113,14 +110,9 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        tv_balance_currency.text = sConfigData?.systemCurrencySign
         setupLogin()
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
-        }
-        iv_money_refresh.setOnClickListener {
-            refreshMoneyLoading()
-            viewModel.getMoney()
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -176,8 +168,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             val countCS =
                 sportMenuResult?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
-//            val countParlay =
-//                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+            val countParlay =
+                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
 
@@ -221,6 +213,10 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
                 tv_number?.text = countCS.toString()
             }
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 7)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
+                tv_number?.text = countCS.toString()
+            }
 
             //0401需求先隱藏特優賠率
 //            val tabEps = tabLayout.getTabAt(7)?.customView
@@ -256,7 +252,7 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         MatchType.EARLY to 3,
         MatchType.OUTRIGHT to 4,
         MatchType.CS to 5,
-//        MatchType.PARLAY to 6,
+        MatchType.PARLAY to 6,
 //        MatchType.EPS to 7,
         MatchType.MAIN to 99
     )
@@ -268,7 +264,7 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         MatchType.EARLY to 3,
         MatchType.CS to 4,
         MatchType.OUTRIGHT to 5,
-//        MatchType.PARLAY to 5,
+        MatchType.PARLAY to 6,
 //        MatchType.EPS to 6,
         MatchType.MAIN to 99
     )
@@ -362,10 +358,7 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
     private fun initObserve() {
         viewModel.userMoney.observe(viewLifecycleOwner) {
-            it?.let { money ->
-                refreshMoneyHideLoading()
-                tv_balance.text = TextUtil.formatMoney(money)
-            }
+
         }
         viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) {
             val message = it.getContentIfNotHandled()
@@ -581,19 +574,9 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
     private fun setupLogin() {
         val isLogin = viewModel.isLogin != null && viewModel.isLogin.value!!
-        lin_money.visibility = if (isLogin) View.VISIBLE else View.GONE
         btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
     }
 
-    private fun refreshMoneyLoading() {
-        var anim = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate)
-        anim.interpolator = LinearInterpolator()
-        iv_money_refresh.startAnimation(anim)
-    }
-
-    private fun refreshMoneyHideLoading() {
-        iv_money_refresh.clearAnimation()
-    }
 
     private fun navGameFragment(matchType: MatchType) {
         val fragment = when (matchType) {

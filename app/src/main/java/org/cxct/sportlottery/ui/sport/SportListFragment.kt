@@ -295,7 +295,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         }
         lin_filter.setOnClickListener {
             gameType?.let {
-                if (matchType == MatchType.EARLY) {
+                if (matchType == MatchType.EARLY || matchType == MatchType.CS) {
                     val timeRangeParams = viewModel.getCurrentTimeRangeParams()
                     LeagueSelectActivity.start(requireContext(),
                         it,
