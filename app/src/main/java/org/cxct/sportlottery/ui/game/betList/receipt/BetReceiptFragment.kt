@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -205,16 +204,16 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             }
         }
-        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
+//        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
     }
 
     private fun showOddChange() {
-        btn_complete.text = getString(R.string.bet_fail_btn)
-        btn_complete.setTextColor(
-            ContextCompat.getColor(
-                btn_complete.context,
-                R.color.white
-            )
-        )
+//        btn_complete.text = getString(R.string.bet_fail_btn)
+//        btn_complete.setTextColor(
+//            ContextCompat.getColor(
+//                btn_complete.context,
+//                R.color.white
+//            )
+//        )
     }
 }

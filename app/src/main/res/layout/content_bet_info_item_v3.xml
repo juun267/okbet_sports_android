@@ -117,7 +117,7 @@
                         android:layout_height="8dp"
                         android:layout_marginStart="4dp"
                         android:visibility="gone"
-                        tools:src="@drawable/selector_odds_arrow_up"
+                        tools:src="@drawable/ic_arrow_odd_up"
                         tools:visibility="visible" />
                 </LinearLayout>
 
@@ -315,7 +315,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/keyboard_height"
                     android:layout_marginHorizontal="@dimen/margin_8"
-                    android:paddingTop="@dimen/margin_10"
+                    android:paddingTop="@dimen/margin_12"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView"
                     tools:visibility="visible" />
@@ -361,7 +361,7 @@
                         android:textSize="@dimen/textSize14sp"
                         android:visibility="gone"
                         app:drawableStartCompat="@drawable/ic_bet_lock_tip"
-                        app:drawableTint="@color/color_E38902"
+                        app:drawableTint="@color/color_EBA900"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:visibility="gone" />
 
@@ -374,10 +374,11 @@
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/margin_10"
                         android:text="@string/bet_info_bet_lock_hint"
-                        android:textColor="@color/color_F9F9F9"
+                        android:textColor="@color/color_141931_F9F9F9"
                         android:textSize="@dimen/textSize14sp"
                         android:visibility="gone"
                         app:drawableStartCompat="@drawable/ic_bet_lock_tip"
+                        app:drawableTint="@color/color_141931_F9F9F9"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:visibility="visible" />
 

@@ -199,7 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/keyboard_height"
                     android:layout_marginHorizontal="@dimen/margin_24"
-                    android:paddingTop="@dimen/margin_10"
+                    android:paddingTop="@dimen/margin_15"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:visibility="visible" />
