@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -213,7 +214,6 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
         receiver.serviceConnectStatus.removeObservers(viewLifecycleOwner)
         receiver.matchStatusChange.removeObservers(viewLifecycleOwner)
         receiver.matchClock.removeObservers(viewLifecycleOwner)
-        receiver.oddsChange.removeObservers(viewLifecycleOwner)
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
         receiver.leagueChange.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
@@ -486,38 +486,37 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
             }
         }
 
-        receiver.oddsChange.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let { oddsChangeEvent ->
-                val targetList = getNewestRecommendData()
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            val targetList = getNewestRecommendData()
+            var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
-                targetList.forEachIndexed { index, recommend ->
-                    if (recommend.id == oddsChangeEvent.eventId) {
-                        recommend.sortOddsMap()
+            targetList.forEachIndexed { index, recommend ->
+                if (recommend.id == oddsChangeEvent.eventId) {
+                    recommend.sortOddsMap()
 
-                        //region 翻譯更新
-                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                            recommend.playCateNameMap?.putAll(playCateNameMap)
-                        }
-                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                            recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                        }
-                        //endregion
-
-                        if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
-                            updateBetInfo(recommend, oddsChangeEvent)
-                            needUpdate = true
-                        }
-
-                        if (isNewestDataFromApi)
-                            isNewestDataFromApi = false
+                    //region 翻譯更新
+                    oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                        recommend.playCateNameMap?.putAll(playCateNameMap)
                     }
-                }
-                mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
-                if (needUpdate) {
-                    updateRecommendListData(targetList)
+                    oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                        recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                    }
+                    //endregion
+
+                    if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
+                        updateBetInfo(recommend, oddsChangeEvent)
+                        needUpdate = true
+                    }
+
+                    if (isNewestDataFromApi)
+                        isNewestDataFromApi = false
                 }
             }
+            mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
+            if (needUpdate) {
+                updateRecommendListData(targetList)
+            }
+
         }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
@@ -611,30 +610,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     }
 
     private fun Recommend.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size
-                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-
-    /**
-     * 賠率排序
-     */
-    private fun OddsChangeEvent.sortOddsMap() {
-        this.odds.forEach { (_, value) ->
-            if ((value?.size
-                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
+        this.oddsMap?.sortOddsMap()
     }
 
     private fun queryData() {

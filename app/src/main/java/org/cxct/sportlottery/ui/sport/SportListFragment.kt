@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -836,9 +837,8 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
             }
         }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { oddsChangeEvent ->
-                when (game_list.adapter) {
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+                when (game_list?.adapter) {
                     is SportLeagueAdapter -> {
                         sportLeagueAdapter.data.forEach { leagueOdd ->
                             leagueOdd.matchOdds.forEach { matchOdd ->
@@ -886,7 +886,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                         viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
                     }
                 }
-            }
         }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {

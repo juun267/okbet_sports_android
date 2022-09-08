@@ -168,11 +168,11 @@ object BetInfoRepository {
                         }
                     }
                 }
-                _parlayList.value = newParlayList
-                _betParlaySuccess.value = true
+                _parlayList.postValue(newParlayList)
+                _betParlaySuccess.postValue(true)
             } else {
-                _parlayList.value = mutableListOf()
-                _betParlaySuccess.value = false
+                _parlayList.postValue(mutableListOf())
+                _betParlaySuccess.postValue(false)
             }
         }
     }
@@ -486,17 +486,8 @@ object BetInfoRepository {
 
         checkBetInfoContent(updateBetInfoList)
         updateBetOrderParlay(updateBetInfoList)
-        _betInfoList.value = Event(updateBetInfoList)
+        _betInfoList.postValue(Event(updateBetInfoList))
     }
-
-    fun notifyBetInfoChanged(newList: MutableList<BetInfoListData>) {
-
-        updateQuickListManager(newList)
-
-        checkBetInfoContent(newList)
-        _betInfoList.value = Event(newList)
-    }
-
 
     /**
      * 檢查注單中賠率、盤口狀態
@@ -560,7 +551,7 @@ object BetInfoRepository {
         val newList: MutableList<Odd> = mutableListOf()
         when (changeEvent) {
             is OddsChangeEvent -> {
-                changeEvent.odds.forEach { map ->
+                changeEvent.odds.toMap().forEach { map ->
                     val value = map.value
                     value?.forEach { odd ->
                         odd?.let {
@@ -584,7 +575,7 @@ object BetInfoRepository {
 
             is MatchOddsChangeEvent -> {
                 for ((_, value) in changeEvent.odds ?: mapOf()) {
-                    value.odds?.forEach { odd ->
+                    value.odds?.toList()?.forEach { odd ->
                         odd?.let { o ->
                             newList.add(o)
                         }
@@ -592,7 +583,7 @@ object BetInfoRepository {
                 }
             }
         }
-        betInfoList.value?.peekContent()?.forEach {
+        betInfoList.value?.peekContent()?.toList()?.forEach {
             updateItem(it.matchOdd, newList)
         }
         notifyBetInfoChanged()

@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.sortOddsMap
 
 /**
  * @app_destination 宣傳頁
@@ -456,26 +457,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
     }
 
     private fun Recommend.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-
-    /**
-     * 賠率排序
-     */
-    private fun OddsChangeEvent.sortOddsMap() {
-        this.odds.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
+        this.oddsMap?.sortOddsMap()
     }
 
     private fun queryData() {

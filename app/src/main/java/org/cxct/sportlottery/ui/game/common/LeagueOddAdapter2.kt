@@ -100,6 +100,11 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
         }
     }
 
+    fun updateByMatchIdForOdds(matchOdd: MatchOdd){
+        val index =  data.indexOf(data.find { it == matchOdd })
+        notifyItemChanged(index, matchOdd)
+    }
+
     fun updateBySelectCsTab(matchOdd: MatchOdd){
         val index =  data.indexOf(data.find { it == matchOdd })
         notifyItemChanged(index, matchOdd)
@@ -137,10 +142,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
-            //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
-            Log.d("Hewie", "更新：賽事($position)")
-
             when (payloads.first()) {
                 is MatchOdd -> {
                     val matchOdd = payloads.first() as MatchOdd
@@ -213,9 +215,8 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTimeAndStatus(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
-            setupOddsButton(matchType, item, oddsType, leagueOddListener, playSelectedCodeSelectionType)
+            setupOddsButton(matchType, item, leagueOddListener)
 
-            //setupQuickCategory(item, oddsType, leagueOddListener)
             setQuickListView(item, leagueOddListener, oddsType, playSelectedCodeSelectionType, playSelectedCode)
             setupCsTextLayout(matchType, item, leagueOddListener)
         }
@@ -911,13 +912,12 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
             )
         }
 
-        val oddButtonPagerAdapter = OddButtonPagerAdapter()
+        private val oddButtonPagerAdapter = OddButtonPagerAdapter()
+
         private fun setupOddsButton(
             matchType: MatchType,
             item: MatchOdd,
-            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?,
-            playSelectedCodeSelectionType: Int?
         ) {
             itemView.rv_league_odd_btn_pager_main.apply {
                 linearLayoutManager.isAutoMeasureEnabled = false
@@ -941,10 +941,6 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                             )
                         }
                 }
-
-                Log.d("Hewie4", "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
-                updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
-
                 OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             }
         }
