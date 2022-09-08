@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
+import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
 /**
@@ -46,11 +47,16 @@ class SettingPasswordActivity :
     private fun initView() {
         tv_toolbar_title.setTitleLetterSpacing()
         tv_toolbar_title.text = getString(R.string.setting_password)
-
+        eet_current_password.transformationMethod =
+            AsteriskPasswordTransformationMethod()
+        eet_new_password.transformationMethod =
+            AsteriskPasswordTransformationMethod()
+        eet_confirm_password.transformationMethod =
+            AsteriskPasswordTransformationMethod()
         et_current_password.endIconImageButton.setOnClickListener {
             if (et_current_password.endIconResourceId == R.drawable.ic_eye_open) {
                 eet_current_password.transformationMethod =
-                    PasswordTransformationMethod.getInstance()
+                    AsteriskPasswordTransformationMethod()
                 et_current_password.setEndIcon(R.drawable.ic_eye_close)
             } else {
                 et_current_password.setEndIcon(R.drawable.ic_eye_open)
@@ -64,7 +70,7 @@ class SettingPasswordActivity :
         et_new_password.endIconImageButton.setOnClickListener {
             if (et_new_password.endIconResourceId == R.drawable.ic_eye_open) {
                 eet_new_password.transformationMethod =
-                    PasswordTransformationMethod.getInstance()
+                    AsteriskPasswordTransformationMethod()
                 et_new_password.setEndIcon(R.drawable.ic_eye_close)
             } else {
                 et_new_password.setEndIcon(R.drawable.ic_eye_open)
@@ -72,12 +78,12 @@ class SettingPasswordActivity :
                     HideReturnsTransformationMethod.getInstance()
             }
             et_new_password.hasFocus = true
-            eet_new_password.setSelection(eet_current_password.text.toString().length)
+            eet_new_password.setSelection(eet_new_password.text.toString().length)
         }
         et_confirm_password.endIconImageButton.setOnClickListener {
             if (et_confirm_password.endIconResourceId == R.drawable.ic_eye_open) {
                 eet_confirm_password.transformationMethod =
-                    PasswordTransformationMethod.getInstance()
+                    AsteriskPasswordTransformationMethod()
                 et_confirm_password.setEndIcon(R.drawable.ic_eye_close)
             } else {
                 et_confirm_password.setEndIcon(R.drawable.ic_eye_open)
@@ -85,7 +91,7 @@ class SettingPasswordActivity :
                     HideReturnsTransformationMethod.getInstance()
             }
             et_confirm_password.hasFocus = true
-            eet_confirm_password.setSelection(eet_current_password.text.toString().length)
+            eet_confirm_password.setSelection(eet_confirm_password.text.toString().length)
         }
 
     }
