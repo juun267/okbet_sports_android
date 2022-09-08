@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
+import org.cxct.sportlottery.util.sortOddsMap
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
@@ -49,13 +50,7 @@ data class MatchOdd(
     var quickPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
     fun sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if (value?.size!! > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
-                value.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
+        this.oddsMap?.sortOddsMap()
     }
 
     var runningTime: String = ""

@@ -658,20 +658,6 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         }
     }
 
-    /**
-     * 賠率排序
-     */
-    private fun OddsChangeEvent.sortOddsMap() {
-        this.odds.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-
-
     private fun updateSportBackground(sportCode: String?) {
         GameConfigManager.getTitleBarBackgroundInPublicPage(sportCode, MultiLanguagesApplication.isNightMode)?.let { titleRes ->
             game_league_toolbar_bg.setImageResource(titleRes)

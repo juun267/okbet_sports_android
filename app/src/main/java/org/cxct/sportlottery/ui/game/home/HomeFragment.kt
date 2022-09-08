@@ -51,11 +51,8 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.OddsSortUtil.recommendSortOddsMap
-import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.getVisibleRangePosition
 import java.util.*
 
 
@@ -1422,14 +1419,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
      */
     private fun MutableList<GameEntity>.sortOddsMap() {
         this.forEach { GameEntity ->
-            GameEntity.matchOdds.forEach { MatchOdd ->
-                MatchOdd.oddsMap?.forEach { (key, value) ->
-                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                        value?.sortBy {
-                            it?.marketSort
-                        }
-                    }
-                }
+            GameEntity.matchOdds.forEach { matchOdd ->
+                matchOdd.oddsMap?.sortOddsMap()
             }
         }
     }
@@ -1447,14 +1438,8 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
      * 精選賽事賠率排序
      */
     private fun MutableList<MatchOdd>.highlightSortOddsMap() {
-        this.forEach { MatchOdd ->
-            MatchOdd.oddsMap?.forEach { (key, value) ->
-                if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                    value?.sortBy {
-                        it?.marketSort
-                    }
-                }
-            }
+        this.forEach { matchOdd ->
+            matchOdd.oddsMap?.sortOddsMap()
         }
     }
 

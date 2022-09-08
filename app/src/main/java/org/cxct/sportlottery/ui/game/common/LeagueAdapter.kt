@@ -174,6 +174,16 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
     }
 
+    fun updateLeagueByPosition(matchId: String?){
+        data.forEachIndexed { index, l ->
+            l.matchOdds.find { m ->
+                m.matchInfo?.id == matchId
+            }?.let {
+                notifyItemChanged(index, it)
+            }
+        }
+    }
+
     // region update by payload functions
     fun updateLeague(position: Int, payload: LeagueOdd) {
         notifyItemChanged(position, payload)

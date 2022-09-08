@@ -1517,17 +1517,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             it?.let { matchClockEvent ->
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
-                        val leagueOdds = leagueAdapter.data
-
-                        leagueOdds.forEachIndexed { _, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateMatchClock(
-                                        matchOdd,
-                                        matchClockEvent
-                                    )
-                                } &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //暫時不處理 防止過多更新
+                        leagueAdapter.data.forEachIndexed { _, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                SocketUpdateUtil.updateMatchClock(matchOdd, matchClockEvent)
                             }
                         }
                     }
@@ -1587,11 +1579,13 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 leagueOddMap[leagueOdd.league.id] = leagueOdd
-                                updateGameList(index, leagueOdd)
                                 updateBetInfo(leagueOdd, oddsChangeEvent)
-                            } else {
-                                updateGameList(index, leagueOdd)
                             }
+                            leagueAdapter.data[index] = leagueOdd
+                        }
+
+                        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
+                            leagueAdapter.updateLeagueByPosition(oddsChangeEvent.eventId)
                         }
                     }
 
@@ -1621,13 +1615,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             it?.let { matchOddsLockEvent ->
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
-                        val leagueOdds = leagueAdapter.data
-
-                        leagueOdds.forEachIndexed { _, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
-                                } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //暫時不處理 防止過多更新
+                        leagueAdapter.data.forEachIndexed { _, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                             }
                         }
                     }
@@ -1651,18 +1641,9 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
-                        val leagueOdds = leagueAdapter.data
-
-                        leagueOdds.forEachIndexed { _, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateOddStatus(
-                                        matchOdd,
-                                        globalStopEvent
-                                    )
-                                } &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code
-                            ) {
-                                //暫時不處理 防止過多更新
+                        leagueAdapter.data.forEachIndexed { _, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)
                             }
                         }
                     }
@@ -1725,13 +1706,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         }
     }
 
-    private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
-        leagueAdapter.data[index] = leagueOdd
-        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
-            leagueAdapter.updateLeague(index, leagueOdd)
-        }
-    }
-
     /**
      * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
      */
@@ -1776,14 +1750,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun MutableList<LeagueOdd>.sortOddsMap() {
         this.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { MatchOdd ->
-                MatchOdd.oddsMap?.forEach { (_, value) ->
-                    if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                        value?.sortBy {
-                            it?.marketSort
-                        }
-                    }
-                }
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.oddsMap?.sortOddsMap()
             }
         }
     }

@@ -45,6 +45,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import org.cxct.sportlottery.util.sortOddsMap
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -386,13 +387,7 @@ open class ServiceBroadcastReceiver(
     }
 
     private fun OddsChangeEvent.sortOddsMap() {
-        this.odds.forEach { (_, value) ->
-            if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
+        this.odds.sortOddsMap()
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
