@@ -992,14 +992,18 @@ fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Uni
     })
 }
 
-fun ImageView.setSvgDrawable(icon: String?) {
-    val countryIcon = SvgUtil.getSvgDrawable(
-        this.context,
-        if (icon.isNullOrEmpty()) {
-            SvgUtil.defaultIconPath
-        } else {
-            icon
-        }
-    )
-    this.setImageDrawable(countryIcon)
+fun ImageView.setTeamLogo(icon: String?) {
+    if (icon.isNullOrEmpty()) {
+        setImageResource(R.drawable.ic_team_default)
+    } else {
+        setImageDrawable(SvgUtil.getSvgDrawable(this.context, icon))
+    }
+}
+
+fun ImageView.setLeagueLogo(icon: String?) {
+    if (icon.isNullOrEmpty()) {
+        setImageResource(R.drawable.ic_league_default)
+    } else {
+        setImageDrawable(SvgUtil.getSvgDrawable(this.context, icon))
+    }
 }
