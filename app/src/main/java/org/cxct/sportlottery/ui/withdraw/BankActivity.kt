@@ -38,21 +38,46 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun checkMode() {
+        val addBank = intent.getIntExtra("add_bank", 0)
+        if (addBank == 1) {
+            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                null,
+                TransferType.BANK
+            )
+            mNavController.navigate(action)
+        }
+
         val modifyType = intent.getSerializableExtra(ModifyBankTypeKey)?.let { it as TransferType? }
-        val transferTypeAddSwitch = intent.getParcelableExtra<TransferTypeAddSwitch>(TransferTypeAddSwitch)
+        val transferTypeAddSwitch =
+            intent.getParcelableExtra<TransferTypeAddSwitch>(TransferTypeAddSwitch)
 //        Timber.e("BankActivity transferTypeAddSwitch: $transferTypeAddSwitch")
         modifyType?.let { type ->
             when (type) {
                 TransferType.BANK -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, transferTypeAddSwitch)
+                    val action =
+                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                            null,
+                            type,
+                            transferTypeAddSwitch
+                        )
                     mNavController.navigate(action)
                 }
                 TransferType.CRYPTO -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, transferTypeAddSwitch)
+                    val action =
+                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                            null,
+                            type,
+                            transferTypeAddSwitch
+                        )
                     mNavController.navigate(action)
                 }
                 TransferType.E_WALLET -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, type, transferTypeAddSwitch)
+                    val action =
+                        BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                            null,
+                            type,
+                            transferTypeAddSwitch
+                        )
                     mNavController.navigate(action)
                 }
             }

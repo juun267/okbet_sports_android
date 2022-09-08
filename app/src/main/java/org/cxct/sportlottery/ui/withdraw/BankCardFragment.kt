@@ -207,7 +207,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupClearButtonVisibility(setupView: ExtendedEditText, checkFun: (String) -> Unit) {
         setupView.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
-                checkFun.invoke(setupView.getText().toString())
+                checkFun.invoke(setupView.text.toString())
         }
     }
 
@@ -215,7 +215,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupEyeButtonVisibility(setupView: ExtendedEditText, checkFun: (String) -> Unit) {
         setupView.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
-                checkFun(setupView.getText().toString())
+                checkFun(setupView.text.toString())
         }
     }
 

@@ -190,6 +190,7 @@
                             android:background="@color/exo_white">
 
                             <TextView
+                                android:id="@+id/tv_add_bank"
                                 android:layout_width="wrap_content"
                                 android:layout_height="50dp"
                                 android:layout_gravity="center"
