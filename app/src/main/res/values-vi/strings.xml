@@ -554,7 +554,7 @@
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
-    <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi, %1$s thành %2$s</string>
+    <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
     <string name="bet_list_single">Đơn cược</string>
     <string name="bet_list_single_type">Cược đơn</string>
