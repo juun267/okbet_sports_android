@@ -44,7 +44,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
-import org.cxct.sportlottery.util.setSvgDrawable
+import org.cxct.sportlottery.util.setTeamLogo
 import java.util.*
 
 class SportOddAdapter(private val matchType: MatchType) :
@@ -390,8 +390,8 @@ class SportOddAdapter(private val matchType: MatchType) :
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
-            itemView.iv_home_team_logo.setSvgDrawable(item.matchInfo?.homeIcon)
-            itemView.iv_away_team_logo.setSvgDrawable(item.matchInfo?.awayIcon)
+            itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
+            itemView.iv_away_team_logo.setTeamLogo(item.matchInfo?.awayIcon)
             showStrongTeam(item)
             setupMatchScore(item, matchType)
             setStatusTextColor(item)
@@ -422,8 +422,8 @@ class SportOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
 
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
-            itemView.iv_home_team_logo.setSvgDrawable(item.matchInfo?.homeIcon)
-            itemView.iv_away_team_logo.setSvgDrawable(item.matchInfo?.awayIcon)
+            itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
+            itemView.iv_away_team_logo.setTeamLogo(item.matchInfo?.awayIcon)
 
             showStrongTeam(item)
 
@@ -1002,7 +1002,9 @@ class SportOddAdapter(private val matchType: MatchType) :
 
                 OverScrollDecoratorHelper.setUpOverScroll(this,
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                itemView.hIndicator.bindRecyclerView(this)
             }
+
         }
 
         private fun updateOddsButton(

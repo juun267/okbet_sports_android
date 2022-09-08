@@ -2349,7 +2349,7 @@ class GameViewModel(
         else -> null
     }
 
-    fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
+    fun getSportSelectedCode(matchType: MatchType? = curMatchType.value): String? = when (matchType) {
         MatchType.MAIN -> {
             specialMenuData?.items?.find { it.isSelected }?.code
         }
@@ -2629,28 +2629,6 @@ class GameViewModel(
     }
 
     /**
-     * 有些playCateCode後面會給： 要特別做處理
-     * */
-    private fun MatchOdd.refactorPlayCode() {
-        try {
-            val oddsMap: MutableMap<String, MutableList<Odd?>?>
-
-            val rgzMap = this.oddsMap?.filter { (key, value) -> key.contains(":") }
-            rgzMap?.let {
-                if (rgzMap.isNotEmpty()) {
-                    oddsMap = this.oddsMap?.filter { !it.key.contains(":") }?.toMutableMap() ?: mutableMapOf()
-                    oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
-
-                    this.oddsMap?.clear()
-                    this.oddsMap?.putAll(oddsMap)
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    /**
      * 根據賽事的oddsSort將盤口重新排序
      */
     private fun MatchOdd.sortOdds() {
@@ -2821,10 +2799,6 @@ class GameViewModel(
 
     fun resetErrorDialogMsg() {
         _showErrorDialogMsg.value = ""
-    }
-
-    fun updateBetAmount(input: String) {
-        betInfoRepository.updateBetAmount(input)
     }
 
     //region 宣傳頁用
@@ -3379,7 +3353,7 @@ class GameViewModel(
         }
     }
 
-    suspend fun getOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null): OddsListResult? {
+    private suspend fun getOddsList(gameType: String, matchType: String, leagueIdList: List<String>? = null): OddsListResult? {
         return doNetwork(androidContext) {
             OneBoSportApi.oddsService.getOddsList(
                 OddsListRequest(

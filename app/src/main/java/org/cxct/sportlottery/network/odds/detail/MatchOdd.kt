@@ -5,6 +5,7 @@ import android.util.Log
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.util.sortOddsMapByDetail
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
@@ -20,12 +21,6 @@ data class MatchOdd(
     var odds: MutableMap<String, CateDetailData>
 ){
     fun sortOddsMap() {
-        this.odds.forEach { (_, value) ->
-            if (value?.odds.size!! > 3 && value.odds.first()?.marketSort != 0 && (value.odds.first()?.odds != value.odds.first()?.malayOdds)) {
-                value?.odds.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
+        this.odds.sortOddsMapByDetail()
     }
 }

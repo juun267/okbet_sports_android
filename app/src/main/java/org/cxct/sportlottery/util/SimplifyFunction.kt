@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
@@ -973,7 +974,8 @@ fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
 /**
  * 判斷當前是否為多站點平台
  */
-fun isMultipleSitePlat(): Boolean = LocalUtils.getString(R.string.app_name) == "ONbet"
+fun isMultipleSitePlat(): Boolean =
+    LocalUtils.getString(R.string.app_name) == "ONbet" || LocalUtils.getString(R.string.app_name) == "BET88" || LocalUtils.getString(R.string.app_name) == "OKbet9"
 
 /**
  * 判斷當前是否為OKbet平台
@@ -992,14 +994,45 @@ fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Uni
     })
 }
 
-fun ImageView.setSvgDrawable(icon: String?) {
-    val countryIcon = SvgUtil.getSvgDrawable(
-        this.context,
-        if (icon.isNullOrEmpty()) {
-            SvgUtil.defaultIconPath
-        } else {
-            icon
+fun ImageView.setTeamLogo(icon: String?) {
+    if (icon.isNullOrEmpty()) {
+        setImageResource(R.drawable.ic_team_default)
+    } else {
+        setImageDrawable(SvgUtil.getSvgDrawable(this.context, icon))
+    }
+}
+
+fun ImageView.setLeagueLogo(icon: String?) {
+    if (icon.isNullOrEmpty()) {
+        setImageResource(R.drawable.ic_league_default)
+    } else {
+        setImageDrawable(SvgUtil.getSvgDrawable(this.context, icon))
+    }
+}
+
+fun MutableMap<String, MutableList<Odd?>?>.sortOddsMap(sizeCheck: Int = 3) {
+    forEach { (_, value) ->
+        when (sizeCheck) {
+            3 -> {
+                if (value?.size ?: 0 > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)) {
+                    value?.sortBy { it?.marketSort }
+                }
+            }
+
+            // 目前僅作用於推薦賽事 (OddData)
+            2 -> {
+                if (value?.size ?: 0 > 2 && value?.first()?.marketSort != 0) {
+                    value?.sortBy { it?.marketSort }
+                }
+            }
         }
-    )
-    this.setImageDrawable(countryIcon)
+    }
+}
+
+fun MutableMap<String, CateDetailData>.sortOddsMapByDetail() {
+    forEach { (_, value) ->
+        if (value.odds.size > 3 && value.odds.first()?.marketSort != 0 && (value.odds.first()?.odds != value.odds.first()?.malayOdds)) {
+            value.odds.sortBy { it?.marketSort }
+        }
+    }
 }

@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -437,8 +438,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             }
         }
 
-        receiver.oddsChange.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let { oddsChangeEvent ->
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
                 val targetList = getNewestRecommendData()
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
@@ -467,7 +467,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 if (needUpdate) {
                     homeRecommendAdapter.updateRecommendItem(targetList, viewModel.oddsType.value!!)
                 }
-            }
         }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
@@ -766,7 +765,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         receiver.serviceConnectStatus.removeObservers(viewLifecycleOwner)
         receiver.matchStatusChange.removeObservers(viewLifecycleOwner)
         receiver.matchClock.removeObservers(viewLifecycleOwner)
-        receiver.oddsChange.removeObservers(viewLifecycleOwner)
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
         receiver.leagueChange.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
