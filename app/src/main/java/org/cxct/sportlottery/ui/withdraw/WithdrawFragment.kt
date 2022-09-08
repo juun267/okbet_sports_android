@@ -103,7 +103,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             clearIsShow = false
             getAllIsShow = true
         }
-
+        tv_add_bank.setOnClickListener {
+            var intent = Intent(context, BankActivity::class.java)
+            intent.putExtra("add_bank", 1)
+            startActivity(intent)
+        }
 
 
         ll_tab_layout.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
