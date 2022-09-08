@@ -294,27 +294,27 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 when (gameType) {
                     GameType.FT.key -> { //上半場, 全場
                         tv_first_half_score.visibility = View.VISIBLE
-                        tv_second_half_score.visibility = View.GONE
-                        tv_end_game_score.visibility = View.GONE
+                     //   tv_second_half_score.visibility = View.GONE
+                      //  tv_end_game_score.visibility = View.GONE
                         tv_full_game_score.visibility = View.VISIBLE
                     }
                     GameType.BK.key -> { //上半場, 下半場, 賽果
                         tv_first_half_score.visibility = View.VISIBLE
-                        tv_second_half_score.visibility = View.VISIBLE
-                        tv_end_game_score.visibility = View.VISIBLE
+                      //  tv_second_half_score.visibility = View.VISIBLE
+                  //      tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
                     GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
                     GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key  -> { //賽果
                         tv_first_half_score.visibility = View.GONE
-                        tv_second_half_score.visibility = View.GONE
-                        tv_end_game_score.visibility = View.VISIBLE
+                      //  tv_second_half_score.visibility = View.GONE
+                   //     tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
                     else -> {
                         tv_first_half_score.visibility = View.GONE
-                        tv_second_half_score.visibility = View.GONE
-                        tv_end_game_score.visibility = View.GONE
+                      //  tv_second_half_score.visibility = View.GONE
+                     //   tv_end_game_score.visibility = View.GONE
                         tv_full_game_score.visibility = View.GONE
                     }
                 }
@@ -344,10 +344,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         ?: it.find { it.status == StatusType.END_GAME.code }
                     tv_first_half_score.text =
                         firstHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
-                    tv_second_half_score.text =
-                        secondHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
-                    tv_end_game_score.text =
-                        endGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
+               //     tv_second_half_score.text =
+              //          secondHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
+                 //   tv_end_game_score.text =
+                   //     endGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                     tv_full_game_score.text =
                         fullGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                 }
