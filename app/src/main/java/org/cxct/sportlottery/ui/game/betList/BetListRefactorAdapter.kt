@@ -782,11 +782,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
                     if (isUp) {
-                        ivArrow.setImageResource(R.drawable.selector_odds_arrow_up)
+                        ivArrow.setImageResource(R.drawable.ic_arrow_odd_up)
                         tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_34CB8A_1D9F51))
                     } else {
-                        ivArrow.setImageResource(R.drawable.selector_odds_arrow_down)
-                        tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_D35555))
+                        ivArrow.setImageResource(R.drawable.ic_arrow_odd_down)
+                        tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.color_D35555_D35555))
                     }
                     ivArrow.isVisible = true
                     repeatCount += 1

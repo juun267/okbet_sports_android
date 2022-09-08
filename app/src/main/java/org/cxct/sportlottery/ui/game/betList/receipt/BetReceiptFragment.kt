@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -131,13 +130,16 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             tv_total_winnable_amount.text =
                 "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoneyFourthDecimal(betResultData?.totalWinnable ?: 0.0)}"
         }
+
+        //顯示注單收據的數量
+        tv_bet_list_count.text = betCount.toString()
     }
 
     private fun initButton() {
         btn_complete.setOnClickListener {
             activity?.onBackPressed()
         }
-        iv_receipt.setOnClickListener {
+        cl_title.setOnClickListener {
             activity?.onBackPressed()
         }
     }
@@ -195,23 +197,23 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         btn_complete.apply {
             text = when (hasBetSuccess || hasParlaySuccess) {
                 true -> {
-                    getString(R.string.complete)
+                    getString(R.string.btn_sure)
                 }
                 false -> {
                     getString(R.string.bet_fail_btn)
                 }
             }
         }
-        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
+//        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
     }
 
     private fun showOddChange() {
-        btn_complete.text = getString(R.string.bet_fail_btn)
-        btn_complete.setTextColor(
-            ContextCompat.getColor(
-                btn_complete.context,
-                R.color.white
-            )
-        )
+//        btn_complete.text = getString(R.string.bet_fail_btn)
+//        btn_complete.setTextColor(
+//            ContextCompat.getColor(
+//                btn_complete.context,
+//                R.color.white
+//            )
+//        )
     }
 }

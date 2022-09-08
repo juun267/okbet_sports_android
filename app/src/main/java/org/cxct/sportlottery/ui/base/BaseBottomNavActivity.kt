@@ -118,7 +118,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
         isMultiBet: Boolean,
         containerId: Int,
     ) {
-        if (isMultiBet) {
+//        if (isMultiBet) {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.push_right_to_left_enter,
@@ -132,12 +132,12 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                 )
                 .addToBackStack(BetReceiptFragment::class.java.simpleName)
                 .commit()
-        } else {
-            BetInfoCarReceiptDialog(betResultData).show(
-                supportFragmentManager,
-                BetInfoCarReceiptDialog::class.java.simpleName
-            )
-        }
+//        } else {
+//            BetInfoCarReceiptDialog(betResultData).show(
+//                supportFragmentManager,
+//                BetInfoCarReceiptDialog::class.java.simpleName
+//            )
+//        }
     }
 
     private var isViewHide = false

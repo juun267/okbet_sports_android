@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_above="@+id/cl_total_info"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_202541_FFFFFF"
     android:orientation="vertical"
     android:showDividers="end"
     tools:ignore="SpUsage">
@@ -25,8 +25,9 @@
         android:paddingTop="@dimen/margin_20"
         android:paddingBottom="@dimen/margin_4"
         android:text="@string/bet_list_cant_parlay_warn"
-        android:textColor="@color/color_E44438_e44438"
+        android:textColor="@color/color_E23434_E23434"
         android:textSize="@dimen/textSize12sp"
-        app:drawableStartCompat="@drawable/ic_odds_change_tip" />
+        android:drawableTint="@color/color_E23434_E23434"
+        app:drawableStartCompat="@drawable/ic_bet_lock_tip" />
 
 </LinearLayout>

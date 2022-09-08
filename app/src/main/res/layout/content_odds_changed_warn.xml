@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_202541_FFFFFF"
     android:orientation="vertical"
     tools:ignore="SpUsage">
 
@@ -14,7 +14,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="2dp"
         android:text="@string/bet_info_odd_content_changed"
-        android:textColor="@color/color_E44438_e44438"
+        android:textColor="@color/color_E23434_E23434"
         android:textSize="@dimen/textSize12sp" />
 
 </LinearLayout>
