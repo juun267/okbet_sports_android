@@ -72,6 +72,7 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
@@ -379,6 +380,9 @@ class ProfileCenterFragment :
                     JumpUtil.toExternalWeb(requireContext(), serviceUrl)
                 }
             }
+        }
+        update_version.setOnClickListener{
+            startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
         }
         //关于我们
         btn_about_us.setOnClickListener {
