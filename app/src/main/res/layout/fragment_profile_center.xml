@@ -747,6 +747,7 @@
                             android:src="@drawable/ic_icon_version_01" />
 
                         <RelativeLayout
+                            android:id="@+id/update_version"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="10dp"
