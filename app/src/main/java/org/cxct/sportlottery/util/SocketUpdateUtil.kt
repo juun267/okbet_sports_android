@@ -44,6 +44,9 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
+                    //matchStatusList为空就用 periods
+                    matchOdd.matchInfo?.matchStatusList =
+                        matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
                     if (matchStatusCO.gameType == GameType.CK.key) {
 
                         val homeTotal = matchStatusCO.homeTotalScore ?: 0

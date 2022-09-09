@@ -372,7 +372,7 @@ class SportLeagueAdapter(private val matchType: MatchType) :
                         DividerItemDecorator(
                             ContextCompat.getDrawable(
                                 context,
-                                R.drawable.divider_color_white8
+                                R.drawable.bg_sport_divide_line
                             )
                         )
                     ) // TODO IllegalStateException: Cannot add item decoration during a scroll  or layout

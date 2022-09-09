@@ -32,7 +32,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize10sp"
                 tools:text="义大利"
                 tools:textColor="@color/color_6C7BA8" />
 
@@ -57,8 +57,8 @@
 
             <ImageView
                 android:id="@+id/iv_arrow"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
                 android:layout_marginRight="2dp"
                 tools:src="@drawable/selector_odds_arrow_up"
                 android:visibility="gone"
@@ -71,7 +71,7 @@
                 android:fontFamily="@font/helvetica"
                 android:includeFontPadding="false"
                 android:textColor="@color/selector_button_odd_bottom_text"
-                android:textSize="@dimen/textSize15sp"
+                android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 tools:text="1.067" />
         </LinearLayout>

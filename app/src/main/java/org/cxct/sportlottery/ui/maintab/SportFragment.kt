@@ -324,9 +324,9 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                     viewModel.switchMatchType(MatchType.OUTRIGHT)
                 }
             }
-//            getMatchTypeTabPosition(MatchType.PARLAY) -> {
-//                viewModel.switchMatchType(MatchType.PARLAY)
-//            }
+            getMatchTypeTabPosition(MatchType.PARLAY) -> {
+                viewModel.switchMatchType(MatchType.PARLAY)
+            }
 //            getMatchTypeTabPosition(MatchType.EPS) -> {
 //                viewModel.switchMatchType(MatchType.EPS)
 //            }

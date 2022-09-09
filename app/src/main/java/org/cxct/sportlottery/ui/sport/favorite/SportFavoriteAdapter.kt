@@ -2,16 +2,15 @@ package org.cxct.sportlottery.ui.sport.favorite
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
 import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -33,6 +32,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -213,7 +213,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             playSelectedCodeSelectionType: Int?,
             playSelectedCode: String?,
         ) {
-            itemView.v_top.visibility = if (bindingAdapterPosition == 0) View.GONE else View.VISIBLE
 
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
@@ -383,7 +382,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
             itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
             itemView.iv_away_team_logo.setTeamLogo(item.matchInfo?.awayIcon)
-            showStrongTeam(item)
             setupMatchScore(item, matchType)
             setStatusTextColor(item)
             itemView.league_odd_match_play_count.text =
@@ -416,8 +414,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
             itemView.iv_home_team_logo.setTeamLogo(item.matchInfo?.homeIcon)
             itemView.iv_away_team_logo.setTeamLogo(item.matchInfo?.awayIcon)
-
-            showStrongTeam(item)
 
             setupMatchScore(item, matchType)
 
@@ -457,7 +453,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 }
             }
 
-            itemView.cl_game.setOnClickListener {
+            itemView.lin_match.setOnClickListener {
                 leagueOddListener?.onClickPlayType(
                     item.matchInfo?.id,
                     matchInfoList,
@@ -485,7 +481,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 isVisible =
                     TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                         ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
-                item.matchInfo?.gameType?.let { setLiveImg(it) }
                 setOnClickListener {
                     leagueOddListener?.onClickAnimationIconListener(
                         item.matchInfo?.id,
@@ -496,27 +491,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 }
             }
 
-        }
-
-        private fun ImageView.setLiveImg(gameType: String) {
-            when (gameType) {
-                GameType.FT.key -> setImageResource(R.drawable.ic_live_soccer_small)
-                GameType.BK.key -> setImageResource(R.drawable.ic_live_basketball_small)
-                GameType.TN.key -> setImageResource(R.drawable.ic_live_tennis_small)
-                GameType.VB.key -> setImageResource(R.drawable.ic_live_volleyball_small)
-                GameType.BM.key -> setImageResource(R.drawable.ic_live_badminton_small)
-                GameType.TT.key -> setImageResource(R.drawable.ic_live_pingpong_small)
-                GameType.IH.key -> setImageResource(R.drawable.ic_live_icehockey_small)
-                GameType.BX.key -> setImageResource(R.drawable.ic_live_boxing_small)
-                GameType.CB.key -> setImageResource(R.drawable.ic_live_billiards_small)
-                GameType.CK.key -> setImageResource(R.drawable.ic_live_cricket_small)
-                GameType.BB.key -> setImageResource(R.drawable.ic_live_baseball_small)
-                GameType.RB.key -> setImageResource(R.drawable.ic_live_rugby_small)
-                GameType.AFT.key -> setImageResource(R.drawable.ic_live_football_small)
-                GameType.MR.key -> setImageResource(R.drawable.ic_live_racing_small)
-                GameType.GF.key -> setImageResource(R.drawable.ic_live_golf_small)
-                GameType.ES.key -> setImageResource(R.drawable.ic_live_esport_small)
-            }
         }
 
         private fun setupMatchScore(item: MatchOdd, matchType: MatchType) {
@@ -579,7 +553,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         private fun setVbScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
                 setAllScoreTextAtBottom(matchType, item)
-                setScoreText(matchType, item)
                 setSptText(item, matchType)
             }
         }
@@ -589,8 +562,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             itemView.apply {
 
                 setAllScoreTextAtBottom(matchType, item)
-                setScoreText(matchType, item)
-                setPointText(matchType, item)
                 setSptText(item, matchType)
 
             }
@@ -599,7 +570,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         private fun setBmScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
                 setAllScoreTextAtBottom(matchType, item)
-                setScoreText(matchType, item)
                 setSptText(item, matchType)
             }
         }
@@ -745,75 +715,31 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun View.setPointText(matchType: MatchType, item: MatchOdd) {
-            league_odd_match_point_home_bottom.apply {
-                visibility = isScoreTextVisible(matchType, item)
-                text = (item.matchInfo?.homePoints ?: 0).toString()
-            }
-
-            league_odd_match_point_away_bottom.apply {
-                visibility = isScoreTextVisible(matchType, item)
-                text = (item.matchInfo?.awayPoints ?: 0).toString()
-            }
-        }
-
-        private fun View.setScoreText(matchType: MatchType, item: MatchOdd) {
-            league_odd_match_score_home_bottom.apply {
-                visibility = isScoreTextVisible(matchType, item)
-                text = (item.matchInfo?.homeScore ?: 0).toString()
-            }
-
-            league_odd_match_score_away_bottom.apply {
-                visibility = isScoreTextVisible(matchType, item)
-                text = (item.matchInfo?.awayScore ?: 0).toString()
-            }
-        }
 
         private fun View.setAllScoreTextAtBottom(matchType: MatchType, item: MatchOdd) {
-
-            //hide front total score text
-            league_odd_match_score_home.visibility = View.GONE
-            league_odd_match_score_away.visibility = View.GONE
-
-            league_odd_match_total_score_home_bottom.apply {
-                visibility = isScoreTextVisible(matchType, item)
-                text = (item.matchInfo?.homeTotalScore ?: 0).toString()
-            }
-
-            league_odd_match_total_score_away_bottom.apply {
-                visibility = isScoreTextVisible(matchType, item)
-                text = (item.matchInfo?.awayTotalScore ?: 0).toString()
+            item.matchInfo?.matchStatusList?.let {
+                setupStatusPeriods(it)
             }
         }
 
-        private fun showStrongTeam(item: MatchOdd) {
-            itemView.apply {
-                val oddListHDP = when (item.matchInfo?.gameType) {
-                    GameType.TN.key -> {
-                        item.oddsMap?.get(PlayCate.SET_HDP.value)
-                    }
-                    GameType.BK.key -> {
-                        item.oddsMap?.get(PlayCate.HDP_INCL_OT.value)
-                    }
-                    else -> {
-                        item.oddsMap?.get(PlayCate.HDP.value)
-                    }
+        /**
+         * 网球和羽毛球  排球，乒乓球 显示局比分
+         */
+        private fun setupStatusPeriods(matchStatusList: List<MatchStatus>) {
+            var spanny = Spanny()
+            matchStatusList.forEachIndexed { index, it ->
+                val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+                //9表示已结束，其他代表进行中的
+                if (index < matchStatusList.lastIndex) {
+                    spanny.append(spanScore)
+                    spanny.append("  ")
+                } else {
+                    spanny.append(spanScore,
+                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)))
                 }
-                val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
-                    Typeface.BOLD
-                else
-                    Typeface.NORMAL
-
-                val awayStrongType = if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
-                    Typeface.BOLD
-                else
-                    Typeface.NORMAL
-
-                //隊伍名稱粗體
-                league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
-
-                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
+            itemView.tv_periods_score.isVisible = true
+            itemView.tv_periods_score.text = spanny
         }
 
         private fun setupMatchTimeAndStatus(

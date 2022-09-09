@@ -11,6 +11,7 @@ import android.os.Handler
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
@@ -647,7 +648,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         curHomeScore = homeScore
                         curAwayScore = awayScore
                         curStatus = status
-
                         updateCornerKicks()
 
                         setupStatusList(matchStatusChangeEvent)
@@ -882,6 +882,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 tv_away_score_live.visibility = View.GONE
             }*/
             else -> {
+                //网球和羽毛球  排球，乒乓球需要显示局数比分
                 when (gameType) {
                     GameType.FT,
                     GameType.IH,
@@ -928,13 +929,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         //region setup game status
         //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
 //        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
+
         when (gameType) {
             GameType.BK -> {
                 setupStatusBk(event)
             }
             GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
                 showBackTimeBlock(false)
-                setupStatusTnVb(event, true)
+                setupStatusPeriods(event)
             }
             GameType.BB -> {
                 setupFrontScore(event)
@@ -946,6 +948,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             else -> {
             }
         }
+
         //endregion
     }
 
@@ -1048,27 +1051,29 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     }
 
-    private fun setupStatusTnVb(event: MatchStatusChangeEvent, showScore: Boolean = true) {
-
-        val statusBuilder = SpannableStringBuilder()
+    /**
+     * 网球和羽毛球  排球，乒乓球 显示局比分
+     */
+    private fun setupStatusPeriods(event: MatchStatusChangeEvent) {
 
         toolBar.tv_status_left.visibility = View.VISIBLE
         toolBar.tv_status_left.text =
-            event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(this).key) ?: ""
+            event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(this).key)
+                ?: event.matchStatusCO?.statusName
 
-        toolBar.tv_status_right.visibility = if (showScore) View.VISIBLE else View.GONE
-
-        event.matchStatusList?.forEachIndexed { index, it ->
-            if (index != event.matchStatusList.lastIndex) {
-                val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}")
-                statusBuilder.append(spanScore)
-            }
-
-            if (index < event.matchStatusList.lastIndex - 1) {
-                statusBuilder.append("  ")
+        var periods = event.matchStatusList ?: event.matchStatusCO?.periods
+        var spanny = Spanny()
+        periods?.forEachIndexed { index, it ->
+            val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}")
+            //9表示已结束，其他代表进行中的
+            if (index < periods?.lastIndex) {
+                spanny.append(spanScore)
+                spanny.append("  ")
+            } else {
+                spanny.append(spanScore, ForegroundColorSpan(getColor(R.color.color_025BE8)))
             }
         }
-        toolBar.tv_status_right.text = statusBuilder
+        toolBar.tv_status_right.text = spanny
     }
 
 
@@ -1120,11 +1125,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-//            lin_video.isVisible =
-//                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
-//            lin_anime.isVisible =
-//                TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-//                    ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
+            lin_video.isVisible =
+                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+            lin_anime.isVisible =
+                TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                    ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
             lin_video.setOnClickListener {
                 toolBar.isVisible = false
                 live_view_tool_bar.isVisible = true

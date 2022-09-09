@@ -33,7 +33,7 @@
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="义大利"
-                tools:textColor="@color/color_6C7BA8" />
+                tools:textColor="@color/color_535D76" />
 
             <TextView
                 android:id="@+id/tv_spread"
@@ -71,9 +71,9 @@
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/helvetica"
+                android:fontFamily="@font/din_font"
                 android:includeFontPadding="false"
-                android:textColor="@color/selector_button_odd_bottom_text"
+                android:textColor="@color/selector_outright_button_odd_bottom_text"
                 android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
                 tools:text="1.067" />

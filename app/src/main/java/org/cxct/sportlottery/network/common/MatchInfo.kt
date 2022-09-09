@@ -1,5 +1,8 @@
 package org.cxct.sportlottery.network.common
 
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
+
+
 interface MatchInfo {
     val id: String
 
@@ -31,4 +34,5 @@ interface MatchInfo {
     var outNumber:Int?
 
     var stopped: Int? //是否计时停止 1:是 ，0：否
+    var matchStatusList: List<MatchStatus>?
 }

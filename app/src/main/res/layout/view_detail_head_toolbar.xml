@@ -59,13 +59,6 @@
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize16sp"
                     tools:text="欧洲足球锦标赛2020" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_droparrow"
-                    android:layout_marginLeft="7dp"
-                    android:layout_gravity="center_vertical" />
             </LinearLayout>
 
             <ImageView

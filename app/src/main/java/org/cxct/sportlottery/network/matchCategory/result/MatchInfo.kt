@@ -4,6 +4,7 @@ package org.cxct.sportlottery.network.matchCategory.result
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.MatchInfo
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 
 @JsonClass(generateAdapter = true)
 data class MatchInfo(
@@ -74,6 +75,11 @@ data class MatchInfo(
     override var awayCornerKicks: Int? = null
 
     override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
+
+    /**
+     * 局比分
+     */
+    override var matchStatusList: List<MatchStatus>? = null
 
     override var attack: String? = null
 

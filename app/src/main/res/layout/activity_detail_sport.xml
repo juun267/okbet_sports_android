@@ -35,7 +35,7 @@
                     android:id="@+id/toolBar"
                     layout="@layout/view_detail_head_toolbar"
                     android:visibility="visible"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
 
                 <org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
@@ -43,7 +43,7 @@
                     android:layout_height="232dp"
                     android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
             </LinearLayout>
 
             <include

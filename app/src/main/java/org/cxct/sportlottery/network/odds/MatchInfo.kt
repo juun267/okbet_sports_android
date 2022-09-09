@@ -6,6 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.common.MatchInfo
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -53,7 +54,7 @@ data class MatchInfo(
     @Json(name = "homeIcon")
     val homeIcon: String? = null,
     @Json(name = "awayIcon")
-    val awayIcon: String? = null
+    val awayIcon: String? = null,
 
     ) : Parcelable, MatchInfo {
     //Live
@@ -98,6 +99,8 @@ data class MatchInfo(
     override var thirdBaseBag: Int? = null
     override var outNumber: Int? = null
 
+    override var matchStatusList: List<MatchStatus>? = null
+
     //999
     var scoreStatus: Int? = 0
 
@@ -107,6 +110,4 @@ data class MatchInfo(
 
     //联赛图标
     var categoryIcon: String? = null
-
-
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bg_radius_stroke_blue_radius_2" android:state_selected="true" />
-    <item android:drawable="@drawable/bg_radius_gray_2" android:state_selected="false" />
-    <item android:drawable="@drawable/bg_radius_gray_2" />
+    <item android:drawable="@drawable/bg_radius_stroke_blue_radius_4" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_radius_stroke_gray_radius_4" android:state_selected="false" />
+    <item android:drawable="@drawable/bg_radius_stroke_gray_radius_4" />
 </selector>
