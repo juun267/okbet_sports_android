@@ -310,9 +310,13 @@ class SportViewModel(
     val matchTrackerUrl: LiveData<Event<MatchTrackerUrl?>>
         get() = _matchTrackerUrl*/
 
-    private val _matchTrackerUrl = MutableLiveData<Event<String?>>()
-    val matchTrackerUrl: LiveData<Event<String?>>
-        get() = _matchTrackerUrl
+    private val _videoUrl = MutableLiveData<Event<String?>>()
+    val videoUrl: LiveData<Event<String?>>
+        get() = _videoUrl
+
+    private val _animeUrl = MutableLiveData<Event<String?>>()
+    val animeUrl: LiveData<Event<String?>>
+        get() = _animeUrl
 
     //Loading
     val isLoading: LiveData<Boolean>
@@ -2145,7 +2149,8 @@ class SportViewModel(
                             value.name,
                             filteredOddList,
                             value.nameMap,
-                            value.rowSort
+                            value.rowSort,
+                            matchInfo = result.oddsDetailData?.matchOdd.matchInfo
                         )
 
                         //球員玩法邏輯
@@ -2199,13 +2204,16 @@ class SportViewModel(
                     val languageParams =
                         LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
-                    val trackerUrl =
+                    val videoUrl =
+                        "${sConfigData?.sportAnimation}/animation/?matchId=${matchId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=video"
+                    val animeUrl =
                         "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
                     //測試用eventId=4385309, 4477265
 //                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-
-                    _matchTrackerUrl.postValue(Event(trackerUrl))
+                    _videoUrl.postValue(Event(videoUrl))
+                    _animeUrl.postValue(Event(animeUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
+                    getLiveInfo(matchId, true)
                 }
             }
         }

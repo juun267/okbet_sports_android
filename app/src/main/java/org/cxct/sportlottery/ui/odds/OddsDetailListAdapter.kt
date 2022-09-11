@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.content_odds_detail_list_team.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.ComparePlayCate
@@ -41,6 +42,7 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
+import org.cxct.sportlottery.util.setTeamLogo
 import java.util.*
 
 /**
@@ -698,7 +700,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 odd_detail_fold.isSelected = oddsDetail.isExpand
 
             }
-
+            itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
+            itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
+            itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+            itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             when (sportCode) {
@@ -719,7 +724,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.CORNER_HDP_SEG4.ordinal, PlayCate.CORNER_OU_SEG4.ordinal, PlayCate.CORNER_HDP_SEG5.ordinal, PlayCate.CORNER_OU_SEG5.ordinal, PlayCate.CORNER_HDP_SEG6.ordinal, PlayCate.CORNER_OU_SEG6.ordinal,
                         PlayCate.PENALTY_HDP_SEG1.ordinal, PlayCate.PENALTY_OU_SEG1.ordinal, PlayCate.PENALTY_HDP_SEG2.ordinal, PlayCate.PENALTY_OU_SEG2.ordinal, PlayCate.PENALTY_HDP_SEG3.ordinal, PlayCate.PENALTY_OU_SEG3.ordinal,
                         PlayCate.PENALTY_HDP_SEG4.ordinal, PlayCate.PENALTY_OU_SEG4.ordinal, PlayCate.PENALTY_HDP_SEG5.ordinal, PlayCate.PENALTY_OU_SEG5.ordinal, PlayCate.PENALTY_HDP_SEG6.ordinal, PlayCate.PENALTY_OU_SEG6.ordinal,
-                        PlayCate.TG_OU_OT_H.ordinal, PlayCate.TG_OU_OT_C.ordinal
+                        PlayCate.TG_OU_OT_H.ordinal, PlayCate.TG_OU_OT_C.ordinal,
                         -> forSingle(oddsDetail, 2)
 
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.HWMG_SINGLE.ordinal, PlayCate.CORNER_SINGLE.ordinal, PlayCate.CORNER_1ST_SINGLE.ordinal, PlayCate.PENALTY_SINGLE.ordinal, PlayCate.PENALTY_1ST_SINGLE.ordinal,

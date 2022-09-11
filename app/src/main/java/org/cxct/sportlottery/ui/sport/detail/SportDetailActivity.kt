@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.item_sport_odd.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
-import kotlinx.android.synthetic.main.view_detail_head_toolbar.tv_away_name
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -44,7 +43,6 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
-import org.cxct.sportlottery.repository.FLAG_LIVE
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -143,6 +141,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         text = this.context.getString(R.string.time_null)
                         isVisible = false
                     }
+                    tv_toolbar_bottom.text = text
+                    tv_toolbar_bottom.isVisible = isVisible
                 }
             }
             else -> {
@@ -194,7 +194,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             onBackPressed()
         }
         iv_toolback.setOnClickListener {
-            onBackPressed()
+            showFullScreen(false, Configuration.ORIENTATION_PORTRAIT)
         }
         iv_refresh.setOnClickListener {
             iv_refresh.animate().rotation(720f).setDuration(1000).start()
@@ -309,9 +309,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         live_view_tool_bar.initLoginStatus(isLogin)
 
-        if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
-        }
     }
 
     override fun onPause() {
@@ -336,7 +333,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
-        live_view_tool_bar.gameType = gameType //賽事動畫icon用，之後用不到可刪
         supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value)
             .commit()
         oddsDetailListAdapter = OddsDetailListAdapter(
@@ -434,7 +430,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         }
 
                         setupStartTime()
-                        setupInitShowView(result.oddsDetailData?.matchOdd?.matchInfo)
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                     }
                     false -> {
@@ -519,42 +514,25 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.matchLiveInfo.observe(this) {
-            it?.peekContent()?.let { liveStreamInfo ->
-                live_view_tool_bar.startPlayer(
-                    matchId,
-                    matchOdd?.matchInfo?.trackerId,
-                    liveStreamInfo.streamUrl, isLogin
-                )
+            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
+                live_view_tool_bar.videoUrl = liveStreamInfo.streamUrl
             }
         }
-
-        viewModel.matchTrackerUrl.observe(this) { event ->
-            event?.getContentIfNotHandled()?.let { matchTrackerUrl ->
-                live_view_tool_bar.setupTrackerUrl(matchTrackerUrl)
+        viewModel.videoUrl.observe(this) { event ->
+            event?.getContentIfNotHandled()?.let { url ->
+//                live_view_tool_bar.videoUrl=url
             }
         }
-    }
-
-    private fun setupInitShowView(matchInfo: MatchInfo?) {
-        live_view_tool_bar.initLiveType(
-            matchInfo?.liveVideo.toString() == FLAG_LIVE,
-            !matchOdd?.matchInfo?.trackerId.isNullOrEmpty()
-        )
+        viewModel.animeUrl.observe(this) { event ->
+            event?.getContentIfNotHandled()?.let { url ->
+                live_view_tool_bar.animeUrl = url
+            }
+        }
     }
 
     private fun setupLiveView(liveVideo: Int?) {
         with(live_view_tool_bar) {
-            when (matchType) {
-                MatchType.IN_PLAY -> {
-                    setupToolBarListener(liveToolBarListener)
-                    setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-                    startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
-                }
-                else -> {
-                    setupToolBarListener(liveToolBarListener)
-                    setupPlayerControl(false)
-                }
-            }
+            setupToolBarListener(liveToolBarListener)
         }
     }
 
@@ -588,6 +566,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
         tv_away_name.text = matchInfo.awayName ?: ""
+        tv_toolbar_home_name.text = matchInfo.homeName ?: ""
+        tv_toolbar_away_name.text = matchInfo.awayName ?: ""
         Glide.with(this)
             .load(matchInfo.homeIcon)
             .into(img_home_logo)
@@ -600,6 +580,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)
         ) {
             toolBar.tv_score.text = getString(R.string.game_postponed)
+            tv_toolbar_home_score.text = "-"
+            tv_toolbar_away_score.text = "-"
         }
         //endregion
 
@@ -643,6 +625,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                                     ?: statusName
                             tv.text = statusValue
                         }
+                        tv_toolbar_home_score.text = "-"
+                        tv_toolbar_away_score.text = "-"
+                        tv_toolbar_bottom.text = tv_time_bottom.text
                         tv_toolbar_top.text = tv_time_top.text
 
                         curHomeScore = homeScore
@@ -1048,6 +1033,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
             isVisible = true
         }
+        tv_toolbar_home_score.text = "-"
+        tv_toolbar_away_score.text = "-"
 
     }
 
@@ -1095,6 +1082,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     TimeUtil.getRemainMinute(startTime)
                 )
             tv_time_top.visibility = View.GONE
+
+            tv_toolbar_bottom.text = tv_time_bottom.text
+            tv_toolbar_top.visibility = View.GONE
         } else {
             //今日、早盤
             val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
@@ -1105,7 +1095,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             //记分牌无法显示时间時，隱藏-:-
             tv_time_bottom.isVisible = timeStr.isNotEmpty()
-
             tv_time_top.visibility = View.VISIBLE
         }
         tv_toolbar_top.visibility = tv_time_top.visibility
@@ -1131,25 +1120,30 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
             lin_video.setOnClickListener {
-                toolBar.isVisible = false
-                live_view_tool_bar.isVisible = true
-                live_view_tool_bar.showLiveView(true)
-                live_view_tool_bar.showVideo()
+//                videoUrl?.let {
+//                    toolBar.isVisible = false
+//                    live_view_tool_bar.isVisible = true
+//                    live_view_tool_bar.showVideo(it)
+//                }
+                live_view_tool_bar.videoUrl?.let {
+                    toolBar.isVisible = false
+                    live_view_tool_bar.isVisible = true
+                    live_view_tool_bar.showVideo()
+                }
             }
             lin_anime.setOnClickListener {
-                toolBar.isVisible = false
-                live_view_tool_bar.isVisible = true
-                live_view_tool_bar.showLiveView(false)
-                live_view_tool_bar.showAnime()
+                live_view_tool_bar.animeUrl?.let {
+                    toolBar.isVisible = false
+                    live_view_tool_bar.isVisible = true
+                    live_view_tool_bar.showAnime()
+                }
             }
-            if (lin_video.isVisible && lin_anime.isVisible) {
+            if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {
                 lin_menu.isVisible = true
-                v_menu_1.isVisible = true
-            } else if (!lin_video.isVisible && !lin_anime.isVisible) {
-                lin_menu.isVisible = false
+                v_menu_1.isVisible = lin_live.isVisible
+                v_menu_2.isVisible = lin_video.isVisible && lin_anime.isVisible
             } else {
-                lin_menu.isVisible = true
-                v_menu_1.isVisible = false
+                lin_menu.isVisible = false
             }
         }
     }
@@ -1181,6 +1175,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 height = ViewGroup.LayoutParams.MATCH_PARENT
             }
         }
+        live_view_tool_bar.invalidate()
     }
 
     private fun setScrollEnable(enable: Boolean) {

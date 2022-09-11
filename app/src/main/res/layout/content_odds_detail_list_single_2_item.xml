@@ -17,6 +17,7 @@
 
         <include layout="@layout/content_odds_detail_list_item" />
 
+        <include layout="@layout/content_odds_detail_list_team" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bet"

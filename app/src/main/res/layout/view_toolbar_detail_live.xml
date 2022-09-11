@@ -2,24 +2,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_000000"
     android:orientation="vertical"
     tools:ignore="UseAppTint">
 
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/expand_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:el_duration="500"
-        app:el_expanded="true"
-        app:el_parallax="0.5">
 
         <RelativeLayout
             android:id="@+id/web_view_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -47,20 +40,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible"
-                app:use_controller="false">
+                tools:visibility="visible"
+                app:use_controller="false" />
 
-                <WebView
-                    android:id="@+id/web_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
-            </com.google.android.exoplayer2.ui.PlayerView>
-
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_025BE8"
+                android:overScrollMode="never" />
             <!--根據需求，先隱藏賽事動畫-->
 
         </RelativeLayout>
-
-    </net.cachapa.expandablelayout.ExpandableLayout>
 
 
     <LinearLayout
@@ -81,11 +72,20 @@
             tools:visibility="visible" />
 
         <ImageView
-            android:id="@+id/iv_play"
+            android:id="@+id/iv_video"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_video_trans"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_live"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_live_trans"
             android:visibility="gone"
             tools:visibility="visible" />
 
