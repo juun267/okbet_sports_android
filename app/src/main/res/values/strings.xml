@@ -559,7 +559,7 @@
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">To Win</string>
     <string name="bet_info_odd_content_changed">One or more options for odds, concede. Points or score has changed</string>
-    <string name="bet_info_odd_content_changed2">The odds have changed, %1$s to %2$s </string>
+    <string name="bet_info_odd_content_changed2">The odds have changed</string>
 
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Singles</string>

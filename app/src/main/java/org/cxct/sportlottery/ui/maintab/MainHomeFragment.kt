@@ -216,8 +216,32 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 subscribeQueryData(recommendList)
             }
         }
+
+        viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
+            event.peekContent().let { betList ->
+                val targetList = getNewestRecommendData()
+                targetList.forEachIndexed { index, recommend ->
+                    var needUpdate = false
+                    recommend.oddsMap?.values?.forEach { oddList ->
+                        oddList?.forEach { odd ->
+                            val newSelectStatus = betList.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
+                            }
+                            if (odd?.isSelected != newSelectStatus) {
+                                odd?.isSelected = newSelectStatus
+                                needUpdate = true
+                            }
+                        }
+                    }
+                    if (needUpdate) {
+                        updateRecommend(targetList)
+                    }
+                }
+            }
+        }
+
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
-            event?.peekContent()?.let { isReload ->
+            event.peekContent().let { isReload ->
                 if (isReload) {
                     setupBanner()
                 }
@@ -410,7 +434,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
 
                 if (needUpdate) {
-                    homeRecommendAdapter.updateRecommendItem(targetList, viewModel.oddsType.value!!)
+                    updateRecommend(targetList)
                 }
             }
         }
@@ -433,7 +457,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
 
                 if (needUpdate) {
-                    homeRecommendAdapter.updateRecommendItem(targetList, viewModel.oddsType.value!!)
+                    updateRecommend(targetList)
                 }
             }
         }
@@ -465,7 +489,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     }
                 }
                 if (needUpdate) {
-                    homeRecommendAdapter.updateRecommendItem(targetList, viewModel.oddsType.value!!)
+                    updateRecommend(targetList)
                 }
         }
 
@@ -483,7 +507,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
 
                 if (needUpdate) {
-                    homeRecommendAdapter.updateRecommendItem(targetList, viewModel.oddsType.value!!)
+                    updateRecommend(targetList)
                 }
             }
         }
@@ -511,7 +535,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 }
 
                 if (needUpdate) {
-                    homeRecommendAdapter.updateRecommendItem(targetList, viewModel.oddsType.value!!)
+                    updateRecommend(targetList)
                 }
             }
         }
@@ -775,6 +799,12 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         if(viewModel != null && viewModel.isLogin!=null && viewModel.isLogin.value!!){
             val isLogin = viewModel.isLogin != null
             btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
+        }
+    }
+
+    private fun updateRecommend(recommendList: List<Recommend>) {
+        viewModel.oddsType.value?.let {
+            homeRecommendAdapter.updateRecommendItem(recommendList = recommendList, oddsType = it)
         }
     }
 }

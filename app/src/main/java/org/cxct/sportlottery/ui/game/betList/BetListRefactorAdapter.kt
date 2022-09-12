@@ -844,12 +844,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
                         setAnimation(ivOddsArrow, tvOdds, false)
                     }
-//                    tv_odd_content_changed.visibility =
-//                        if (handler != null) View.VISIBLE else View.GONE
-//                    handler?.postDelayed({
-//                        tv_odd_content_changed?.visibility = View.GONE
-//                    }, 3000)
-//
+                    tv_odd_content_changed.visibility =
+                        if (handler != null) View.VISIBLE else View.GONE
+                    handler?.postDelayed({
+                        tv_odd_content_changed?.visibility = View.GONE
+                    }, 3000)
 //                    tv_odd_content_changed.text =
 //                        if (itemData.matchOdd.playCode == PlayCate.LCS.value) context.getString(
 //                            R.string.bet_info_odd_content_changed2,
