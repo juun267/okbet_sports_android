@@ -447,5 +447,7 @@
     <!--endregion 新UI 日夜間色系-->
 
     <color name="color_1E6C7BA8">#1e6c7ba8</color>
+    //日历选中颜色
 
+    //日历范围颜色
 </resources>

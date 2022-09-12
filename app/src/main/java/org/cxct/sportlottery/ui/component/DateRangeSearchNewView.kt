@@ -2,8 +2,14 @@ package org.cxct.sportlottery.ui.component
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.Window
+import android.view.WindowManager
 import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialog
+import androidx.fragment.app.DialogFragment
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -26,7 +32,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
-    private val calendarBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+    private val calendarBottomSheet: AppCompatDialog by lazy { AppCompatDialog(context) }
     var timeZone: TimeZone = TimeZone.getDefault()
 
     val startTime: Long?
@@ -121,6 +127,9 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     private fun setupCalendarBottomSheet() {
         setCalendarRange()
         calendarBottomSheet.setContentView(bottomSheetView)
+        val win = calendarBottomSheet.window
+        win?.setGravity(Gravity.TOP)
+        win?.attributes?.y = 330
         bottomSheetView.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
                 setRecordTimeRange(dateSelectedType, startDate)

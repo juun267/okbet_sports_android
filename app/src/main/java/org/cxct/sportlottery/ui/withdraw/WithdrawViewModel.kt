@@ -269,8 +269,8 @@ class WithdrawViewModel(
             return false
         if (withdrawPasswordMsg.value != "")
             return false
-        if (WithdrawAppointmentMsg.value != "")
-            return false
+       /* if (WithdrawAppointmentMsg.value != "")
+            return false*/
         return true
     }
 
