@@ -403,6 +403,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.userInfo.observe(this) { userInfo ->
             oddsDetailListAdapter?.discount = userInfo?.discount ?: 1.0F
         }
+        viewModel.userMoney.observe(this) {
+            it?.let { money ->
+                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
+            }
+        }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
