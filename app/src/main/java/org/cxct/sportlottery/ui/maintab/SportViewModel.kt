@@ -2210,7 +2210,7 @@ class SportViewModel(
                         "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
                     //測試用eventId=4385309, 4477265
 //                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-                    _videoUrl.postValue(Event(videoUrl))
+                    _videoUrl.postValue(Event("https://okbet-v2.cxsport.net/animation/?matchId=xm6042168&lang=en&mode=video"))
                     _animeUrl.postValue(Event(animeUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
                     getLiveInfo(matchId, true)

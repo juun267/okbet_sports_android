@@ -115,7 +115,7 @@ class TypeSCOAdapter(
             val lOdd = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_LAST.playCode) == true }
 
             btnOdds1st?.apply {
-                setupOdd(fOdd, oddsType)
+                setupOdd(fOdd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, fOdd)
                 setOnClickListener {
                     fOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_first)) }
@@ -125,7 +125,7 @@ class TypeSCOAdapter(
             }
 
             btnOddsAnt?.apply {
-                setupOdd(aOdd, oddsType)
+                setupOdd(aOdd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, aOdd)
                 setOnClickListener {
                     aOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_any)) }
@@ -135,7 +135,7 @@ class TypeSCOAdapter(
             }
 
             btnOddsLast?.apply {
-                setupOdd(lOdd, oddsType)
+                setupOdd(lOdd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, lOdd)
                 setOnClickListener {
                     lOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail, context.getString(R.string.sco_name_last)) }
@@ -166,7 +166,7 @@ class TypeSCOAdapter(
             val odd = oddsList?.find { TextUtil.compareWithGameKey(OddSpreadForSCOCompare.SCORE_N.playCode, "${it?.playCode}") }
 
             btnOdds?.apply {
-                setupOdd(odd, oddsType)
+                setupOdd(odd, oddsType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }

@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.game.widget
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
@@ -72,8 +74,11 @@ class OddsButtonDetail @JvmOverloads constructor(
         init(attrs)
     }
 
-    private var tvSpreadSpace: TextView ?= null
-    private var spaceItemRemain: View ?= null
+    private var tvSpreadSpace: TextView? = null
+    private var spaceItemRemain: View? = null
+
+    //为了在赔率不显示队名，按钮内传入队名，过滤
+    private var matchInfo: MatchInfo? = null
 
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
@@ -96,9 +101,16 @@ class OddsButtonDetail @JvmOverloads constructor(
         tvSpreadSpace = findViewById(R.id.tv_spread_space)
     }
 
-    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage:Boolean? = false) {
+    fun setupOdd(
+        odd: Odd?,
+        oddsType: OddsType,
+        gameType: String? = null,
+        isOddPercentage: Boolean? = false,
+        matchInfo: MatchInfo?,
+    ) {
         mOdd = odd
         mOddsType = oddsType
+        this.matchInfo = matchInfo
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
@@ -110,7 +122,9 @@ class OddsButtonDetail @JvmOverloads constructor(
             requestLayout()
 
             visibility =
-                if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
+                if (odd?.name.isNullOrEmpty() || gameType == "disable" || TextUtils.equals(matchInfo?.homeName,
+                        odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name)
+                ) View.GONE else View.VISIBLE
         }
 
         tv_spread.apply {

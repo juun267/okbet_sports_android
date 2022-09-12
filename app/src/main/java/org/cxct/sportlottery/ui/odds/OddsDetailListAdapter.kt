@@ -7,6 +7,7 @@ import android.os.Build
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.LineHeightSpan
@@ -700,10 +701,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 odd_detail_fold.isSelected = oddsDetail.isExpand
 
             }
-            itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
-            itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
-            itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-            itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
+            //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+            TextUtils.equals(oddsDetail.matchInfo?.homeName, oddsDetail.oddArrayList[0]?.name).let {
+                itemView.lin_match?.isVisible = it
+                itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
+                itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
+                itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+                itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
+            }
+
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             when (sportCode) {

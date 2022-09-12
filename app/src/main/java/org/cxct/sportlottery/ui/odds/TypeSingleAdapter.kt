@@ -44,7 +44,7 @@ class TypeSingleAdapter (
 
         fun bindModel(gameType: String?, odd: Odd?) {
             btnOdds?.apply {
-                setupOdd(odd, oddsType, gameType)
+                setupOdd(odd, oddsType, gameType, matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }

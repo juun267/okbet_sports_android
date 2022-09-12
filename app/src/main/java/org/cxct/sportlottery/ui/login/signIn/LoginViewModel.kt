@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
@@ -54,11 +53,18 @@ class LoginViewModel(
             loginRepository.isRememberPWD = value
         }
 
-    fun checkInputData(context: Context, account: String, password: String): Boolean {
+    fun checkInputData(
+        context: Context,
+        account: String,
+        password: String,
+        validCode: String,
+    ): Boolean {
         val accountError = checkAccount(context, account)
         val passwordError = checkPassword(context, password)
-        val isDataValid = accountError == null && passwordError == null
-        _loginFormState.value = LoginFormState(accountError, passwordError)
+        val validCodeError = checkValidCode(context, validCode)
+        val isDataValid = accountError == null && passwordError == null &&
+                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null)
+        _loginFormState.value = LoginFormState(accountError, passwordError, validCodeError)
 
         return isDataValid
     }

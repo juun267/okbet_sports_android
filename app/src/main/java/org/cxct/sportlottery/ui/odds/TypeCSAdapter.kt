@@ -55,7 +55,10 @@ class TypeCSAdapter(
 
         fun bindModel(odd: Odd?) {
             btnOdds?.apply {
-                setupOdd(odd, oddsType, isOddPercentage = isOddPercentage)
+                setupOdd(odd,
+                    oddsType,
+                    isOddPercentage = isOddPercentage,
+                    matchInfo = oddsDetail.matchInfo)
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
