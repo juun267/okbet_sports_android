@@ -326,6 +326,7 @@
     <string name="no_data">Không có thêm dữ liệu</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
+    <string name="not_settled">Đơn cược chưa được thanh toán</string>
     <string name="settled">đặt cược đã được thanh toán</string>
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>

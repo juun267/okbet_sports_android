@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab
 
-import BetRecordFragment
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color

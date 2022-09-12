@@ -45,7 +45,7 @@ class TransactionRecordDiffAdapter :
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 
-    fun setupBetList(betListData: BetListData, status: Int) {
+    fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
         totalAmount = betListData.totalMoney
         itemList = when {

@@ -337,6 +337,7 @@
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Running</string>
+    <string name="not_settled">Unsettled</string>
     <string name="settled">Settled bets</string>
     <string name="win">Win</string>
     <string name="win_half">Win a half</string>

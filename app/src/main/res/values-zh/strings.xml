@@ -325,6 +325,7 @@
     <string name="no_data">没有更多数据了</string>
     <string name="uncheck">未确认</string>
     <string name="undone">投注成功</string>
+    <string name="not_settled">未结算</string>
     <string name="settled">已结算</string>
     <string name="win">赢</string>
     <string name="win_half">赢半</string>
