@@ -263,7 +263,7 @@ class WithdrawViewModel(
             appointmentHour = appointmentHour
         )
     }
-
+    //检测消息提示 预约时间提示要做判断 银行卡没有预约时间
     private fun checkWithdrawData(): Boolean {
         if (withdrawAmountMsg.value != "")
             return false
