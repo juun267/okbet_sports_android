@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
@@ -22,6 +24,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel.Companion.PAGE_SIZE
+import org.cxct.sportlottery.ui.main.accountHistory.first.*
 import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
 import org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter
 import org.greenrobot.eventbus.EventBus
@@ -32,6 +35,17 @@ class BetRecordFragment :
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
     private val colorSettled = R.color.color_FFFFFF_414655
     private val colorNotSettled = R.color.color_6C7BA8_6C7BA8
+
+    private val rvAdapter by lazy {
+        AccountHistoryAdapter(ItemClickListener {
+            it.let { data ->
+                viewModel.setSelectedDate(data.statDate)
+//                val action =
+//                    AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
+//                findNavController().navigate(action)
+            }
+        })
+    }
 
     companion object {
         fun newInstance(): BetRecordFragment {
@@ -106,7 +120,11 @@ class BetRecordFragment :
 //                setSelectInfo(selectItem)
                 viewModel.apply {
                     gameTypeCode = sportItem.code
-                    getBetList(true, gameTypeCode)
+                    if (tabPosition == 0) {
+                        viewModel.searchBetRecord(gameTypeCode)
+                    } else {
+                        getBetList(true, gameTypeCode)
+                    }
                 }
             }
         })
@@ -126,6 +144,14 @@ class BetRecordFragment :
 //            divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
         }
 
+        viewModel.betRecordResult.observe(viewLifecycleOwner) {
+            if (it.success) {
+                rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+                rv_record_settled.scrollToPosition(0)
+            } else {
+                Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun initToolBar() {
@@ -184,19 +210,26 @@ class BetRecordFragment :
                 )
             }
             settled_title_bar.isVisible = isSettledTab
+            sm_settled_tab_refresh.isVisible = isSettledTab
+            sm_unsettled_tab_refresh.isVisible = !isSettledTab
         }
     }
 
     private fun initRecyclerView() {
-        rv_record.apply {
+        rv_record_settled.apply {
+            adapter = rvAdapter
+            addOnScrollListener(settledRecyclerViewOnScrollListener)
+        }
+        rv_record_unsettled.apply {
             adapter = recordDiffAdapter
-            addOnScrollListener(recyclerViewOnScrollListener)
+            addOnScrollListener(unsettledRecyclerViewOnScrollListener)
         }
     }
 
     private fun initData() {
         viewModel.getSportList()
         viewModel.getBetList(true)
+        viewModel.searchBetRecord()
     }
 
     private fun updateSportList(list: List<StatusSheetData>) {
@@ -221,7 +254,7 @@ class BetRecordFragment :
         }
     }
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+    private val settledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             recyclerView.layoutManager?.let {
@@ -236,6 +269,25 @@ class BetRecordFragment :
                     ) {
                         viewModel.getBetList()
                     }
+                }
+            }
+        }
+    }
+
+    private val unsettledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            recyclerView.layoutManager?.let {
+                val visibleItemCount: Int = it.childCount
+                val totalItemCount: Int = it.itemCount
+                val firstVisibleItemPosition: Int =
+                    (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (firstVisibleItemPosition > 0) {
+                    viewModel.getNextPage(
+                        visibleItemCount,
+                        firstVisibleItemPosition,
+                        totalItemCount
+                    )
                 }
             }
         }

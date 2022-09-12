@@ -43,14 +43,16 @@ class TransactionRecordDiffAdapter :
     var totalAmount: Double = 0.0
     var itemList = listOf<DataItem>()
 
-    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
+//    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
+    private enum class ViewType { Match, Parlay, Outright, NoData }
 
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
         totalAmount = betListData.totalMoney
         itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
-            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
+//            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
+            else -> betListData.row.map { DataItem.Item(it) }
         }
         submitList(itemList)
     }
@@ -68,7 +70,7 @@ class TransactionRecordDiffAdapter :
             ViewType.NoData.ordinal -> NoDataViewHolder.from(parent)
             ViewType.Match.ordinal -> MatchRecordViewHolder.from(parent)
             ViewType.Outright.ordinal -> OutrightRecordViewHolder.from(parent)
-            ViewType.LastTotal.ordinal -> LastTotalViewHolder.from(parent)
+//            ViewType.LastTotal.ordinal -> LastTotalViewHolder.from(parent)
             else -> ParlayRecordViewHolder.from(parent)
         }
     }
@@ -85,9 +87,9 @@ class TransactionRecordDiffAdapter :
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
             }
-            is LastTotalViewHolder -> {
-                holder.bind((rvData as DataItem.Total).totalAmount)
-            }
+//            is LastTotalViewHolder -> {
+//                holder.bind((rvData as DataItem.Total).totalAmount)
+//            }
             is NoDataViewHolder -> {
                 holder.bind()
             }
@@ -97,7 +99,7 @@ class TransactionRecordDiffAdapter :
     override fun getItemViewType(position: Int): Int {
         return when {
             getItem(position).orderNo.isNullOrBlank() && itemCount == 1 -> ViewType.NoData.ordinal
-            position == itemCount - 1 -> ViewType.LastTotal.ordinal
+//            position == itemCount - 1 -> ViewType.LastTotal.ordinal
             getItem(position).parlayType == ParlayType.SINGLE.key -> ViewType.Match.ordinal
             getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Outright.ordinal
             else -> ViewType.Parlay.ordinal
@@ -221,23 +223,23 @@ class TransactionRecordDiffAdapter :
 
     }
 
-    class LastTotalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view =
-                    layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
-                return LastTotalViewHolder(view)
-            }
-        }
-
-        fun bind(totalAmount: Double) {
-            itemView.apply {
-                last_total_amount.text =
-                    "${sConfigData?.systemCurrencySign} ${TextUtil.format(totalAmount)}"
-            }
-        }
-    }
+//    class LastTotalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//        companion object {
+//            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+//                val layoutInflater = LayoutInflater.from(viewGroup.context)
+//                val view =
+//                    layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
+//                return LastTotalViewHolder(view)
+//            }
+//        }
+//
+//        fun bind(totalAmount: Double) {
+//            itemView.apply {
+//                last_total_amount.text =
+//                    "${sConfigData?.systemCurrencySign} ${TextUtil.format(totalAmount)}"
+//            }
+//        }
+//    }
 
     class ParlayRecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
@@ -336,13 +338,12 @@ sealed class DataItem {
         val row: Row,
         override var parlayType: String? = row.parlayType,
         override var orderNo: String? = row.orderNo
-    ) :
-        DataItem()
+    ) : DataItem()
 
-    data class Total(val totalAmount: Double) : DataItem() {
-        override var parlayType: String? = null
-        override var orderNo: String? = null
-    }
+//    data class Total(val totalAmount: Double) : DataItem() {
+//        override var parlayType: String? = null
+//        override var orderNo: String? = null
+//    }
 
 
     object NoData : DataItem() {

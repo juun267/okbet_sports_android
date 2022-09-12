@@ -369,10 +369,10 @@ fun TextView.setOddFormat(odd: Double?) {
 fun TextView.setMoneyColor(profit: Double = 0.0) {
 
     val color = when {
-        profit > 0.0 -> R.color.color_08dc6e_08dc6e
-        profit < 0.0 -> R.color.color_E44438_e44438
-        profit == 0.0 -> R.color.color_909090_666666
-        else -> R.color.color_909090_666666
+        profit > 0.0 -> R.color.color_1D9F51_1D9F51
+        profit < 0.0 -> R.color.color_E23434_E23434
+        profit == 0.0 -> R.color.color_9BB3D9_535D76
+        else -> R.color.color_9BB3D9_535D76
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
