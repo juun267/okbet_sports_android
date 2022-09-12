@@ -70,9 +70,6 @@ open class ServiceBroadcastReceiver(
     val notice: LiveData<NoticeEvent?>
         get() = _notice
 
-    val oddsChange: LiveData<Event<OddsChangeEvent?>>
-        get() = _oddsChange
-
     val orderSettlement: LiveData<OrderSettlementEvent?>
         get() = _orderSettlement
 
@@ -123,7 +120,6 @@ open class ServiceBroadcastReceiver(
     private val _matchOddsChange = MutableLiveData<Event<MatchOddsChangeEvent?>>()
     private val _matchStatusChange = MutableLiveData<MatchStatusChangeEvent?>()
     private val _notice = MutableLiveData<NoticeEvent?>()
-    private val _oddsChange = MutableLiveData<Event<OddsChangeEvent?>>()
     private val _orderSettlement = MutableLiveData<OrderSettlementEvent?>()
     private val _pingPong = MutableLiveData<PingPongEvent?>()
     private val _producerUp = MutableLiveData<ProducerUpEvent?>()
