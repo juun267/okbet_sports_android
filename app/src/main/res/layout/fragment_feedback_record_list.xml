@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_5"
         app:layout_constraintTop_toTopOf="parent"
-        app:minusDays="6" />
+        app:minusDays="8" />
 
     <org.cxct.sportlottery.ui.component.StatusSpinnerView
         android:id="@+id/status_selector"
