@@ -30,6 +30,21 @@
             tools:text="主队名字" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_draw"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/color_535D76"
+        android:textSize="@dimen/textSize14sp"
+        android:textAllCaps="true"
+        android:text="@string/draw"
+        tools:text="和"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

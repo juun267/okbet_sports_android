@@ -20,7 +20,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsOutrightButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GridItemDecoration
-import org.cxct.sportlottery.util.SvgUtil
+import org.cxct.sportlottery.util.setLeagueLogo
 
 @SuppressLint("NotifyDataSetChanged")
 class SportOutrightAdapter : BaseGameAdapter() {
@@ -127,13 +127,7 @@ class SportOutrightAdapter : BaseGameAdapter() {
             }
             outrightItem.matchOdd.matchInfo?.let {
                 itemView.tv_league_name.text = it.name
-                val logo = if (it.img.isNullOrEmpty()) {
-                    SvgUtil.defaultIconPath
-                } else {
-                    it.img!!
-                }
-                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, logo)
-                itemView.iv_league_logo.setImageDrawable(countryIcon)
+                itemView.iv_league_logo.setLeagueLogo(it.img)
             }
             itemView.iv_league_arrow.isSelected = outrightItem.leagueExpanded
             itemView.rv_catagory.visibility =

@@ -192,9 +192,8 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }
         }
         iv_fullscreen.setOnClickListener {
-            iv_fullscreen.isSelected = !iv_fullscreen.isSelected
-            isFullScreen = iv_fullscreen.isSelected
-            if (iv_fullscreen.isSelected) {//全屏
+            showFullScreen(!isFullScreen)
+            if (isFullScreen) {//全屏
                 liveToolBarListener?.onFullScreen(true)
             } else {
                 liveToolBarListener?.onFullScreen(false)
@@ -266,7 +265,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
                 web_view.isVisible = true
-                iv_live.isVisible = !videoUrl.isNullOrEmpty()
+                iv_live.isVisible = !liveUrl.isNullOrEmpty()
                 iv_video.isVisible = false
                 iv_animation.isVisible = !animeUrl.isNullOrEmpty()
             }
@@ -441,5 +440,20 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
 
+    }
+
+    fun release() {
+        if (exoPlayer != null) {
+            releasePlayer()
+        }
+        if (web_view.isVisible) {
+            web_view.stopLoading()
+            web_view.clearCache(false)
+        }
+    }
+
+    fun showFullScreen(fullScreen: Boolean) {
+        isFullScreen = fullScreen
+        iv_fullscreen.isSelected = isFullScreen
     }
 }

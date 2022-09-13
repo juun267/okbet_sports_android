@@ -123,18 +123,11 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
     }
 
     fun showLoginNotify() {
-//        snackBarLoginNotify.apply {
-//            setAnchorView(R.id.game_bottom_navigation)
-//            show()
-//        }
+        (activity as MainTabActivity).showLoginNotify()
     }
 
     fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-//        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-//        snackBarMyFavoriteNotify?.apply {
-//            setAnchorView(R.id.game_bottom_navigation)
-//            show()
-//        }
+        (activity as MainTabActivity).showMyFavoriteNotify(myFavoriteNotifyType)
     }
 
 
@@ -168,11 +161,10 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                 sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             val countCS =
                 sportMenuResult?.sportMenuData?.menu?.cs?.items?.sumBy { it.num } ?: 0
-            val countParlay =
-                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
-
+            val countParlay =
+                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
 
             //20220728 不要有主頁
             /*tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.view?.visibility = View.GONE
@@ -215,7 +207,7 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             }
             tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 7)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
-                tv_number?.text = countCS.toString()
+                tv_number?.text = countParlay.toString()
             }
 
             //0401需求先隱藏特優賠率
@@ -435,6 +427,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
                                 MatchType.EARLY) ||
                                     it == MatchType.CS && tabSelectedPosition == getMatchTypeTabPosition(
                                 MatchType.CS) ||
+                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(
+                                MatchType.PARLAY) ||
                                     it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(
                                 MatchType.OUTRIGHT)
                             -> {

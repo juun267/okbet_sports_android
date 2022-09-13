@@ -1254,11 +1254,11 @@ class SportViewModel(
                     )
                 }
                 MatchType.PARLAY -> {
-                    getLeagueList(
+                    getOddsList(
                         code,
-                        nowChildMatchType.postValue,
+                        matchType.postValue,
                         requestTimeRangeParams,
-                        date,
+                        leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
 
@@ -1659,6 +1659,7 @@ class SportViewModel(
                 MatchType.TODAY.postValue,
                 MatchType.AT_START.postValue,
                 MatchType.EARLY.postValue,
+                MatchType.PARLAY.postValue,
                 -> {
                     if (_leagueFilterList.value?.isNotEmpty() == true) {
                         result?.oddsListData?.leagueOddsFilter =
@@ -1683,7 +1684,7 @@ class SportViewModel(
                     }
                 }
 
-                MatchType.PARLAY.postValue, MatchType.OTHER.postValue -> {
+                MatchType.OTHER.postValue -> {
                     if (isIncrement)
                         _oddsListGameHallIncrementResult.postValue(
                             Event(
@@ -2205,12 +2206,13 @@ class SportViewModel(
                         LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
                     val videoUrl =
-                        "${sConfigData?.sportAnimation}/animation/?matchId=${matchId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=video"
+                        "${sConfigData?.sportAnimation}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
                     val animeUrl =
                         "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
                     //測試用eventId=4385309, 4477265
 //                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-                    _videoUrl.postValue(Event("https://okbet-v2.cxsport.net/animation/?matchId=xm6042168&lang=en&mode=video"))
+//                    _videoUrl.postValue(Event("https://okbet-v2.cxsport.net/animation/?matchId=xm6037992&lang=zh&mode=video"))
+                    _videoUrl.postValue(Event(videoUrl))
                     _animeUrl.postValue(Event(animeUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
                     getLiveInfo(matchId, true)

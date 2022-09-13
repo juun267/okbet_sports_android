@@ -50,8 +50,8 @@
             <include
                 android:id="@+id/collaps_toolbar"
                 layout="@layout/view_toolbar_detail_collaps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                app:layout_collapseMode="pin"
+                android:visibility="gone" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

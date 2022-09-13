@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -24,11 +23,13 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.activity_detail_sport.iv_arrow
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.item_sport_odd.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
+import kotlinx.android.synthetic.main.view_toolbar_live.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -104,7 +105,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var curAwayCornerKicks: Int? = null
 
     private var curStatus: Int? = null
-
     private var isGamePause = false
     override var startTime: Long = 0
     override var timer: Timer = Timer()
@@ -162,10 +162,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
             override fun onFullScreen(enable: Boolean) {
                 if (enable) {
-                    showFullScreen(enable, Configuration.ORIENTATION_PORTRAIT)
+                    showFullScreen(enable)
                 } else {
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                    showFullScreen(enable, Configuration.ORIENTATION_PORTRAIT)
+                    showFullScreen(enable)
                 }
             }
         }
@@ -181,12 +180,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initBottomNavigation()
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        if (live_view_tool_bar.isFullScreen) {
-            showFullScreen(true, newConfig.orientation)
-        }
-    }
 
 
     override fun initToolBar() {
@@ -194,7 +187,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             onBackPressed()
         }
         iv_toolback.setOnClickListener {
-            showFullScreen(false, Configuration.ORIENTATION_PORTRAIT)
+            if (live_view_tool_bar.isFullScreen) {
+                live_view_tool_bar.showFullScreen(false)
+                showFullScreen(false)
+            } else {
+                toolBar.isVisible = true
+                live_view_tool_bar.isVisible = false
+                collaps_toolbar.isVisible = false
+                live_view_tool_bar.release()
+            }
         }
         iv_refresh.setOnClickListener {
             iv_refresh.animate().rotation(720f).setDuration(1000).start()
@@ -212,7 +213,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     //折叠状态
                     collaps_toolbar.visibility = View.VISIBLE
                 } else {
-                    collaps_toolbar.visibility = View.GONE
+                    if (live_view_tool_bar.isVisible) {
+                        collaps_toolbar.visibility = View.VISIBLE
+                    } else {
+                        collaps_toolbar.visibility = View.GONE
+                    }
                 }
             }
         })
@@ -272,7 +277,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            setAnchorView(R.id.game_bottom_navigation)
+            setAnchorView(R.id.fl_bet_list)
             show()
         }
     }
@@ -525,12 +530,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         viewModel.videoUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
-                live_view_tool_bar.videoUrl = url
+                LogUtil.d("videoUrl=" + url)
+                if (lin_video.isVisible)
+                    live_view_tool_bar.videoUrl = url
             }
         }
         viewModel.animeUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
-                live_view_tool_bar.animeUrl = url
+                if (lin_anime.isVisible)
+                    live_view_tool_bar.animeUrl = url
             }
         }
     }
@@ -1119,8 +1127,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-            lin_video.isVisible = true
-//                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+            lin_video.isVisible =
+                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =
                 TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
@@ -1128,6 +1136,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
+                    collaps_toolbar.isVisible = true
                     live_view_tool_bar.showVideo()
                 }
             }
@@ -1135,6 +1144,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.animeUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
+                    collaps_toolbar.isVisible = true
                     live_view_tool_bar.showAnime()
                 }
             }
@@ -1148,8 +1158,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    fun showFullScreen(enable: Boolean, orientation: Int) {
+    fun showFullScreen(enable: Boolean) {
         if (enable) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
             sv_content.isVisible = false
             lin_center.isVisible = false
             toolBar.isVisible = false
@@ -1158,18 +1169,19 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             setScrollEnable(false)
         } else {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             sv_content.isVisible = true
             lin_center.isVisible = true
             toolBar.isVisible = false
             live_view_tool_bar.isVisible = true
-            collaps_toolbar.isVisible = false
+            collaps_toolbar.isVisible = true
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             setScrollEnable(true)
         }
-        live_view_tool_bar.layoutParams.apply {
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        web_view_layout.layoutParams.apply {
+            if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
-                height = 232.dp
+                height = if (enable) ViewGroup.LayoutParams.MATCH_PARENT else 232.dp
             } else {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
                 height = ViewGroup.LayoutParams.MATCH_PARENT

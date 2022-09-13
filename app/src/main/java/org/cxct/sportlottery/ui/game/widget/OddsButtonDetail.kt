@@ -7,8 +7,8 @@ import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail_detail.view.*
@@ -74,11 +74,10 @@ class OddsButtonDetail @JvmOverloads constructor(
         init(attrs)
     }
 
-    private var tvSpreadSpace: TextView? = null
-    private var spaceItemRemain: View? = null
 
     //为了在赔率不显示队名，按钮内传入队名，过滤
     private var matchInfo: MatchInfo? = null
+    private var hideName = true
 
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
@@ -90,15 +89,9 @@ class OddsButtonDetail @JvmOverloads constructor(
             inflate(context, R.layout.button_odd_detail_detail, this).apply {
                 button_odd_detail.background = mBackground
             }
-            initView()
         } catch (e: Exception) {
             typedArray.recycle()
         }
-    }
-
-    private fun initView() {
-        spaceItemRemain = findViewById(R.id.space_item_remain)
-        tvSpreadSpace = findViewById(R.id.tv_spread_space)
     }
 
     fun setupOdd(
@@ -111,6 +104,9 @@ class OddsButtonDetail @JvmOverloads constructor(
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
+        hideName = TextUtils.equals(matchInfo?.homeName,
+            odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name) || TextUtils.equals(
+            getString(R.string.draw), odd?.name)
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
@@ -122,13 +118,11 @@ class OddsButtonDetail @JvmOverloads constructor(
             requestLayout()
 
             visibility =
-                if (odd?.name.isNullOrEmpty() || gameType == "disable" || TextUtils.equals(matchInfo?.homeName,
-                        odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name)
-                ) View.GONE else View.VISIBLE
+                if (odd?.name.isNullOrEmpty() || gameType == "disable" || hideName) View.GONE else View.VISIBLE
         }
 
         tv_spread.apply {
-            tvSpreadSpace?.text = odd?.spread
+            tv_spread_space?.text = odd?.spread
             text = odd?.spread
             requestLayout()
             visibility =
@@ -147,9 +141,18 @@ class OddsButtonDetail @JvmOverloads constructor(
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        spaceItemRemain?.post{
-            tv_name.maxWidth = spaceItemRemain?.width?:0
+        space_item_remain?.post {
+            tv_name.maxWidth = space_item_remain?.width ?: 0
         }
+        if (hideName && !tv_spread.isVisible && !tv_spread_space.isVisible) {
+            (lin_odd.layoutParams as ConstraintLayout.LayoutParams).apply {
+                leftToLeft = PARENT_ID
+                topToTop = PARENT_ID
+                rightToRight = PARENT_ID
+                bottomToBottom = PARENT_ID
+            }
+        }
+
 
     }
 

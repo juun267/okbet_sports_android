@@ -147,7 +147,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginTop="4dp"
-                    app:endIcon="@drawable/ic_eye_close"
                     app:hintText="@string/dialog_security_title"
                     app:iconSignifier="@drawable/ic_valid"
                     app:isResponsiveIconColor="false"

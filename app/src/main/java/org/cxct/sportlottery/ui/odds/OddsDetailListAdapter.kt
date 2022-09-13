@@ -575,8 +575,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 itemView.findViewById<View>(R.id.spaceItemBottom).isVisible = expand
                 itemView.findViewById<View>(R.id.view_line).visibility =
                     if (expand) View.VISIBLE else View.GONE
-                itemView.findViewById<View>(R.id.spaceTitle).visibility =
-                    if (expand) View.VISIBLE else View.GONE
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -711,7 +709,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
+            itemView.lin_match?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             when (sportCode) {
                 GameType.FT -> {
                     when (viewType) {
@@ -1222,7 +1220,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             tvHomeName?.text = homeName
             tvAwayName?.text = awayName
-
+            itemView.tv_draw?.isVisible = true
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
@@ -1307,7 +1305,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             tvHomeName?.text = homeName
             tvAwayName?.text = awayName
-
+            itemView?.tv_draw.isVisible = true
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
                 if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
@@ -1411,13 +1409,21 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet?.apply {
                 adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
+                //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
+                if (spanCount == 3) {
+                    TextUtils.equals(oddsDetail.matchInfo?.homeName,
+                        oddsDetail.oddArrayList[0]?.name).let {
+                        itemView.tv_draw?.isVisible = true
+                        itemView.tv_draw?.text = oddsDetail.oddArrayList[1]?.name
+                    }
+                }
             }
         }
 
         private fun forSingleCS(oddsDetail: OddsDetailListData, spanCount: Int) {
             tvHomeName?.text = homeName
             tvAwayName?.text = awayName
-
+            itemView.tv_draw?.isVisible = true
             tvHomeName?.isVisible = oddsDetail.isExpand
             tvAwayName?.isVisible = oddsDetail.isExpand
 

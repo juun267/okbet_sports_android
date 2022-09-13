@@ -229,11 +229,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun showLoginNotify() {
-
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.bottom_navigation_view)
+            show()
+        }
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
-
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(R.id.bottom_navigation_view)
+            show()
+        }
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
