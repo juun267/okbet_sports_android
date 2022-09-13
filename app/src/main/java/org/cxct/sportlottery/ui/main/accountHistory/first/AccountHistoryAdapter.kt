@@ -4,6 +4,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -103,7 +104,7 @@ class AccountHistoryAdapter(
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, clickListener, position)
+                holder.bind(data.row, clickListener, position, mRowList)
             }
 
 //            is FooterViewHolder -> {
@@ -124,7 +125,7 @@ class AccountHistoryAdapter(
     }
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row?, clickListener: ItemClickListener, position: Int) {
+        fun bind(data: Row?, clickListener: ItemClickListener, position: Int, list: List<Row?>) {
             binding.row = data
             binding.textUtil = TextUtil
 
@@ -133,8 +134,12 @@ class AccountHistoryAdapter(
                     clickListener.onClick(data)
                 }
             }
-            if (data?.statDate?.contains("-") == true)
+            if (data?.statDate?.contains("-") == true) {
                 itemView.tv_date_new.text = data.statDate.replace("-", "/")
+            } else {
+                itemView.tv_date_new.text = data?.statDate.orEmpty()
+            }
+            itemView.bottom_line.isVisible = position != list.size - 1
 //            if (position % 2 == 0) itemView.setBackgroundResource(R.color.color_242424_f2f2f2)
 //            else itemView.setBackgroundResource(R.color.color_191919_FCFCFC)
             binding.executePendingBindings()

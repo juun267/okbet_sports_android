@@ -4,29 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919_FCFCFC"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
     tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextAdapter"
     tools:ignore="SpUsage">
 
     <ImageView
         android:id="@+id/iv_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/soccer_account"
+        android:layout_height="48dp"
+        android:src="@color/color_202541_FFFFFF"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:padding="16dp"
-        android:src="@drawable/ic_arrow_left_game_back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:paddingVertical="4dp"
+        android:layout_marginStart="14dp"
+        android:src="@drawable/ic_arrow_white"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/color_BBBBBB_333333" />
+        app:tint="@color/color_FFFFFF_414655" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -34,9 +33,9 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="@string/bet_num_and_bet_date"
-        android:textColor="@color/color_BBBBBB_333333"
-        android:textSize="@dimen/textSize14sp"
+        android:text="@string/bet_detail"
+        android:textColor="@color/color_FFFFFF_414655"
+        android:textSize="@dimen/textSize18sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,10 +43,10 @@
         android:id="@+id/date_selector"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/frame_color_silver_light_stroke"
+        android:visibility="gone"
         app:defaultStatusText="6-21 星期一"
         app:textGravity="start|center_vertical"
         app:layout_constraintEnd_toStartOf="@id/sport_selector"
@@ -60,10 +59,10 @@
         android:id="@+id/sport_selector"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/frame_color_silver_light_stroke"
+        android:visibility="gone"
         app:defaultStatusText="@string/all_sport"
         app:layout_constraintBottom_toBottomOf="@+id/date_selector"
         app:layout_constraintEnd_toEndOf="parent"

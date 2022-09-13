@@ -43,7 +43,8 @@ class AccountHistoryNextAdapter(
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, BACK_TO_TOP, NO_DATA
+//        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, BACK_TO_TOP, NO_DATA
+        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, NO_DATA
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -101,7 +102,7 @@ class AccountHistoryNextAdapter(
                     add(it)
                 }
                 add(DataItem.Footer)
-                add(DataItem.BackToTop)
+//                add(DataItem.BackToTop)
             }
             else -> mutableListOf<DataItem>().apply {
                 mRowList?.map { DataItem.Item(it) }?.forEach {
@@ -122,7 +123,7 @@ class AccountHistoryNextAdapter(
             ItemType.OUTRIGHT.ordinal -> OutrightItemViewHolder.from(parent)
             ItemType.PARLAY.ordinal -> ParlayItemViewHolder.from(parent)
             ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
-            ItemType.BACK_TO_TOP.ordinal -> BackToTopViewHolder.from(parent)
+//            ItemType.BACK_TO_TOP.ordinal -> BackToTopViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -170,9 +171,9 @@ class AccountHistoryNextAdapter(
             is NoDataViewHolder -> {
             }
 
-            is BackToTopViewHolder -> {
-                holder.bind(scrollToTopListener)
-            }
+//            is BackToTopViewHolder -> {
+//                holder.bind(scrollToTopListener)
+//            }
         }
     }
 
@@ -187,7 +188,7 @@ class AccountHistoryNextAdapter(
                 }
             }
             is DataItem.Footer -> ItemType.FOOTER.ordinal
-            is DataItem.BackToTop -> ItemType.BACK_TO_TOP.ordinal
+//            is DataItem.BackToTop -> ItemType.BACK_TO_TOP.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
     }
@@ -210,14 +211,14 @@ class AccountHistoryNextAdapter(
                     }
                 }
 
-                tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
-                tvDetail.setOnClickListener {
-                    val dialog = row.parlayComsDetailVOs?.let { list ->
-                        ComboDetailDialog(it.context, list)
-                    }
-                    dialog?.show()
-                }
+//                tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+//                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+//                tvDetail.setOnClickListener {
+//                    val dialog = row.parlayComsDetailVOs?.let { list ->
+//                        ComboDetailDialog(it.context, list)
+//                    }
+//                    dialog?.show()
+//                }
                 rvParlay.apply {
                     adapter = parlayAdapter
                     layoutManager =
@@ -416,7 +417,7 @@ class AccountHistoryNextAdapter(
                     backClickListener.onClick()
                 }
 
-                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
+//                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
 
                 date_selector.cl_root.layoutParams.height = 40.dp
                 sport_selector.cl_root.layoutParams.height = 40.dp
@@ -535,9 +536,9 @@ sealed class DataItem {
         override val parlayType = ""
     }
 
-    object BackToTop : DataItem() {
-        override val orderNum: String? = null
-        override val parlayType = ""
-    }
+//    object BackToTop : DataItem() {
+//        override val orderNum: String? = null
+//        override val parlayType = ""
+//    }
 
 }

@@ -33,6 +33,18 @@
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
+            android:id="@+id/tv_bet_total_money"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            app:moneyFormat="@{other.totalAmount}"
+            android:gravity="end"
+            android:textColor="@color/colorRedLight"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="9,999,587.000 RMB" />
+
+        <TextView
             android:id="@+id/tv_status_money"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

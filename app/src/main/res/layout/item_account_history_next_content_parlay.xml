@@ -69,6 +69,7 @@
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
                 android:text="@string/commission_detail"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/margin_10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

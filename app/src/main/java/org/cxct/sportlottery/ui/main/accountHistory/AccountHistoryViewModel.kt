@@ -203,7 +203,7 @@ class AccountHistoryViewModel(
         mBetDetailRequest?.let { getDetailList(it) }
     }
 
-    fun getDetailNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+    fun getDetailNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int, date: String) {
         if (_loading.value != true && !isDetailLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
@@ -211,7 +211,7 @@ class AccountHistoryViewModel(
                     mBetDetailRequest = BetSettledDetailListRequest(
                         startTime = it.startTime,
                         endTime = it.endTime,
-                        statDate = selectedDate.value?.peekContent(),
+                        statDate = date,
                         page = it.page,
                         pageSize = PAGE_SIZE)
                     getDetailList(mBetDetailRequest!!)

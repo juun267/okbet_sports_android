@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
@@ -302,5 +303,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
+    }
+
+    fun goBetRecordDetails(date: String, gameType: String) {
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fl_content, AccountHistoryNextFragment.newInstance(date, gameType))
+            .addToBackStack(AccountHistoryNextFragment::class.java.simpleName)
+            .commit()
     }
 }

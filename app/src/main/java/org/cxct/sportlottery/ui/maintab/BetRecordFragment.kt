@@ -43,6 +43,12 @@ class BetRecordFragment :
 //                val action =
 //                    AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
 //                findNavController().navigate(action)
+                if (activity is MainTabActivity) {
+                    (activity as MainTabActivity).goBetRecordDetails(
+                        data.statDate.orEmpty(),
+                        viewModel.gameTypeCode
+                    )
+                }
             }
         })
     }
