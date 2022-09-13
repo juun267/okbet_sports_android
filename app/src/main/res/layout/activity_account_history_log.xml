@@ -7,12 +7,13 @@
     android:background="@color/color_141414_F3F4F5"
     tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
 
-    <org.cxct.sportlottery.ui.component.DateRangeSearchView
+    <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        app:dateRange="-7"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:minusDays="6" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

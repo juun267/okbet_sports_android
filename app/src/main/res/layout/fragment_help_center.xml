@@ -10,19 +10,39 @@
     android:showDividers="middle|end">
 
     <LinearLayout
-        android:id="@+id/linear_game_rule"
+        android:id="@+id/linear_common_problem"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50dp"
         android:background="@color/color_191919_FCFCFC"
         android:gravity="center"
         android:paddingStart="18dp"
         android:paddingEnd="20dp">
 
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/faqs"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:src="@drawable/ic_info_game_rules"
-            app:tint="@color/color_666666_bcbcbc" />
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_game_rule"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
 
         <TextView
             android:layout_width="0dp"
@@ -31,6 +51,30 @@
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
             android:text="@string/game_rule"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize14sp" />
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_arrow_right" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingStart="18dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="@string/feedback"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp" />
 

@@ -99,7 +99,10 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         }
 
         date_range_selector.setOnClickSearchListener {
-            viewModel.getFbQueryList(date_range_selector.startTime.toString(), date_range_selector.endTime.toString(), status_selector.selectedTag, true, 0)//首次進來跟點選查詢都重新撈資料
+            viewModel.getFbQueryList(
+                date_range_selector.startTime.toString(),
+                date_range_selector.endTime.toString(), status_selector.selectedTag,
+                true, 0)//首次進來跟點選查詢都重新撈資料
         }
     }
 

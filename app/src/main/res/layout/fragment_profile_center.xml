@@ -660,16 +660,15 @@
                                 android:textSize="@dimen/textSize12sp" />
 
 
-
                             <TextView
                                 android:id="@+id/tv_feedback"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/color_A7B2C4"
-                                android:textSize="@dimen/textSize12sp"
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/iv_line2"
-                                android:text="意见反馈"/>
+                                android:text="意见反馈"
+                                android:textColor="@color/color_A7B2C4"
+                                android:textSize="@dimen/textSize12sp" />
 
                             <View
                                 android:layout_width="match_parent"
