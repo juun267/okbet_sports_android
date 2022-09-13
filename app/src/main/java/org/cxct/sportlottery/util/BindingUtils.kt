@@ -436,22 +436,17 @@ fun TextView.setPlayContent(
     spread: String?,
     formatForOdd: String?
 ) {
-    var playNameStrColor : String = "#666666"
-    var spreadStrColor : String = "#B73A20"
+    val color_9BB3D9_535D76 = MultiLanguagesApplication.getChangeModeColorCode("#535D76", "#9BB3D9")
+    val color_025BE8_025BE8 = MultiLanguagesApplication.getChangeModeColorCode("#025BE8", "#025BE8")
 
-    if(MultiLanguagesApplication.isNightMode){
-        playNameStrColor = "#A3A3A3"
-    }
-
-    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$playNameStrColor>${playName} </font> " else ""
-    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20><b>$spread</b></font> " else ""
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>${playName} </font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=$color_9BB3D9_535D76>$spread</font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
-                "<font color=$playNameStrColor>@ </font> " +
-                "<font color=#B73A20><b>$formatForOdd </b></font> "
-        , HtmlCompat.FROM_HTML_MODE_LEGACY
+                "<font color=$color_025BE8_025BE8>@ <b>$formatForOdd</b></font> ",
+        HtmlCompat.FROM_HTML_MODE_LEGACY
     )
 }
 

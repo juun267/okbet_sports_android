@@ -1204,4 +1204,8 @@
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">EST winning(%s)：</string>
+
+    <string name="bet_record_single">单串</string>
+    <string name="bet_record_parlay">复式</string>
+
 </resources>

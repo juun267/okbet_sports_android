@@ -1330,4 +1330,7 @@
     <string name="register_and_login">注册/登录</string>
     <string name="live_streaming">直播</string>
 
+    <string name="bet_record_single">单串</string>
+    <string name="bet_record_parlay">复式</string>
+
 </resources>
