@@ -5,15 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
+import kotlinx.android.synthetic.main.item_account_history_next_total.*
+import kotlinx.android.synthetic.main.view_account_history_next_title_bar.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.util.TextUtil
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
@@ -64,6 +68,9 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         super.onViewCreated(view, savedInstanceState)
 
         view.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        iv_back.setOnClickListener {
+            activity?.onBackPressed()
+        }
         initRv()
         initObserver()
         initData()
@@ -81,6 +88,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
         viewModel.betDetailResult.observe(viewLifecycleOwner) {
             if (it.success) {
+                setupTotalView(it.other)
                 rvAdapter.addFooterAndSubmitList(
                     it.other,
                     viewModel.detailDataList,
@@ -158,6 +166,31 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             gameType = getString("gameType", "")
 
             viewModel.searchDetail(gameType, date)
+        }
+    }
+
+    private fun setupTotalView(other: Other?) {
+        other?.apply {
+            tv_bet_total_money.text = TextUtil.format(totalAmount as Double)
+            val textColor: Int
+            when {
+                win as Double > 0 -> {
+                    tv_win_or_Lose.text = getString(R.string.win)
+                    textColor = R.color.color_1D9F51_1D9F51
+                }
+                win < 0 -> {
+                    tv_win_or_Lose.text = getString(R.string.lose)
+                    textColor = R.color.color_E23434_E23434
+                }
+                else -> {
+                    tv_win_or_Lose.text = getString(R.string.win_lose)
+                    textColor = R.color.color_9BB3D9_535D76
+                }
+            }
+            tv_status_money.setTextColor(
+                ContextCompat.getColor(requireContext(), textColor)
+            )
+            tv_status_money.text = TextUtil.format(win)
         }
     }
 }

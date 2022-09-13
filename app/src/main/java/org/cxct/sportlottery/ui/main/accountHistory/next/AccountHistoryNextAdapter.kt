@@ -32,7 +32,6 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import timber.log.Timber
 
 class AccountHistoryNextAdapter(
     private val itemClickListener: ItemClickListener,
@@ -44,7 +43,7 @@ class AccountHistoryNextAdapter(
 
     enum class ItemType {
 //        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, BACK_TO_TOP, NO_DATA
-        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, NO_DATA
+        ITEM, PARLAY, OUTRIGHT, NO_DATA
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -95,13 +94,14 @@ class AccountHistoryNextAdapter(
      */
     private fun updateData() {
 
-        val items = listOf(DataItem.TitleBar(mSportTypeList)) + when {
+//        val items = listOf(DataItem.TitleBar(mSportTypeList)) + when {
+        val items = when {
             mRowList.isNullOrEmpty() -> listOf(DataItem.NoData)
             mIsLastPage -> mutableListOf<DataItem>().apply {
                 mRowList?.map { DataItem.Item(it) }?.forEach {
                     add(it)
                 }
-                add(DataItem.Footer)
+//                add(DataItem.Footer)
 //                add(DataItem.BackToTop)
             }
             else -> mutableListOf<DataItem>().apply {
@@ -118,11 +118,11 @@ class AccountHistoryNextAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ItemType.TITLE_BAR.ordinal -> TitleBarViewHolder.from(parent)
+//            ItemType.TITLE_BAR.ordinal -> TitleBarViewHolder.from(parent)
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
             ItemType.OUTRIGHT.ordinal -> OutrightItemViewHolder.from(parent)
             ItemType.PARLAY.ordinal -> ParlayItemViewHolder.from(parent)
-            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+//            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
 //            ItemType.BACK_TO_TOP.ordinal -> BackToTopViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
@@ -131,23 +131,23 @@ class AccountHistoryNextAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
 
-            is TitleBarViewHolder -> {
-                when (val data = getItem(position)) {
-                    is DataItem.TitleBar -> {
-                        holder.bind(
-                            data.spinnerList,
-                            nowSelectedDate,
-                            nowSelectedSport,
-                            backClickListener,
-                            sportSelectListener,
-                            dateSelectListener
-                        )
-                    }
-                    else -> {
-                        Timber.e("data of TitleBar no match")
-                    }
-                }
-            }
+//            is TitleBarViewHolder -> {
+//                when (val data = getItem(position)) {
+//                    is DataItem.TitleBar -> {
+//                        holder.bind(
+//                            data.spinnerList,
+//                            nowSelectedDate,
+//                            nowSelectedSport,
+//                            backClickListener,
+//                            sportSelectListener,
+//                            dateSelectListener
+//                        )
+//                    }
+//                    else -> {
+//                        Timber.e("data of TitleBar no match")
+//                    }
+//                }
+//            }
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
@@ -164,9 +164,9 @@ class AccountHistoryNextAdapter(
                 holder.bind(data.row, oddsType)
             }
 
-            is FooterViewHolder -> {
-                holder.bind(mOther)
-            }
+//            is FooterViewHolder -> {
+//                holder.bind(mOther)
+//            }
 
             is NoDataViewHolder -> {
             }
@@ -179,7 +179,7 @@ class AccountHistoryNextAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
+//            is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
             is DataItem.Item -> {
                 when (getItem(position).parlayType) {
                     ParlayType.SINGLE.key -> ItemType.ITEM.ordinal
@@ -187,7 +187,7 @@ class AccountHistoryNextAdapter(
                     else -> ItemType.PARLAY.ordinal
                 }
             }
-            is DataItem.Footer -> ItemType.FOOTER.ordinal
+//            is DataItem.Footer -> ItemType.FOOTER.ordinal
 //            is DataItem.BackToTop -> ItemType.BACK_TO_TOP.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
@@ -521,15 +521,15 @@ sealed class DataItem {
         override val parlayType = row.parlayType
     }
 
-    data class TitleBar(val spinnerList: List<StatusSheetData>) : DataItem() {
-        override val orderNum: String = ""
-        override val parlayType = ""
-    }
+//    data class TitleBar(val spinnerList: List<StatusSheetData>) : DataItem() {
+//        override val orderNum: String = ""
+//        override val parlayType = ""
+//    }
 
-    object Footer : DataItem() {
-        override val orderNum: String = ""
-        override val parlayType = ""
-    }
+//    object Footer : DataItem() {
+//        override val orderNum: String = ""
+//        override val parlayType = ""
+//    }
 
     object NoData : DataItem() {
         override val orderNum: String? = null
