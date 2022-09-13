@@ -165,6 +165,11 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             date = getString("date", "")
             gameType = getString("gameType", "")
 
+            if (date.contains("-")) {
+                tv_date.text = date.replace("-", "/")
+            } else {
+                tv_date.text = date
+            }
             viewModel.searchDetail(gameType, date)
         }
     }

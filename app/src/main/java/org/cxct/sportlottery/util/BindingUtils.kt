@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ThirdGameRepository
+import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -48,7 +49,7 @@ fun TextView.setDateNoYear(date: String?) {
 
 @BindingAdapter("dateTimeNoYear")
 fun TextView.setDateTimeNoYear(timeStamp: Long?) {
-    text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
+    text = TimeUtil.timeFormat(timeStamp, DM_HM_FORMAT)
 }
 
 @SuppressLint("SetTextI18n")
@@ -429,6 +430,20 @@ fun TextView.setTextTypeFace(type: Int) {
     apply {
         typeface = Typeface.create(this.typeface, type)
     }
+}
+
+fun TextView.setTeamsNameWithVS(
+    homeName: String?,
+    awayName: String?
+) {
+    val color_9BB3D9_535D76 = MultiLanguagesApplication.getChangeModeColorCode("#535D76", "#9BB3D9")
+    val color_6C7BA8_A7B2C4 = MultiLanguagesApplication.getChangeModeColorCode("#A7B2C4", "#6C7BA8")
+
+    val homeNameStr = if (!homeName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>$homeName</font> " else ""
+    val awayNameStr = if (!awayName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>$awayName</font> " else ""
+    val vsStr = "<font color=$color_6C7BA8_A7B2C4> ${context.getString(R.string.verse_upper)} </font> "
+
+    text = HtmlCompat.fromHtml(homeNameStr + vsStr + awayNameStr, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
 
 fun TextView.setPlayContent(

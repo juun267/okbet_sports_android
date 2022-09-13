@@ -79,8 +79,7 @@ class ContentParlayMatchAdapter(val status: Int) :
                 }
 
 //                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
-                title_home_name_parlay.text = data.homeName
-                title_away_name_parlay.text = data.awayName
+                title_team_name_parlay.setTeamsNameWithVS(data.homeName, data.awayName)
 
                 parlay_play_content.setPlayContent(
                     data.playName,

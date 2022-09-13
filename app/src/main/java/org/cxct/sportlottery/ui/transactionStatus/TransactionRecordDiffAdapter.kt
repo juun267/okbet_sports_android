@@ -110,8 +110,7 @@ class TransactionRecordDiffAdapter :
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName.replace("\n","")
-                title_home_name.text = matchOdds.homeName
-                title_away_name.text = matchOdds.awayName
+                title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
 
                 val oddsTypeStr = when (matchOdds.oddsType) {
                     OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
@@ -170,7 +169,7 @@ class TransactionRecordDiffAdapter :
                     context.getString(R.string.bet_record_single) + "-${getGameTypeName(data.gameType)}"
                 tv_match_title.text = singleTitle
 
-                tv_bet_result.setBetReceiptStatus(data.status)
+                tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
                 tv_bet_result.isVisible = data.status != 7
 
                 ll_copy_bet_order.setOnClickListener {
@@ -202,10 +201,8 @@ class TransactionRecordDiffAdapter :
             val matchOdds = data.matchOdds[0]
             itemView.apply {
 //                title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
-                title_league_name.text = "${matchOdds.leagueName}"
-                title_home_name.text = matchOdds.leagueName
-                tv_vs.isVisible = false
-                title_away_name.isVisible = false
+                title_league_name.text = matchOdds.leagueName
+                title_team_name.text = matchOdds.leagueName
                 val oddsTypeStr = when (matchOdds.oddsType) {
                     OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
                     OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
@@ -238,7 +235,7 @@ class TransactionRecordDiffAdapter :
                     context.getString(R.string.bet_record_single) + "-${getGameTypeName(data.gameType)}"
                 tv_match_title.text = singleTitle
 
-                tv_bet_result.setBetReceiptStatus(data.status)
+                tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
                 tv_bet_result.isVisible = data.status != 7
 
                 ll_copy_bet_order.setOnClickListener {
@@ -313,7 +310,7 @@ class TransactionRecordDiffAdapter :
                 content_parlay_order_no.text = data.orderNo
                 content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
 
-                tv_bet_result_parlay.setBetReceiptStatus(data.status)
+                tv_bet_result_parlay.setBetReceiptStatus(data.status, data.cancelledBy)
                 tv_bet_result_parlay.isVisible = data.status != 7
 
                 ll_copy_bet_order_parlay.setOnClickListener {
