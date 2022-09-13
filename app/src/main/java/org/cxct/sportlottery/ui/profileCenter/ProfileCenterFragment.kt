@@ -346,9 +346,9 @@ class ProfileCenterFragment :
         }
 
         //建議反饋
-        tv_feedback.setOnClickListener {
+     /*   tv_feedback.setOnClickListener {
             startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
-        }
+        }*/
 
 //        btn_time_zone.visibility = View.GONE
         //时区切换

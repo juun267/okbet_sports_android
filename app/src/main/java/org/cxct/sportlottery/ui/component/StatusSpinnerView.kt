@@ -61,7 +61,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             tv_name.tag = ""
             tv_name.text =
                 typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
-            tv_name.setTextColor(typedArray.getInt(R.styleable.StatusBottomSheetStyle_textColor,0))
+            tv_name.setTextColor(resources.getColor(R.color.color_414655))
             tv_name.gravity = textGravity
             setOnClickListener {
                 this@StatusSpinnerView.callOnClick()
@@ -79,7 +79,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             setSelectCode(first.code)
         }
         spinnerAdapter = StatusSpinnerAdapter(dataList)
-        spinnerAdapter!!.setItmeColor(context.resources.getColor(R.color.colorBackground,null))
+        spinnerAdapter!!.setItmeColor(resources.getColor(R.color.color_414655))
         mListPop = ListPopupWindow(context)
         var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
             0F

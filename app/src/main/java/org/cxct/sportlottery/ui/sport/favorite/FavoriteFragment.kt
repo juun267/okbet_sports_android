@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -289,9 +290,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { oddsChangeEvent ->
-
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
                 //該處篩選於viewModel內是不同寫法 暫時不同步於ServiceBroadcastReceiver內
 
                 val leagueOdds = favoriteAdapter.data
@@ -322,7 +321,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         updateGameList(index, leagueOdd)
                     }
                 }
-            }
         }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
@@ -682,9 +680,11 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
-        favoriteAdapter.data[index] = leagueOdd
-        if (favorite_game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !favorite_game_list.isComputingLayout) {
-            favoriteAdapter.updateLeague(index, leagueOdd)
+        favorite_game_list?.let {
+            favoriteAdapter.data[index] = leagueOdd
+            if (it.scrollState == RecyclerView.SCROLL_STATE_IDLE && !it.isComputingLayout) {
+                favoriteAdapter.updateLeague(index, leagueOdd)
+            }
         }
     }
 

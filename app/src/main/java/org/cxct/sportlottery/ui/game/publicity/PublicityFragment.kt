@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -140,7 +141,6 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
         receiver.serviceConnectStatus.removeObservers(viewLifecycleOwner)
         receiver.matchStatusChange.removeObservers(viewLifecycleOwner)
         receiver.matchClock.removeObservers(viewLifecycleOwner)
-        receiver.oddsChange.removeObservers(viewLifecycleOwner)
         receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
         receiver.leagueChange.removeObservers(viewLifecycleOwner)
         receiver.globalStop.removeObservers(viewLifecycleOwner)
@@ -348,8 +348,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
             }
         })
 
-        receiver.oddsChange.observe(viewLifecycleOwner, { event ->
-            event?.getContentIfNotHandled()?.let { oddsChangeEvent ->
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
                 val targetList = getNewestRecommendData()
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
@@ -374,8 +373,7 @@ class PublicityFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewMo
                     }
                 }
                 mPublicityAdapter.removeData(GamePublicityAdapter.PreloadItem())
-            }
-        })
+        }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner, {
             it?.let { matchOddsLockEvent ->

@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -166,8 +167,7 @@ class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(Gam
     }
 
     private fun initSocketObserver() {
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
-            it?.getContentIfNotHandled()?.let { oddsChangeEvent ->
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
                 oddsChangeEvent.odds.let { oddTypeSocketMap ->
                     outrightOddAdapter.data?.first?.filterNotNull()
                         ?.forEachIndexed { index: Int, odd: Odd ->
@@ -228,8 +228,7 @@ class GameOutrightMoreFragment : BaseBottomNavigationFragment<GameViewModel>(Gam
 
                         }
                 }
-            }
-        })
+        }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
             it?.let { matchOddsLockEvent ->
