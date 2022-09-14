@@ -730,19 +730,13 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                             if (nowGameType == leagueChangeEvent.gameType && leagueChangeEvent.leagueIdList?.isNotEmpty() == true) {
                                 //不管是否相同聯賽，也要確認是否要更新賽事資訊
                                 withContext(Dispatchers.Main) {
-                                    if (matchType == MatchType.OTHER) {
-                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                    } else {
-                                        viewModel.getGameHallList(
-                                            matchType,
-                                            leagueIdList = leagueChangeEvent.leagueIdList,
-                                            isReloadDate = false,
-                                            isIncrement = true
-                                        )
-                                    }
+                                    viewModel.getGameHallList(
+                                        matchType,
+                                        leagueIdList = leagueChangeEvent.leagueIdList,
+                                        isReloadDate = false,
+                                        isIncrement = true
+                                    )
                                 }
-                            } else if (matchType == MatchType.OTHER) {
-                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                             }
                         }
                         isUpdatingLeague = false
@@ -775,9 +769,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     viewModel.firstSwitchMatch(matchType = matchType)
-                    if (matchType == MatchType.OTHER) {
-                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
-                    } else if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
+                    if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
                         gameType?.let { gameType ->
                             viewModel.getOutrightOddsList(gameType = gameType,
                                 leagueIdList = leagueIdList)

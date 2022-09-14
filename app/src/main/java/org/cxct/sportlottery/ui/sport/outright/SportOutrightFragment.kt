@@ -586,19 +586,17 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     viewModel.firstSwitchMatch(matchType = matchType)
-                    if (matchType == MatchType.OTHER) {
-                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
-                    } else if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
-                        gameType?.let { gameType ->
-                            viewModel.getOutrightOddsList(gameType = gameType,
-                                leagueIdList = leagueIdList)
-                        }
-                    } else {
-                        viewModel.getGameHallList(
-                            matchType = matchType,
-                            isReloadDate = true,
-                            isReloadPlayCate = false,
-                            isLastSportType = true
+                if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
+                    gameType?.let { gameType ->
+                        viewModel.getOutrightOddsList(gameType = gameType,
+                            leagueIdList = leagueIdList)
+                    }
+                } else {
+                    viewModel.getGameHallList(
+                        matchType = matchType,
+                        isReloadDate = true,
+                        isReloadPlayCate = false,
+                        isLastSportType = true
                         )
                     }
                     subscribeSportChannelHall()
