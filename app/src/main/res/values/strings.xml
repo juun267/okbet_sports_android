@@ -1335,4 +1335,6 @@
     <string name="live_streaming">直播</string>
     <string name="half_first_short">上</string>
     <string name="half_second_short">下</string>
+    <string name="bank_memory_card">储存卡</string>
+    <string name="my_bank_card">我的银行卡</string>
 </resources>

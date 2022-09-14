@@ -6,26 +6,15 @@
 
     <ImageView
         android:id="@+id/list_no_record_img"
-        android:layout_width="130dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/ic_img_no_record"
+        android:layout_width="256dp"
+        android:layout_height="199dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_img_no_game_record"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/color_2a2a2a_dedede"/>
 
-    <TextView
-        android:id="@+id/list_no_record_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/finance_list_no_record"
-        android:textColor="@color/color_BBBBBB_333333"
-        android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
-        app:layout_constraintStart_toStartOf="@id/list_no_record_img"
-        app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

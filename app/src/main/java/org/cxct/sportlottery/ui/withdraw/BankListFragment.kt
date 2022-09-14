@@ -8,15 +8,98 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseFragment
-
+/**
+ * @app_destination 提款设置
+ */
 class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
-
     private val mNavController by lazy {
+        findNavController()
+    }
+
+
+    private val mBankListAdapter by lazy {
+        BankCardListAdapter(
+            BankCardListClickListener(
+                editBankListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType, null)
+                    mNavController.navigate(action)
+                },
+                editCryptoListener = {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType, null)
+                    mNavController.navigate(action)
+                }
+            ))
+
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_bank_list, container, false).apply {
+            setupRecyclerView(this)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initData()
+        setupObserve()
+        setupTitle()
+    }
+
+    private fun initData() {
+        viewModel.getBankCardList()
+    }
+
+    private fun setupTitle() {
+        (activity as BankActivity).changeTitle(getString(R.string.withdraw_setting))
+    }
+
+    private fun setupObserve() {
+        viewModel.loading.observe(this.viewLifecycleOwner, Observer {
+            if (it)
+                loading()
+            else
+                hideLoading()
+        })
+
+        viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
+            mBankListAdapter.moneyConfig = it
+        })
+
+
+        viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer { bankCardList ->
+            bankCardList.let { data ->
+                mBankListAdapter.bankList = data ?: listOf()
+                if (!data.isNullOrEmpty()) {
+                    tv_no_bank_card.visibility = View.GONE
+                }
+                viewModel.checkBankCardCount()
+            }
+        })
+        //银行卡数量
+        viewModel.numberOfBankCard.observe(this.viewLifecycleOwner,Observer{
+            tv_bank_card_number.text = it
+        })
+        cv_add_bank.setOnClickListener{
+            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null,TransferType.BANK)
+            mNavController.navigate(action)
+        }
+    }
+
+    private fun setupRecyclerView(view: View) {
+        view.rv_bank_list.apply {
+            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false).apply {
+            }
+
+            adapter = mBankListAdapter
+        }
+    }
+   /* private val mNavController by lazy {
         findNavController()
     }
 
@@ -86,7 +169,11 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 viewModel.checkBankCardCount()
             }
         })
-
+        //银行卡数量
+        viewModel.numberOfBankCard.observe(this.viewLifecycleOwner,Observer{
+            tv_bank_card_number.text = it
+        })
+    //这个方法 是根据有没有银行卡或者虚拟币等分类显示需要添加的按钮　改版后去除了此方法　
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, Observer {
             mBankListAdapter.transferAddSwitch = it
             tv_no_bank_card.text = it.run {
@@ -104,7 +191,11 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupRecyclerView(view: View) {
         view.rv_bank_list.apply {
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
+            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false).apply {
+
+
+            }
+         *//*   layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
                         return when (mBankListAdapter.bankList.size) {
@@ -114,8 +205,8 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     }
 
                 }
-            }
+            }*//*
             adapter = mBankListAdapter
         }
-    }
+    }*/
 }

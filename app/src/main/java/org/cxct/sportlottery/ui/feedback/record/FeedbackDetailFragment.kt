@@ -16,7 +16,9 @@ import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.util.countTextAmount
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
-
+/**
+ * @app_destination 反馈记录-反馈详情
+ */
 class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 
     val adapter by lazy {
