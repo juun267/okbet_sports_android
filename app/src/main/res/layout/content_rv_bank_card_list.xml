@@ -70,7 +70,7 @@
                     android:id="@+id/bank_card_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="储存卡"
+                    android:text="@string/bank_memory_card"
                     android:textColor="#7Fffffff"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="储存卡" />
