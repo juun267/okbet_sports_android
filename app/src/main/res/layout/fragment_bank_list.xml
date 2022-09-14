@@ -28,6 +28,7 @@
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold" />
         <LinearLayout
+            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginStart="@dimen/margin_16"
             android:orientation="horizontal"
             android:layout_width="match_parent"
