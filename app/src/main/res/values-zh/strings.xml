@@ -1209,4 +1209,5 @@
     <string name="submitting">注单提交中</string>
     <string name="bet_receipt_bet_quota_with_sign">投注金额(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">可赢金额(%s)：</string>
+    <string name="bank_memory_card">储蓄卡</string>
 </resources>

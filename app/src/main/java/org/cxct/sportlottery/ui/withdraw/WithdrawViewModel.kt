@@ -199,7 +199,9 @@ class WithdrawViewModel(
 
     private var dealType: TransferType = TransferType.BANK
 
-
+    val numberOfBankCard: LiveData<String>
+        get() = _numberOfBankCard
+    private var _numberOfBankCard = MutableLiveData<String>()
     /**
      * @param isBalanceMax: 是否為當前餘額作為提款上限, true: 提示字為超過餘額相關, false: 提示字為金額設定相關
      */
@@ -288,6 +290,7 @@ class WithdrawViewModel(
                     })
                 }
                 _bankCardList.value = cardList
+                _numberOfBankCard.value = "(${result.bankCardList?.size})"
                 hideLoading()
             }
         }

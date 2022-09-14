@@ -63,10 +63,10 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
 
     val adapter by lazy {
         context?.let {
-            FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { data ->
+            FeedbackListAdapter(it, FeedbackListAdapter.ItemClickListener { /*data ->
                 view?.findNavController()?.navigate(R.id.action_feedbackRecordListFragment_to_feedbackDetailFragment)
                 viewModel.dataID = data.id?.toLong()
-                viewModel.feedbackCode = data.feedbackCode
+                viewModel.feedbackCode = data.feedbackCode*/
             })
         }
     }
