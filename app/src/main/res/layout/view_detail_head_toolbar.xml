@@ -115,24 +115,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_time_top"
+                        android:id="@+id/tv_match_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_FFFFFF"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/color_99FFFFFF"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="下半场" />
 
                     <TextView
-                        android:id="@+id/tv_time_bottom"
+                        android:id="@+id/tv_match_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/time_null"
-                        android:fontFamily="@font/helvetica"
-                        android:textColor="@color/color_FFFFFF"
-                        android:textSize="@dimen/textSize12sp" />
+                        android:fontFamily="@font/din_bold"
+                        android:textColor="@color/color_99FFFFFF"
+                        android:textSize="@dimen/textSize14sp" />
 
                 </LinearLayout>
 
@@ -165,18 +166,54 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize26sp"
-                    android:fontFamily="@font/din_font"
-                    android:visibility="gone"
-                    tools:text="5 - 5"
-                    tools:visibility="visible" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ic_attack_h"
+                            android:layout_width="4dp"
+                            android:layout_height="4dp"
+                            android:src="@drawable/bg_green_dot"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_FFFFFF"
+                        android:textSize="@dimen/textSize26sp"
+                        android:fontFamily="@font/din_font"
+                        android:visibility="gone"
+                        tools:text="5 - 5"
+                        tools:visibility="visible" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/ic_attack_c"
+                            android:layout_width="4dp"
+                            android:layout_height="4dp"
+                            android:layout_marginRight="@dimen/margin_4"
+                            android:src="@drawable/bg_green_dot"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -304,15 +341,97 @@
             android:layout_weight="1" />
 
         <LinearLayout
+            android:id="@+id/lin_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
+            android:layout_marginHorizontal="14dp"
             android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:id="@+id/lin_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_ft_half"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/color_1A1A1A_FFFFFF"
+                    android:textSize="@dimen/textSize10sp"
+                    tools:text="半：1-2"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+
+                <TextView
+                    android:id="@+id/league_corner_kicks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_kicks"
+                    android:drawablePadding="5dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/color_1A1A1A_FFFFFF"
+                    android:textSize="@dimen/textSize10sp"
+                    android:visibility="gone"
+                    tools:text="1-5"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_yellow_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/bg_sport_card_yellow"
+                    android:drawablePadding="5dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="@dimen/textSize8sp"
+                    android:textColor="@color/color_FFFFFF"
+                    android:gravity="center"
+                    android:fontFamily="@font/helvetica"
+                    android:visibility="gone"
+                    tools:text="1-3"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_red_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/bg_sport_card_red"
+                    android:textColor="@color/color_1A1A1A_FFFFFF"
+                    android:textSize="@dimen/textSize10sp"
+                    android:visibility="gone"
+                    tools:text="1-2"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_peroids_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_1A1A1A_FFFFFF"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    tools:text="1-1 2-2 3-3"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/content_baseball_status"
+                layout="@layout/content_baseball_status"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_half"
@@ -377,16 +496,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_status_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/textSize12sp"
-                android:fontFamily="@font/din_font"
-                android:visibility="gone"
-                tools:text="14-15  15-14"
-                tools:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

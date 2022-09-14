@@ -142,7 +142,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
                 },
                 onClickMatch = { outrightItem ->
                     outrightItem.matchOdd.matchInfo?.let {
-                        navMatchDetailPage(it.id, 0)
+                        navMatchDetailPage(it)
                     }
                 },
                 clickExpand = { outrightItem ->
@@ -163,12 +163,19 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
         }
     }
 
-    private fun navMatchDetailPage(
-        matchId: String?,
-        liveVideo: Int,
-    ) {
-        matchId?.let {
-            navOddsDetailLive(it, liveVideo)
+    private fun navMatchDetailPage(matchInfo: MatchInfo?) {
+        matchInfo?.let { it ->
+            val gameType =
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            gameType?.let {
+                if (gameType != null) {
+                    SportDetailActivity.startActivity(requireContext(),
+                        DetailParams(matchType = matchType,
+                            gameType = gameType,
+                            matchId = matchInfo.id,
+                            matchInfo = matchInfo))
+                }
+            }
         }
     }
 

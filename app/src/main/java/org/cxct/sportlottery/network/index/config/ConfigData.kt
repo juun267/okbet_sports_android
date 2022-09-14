@@ -82,6 +82,7 @@ data class ConfigData(
     val zaloLink: String?,
     val zaloQR: String?,
     val sportAnimation: String?,//体育动画接口 20210812確認暫時無用處
+    val sportStream: String?,//体育视频域名
     val liveUrl: String?,
     val analysisUrl: String?,
     val referUrl: String?,

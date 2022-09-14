@@ -70,6 +70,10 @@ data class MatchInfo(
 
     override var awayCards: Int? = null
 
+    override var homeYellowCards: Int? = null
+
+    override var awayYellowCards: Int? = null
+
     override var homeCornerKicks: Int? = null
 
     override var awayCornerKicks: Int? = null

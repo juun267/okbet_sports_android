@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,21 +105,28 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     showStatistics(matchId)
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
                     checkCreditSystemLogin {
-                        navOddsDetailFragment(
-                            gameType,
-                            matchType,
-                            matchId,
-                            matchInfoList
-                        )
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navOddsDetailFragment(gameType, matchType, matchId, it)
+                        }
                     }
                 }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
                     if (viewModel.checkLoginStatus()) {
-                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navOddsDetailFragment(gameType, matchType, matchId, it)
+                        }
                     }
                 },
                 onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
                     if (viewModel.checkLoginStatus()) {
-                        navOddsDetailFragment(gameType, matchType, matchId, matchInfoList)
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navOddsDetailFragment(gameType, matchType, matchId, it)
+                        }
                     }
                 }
             )
@@ -660,13 +668,17 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         gameTypeCode: String,
         matchType: MatchType?,
         matchId: String?,
-        matchInfoList: List<MatchInfo>,
+        matchInfo: MatchInfo?,
     ) {
+
         val gameType = GameType.getGameType(gameTypeCode)
         val navMatchType = matchType ?: MatchType.DETAIL
         if (gameType != null && matchId != null) {
             SportDetailActivity.startActivity(requireContext(),
-                DetailParams(matchType = navMatchType, gameType = gameType, matchId = matchId))
+                DetailParams(matchType = navMatchType,
+                    gameType = gameType,
+                    matchId = matchId,
+                    matchInfo = matchInfo))
         }
     }
 

@@ -21,9 +21,6 @@ abstract class BaseGameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             BaseItemType.PRELOAD_ITEM.type -> {
                 PreloadItemViewHolder.from(parent)
             }
-            BaseItemType.BOTTOM_NAVIGATION.type -> {
-                BottomNavigationViewHolder.from(parent)
-            }
             else -> {
                 NoDataViewHolder.from(parent)
             }
@@ -49,21 +46,10 @@ abstract class BaseGameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
-    class BottomNavigationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(parent: ViewGroup) =
-                BottomNavigationViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.home_bottom_navigation, parent, false)
-                )
-
-        }
-    }
 
     enum class BaseItemType(val type: Int) {
         NO_DATA(9999),
         PRELOAD_ITEM(9998),
-        BOTTOM_NAVIGATION(9997)
     }
 
 }

@@ -88,6 +88,8 @@ data class MatchInfo(
     //FT
     override var homeCards: Int? = null
     override var awayCards: Int? = null
+    override var homeYellowCards: Int? = null
+    override var awayYellowCards: Int? = null
     override var homeCornerKicks: Int? = null
     override var awayCornerKicks: Int? = null
 

@@ -4,28 +4,22 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.activity_detail_sport.iv_arrow
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
-import kotlinx.android.synthetic.main.item_sport_odd.*
+import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
@@ -42,8 +36,6 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -60,9 +52,6 @@ import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.ui.statistics.StatisticsFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
-import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
-import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import timber.log.Timber
 import java.util.*
 
@@ -96,58 +85,58 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId) }
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
+    private var matchInfo: MatchInfo? = null
     lateinit var gameType: GameType
 
-    private var curHomeScore: Int? = null
-    private var curAwayScore: Int? = null
 
-    private var curHomeCornerKicks: Int? = null
-    private var curAwayCornerKicks: Int? = null
-
-    private var curStatus: Int? = null
     private var isGamePause = false
     override var startTime: Long = 0
     override var timer: Timer = Timer()
     override var timerHandler: Handler = Handler {
         var timeMillis = startTime * 1000L
-
-        when (matchType) {
-            //原滾球時間顯示邏輯
-            MatchType.IN_PLAY -> {
-                if (!isGamePause) {
-                    when (gameType) {
-                        GameType.FT -> {
-                            timeMillis += 1000
-                        }
-                        GameType.BK, GameType.RB, GameType.AFT -> {
-                            timeMillis -= 1000
-                        }
-                        else -> {
-                        }
+        if (TimeUtil.isTimeInPlay(matchOdd?.matchInfo?.startTime)) {
+            if (!isGamePause) {
+                when (gameType) {
+                    GameType.FT -> {
+                        timeMillis += 1000
                     }
-
+                    GameType.BK, GameType.RB, GameType.AFT -> {
+                        timeMillis -= 1000
+                    }
+                    else -> {
+                    }
                 }
-                tv_time_bottom?.apply {
-                    if (needCountStatus(curStatus)) {
-                        if (timeMillis >= 1000) {
-                            text = TimeUtil.longToMmSs(timeMillis)
-                            startTime = timeMillis / 1000L
-                            isVisible = true
-                        } else {
-                            text = this.context.getString(R.string.time_null)
-                            isVisible = false
-                        }
+
+            }
+            //过滤部分球类
+            if (when (gameType) {
+                    GameType.BB, GameType.TN, GameType.VB, GameType.TT, GameType.BM ->
+                        true
+                    else -> {
+                        false
+                    }
+                }
+            ) {
+                tv_match_time.isVisible = false
+                cancelTimer()
+                return@Handler false
+            }
+            tv_match_time?.apply {
+                if (needCountStatus(matchOdd?.matchInfo?.socketMatchStatus)) {
+                    if (timeMillis >= 1000) {
+                        text = TimeUtil.longToMmSs(timeMillis)
+                        startTime = timeMillis / 1000L
+                        isVisible = true
                     } else {
                         text = this.context.getString(R.string.time_null)
                         isVisible = false
                     }
-                    tv_toolbar_bottom.text = text
-                    tv_toolbar_bottom.isVisible = isVisible
+                } else {
+                    text = this.context.getString(R.string.time_null)
+                    isVisible = true
                 }
-            }
-            else -> {
-                setupNotInPlayTime()
-
+                tv_toolbar_bottom.text = text
+                tv_toolbar_bottom.isVisible = isVisible
             }
         }
         return@Handler false
@@ -172,6 +161,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_detail_sport)
         initToolBar()
         initData()
@@ -284,10 +274,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
         setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-//        snackBarMyFavoriteNotify?.apply {
-//            setAnchorView(R.id.game_bottom_navigation)
-//            show()
-//        }
+
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
@@ -296,10 +283,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        (intent.getSerializableExtra(TYPE_PARAMETER) as DetailParams)?.let {
+        intent.getParcelableExtra<DetailParams>(TYPE_PARAMETER)?.let {
             gameType = it.gameType
             matchType = it.matchType ?: MatchType.OTHER
             matchId = it.matchId
+            matchInfo = it.matchInfo
+        }
+        matchInfo?.let {
+            setupMatchInfo(it)
         }
     }
 
@@ -345,12 +336,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 if (mIsEnabled) {
                     avoidFastDoubleClick()
                     matchOdd?.let { matchOdd ->
-                        matchOdd.matchInfo.homeScore = "$curHomeScore"
-                        matchOdd.matchInfo.awayScore = "$curAwayScore"
-
-                        matchOdd.matchInfo.homeCornerKicks = curHomeCornerKicks
-                        matchOdd.matchInfo.awayCornerKicks = curAwayCornerKicks
-
                         val fastBetDataBean = FastBetDataBean(
                             matchType = matchType,
                             gameType = gameType,
@@ -427,6 +412,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         matchOdd = result.oddsDetailData?.matchOdd
 
                         result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
+                            this.matchInfo = matchInfo
                             //region 配置主客隊名稱給內部Item使用
                             matchInfo.homeName?.let { home ->
                                 oddsDetailListAdapter?.homeName = home
@@ -438,8 +424,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
                             setupMatchInfo(matchInfo)
                         }
-
-                        setupStartTime()
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
                     }
                     false -> {
@@ -575,18 +559,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
      */
     private fun setupMatchInfo(matchInfo: MatchInfo) {
+        LogUtil.toJson(matchInfo)
         //region 隊伍名稱
         tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
         tv_away_name.text = matchInfo.awayName ?: ""
         tv_toolbar_home_name.text = matchInfo.homeName ?: ""
         tv_toolbar_away_name.text = matchInfo.awayName ?: ""
-        Glide.with(this)
-            .load(matchInfo.homeIcon)
-            .into(img_home_logo)
-        Glide.with(this)
-            .load(matchInfo.awayIcon)
-            .into(img_away_logo)
+        img_home_logo.setTeamLogo(matchInfo.homeIcon)
+        img_away_logo.setTeamLogo(matchInfo.awayIcon)
         //endregion
         //region 比賽延期判斷
         if (matchInfo.status == GameStatus.POSTPONED.code
@@ -595,21 +576,35 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             toolBar.tv_score.text = getString(R.string.game_postponed)
             tv_toolbar_home_score.text = "-"
             tv_toolbar_away_score.text = "-"
+            lin_bottom.isVisible = false
+            return
         }
         //endregion
 
-        //region 比賽賽制
-        if (matchType == MatchType.IN_PLAY &&
-            (gameType == GameType.TN || gameType == GameType.VB || gameType == GameType.TT || gameType == GameType.BM)
-            && (matchInfo.spt != null)
-        ) {
-            toolBar.tv_spt.visibility = View.VISIBLE
-            toolBar.tv_spt.text = " / ${(matchInfo.spt)}"
+        //赛事进行中，就显示比分状态，否则就不显示左下角，并且显示开赛时间
+        var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
+        if (isInPlay) {
+            lin_bottom.isVisible = true
+            setStatusText(matchInfo)
+            updateMenu(matchInfo)
+            setupMatchScore(matchInfo)
         } else {
-            toolBar.tv_spt.visibility = View.GONE
+            var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
+            startDate.split(" ").let {
+                if (it.size == 2) {
+                    tv_match_time.text = it[0]
+                    tv_score.text = it[1]
+                    tv_match_status.isVisible = false
+                    tv_score.isVisible = true
+                    tv_match_time.isVisible = true
+                } else {
+                    tv_match_status.isVisible = false
+                    tv_score.isVisible = false
+                    tv_match_time.isVisible = false
+                }
+            }
+            lin_bottom.isVisible = false
         }
-        //endregion
-        updateMenu(matchInfo)
     }
 
     private fun initSocketObserver() {
@@ -631,30 +626,26 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                             unsubscribeHallChannel(matchId)
                             getData()
                         }
-
-                        tv_score?.let { tv ->
-                            val statusValue =
-                                statusNameI18n?.get(getSelectLanguage(this@SportDetailActivity).key)
-                                    ?: statusName
-                            tv.text = statusValue
+                        matchOdd?.let { matchOdd ->
+                            var isNeedUpdate = SocketUpdateUtil.updateMatchStatus(
+                                gameType = gameType,
+                                matchOdd = matchOdd,
+                                matchStatusChangeEvent,
+                                context = this@SportDetailActivity
+                            )
+                            if (isNeedUpdate) {
+                                setupMatchInfo(matchOdd.matchInfo)
+                            }
                         }
-                        tv_toolbar_home_score.text = "-"
-                        tv_toolbar_away_score.text = "-"
-                        tv_toolbar_bottom.text = tv_time_bottom.text
-                        tv_toolbar_top.text = tv_time_top.text
-
-                        curHomeScore = homeScore
-                        curAwayScore = awayScore
-                        curStatus = status
-                        updateCornerKicks()
-
-                        setupStatusList(matchStatusChangeEvent)
                     }
             }
         }
 
         receiver.matchClock.observe(this) {
             it?.let { matchClockEvent ->
+                if (matchClockEvent.matchClockCO?.matchId != matchId) {
+                    return@let
+                }
                 val updateTime = when (gameType) {
                     GameType.FT -> {
                         matchClockEvent.matchClockCO?.matchTime
@@ -666,9 +657,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
 
                 isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
-
                 updateTime?.let { time ->
                     startTime = time
+                    matchType =
+                        if (TimeUtil.isTimeInPlay(startTime)) MatchType.IN_PLAY else MatchType.OTHER
                 }
             }
         }
@@ -781,47 +773,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         return betListFragment.isVisible
     }
 
-    /**
-     * 更新當前頁面的角球數
-     */
-    private fun MatchStatusCO.updateCornerKicks() {
-        //region 判斷需不需要更新資料 角球數都沒變的話就不更新
-        var cornerKicksChanged = false
-        if (homeCornerKicks != null && curHomeCornerKicks != homeCornerKicks) {
-            curHomeCornerKicks = homeCornerKicks
-            oddsDetailListAdapter?.homeCornerKicks = homeCornerKicks
-            cornerKicksChanged = true
-        }
-
-        if (awayCornerKicks != null && curAwayCornerKicks != awayCornerKicks) {
-            curAwayCornerKicks = awayCornerKicks
-            oddsDetailListAdapter?.awayCornerKicks = awayCornerKicks
-            cornerKicksChanged = true
-        }
-        //endregion
-
-        if (cornerKicksChanged) {
-            oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
-                oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
-                    //需要顯示當前滾球的玩法標題需更新
-                    if (PlayCate.needShowCurrentCorner(oddsDetailListData.gameType)) {
-                        oddsDetailListAdapter?.notifyItemChanged(index)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setupStartTime() {
-        matchOdd?.matchInfo?.apply {
-            if (matchType != MatchType.IN_PLAY) {
-                this@SportDetailActivity.startTime = startTime ?: 0
-                setupNotInPlayTime()
-            } else {
-                //滾球狀態透過socket事件MATCH_CLOCK更新
-            }
-        }
-    }
 
     private fun getData() {
         matchId?.let { matchId ->
@@ -841,288 +792,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    private fun setupFrontScore(event: MatchStatusChangeEvent) {
-        tv_score.visibility = View.VISIBLE
-        tv_score.text = (event.matchStatusCO?.homeTotalScore
-            ?: 0).toString() + " - " + (event.matchStatusCO?.awayTotalScore ?: 0).toString()
-        tv_toolbar_home_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString()
-        tv_toolbar_away_score.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
-    }
-
-    private fun setupBackScore(event: MatchStatusChangeEvent) {
-        tv_score.visibility = View.VISIBLE
-        tv_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString() +
-                " - " + (event.matchStatusCO?.awayTotalScore ?: 0).toString()
-        tv_toolbar_home_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString()
-        tv_toolbar_away_score.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
-
-    }
-
-    private fun showBackTimeBlock(show: Boolean) {
-        ll_time.visibility = if (show) View.VISIBLE else View.GONE
-    }
-
-    private fun setupStatusList(event: MatchStatusChangeEvent) {
-        if (matchType != MatchType.IN_PLAY) return
-
-        //region setup game score
-        when (event.matchStatusCO?.status) {
-            GameMatchStatus.FINISH.value -> {
-                //donothing
-            }
-            //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
-            /*GameMatchStatus.HIDE_SCORE.value -> {
-                tv_home_score.visibility = View.GONE
-                tv_away_score.visibility = View.GONE
-                tv_home_score_total.visibility = View.GONE
-                tv_away_score_total.visibility = View.GONE
-                tv_home_score_live.visibility = View.GONE
-                tv_away_score_live.visibility = View.GONE
-            }*/
-            else -> {
-                //网球和羽毛球  排球，乒乓球需要显示局数比分
-                when (gameType) {
-                    GameType.FT,
-                    GameType.IH,
-                    -> {
-                        setCardText(event)
-                        setupFrontScore(event)
-                    }
-                    GameType.BK -> {
-                        setupFrontScore(event)
-                        setupStatusBk(event)
-                    }
-                    GameType.TN -> {
-                        setupPoint(event)
-                        setupBackScore(event)
-                    }
-                    GameType.VB,
-                    GameType.TT,
-                    -> {
-                        setupBackScore(event)
-                    }
-                    GameType.RB, GameType.AFT -> {
-                        setupFrontScore(event)
-                    }
-                    GameType.BM -> {
-                        setupBackScore(event)
-                    }
-                    GameType.CK -> {
-                        setupFrontScore(event)
-                    }
-                    GameType.BB -> {
-                        setupFrontScore(event)
-                        setupStatusBB(event)
-                    }
-                    // Todo: 仍有其他球種待處理
-                    // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
-                    // MR, GF, FB, OTHER
-                    else -> {
-                    }
-                }
-            }
-        }
-        //endregion
-
-        //region setup game status
-        //20220507 status:999 邏輯變更 隱藏分數 -> 賽事狀態變為滾球
-//        val showScore = event.matchStatusCO?.status != GameMatchStatus.HIDE_SCORE.value
-
-        when (gameType) {
-            GameType.BK -> {
-                setupStatusBk(event)
-            }
-            GameType.TN, GameType.VB, GameType.TT, GameType.BM -> {
-                showBackTimeBlock(false)
-                setupStatusPeriods(event)
-            }
-            GameType.BB -> {
-                setupFrontScore(event)
-                setupStatusBB(event)
-            }
-            // Todo: 仍有其他球種待處理
-            // 20220412 根據h5顯示的版面進行同步, MR, GF, FB, OTHER 無法模擬野佔無賽事可參考
-            // MR, GF, FB, OTHER
-            else -> {
-            }
-        }
-
-        //endregion
-    }
-
-    /**
-     * TODO 不确定半场比分是不是这个
-     */
-    private fun setCardText(event: MatchStatusChangeEvent) {
-        //半场比分
-        var homeScore = event.matchStatusCO?.homeCards ?: 0
-        var awayScore = event.matchStatusCO?.awayCards ?: 0
-        tv_half.isVisible = event.matchStatusCO?.halfStatus == 1
-        tv_half.text = "$homeScore-$awayScore"
-        //角球
-        homeScore = event.matchStatusCO?.homeCornerKicks ?: 0
-        awayScore = event.matchStatusCO?.awayCornerKicks ?: 0
-        imgCorner.isVisible = (homeScore + awayScore > 0)
-        tvCorner.isVisible = (homeScore + awayScore > 0)
-        tvCorner.text = "半：$homeScore-$awayScore"
-
-        //黄牌
-        homeScore = event.matchStatusCO?.homeYellowCards ?: 0
-        awayScore = event.matchStatusCO?.awayYellowCards ?: 0
-        imgYellowScore.isVisible = (homeScore + awayScore > 0)
-        tvYellowScore.isVisible = (homeScore + awayScore > 0)
-        tvYellowScore.text = "$homeScore-$awayScore"
-
-
-    }
-
-    private fun setupPoint(event: MatchStatusChangeEvent) {
-//        tv_home_point_live.visibility = View.VISIBLE
-//        tv_home_point_live.text = (event.matchStatusCO?.homePoints ?: 0).toString()
-//
-//        tv_away_point_live.visibility = View.VISIBLE
-//        tv_away_point_live.text = (event.matchStatusCO?.awayPoints ?: 0).toString()
-    }
-
-    private fun setupStatusBk(event: MatchStatusChangeEvent) {
-        if (event.matchStatusList?.isEmpty() == true) return
-
-        val statusBuilder = SpannableStringBuilder()
-
-        toolBar.tv_status_left.visibility = View.VISIBLE
-        toolBar.tv_spt.visibility = View.GONE
-        toolBar.tv_status_right.visibility = View.GONE
-        toolBar.tv_status_left.setTextColor(
-            ContextCompat.getColor(
-                toolBar.tv_status_left.context,
-                R.color.color_FFFFFF
-            )
-        )
-
-        event.matchStatusList?.forEachIndexed { index, it ->
-            val spanStatusName =
-                SpannableString(it.statusNameI18n?.get(getSelectLanguage(this).key))
-            val spanScore = SpannableString(" ${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
-
-            if (index == event.matchStatusList.lastIndex) {
-                spanStatusName.setSpan(
-                    StyleSpan(Typeface.BOLD),
-                    0,
-                    spanStatusName.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spanScore.setSpan(
-                    StyleSpan(Typeface.BOLD),
-                    0,
-                    spanScore.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-
-            statusBuilder.append(spanStatusName).append(spanScore)
-        }
-
-        toolBar.tv_status_left.text = statusBuilder
-    }
-
-    private fun setupStatusBB(event: MatchStatusChangeEvent) {
-        toolBar.tv_status_left.visibility = View.INVISIBLE
-        toolBar.tv_spt.visibility = View.GONE
-        toolBar.tv_status_right.visibility = View.GONE
-        ll_time.visibility = View.GONE
-
-//        tv_time_top.visibility = View.VISIBLE
-//        league_odd_match_basebag.visibility = View.VISIBLE
-
-        if (event.matchStatusCO?.attack.equals("H")) {
-            ic_attack_h.visibility = View.VISIBLE
-            ic_attack_c.visibility = View.INVISIBLE
-        } else {
-            ic_attack_h.visibility = View.INVISIBLE
-            ic_attack_c.visibility = View.VISIBLE
-        }
-
-        tv_score.apply {
-            text = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: ""
-            isVisible = true
-        }
-        tv_toolbar_home_score.text = "-"
-        tv_toolbar_away_score.text = "-"
-
-    }
-
-    /**
-     * 网球和羽毛球  排球，乒乓球 显示局比分
-     */
-    private fun setupStatusPeriods(event: MatchStatusChangeEvent) {
-
-        toolBar.tv_status_left.visibility = View.VISIBLE
-        toolBar.tv_status_left.text =
-            event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(this).key)
-                ?: event.matchStatusCO?.statusName
-
-        var periods = event.matchStatusList ?: event.matchStatusCO?.periods
-        var spanny = Spanny()
-        periods?.forEachIndexed { index, it ->
-            val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}")
-            //9表示已结束，其他代表进行中的
-            if (index < periods?.lastIndex) {
-                spanny.append(spanScore)
-                spanny.append("  ")
-            } else {
-                spanny.append(spanScore, ForegroundColorSpan(getColor(R.color.color_025BE8)))
-            }
-        }
-        toolBar.tv_status_right.text = spanny
-    }
-
-
-    /**
-     * 配置滾球以外的時間格式 (即將開賽、今日、早盤 ...)
-     */
-    private fun setupNotInPlayTime() {
-        //賽事開始時間若為今天則日期部分顯示今日
-        tv_time_top.text =
-            if (TimeUtil.isTimeToday(startTime)) getString(R.string.home_tab_today) else TimeUtil.timeFormat(
-                startTime,
-                DM_FORMAT
-            )
-        if (TimeUtil.isTimeAtStart(startTime)) {
-            //即將開賽時間格式
-            tv_time_bottom.text =
-                String.format(
-                    getString(R.string.at_start_remain_minute),
-                    TimeUtil.getRemainMinute(startTime)
-                )
-            tv_time_top.visibility = View.GONE
-
-            tv_toolbar_bottom.text = tv_time_bottom.text
-            tv_toolbar_top.visibility = View.GONE
-        } else {
-            //今日、早盤
-            val timeStr = TimeUtil.timeFormat(startTime, HM_FORMAT)
-            if (timeStr.isNotEmpty()) {
-                tv_time_bottom.text = timeStr
-            } else {
-                tv_time_bottom.text = getString(R.string.time_null)
-            }
-            //记分牌无法显示时间時，隱藏-:-
-            tv_time_bottom.isVisible = timeStr.isNotEmpty()
-            tv_time_top.visibility = View.VISIBLE
-        }
-        tv_toolbar_top.visibility = tv_time_top.visibility
-        tv_toolbar_top.text = tv_time_top.text
-
-        tv_toolbar_bottom.visibility = tv_time_bottom.visibility
-        tv_toolbar_bottom.text = tv_time_bottom.text
-
-    }
 
     /** 初始化监听 **/
     private fun initAllObserve() {
         initObserve()
         initSocketObserver()
-
     }
 
     fun updateMenu(matchInfo: MatchInfo) {
@@ -1181,7 +855,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         web_view_layout.layoutParams.apply {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
-                height = if (enable) ViewGroup.LayoutParams.MATCH_PARENT else 232.dp
+                height = if (enable) ViewGroup.LayoutParams.MATCH_PARENT else 250.dp
             } else {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
                 height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -1198,6 +872,340 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
             else
                 AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+        }
+    }
+
+    /**
+     * 棒球同时处理
+     */
+    private fun setupMatchScore(matchInfo: MatchInfo) {
+        when (matchInfo?.gameType) {
+            GameType.BB.key -> {
+                lin_tips.isVisible = false
+                content_baseball_status.isVisible = true
+            }
+            else -> {
+                lin_tips.isVisible = true
+                content_baseball_status.isVisible = false
+            }
+        }
+        when (matchInfo.gameType) {
+            GameType.VB.key -> setVbScoreText(matchInfo)
+            GameType.TN.key -> setTnScoreText(matchInfo)
+            GameType.FT.key -> setFtScoreText(matchInfo)
+            GameType.BK.key -> setBkScoreText(matchInfo)
+            GameType.TT.key -> setVbScoreText(matchInfo)
+            GameType.BM.key -> setBmScoreText(matchInfo)
+            GameType.BB.key -> setBbScoreText(matchInfo)
+            else -> setBkScoreText(matchInfo)
+        }
+    }
+
+    private fun setFtScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setCardText(matchInfo)
+        setFbKicks(matchInfo)
+    }
+
+    private fun setBkScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
+    }
+
+    private fun setVbScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
+//        setSptText(matchInfo)
+        setCurrentPeroid(matchInfo)
+        setAttack(matchInfo)
+    }
+
+    private fun setTnScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
+//        setSptText(matchInfo)
+        setCurrentPeroid(matchInfo)
+        setAttack(matchInfo)
+    }
+
+    private fun setBmScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
+//        setSptText(matchInfo )
+        setCurrentPeroid(matchInfo)
+        setAttack(matchInfo)
+    }
+
+    private fun setBbScoreText(matchInfo: MatchInfo) {
+        if (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
+            setScoreTextAtFront(matchInfo)
+            setAttack(matchInfo)
+            setBBStatus(matchInfo)
+        } else
+            setBkScoreText(matchInfo)
+    }
+
+    /**
+     * 賽制(5盤3勝)
+     * 只有网球，排球，乒乓球，羽毛球
+     */
+    @SuppressLint("SetTextI18n")
+    private fun setSptText(matchInfo: MatchInfo) {
+//        matchInfo.spt?.let {
+//            if (it == 3 || it == 5|| it == 7) {
+//                league_spt.visibility = View.VISIBLE
+//                league_spt.text = when (it) {
+//                    3 -> {
+//                        when(matchInfo.gameType){
+//                            ////排球，乒乓球显示3局2胜
+//                            GameType.BM.key-> getString(R.string.spt_number_3_2_bm)
+//                            else-> getString(R.string.spt_number_3_2)
+//                        }
+//                    }
+//                    5 -> {
+//                        when(matchInfo.gameType){
+//                            //排球，乒乓球显示5局3胜
+//                            GameType.VB.key,GameType.TT.key-> getString(R.string.spt_number_5_3_vb)
+//                            else-> getString(R.string.spt_number_5_3)
+//                        }
+//                    }
+//                    7 -> {
+//                        //部分乒乓球会采用七局四胜制
+//                        when(matchInfo.gameType){
+//                            GameType.TT.key-> getString(R.string.spt_number_7_4_tt)
+//                            else-> ""
+//                        }
+//                    }
+//                    else -> ""
+//                }
+//            } else {
+////                league_spt.visibility = View.GONE
+//            }
+//        }
+    }
+
+    /**
+     * 设置当前盘数/局数/回合
+     * 网球显示 第x盘
+     * 其他球类显示 第x局
+     */
+    @SuppressLint("SetTextI18n")
+    private fun setCurrentPeroid(matchInfo: MatchInfo) {
+        matchInfo.matchStatusList?.let {
+            tv_match_status.visibility = View.VISIBLE
+            tv_match_status.text = when (matchInfo.gameType) {
+                GameType.TN.key -> String.format(getString(R.string.format_plat),
+                    it.size.toString())
+                GameType.VB.key, GameType.TT.key, GameType.BM.key -> String.format(getString(R.string.format_round),
+                    it.size.toString())
+                else -> ""
+            }
+        }
+    }
+
+    /**
+     * 设置足球黄牌，红牌数量
+     */
+    private fun setCardText(matchInfo: MatchInfo) {
+        tv_red_card.apply {
+            visibility = when {
+                (matchInfo.homeCards ?: 0 > 0) || (matchInfo.awayCards ?: 0 > 0) -> View.VISIBLE
+                else -> View.GONE
+            }
+            text =
+                (matchInfo.homeCards ?: 0).toString() + "-" + (matchInfo.awayCards ?: 0).toString()
+        }
+
+        tv_yellow_card.apply {
+            visibility = when {
+                (matchInfo.homeYellowCards ?: 0 > 0) || (matchInfo.awayYellowCards ?: 0 > 0) -> View.VISIBLE
+                else -> View.GONE
+            }
+            text = (matchInfo.homeYellowCards ?: 0).toString() + "-" + (matchInfo.awayYellowCards
+                ?: 0).toString()
+        }
+
+    }
+
+    /**
+     * 设置球权标识，
+     *  目前支持 棒球，网球，排球，乒乓球，羽毛球
+     *  其中网球标识是另外一个位置
+     */
+    private fun setAttack(matchInfo: MatchInfo) {
+        if (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
+            when (matchInfo.gameType) {
+                GameType.BB.key,
+                GameType.VB.key,
+                GameType.TT.key,
+                GameType.BM.key,
+                GameType.TN.key,
+                -> {
+                    if (matchInfo.attack.equals("H")) {
+                        ic_attack_h.visibility = View.VISIBLE
+                        ic_attack_c.visibility = View.INVISIBLE
+                    } else {
+                        ic_attack_h.visibility = View.INVISIBLE
+                        ic_attack_c.visibility = View.VISIBLE
+                    }
+                }
+                else -> {
+                    ic_attack_h.visibility = View.GONE
+                    ic_attack_c.visibility = View.GONE
+                }
+            }
+        } else {
+            ic_attack_h.visibility = View.GONE
+            ic_attack_c.visibility = View.GONE
+        }
+    }
+
+    private fun setFbKicks(matchInfo: MatchInfo) {
+        league_corner_kicks.apply {
+            visibility = when {
+                TimeUtil.isTimeInPlay(matchInfo.startTime)
+                        && (matchInfo.homeCornerKicks ?: 0 > 0 || matchInfo.awayCornerKicks ?: 0 > 0) -> View.VISIBLE
+                else -> View.GONE
+            }
+            text = (matchInfo.homeCornerKicks
+                ?: 0).toString() + "-" + (matchInfo.awayCornerKicks ?: 0)
+        }
+    }
+
+    private fun setScoreTextAtFront(matchInfo: MatchInfo) {
+        tv_score.apply {
+            visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
+                true -> View.VISIBLE
+                else -> View.GONE
+            }
+            text = when (matchInfo.gameType) {
+                GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.homeTotalScore
+                    ?: 0).toString() + " - " + (matchInfo.awayTotalScore ?: 0).toString()
+                else -> (matchInfo.homeScore ?: 0).toString() + " - " + (matchInfo.awayScore
+                    ?: 0).toString()
+            }
+        }
+        tv_toolbar_home_score.apply {
+            visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
+                true -> View.VISIBLE
+                else -> View.GONE
+            }
+            text = when (matchInfo.gameType) {
+                GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.homeTotalScore
+                    ?: 0).toString()
+                else -> (matchInfo.homeScore ?: 0).toString()
+            }
+        }
+        tv_toolbar_away_score.apply {
+            visibility = when (TimeUtil.isTimeInPlay(matchInfo.startTime)) {
+                true -> View.VISIBLE
+                else -> View.GONE
+            }
+            text = when (matchInfo.gameType) {
+                GameType.VB.key, GameType.TT.key, GameType.BM.key -> (matchInfo.awayTotalScore
+                    ?: 0).toString()
+                else -> (matchInfo.awayScore ?: 0).toString()
+            }
+        }
+    }
+
+
+    /**
+     * 网球和羽毛球  排球，乒乓球 显示局比分
+     */
+    private fun setAllScoreTextAtBottom(matchInfo: MatchInfo) {
+        matchInfo.matchStatusList?.let { matchStatusList ->
+            var spanny = Spanny()
+            matchStatusList.forEachIndexed { index, it ->
+                val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+                //9表示已结束，其他代表进行中的
+                if (index < matchStatusList.lastIndex) {
+                    spanny.append(spanScore)
+                    spanny.append("  ")
+                } else {
+                    spanny.append(spanScore,
+                        ForegroundColorSpan(getColor(R.color.color_F0A536)))
+                }
+            }
+            tv_peroids_score.isVisible = true
+            tv_peroids_score.text = spanny
+        }
+    }
+
+
+    private fun setStatusText(matchInfo: MatchInfo) {
+        tv_match_status.text = when {
+            (TimeUtil.isTimeInPlay(matchInfo.startTime)
+                    && matchInfo.status == GameStatus.POSTPONED.code
+                    && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
+                getString(R.string.game_postponed)
+            }
+            TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
+                if (matchInfo.statusName18n != null) {
+                    //网球，排球，乒乓，羽毛球，就不显示
+                    if (matchInfo.gameType == GameType.TN.name
+                        || matchInfo.gameType == GameType.VB.name
+                        || matchInfo.gameType == GameType.TT.name
+                        || matchInfo.gameType == GameType.BM.name
+                    ) {
+                        ""
+                    } else {
+                        matchInfo.statusName18n
+                    }
+
+                } else {
+                    ""
+                }
+            }
+            else -> {
+                if (TimeUtil.isTimeToday(matchInfo.startTime))
+                    getString((R.string.home_tab_today))
+                else
+                    matchInfo.startDateDisplay
+            }
+        }
+    }
+
+    /**
+     * 棒球的特殊布局处理
+     */
+    private fun setBBStatus(matchInfo: MatchInfo) {
+        lin_tips.isVisible = false
+        content_baseball_status.isVisible = true
+        league_odd_match_bb_status.isVisible = false
+        league_odd_match_halfStatus.isVisible = false
+        tv_match_status.apply {
+            text = String.format(getString(R.string.format_round), matchInfo.statusName18n)
+            isVisible = true
+        }
+
+        txvOut.apply {
+            text = getString(R.string.game_out,
+                matchInfo.outNumber ?: "")
+            isVisible = true
+        }
+
+        tv_match_time.apply {
+            text =
+                if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(R.string.half_second_short)
+            isVisible = true
+        }
+
+        league_odd_match_basebag.apply {
+            setImageResource(
+                when {
+                    matchInfo.firstBaseBag == 0 && matchInfo.secBaseBag == 0 && matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
+                    matchInfo.firstBaseBag == 1 && matchInfo.secBaseBag == 0 && matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_0_0
+                    matchInfo.firstBaseBag == 0 && matchInfo.secBaseBag == 1 && matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
+                    matchInfo.firstBaseBag == 0 && matchInfo.secBaseBag == 0 && matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
+                    matchInfo.firstBaseBag == 1 && matchInfo.secBaseBag == 1 && matchInfo.thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
+                    matchInfo.firstBaseBag == 1 && matchInfo.secBaseBag == 0 && matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
+                    matchInfo.firstBaseBag == 0 && matchInfo.secBaseBag == 1 && matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
+                    matchInfo.firstBaseBag == 1 && matchInfo.secBaseBag == 1 && matchInfo.thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
+                    else -> R.drawable.ic_bb_base_bag_0_0_0
+                }
+            )
+            isVisible = true
         }
     }
 }

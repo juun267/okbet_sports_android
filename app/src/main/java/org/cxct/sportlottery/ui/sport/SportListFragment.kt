@@ -150,7 +150,11 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
             }
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
-                    navMatchDetailPage(matchId, 0)
+                    matchInfoList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let {
+                        navMatchDetailPage(it)
+                    }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -179,7 +183,14 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 },
                 clickListenerStatistics = { matchId ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, 0)
+                        data.forEach {
+                            it.matchOdds.forEach {
+                                if (TextUtils.equals(matchId, it.matchInfo?.id)) {
+                                    navMatchDetailPage(it.matchInfo)
+                                    return@forEach
+                                }
+                            }
+                        }
                     }
                 },
                 refreshListener = { matchId ->
@@ -192,12 +203,20 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 },
                 clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, liveVideo)
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navMatchDetailPage(it)
+                        }
                     }
                 },
                 clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, liveVideo)
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navMatchDetailPage(it)
+                        }
                     }
                 },
                 clickCsTabListener = { playCate, matchOdd ->
@@ -214,12 +233,19 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         }
     }
 
-    private fun navMatchDetailPage(
-        matchId: String?,
-        liveVideo: Int,
-    ) {
-        matchId?.let {
-            navOddsDetailLive(it, liveVideo)
+    private fun navMatchDetailPage(matchInfo: MatchInfo?) {
+        matchInfo?.let { it ->
+            val gameType =
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+            gameType?.let {
+                if (gameType != null) {
+                    SportDetailActivity.startActivity(requireContext(),
+                        DetailParams(matchType = matchType,
+                            gameType = gameType,
+                            matchId = matchInfo.id,
+                            matchInfo = matchInfo))
+                }
+            }
         }
     }
 
@@ -1069,19 +1095,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         val intent = Intent(activity, MainActivity::class.java)
             .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
         startActivity(intent)
-    }
-
-
-    private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        gameType?.let {
-            if (gameType != null && matchId != null) {
-                SportDetailActivity.startActivity(requireContext(),
-                    DetailParams(matchType = matchType, gameType = gameType, matchId = matchId))
-            }
-        }
     }
 
     private fun navStatistics(matchId: String?) {

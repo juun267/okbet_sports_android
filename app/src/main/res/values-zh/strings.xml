@@ -708,7 +708,12 @@
     <string name="credit_record_status_unsettle">尚未到結算日期</string>
     <string name="game_play_type">游戏类别</string>
     <string name="spt_number_3_2">3盘2胜</string>
+    <string name="spt_number_3_2_bm">3局2胜</string>
     <string name="spt_number_5_3">5盘3胜</string>
+    <string name="spt_number_5_3_vb">5局3胜</string>
+    <string name="spt_number_7_4_tt">7局4胜</string>
+    <string name="format_plat">第%s盘</string>
+    <string name="format_round">第%s局</string>
     <string name="bet_notify_max_limit">最多可添加10个选项至投注单</string>
     <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
     <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>

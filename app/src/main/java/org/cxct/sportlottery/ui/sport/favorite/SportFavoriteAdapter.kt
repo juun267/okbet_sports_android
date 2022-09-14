@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +31,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 import org.cxct.sportlottery.ui.common.CustomLinearLayoutManager
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -554,16 +552,19 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             itemView.apply {
                 setAllScoreTextAtBottom(matchType, item)
                 setSptText(item, matchType)
+                setCurrentPeroid(item, matchType)
+                setAttack(item)
             }
         }
 
         private fun setTnScoreText(matchType: MatchType, item: MatchOdd) {
 
             itemView.apply {
-
                 setAllScoreTextAtBottom(matchType, item)
                 setSptText(item, matchType)
-
+                setTennisRoundScore(matchType, item)
+                setCurrentPeroid(item, matchType)
+                setAttack(item)
             }
         }
 
@@ -571,6 +572,8 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             itemView.apply {
                 setAllScoreTextAtBottom(matchType, item)
                 setSptText(item, matchType)
+                setCurrentPeroid(item, matchType)
+                setAttack(item)
             }
         }
 
@@ -578,13 +581,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             if (matchType == MatchType.IN_PLAY) {
                 itemView.apply {
                     setScoreTextAtFront(item)
-                    if (item.matchInfo?.attack.equals("H")) {
-                        ic_attack_h.visibility = View.VISIBLE
-                        ic_attack_c.visibility = View.INVISIBLE
-                    } else {
-                        ic_attack_h.visibility = View.INVISIBLE
-                        ic_attack_c.visibility = View.VISIBLE
-                    }
+                    setAttack(item)
 
                     league_odd_match_bb_status.apply {
                         text = item.matchInfo?.statusName18n
@@ -634,31 +631,67 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
 //            }
         }
 
-        //賽制(5盤3勝 or /int)
+        /**
+         * 賽制(5盤3勝)
+         * 只有网球，排球，乒乓球，羽毛球
+         */
         @SuppressLint("SetTextI18n")
         private fun setSptText(item: MatchOdd, matchType: MatchType) {
             item.matchInfo?.spt?.let {
-                when {
-                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> { //除0以外顯示
-                        itemView.league_odd_spt.visibility = if (it > 0) View.VISIBLE else View.GONE
-                        itemView.league_odd_spt.text = "/ $it"
-                    }
-                    else -> {
-                        if (it == 3 || it == 5) {//除3、5以外不顯示
-                            itemView.league_spt.visibility = View.VISIBLE
-                            itemView.league_spt.text = when (it) {
-                                3 -> itemView.context.getString(R.string.spt_number_3_2)
-                                5 -> itemView.context.getString(R.string.spt_number_5_3)
+                if (it == 3 || it == 5 || it == 7) {
+                    itemView.league_spt.visibility = View.VISIBLE
+                    itemView.league_spt.text = when (it) {
+                        3 -> {
+                            when (item.matchInfo.gameType) {
+                                ////排球，乒乓球显示3局2胜
+                                GameType.BM.key -> itemView.context.getString(R.string.spt_number_3_2_bm)
+                                else -> itemView.context.getString(R.string.spt_number_3_2)
+                            }
+                        }
+                        5 -> {
+                            when (item.matchInfo.gameType) {
+                                //排球，乒乓球显示5局3胜
+                                GameType.VB.key, GameType.TT.key -> itemView.context.getString(R.string.spt_number_5_3_vb)
+                                else -> itemView.context.getString(R.string.spt_number_5_3)
+                            }
+                        }
+                        7 -> {
+                            //部分乒乓球会采用七局四胜制
+                            when (item.matchInfo.gameType) {
+                                GameType.TT.key -> itemView.context.getString(R.string.spt_number_7_4_tt)
                                 else -> ""
                             }
-                        } else {
-                            itemView.league_spt.visibility = View.GONE
                         }
+                        else -> ""
                     }
+                } else {
+                    itemView.league_spt.visibility = View.GONE
                 }
             }
         }
 
+        /**
+         * 设置当前盘数/局数/回合
+         * 网球显示 第x盘
+         * 其他球类显示 第x局
+         */
+        @SuppressLint("SetTextI18n")
+        private fun setCurrentPeroid(item: MatchOdd, matchType: MatchType) {
+            item.matchInfo?.matchStatusList?.let {
+                itemView.tv_peroid.visibility = View.VISIBLE
+                itemView.tv_peroid.text = when (item.matchInfo.gameType) {
+                    GameType.TN.key -> String.format(itemView.context.getString(R.string.format_plat),
+                        it.size.toString())
+                    GameType.VB.key, GameType.TT.key, GameType.BM.key -> String.format(itemView.context.getString(
+                        R.string.format_round), it.size.toString())
+                    else -> ""
+                }
+            }
+        }
+
+        /**
+         * 设置足球黄牌，红牌数量
+         */
         private fun View.setCardText(matchType: MatchType, item: MatchOdd) {
             league_odd_match_cards_home.apply {
                 visibility = when {
@@ -676,6 +709,59 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 }
                 text = (item.matchInfo?.awayCards ?: 0).toString()
             }
+            league_odd_yellow_cards_home.apply {
+                visibility = when {
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
+                            && (item.matchInfo?.homeYellowCards ?: 0 > 0) -> View.VISIBLE
+                    else -> View.GONE
+                }
+                text = (item.matchInfo?.homeYellowCards ?: 0).toString()
+            }
+            league_odd_yellow_cards_away.apply {
+                visibility = when {
+                    TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
+                            && (item.matchInfo?.awayYellowCards ?: 0 > 0) -> View.VISIBLE
+                    else -> View.GONE
+                }
+                text = (item.matchInfo?.awayYellowCards ?: 0).toString()
+            }
+        }
+
+        /**
+         * 设置球权标识，
+         *  目前支持 棒球，网球，排球，乒乓球，羽毛球
+         *  其中网球标识是另外一个位置
+         */
+        private fun View.setAttack(item: MatchOdd) {
+            when (item.matchInfo?.gameType) {
+                GameType.BB.key,
+                GameType.VB.key,
+                GameType.TT.key,
+                GameType.BM.key,
+                -> {
+                    if (item.matchInfo?.attack.equals("H")) {
+                        ic_attack_h.visibility = View.VISIBLE
+                        ic_attack_c.visibility = View.INVISIBLE
+                    } else {
+                        ic_attack_h.visibility = View.INVISIBLE
+                        ic_attack_c.visibility = View.VISIBLE
+                    }
+                }
+                GameType.TN.key -> {
+                    if (item.matchInfo?.attack.equals("H")) {
+                        ic_attack_tn_h.visibility = View.VISIBLE
+                        ic_attack_tn_c.visibility = View.INVISIBLE
+                    } else {
+                        ic_attack_tn_h.visibility = View.INVISIBLE
+                        ic_attack_tn_c.visibility = View.VISIBLE
+                    }
+                }
+                else -> {
+                    ic_attack_h.visibility = View.GONE
+                    ic_attack_c.visibility = View.GONE
+                }
+            }
+
         }
 
         private fun View.setFbKicks(matchType: MatchType, item: MatchOdd) {
@@ -715,31 +801,68 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             }
         }
 
-
+        /**
+         * 网球和羽毛球  排球，乒乓球 显示局比分
+         */
         private fun View.setAllScoreTextAtBottom(matchType: MatchType, item: MatchOdd) {
-            item.matchInfo?.matchStatusList?.let {
-                setupStatusPeriods(it)
+            item.matchInfo?.matchStatusList?.let { matchStatusList ->
+                var spanny = Spanny()
+                matchStatusList.forEachIndexed { index, it ->
+                    val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+                    //9表示已结束，其他代表进行中的
+                    if (index < matchStatusList.lastIndex) {
+                        spanny.append(spanScore)
+                        spanny.append("  ")
+                    } else {
+                        spanny.append(spanScore,
+                            ForegroundColorSpan(itemView.context.getColor(R.color.color_F0A536)))
+                    }
+                }
+                itemView.tv_peroids_score.isVisible = true
+                itemView.tv_peroids_score.text = spanny
             }
         }
 
         /**
-         * 网球和羽毛球  排球，乒乓球 显示局比分
+         * 设置网球的中间分数布局
          */
-        private fun setupStatusPeriods(matchStatusList: List<MatchStatus>) {
-            var spanny = Spanny()
-            matchStatusList.forEachIndexed { index, it ->
-                val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-                //9表示已结束，其他代表进行中的
-                if (index < matchStatusList.lastIndex) {
-                    spanny.append(spanScore)
-                    spanny.append("  ")
-                } else {
-                    spanny.append(spanScore,
-                        ForegroundColorSpan(itemView.context.getColor(R.color.color_025BE8)))
-                }
+        private fun View.setTennisRoundScore(matchType: MatchType, item: MatchOdd) {
+            //隐藏其他球类的比分
+            league_odd_match_score_home.visibility = View.GONE
+            league_odd_match_score_away.visibility = View.GONE
+            ic_attack_h.visibility = View.GONE
+            ic_attack_c.visibility = View.GONE
+            lin_home_round_score.visibility = View.VISIBLE
+            lin_away_round_score.visibility = View.VISIBLE
+            //设置盘比，局比，分数
+            league_odd_match_total_score_home_bottom.apply {
+                visibility = isScoreTextVisible(matchType, item)
+                text = (item.matchInfo?.homeTotalScore ?: 0).toString()
             }
-            itemView.tv_periods_score.isVisible = true
-            itemView.tv_periods_score.text = spanny
+
+            league_odd_match_total_score_away_bottom.apply {
+                visibility = isScoreTextVisible(matchType, item)
+                text = (item.matchInfo?.awayTotalScore ?: 0).toString()
+            }
+            league_odd_match_score_home_bottom.apply {
+                visibility = isScoreTextVisible(matchType, item)
+                text = (item.matchInfo?.homeScore ?: 0).toString()
+            }
+
+            league_odd_match_score_away_bottom.apply {
+                visibility = isScoreTextVisible(matchType, item)
+                text = (item.matchInfo?.awayScore ?: 0).toString()
+            }
+            league_odd_match_point_home_bottom.apply {
+                visibility = isScoreTextVisible(matchType, item)
+                text = (item.matchInfo?.homePoints ?: 0).toString()
+            }
+
+            league_odd_match_point_away_bottom.apply {
+                visibility = isScoreTextVisible(matchType, item)
+                text = (item.matchInfo?.awayPoints ?: 0).toString()
+            }
+
         }
 
         private fun setupMatchTimeAndStatus(
@@ -837,7 +960,17 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 }
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     if (item.matchInfo?.statusName18n != null) {
-                        item.matchInfo.statusName18n
+                        //网球，排球，乒乓，羽毛球，就不显示
+                        if (item.matchInfo.gameType == GameType.TN.name
+                            || item.matchInfo.gameType == GameType.VB.name
+                            || item.matchInfo.gameType == GameType.TT.name
+                            || item.matchInfo.gameType == GameType.BM.name
+                        ) {
+                            ""
+                        } else {
+                            item.matchInfo.statusName18n
+                        }
+
                     } else {
                         ""
                     }
@@ -854,18 +987,12 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         private fun setTextViewStatus(item: MatchOdd, matchType: MatchType) {
             when {
                 (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
-                    itemView.league_odd_spt.visibility = View.GONE
                     itemView.league_odd_match_time.visibility = View.GONE
                 }
 
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     if (item.matchInfo?.statusName18n != null) {
                         itemView.league_odd_match_status.visibility = View.VISIBLE
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            6
-                    } else {
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            0
                     }
                 }
                 TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
@@ -922,6 +1049,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
                 itemView.hIndicator.bindRecyclerView(this)
             }
+
         }
 
         private fun updateOddsButton(

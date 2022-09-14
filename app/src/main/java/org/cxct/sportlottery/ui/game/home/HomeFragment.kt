@@ -554,6 +554,10 @@ class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::
                                         curMatchOdd.matchInfo?.statusName18n
                                     matchInfo?.homeCards = curMatchOdd.matchInfo?.homeCards
                                     matchInfo?.awayCards = curMatchOdd.matchInfo?.awayCards
+                                    matchInfo?.homeYellowCards =
+                                        curMatchOdd.matchInfo?.homeYellowCards
+                                    matchInfo?.homeYellowCards =
+                                        curMatchOdd.matchInfo?.homeYellowCards
                                     matchInfo?.scoreStatus = curMatchOdd.matchInfo?.status
                                     runningTime = curMatchOdd.runningTime
                                 }
