@@ -299,13 +299,13 @@ class TransactionRecordDiffAdapter :
                         layoutParams = lp
                     }
                 }
-                list_no_record_text.apply {
-                    viewTreeObserver.addOnGlobalLayoutListener {
-                        val lp = layoutParams as ConstraintLayout.LayoutParams
-                        lp.topMargin = 45.dp
-                        layoutParams = lp
-                    }
-                }
+//                list_no_record_text.apply {
+//                    viewTreeObserver.addOnGlobalLayoutListener {
+//                        val lp = layoutParams as ConstraintLayout.LayoutParams
+//                        lp.topMargin = 45.dp
+//                        layoutParams = lp
+//                    }
+//                }
             }
         }
     }
