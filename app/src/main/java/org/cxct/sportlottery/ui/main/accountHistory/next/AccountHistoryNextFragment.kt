@@ -13,6 +13,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import kotlinx.android.synthetic.main.item_account_history_next_total.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -67,7 +68,12 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        ImmersionBar.with(this)
+            .statusBarView(statusBar)
+            .statusBarDarkFont(!MultiLanguagesApplication.isNightMode)
+            .fitsSystemWindows(true)
+            .init()
+
         iv_back.setOnClickListener {
             activity?.onBackPressed()
         }
