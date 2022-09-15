@@ -336,13 +336,13 @@ class TransactionRecordDiffAdapter :
 
         fun bind() {
             itemView.apply {
-                list_no_record_img.apply {
-                    viewTreeObserver.addOnGlobalLayoutListener {
-                        val lp = layoutParams as ConstraintLayout.LayoutParams
-                        lp.topMargin = 30.dp
-                        layoutParams = lp
-                    }
-                }
+//                list_no_record_img.apply {
+//                    viewTreeObserver.addOnGlobalLayoutListener {
+//                        val lp = layoutParams as ConstraintLayout.LayoutParams
+//                        lp.topMargin = 30.dp
+//                        layoutParams = lp
+//                    }
+//                }
 //                list_no_record_text.apply {
 //                    viewTreeObserver.addOnGlobalLayoutListener {
 //                        val lp = layoutParams as ConstraintLayout.LayoutParams

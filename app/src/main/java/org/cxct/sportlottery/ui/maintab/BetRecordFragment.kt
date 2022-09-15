@@ -126,11 +126,8 @@ class BetRecordFragment :
 //                setSelectInfo(selectItem)
                 viewModel.apply {
                     gameTypeCode = sportItem.code
-                    if (tabPosition == 0) {
-                        viewModel.searchBetRecord(gameTypeCode)
-                    } else {
-                        getBetList(true, gameTypeCode)
-                    }
+                    searchBetRecord(gameTypeCode)
+                    getBetList(true, gameTypeCode)
                 }
             }
         })

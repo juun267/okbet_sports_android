@@ -12,8 +12,7 @@
         android:src="@drawable/ic_img_no_game_record"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/color_2a2a2a_dedede"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
 
