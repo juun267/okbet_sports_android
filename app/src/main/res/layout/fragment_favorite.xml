@@ -102,7 +102,7 @@
 
                 <include
                     android:id="@+id/fl_no_game"
-                    layout="@layout/include_my_favorite_empty"
+                    layout="@layout/view_favorite_empty"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone" />

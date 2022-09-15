@@ -1337,4 +1337,5 @@
     <string name="half_second_short">下</string>
     <string name="bank_memory_card">储存卡</string>
     <string name="my_bank_card">我的银行卡</string>
+    <string name="my_favorite_empty">您还没有收藏赛事</string>
 </resources>

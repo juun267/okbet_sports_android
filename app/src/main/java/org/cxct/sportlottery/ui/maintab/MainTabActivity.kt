@@ -311,4 +311,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
     }
+
+    fun switchTabByPosition(position: Int) {
+        bottom_navigation_view.currentItem = position
+    }
 }

@@ -22,7 +22,6 @@ import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
-import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
@@ -372,29 +371,20 @@ class SportLeagueAdapter(private val matchType: MatchType) :
         }
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
-            expandCheckList[data[adapterPosition].league.id].apply {
-                if (this != null) {
-                    data[adapterPosition].unfold =
-                        if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
-                }
-            }
 
-            itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            itemView.league_odd_list.visibility =
+                if (item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
-                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) {
-                    expandCheckList[data[adapterPosition].league.id] = false
+                item.unfold = if (item.unfold == FoldState.UNFOLD.code) {
                     FoldState.FOLD.code
                 } else {
-                    expandCheckList[data[adapterPosition].league.id] = true
                     FoldState.UNFOLD.code
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
                 itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
-
-//                notifyItemChanged(adapterPosition)
                 updateLeagueByExpand(bindingAdapterPosition)
 
                 leagueListener?.onClickLeague(item)

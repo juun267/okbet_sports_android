@@ -6,7 +6,9 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RadioGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -17,10 +19,11 @@ import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.item_flipper.view.*
+import kotlinx.android.synthetic.main.view_home_menu_game.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemFlipperBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -39,7 +42,6 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
@@ -54,13 +56,14 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.GalleryLayoutManager
 import org.cxct.sportlottery.widget.Transformer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
+class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -165,7 +168,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             clickCustomService(requireContext(), childFragmentManager)
         }
         tv_hot_recommend.setOnClickListener {
-
+            (activity as MainTabActivity).switchTabByPosition(1)
         }
         initRecommendView()
     }
@@ -343,7 +346,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                         .apply(requestOptions)
                         .into(holder.imageView)
                     holder.imageView.setOnClickListener {
-                        //                    publicityAdapterListener.onGoHomePageListener()
+                        (activity as MainTabActivity).switchTabByPosition(1)
                     }
                 }
             })
@@ -372,9 +375,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
     private fun setupFlipper(titleList: List<String>) {
         var views = arrayListOf<View>()
         for (i in titleList) {
-            var view = ItemFlipperBinding.inflate(layoutInflater)
-            view.tvMarquee.text = i
-            views.add(view.root)
+            var view = layoutInflater.inflate(R.layout.item_flipper, null)
+            view.tv_marquee.text = i
+            views.add(view)
         }
         um_activity.setViews(views)
     }
@@ -383,15 +386,18 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 when (checkedId) {
-                    R.id.rbtn_sport ->
+                    R.id.rbtn_sport -> {
+                        lin_menu_game.isVisible = false
+                        rv_type_list.isVisible = true
                         publicityMenuData?.sportMenuDataList?.let {
+                            lin_menu_game.isVisible = false
                             mainHomeMenuAdapter.setNewData(it.toMutableList())
                         }
-                    R.id.rbtn_egame ->
-                        publicityMenuData?.eGameMenuData?.let {
-                            mainHomeMenuAdapter.setNewData(mutableListOf<SportMenu>().apply {
-                            })
-                        }
+                    }
+                    R.id.rbtn_egame -> {
+                        rv_type_list.isVisible = false
+                        lin_menu_game.isVisible = true
+                    }
                 }
             }
         })
@@ -408,6 +414,30 @@ class MainHomeFragment() : BaseBottomNavigationFragment<GameViewModel>(GameViewM
         publicityMenuData?.sportMenuDataList?.let {
             mainHomeMenuAdapter.setNewData(it.toMutableList())
         }
+        lin_menu_game.apply {
+            llThirdGamePlayNowContainer.isVisible = true
+            llThirdGameComingSoonContainer.isVisible = false
+            val ivPlayNowLayoutParams = ivPlayNow.layoutParams as LinearLayout.LayoutParams
+            if (isCreditSystem()) {
+                tvNewGamesBeta.visibility = View.GONE
+                ivPlayNowLayoutParams.setMargins(0, 8.dp, 0, 0)
+            } else {
+                tvNewGamesBeta.visibility = View.VISIBLE
+                ivPlayNowLayoutParams.setMargins(0, 0, 0, 0)
+            }
+            ivThirdGame.setImageResource(R.drawable.image_e_game_empty)
+            ivThirdGame.setOnClickListener {
+                publicityMenuData?.eGameMenuData?.let { thirdDictValues ->
+                    avoidFastDoubleClick()
+                    if (viewModel.isLogin.value != true) {
+                        (activity as MainTabActivity).showLoginNotify()
+                    } else {
+                        viewModel.requestEnterThirdGame(thirdDictValues)
+                    }
+                }
+            }
+        }
+
     }
 
     // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求

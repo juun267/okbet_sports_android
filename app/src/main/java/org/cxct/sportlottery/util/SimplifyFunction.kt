@@ -967,7 +967,6 @@ fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
         }
     }
 
-
 }
 
 fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =

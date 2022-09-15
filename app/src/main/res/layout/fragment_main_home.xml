@@ -96,7 +96,17 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_type_list"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="200dp"
+            tools:listitem="@layout/item_main_home_menu"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/lin_menu_game"
+            layout="@layout/view_home_menu_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/margin_40" />
 
         <RadioGroup
             android:id="@+id/rg_type"

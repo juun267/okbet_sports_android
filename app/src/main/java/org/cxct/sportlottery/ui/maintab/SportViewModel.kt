@@ -2711,7 +2711,9 @@ class SportViewModel(
                 )
             }?.let { result ->
                 if (result.success) {
-                    result.result.recommendList.forEach { recommend ->
+                    result.result.recommendList.filter {
+                        !it.menuList.isNullOrEmpty()
+                    }.forEach { recommend ->
                         with(recommend) {
                             setupOddsSort()
                             setupMatchType()

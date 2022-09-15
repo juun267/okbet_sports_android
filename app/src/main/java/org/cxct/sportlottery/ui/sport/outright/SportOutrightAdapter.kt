@@ -129,7 +129,7 @@ class SportOutrightAdapter : BaseGameAdapter() {
                 itemView.tv_league_name.text = it.name
                 itemView.iv_league_logo.setLeagueLogo(it.img)
             }
-            itemView.iv_league_arrow.isSelected = outrightItem.leagueExpanded
+            itemView.iv_league_arrow.isSelected = !outrightItem.leagueExpanded
             itemView.rv_catagory.visibility =
                 if (outrightItem.leagueExpanded) View.VISIBLE else View.GONE
             itemView.iv_league_arrow.setOnClickListener {

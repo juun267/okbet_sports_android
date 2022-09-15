@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.favorite
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,8 +35,9 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.statistics.StatisticsDialog
+import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
 
@@ -72,7 +74,14 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, _, gameMatchType, _ ->
-                    navMatchDetailPage(matchId, gameMatchType)
+                    data.forEach {
+                        it.matchOdds.find {
+                            TextUtils.equals(matchId, it.matchInfo?.id)
+                        }?.let {
+                            navMatchDetailPage(it.matchInfo)
+                            return@LeagueOddListener
+                        }
+                    }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -96,17 +105,38 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                 },
                 clickListenerStatistics = { matchId ->
-                    navStatistics(matchId)
+                    data.forEach {
+                        it.matchOdds.find {
+                            TextUtils.equals(matchId, it.matchInfo?.id)
+                        }?.let {
+                            navMatchDetailPage(it.matchInfo)
+                            return@LeagueOddListener
+                        }
+                    }
                 },
                 refreshListener = {},
                 clickLiveIconListener = { matchId, _, gameMatchType, _ ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, gameMatchType)
+                        data.forEach {
+                            it.matchOdds.find {
+                                TextUtils.equals(matchId, it.matchInfo?.id)
+                            }?.let {
+                                navMatchDetailPage(it.matchInfo)
+                                return@LeagueOddListener
+                            }
+                        }
                     }
                 },
                 clickAnimationIconListener = { matchId, _, gameMatchType, _ ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, gameMatchType)
+                        data.forEach {
+                            it.matchOdds.find {
+                                TextUtils.equals(matchId, it.matchInfo?.id)
+                            }?.let {
+                                navMatchDetailPage(it.matchInfo)
+                                return@LeagueOddListener
+                            }
+                        }
                     }
                 },
                 clickCsTabListener = { playCate, matchOdd ->
@@ -120,13 +150,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                     }
                 }
             )
-        }
-    }
-
-
-    private fun navMatchDetailPage(matchId: String?, gameMatchType: MatchType) {
-        matchId?.let {
-            navOddsDetailLive(matchId, gameMatchType)
         }
     }
 
@@ -146,7 +169,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         initView()
         initObserver()
         initSocketObserver()
-        initBottomNavigation()
         viewModel.getFavoriteMatch()
     }
 
@@ -638,45 +660,20 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         }
     }
 
-    /**
-     * 解除訂閱當前所選擇的PlayCate(MAIN, MATCH, 1ST ...)
-     */
-    private fun unSubscribePlayCateChannel() {
-        favoriteAdapter.data.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                unSubscribeChannelHall(
-                    leagueOdd.gameType?.key,
-                    matchOdd.matchInfo?.id
-                )
+    private fun navMatchDetailPage(matchInfo: MatchInfo?) {
+        matchInfo?.let { it ->
+            val gameType =
+                GameType.getGameType(matchInfo.gameType)
+            gameType?.let {
+                if (gameType != null) {
+                    SportDetailActivity.startActivity(requireContext(),
+                        DetailParams(matchType = null,
+                            gameType = gameType,
+                            matchId = matchInfo.id,
+                            matchInfo = matchInfo))
+                }
             }
         }
-    }
-
-    private fun navOddsDetailLive(matchId: String, gameMatchType: MatchType) {
-        val gameType =
-            GameType.getGameType(dataSport.find { item -> item.isSelected }?.code)
-
-//        gameType?.let {
-//            val action =
-//                MyFavoriteFragmentDirections.actionMyFavoriteFragmentToOddsDetailLiveFragment(
-//                    gameMatchType,
-//                    gameType,
-//                    matchId
-//                )
-//
-//            findNavController().navigate(action)
-//        }
-    }
-
-    private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId,
-            clickListener = StatisticsDialog.StatisticsClickListener {
-//            when (activity) {
-//                is MyFavoriteActivity -> {
-//                    (activity as MyFavoriteActivity).clickMenuEvent()
-//                }
-//            }
-            }).show(childFragmentManager, StatisticsDialog::class.java.simpleName)
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
