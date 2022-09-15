@@ -18,5 +18,28 @@ enum class MatchType(val postValue: String, @StringRes val resId: Int) {
     OTHER_OUTRIGHT("OTHER_OUTRIGHT", R.string.my_favorite),
     OTHER_EPS("OTHER_EPS", R.string.my_favorite),
     DETAIL("DETAIL", R.string.my_favorite),
-    SINGLE("SINGLE",R.string.ou_hdp_1x2_title)
+    SINGLE("SINGLE",R.string.ou_hdp_1x2_title);
+
+    companion object {
+        fun getMatchTypeStringRes(matchType: String?): Int {
+            return when (matchType) {
+                MAIN.postValue -> MAIN.resId
+                IN_PLAY.postValue -> IN_PLAY.resId
+                TODAY.postValue -> TODAY.resId
+                EARLY.postValue -> EARLY.resId
+                CS.postValue -> CS.resId
+                PARLAY.postValue -> PARLAY.resId
+                OUTRIGHT.postValue -> OUTRIGHT.resId
+                AT_START.postValue -> AT_START.resId
+                EPS.postValue -> EPS.resId
+                MY_EVENT.postValue -> MY_EVENT.resId
+                OTHER.postValue -> OTHER.resId
+                OTHER_OUTRIGHT.postValue -> OTHER_OUTRIGHT.resId
+                OTHER_EPS.postValue -> OTHER_EPS.resId
+                DETAIL.postValue -> DETAIL.resId
+                SINGLE.postValue -> SINGLE.resId
+                else -> R.string.unknown_name
+            }
+        }
+    }
 }

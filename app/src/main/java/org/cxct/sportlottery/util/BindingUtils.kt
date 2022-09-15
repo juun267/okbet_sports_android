@@ -20,6 +20,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.ThirdGameRepository
+import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -47,7 +48,7 @@ fun TextView.setDateNoYear(date: String?) {
 
 @BindingAdapter("dateTimeNoYear")
 fun TextView.setDateTimeNoYear(timeStamp: Long?) {
-    text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
+    text = TimeUtil.timeFormat(timeStamp, DM_HM_FORMAT)
 }
 
 @SuppressLint("SetTextI18n")
@@ -368,10 +369,10 @@ fun TextView.setOddFormat(odd: Double?) {
 fun TextView.setMoneyColor(profit: Double = 0.0) {
 
     val color = when {
-        profit > 0.0 -> R.color.color_08dc6e_08dc6e
-        profit < 0.0 -> R.color.color_E44438_e44438
-        profit == 0.0 -> R.color.color_909090_666666
-        else -> R.color.color_909090_666666
+        profit > 0.0 -> R.color.color_1D9F51_1D9F51
+        profit < 0.0 -> R.color.color_E23434_E23434
+        profit == 0.0 -> R.color.color_9BB3D9_535D76
+        else -> R.color.color_9BB3D9_535D76
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
@@ -420,27 +421,36 @@ fun TextView.setTextTypeFace(type: Int) {
     }
 }
 
+fun TextView.setTeamsNameWithVS(
+    homeName: String?,
+    awayName: String?
+) {
+    val color_9BB3D9_535D76 = MultiLanguagesApplication.getChangeModeColorCode("#535D76", "#9BB3D9")
+    val color_6C7BA8_A7B2C4 = MultiLanguagesApplication.getChangeModeColorCode("#A7B2C4", "#6C7BA8")
+
+    val homeNameStr = if (!homeName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>$homeName</font> " else ""
+    val awayNameStr = if (!awayName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>$awayName</font> " else ""
+    val vsStr = "<font color=$color_6C7BA8_A7B2C4> ${context.getString(R.string.verse_upper)} </font> "
+
+    text = HtmlCompat.fromHtml(homeNameStr + vsStr + awayNameStr, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
+
 fun TextView.setPlayContent(
     playName: String?,
     spread: String?,
     formatForOdd: String?
 ) {
-    var playNameStrColor : String = "#666666"
-    var spreadStrColor : String = "#B73A20"
+    val color_9BB3D9_535D76 = MultiLanguagesApplication.getChangeModeColorCode("#535D76", "#9BB3D9")
+    val color_025BE8_025BE8 = MultiLanguagesApplication.getChangeModeColorCode("#025BE8", "#025BE8")
 
-    if(MultiLanguagesApplication.isNightMode){
-        playNameStrColor = "#A3A3A3"
-    }
-
-    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$playNameStrColor>${playName} </font> " else ""
-    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=#B73A20><b>$spread</b></font> " else ""
+    val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_9BB3D9_535D76>${playName} </font> " else ""
+    val spreadStr = if (!spread.isNullOrEmpty() && playName != spread) "<font color=$color_9BB3D9_535D76>$spread</font> " else ""
 
     text = HtmlCompat.fromHtml(
         playNameStr +
                 spreadStr +
-                "<font color=$playNameStrColor>@ </font> " +
-                "<font color=#B73A20><b>$formatForOdd </b></font> "
-        , HtmlCompat.FROM_HTML_MODE_LEGACY
+                "<font color=$color_025BE8_025BE8>@ <b>$formatForOdd</b></font> ",
+        HtmlCompat.FROM_HTML_MODE_LEGACY
     )
 }
 

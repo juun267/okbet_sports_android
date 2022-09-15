@@ -12,27 +12,18 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_last_total_record.view.*
 import kotlinx.android.synthetic.main.content_match_record.view.*
-import kotlinx.android.synthetic.main.content_match_record.view.play_content
-import kotlinx.android.synthetic.main.content_outright_record.view.*
-import kotlinx.android.synthetic.main.content_outright_record.view.content_bet_amount
-import kotlinx.android.synthetic.main.content_outright_record.view.content_order_no
-import kotlinx.android.synthetic.main.content_outright_record.view.content_play
-import kotlinx.android.synthetic.main.content_outright_record.view.content_time_type
-import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
-import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.itemview_game_no_record.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TextUtil.getParlayShowName
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setPlayContent
 
@@ -43,14 +34,16 @@ class TransactionRecordDiffAdapter :
     var totalAmount: Double = 0.0
     var itemList = listOf<DataItem>()
 
-    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
+//    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
+    private enum class ViewType { Match, Parlay, Outright, NoData }
 
-    fun setupBetList(betListData: BetListData, status: Int) {
+    fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
         totalAmount = betListData.totalMoney
         itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
-            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
+//            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
+            else -> betListData.row.map { DataItem.Item(it) }
         }
         submitList(itemList)
     }
@@ -68,7 +61,7 @@ class TransactionRecordDiffAdapter :
             ViewType.NoData.ordinal -> NoDataViewHolder.from(parent)
             ViewType.Match.ordinal -> MatchRecordViewHolder.from(parent)
             ViewType.Outright.ordinal -> OutrightRecordViewHolder.from(parent)
-            ViewType.LastTotal.ordinal -> LastTotalViewHolder.from(parent)
+//            ViewType.LastTotal.ordinal -> LastTotalViewHolder.from(parent)
             else -> ParlayRecordViewHolder.from(parent)
         }
     }
@@ -85,9 +78,9 @@ class TransactionRecordDiffAdapter :
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row)
             }
-            is LastTotalViewHolder -> {
-                holder.bind((rvData as DataItem.Total).totalAmount)
-            }
+//            is LastTotalViewHolder -> {
+//                holder.bind((rvData as DataItem.Total).totalAmount)
+//            }
             is NoDataViewHolder -> {
                 holder.bind()
             }
@@ -97,7 +90,7 @@ class TransactionRecordDiffAdapter :
     override fun getItemViewType(position: Int): Int {
         return when {
             getItem(position).orderNo.isNullOrBlank() && itemCount == 1 -> ViewType.NoData.ordinal
-            position == itemCount - 1 -> ViewType.LastTotal.ordinal
+//            position == itemCount - 1 -> ViewType.LastTotal.ordinal
             getItem(position).parlayType == ParlayType.SINGLE.key -> ViewType.Match.ordinal
             getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Outright.ordinal
             else -> ViewType.Parlay.ordinal
@@ -117,15 +110,14 @@ class TransactionRecordDiffAdapter :
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName.replace("\n","")
-                title_home_name.text = matchOdds.homeName
-                title_away_name.text = matchOdds.awayName
+                title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
 
-//                val oddsTypeStr = when (matchOdds.oddsType) {
-//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-//                }
+                val oddsTypeStr = when (matchOdds.oddsType) {
+                    OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + context.getString(OddsType.EU.res) + "】"
+                }
 
                 val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
@@ -134,29 +126,34 @@ class TransactionRecordDiffAdapter :
                     formatForOdd
                 )
 
-                match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.YMD_HM_FORMAT)
-                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
+                match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
 
-                if(data.betConfirmTime?.toInt() != 0){
-                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
-                    object : CountDownTimer(leftTime ?: 0, 1000) {
-
-                        override fun onTick(millisUntilFinished: Long) {
-                            tv_count_down.visibility = View.VISIBLE
-                            tv_count_down.text = "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
-                        }
-
-                        override fun onFinish() {
-                            tv_count_down.text = "0 ${context.getString(R.string.sec)}"
-                            if(data.status != 0){
-                                tv_count_down.visibility = View.GONE
-                            }
-                        }
-                    }.start()
-                }else{
-                    tv_count_down.visibility = View.GONE
+                content_play.text = if (data.matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "${getGameTypeName(data.gameType)} ${getMatchTypeName(data.matchType)} ${matchOdds.playCateName}$oddsTypeStr"
+                } else {
+                    "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}$oddsTypeStr"
                 }
 
+//                if(data.betConfirmTime?.toInt() != 0){
+//                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+//                    object : CountDownTimer(leftTime ?: 0, 1000) {
+//
+//                        override fun onTick(millisUntilFinished: Long) {
+//                            tv_count_down.visibility = View.VISIBLE
+//                            tv_count_down.text = "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
+//                        }
+//
+//                        override fun onFinish() {
+//                            tv_count_down.text = "0 ${context.getString(R.string.sec)}"
+//                            if(data.status != 0){
+//                                tv_count_down.visibility = View.GONE
+//                            }
+//                        }
+//                    }.start()
+//                }else{
+//                    tv_count_down.visibility = View.GONE
+//                }
 
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
@@ -167,6 +164,17 @@ class TransactionRecordDiffAdapter :
                         if (matchOdds.rtScore?.isNotEmpty() == true) tv_score.text = "(${matchOdds.rtScore})"
                     }
                 }
+
+                val singleTitle =
+                    context.getString(R.string.bet_record_single) + "-${getGameTypeName(data.gameType)}"
+                tv_match_title.text = singleTitle
+
+                tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
+                tv_bet_result.isVisible = data.status != 7
+
+                ll_copy_bet_order.setOnClickListener {
+                    context.copyToClipboard(data.orderNo)
+                }
             }
         }
 
@@ -174,6 +182,9 @@ class TransactionRecordDiffAdapter :
             return itemView.context.getString(GameType.valueOf(gameType).string)
         }
 
+        private fun getMatchTypeName(matchType: String?): String {
+            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
+        }
     }
 
     class OutrightRecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -181,7 +192,7 @@ class TransactionRecordDiffAdapter :
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view =
-                    layoutInflater.inflate(R.layout.content_outright_record, viewGroup, false)
+                    layoutInflater.inflate(R.layout.content_match_record, viewGroup, false)
                 return OutrightRecordViewHolder(view)
             }
         }
@@ -189,14 +200,21 @@ class TransactionRecordDiffAdapter :
         fun bind(data: Row) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
-                title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
-                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
-//                val oddsTypeStr = when (matchOdds.oddsType) {
-//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
-//                }
+//                title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
+                title_league_name.text = matchOdds.leagueName
+                title_team_name.text = matchOdds.leagueName
+                val oddsTypeStr = when (matchOdds.oddsType) {
+                    OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + context.getString(OddsType.EU.res) + "】"
+                }
+                content_play.text = if (data.matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "${getGameTypeName(data.gameType)} ${getMatchTypeName(data.matchType)} ${matchOdds.playCateName}$oddsTypeStr"
+                } else {
+                    "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}$oddsTypeStr"
+                }
 
                 val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
@@ -205,13 +223,24 @@ class TransactionRecordDiffAdapter :
                     formatForOdd
                 )
                 matchOdds.startTime?.let {
-                    play_time.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
+                    match_play_time.text = TimeUtil.timeFormat(it, TimeUtil.DM_HM_FORMAT)
                 }
-                play_time.isVisible = data.parlayType != ParlayType.OUTRIGHT.key
+                match_play_time.isVisible = data.parlayType != ParlayType.OUTRIGHT.key
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
+
+                val singleTitle =
+                    context.getString(R.string.bet_record_single) + "-${getGameTypeName(data.gameType)}"
+                tv_match_title.text = singleTitle
+
+                tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
+                tv_bet_result.isVisible = data.status != 7
+
+                ll_copy_bet_order.setOnClickListener {
+                    context.copyToClipboard(data.orderNo)
+                }
             }
         }
 
@@ -219,25 +248,28 @@ class TransactionRecordDiffAdapter :
             return itemView.context.getString(GameType.valueOf(gameType).string)
         }
 
-    }
-
-    class LastTotalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view =
-                    layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
-                return LastTotalViewHolder(view)
-            }
-        }
-
-        fun bind(totalAmount: Double) {
-            itemView.apply {
-                last_total_amount.text =
-                    "${sConfigData?.systemCurrencySign} ${TextUtil.format(totalAmount)}"
-            }
+        private fun getMatchTypeName(matchType: String?): String {
+            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
     }
+
+//    class LastTotalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//        companion object {
+//            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+//                val layoutInflater = LayoutInflater.from(viewGroup.context)
+//                val view =
+//                    layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
+//                return LastTotalViewHolder(view)
+//            }
+//        }
+//
+//        fun bind(totalAmount: Double) {
+//            itemView.apply {
+//                last_total_amount.text =
+//                    "${sConfigData?.systemCurrencySign} ${TextUtil.format(totalAmount)}"
+//            }
+//        }
+//    }
 
     class ParlayRecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
@@ -254,7 +286,11 @@ class TransactionRecordDiffAdapter :
             itemView.apply {
                 getParlayStringRes(data.parlayType)?.let { parlayTypeStringResId ->
                     //盡量避免直接使用 MultiLanguagesApplication.appContext.getString 容易出現語系顯示錯誤
-                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
+//                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
+                    val parlayTitle = context.getString(R.string.bet_record_parlay) +
+                            "(${context.getString(parlayTypeStringResId)})" +
+                            "-${getGameTypeName(data.gameType)}"
+                    title_parlay_type.text = parlayTitle
                 }
                 rv_parlay_match.apply {
                     adapter = contentParlayMatchAdapter
@@ -263,7 +299,8 @@ class TransactionRecordDiffAdapter :
                     contentParlayMatchAdapter.setupMatchData(
                         getGameTypeName(data.gameType),
                         data.matchOdds,
-                        data.betConfirmTime
+                        data.betConfirmTime,
+                        data.matchType
                     )
 
                 }
@@ -272,6 +309,13 @@ class TransactionRecordDiffAdapter :
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)
                 content_parlay_order_no.text = data.orderNo
                 content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
+
+                tv_bet_result_parlay.setBetReceiptStatus(data.status, data.cancelledBy)
+                tv_bet_result_parlay.isVisible = data.status != 7
+
+                ll_copy_bet_order_parlay.setOnClickListener {
+                    context.copyToClipboard(data.orderNo)
+                }
             }
         }
 
@@ -312,7 +356,7 @@ class TransactionRecordDiffAdapter :
 
     companion object {
         fun getTimeFormatFromDouble(time: Long): String {
-            return TimeUtil.timeFormat(time, TimeUtil.MD_HMS_FORMAT)
+            return TimeUtil.timeFormat(time, TimeUtil.DM_HM_FORMAT)
         }
     }
 }
@@ -336,13 +380,12 @@ sealed class DataItem {
         val row: Row,
         override var parlayType: String? = row.parlayType,
         override var orderNo: String? = row.orderNo
-    ) :
-        DataItem()
+    ) : DataItem()
 
-    data class Total(val totalAmount: Double) : DataItem() {
-        override var parlayType: String? = null
-        override var orderNo: String? = null
-    }
+//    data class Total(val totalAmount: Double) : DataItem() {
+//        override var parlayType: String? = null
+//        override var orderNo: String? = null
+//    }
 
 
     object NoData : DataItem() {

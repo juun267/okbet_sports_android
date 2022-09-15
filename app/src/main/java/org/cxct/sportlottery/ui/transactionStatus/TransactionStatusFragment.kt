@@ -116,7 +116,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private fun initObserve() {
         viewModel.betListData.observe(viewLifecycleOwner) {
             Log.e("Martin", "123321=" + viewModel.statusList)
-            recordDiffAdapter.setupBetList(it, viewModel.statusList?.get(0) ?: 0)
+            recordDiffAdapter.setupBetList(it)
             btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
             divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
         }
