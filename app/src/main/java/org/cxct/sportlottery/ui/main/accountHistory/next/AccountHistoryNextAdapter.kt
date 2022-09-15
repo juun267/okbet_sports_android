@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
@@ -152,17 +153,17 @@ class AccountHistoryNextAdapter(
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType)
+                holder.bind(data.row, oddsType, position)
             }
 
             is OutrightItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType)
+                holder.bind(data.row, oddsType, position)
             }
 
             is ParlayItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType)
+                holder.bind(data.row, oddsType, position)
             }
 
 //            is FooterViewHolder -> {
@@ -198,7 +199,9 @@ class AccountHistoryNextAdapter(
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(row: Row, oddsType: OddsType) {
+        fun bind(row: Row, oddsType: OddsType, position: Int) {
+            binding.topViewParlay.isVisible = position == 0
+
             val parlayAdapter by lazy { ParlayItemAdapter() }
 
             binding.row = row
@@ -208,7 +211,11 @@ class AccountHistoryNextAdapter(
 
                 row.parlayType?.let { parlayType ->
                     ParlayType.getParlayStringRes(parlayType)?.let { parlayTypeStringResId ->
-                        tvParlayType.text = LocalUtils.getString(parlayTypeStringResId)
+//                        tvParlayType.text = LocalUtils.getString(parlayTypeStringResId)
+                        val parlayTitle = itemView.context.getString(R.string.bet_record_parlay) +
+                                "(${itemView.context.getString(parlayTypeStringResId)})" +
+                                "-${getGameTypeName(row.gameType.orEmpty())}"
+                        tvParlayType.text = parlayTitle
                     }
                 }
 
@@ -227,9 +234,19 @@ class AccountHistoryNextAdapter(
                     parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
                     parlayAdapter.oddsType = oddsType
                     parlayAdapter.gameType = row.gameType ?: ""
+                    parlayAdapter.matchType = row.matchType
                 }
+
+                llCopyBetOrderParlay.setOnClickListener {
+                    itemView.context.copyToClipboard(row.orderNo.orEmpty())
+                }
+
                 executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
             }
+        }
+
+        private fun getGameTypeName(gameType: String): String {
+            return itemView.context.getString(GameType.valueOf(gameType).string)
         }
 
         companion object {
@@ -248,7 +265,9 @@ class AccountHistoryNextAdapter(
 
     class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(row: Row, oddsType: OddsType) {
+        fun bind(row: Row, oddsType: OddsType, position: Int) {
+            binding.topView.isVisible = position == 0
+
             val first = row.matchOdds?.firstOrNull()
 
             binding.row = row
@@ -326,7 +345,9 @@ class AccountHistoryNextAdapter(
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(row: Row, oddsType: OddsType) {
+        fun bind(row: Row, oddsType: OddsType, position: Int) {
+            binding.topView.isVisible = position == 0
+
             val first = row.matchOdds?.firstOrNull()
 
             val roundAdapter by lazy { RoundAdapter() }

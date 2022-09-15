@@ -1061,5 +1061,5 @@ fun Context.copyToClipboard(copyText: String) {
     val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
     val clipData = ClipData.newPlainText(null, copyText)
     clipboard?.setPrimaryClip(clipData)
-    ToastUtil.showToastInCenter(this, this.getString(R.string.text_money_copy_success))
+    ToastUtil.showToastInCenter(this, this.getString(R.string.text_money_copy_success) + ": $copyText")
 }
