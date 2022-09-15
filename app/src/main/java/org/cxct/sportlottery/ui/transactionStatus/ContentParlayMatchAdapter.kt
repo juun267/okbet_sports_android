@@ -4,24 +4,26 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
-import kotlinx.android.synthetic.main.content_parlay_match.view.tv_team_names
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
-import org.cxct.sportlottery.ui.game.BetRecordType
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class ContentParlayMatchAdapter(val status: Int) :
     ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
     var betConfirmTime: Long? = 0
-    fun setupMatchData(gameType: String, dataList: List<MatchOdd>, betConfirmTime: Long?) {
+    var matchType: String? = null
+    fun setupMatchData(gameType: String, dataList: List<MatchOdd>, betConfirmTime: Long?, matchType: String?) {
         this.gameType = gameType
         this.betConfirmTime = betConfirmTime
+        this.matchType = matchType
         submitList(dataList)
     }
 
@@ -43,7 +45,7 @@ class ContentParlayMatchAdapter(val status: Int) :
         val data = getItem(holder.adapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data, position, betConfirmTime, status)
+                holder.bind(gameType, data, position, betConfirmTime, status, matchType)
             }
         }
     }
@@ -57,11 +59,27 @@ class ContentParlayMatchAdapter(val status: Int) :
             }
         }
 
-        fun bind(gameTypeName: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int) {
+        fun bind(gameTypeName: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int, matchType: String?) {
             itemView.apply {
-                content_play.text = "$gameTypeName ${data.playCateName}"
+                topLine.isVisible = position != 0
+//                content_play.text = "$gameTypeName ${data.playCateName}"
+                val oddsTypeStr = when (data.oddsType) {
+                    OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + context.getString(OddsType.EU.res) + "】"
+                }
+//                content_play.text = "$gameTypeName ${data.playCateName}"
+                //篮球 滚球 全场让分【欧洲盘】
+                content_play.text = if (matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "$gameTypeName $matchType ${data.playCateName}$oddsTypeStr"
+                } else {
+                    "$gameTypeName ${data.playCateName}$oddsTypeStr"
+                }
 
-                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
+//                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
+                title_team_name_parlay.setTeamsNameWithVS(data.homeName, data.awayName)
 
                 parlay_play_content.setPlayContent(
                     data.playName,
@@ -69,35 +87,33 @@ class ContentParlayMatchAdapter(val status: Int) :
                     TextUtil.formatForOdd(data.odds)
                 )
 
-                parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.YMD_HM_FORMAT)
+                parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.DM_HM_FORMAT)
                 content_league.text = data.leagueName
-                content_date.visibility = View.GONE
-                if (position == 0) {
-                    if(betConfirmTime?.toInt() != 0){
-                        val leftTime = betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
-                        object : CountDownTimer(leftTime ?: 0, 1000) {
-
-                            override fun onTick(millisUntilFinished: Long) {
-                                tv_count_down_parley.text =
-                                    "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
-                            }
-
-                            override fun onFinish() {
-                                tv_count_down_parley.text =
-                                    "0 ${context.getString(R.string.sec)}"
-                                if (status == BetRecordType.UNSETTLEMENT.code.firstOrNull()) {
-                                    tv_count_down_parley.visibility = View.GONE
-                                }
-                            }
-                        }.start()
-                    }else{
-                        tv_count_down_parley.visibility = View.GONE
-                    }
-                } else {
-                    tv_count_down_parley.visibility = View.GONE
-                }
-                if (data.rtScore?.isNotEmpty() == true) tv_score_parlay.text = "(${data.rtScore})"
-
+//                if (position == 0) {
+//                    if(betConfirmTime?.toInt() != 0){
+//                        val leftTime = betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+//                        object : CountDownTimer(leftTime ?: 0, 1000) {
+//
+//                            override fun onTick(millisUntilFinished: Long) {
+//                                tv_count_down_parley.text =
+//                                    "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
+//                            }
+//
+//                            override fun onFinish() {
+//                                tv_count_down_parley.text =
+//                                    "0 ${context.getString(R.string.sec)}"
+//                                if (status == BetRecordType.UNSETTLEMENT.code.firstOrNull()) {
+//                                    tv_count_down_parley.visibility = View.GONE
+//                                }
+//                            }
+//                        }.start()
+//                    }else{
+//                        tv_count_down_parley.visibility = View.GONE
+//                    }
+//                } else {
+//                    tv_count_down_parley.visibility = View.GONE
+//                }
+//                if (data.rtScore?.isNotEmpty() == true) tv_score_parlay.text = "(${data.rtScore})"
             }
         }
     }

@@ -5,21 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
+import kotlinx.android.synthetic.main.item_account_history_next_total.*
+import kotlinx.android.synthetic.main.view_account_history_next_title_bar.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.util.TextUtil
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private var needScrollToTop = true //用來記錄是否需要滾動至最上方
+    private var date = ""
+    private var gameType = ""
 
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
     }, BackClickListener {
-        findNavController().navigateUp()
+//        findNavController().navigateUp()
+        activity?.onBackPressed()
     }, SportSelectListener {
         viewModel.setSelectedSport(it)
     }, DateSelectListener {
@@ -36,8 +46,17 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
                 val totalItemCount: Int = it.itemCount
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
                 needScrollToTop = false
-                viewModel.getDetailNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
+                viewModel.getDetailNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount, date)
             }
+        }
+    }
+
+    companion object {
+        fun newInstance(date: String, gameType: String): AccountHistoryNextFragment {
+            val args = bundleOf("date" to date, "gameType" to gameType)
+            val fragment = AccountHistoryNextFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
 
@@ -49,8 +68,18 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ImmersionBar.with(this)
+            .statusBarView(statusBar)
+            .statusBarDarkFont(!MultiLanguagesApplication.isNightMode)
+            .fitsSystemWindows(true)
+            .init()
+
+        iv_back.setOnClickListener {
+            activity?.onBackPressed()
+        }
         initRv()
         initObserver()
+        initData()
     }
 
     private fun initObserver() {
@@ -65,6 +94,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
         viewModel.betDetailResult.observe(viewLifecycleOwner) {
             if (it.success) {
+                setupTotalView(it.other)
                 rvAdapter.addFooterAndSubmitList(
                     it.other,
                     viewModel.detailDataList,
@@ -79,21 +109,21 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             rvAdapter.oddsType = it
         }
 
-        viewModel.selectedDate.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.apply {
-                needScrollToTop = true
-                rvAdapter.nowSelectedDate = this
-                viewModel.searchDetail(date = this)
-            }
-        }
-
-        viewModel.selectedSport.observe(viewLifecycleOwner) {
-            rvAdapter.nowSelectedSport = it.peekContent()
-            it.getContentIfNotHandled()?.apply {
-                needScrollToTop = true
-                viewModel.searchDetail(gameType = this)
-            }
-        }
+//        viewModel.selectedDate.observe(viewLifecycleOwner) {
+//            it.getContentIfNotHandled()?.apply {
+//                needScrollToTop = true
+//                rvAdapter.nowSelectedDate = this
+//                viewModel.searchDetail(date = this)
+//            }
+//        }
+//
+//        viewModel.selectedSport.observe(viewLifecycleOwner) {
+//            rvAdapter.nowSelectedSport = it.peekContent()
+//            it.getContentIfNotHandled()?.apply {
+//                needScrollToTop = true
+//                viewModel.searchDetail(gameType = this)
+//            }
+//        }
 
     }
 
@@ -136,5 +166,43 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         })
     }
 
+    private fun initData() {
+        arguments?.apply {
+            date = getString("date", "")
+            gameType = getString("gameType", "")
+
+            if (date.contains("-")) {
+                tv_date.text = date.replace("-", "/")
+            } else {
+                tv_date.text = date
+            }
+            viewModel.searchDetail(gameType, date)
+        }
+    }
+
+    private fun setupTotalView(other: Other?) {
+        other?.apply {
+            tv_bet_total_money.text = TextUtil.format(totalAmount as Double)
+            val textColor: Int
+            when {
+                win as Double > 0 -> {
+                    tv_win_or_Lose.text = getString(R.string.win)
+                    textColor = R.color.color_1D9F51_1D9F51
+                }
+                win < 0 -> {
+                    tv_win_or_Lose.text = getString(R.string.lose)
+                    textColor = R.color.color_E23434_E23434
+                }
+                else -> {
+                    tv_win_or_Lose.text = getString(R.string.win_lose)
+                    textColor = R.color.color_9BB3D9_535D76
+                }
+            }
+            tv_status_money.setTextColor(
+                ContextCompat.getColor(requireContext(), textColor)
+            )
+            tv_status_money.text = TextUtil.format(win)
+        }
+    }
 }
 

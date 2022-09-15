@@ -32,6 +32,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
         }
 
     var gameType: String = ""
+    var matchType: String? = null
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -60,7 +61,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
         when (holder) {
             is ItemViewHolder -> {
                 val data = getItem(position) as ParlayDataItem.Item
-                data.matchOdd.oddsType?.let { holder.bind(data.matchOdd, it, gameType) }
+                data.matchOdd.oddsType?.let { holder.bind(data.matchOdd, it, gameType, matchType) }
             }
 
             is NoDataViewHolder -> {
@@ -81,7 +82,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
 
         private val roundAdapter by lazy { RoundAdapter() }
 
-        fun bind(matchOdd: MatchOdd, oddsType: String, gameType: String) {
+        fun bind(matchOdd: MatchOdd, oddsType: String, gameType: String, matchType: String?) {
 
             binding.gameType = gameType
             binding.matchOdd = matchOdd
@@ -89,46 +90,59 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             binding.tvTime.text = TimeUtil.timeFormat(matchOdd.startTime, TimeUtil.YMD_HM_FORMAT)
 
             matchOdd.apply {
+                binding.tvTeamNames.setTeamsNameWithVS(homeName, awayName)
+
+                val oddsTypeStr = when (oddsType) {
+                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
+                }
+                //篮球 滚球 全场让分【欧洲盘】
+                binding.tvGameTypePlayCate.text = if (matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "$gameType $matchType ${playCateName}$oddsTypeStr"
+                } else {
+                    "$gameType ${playCateName}$oddsTypeStr"
+                }
                 val odds = getOdds(matchOdd, matchOdd.oddsType.toString())
                 binding.playContent.setPlayContent(
                     playName,
                     spread,
                     TextUtil.formatForOdd(odds)
                 )
-
-                when (gameType) {
-                    GameType.FT.key -> {
-                        if (rtScore?.isNotEmpty() == true) {
-                            binding.tvScore.text = "(${rtScore})"
-                            binding.tvScore.visibility = View.VISIBLE
-                        }
-                        else {
-                            binding.tvScore.visibility = View.GONE
-                        }
-                    }
-                    else -> {
-                        binding.tvScore.visibility = View.GONE
-                    }
-                }
-                binding.tvTeamNames.setTeamNames(15, homeName, awayName)
-                val scoreList = mutableListOf<String>()
-                playCateMatchResultList?.map { scoreData ->
-                    scoreList.add(
-                        "${
-                            scoreData.statusNameI18n?.get(
-                                LanguageManager.getSelectLanguage(
-                                    itemView.context
-                                ).key
-                            )
-                        }: ${scoreData.score}"
-                    )
-                }
-
-                binding.listScore.apply {
-                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
-                    adapter = roundAdapter
-                }
-                roundAdapter.submitList(scoreList)
+//                when (gameType) {
+//                    GameType.FT.key -> {
+//                        if (rtScore?.isNotEmpty() == true) {
+//                            binding.tvScore.text = "(${rtScore})"
+//                            binding.tvScore.visibility = View.VISIBLE
+//                        }
+//                        else {
+//                            binding.tvScore.visibility = View.GONE
+//                        }
+//                    }
+//                    else -> {
+//                        binding.tvScore.visibility = View.GONE
+//                    }
+//                }
+//                val scoreList = mutableListOf<String>()
+//                playCateMatchResultList?.map { scoreData ->
+//                    scoreList.add(
+//                        "${
+//                            scoreData.statusNameI18n?.get(
+//                                LanguageManager.getSelectLanguage(
+//                                    itemView.context
+//                                ).key
+//                            )
+//                        }: ${scoreData.score}"
+//                    )
+//                }
+//
+//                binding.listScore.apply {
+//                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+//                    adapter = roundAdapter
+//                }
+//                roundAdapter.submitList(scoreList)
 
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新

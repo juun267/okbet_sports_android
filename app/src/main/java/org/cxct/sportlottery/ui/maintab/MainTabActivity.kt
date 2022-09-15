@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab
 
-import BetRecordFragment
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -26,6 +25,7 @@ import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
@@ -207,6 +207,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun onBackPressed() {
+        //非注單詳情頁，重新顯示BottomNavBar
+        val fragment = supportFragmentManager.findFragmentByTag(AccountHistoryNextFragment::class.java.simpleName)
+        if (fragment == null) setupBottomNavBarVisibility(true)
+
         //返回鍵優先關閉投注單fragment
         if (supportFragmentManager.backStackEntryCount != 0) {
             for (i in 0 until supportFragmentManager.backStackEntryCount) {
@@ -221,10 +225,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         return betListFragment.isVisible
     }
 
+    var betListCount = 0
     override fun updateBetListCount(num: Int) {
+        betListCount = num
         cl_bet_list_bar.isVisible = num > 0
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
-        Timber.e("num: $num")
         if (num > 0) viewModel.getMoney()
     }
 
@@ -310,6 +315,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
+    }
+
+    fun setupBottomNavBarVisibility(isVisible: Boolean) {
+        bottom_navigation_view.isVisible = isVisible
+        if (isVisible) {
+            cl_bet_list_bar.isVisible = betListCount > 0
+        } else {
+            cl_bet_list_bar.isVisible = false
+        }
+    }
+
+    fun goBetRecordDetails(date: String, gameType: String) {
+        setupBottomNavBarVisibility(false)
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fl_content, AccountHistoryNextFragment.newInstance(date, gameType))
+            .addToBackStack(AccountHistoryNextFragment::class.java.simpleName)
+            .commit()
     }
 
     fun switchTabByPosition(position: Int) {

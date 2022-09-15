@@ -1,34 +1,57 @@
-import android.content.Context
-import android.content.Intent
+package org.cxct.sportlottery.ui.maintab
+
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.fragment_bet_record.*
 import kotlinx.android.synthetic.main.view_toolbar_home.iv_menu_left
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
-import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.menu.MenuItemData
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.clickCustomService
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel.Companion.PAGE_SIZE
+import org.cxct.sportlottery.ui.main.accountHistory.first.*
+import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
+import org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter
 import org.greenrobot.eventbus.EventBus
 
-class BetRecordFragment() :
+class BetRecordFragment :
     BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
+
+    private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
+    private val colorSettled = R.color.color_FFFFFF_414655
+    private val colorNotSettled = R.color.color_6C7BA8_6C7BA8
+
+    private val rvAdapter by lazy {
+        AccountHistoryAdapter(ItemClickListener {
+            it.let { data ->
+                viewModel.setSelectedDate(data.statDate)
+//                val action =
+//                    AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
+//                findNavController().navigate(action)
+                if (activity is MainTabActivity) {
+                    (activity as MainTabActivity).goBetRecordDetails(
+                        data.statDate.orEmpty(),
+                        viewModel.gameTypeCode
+                    )
+                }
+            }
+        })
+    }
 
     companion object {
         fun newInstance(): BetRecordFragment {
@@ -57,25 +80,33 @@ class BetRecordFragment() :
 //        initSocketObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initData()
+    }
+
     private fun initView() {
         initToolBar()
+        initTabBar()
+        initRecyclerView()
     }
 
     private var dataList = mutableListOf<StatusSheetData>()
     private var spinnerAdapter: StatusSpinnerAdapter? = null
+    private var dataSport = mutableListOf<Item>()
     private lateinit var mListPop: ListPopupWindow
 
     private fun initPopwindow(){
         mListPop = ListPopupWindow(requireContext())
-        mListPop.width = ScreenUtils.getScreenWidth(context) / 2
+        mListPop.width = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
-                R.drawable.bg_play_category_pop
+                R.drawable.bg_pop_up_arrow
             )
         )
-        mListPop.setAdapter(spinnerAdapter)
+        mListPop.setAdapter(SportTypeTextAdapter(dataSport))
         mListPop.anchorView = cl_bet_all_sports //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.isModal = true //设置是否是模式
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
@@ -86,59 +117,185 @@ class BetRecordFragment() :
                 id: Long
             ) {
                 mListPop.dismiss()
+                val sportItem = dataSport[position]
+                sportItem.isSelected = true
+                tv_all_sports.text = sportItem.name
 //                selectItem = dataList.get(position)
 //                setSelectCode(selectItem.code)
 //                itemSelectedListener?.invoke(selectItem)
 //                setSelectInfo(selectItem)
+                viewModel.apply {
+                    gameTypeCode = sportItem.code
+                    if (tabPosition == 0) {
+                        viewModel.searchBetRecord(gameTypeCode)
+                    } else {
+                        getBetList(true, gameTypeCode)
+                    }
+                }
             }
         })
+        mListPop.setOnDismissListener {
+            cl_bet_all_sports.isSelected = false
+        }
     }
 
     fun initObservable() {
         viewModel.sportCodeList.observe(viewLifecycleOwner) {
             System.out.println("============ initObservable size ================"+it.size)
-            spinnerAdapter = StatusSpinnerAdapter(dataList)
+            updateSportList(it)
+        }
+        viewModel.betListData.observe(viewLifecycleOwner) {
+            recordDiffAdapter.setupBetList(it)
+//            btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
+//            divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
         }
 
-//        viewModel.sportCodeList.observe(viewLifecycleOwner) {
-//            rvAdapter.setSportCodeSpinner(it)
-//        }
-
+        viewModel.betRecordResult.observe(viewLifecycleOwner) {
+            if (it.success) {
+                rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+                rv_record_settled.scrollToPosition(0)
+            } else {
+                Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        //setupLogin()
+        ImmersionBar.with(this)
+            .statusBarView(v_statusbar)
+            .statusBarDarkFont(true)
+            .fitsSystemWindows(true)
+            .init()
+
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
         }
 
-//        iv_money_refresh.setOnClickListener {
-//            //refreshMoneyLoading()
-//            viewModel.getMoney()
-//        }
-//        btn_login.setOnClickListener {
-//            startActivity(Intent(requireActivity(), LoginActivity::class.java))
-//        }
-        //EventBus.getDefault().post(MenuEvent(true))
-//        bet_record_status_spinner.tv_name.gravity = Gravity.CENTER_VERTICAL or Gravity.START
-//        bet_record_status_spinner.setItemData(data.spinnerList.toMutableList())
-//            bet_record_status_spinner.setOnItemSelectedListener {
-//                //sportSelectListener.onSelect(it.code)
-//                System.out.println("============ it.code ================"+it.code) }
         cl_bet_all_sports.setOnClickListener(View.OnClickListener {
             System.out.println("============ 000yetetet ================")
             if (mListPop.isShowing) {
+                cl_bet_all_sports.isSelected = false
                 mListPop.dismiss()
             } else {
+                cl_bet_all_sports.isSelected = true
                 mListPop.show()
             }
         })
+    }
 
+    private fun initTabBar() {
+        tv_tab_settled.setOnClickListener {
+            setupTabUI(true)
+        }
+        tv_tab_not_settled.setOnClickListener {
+            setupTabUI(false)
+        }
+        //預設為已結算tab
+        setupTabUI(true)
+    }
+
+    private fun setupTabUI(isSettledTab: Boolean) {
+        viewModel.apply {
+            if (isSettledTab) {
+                tabPosition = 0
+                cl_content.setBackgroundResource(R.drawable.bg_bet_record_tab_1)
+                tv_tab_settled.setTextColor(
+                    ContextCompat.getColor(requireContext(), colorSettled)
+                )
+                tv_tab_not_settled.setTextColor(
+                    ContextCompat.getColor(requireContext(), colorNotSettled)
+                )
+            } else {
+                tabPosition = 1
+                cl_content.setBackgroundResource(R.drawable.bg_bet_record_tab_2)
+                tv_tab_not_settled.setTextColor(
+                    ContextCompat.getColor(requireContext(), colorSettled)
+                )
+                tv_tab_settled.setTextColor(
+                    ContextCompat.getColor(requireContext(), colorNotSettled)
+                )
+            }
+            settled_title_bar.isVisible = isSettledTab
+            sm_settled_tab_refresh.isVisible = isSettledTab
+            sm_unsettled_tab_refresh.isVisible = !isSettledTab
+        }
+    }
+
+    private fun initRecyclerView() {
+        rv_record_settled.apply {
+            adapter = rvAdapter
+            addOnScrollListener(settledRecyclerViewOnScrollListener)
+        }
+        rv_record_unsettled.apply {
+            adapter = recordDiffAdapter
+            addOnScrollListener(unsettledRecyclerViewOnScrollListener)
+        }
     }
 
     private fun initData() {
         viewModel.getSportList()
+        viewModel.getBetList(true)
+        viewModel.searchBetRecord()
     }
 
+    private fun updateSportList(list: List<StatusSheetData>) {
+        list.forEach {
+            dataSport.add(
+                Item(
+                    code = it.code.orEmpty(),
+                    name = it.showName.orEmpty(),
+                    num = 0,
+                    play = null,
+                    sortNum = 0
+                )
+            )
+        }
+        //如沒有選過的，預設選第一個
+        dataSport.find {
+            it.isSelected
+        }.let {
+            if (it == null) {
+                dataSport.firstOrNull()?.isSelected = true
+            }
+        }
+    }
+
+    private val settledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            recyclerView.layoutManager?.let {
+                val visibleItemCount: Int = it.childCount
+                val totalItemCount: Int = it.itemCount
+                val firstVisibleItemPosition: Int =
+                    (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (firstVisibleItemPosition > 0) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount &&
+                        firstVisibleItemPosition >= 0 &&
+                        totalItemCount >= PAGE_SIZE
+                    ) {
+                        viewModel.getBetList()
+                    }
+                }
+            }
+        }
+    }
+
+    private val unsettledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            recyclerView.layoutManager?.let {
+                val visibleItemCount: Int = it.childCount
+                val totalItemCount: Int = it.itemCount
+                val firstVisibleItemPosition: Int =
+                    (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (firstVisibleItemPosition > 0) {
+                    viewModel.getNextPage(
+                        visibleItemCount,
+                        firstVisibleItemPosition,
+                        totalItemCount
+                    )
+                }
+            }
+        }
+    }
 }
