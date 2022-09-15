@@ -21,16 +21,13 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.message.Row
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -39,7 +36,6 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
-import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
@@ -82,30 +78,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         initObserve()
         viewModel.firstSwitchMatch(MatchType.IN_PLAY)
         setupDataSourceChange()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        arguments?.let {
-            val matchId = it.getString(GamePublicityActivity.PUBLICITY_MATCH_ID)
-            val gameTypeCode = it.getString(GamePublicityActivity.PUBLICITY_GAME_TYPE)
-            val gameType = GameType.getGameType(gameTypeCode) ?: GameType.OTHER
-            val intentMatchType = it.getSerializable(GamePublicityActivity.PUBLICITY_MATCH_TYPE)
-            val matchType = if (intentMatchType != null) intentMatchType as MatchType else null
-            val matchList =
-                it.getParcelableArrayList<MatchInfo>(GamePublicityActivity.PUBLICITY_MATCH_LIST)
-            matchId?.let {
-                val gameType = GameType.getGameType(gameTypeCode)
-                val navMatchType = matchType ?: MatchType.DETAIL
-                if (gameType != null && matchId != null) {
-                    SportDetailActivity.startActivity(requireContext(),
-                        DetailParams(matchType = navMatchType,
-                            gameType = gameType,
-                            matchId = matchId))
-                }
-            }
-        }
     }
 
     fun initToolBar() {

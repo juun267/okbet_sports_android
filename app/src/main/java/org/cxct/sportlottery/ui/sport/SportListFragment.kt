@@ -43,7 +43,6 @@ import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -235,17 +234,9 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 
     private fun navMatchDetailPage(matchInfo: MatchInfo?) {
         matchInfo?.let { it ->
-            val gameType =
-                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-            gameType?.let {
-                if (gameType != null) {
-                    SportDetailActivity.startActivity(requireContext(),
-                        DetailParams(matchType = matchType,
-                            gameType = gameType,
-                            matchId = matchInfo.id,
-                            matchInfo = matchInfo))
-                }
-            }
+            SportDetailActivity.startActivity(requireContext(),
+                matchInfo = it,
+                matchType = matchType)
         }
     }
 

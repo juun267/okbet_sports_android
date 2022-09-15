@@ -42,7 +42,6 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
 import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
@@ -105,13 +104,19 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                     viewModel.pinFavorite(FavoriteType.MATCH, it)
                 },
                 onClickStatisticsListener = { matchId ->
-                    showStatistics(matchId)
+                    mRecommendList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let { recommend ->
+                        recommend.matchInfo?.let {
+                            navOddsDetailFragment(recommend.matchType!!, it)
+                        }
+                    }
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
                     checkCreditSystemLogin {
                         matchInfoList.find {
                             TextUtils.equals(matchId, it.id)
                         }?.let {
-                            navOddsDetailFragment(gameType, matchType, matchId, it)
+                            navOddsDetailFragment(matchType!!, it)
                         }
                     }
                 }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
@@ -119,7 +124,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                         matchInfoList.find {
                             TextUtils.equals(matchId, it.id)
                         }?.let {
-                            navOddsDetailFragment(gameType, matchType, matchId, it)
+                            navOddsDetailFragment(matchType!!, it)
                         }
                     }
                 },
@@ -128,7 +133,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                         matchInfoList.find {
                             TextUtils.equals(matchId, it.id)
                         }?.let {
-                            navOddsDetailFragment(gameType, matchType, matchId, it)
+                            navOddsDetailFragment(matchType!!, it)
                         }
                     }
                 }
@@ -695,21 +700,12 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
     }
 
     private fun navOddsDetailFragment(
-        gameTypeCode: String,
-        matchType: MatchType?,
-        matchId: String?,
-        matchInfo: MatchInfo?,
+        matchType: MatchType,
+        matchInfo: MatchInfo,
     ) {
-
-        val gameType = GameType.getGameType(gameTypeCode)
-        val navMatchType = matchType ?: MatchType.DETAIL
-        if (gameType != null && matchId != null) {
-            SportDetailActivity.startActivity(requireContext(),
-                DetailParams(matchType = navMatchType,
-                    gameType = gameType,
-                    matchId = matchId,
-                    matchInfo = matchInfo))
-        }
+        SportDetailActivity.startActivity(requireContext(),
+            matchInfo = matchInfo,
+            matchType = matchType)
     }
 
     /**

@@ -44,7 +44,6 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -60,15 +59,19 @@ import java.util.*
 class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel::class),
     TimerManager {
     companion object {
-        private val TYPE_PARAMETER = "type_parameter"
-        fun startActivity(context: Context, params: DetailParams) {
-            val intent = Intent(context, SportDetailActivity::class.java)
-            intent.putExtra(TYPE_PARAMETER, params)
-            context.startActivity(intent)
+        fun startActivity(context: Context, matchInfo: MatchInfo, matchType: MatchType? = null) {
+            matchInfo?.let {
+                val intent = Intent(context, SportDetailActivity::class.java)
+                intent.putExtra("matchInfo", matchInfo)
+                intent.putExtra("matchType",
+                    matchType
+                        ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL)
+                context.startActivity(intent)
+            }
         }
     }
 
-    private var matchType: MatchType = MatchType.OTHER
+    private var matchType: MatchType = MatchType.DETAIL
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var isLogin: Boolean = false
     private val tabCateAdapter: TabCateAdapter by lazy {
@@ -82,11 +85,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         })
     }
     private var betListFragment = BetListFragment()
-    private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId) }
-    private var matchId: String? = null
+    private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId = matchInfo?.id) }
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
-    lateinit var gameType: GameType
 
 
     private var isGamePause = false
@@ -96,11 +97,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         var timeMillis = startTime * 1000L
         if (TimeUtil.isTimeInPlay(matchOdd?.matchInfo?.startTime)) {
             if (!isGamePause) {
-                when (gameType) {
-                    GameType.FT -> {
+                when (matchInfo?.gameType) {
+                    GameType.FT.key -> {
                         timeMillis += 1000
                     }
-                    GameType.BK, GameType.RB, GameType.AFT -> {
+                    GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         timeMillis -= 1000
                     }
                     else -> {
@@ -109,8 +110,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
             }
             //过滤部分球类
-            if (when (gameType) {
-                    GameType.BB, GameType.TN, GameType.VB, GameType.TT, GameType.BM ->
+            if (when (matchInfo?.gameType) {
+                    GameType.BB.key, GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key ->
                         true
                     else -> {
                         false
@@ -144,8 +145,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private val liveToolBarListener by lazy {
         object : DetailLiveViewToolbar.LiveToolBarListener {
             override fun getLiveInfo(newestUrl: Boolean) {
-                matchId?.let {
-                    viewModel.getLiveInfo(it, newestUrl)
+                matchInfo?.let {
+                    viewModel.getLiveInfo(it.id, newestUrl)
                 }
             }
 
@@ -283,12 +284,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initData() {
         clickButton()
-        intent.getParcelableExtra<DetailParams>(TYPE_PARAMETER)?.let {
-            gameType = it.gameType
-            matchType = it.matchType ?: MatchType.OTHER
-            matchId = it.matchId
-            matchInfo = it.matchInfo
-        }
+        matchInfo = intent.getParcelableExtra<MatchInfo>("matchInfo")
+        matchType = intent.getSerializableExtra("matchType") as MatchType
         matchInfo?.let {
             setupMatchInfo(it)
         }
@@ -338,7 +335,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     matchOdd?.let { matchOdd ->
                         val fastBetDataBean = FastBetDataBean(
                             matchType = matchType,
-                            gameType = gameType,
+                            gameType = GameType.getGameType(matchOdd.matchInfo.id)!!,
                             playCateCode = oddsDetail?.gameType ?: "",
                             playCateName = oddsDetail?.name ?: "",
                             matchInfo = matchOdd.matchInfo,
@@ -356,10 +353,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             oddsDetailListener = OddsDetailListener {
-                viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, gameType.key)
+                viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, matchInfo?.gameType)
             }
 
-            sportCode = gameType
+            sportCode = GameType.getGameType(matchInfo?.gameType)
         }
         rv_detail.apply {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -464,7 +461,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.favorPlayCateList.observe(this) {
             oddsDetailListAdapter?.let { oddsDetailListAdapter ->
                 val playCate = it.find { playCate ->
-                    playCate.gameType == gameType.key
+                    playCate.gameType == matchInfo?.gameType
                 }
 
                 val playCateCodeList = playCate?.code?.let { it1 ->
@@ -618,7 +615,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         receiver.matchStatusChange.observe(this) {
             it?.let { matchStatusChangeEvent ->
-                matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
+                matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == matchInfo?.id }
                     ?.apply {
                         //從滾球以外的狀態轉變為滾球時, 重新獲取一次賽事資料, 看是否有新的直播或動畫url
                         if (matchType != MatchType.IN_PLAY) {
@@ -643,14 +640,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         receiver.matchClock.observe(this) {
             it?.let { matchClockEvent ->
-                if (matchClockEvent.matchClockCO?.matchId != matchId) {
+                if (matchClockEvent.matchClockCO?.matchId != matchInfo?.id) {
                     return@let
                 }
-                val updateTime = when (gameType) {
-                    GameType.FT -> {
+                val updateTime = when (matchInfo?.gameType) {
+                    GameType.FT.key -> {
                         matchClockEvent.matchClockCO?.matchTime
                     }
-                    GameType.BK, GameType.RB, GameType.AFT -> {
+                    GameType.BK.key, GameType.RB.key, GameType.AFT.key -> {
                         matchClockEvent.matchClockCO?.remainingTimeInPeriod
                     }
                     else -> null
@@ -660,7 +657,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 updateTime?.let { time ->
                     startTime = time
                     matchType =
-                        if (TimeUtil.isTimeInPlay(startTime)) MatchType.IN_PLAY else MatchType.OTHER
+                        if (TimeUtil.isTimeInPlay(startTime)) MatchType.IN_PLAY else MatchType.DETAIL
                 }
             }
         }
@@ -672,7 +669,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         oddsDetailListDataList,
                         matchOddsChangeEvent,
                         viewModel.favorPlayCateList.value?.find { playCate ->
-                            playCate.gameType == gameType.key
+                            playCate.gameType == matchInfo?.gameType
                         }
                     )
                         ?.let { updatedDataList ->
@@ -697,7 +694,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         receiver.matchOddsLock.observe(this) {
             it?.let { matchOddsLockEvent ->
                 //比對收到 matchOddsLock event 的 matchId
-                if (matchId == matchOddsLockEvent.matchId) {
+                if (matchInfo?.id == matchOddsLockEvent.matchId) {
                     oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateOddStatus(oddsDetailListData)) {
@@ -726,13 +723,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         receiver.producerUp.observe(this) {
             it?.let {
                 unSubscribeChannelEventAll()
-                subscribeChannelEvent(matchId)
+                subscribeChannelEvent(matchInfo?.id)
             }
         }
 
         receiver.closePlayCate.observe(this) { event ->
             event?.getContentIfNotHandled()?.let {
-                if (gameType.key != it.gameType) return@observe
+                if (matchInfo?.gameType != it.gameType) return@observe
                 oddsDetailListAdapter?.oddsDetailDataList?.apply {
                     indexOf(
                         find { date ->
@@ -775,9 +772,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
 
     private fun getData() {
-        matchId?.let { matchId ->
-            viewModel.getOddsDetail(matchId).run {
-                subscribeChannelEvent(matchId)
+        matchInfo?.let {
+            viewModel.getOddsDetail(it.id).run {
+                subscribeChannelEvent(it.id)
             }
         }
     }

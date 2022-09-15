@@ -57,6 +57,7 @@ data class MatchInfo(
     val awayIcon: String? = null,
 
     ) : Parcelable, MatchInfo {
+
     //Live
     var isInPlay: Boolean? = false
     override var awayScore: String? = null //客队分数

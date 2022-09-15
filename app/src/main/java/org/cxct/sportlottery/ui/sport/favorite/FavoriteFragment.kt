@@ -35,7 +35,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
@@ -662,17 +661,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun navMatchDetailPage(matchInfo: MatchInfo?) {
         matchInfo?.let { it ->
-            val gameType =
-                GameType.getGameType(matchInfo.gameType)
-            gameType?.let {
-                if (gameType != null) {
-                    SportDetailActivity.startActivity(requireContext(),
-                        DetailParams(matchType = null,
-                            gameType = gameType,
-                            matchId = matchInfo.id,
-                            matchInfo = matchInfo))
-                }
-            }
+            SportDetailActivity.startActivity(requireContext(), matchInfo = it)
         }
     }
 
