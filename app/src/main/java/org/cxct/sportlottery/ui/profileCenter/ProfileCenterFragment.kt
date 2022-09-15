@@ -239,6 +239,7 @@ class ProfileCenterFragment :
 
     private fun setupLogout() {
         iv_logout.setOnClickListener {
+            //退出登录并还原所有用户设置
             viewModel.doLogoutAPI()
             viewModel.doLogoutCleanUser {
                 run {

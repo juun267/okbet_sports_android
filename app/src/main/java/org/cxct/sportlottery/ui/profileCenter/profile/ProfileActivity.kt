@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
@@ -40,7 +41,7 @@ import java.io.File
 import java.io.FileNotFoundException
 
 /**
- * @app_destination 個人資訊
+ * @app_destination 个人资讯
  */
 class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
@@ -98,6 +99,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_profile)
 
         initView()
@@ -179,6 +181,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_verified.setOnClickListener {
             if (ll_verified.isEnabled)
                 startActivity(Intent(this@ProfileActivity, VerifyIdentityActivity::class.java))
+        }
+        //注销账号
+        ll_cancel_account.setOnClickListener{
+            startActivity(Intent(this@ProfileActivity, CancelAccountActivity::class.java))
         }
     }
 

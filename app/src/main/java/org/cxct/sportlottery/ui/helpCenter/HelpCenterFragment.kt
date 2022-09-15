@@ -13,7 +13,7 @@ import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.util.JumpUtil
 
 /**
- * @app_destination 幫助中心
+ * @app_destination 帮助中心
  */
 class HelpCenterFragment : BaseFragment<HelpCenterViewModel>(HelpCenterViewModel::class) {
 

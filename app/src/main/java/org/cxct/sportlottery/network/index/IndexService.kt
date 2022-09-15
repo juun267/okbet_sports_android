@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.index
 
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.CANCEL_ACCOUNT
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountResult
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -66,4 +68,7 @@ interface IndexService {
 
     @POST(LOGIN_FOR_GUEST)
     suspend fun loginForGuest(@Body loginForGuestRequest: LoginForGuestRequest): Response<LoginResult>
+
+    @POST(CANCEL_ACCOUNT)
+    suspend fun cancelAccount(@Path("password") password: String ):Response<CancelAccountResult>
 }

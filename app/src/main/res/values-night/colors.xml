@@ -147,5 +147,6 @@
     <color name="color_131932_F0F5FA">@color/color_131932</color>
     <color name="color_202541_FFFFFF">@color/color_202541</color>
     <!--endregion 新UI 日夜間色系-->
-
+    <!--沉浸式状态栏颜色处理-->
+    <color name="color_232C4F_FFFFFF">@color/color_232C4F</color>
 </resources>

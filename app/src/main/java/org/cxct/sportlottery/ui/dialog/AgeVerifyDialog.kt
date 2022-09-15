@@ -17,7 +17,7 @@ class AgeVerifyDialog(
     val activity: FragmentActivity,
     private val onAgeVerifyCallBack: OnAgeVerifyCallBack
 ) : AlertDialog(activity) {
-
+    //TODO 参考弹窗
     private var isCbChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

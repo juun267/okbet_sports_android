@@ -60,6 +60,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     open fun init() {
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_web)
         if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()
         setCookie()
