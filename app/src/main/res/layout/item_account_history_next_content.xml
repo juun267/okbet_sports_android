@@ -60,23 +60,23 @@
                     app:layout_constraintTop_toTopOf="@+id/topContainer"
                     tools:text="单串-足球" />
 
-                <TextView
-                    android:id="@+id/tv_bet_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:background="@drawable/bg_square_shape_8dp_green"
-                    android:gravity="center"
-                    android:paddingHorizontal="10dp"
-                    android:text="@string/undone"
-                    android:textColor="@color/color_FFFFFF_FFFFFF"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="gone"
-                    app:betReceiptStatus="@{row.status}"
-                    app:betResultCancelBy="@{row.cancelledBy}"
-                    app:hideByStatus="@{row.status}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:visibility="visible" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_bet_result"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:background="@drawable/bg_square_shape_8dp_green"-->
+<!--                    android:gravity="center"-->
+<!--                    android:paddingHorizontal="10dp"-->
+<!--                    android:text="@string/undone"-->
+<!--                    android:textColor="@color/color_FFFFFF_FFFFFF"-->
+<!--                    android:textSize="@dimen/textSize12sp"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:betReceiptStatus="@{row.status}"-->
+<!--                    app:betResultCancelBy="@{row.cancelledBy}"-->
+<!--                    app:hideByStatus="@{row.status}"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    tools:visibility="visible" />-->
 
                 <LinearLayout
                     android:id="@+id/leagueContainer"

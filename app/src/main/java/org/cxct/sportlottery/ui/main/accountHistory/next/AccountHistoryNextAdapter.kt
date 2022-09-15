@@ -246,7 +246,7 @@ class AccountHistoryNextAdapter(
 
     }
 
-    class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentOutrightBinding) :
+    class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(row: Row, oddsType: OddsType) {
             val first = row.matchOdds?.firstOrNull()
@@ -256,33 +256,63 @@ class AccountHistoryNextAdapter(
 
             first?.apply {
                 first.oddsType?.let {
-                    binding.playContent.setPlayContent(
+                    val formatForOdd = if (playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage((odds ?: 0.0) - 1.0) else TextUtil.formatForOdd(odds ?: 0)
+                    binding.tvContent.setPlayContent(
                         playName,
                         spread,
-                        odds?.let { TextUtil.formatForOdd(it) }
+                        formatForOdd
                     )
                 }
-                binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
+
+                val gameType = row.gameType.orEmpty()
+
+                val singleTitle = itemView.context.getString(R.string.bet_record_single) +
+                        "-${getGameTypeName(gameType)}"
+                binding.tvTitle.text = singleTitle
+
+                val oddsTypeStr = when (this.oddsType) {
+                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
+                }
+                binding.tvGameTypePlayCate.text = if (row.matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "${getGameTypeName(gameType)} ${getMatchTypeName(row.matchType)} ${this.playCateName}$oddsTypeStr"
+                } else {
+                    "${getGameTypeName(gameType)} ${this.playCateName}$oddsTypeStr"
+                }
 
                 if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
-                    binding.tvTeamNames.setTeamNames(15, homeName, awayName)
-                    binding.tvTeamNames.visibility = View.VISIBLE
+                    binding.tvTeamNamesSingles.setTeamsNameWithVS(homeName, awayName)
                 } else {
-                    binding.tvTeamNames.visibility = View.GONE
+                    binding.tvTeamNamesSingles.text = this.leagueName
                 }
 
                 startTime?.let {
-                    binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
+                    binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.DM_HM_FORMAT)
                 }
                 binding.tvStartTime.isVisible = row.parlayType != ParlayType.OUTRIGHT.key
+
+                binding.llCopyBetOrder.setOnClickListener {
+                    itemView.context.copyToClipboard(row.orderNo.orEmpty())
+                }
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
+        }
+
+        private fun getGameTypeName(gameType: String): String {
+            return itemView.context.getString(GameType.valueOf(gameType).string)
+        }
+
+        private fun getMatchTypeName(matchType: String?): String {
+            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemAccountHistoryNextContentOutrightBinding.inflate(
+                val binding = ItemAccountHistoryNextContentBinding.inflate(
                     layoutInflater,
                     parent,
                     false
