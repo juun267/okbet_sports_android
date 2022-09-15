@@ -716,7 +716,12 @@
     <string name="credit_record_status_unsettle">The settlement date has not yet been reached</string>
     <string name="game_play_type">Game category</string>
     <string name="spt_number_3_2">Best of 3</string>
+    <string name="spt_number_3_2_bm">Best of 3</string>
     <string name="spt_number_5_3">Best of 5</string>
+    <string name="spt_number_5_3_vb">Best Of 5</string>
+    <string name="spt_number_7_4_tt">Best Of 7</string>
+    <string name="format_plat">Best of %s</string>
+    <string name="format_round">Best of %s</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
     <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
     <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
@@ -1234,6 +1239,8 @@
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">EST winning(%s)：</string>
+    <string name="bet_record_single">Singles</string>
+    <string name="bet_record_parlay">Parlay</string>
 
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
@@ -1328,8 +1335,11 @@
     <string name="action_settings">Settings</string>
     <string name="register_and_login">注册/登录</string>
     <string name="live_streaming">直播</string>
+    <string name="half_first_short">上</string>
+    <string name="half_second_short">下</string>
     <string name="bank_memory_card">储存卡</string>
     <string name="my_bank_card">我的银行卡</string>
+    <string name="my_favorite_empty">您还没有收藏赛事</string>
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="cruel_write_off">残忍注销</string>
 </resources>

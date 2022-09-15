@@ -114,16 +114,7 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
         }
 
         return when {
-            data.isEmpty() -> {
-                if (position == 0) {
-                    BaseItemType.NO_DATA.type
-                } else {
-                    BaseItemType.BOTTOM_NAVIGATION.type
-                }
-            }
-            position == (data.size) -> {
-                BaseItemType.BOTTOM_NAVIGATION.type
-            }
+            data.isEmpty() -> BaseItemType.NO_DATA.type
             else -> {
                 when (val item = data[position]) {
                     is MatchOdd -> OutrightViewType.TITLE.ordinal

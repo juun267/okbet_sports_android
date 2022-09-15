@@ -307,7 +307,7 @@
     <string name="champion_play">冠军玩法</string>
     <string name="inquire">查询</string>
     <string name="order_number">注单编号</string>
-    <string name="order_number_colon">注单编号：</string>
+    <string name="order_number_colon">注单号：</string>
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">总投注额</string>
     <string name="total_bet_money_colon">总投注额：</string>
@@ -325,6 +325,7 @@
     <string name="no_data">没有更多数据了</string>
     <string name="uncheck">未确认</string>
     <string name="undone">投注成功</string>
+    <string name="not_settled">未结算</string>
     <string name="settled">已结算</string>
     <string name="win">赢</string>
     <string name="win_half">赢半</string>
@@ -689,7 +690,7 @@
     <string name="win_lose_mark">赢 / 输：</string>
     <string name="all_sport">所有体育</string>
     <string name="back_to_top">回到顶部</string>
-    <string name="total">总共</string>
+    <string name="total">总计</string>
     <string name="verse">v</string>
     <string name="keyboard_max">最大</string>
     <string name="odds_button_name_first">第一</string>
@@ -708,7 +709,12 @@
     <string name="credit_record_status_unsettle">尚未到結算日期</string>
     <string name="game_play_type">游戏类别</string>
     <string name="spt_number_3_2">3盘2胜</string>
+    <string name="spt_number_3_2_bm">3局2胜</string>
     <string name="spt_number_5_3">5盘3胜</string>
+    <string name="spt_number_5_3_vb">5局3胜</string>
+    <string name="spt_number_7_4_tt">7局4胜</string>
+    <string name="format_plat">第%s盘</string>
+    <string name="format_round">第%s局</string>
     <string name="bet_notify_max_limit">最多可添加10个选项至投注单</string>
     <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
     <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>
@@ -873,7 +879,7 @@
     <string name="verify_failed">(验证失败)</string>
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
-    <string name="text_us_east_time">以美东(UTC-4)时间计算</string>
+    <string name="text_us_east_time">以美东（UTC-4）时间计算</string>
     <string name="text_cant_play">发生错误,请稍后再试。</string>
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
@@ -1209,5 +1215,8 @@
     <string name="submitting">注单提交中</string>
     <string name="bet_receipt_bet_quota_with_sign">投注金额(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">可赢金额(%s)：</string>
+    <string name="bet_record_single">单串</string>
+    <string name="bet_record_parlay">复式</string>
+
     <string name="bank_memory_card">储蓄卡</string>
 </resources>

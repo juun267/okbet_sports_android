@@ -337,6 +337,7 @@
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Running</string>
+    <string name="not_settled">Unsettled</string>
     <string name="settled">Settled bets</string>
     <string name="win">Win</string>
     <string name="win_half">Win a half</string>
@@ -714,7 +715,12 @@
     <string name="credit_record_status_unsettle">The settlement date has not yet been reached</string>
     <string name="game_play_type">Game category</string>
     <string name="spt_number_3_2">Best of 3</string>
+    <string name="spt_number_3_2_bm">Best of 3</string>
     <string name="spt_number_5_3">Best of 5</string>
+    <string name="spt_number_5_3_vb">Best Of 5</string>
+    <string name="spt_number_7_4_tt">Best Of 7</string>
+    <string name="format_plat">Best of %s</string>
+    <string name="format_round">Best of %s</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
     <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
     <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
@@ -1203,4 +1209,7 @@
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">EST winning(%s)：</string>
+    <string name="bet_record_single">Singles</string>
+    <string name="bet_record_parlay">Parlay</string>
+
 </resources>

@@ -2,6 +2,8 @@ package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -967,7 +969,6 @@ fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
         }
     }
 
-
 }
 
 fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
@@ -1053,4 +1054,11 @@ fun MutableMap<String, CateDetailData>.sortOddsMapByDetail() {
             value.odds.sortBy { it?.marketSort }
         }
     }
+}
+
+fun Context.copyToClipboard(copyText: String) {
+    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+    val clipData = ClipData.newPlainText(null, copyText)
+    clipboard?.setPrimaryClip(clipData)
+    ToastUtil.showToastInCenter(this, this.getString(R.string.text_money_copy_success) + ": $copyText")
 }

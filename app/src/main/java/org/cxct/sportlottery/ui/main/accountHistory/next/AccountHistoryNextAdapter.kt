@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -32,7 +34,6 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import timber.log.Timber
 
 class AccountHistoryNextAdapter(
     private val itemClickListener: ItemClickListener,
@@ -43,7 +44,8 @@ class AccountHistoryNextAdapter(
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, BACK_TO_TOP, NO_DATA
+//        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, BACK_TO_TOP, NO_DATA
+        ITEM, PARLAY, OUTRIGHT, NO_DATA
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -94,14 +96,15 @@ class AccountHistoryNextAdapter(
      */
     private fun updateData() {
 
-        val items = listOf(DataItem.TitleBar(mSportTypeList)) + when {
+//        val items = listOf(DataItem.TitleBar(mSportTypeList)) + when {
+        val items = when {
             mRowList.isNullOrEmpty() -> listOf(DataItem.NoData)
             mIsLastPage -> mutableListOf<DataItem>().apply {
                 mRowList?.map { DataItem.Item(it) }?.forEach {
                     add(it)
                 }
-                add(DataItem.Footer)
-                add(DataItem.BackToTop)
+//                add(DataItem.Footer)
+//                add(DataItem.BackToTop)
             }
             else -> mutableListOf<DataItem>().apply {
                 mRowList?.map { DataItem.Item(it) }?.forEach {
@@ -117,12 +120,12 @@ class AccountHistoryNextAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ItemType.TITLE_BAR.ordinal -> TitleBarViewHolder.from(parent)
+//            ItemType.TITLE_BAR.ordinal -> TitleBarViewHolder.from(parent)
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
             ItemType.OUTRIGHT.ordinal -> OutrightItemViewHolder.from(parent)
             ItemType.PARLAY.ordinal -> ParlayItemViewHolder.from(parent)
-            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
-            ItemType.BACK_TO_TOP.ordinal -> BackToTopViewHolder.from(parent)
+//            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+//            ItemType.BACK_TO_TOP.ordinal -> BackToTopViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -130,55 +133,55 @@ class AccountHistoryNextAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
 
-            is TitleBarViewHolder -> {
-                when (val data = getItem(position)) {
-                    is DataItem.TitleBar -> {
-                        holder.bind(
-                            data.spinnerList,
-                            nowSelectedDate,
-                            nowSelectedSport,
-                            backClickListener,
-                            sportSelectListener,
-                            dateSelectListener
-                        )
-                    }
-                    else -> {
-                        Timber.e("data of TitleBar no match")
-                    }
-                }
-            }
+//            is TitleBarViewHolder -> {
+//                when (val data = getItem(position)) {
+//                    is DataItem.TitleBar -> {
+//                        holder.bind(
+//                            data.spinnerList,
+//                            nowSelectedDate,
+//                            nowSelectedSport,
+//                            backClickListener,
+//                            sportSelectListener,
+//                            dateSelectListener
+//                        )
+//                    }
+//                    else -> {
+//                        Timber.e("data of TitleBar no match")
+//                    }
+//                }
+//            }
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType)
+                holder.bind(data.row, oddsType, position)
             }
 
             is OutrightItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType)
+                holder.bind(data.row, oddsType, position)
             }
 
             is ParlayItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType)
+                holder.bind(data.row, oddsType, position)
             }
 
-            is FooterViewHolder -> {
-                holder.bind(mOther)
-            }
+//            is FooterViewHolder -> {
+//                holder.bind(mOther)
+//            }
 
             is NoDataViewHolder -> {
             }
 
-            is BackToTopViewHolder -> {
-                holder.bind(scrollToTopListener)
-            }
+//            is BackToTopViewHolder -> {
+//                holder.bind(scrollToTopListener)
+//            }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
+//            is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
             is DataItem.Item -> {
                 when (getItem(position).parlayType) {
                     ParlayType.SINGLE.key -> ItemType.ITEM.ordinal
@@ -186,8 +189,8 @@ class AccountHistoryNextAdapter(
                     else -> ItemType.PARLAY.ordinal
                 }
             }
-            is DataItem.Footer -> ItemType.FOOTER.ordinal
-            is DataItem.BackToTop -> ItemType.BACK_TO_TOP.ordinal
+//            is DataItem.Footer -> ItemType.FOOTER.ordinal
+//            is DataItem.BackToTop -> ItemType.BACK_TO_TOP.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
     }
@@ -196,7 +199,9 @@ class AccountHistoryNextAdapter(
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(row: Row, oddsType: OddsType) {
+        fun bind(row: Row, oddsType: OddsType, position: Int) {
+            binding.topViewParlay.isVisible = position == 0
+
             val parlayAdapter by lazy { ParlayItemAdapter() }
 
             binding.row = row
@@ -206,18 +211,22 @@ class AccountHistoryNextAdapter(
 
                 row.parlayType?.let { parlayType ->
                     ParlayType.getParlayStringRes(parlayType)?.let { parlayTypeStringResId ->
-                        tvParlayType.text = LocalUtils.getString(parlayTypeStringResId)
+//                        tvParlayType.text = LocalUtils.getString(parlayTypeStringResId)
+                        val parlayTitle = itemView.context.getString(R.string.bet_record_parlay) +
+                                "(${itemView.context.getString(parlayTypeStringResId)})" +
+                                "-${getGameTypeName(row.gameType.orEmpty())}"
+                        tvParlayType.text = parlayTitle
                     }
                 }
 
-                tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
-                tvDetail.setOnClickListener {
-                    val dialog = row.parlayComsDetailVOs?.let { list ->
-                        ComboDetailDialog(it.context, list)
-                    }
-                    dialog?.show()
-                }
+//                tvDetail.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+//                tvDetail.isVisible = (row.parlayComsDetailVOs ?: emptyList()).isNotEmpty()
+//                tvDetail.setOnClickListener {
+//                    val dialog = row.parlayComsDetailVOs?.let { list ->
+//                        ComboDetailDialog(it.context, list)
+//                    }
+//                    dialog?.show()
+//                }
                 rvParlay.apply {
                     adapter = parlayAdapter
                     layoutManager =
@@ -225,9 +234,19 @@ class AccountHistoryNextAdapter(
                     parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
                     parlayAdapter.oddsType = oddsType
                     parlayAdapter.gameType = row.gameType ?: ""
+                    parlayAdapter.matchType = row.matchType
                 }
+
+                llCopyBetOrderParlay.setOnClickListener {
+                    itemView.context.copyToClipboard(row.orderNo.orEmpty())
+                }
+
                 executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
             }
+        }
+
+        private fun getGameTypeName(gameType: String): String {
+            return itemView.context.getString(GameType.valueOf(gameType).string)
         }
 
         companion object {
@@ -244,9 +263,11 @@ class AccountHistoryNextAdapter(
 
     }
 
-    class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentOutrightBinding) :
+    class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(row: Row, oddsType: OddsType) {
+        fun bind(row: Row, oddsType: OddsType, position: Int) {
+            binding.topView.isVisible = position == 0
+
             val first = row.matchOdds?.firstOrNull()
 
             binding.row = row
@@ -254,33 +275,63 @@ class AccountHistoryNextAdapter(
 
             first?.apply {
                 first.oddsType?.let {
-                    binding.playContent.setPlayContent(
+                    val formatForOdd = if (playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage((odds ?: 0.0) - 1.0) else TextUtil.formatForOdd(odds ?: 0)
+                    binding.tvContent.setPlayContent(
                         playName,
                         spread,
-                        odds?.let { TextUtil.formatForOdd(it) }
+                        formatForOdd
                     )
                 }
-                binding.tvGameTypePlayCate.text = "${GameType.getGameTypeString(binding.tvGameTypePlayCate.context, row.gameType)} $playCateName"
+
+                val gameType = row.gameType.orEmpty()
+
+                val singleTitle = itemView.context.getString(R.string.bet_record_single) +
+                        "-${getGameTypeName(gameType)}"
+                binding.tvTitle.text = singleTitle
+
+                val oddsTypeStr = when (this.oddsType) {
+                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
+                }
+                binding.tvGameTypePlayCate.text = if (row.matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "${getGameTypeName(gameType)} ${getMatchTypeName(row.matchType)} ${this.playCateName}$oddsTypeStr"
+                } else {
+                    "${getGameTypeName(gameType)} ${this.playCateName}$oddsTypeStr"
+                }
 
                 if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
-                    binding.tvTeamNames.setTeamNames(15, homeName, awayName)
-                    binding.tvTeamNames.visibility = View.VISIBLE
+                    binding.tvTeamNamesSingles.setTeamsNameWithVS(homeName, awayName)
                 } else {
-                    binding.tvTeamNames.visibility = View.GONE
+                    binding.tvTeamNamesSingles.text = this.leagueName
                 }
 
                 startTime?.let {
-                    binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.YMD_HM_FORMAT)
+                    binding.tvStartTime.text = TimeUtil.timeFormat(it, TimeUtil.DM_HM_FORMAT)
                 }
                 binding.tvStartTime.isVisible = row.parlayType != ParlayType.OUTRIGHT.key
+
+                binding.llCopyBetOrder.setOnClickListener {
+                    itemView.context.copyToClipboard(row.orderNo.orEmpty())
+                }
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
+        }
+
+        private fun getGameTypeName(gameType: String): String {
+            return itemView.context.getString(GameType.valueOf(gameType).string)
+        }
+
+        private fun getMatchTypeName(matchType: String?): String {
+            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemAccountHistoryNextContentOutrightBinding.inflate(
+                val binding = ItemAccountHistoryNextContentBinding.inflate(
                     layoutInflater,
                     parent,
                     false
@@ -294,7 +345,9 @@ class AccountHistoryNextAdapter(
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(row: Row, oddsType: OddsType) {
+        fun bind(row: Row, oddsType: OddsType, position: Int) {
+            binding.topView.isVisible = position == 0
+
             val first = row.matchOdds?.firstOrNull()
 
             val roundAdapter by lazy { RoundAdapter() }
@@ -311,46 +364,78 @@ class AccountHistoryNextAdapter(
                     formatForOdd
                 )
 
-                binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT)
+                binding.tvStartTime.text = TimeUtil.timeFormat(it.startTime, TimeUtil.DM_HM_FORMAT)
 
-                val scoreList = mutableListOf<String>()
-                it.playCateMatchResultList?.map { scoreData ->
-                    scoreList.add(
-                        "${
-                            scoreData.statusNameI18n?.get(
-                                LanguageManager.getSelectLanguage(
-                                    itemView.context
-                                ).key
-                            )
-                        }: ${scoreData.score}"
-                    )
+//                val scoreList = mutableListOf<String>()
+//                it.playCateMatchResultList?.map { scoreData ->
+//                    scoreList.add(
+//                        "${
+//                            scoreData.statusNameI18n?.get(
+//                                LanguageManager.getSelectLanguage(
+//                                    itemView.context
+//                                ).key
+//                            )
+//                        }: ${scoreData.score}"
+//                    )
+//                }
+//
+//                when (row.gameType) {
+//                    GameType.FT.key -> {
+//                        if (it.rtScore?.isNotEmpty() == true) {
+//                            binding.tvScore.text = "(${it.rtScore})"
+//
+//                            binding.tvScore.visibility = View.VISIBLE
+//                        }
+//                        else {
+//                            binding.tvScore.visibility = View.GONE
+//                        }
+//                    }
+//                    else -> {
+//                        binding.tvScore.visibility = View.GONE
+//                    }
+//                }
+//                binding.listScore.apply {
+//                    layoutManager =
+//                        LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+//                    adapter = roundAdapter
+//                }
+//                roundAdapter.submitList(scoreList)
+
+                val gameType = row.gameType.orEmpty()
+
+                val singleTitle = itemView.context.getString(R.string.bet_record_single) +
+                        "-${getGameTypeName(gameType)}"
+                binding.tvTitle.text = singleTitle
+
+                binding.tvTeamNamesSingles.setTeamsNameWithVS(it.homeName, it.awayName)
+
+                val oddsTypeStr = when (it.oddsType) {
+                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
+                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
+                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
+                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
+                }
+                binding.tvGameTypePlayCate.text = if (row.matchType != null) {
+                    //篮球 滚球 全场让分【欧洲盘】
+                    "${getGameTypeName(gameType)} ${getMatchTypeName(row.matchType)} ${it.playCateName}$oddsTypeStr"
+                } else {
+                    "${getGameTypeName(gameType)} ${it.playCateName}$oddsTypeStr"
                 }
 
-                when (row.gameType) {
-                    GameType.FT.key -> {
-                        if (it.rtScore?.isNotEmpty() == true) {
-                            binding.tvScore.text = "(${it.rtScore})"
-
-                            binding.tvScore.visibility = View.VISIBLE
-                        }
-                        else {
-                            binding.tvScore.visibility = View.GONE
-                        }
-                    }
-                    else -> {
-                        binding.tvScore.visibility = View.GONE
-                    }
+                binding.llCopyBetOrder.setOnClickListener {
+                    itemView.context.copyToClipboard(row.orderNo.orEmpty())
                 }
-                binding.listScore.apply {
-                    layoutManager =
-                        LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
-                    adapter = roundAdapter
-                }
-                roundAdapter.submitList(scoreList)
-
             }
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
+        }
+
+        private fun getGameTypeName(gameType: String): String {
+            return itemView.context.getString(GameType.valueOf(gameType).string)
+        }
+
+        private fun getMatchTypeName(matchType: String?): String {
+            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
 
         companion object {
@@ -416,7 +501,7 @@ class AccountHistoryNextAdapter(
                     backClickListener.onClick()
                 }
 
-                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
+//                tv_title.setTextWithStrokeWidth(context?.getString(R.string.bet_num_and_bet_date) ?: "", 0.7f)
 
                 date_selector.cl_root.layoutParams.height = 40.dp
                 sport_selector.cl_root.layoutParams.height = 40.dp
@@ -520,24 +605,24 @@ sealed class DataItem {
         override val parlayType = row.parlayType
     }
 
-    data class TitleBar(val spinnerList: List<StatusSheetData>) : DataItem() {
-        override val orderNum: String = ""
-        override val parlayType = ""
-    }
+//    data class TitleBar(val spinnerList: List<StatusSheetData>) : DataItem() {
+//        override val orderNum: String = ""
+//        override val parlayType = ""
+//    }
 
-    object Footer : DataItem() {
-        override val orderNum: String = ""
-        override val parlayType = ""
-    }
+//    object Footer : DataItem() {
+//        override val orderNum: String = ""
+//        override val parlayType = ""
+//    }
 
     object NoData : DataItem() {
         override val orderNum: String? = null
         override val parlayType = ""
     }
 
-    object BackToTop : DataItem() {
-        override val orderNum: String? = null
-        override val parlayType = ""
-    }
+//    object BackToTop : DataItem() {
+//        override val orderNum: String? = null
+//        override val parlayType = ""
+//    }
 
 }

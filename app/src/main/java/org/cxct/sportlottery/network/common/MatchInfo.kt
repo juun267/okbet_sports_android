@@ -19,9 +19,12 @@ interface MatchInfo {
     var homePoints: String?
     var awayPoints: String?
     var playCateNum: Int?
+
     //FT
     var homeCards: Int?
     var awayCards: Int?
+    var homeYellowCards: Int?
+    var awayYellowCards: Int?
     var homeCornerKicks: Int?
     var awayCornerKicks: Int?
 
@@ -31,7 +34,7 @@ interface MatchInfo {
     var firstBaseBag: Int?
     var secBaseBag: Int?
     var thirdBaseBag: Int?
-    var outNumber:Int?
+    var outNumber: Int?
 
     var stopped: Int? //是否计时停止 1:是 ，0：否
     var matchStatusList: List<MatchStatus>?

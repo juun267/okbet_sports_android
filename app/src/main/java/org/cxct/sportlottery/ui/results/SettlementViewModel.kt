@@ -21,6 +21,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.LogUtil
 
 
 class SettlementViewModel(
@@ -82,6 +83,7 @@ class SettlementViewModel(
                     gameType = gameType
                 )
             }?.let { result ->
+                LogUtil.toJson(result.matchResultList)
                 reformatMatchResultData(result.matchResultList).let {
                     matchResultReformatted = it
                     //獲取賽果資料後,更新聯賽列表

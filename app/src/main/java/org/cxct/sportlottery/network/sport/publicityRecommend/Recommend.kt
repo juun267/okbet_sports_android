@@ -38,7 +38,7 @@ data class Recommend(
     @Json(name = "matchNum")
     val matchNum: Int,
     @Json(name = "menuList")
-    val menuList: List<Menu>,
+    val menuList: List<Menu> = arrayListOf(),
     @Json(name = "neutral")
     val neutral: Int,
     @Json(name = "playCateNum")
@@ -54,7 +54,7 @@ data class Recommend(
     @Json(name = "trackerId")
     val trackerId: String?,
     @Json(name = "tvId")
-    val tvId: String
+    val tvId: String,
 ) : MatchOdd {
     var matchType: MatchType? = null
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null

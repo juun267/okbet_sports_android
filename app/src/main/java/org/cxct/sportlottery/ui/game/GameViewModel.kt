@@ -2947,7 +2947,7 @@ class GameViewModel(
      */
     private fun Recommend.setupOddsSort() {
         val nowGameType = gameType
-        val playCateMenuCode = menuList.firstOrNull()?.code
+        val playCateMenuCode = menuList?.firstOrNull()?.code
         val oddsSortFilter = PlayCateMenuFilterUtils.filterOddsSort(nowGameType, playCateMenuCode)
         val playCateNameMapFilter = PlayCateMenuFilterUtils.filterPlayCateNameMap(nowGameType, playCateMenuCode)
 

@@ -151,13 +151,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
             return BaseItemType.PRELOAD_ITEM.type
         }
         return when {
-            data.isEmpty() -> {
-                when (position) {
-                    0 -> BaseItemType.NO_DATA.type
-                    else -> BaseItemType.BOTTOM_NAVIGATION.type
-                }
-            }
-            data.size == position -> BaseItemType.BOTTOM_NAVIGATION.type
+            data.isEmpty() -> BaseItemType.NO_DATA.type
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -258,11 +252,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
         }
     }
 
-    override fun getItemCount(): Int = if (data.isEmpty()) {
-        2
-    } else {
-        data.size + 1
-    }
+    override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)

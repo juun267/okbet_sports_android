@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
-import kotlinx.android.synthetic.main.itemview_country_v4.view.iv_country
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
@@ -59,14 +58,8 @@ class CountryAdapter : BaseGameAdapter() {
             return BaseItemType.PRELOAD_ITEM.type
         }
         return when {
-            data.isEmpty() -> {
-                when(position){
-                    0 -> BaseItemType.NO_DATA.type
-                    else -> BaseItemType.BOTTOM_NAVIGATION.type
-                }
-            }
+            data.isEmpty() -> BaseItemType.NO_DATA.type
             position == itemPinPosition -> ItemType.ITEM_PIN.ordinal
-            position == data.size + 1 -> BaseItemType.BOTTOM_NAVIGATION.type
             else -> ItemType.ITEM.ordinal
         }
     }

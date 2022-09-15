@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SpUsage"
-    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextAdapter">
+    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextAdapter"
+    tools:ignore="SpUsage">
 
     <data>
 
@@ -17,10 +17,11 @@
         android:id="@+id/linear_layout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_1D4C99_0760D4"
+        android:background="@color/color_202541_FFFFFF"
+        android:elevation="3dp"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="14dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="21dp"
         app:layout_constraintBottom_toTopOf="@id/btn_back_to_top"
         app:layout_constraintTop_toBottomOf="@id/divider">
 
@@ -29,21 +30,63 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:text="@string/total"
-            android:textColor="@color/color_FFFFFF"
+            android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView
-            android:id="@+id/tv_status_money"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
+            android:text="@string/bet_info_list_bet"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colon"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize14sp" />
+
+        <TextView
+            android:id="@+id/tv_bet_total_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:moneyFormat="@{other.totalAmount}"
+            tools:text="519,050,9.000" />
+
+        <TextView
+            android:id="@+id/tv_win_or_Lose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize14sp"
+            tools:text="@string/lose" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colon"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize14sp" />
+
+        <TextView
+            android:id="@+id/tv_status_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:moneyColorWhite="@{other.win}"
             app:moneyFormat="@{other.win}"
-            tools:text="9,999,587.000"
-            tools:textColor="@color/color_FFFFFF" />
+            tools:text="-550,9.000"
+            tools:textColor="@color/color_E23434_E23434" />
 
     </LinearLayout>
 

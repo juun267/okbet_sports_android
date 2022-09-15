@@ -45,7 +45,6 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -142,7 +141,7 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
                 },
                 onClickMatch = { outrightItem ->
                     outrightItem.matchOdd.matchInfo?.let {
-                        navMatchDetailPage(it.id, 0)
+                        navMatchDetailPage(it)
                     }
                 },
                 clickExpand = { outrightItem ->
@@ -163,12 +162,11 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
         }
     }
 
-    private fun navMatchDetailPage(
-        matchId: String?,
-        liveVideo: Int,
-    ) {
-        matchId?.let {
-            navOddsDetailLive(it, liveVideo)
+    private fun navMatchDetailPage(matchInfo: MatchInfo?) {
+        matchInfo?.let { it ->
+            SportDetailActivity.startActivity(requireContext(),
+                matchInfo = it,
+                matchType = matchType)
         }
     }
 
@@ -579,19 +577,17 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     viewModel.firstSwitchMatch(matchType = matchType)
-                    if (matchType == MatchType.OTHER) {
-                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
-                    } else if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
-                        gameType?.let { gameType ->
-                            viewModel.getOutrightOddsList(gameType = gameType,
-                                leagueIdList = leagueIdList)
-                        }
-                    } else {
-                        viewModel.getGameHallList(
-                            matchType = matchType,
-                            isReloadDate = true,
-                            isReloadPlayCate = false,
-                            isLastSportType = true
+                if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
+                    gameType?.let { gameType ->
+                        viewModel.getOutrightOddsList(gameType = gameType,
+                            leagueIdList = leagueIdList)
+                    }
+                } else {
+                    viewModel.getGameHallList(
+                        matchType = matchType,
+                        isReloadDate = true,
+                        isReloadPlayCate = false,
+                        isLastSportType = true
                         )
                     }
                     subscribeSportChannelHall()
@@ -771,17 +767,6 @@ class SportOutrightFragment : BaseBottomNavigationFragment<SportViewModel>(Sport
         startActivity(intent)
     }
 
-    private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        gameType?.let {
-            if (gameType != null && matchId != null) {
-                SportDetailActivity.startActivity(requireContext(),
-                    DetailParams(matchType = matchType, gameType = gameType, matchId = matchId))
-            }
-        }
-    }
 
     private fun addOutRightOddsDialog(
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,

@@ -328,10 +328,6 @@ class SportViewModel(
         get() = _showErrorDialogMsg
     private var _showErrorDialogMsg = MutableLiveData<String>()
 
-    private val _sportMenuList = MutableLiveData<Event<List<SportMenu>>>()
-    val sportMenuList: LiveData<Event<List<SportMenu>>>
-        get() = _sportMenuList
-
     private val _publicityRecommend = MutableLiveData<Event<List<Recommend>>>()
     val publicityRecommend: LiveData<Event<List<Recommend>>>
         get() = _publicityRecommend
@@ -627,62 +623,6 @@ class SportViewModel(
         specialMenuData = null
     }
 
-    fun getAllPlayCategoryBySpecialMatchType(
-        code: String = _specialEntrance.value?.couponCode ?: currentSpecialCode,
-        item: Item? = null,
-        isReload: Boolean = false,
-    ) {
-        currentSpecialCode = code
-
-        if (code.isEmpty()) return
-
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.sportService.getQuery(
-                    SportQueryRequest(
-                        TimeUtil.getNowTimeStamp().toString(),
-                        TimeUtil.getTodayStartTimeStamp().toString(),
-                        code
-                    )
-                )
-            }.let { result ->
-                if (result?.success == true) {
-                    var items = result.sportQueryData?.items
-                    var gameCode = item?.code ?: getSportSelectedCode(MatchType.OTHER)
-                    if (items?.filter { it.code == gameCode }.isNullOrEmpty()) {
-                        gameCode = items?.getOrNull(0)?.code ?: GameType.FT.key
-                    }
-                    sportQueryData = result.sportQueryData
-                    specialMenuData = result.sportQueryData
-                    specialMenuData?.updateSportSelectState(gameCode)
-                    _sportMenuResult.postValue(null)
-                    getPlayCategory(MatchType.OTHER)
-
-                    if (isReload && items?.isNotEmpty() == true && gameCode != null) {
-                        val defaultItem = items?.firstOrNull { it.code == gameCode }
-                        if (defaultItem?.play == null) {
-                            getLeagueList(
-                                gameCode,
-                                code,
-                                null,
-                                isIncrement = false
-                            )
-                        } else {
-                            getGameHallList(
-                                matchType = MatchType.OTHER,
-                                isReloadDate = true,
-                                isReloadPlayCate = true,
-                                isLastSportType = true,
-                            )
-                        }
-                    }
-                } else {
-                    _showErrorDialogMsg.value = result?.msg
-                }
-            }
-        }
-    }
-
     private fun getLeaguePlayCategory(matchType: MatchType, leagueIdList: List<String>) {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -697,7 +637,6 @@ class SportViewModel(
             }.let { result ->
                 if (result?.success == true) {
                     sportQueryData = result.sportQueryData
-                    getPlayCategory(matchType)
                 } else {
                     _showErrorDialogMsg.value = result?.msg
                 }
@@ -716,57 +655,7 @@ class SportViewModel(
             lastSportTypeHashMap[matchType.postValue] = sportQueryData?.items?.firstOrNull()?.code
     }
 
-    private fun postHomeCardCount(sportMenuResult: SportMenuResult?) {
-        _asStartCount.postValue(
-            getMatchCount(
-                MatchType.AT_START,
-                sportMenuResult
-            )
-        )
 
-        sportMenuRepository.sportSortList.value?.let { list ->
-            list.forEach { sportMenu ->
-                sportMenu.apply {
-                    gameCount =
-                        getSportCount(MatchType.IN_PLAY, gameType, sportMenuResult) + getSportCount(
-                            MatchType.TODAY,
-                            gameType,
-                            sportMenuResult
-                        ) + getSportCount(MatchType.EARLY, gameType, sportMenuResult) +
-                                getSportCount(
-                                    MatchType.PARLAY,
-                                    gameType,
-                                    sportMenuResult
-                                ) + getSportCount(
-                            MatchType.OUTRIGHT,
-                            gameType,
-                            sportMenuResult
-                        ) + getSportCount(MatchType.AT_START, gameType, sportMenuResult) +
-                                getSportCount(MatchType.EPS, gameType, sportMenuResult)
-
-                    entranceType = when {
-                        getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> {
-                            MatchType.TODAY
-                        }
-                        getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> {
-                            MatchType.EARLY
-                        }
-                        getSportCount(MatchType.CS, gameType, sportMenuResult) != 0 -> {
-                            MatchType.CS
-                        }
-                        getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> {
-                            MatchType.PARLAY
-                        }
-                        getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) != 0 -> {
-                            MatchType.OUTRIGHT
-                        }
-                        else -> null
-                    }
-                }
-            }
-            _sportMenuList.postValue(Event(list))
-        }
-    }
 
     private fun SportMenuData.sortSport(): SportMenuData {
         this.menu.inPlay.items.sortedBy { sport ->
@@ -1102,29 +991,6 @@ class SportViewModel(
         lastSportTypeHashMap[matchType.postValue] = sportType
     }
 
-    fun switchPlay(matchType: MatchType, play: Play) {
-        updatePlaySelectedState(matchType, play)
-    }
-
-    fun switchPlayCategory(
-        play: Play,
-        playCateCode: String?,
-        hasItemSelect: Boolean,
-        matchType: MatchType,
-    ) {
-        _playList.value?.peekContent()?.forEach {
-            it.isSelected = (it == play)
-        }
-        _playCate.value = Event(playCateCode)
-        if (!hasItemSelect) {
-            getGameHallList(
-                matchType = matchType,
-                isReloadDate = false,
-                isReloadPlayCate = false,
-                isLastSportType = true,
-            )
-        }
-    }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
         _curDate.value?.updateDateSelectedState(date)
@@ -1187,10 +1053,6 @@ class SportViewModel(
         val nowMatchType = curMatchType.value ?: matchType
         val nowChildMatchType = curChildMatchType.value ?: matchType
 
-        if (isReloadPlayCate) {
-            getPlayCategory(nowChildMatchType)
-        }
-
         var reloadedDateRow: List<Date>? = null
 
         if (isReloadDate) {
@@ -1210,15 +1072,6 @@ class SportViewModel(
         val requestTimeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams()
         sportCode?.let { code ->
             when (mt) {
-                MatchType.MAIN -> {
-                    getOddsList(
-                        code,
-                        specialEntrance.value?.couponCode ?: "",
-                        requestTimeRangeParams,
-                        leagueIdList = leagueIdList,
-                        isIncrement = isIncrement
-                    )
-                }
                 MatchType.IN_PLAY -> {
                     getOddsList(
                         code,
@@ -1943,40 +1796,6 @@ class SportViewModel(
         }
     }
 
-    private fun getPlayCategory(matchType: MatchType) {
-        if (matchType == MatchType.OTHER) {
-            sportQueryData?.let { sportQueryData ->
-                sportQueryData.items?.find { item ->
-                    item.code == getSportSelectedCode(matchType)
-                }?.play?.filter { play ->
-                    play.num != 0
-                }?.let { playList ->
-                    playList.forEach {
-                        it.isSelected = (it == playList.firstOrNull())
-                    }
-
-                    _playList.postValue(Event(playList))
-                    _playCate.postValue(Event(null))
-                }
-            }
-        } else {
-            sportQueryData?.let { sportQueryData ->
-                sportQueryData.items?.find { item ->
-                    item.code == getSportSelected(matchType)?.code
-                }?.play?.filter { play ->
-                    play.num != 0
-                }?.let { playList ->
-                    playList.forEach {
-                        it.isSelected = (it == playList.firstOrNull())
-                    }
-
-                    _playList.postValue(Event(playList))
-                    _playCate.postValue(Event(null))
-                }
-            }
-        }
-    }
-
     private fun getDateRow(matchType: MatchType): List<Date>? {
         val dateRow = when (matchType) {
             MatchType.TODAY -> {
@@ -2206,12 +2025,9 @@ class SportViewModel(
                         LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
                     val videoUrl =
-                        "${sConfigData?.sportAnimation}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
+                        "${sConfigData?.sportStream}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
                     val animeUrl =
                         "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-                    //測試用eventId=4385309, 4477265
-//                    val trackerUrl = "${Constants.getBaseUrl()}animation/?eventId=4477265&width=${screenWidth.px}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-//                    _videoUrl.postValue(Event("https://okbet-v2.cxsport.net/animation/?matchId=xm6037992&lang=zh&mode=video"))
                     _videoUrl.postValue(Event(videoUrl))
                     _animeUrl.postValue(Event(animeUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)
@@ -2397,9 +2213,6 @@ class SportViewModel(
     }
 
     fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
-        MatchType.MAIN -> {
-            specialMenuData?.items?.find { it.isSelected }?.code
-        }
         MatchType.IN_PLAY -> {
             sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }?.code
         }
@@ -2898,7 +2711,9 @@ class SportViewModel(
                 )
             }?.let { result ->
                 if (result.success) {
-                    result.result.recommendList.forEach { recommend ->
+                    result.result.recommendList.filter {
+                        !it.menuList.isNullOrEmpty()
+                    }.forEach { recommend ->
                         with(recommend) {
                             setupOddsSort()
                             setupMatchType()
@@ -3493,18 +3308,7 @@ class SportViewModel(
                         if (it.success) {
                             it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
                             _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
-                            postHomeCardCount(it)              // 更新主頁、左邊選單
                         }
-                    }
-                }
-            }
-
-            /* 主頁 */
-            MatchType.MAIN -> {
-                _curMatchType.value = MatchType.MAIN
-                viewModelScope.launch {
-                    getSportCouponMenu()?.let {
-                        _sportCouponMenuResult.postValue(Event(it))
                     }
                 }
             }
@@ -3517,7 +3321,6 @@ class SportViewModel(
                         if (it.success) {
                             it.setupSportSelectState()         // 根據lastSportTypeHashMap設置賽事種類選中球種狀態
                             _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
-                            postHomeCardCount(it)              // 更新主頁、左邊選單
                             if (_sportMenuResult.value == null) {
                                 updateSportInfo(matchType)     // 初次頁面進入
                             }
@@ -3571,17 +3374,8 @@ class SportViewModel(
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
 
         jobSwitchGameType = viewModelScope.launch {
-            getSportMenuAll()?.let {
-                if (it.success) {
-                    postHomeCardCount(it)              // 更新主頁、左邊選單
-                } else {
-                    return@launch
-                }
-            }
-
             //原有邏輯暫時不動
             if (matchType == MatchType.OTHER) {
-                getAllPlayCategoryBySpecialMatchType(item = item)
                 switchSportType(matchType, item)
                 return@launch
             }
@@ -3650,9 +3444,6 @@ class SportViewModel(
             getSportCouponMenu()?.let {
                 _sportCouponMenuResult.postValue(Event(it))
             }
-
-            // 更新主頁、左邊選單
-            postHomeCardCount(sportMenuResult)
 
             // 今日、串關頁面下賽事選擇 (今日、所有)
             if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {

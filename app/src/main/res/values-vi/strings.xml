@@ -326,6 +326,7 @@
     <string name="no_data">Không có thêm dữ liệu</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
+    <string name="not_settled">Đơn cược chưa được thanh toán</string>
     <string name="settled">đặt cược đã được thanh toán</string>
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
@@ -711,7 +712,12 @@
     <string name="credit_record_status_unsettle">Chưa đến ngày thanh toán</string>
     <string name="game_play_type">Thể loại trò chơi</string>
     <string name="spt_number_3_2">3 kèo 2 thắng</string>
+    <string name="spt_number_3_2_bm">3hiệp thắng 2 hiệp</string>
     <string name="spt_number_5_3">5 kèo 3 thắng</string>
+    <string name="spt_number_5_3_vb">5 hiệp thắng 3 hiệp</string>
+    <string name="spt_number_7_4_tt">7 hiệp thắng 4 hiệp</string>
+    <string name="format_plat">Kèo thứ %s</string>
+    <string name="format_round">Kèo thứ %s</string>
     <string name="bet_notify_max_limit">Có thể thêm tối đa 10 lựa chọn vào phiếu đặt cược</string>
     <string name="myfavorite_notify_league_add">Đã thêm vào giải đấu của tôi</string>
     <string name="myfavorite_notify_league_remove">Xóa khỏi giải đấu của tôi</string>
@@ -1188,5 +1194,7 @@
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">Số tiền có thể thắng(%s)：</string>
+    <string name="bet_record_single">Singles</string>
+    <string name="bet_record_parlay">Parlay</string>
 
 </resources>

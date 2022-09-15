@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.button_odd_detail_detail.view.*
@@ -122,7 +121,6 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         tv_spread.apply {
-            tv_spread_space?.text = odd?.spread
             text = odd?.spread
             requestLayout()
             visibility =
@@ -141,19 +139,11 @@ class OddsButtonDetail @JvmOverloads constructor(
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        space_item_remain?.post {
-            tv_name.maxWidth = space_item_remain?.width ?: 0
+        if (hideName && !tv_spread.isVisible) {
+            lin_name.isVisible = false
+        } else {
+            lin_name.isVisible = true
         }
-        if (hideName && !tv_spread.isVisible && !tv_spread_space.isVisible) {
-            (lin_odd.layoutParams as ConstraintLayout.LayoutParams).apply {
-                leftToLeft = PARENT_ID
-                topToTop = PARENT_ID
-                rightToRight = PARENT_ID
-                bottomToBottom = PARENT_ID
-            }
-        }
-
-
     }
 
     fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false, isOtherBtn: Boolean? = false) {

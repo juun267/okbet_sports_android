@@ -43,7 +43,6 @@ import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
-import org.cxct.sportlottery.ui.game.data.DetailParams
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -150,7 +149,11 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
             }
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
-                    navMatchDetailPage(matchId, 0)
+                    matchInfoList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let {
+                        navMatchDetailPage(it)
+                    }
                 },
                 clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
@@ -179,7 +182,14 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 },
                 clickListenerStatistics = { matchId ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, 0)
+                        data.forEach {
+                            it.matchOdds.forEach {
+                                if (TextUtils.equals(matchId, it.matchInfo?.id)) {
+                                    navMatchDetailPage(it.matchInfo)
+                                    return@forEach
+                                }
+                            }
+                        }
                     }
                 },
                 refreshListener = { matchId ->
@@ -192,12 +202,20 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                 },
                 clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, liveVideo)
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navMatchDetailPage(it)
+                        }
                     }
                 },
                 clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
                     if (viewModel.checkLoginStatus()) {
-                        navMatchDetailPage(matchId, liveVideo)
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navMatchDetailPage(it)
+                        }
                     }
                 },
                 clickCsTabListener = { playCate, matchOdd ->
@@ -214,12 +232,11 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         }
     }
 
-    private fun navMatchDetailPage(
-        matchId: String?,
-        liveVideo: Int,
-    ) {
-        matchId?.let {
-            navOddsDetailLive(it, liveVideo)
+    private fun navMatchDetailPage(matchInfo: MatchInfo?) {
+        matchInfo?.let { it ->
+            SportDetailActivity.startActivity(requireContext(),
+                matchInfo = it,
+                matchType = matchType)
         }
     }
 
@@ -704,19 +721,13 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
                             if (nowGameType == leagueChangeEvent.gameType && leagueChangeEvent.leagueIdList?.isNotEmpty() == true) {
                                 //不管是否相同聯賽，也要確認是否要更新賽事資訊
                                 withContext(Dispatchers.Main) {
-                                    if (matchType == MatchType.OTHER) {
-                                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
-                                    } else {
-                                        viewModel.getGameHallList(
-                                            matchType,
-                                            leagueIdList = leagueChangeEvent.leagueIdList,
-                                            isReloadDate = false,
-                                            isIncrement = true
-                                        )
-                                    }
+                                    viewModel.getGameHallList(
+                                        matchType,
+                                        leagueIdList = leagueChangeEvent.leagueIdList,
+                                        isReloadDate = false,
+                                        isIncrement = true
+                                    )
                                 }
-                            } else if (matchType == MatchType.OTHER) {
-                                viewModel.getAllPlayCategoryBySpecialMatchType(isReload = false)
                             }
                         }
                         isUpdatingLeague = false
@@ -749,9 +760,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     viewModel.firstSwitchMatch(matchType = matchType)
-                    if (matchType == MatchType.OTHER) {
-                        viewModel.getAllPlayCategoryBySpecialMatchType(isReload = true)
-                    } else if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
+                    if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
                         gameType?.let { gameType ->
                             viewModel.getOutrightOddsList(gameType = gameType,
                                 leagueIdList = leagueIdList)
@@ -1069,19 +1078,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         val intent = Intent(activity, MainActivity::class.java)
             .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
         startActivity(intent)
-    }
-
-
-    private fun navOddsDetailLive(matchId: String, liveVideo: Int) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        gameType?.let {
-            if (gameType != null && matchId != null) {
-                SportDetailActivity.startActivity(requireContext(),
-                    DetailParams(matchType = matchType, gameType = gameType, matchId = matchId))
-            }
-        }
     }
 
     private fun navStatistics(matchId: String?) {

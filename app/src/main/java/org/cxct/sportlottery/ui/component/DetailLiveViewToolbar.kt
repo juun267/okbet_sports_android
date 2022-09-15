@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
-import android.media.AudioManager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
+import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.MetricsUtil
@@ -182,15 +182,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 showAnime()
             }
         }
-
-        iv_sound.setOnClickListener {
-            iv_sound.isSelected = !iv_sound.isSelected
-            if (iv_sound.isSelected) {
-                unmute(context)
-            } else {
-                mute(context)
-            }
-        }
         iv_fullscreen.setOnClickListener {
             showFullScreen(!isFullScreen)
             if (isFullScreen) {//全屏
@@ -202,9 +193,10 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     fun onBackPressed() {
-        unmute(context)
-        if (iv_fullscreen.isSelected) {
-            liveToolBarListener?.onFullScreen(false)
+        if (live_view_tool_bar.isFullScreen) {
+            showFullScreen(false)
+        } else {
+            onBackPressed()
         }
     }
 
@@ -396,45 +388,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         iv_animation.isSelected = false
         web_view.isVisible = false
         web_view.onPause()
-    }
-
-    /**
-     * 設置WebView高度
-     */
-//    private fun setWebViewHeight() {
-//        val screenWidth = MetricsUtil.getScreenWidth()
-//        web_view_layout.layoutParams = FrameLayout.LayoutParams(
-//            screenWidth,
-//            LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
-//        )
-//        iv_live_status.scaleType = ImageView.ScaleType.CENTER_CROP
-//    }
-    //endregion
-
-
-    var defaultVolume = 0;
-    fun mute(context: Context) {
-        val mAudioManager: AudioManager =
-            context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        defaultVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        val mute_volume = 0
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mute_volume, 0)
-    }
-
-    fun unmute(context: Context) {
-        if (defaultVolume == 0) {
-            return
-        }
-        val mAudioManager: AudioManager =
-            context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, defaultVolume, 0)
-    }
-
-    /**
-     * 是否水平放心
-     */
-    fun isLandscape(): Boolean {
-        return context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
     override fun onConfigurationChanged(newConfig: Configuration?) {

@@ -7,8 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListRequest
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListRequest
@@ -20,6 +22,8 @@ import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.BetListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TimeUtil
@@ -42,7 +46,7 @@ class AccountHistoryViewModel(
 ) {
 
     companion object {
-        private const val PAGE_SIZE = 20
+        const val PAGE_SIZE = 20
     }
 
     val loading: LiveData<Boolean>
@@ -75,6 +79,7 @@ class AccountHistoryViewModel(
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
     private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+    var tabPosition = 0 //當前tabPosition (for 新版UI)
 
     val emptyFilter = { item: String? ->
         if (item.isNullOrEmpty()) null else item
@@ -198,7 +203,7 @@ class AccountHistoryViewModel(
         mBetDetailRequest?.let { getDetailList(it) }
     }
 
-    fun getDetailNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+    fun getDetailNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int, date: String) {
         if (_loading.value != true && !isDetailLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
@@ -206,7 +211,7 @@ class AccountHistoryViewModel(
                     mBetDetailRequest = BetSettledDetailListRequest(
                         startTime = it.startTime,
                         endTime = it.endTime,
-                        statDate = selectedDate.value?.peekContent(),
+                        statDate = date,
                         page = it.page,
                         pageSize = PAGE_SIZE)
                     getDetailList(mBetDetailRequest!!)
@@ -254,12 +259,17 @@ class AccountHistoryViewModel(
                     sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
                     //根據api回傳的球類添加進當前啟用球種篩選清單
                     sportListResponse.rows.sortedBy { it.sortNum }.map {
-                        sportCodeList.add(
-                            StatusSheetData(
-                                it.code,
-                                GameType.getGameTypeString(LocalUtils.getLocalizedContext(), it.code)
+                        if (it.state == 1) { //僅添加狀態為啟用的資料
+                            sportCodeList.add(
+                                StatusSheetData(
+                                    it.code,
+                                    GameType.getGameTypeString(
+                                        LocalUtils.getLocalizedContext(),
+                                        it.code
+                                    )
+                                )
                             )
-                        )
+                        }
                     }
 
                     withContext(Dispatchers.Main) {
@@ -286,5 +296,69 @@ class AccountHistoryViewModel(
         _loading.postValue(false)
     }
 
+    //region 未結算
+    var gameTypeCode = ""
 
+    //整理後未結算投注紀錄資料格式
+    val betListData: LiveData<BetListData>
+        get() = _betListData
+    private val _betListData = MutableLiveData<BetListData>()
+
+    val responseFailed: LiveData<Boolean>
+        get() = _responseFailed
+    private val _responseFailed = MutableLiveData<Boolean>()
+
+    private var betListRequesting = false
+    private var requestCount = 0
+    private val requestMaxCount = 2
+
+    //獲取交易狀況資料(未結算)
+    fun getBetList(firstPage: Boolean = false, gameType: String? = gameTypeCode) {
+        if (betListRequesting || (betListData.value?.isLastPage == true && !firstPage))
+            return
+        betListRequesting = true
+
+        val page = if (firstPage) 1 else betListData.value?.page?.plus(1) ?: 1
+        val betListRequest = BetListRequest(
+            championOnly = 0,
+            statusList = listOf(0,1), //全部注單，(0:待成立, 1:未結算)
+            page = page,
+            gameType = gameType,
+            pageSize = PAGE_SIZE
+        )
+
+        loading()
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetList(betListRequest)
+            }?.let { result ->
+                betListRequesting = false
+                if (result.success) {
+                    requestCount = 0
+                    val rowList =
+                        if (page == 1) mutableListOf()
+                        else betListData.value?.row?.toMutableList() ?: mutableListOf()
+                    result.rows?.let { rowList.addAll(it.apply { }) }
+
+                    _betListData.value =
+                        BetListData(
+                            rowList,
+                            MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK,
+                            result.other?.totalAmount ?: 0.0,
+                            page,
+                            (rowList.size >= (result.total ?: 0))
+                        )
+                    loginRepository.updateTransNum(result.total ?: 0)
+                } else {
+                    if (result.code == NetWorkResponseType.REQUEST_TOO_FAST.code && requestCount < requestMaxCount) {
+                        requestCount += 1
+                        _responseFailed.postValue(true)
+                    }
+                }
+
+                hideLoading()
+            }
+        }
+    }
+    //endregion 未結算
 }

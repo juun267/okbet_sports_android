@@ -153,13 +153,7 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
             return BaseItemType.PRELOAD_ITEM.type
         }
         return when {
-            data.isEmpty() -> {
-                when(position){
-                    0 -> BaseItemType.NO_DATA.type
-                    else -> BaseItemType.BOTTOM_NAVIGATION.type
-                }
-            }
-            data.size == position -> BaseItemType.BOTTOM_NAVIGATION.type
+            data.isEmpty() -> BaseItemType.NO_DATA.type
             else -> ItemType.ITEM.ordinal
         }
     }
