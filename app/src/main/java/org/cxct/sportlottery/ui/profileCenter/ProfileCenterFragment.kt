@@ -83,7 +83,7 @@ import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 /**
- * @app_destination 個人中心
+ * @app_destination 个人中心
  */
 class ProfileCenterFragment :
     BaseBottomNavigationFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
@@ -157,6 +157,7 @@ class ProfileCenterFragment :
         btn_feedback.setVisibilityByCreditSystem()
         val version = "V${BuildConfig.VERSION_NAME}"
         tv_current_version.text = version
+        tv_version_code.text = version
     }
 
     fun initToolBar() {
