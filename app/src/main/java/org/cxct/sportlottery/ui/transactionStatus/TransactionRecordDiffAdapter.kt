@@ -1,29 +1,22 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_last_total_record.view.*
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
-import kotlinx.android.synthetic.main.itemview_game_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setPlayContent
 
@@ -112,12 +105,13 @@ class TransactionRecordDiffAdapter :
                 title_league_name.text = matchOdds.leagueName.replace("\n","")
                 title_team_name.setTeamsNameWithVS(matchOdds.homeName, matchOdds.awayName)
 
-                val oddsTypeStr = when (matchOdds.oddsType) {
-                    OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
-                    OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
-                    OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
-                    else -> "【" + context.getString(OddsType.EU.res) + "】"
-                }
+                //篮球 滚球 全场让分【欧洲盘】
+                content_play.setGameType_MatchType_PlayCateName_OddsType(
+                    data.gameType,
+                    data.matchType,
+                    matchOdds.playCateName,
+                    matchOdds.oddsType
+                )
 
                 val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
@@ -127,13 +121,6 @@ class TransactionRecordDiffAdapter :
                 )
 
                 match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
-
-                content_play.text = if (data.matchType != null) {
-                    //篮球 滚球 全场让分【欧洲盘】
-                    "${getGameTypeName(data.gameType)} ${getMatchTypeName(data.matchType)} ${matchOdds.playCateName}$oddsTypeStr"
-                } else {
-                    "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}$oddsTypeStr"
-                }
 
 //                if(data.betConfirmTime?.toInt() != 0){
 //                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
@@ -166,7 +153,7 @@ class TransactionRecordDiffAdapter :
                 }
 
                 val singleTitle =
-                    context.getString(R.string.bet_record_single) + "-${getGameTypeName(data.gameType)}"
+                    context.getString(R.string.bet_record_single) + "-${GameType.getGameTypeString(context, data.gameType)}"
                 tv_match_title.text = singleTitle
 
                 tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
@@ -176,14 +163,6 @@ class TransactionRecordDiffAdapter :
                     context.copyToClipboard(data.orderNo)
                 }
             }
-        }
-
-        private fun getGameTypeName(gameType: String): String {
-            return itemView.context.getString(GameType.valueOf(gameType).string)
-        }
-
-        private fun getMatchTypeName(matchType: String?): String {
-            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
     }
 
@@ -203,18 +182,14 @@ class TransactionRecordDiffAdapter :
 //                title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
                 title_league_name.text = matchOdds.leagueName
                 title_team_name.text = matchOdds.leagueName
-                val oddsTypeStr = when (matchOdds.oddsType) {
-                    OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
-                    OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
-                    OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
-                    else -> "【" + context.getString(OddsType.EU.res) + "】"
-                }
-                content_play.text = if (data.matchType != null) {
-                    //篮球 滚球 全场让分【欧洲盘】
-                    "${getGameTypeName(data.gameType)} ${getMatchTypeName(data.matchType)} ${matchOdds.playCateName}$oddsTypeStr"
-                } else {
-                    "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}$oddsTypeStr"
-                }
+
+                //篮球 滚球 全场让分【欧洲盘】
+                content_play.setGameType_MatchType_PlayCateName_OddsType(
+                    data.gameType,
+                    data.matchType,
+                    matchOdds.playCateName,
+                    matchOdds.oddsType
+                )
 
                 val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
@@ -232,7 +207,7 @@ class TransactionRecordDiffAdapter :
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
 
                 val singleTitle =
-                    context.getString(R.string.bet_record_single) + "-${getGameTypeName(data.gameType)}"
+                    context.getString(R.string.bet_record_single) + "-${GameType.getGameTypeString(context, data.gameType)}"
                 tv_match_title.text = singleTitle
 
                 tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
@@ -242,14 +217,6 @@ class TransactionRecordDiffAdapter :
                     context.copyToClipboard(data.orderNo)
                 }
             }
-        }
-
-        private fun getGameTypeName(gameType: String): String {
-            return itemView.context.getString(GameType.valueOf(gameType).string)
-        }
-
-        private fun getMatchTypeName(matchType: String?): String {
-            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
     }
 
@@ -289,7 +256,7 @@ class TransactionRecordDiffAdapter :
 //                    title_parlay_type.text = itemView.context.getString(parlayTypeStringResId)
                     val parlayTitle = context.getString(R.string.bet_record_parlay) +
                             "(${context.getString(parlayTypeStringResId)})" +
-                            "-${getGameTypeName(data.gameType)}"
+                            "-${GameType.getGameTypeString(context, data.gameType)}"
                     title_parlay_type.text = parlayTitle
                 }
                 rv_parlay_match.apply {
@@ -297,7 +264,7 @@ class TransactionRecordDiffAdapter :
                     layoutManager =
                         LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                     contentParlayMatchAdapter.setupMatchData(
-                        getGameTypeName(data.gameType),
+                        data.gameType,
                         data.matchOdds,
                         data.betConfirmTime,
                         data.matchType
@@ -317,10 +284,6 @@ class TransactionRecordDiffAdapter :
                     context.copyToClipboard(data.orderNo)
                 }
             }
-        }
-
-        private fun getGameTypeName(gameType: String): String {
-            return itemView.context.getString(GameType.valueOf(gameType).string)
         }
     }
 
