@@ -15,7 +15,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 
 /**
- * 注销账号页面
+ * 注销账号页面  ios需要安卓暂时不需要 此页面隐藏
  */
 
 class CancelAccountActivity :BaseActivity<CancelAccountViewModel>(CancelAccountViewModel::class) {

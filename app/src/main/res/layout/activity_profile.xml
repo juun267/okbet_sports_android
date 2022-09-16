@@ -552,6 +552,7 @@
                     android:layout_marginStart="14dp"
                     android:background="@color/color_F0F5FA" />
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/ll_cancel_account"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
