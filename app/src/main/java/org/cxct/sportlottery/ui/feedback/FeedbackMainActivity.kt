@@ -16,6 +16,8 @@ class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //沉浸式颜色修改
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_feedback_main)
 
         viewModel.getUserInfo()
