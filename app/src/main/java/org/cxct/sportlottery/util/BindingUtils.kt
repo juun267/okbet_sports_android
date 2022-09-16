@@ -19,7 +19,9 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.ThirdGameRepository
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
@@ -418,6 +420,21 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
 fun TextView.setTextTypeFace(type: Int) {
     apply {
         typeface = Typeface.create(this.typeface, type)
+    }
+}
+
+fun TextView.setGameType_MatchType_PlayCateName_OddsType(gameType: String?, matchType: String?, playCateName: String?, oddsType: String?) {
+    val oddsTypeStr = when (oddsType) {
+        OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
+        OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
+        OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
+        else -> "【" + context.getString(OddsType.EU.res) + "】"
+    }
+    text = if (matchType != null) {
+        //篮球 滚球 全场让分【欧洲盘】
+        "${GameType.getGameTypeString(context, gameType)} ${context.getString(MatchType.getMatchTypeStringRes(matchType))} $playCateName$oddsTypeStr"
+    } else {
+        "${GameType.getGameTypeString(context, gameType)} $playCateName$oddsTypeStr"
     }
 }
 

@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class ContentParlayMatchAdapter(val status: Int) :
@@ -59,24 +58,17 @@ class ContentParlayMatchAdapter(val status: Int) :
             }
         }
 
-        fun bind(gameTypeName: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int, matchType: String?) {
+        fun bind(gameType: String, data: MatchOdd, position: Int, betConfirmTime: Long?, status: Int, matchType: String?) {
             itemView.apply {
                 topLine.isVisible = position != 0
 //                content_play.text = "$gameTypeName ${data.playCateName}"
-                val oddsTypeStr = when (data.oddsType) {
-                    OddsType.HK.code -> "【" + context.getString(OddsType.HK.res) + "】"
-                    OddsType.MYS.code -> "【" + context.getString(OddsType.MYS.res) + "】"
-                    OddsType.IDN.code -> "【" + context.getString(OddsType.IDN.res) + "】"
-                    else -> "【" + context.getString(OddsType.EU.res) + "】"
-                }
-//                content_play.text = "$gameTypeName ${data.playCateName}"
                 //篮球 滚球 全场让分【欧洲盘】
-                content_play.text = if (matchType != null) {
-                    //篮球 滚球 全场让分【欧洲盘】
-                    "$gameTypeName $matchType ${data.playCateName}$oddsTypeStr"
-                } else {
-                    "$gameTypeName ${data.playCateName}$oddsTypeStr"
-                }
+                content_play.setGameType_MatchType_PlayCateName_OddsType(
+                    gameType,
+                    matchType,
+                    data.playCateName,
+                    data.oddsType
+                )
 
 //                tv_team_names.setTeamNames(15, data.homeName, data.awayName)
                 title_team_name_parlay.setTeamsNameWithVS(data.homeName, data.awayName)

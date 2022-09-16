@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.main.accountHistory.next
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -15,7 +14,6 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -92,19 +90,9 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             matchOdd.apply {
                 binding.tvTeamNames.setTeamsNameWithVS(homeName, awayName)
 
-                val oddsTypeStr = when (oddsType) {
-                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
-                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
-                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
-                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
-                }
                 //篮球 滚球 全场让分【欧洲盘】
-                binding.tvGameTypePlayCate.text = if (matchType != null) {
-                    //篮球 滚球 全场让分【欧洲盘】
-                    "$gameType $matchType ${playCateName}$oddsTypeStr"
-                } else {
-                    "$gameType ${playCateName}$oddsTypeStr"
-                }
+                binding.tvGameTypePlayCate.setGameType_MatchType_PlayCateName_OddsType(gameType, matchType, playCateName, oddsType)
+
                 val odds = getOdds(matchOdd, matchOdd.oddsType.toString())
                 binding.playContent.setPlayContent(
                     playName,
