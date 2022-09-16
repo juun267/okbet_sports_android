@@ -670,7 +670,7 @@
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
     <string name="write_suggestion">Submission</string>
-    <string name="can_input_1_to_500_word">Can enter 1–500 words</string><!--请描述您遇到的问题-->
+   <!-- <string name="can_input_1_to_500_word">Can enter 1–500 words</string>&lt;!&ndash;请描述您遇到的问题&ndash;&gt;-->
     <string name="third_game_ky">KY games</string>
     <string name="odd_type_title">Odds Setting</string>
     <string name="odd_type_eu">EU Odds</string>
@@ -1344,4 +1344,5 @@
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="cruel_write_off">残忍注销</string>
     <string name="download">DOWNLOAD</string>
+    <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
 </resources>
