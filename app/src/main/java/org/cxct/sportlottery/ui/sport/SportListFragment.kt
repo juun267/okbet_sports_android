@@ -52,7 +52,6 @@ import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
-import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
@@ -274,6 +273,7 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         setupGameListView()
         initObserve()
         initSocketObserver()
+//        LogUtil.d("gameType="+gameType)
     }
 
     private fun setupSportTypeList() {
@@ -284,12 +284,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
 
             this.adapter = gameTypeAdapter
             removeItemDecorations()
-//            addItemDecoration(
-//                SpaceItemDecoration(
-//                    context,
-//                    R.dimen.recyclerview_item_dec_spec_sport_type
-//                )
-//            )
         }
     }
 
@@ -1080,36 +1074,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         startActivity(intent)
     }
 
-    private fun navStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(matchId,
-            StatisticsDialog.StatisticsClickListener { clickMenu() })
-            .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
-    }
-
-    private fun addOutRightOddsDialog(
-        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: Odd,
-        playCateCode: String,
-    ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-        gameType?.let {
-            val fastBetDataBean = FastBetDataBean(
-                matchType = MatchType.OUTRIGHT,
-                gameType = it,
-                playCateCode = playCateCode,
-                playCateName = "",
-                matchInfo = matchOdd.matchInfo!!,
-                matchOdd = matchOdd,
-                odd = odd,
-                subscribeChannelType = ChannelType.HALL,
-                betPlayCateNameMap = null,
-            )
-            (activity as MainTabActivity).setupBetData(fastBetDataBean)
-        }
-
-    }
-
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
@@ -1138,17 +1102,6 @@ class SportListFragment : BaseBottomNavigationFragment<SportViewModel>(SportView
         }
     }
 
-
-    private fun subscribeChannelHall(matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd?) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-        gameType?.let {
-            subscribeChannelHall(
-                it.key,
-                matchOdd?.matchInfo?.id
-            )
-        }
-    }
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->

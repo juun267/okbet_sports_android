@@ -26,10 +26,7 @@ import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
-import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
-import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
-import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
@@ -371,50 +368,6 @@ class SportViewModel(
         MatchType.EPS.postValue to null
     )
 
-    fun navDirectEntrance(matchType: MatchType, gameType: GameType?) {
-        _specialEntrance.postValue(SpecialEntrance(matchType, gameType))
-    }
-
-    fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
-        _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
-        gameType?.let { recordSportType(matchType, it.key) }
-    }
-
-    fun navSpecialEntrance(
-        matchType: MatchType,
-        gameType: GameType?,
-        couponCode: String,
-        couponName: String,
-    ) {
-        _curChildMatchType.value = null
-        _specialEntrance.postValue(SpecialEntrance(matchType, gameType, couponCode, couponName))
-        gameType?.let { recordSportType(matchType, it.key) }
-    }
-
-    fun navSpecialEntrance(
-        entranceMatchType: MatchType,
-        gameType: GameType?,
-        matchId: String,
-        gameMatchType: MatchType? = null,
-    ) {
-        _specialEntrance.postValue(SpecialEntrance(entranceMatchType = entranceMatchType,
-            gameType,
-            matchID = matchId,
-            gameMatchType = gameMatchType))
-    }
-
-    private fun getSpecEntranceFromHome(
-        matchType: MatchType,
-        gameType: GameType?,
-    ): SpecialEntrance = when {
-        matchType == MatchType.OTHER -> {
-            SpecialEntrance(matchType, gameType, "_sportCouponMenuResult.value?.couponCode")
-        }
-        else -> {
-            SpecialEntrance(matchType, gameType)
-        }
-    }
-
     fun setSportClosePromptMessage(sport: String) {
         _errorPromptMessage.postValue(
             Event(
@@ -426,44 +379,8 @@ class SportViewModel(
         )
     }
 
-    fun switchChildMatchType(childMatchType: MatchType? = null) {
-        /* 選取 tab 賽事、冠軍、特優 */
-        _curChildMatchType.value = childMatchType
-        _oddsListGameHallResult.value = Event(null)
-        _oddsListResult.value = Event(null)
-        if (childMatchType == MatchType.OTHER_OUTRIGHT) {
-            getOutrightOddsList(getSportSelectedCode(MatchType.OTHER_OUTRIGHT) ?: "")
-        }
-        if (childMatchType == MatchType.OUTRIGHT) {
-            getOutrightOddsList(getSportSelectedCode(_curMatchType.value!!) ?: "")
-        } else if (childMatchType == MatchType.OTHER) {
-            getGameHallList(
-                matchType = MatchType.OTHER,
-                isReloadDate = true,
-                isReloadPlayCate = true,
-                isLastSportType = true
-            )
-        } else {
-            curMatchType.value?.let {
-                getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
-            }
-        }
-    }
-
     //獲取系統公告
     fun getAnnouncement() {
-//        if (isLogin.value == true) {
-//
-//        } else {
-////            _messageListResult.value = Event(null)
-//            viewModelScope.launch {
-//                doNetwork(androidContext) {
-//                    val typeList = arrayOf(2, 3)
-//                    OneBoSportApi.messageService.getPromoteNotice(typeList)
-//                }?.let { result -> _messageListResult.postValue(Event(result)) }
-//            }
-//        }
-
         viewModelScope.launch {
             doNetwork(androidContext) {
                 val typeList = arrayOf(1, 2, 3)
@@ -564,36 +481,6 @@ class SportViewModel(
         }
     }
 
-    fun getSportListAtHomePage(matchType: MatchType?) {
-//        viewModelScope.launch {
-//            val result = doNetwork(androidContext) {
-//                OneBoSportApi.sportService.getSportList()
-//            }
-//            result?.let { sportList ->
-//                val sportCardList = sportList.rows.sortedBy { it.sortNum }
-//                    .mapNotNull { row ->
-//                        GameType.getGameType(row.code)
-//                            ?.let { gameType ->
-//                                SportMenu(
-//                                    gameType,
-//                                    row.name,
-//                                    getSpecificLanguageString(
-//                                        androidContext,
-//                                        gameType.key,
-//                                        LanguageManager.Language.EN.key
-//                                    ),
-//                                    getGameTypeMenuIcon(gameType)
-//                                )
-//                            }
-//                    }
-//                _sportSortList.postValue(Event(sportCardList))
-//                if (_sportMenuResult.value == null) {
-//                    switchMatchType(matchType)
-//                }
-//            }
-//        }
-    }
-
     fun firstSwitchMatch(matchType: MatchType?) {
         if (_sportMenuResult.value == null) {
             switchMatchType(matchType)
@@ -623,26 +510,6 @@ class SportViewModel(
         specialMenuData = null
     }
 
-    private fun getLeaguePlayCategory(matchType: MatchType, leagueIdList: List<String>) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.sportService.getQuery(
-                    SportQueryRequest(
-                        TimeUtil.getNowTimeStamp().toString(),
-                        TimeUtil.getTodayStartTimeStamp().toString(),
-                        matchType.postValue,
-                        leagueIdList = leagueIdList
-                    )
-                )
-            }.let { result ->
-                if (result?.success == true) {
-                    sportQueryData = result.sportQueryData
-                } else {
-                    _showErrorDialogMsg.value = result?.msg
-                }
-            }
-        }
-    }
 
     private fun checkLastSportType(matchType: MatchType, sportQueryData: SportQueryData?) {
         var isContain = false
@@ -684,171 +551,6 @@ class SportViewModel(
         }
 
         return this
-    }
-
-    //遊戲大廳首頁: 滾球盤
-    fun getMatchPreloadInPlay() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(
-                        MatchType.IN_PLAY.postValue,
-                        MenuCode.HOME_INPLAY_MOBILE.code
-                    )
-                )
-            }?.let { result ->
-                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                //Martin
-                result.matchPreloadData?.datas?.forEach { data ->
-                    data.matchOdds.forEach { matchOdd ->
-                        matchOdd.sortOddsMap()
-                        matchOdd.oddsMap?.forEach { map ->
-                            map.value?.forEach { odd ->
-                                odd?.isSelected =
-                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd?.id
-                                    }
-                            }
-                        }
-                        matchOdd.setupOddDiscount()
-                        matchOdd.updateOddStatus()
-                    }
-                }
-
-                _matchPreloadInPlay.postValue(Event(result))
-            }
-        }
-    }
-
-    //遊戲大廳首頁: 即將開賽盤
-    fun getMatchPreloadAtStart() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                //即將開賽 query 參數：
-                //"matchType": "ATSTART",
-                //"startTime": 現在時間戳,
-                //"endTime": 一小時後時間戳
-                val startTime = System.currentTimeMillis()
-                val endTime = startTime + 60 * 60 * 1000
-                OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(
-                        MatchType.AT_START.postValue,
-                        MenuCode.HOME_ATSTART_MOBILE.code,
-                        startTime = startTime.toString(),
-                        endTime = endTime.toString()
-                    )
-                )
-            }?.let { result ->
-                result.matchPreloadData?.datas?.forEach { data ->
-                    data.matchOdds.forEach { matchOdd ->
-                        matchOdd.sortOddsMap()
-                        //計算且賦值 即將開賽 的倒數時間
-                        matchOdd.matchInfo?.apply {
-                            remainTime = startTime?.let { TimeUtil.getRemainTime(it) }
-                        }
-
-                        //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                        matchOdd.oddsMap?.forEach { map ->
-                            map.value?.forEach { odd ->
-                                odd?.isSelected =
-                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd?.id
-                                    }
-                            }
-                        }
-                        matchOdd.setupOddDiscount()
-                        matchOdd.updateOddStatus()
-                    }
-                }
-
-                _matchPreloadAtStart.postValue(Event(result))
-
-                notifyFavorite(FavoriteType.MATCH)
-            }
-        }
-    }
-
-    //遊戲大廳首頁: 精選賽事菜單
-    fun getHighlightMenu() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.matchCategoryService.getHighlightMenu(
-                    MatchCategoryRequest(
-                        startTime = TimeUtil.getTodayStartTimeStamp(),
-                        endTime = TimeUtil.getTodayEndTimeStamp()
-                    )
-                )
-            }?.let { result ->
-                if (result.success) {
-                    result.t?.odds?.forEach { oddData ->
-                        oddData.sortOddsMap()
-                    }
-                    _highlightMenuResult.postValue(Event(result))
-                }
-            }
-        }
-    }
-
-    fun getRecommendMatch() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.matchCategoryService.getRecommendMatch(MatchRecommendRequest())
-            }?.let { result ->
-                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                result.rows?.forEach { row ->
-                    row.leagueOdds?.matchOdds?.forEach { oddData ->
-                        oddData.sortOddsMap() //按照188排序 不使用markSort by Bill
-                        oddData.oddsMap?.forEach { map ->
-                            map.value?.forEach { odd ->
-                                odd?.isSelected =
-                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd?.id
-                                    }
-                            }
-                        }
-                        oddData.setupOddDiscount()
-                        oddData.updateOddStatus()
-                    }
-                }
-
-                _recommendMatchResult.postValue(Event(result))
-            }
-        }
-    }
-
-    //遊戲大廳首頁: 精選賽事資料
-    fun getHighlightMatch(gameType: String) {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.matchCategoryService.getHighlightMatch(
-                    MatchCategoryRequest(
-                        startTime = TimeUtil.getTodayStartTimeStamp(),
-                        endTime = TimeUtil.getTodayEndTimeStamp(),
-                        gameType = gameType
-                    )
-                )
-            }?.let { result ->
-                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                result.t?.odds?.forEach { oddData ->
-                    oddData.sortOddsMap()
-                    oddData.oddsMap?.forEach { map ->
-                        map.value?.forEach { odd ->
-                            odd?.isSelected =
-                                betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd?.id
-                                }
-                        }
-                    }
-
-                    oddData.setupOddDiscount()
-                    oddData.updateOddStatus()
-                }
-
-                _highlightMatchResult.postValue(Event(result))
-
-                notifyFavorite(FavoriteType.MATCH)
-            }
-        }
     }
 
     //TODO 與switchSportType(matchType: MatchType, gameType: String)功能相近但邏輯有些許不同, 不確定是不是邏輯沒同步到, 看能不能整併成一個
@@ -1166,63 +868,6 @@ class SportViewModel(
         _isNoHistory.postValue(sportCode == null)
     }
 
-    //用於GameLeagueFragment
-    fun switchPlay(
-        matchType: MatchType,
-        leagueIdList: List<String>,
-        matchIdList: List<String>,
-        play: Play,
-    ) {
-        updatePlaySelectedState(matchType, play)
-        getLeagueOddsList(matchType, leagueIdList, matchIdList)
-    }
-
-    //用於GameLeagueFragment
-    fun switchPlayCategory(
-        matchType: MatchType,
-        leagueIdList: List<String>,
-        matchIdList: List<String>,
-        play: Play,
-        playCateCode: String?,
-        hasItemSelect: Boolean,
-    ) {
-        _playList.value?.peekContent()?.forEach {
-            it.isSelected = (it == play)
-        }
-        _playCate.value = Event(playCateCode)
-
-        if (!hasItemSelect) getLeagueOddsList(matchType, leagueIdList, matchIdList)
-    }
-
-    /**
-     * @update by Dean, 20210927, 配合socket event: league_change 新增參數 isIncrement, 作為識別是否增量更新
-     */
-    fun getLeagueOddsList(
-        matchType: MatchType,
-        leagueIdList: List<String>,
-        matchIdList: List<String>,
-        isReloadPlayCate: Boolean = false,
-        isIncrement: Boolean = false,
-    ) {
-
-        val nowMatchType = curChildMatchType.value ?: matchType
-
-        if (isReloadPlayCate && !isIncrement) {
-            getLeaguePlayCategory(matchType, leagueIdList)
-        }
-
-        getSportSelected(nowMatchType)?.let { item ->
-            getOddsList(
-                item.code,
-                matchType.postValue,
-                getCurrentTimeRangeParams(),
-                leagueIdList,
-                matchIdList,
-                isIncrement
-            )
-        }
-    }
-
     fun refreshGame(
         matchType: MatchType,
         leagueIdList: List<String>? = null,
@@ -1533,7 +1178,6 @@ class SportViewModel(
                         )
                     } else {
                         _oddsListGameHallResult.postValue(Event(result))
-                        //_quickOddsListGameHallResult.postValue(Event(result))
                     }
                 }
 
@@ -1553,7 +1197,6 @@ class SportViewModel(
                 }
                 else -> {
                     _oddsListGameHallResult.postValue(Event(result))
-                    //_quickOddsListGameHallResult.postValue(Event(result))
                 }
             }
 
@@ -3351,11 +2994,6 @@ class SportViewModel(
         if (getMatchCount(matchType) < 1) {
             _isNoEvents.postValue(true)
             return
-        }
-
-        // 今日、串關頁面下賽事選擇 (今日、所有)
-        if (matchType == MatchType.TODAY || matchType == MatchType.PARLAY) {
-            getMatchCategory(matchType)
         }
 
         getSportCouponMenu()?.let {

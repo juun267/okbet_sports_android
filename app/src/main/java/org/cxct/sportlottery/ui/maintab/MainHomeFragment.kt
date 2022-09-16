@@ -44,7 +44,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
-import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -53,7 +52,6 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
-import org.cxct.sportlottery.ui.statistics.StatisticsDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.GalleryLayoutManager
@@ -412,10 +410,15 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         manager.attach(rv_type_list, 0)
         manager.setItemTransformer(Transformer())
         manager.setOnItemSelectedListener { recyclerView, item, position ->
+            //当滑动切换时
 
         }
         rv_type_list.adapter = mainHomeMenuAdapter
-
+        mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
+            publicityMenuData.sportMenuDataList?.let {
+                enterTheSport(it[position])
+            }
+        }
         publicityMenuData?.sportMenuDataList?.let {
             mainHomeMenuAdapter.setNewData(it.toMutableList())
         }
@@ -692,12 +695,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         }
     }
 
-    private fun showStatistics(matchId: String?) {
-        StatisticsDialog.newInstance(
-            matchId,
-            StatisticsDialog.StatisticsClickListener { clickMenu() })
-            .show(childFragmentManager, StatisticsDialog::class.java.simpleName)
-    }
 
     private fun navOddsDetailFragment(
         matchType: MatchType,
@@ -803,12 +800,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
      * 跳轉至體育指定球種
      */
     private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
-        startActivity(
-            Intent(activity, GameActivity::class.java).putExtra(
-                GameActivity.ARGS_PUBLICITY_SPORT_ENTRANCE,
-                PublicitySportEntrance(matchType, gameType)
-            )
-        )
+        (activity as MainTabActivity).jumpToTheSport(matchType, gameType)
     }
     override fun onDestroyView() {
         super.onDestroyView()

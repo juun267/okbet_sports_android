@@ -8,22 +8,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
-import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
-import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import kotlinx.android.synthetic.main.view_toolbar_main.btn_login
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.message.Row
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
@@ -33,7 +27,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.main.news.NewsDialog
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
@@ -42,26 +35,29 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
-import java.util.*
 
 
 class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
 
     companion object {
-        fun newInstance(): SportFragment {
+        fun newInstance(matchType: MatchType? = null, gameType: GameType? = null): SportFragment {
             val args = Bundle()
             val fragment = SportFragment()
+            matchType?.let {
+                args.putSerializable("matchType", it)
+            }
+            gameType?.let {
+                args.putSerializable("gameType", it)
+            }
             fragment.arguments = args
             return fragment
         }
     }
 
-
     private var betListFragment = BetListFragment()
 
-    private var mOutrightLeagueId: String? = null //主頁跳轉冠軍頁時傳遞的聯賽Id
-
+    var jumpMatchType: MatchType? = null
+    var jumpGameType: GameType? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,8 +72,11 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         initToolBar()
         initTabLayout()
         initObserve()
-        viewModel.firstSwitchMatch(MatchType.IN_PLAY)
         setupDataSourceChange()
+        viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
+        jumpGameType?.let {
+            navGameFragment(jumpMatchType!!, gameType = it.key)
+        }
     }
 
     fun initToolBar() {
@@ -104,7 +103,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
 
     private fun initTabLayout() {
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 selectTab(tab?.position)
@@ -112,13 +110,12 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
-
             override fun onTabReselected(tab: TabLayout.Tab?) {
 
             }
         })
-
         OverScrollDecoratorHelper.setUpOverScroll(tabLayout)
+
     }
 
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
@@ -138,54 +135,38 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             val countParlay =
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
 
-            //20220728 不要有主頁
-            /*tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.view?.visibility = View.GONE
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.MAIN) ?: 0)?.customView?.apply {
-                visibility = View.GONE
-                *//*tv_title?.setTextWithStrokeWidth(getString(R.string.home_tan_main), 0.7f)
-                tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly)
-                    .plus(countOutright).plus(countEps).toString()*//*
-            }*/
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.IN_PLAY) ?: 1)?.customView?.apply {
+            tabLayout.getTabAt(0)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
                 tv_number?.text = countInPlay.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.AT_START)
-                ?: 2)?.customView?.apply {
+            tabLayout.getTabAt(1)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_at_start), 0.7f)
                 tv_number?.text = countAtStart.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.TODAY) ?: 3)?.customView?.apply {
+            tabLayout.getTabAt(2)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_today), 0.7f)
                 tv_number?.text = countToday.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.EARLY) ?: 4)?.customView?.apply {
+            tabLayout.getTabAt(3)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
                 tv_number?.text = countEarly.toString()
             }
-            tabLayout.getTabAt(
-                getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5
-            )?.customView?.apply {
+            tabLayout.getTabAt(4)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.CS) ?: 6)?.customView?.apply {
+            tabLayout.getTabAt(5)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
                 tv_number?.text = countCS.toString()
             }
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 7)?.customView?.apply {
+            tabLayout.getTabAt(6)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
                 tv_number?.text = countParlay.toString()
             }
-
-            //0401需求先隱藏特優賠率
-//            val tabEps = tabLayout.getTabAt(7)?.customView
-//            tabEps?.tv_title?.setText(R.string.home_tab_eps)
-//            tabEps?.tv_number?.text = countEps.toString()
 
             //英文 越南文稍微加寬padding 不然會太擠
             if (LanguageManager.getSelectLanguage(requireContext()) != LanguageManager.Language.ZH) {
@@ -201,15 +182,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
     }
 
     private val matchTypeTabPositionMap = mapOf<MatchType, Int>(
-        //20220728 隱藏主頁
-        /*MatchType.MAIN to 0,
-        MatchType.IN_PLAY to 1,
-        MatchType.AT_START to 2,
-        MatchType.TODAY to 3,
-        MatchType.EARLY to 4,
-        MatchType.OUTRIGHT to 5,
-        MatchType.PARLAY to 6,
-        MatchType.EPS to 7*/
         MatchType.IN_PLAY to 0,
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
@@ -217,116 +189,19 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         MatchType.OUTRIGHT to 4,
         MatchType.CS to 5,
         MatchType.PARLAY to 6,
-//        MatchType.EPS to 7,
         MatchType.MAIN to 99
     )
 
-    private val matchTypeTabPositionONbetMap = mapOf<MatchType, Int>(
-        MatchType.IN_PLAY to 0,
-        MatchType.AT_START to 1,
-        MatchType.TODAY to 2,
-        MatchType.EARLY to 3,
-        MatchType.CS to 4,
-        MatchType.OUTRIGHT to 5,
-        MatchType.PARLAY to 6,
-//        MatchType.EPS to 6,
-        MatchType.MAIN to 99
-    )
 
-    /**
-     * 根據MatchTypeTabPositionMap獲取MatchType的tab position
-     *
-     * @see MatchTypeTabPositionMap
-     */
-    private fun getMatchTypeTabPosition(matchType: MatchType?): Int? = when (matchType) {
-        null -> {
-            Timber.e("Unable to get $matchType tab position")
-            null
-        }
-        else -> {
-            when (val tabPosition = matchTypeTabPositionMap[matchType]) {
-                null -> {
-                    Timber.e("There is not tab position of $matchType")
-                    null
-                }
-                else -> {
-                    tabPosition
-                }
-            }
-        }
-    }
 
     private fun selectTab(position: Int?) {
         if (position == null) return
-
-        when (position) {
-            getMatchTypeTabPosition(MatchType.MAIN) -> {
-                viewModel.switchMatchType(MatchType.MAIN)
-            }
-            getMatchTypeTabPosition(MatchType.IN_PLAY) -> {
-                viewModel.switchMatchType(MatchType.IN_PLAY)
-            }
-            getMatchTypeTabPosition(MatchType.AT_START) -> {
-                viewModel.switchMatchType(MatchType.AT_START)
-            }
-            getMatchTypeTabPosition(MatchType.TODAY) -> {
-                viewModel.switchMatchType(MatchType.TODAY)
-            }
-            getMatchTypeTabPosition(MatchType.EARLY) -> {
-                viewModel.switchMatchType(MatchType.EARLY)
-            }
-            getMatchTypeTabPosition(MatchType.CS) -> {
-                viewModel.switchMatchType(MatchType.CS)
-            }
-            getMatchTypeTabPosition(MatchType.OUTRIGHT) -> {
-                /**
-                 * 若mOutrightLeagueId有值的話, 此行為為主頁點擊聯賽跳轉至冠軍頁, 跳轉行為於HomeFragment處理
-                 *
-                 * @see org.cxct.sportlottery.ui.game.home.HomeFragment.navGameOutright
-                 */
-                if (mOutrightLeagueId.isNullOrEmpty()) {
-                    viewModel.switchMatchType(MatchType.OUTRIGHT)
-                }
-            }
-            getMatchTypeTabPosition(MatchType.PARLAY) -> {
-                viewModel.switchMatchType(MatchType.PARLAY)
-            }
-//            getMatchTypeTabPosition(MatchType.EPS) -> {
-//                viewModel.switchMatchType(MatchType.EPS)
-//            }
-        }
-    }
-
-
-    //用戶登入公告訊息彈窗
-    private var mNewsDialog: NewsDialog? = null
-    private fun setNewsDialog(messageListResult: MessageListResult) {
-
-        //未登入、遊客登入都要顯示彈窗
-        //顯示規則：帳號登入前= 公告含登入前、帳號登入後= 公告含登入前+登入後
-        var list = listOf<Row>()
-        list = if (viewModel.isLogin.value == true)
-            messageListResult.rows?.filter { it.type.toInt() != 1 } ?: listOf()
-        else
-            messageListResult.rows?.filter { it.type.toInt() == 3 } ?: listOf()
-
-        if (!list.isNullOrEmpty()) {
-            if (!MultiLanguagesApplication.getInstance()?.isNewsShow()!!) {
-                mNewsDialog?.dismiss()
-                mNewsDialog = NewsDialog(list)
-                mNewsDialog?.show(childFragmentManager, null)
-                MultiLanguagesApplication.getInstance()?.setIsNewsShow(true)
-            }
-        }
+        navGameFragment(matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key)
     }
 
     private fun initObserve() {
         viewModel.userMoney.observe(viewLifecycleOwner) {
 
-        }
-        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) {
-            val message = it.getContentIfNotHandled()
-            message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
         }
 
         viewModel.isLogin.observe(viewLifecycleOwner) {
@@ -340,83 +215,16 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             }
         }
 
-        viewModel.showBetUpperLimit.observe(viewLifecycleOwner) {
-            if (it.getContentIfNotHandled() == true) {
-
-            }
-//                snackBarBetUpperLimitNotify.apply {
-//                    setAnchorView(R.id.game_bottom_navigation)
-//                    show()
-//                }
-        }
-
-        viewModel.specialEntrance.observe(viewLifecycleOwner) {
-            hideLoading()
-            if (it?.couponCode.isNullOrEmpty()) {
-                when (it?.entranceMatchType) {
-                    MatchType.MAIN -> {
-                        //do nothing
-                    }
-                    MatchType.OTHER -> {
-                        goTab(3)
-                    }
-                    MatchType.DETAIL -> {
-                        it.matchID?.let { matchId ->
-//                            navDetailLiveFragment(matchId, it.gameType ?: GameType.OTHER, it.gameMatchType)
-                        }
-                    }
-                    else -> {
-                        getMatchTypeTabPosition(it?.entranceMatchType)?.let { matchTypePosition ->
-                            goTab(matchTypePosition)
-                        }
-                    }
-                }
-            } else if (it?.entranceMatchType == MatchType.DETAIL) {
-
-            } else {
-//                navGameFragment(it!!.entranceMatchType)
-            }
-        }
-
         //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
         viewModel.curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) {
             it?.let {
-                val tabSelectedPosition = tabLayout.selectedTabPosition
-                when (it) {
-                    MatchType.MAIN -> {
-
-                    }
-                    else -> {
-                        //僅有要切換的MatchType與當前選中的Tab相同時才繼續進行後續的切頁行為, 避免快速切頁導致切頁邏輯進入無窮迴圈
-                        when {
-                            it == MatchType.IN_PLAY && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.IN_PLAY) ||
-                                    it == MatchType.AT_START && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.AT_START) ||
-                                    it == MatchType.TODAY && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.TODAY) ||
-                                    it == MatchType.EARLY && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.EARLY) ||
-                                    it == MatchType.CS && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.CS) ||
-                                    it == MatchType.PARLAY && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.PARLAY) ||
-                                    it == MatchType.OUTRIGHT && tabSelectedPosition == getMatchTypeTabPosition(
-                                MatchType.OUTRIGHT)
-                            -> {
-                                navGameFragment(it)
-                            }
-                            else -> {
-                                //do nothing
-                            }
-                        }
-
-                    }
-                }
+                LogUtil.d("curMatchType=" + it.name)
+                matchTypeTabPositionMap[it]?.let { it1 -> goTab(it1) }
+                navGameFragment(it)
             }
         }
 
-        viewModel.sportMenuResult.observe(viewLifecycleOwner) {
+        viewModel.sportMenuResult.distinctUntilChanged().observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
         }
@@ -475,7 +283,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
             val intent = Intent(requireActivity(), MainActivity::class.java)
                 .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
             startActivity(intent)
-
             return
         }
 
@@ -543,17 +350,26 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
     }
 
-
-    private fun navGameFragment(matchType: MatchType) {
+    private fun navGameFragment(matchType: MatchType, gameType: String? = null) {
         val fragment = when (matchType) {
             MatchType.OUTRIGHT ->
-                SportOutrightFragment.newInstance()
+                SportOutrightFragment.newInstance(gameType = gameType)
             else ->
-                SportListFragment.newInstance(matchType = matchType)
+                SportListFragment.newInstance(matchType = matchType, gameType = gameType)
         }
         childFragmentManager.beginTransaction()
             .replace(R.id.fl_content, fragment)
             .commit()
-
     }
+
+    fun setJumpSport(matchType: MatchType, gameType: GameType) {
+        if (isAdded) {
+            viewModel.setCurMatchType(matchType)
+            navGameFragment(matchType, gameType.key)
+        } else {
+            jumpMatchType = matchType
+            jumpGameType = gameType
+        }
+    }
+
 }
