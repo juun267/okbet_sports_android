@@ -662,7 +662,7 @@
     <string name="all_out_plat">全部转出</string>
     <string name="all_in_plat">全部转入</string>
     <string name="write_suggestion">填写建议</string>
-    <string name="can_input_1_to_500_word">可输入1–500字</string>
+    <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
     <string name="third_game_ky">开元棋牌</string>
     <string name="odd_type_title">盘口类型</string>
     <string name="odd_type_eu">欧洲盘</string>
