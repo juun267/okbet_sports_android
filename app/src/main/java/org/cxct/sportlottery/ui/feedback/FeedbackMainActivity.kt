@@ -9,7 +9,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 
 /**
- * @app_destination 建議反饋
+ * @app_destination 建议反馈
  */
 class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewModel::class) {
     private val navController by lazy { findNavController(R.id.myNavHostFragment) }

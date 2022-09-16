@@ -196,6 +196,8 @@
         <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"
             android:screenOrientation="portrait" /> <!-- 後臺服務-長連線 -->
+        <activity android:name=".ui.profileCenter.cancelaccount.CancelAccountActivity"
+            android:screenOrientation="portrait"/>
         <service android:name=".service.BackService" /> <!-- broadCast -->
         <receiver
             android:name=".service.ServiceBroadcastReceiver"
