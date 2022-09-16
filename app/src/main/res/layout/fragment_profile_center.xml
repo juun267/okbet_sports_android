@@ -104,7 +104,7 @@
                             android:layout_height="55dp"
                             android:layout_centerVertical="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/img_avatar_default"
+                            android:src="@drawable/ic_person_avatar"
                             app:riv_border_color="@color/exo_white"
                             app:riv_border_width="@dimen/margin_1"
                             app:riv_oval="true" />
