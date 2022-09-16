@@ -896,7 +896,7 @@
     <string name="self_limit_per_bet_limit_impotent">·You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
     <string name="self_limit_per_bet_limit_user">Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
-    <string name="self_limit_per_bet_limit_user_limit"> (Maximum limited bet:%1$s %2$s-%1$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user_limit">・Maximum limited bet:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
     <string name="self_limit_input_password_for_confirm">Please enter the login password to confirm the application.</string>
     <string name="self_limit_input_password_for_modification">Please enter the login password to confirm the modification.</string>

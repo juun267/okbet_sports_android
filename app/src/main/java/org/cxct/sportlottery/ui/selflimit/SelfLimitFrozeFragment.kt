@@ -81,7 +81,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     private fun initView() {
         binding.llImportant.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
-        binding.tvUsTime.text = "‧" + getString(R.string.text_us_east_time)
+        binding.tvUsTime.text = " • " + getString(R.string.text_us_east_time)
     }
 
     private fun initObserve() {
