@@ -338,7 +338,6 @@
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Running</string>
-    <string name="not_settled">Unsettled</string>
     <string name="settled">Settled bets</string>
     <string name="win">Win</string>
     <string name="win_half">Win a half</string>
@@ -1136,7 +1135,7 @@
 
     <string name="register_currency">Currency</string>
     <string name="register_nation">Country</string>
-    <string name="deposits">DEPOSITS</string>
+    <string name="deposits">DEPOSIT</string>
     <string name="withdraw_down">WITHDRAWAL</string>
     <string name="my_message">My message</string>
     <string name="betting_setting">Betting setting</string>
@@ -1341,4 +1340,6 @@
     <string name="bank_memory_card">储存卡</string>
     <string name="my_bank_card">我的银行卡</string>
     <string name="my_favorite_empty">您还没有收藏赛事</string>
+    <string name="remove_account_warning">您确定要注销当前账号吗？</string>
+    <string name="cruel_write_off">残忍注销</string>
 </resources>

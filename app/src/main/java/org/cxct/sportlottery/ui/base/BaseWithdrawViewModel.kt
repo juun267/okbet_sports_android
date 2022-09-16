@@ -9,7 +9,6 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.BaseSecurityCodeResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
-import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository

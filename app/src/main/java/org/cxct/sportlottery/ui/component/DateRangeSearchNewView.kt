@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.ui.component
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.DialogFragment
@@ -124,12 +126,14 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
         tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, YMD_FORMAT)
     }
 
+
     private fun setupCalendarBottomSheet() {
         setCalendarRange()
         calendarBottomSheet.setContentView(bottomSheetView)
         val win = calendarBottomSheet.window
         win?.setGravity(Gravity.TOP)
         win?.attributes?.y = 330
+      //  win?.attributes?.width = win?.windowManager?.currentWindowMetrics?.bounds?.width()//设置dialog宽度等于屏幕宽度但是没有起作用
         bottomSheetView.calendar.setCalendarListener(object : CalendarListener {
             override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
                 setRecordTimeRange(dateSelectedType, startDate)

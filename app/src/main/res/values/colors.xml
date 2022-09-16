@@ -121,6 +121,7 @@
     <color name="color_A8AFB8">#A8AFB8</color>
     <color name="color_515151">#515151</color>
     <color name="color_a3a3a3">#a3a3a3</color>
+    <color name="color_232C4F">#232C4F</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -453,4 +454,6 @@
     //日历选中颜色
 
     //日历范围颜色
+    <!--沉浸式状态栏颜色处理-->
+    <color name="color_232C4F_FFFFFF">@color/color_FFFFFF</color>
 </resources>

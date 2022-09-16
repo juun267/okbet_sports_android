@@ -81,7 +81,10 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_1F1F1F_E2E2E2" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

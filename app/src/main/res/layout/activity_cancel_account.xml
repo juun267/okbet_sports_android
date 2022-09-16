@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/color_F0F5FA"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/view_base_tool_bar_no_drawer" />
+    <LinearLayout
+        android:background="@color/color_202541_FFFFFF"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_warning"
+            android:layout_marginStart="@dimen/margin_15"
+            android:layout_width="16dp"
+            android:layout_height="16dp"/>
+        <TextView
+
+            android:layout_marginLeft="@dimen/margin_5"
+            android:text="@string/remove_account_warning"
+            android:textColor="@color/color_E23434"
+            android:textSize="@dimen/textSize14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/ll_qq_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/color_202541_FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical"
+      >
+
+
+        <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+            android:id="@+id/et_qq_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_14"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/margin_14"
+            app:endIcon="@drawable/ic_eye_close"
+            app:hintText="@string/self_limit_submit_input_password_hint"
+            app:isResponsiveIconColor="false"
+            app:labelText="@string/login_password"
+            app:labelTextStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:primaryColor="@color/color_AFAFB1">
+
+            <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:textColor="@color/color_FFFFFF_DE000000"
+                android:textSize="@dimen/textSize14sp" />
+
+        </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+    </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_feedback"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/ic_submit"
+        android:text="@string/feedback"
+        android:textColor="@color/color_FCFCFC"
+        android:textSize="@dimen/textSize14sp" />
+    <Button
+        android:id="@+id/btn_cancel_account"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/bg_button_cancel"
+        android:text="@string/cruel_write_off"
+        android:textColor="@color/color_025BE8"
+        android:textSize="@dimen/textSize14sp" />
+</LinearLayout>

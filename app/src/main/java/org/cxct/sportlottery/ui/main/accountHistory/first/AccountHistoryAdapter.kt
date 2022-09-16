@@ -183,7 +183,7 @@ class AccountHistoryAdapter(
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
-            fun from(parent: ViewGroup) = NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+            fun from(parent: ViewGroup) = NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_game_no_record, parent, false))
         }
     }
 

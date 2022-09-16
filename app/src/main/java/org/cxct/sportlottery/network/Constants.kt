@@ -345,4 +345,7 @@ object Constants {
     const val BETTING_STATION_QUERY_BY_BETTING_STATION_ID = "/api/front/bettingStation/queryByBettingStationId"
     const val BETTING_STATION_QUERY_UWSTATION = "/api/front/bettingStation/queryUwStation"
     const val AREA_ALL = "/api/front/area/all"
+
+    //注销账户
+    const val CANCEL_ACCOUNT = "/api/front/user/remove"
 }

@@ -8,7 +8,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
 
-
+/**
+ * @app_destination 资金明细
+ */
 class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::class) {
 
     private val navController by lazy {
@@ -17,7 +19,7 @@ class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::c
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_finance)
 
         setupToolbarBack()
