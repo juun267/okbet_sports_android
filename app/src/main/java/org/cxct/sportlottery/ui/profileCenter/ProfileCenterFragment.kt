@@ -147,6 +147,7 @@ class ProfileCenterFragment :
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
@@ -157,7 +158,8 @@ class ProfileCenterFragment :
         btn_feedback.setVisibilityByCreditSystem()
         val version = "V${BuildConfig.VERSION_NAME}"
         tv_current_version.text = version
-        tv_version_code.text = version
+        tv_version_code.text = getString(R.string.current_version)+version
+
     }
 
     fun initToolBar() {
@@ -659,6 +661,8 @@ class ProfileCenterFragment :
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
         }
+
+
     }
 
     @SuppressLint("SetTextI18n")

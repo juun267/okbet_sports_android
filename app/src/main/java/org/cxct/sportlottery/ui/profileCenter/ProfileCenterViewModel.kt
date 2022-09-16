@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.AppVersionState
 import org.cxct.sportlottery.util.Event
 import java.io.File
 
@@ -61,7 +62,10 @@ class ProfileCenterViewModel(
     val userVerifiedType:LiveData<Event<Int?>>
         get() = _userVerifiedType
     private val _userVerifiedType =  MutableLiveData<Event<Int?>>()
-
+    //版本状态
+    private val _appVersionState = MutableLiveData<AppVersionState>()
+    val appVersionState: LiveData<AppVersionState>
+        get() = _appVersionState
     fun getUserInfo() {
         viewModelScope.launch {
             userInfoRepository.getUserInfo()

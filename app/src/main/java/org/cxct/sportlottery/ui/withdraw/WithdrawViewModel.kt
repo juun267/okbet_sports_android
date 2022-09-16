@@ -290,7 +290,7 @@ class WithdrawViewModel(
                     })
                 }
                 _bankCardList.value = cardList
-                _numberOfBankCard.value = "(${result.bankCardList?.size})"
+                _numberOfBankCard.value = "(${result.bankCardList?.size ?: 0})"
                 hideLoading()
             }
         }

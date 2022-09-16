@@ -72,7 +72,7 @@ import java.io.File
 import java.io.FileNotFoundException
 
 /**
- * @app_destination 個人中心
+ * @app_destination 個人中心 旧版
  */
 class ProfileCenterActivity :
     BaseBottomNavActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
