@@ -15,7 +15,6 @@ import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class CancelAccountViewModel(
     androidContext: Application,
-    private val feedbackRepository: FeedbackRepository,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
