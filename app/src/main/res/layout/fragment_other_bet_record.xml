@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.otherBetRecord.OtherBetRecordFragment">
 
-    <org.cxct.sportlottery.ui.component.DateRangeSearchView
+    <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
         android:id="@+id/date_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,10 +30,8 @@
         android:layout_marginHorizontal="@dimen/margin_10"
         android:drawablePadding="@dimen/margin_6"
         android:text="@string/text_us_east_time"
-        android:textColor="@color/color_909090_666666"
+        android:textColor="@color/color_E23434"
         android:textSize="@dimen/textSize12sp"
-        app:drawableLeftCompat="@drawable/ic_info_white"
-        app:drawableTint="@color/color_909090_666666"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/status_selector"
         android:visibility="visible" />

@@ -18,6 +18,7 @@
         android:padding="5dp">
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/ivTick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,10 +27,11 @@
         <TextView
             android:id="@+id/tvPlay"
             android:layout_width="0dp"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:textColor="@color/color_BBBBBB_333333"
+            android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
             tools:text="Goals O/U" />
     </LinearLayout>
@@ -37,6 +39,8 @@
     <View
         android:id="@+id/viewDivider"
         android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/margin_20"
+        android:layout_marginEnd="@dimen/margin_20"
         android:layout_height="0.5dp"
         android:background="@color/color_404040_e2e2e2" />
 

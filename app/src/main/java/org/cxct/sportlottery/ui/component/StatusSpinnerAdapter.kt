@@ -52,7 +52,7 @@ class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableList
         fun bind(data: StatusSheetData, position: Int) {
             with(binding) {
                 tvPlay.text = data.showName
-                ivTick.visibility = if (data.isChecked) View.VISIBLE else View.INVISIBLE
+              //  ivTick.visibility = if (data.isChecked) View.VISIBLE else View.INVISIBLE
                 viewDivider.visibility = if (position >= count - 1) View.GONE else View.VISIBLE
             }
         }

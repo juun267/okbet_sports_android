@@ -869,7 +869,7 @@
     <string name="verify_failed">(Verify failed)</string>
     <string name="select_id_type">Select ID Type</string>
     <string name="scan_tool_bar">Scan results</string>
-    <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
+    <string name="text_us_east_time">• The time is reported in UTC-4 time zone</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
