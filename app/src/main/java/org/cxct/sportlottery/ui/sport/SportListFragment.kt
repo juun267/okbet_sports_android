@@ -795,12 +795,12 @@ class SportListFragment :
 
         //distinctUntilChanged -> 短時間內收到相同leagueChangeEvent僅會執行一次
         receiver.leagueChange.distinctUntilChanged().observe(this.viewLifecycleOwner) {
-            it?.let { leagueChangeEvent ->
-                viewModel.checkGameInList(
-                    leagueChangeEvent = leagueChangeEvent,
-                )
-                //待優化: 應有個暫存leagueChangeEvent的機制，確認後續流程更新完畢，再處理下一筆leagueChangeEvent，不過目前後續操作並非都是suspend，需重構後續流程
-            }
+//            it?.let { leagueChangeEvent ->
+//                viewModel.checkGameInList(
+//                    leagueChangeEvent = leagueChangeEvent,
+//                )
+//                //待優化: 應有個暫存leagueChangeEvent的機制，確認後續流程更新完畢，再處理下一筆leagueChangeEvent，不過目前後續操作並非都是suspend，需重構後續流程
+//            }
         }
 
         receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
