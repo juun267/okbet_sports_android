@@ -93,6 +93,8 @@ data class MatchInfo(
     override var awayYellowCards: Int? = null
     override var homeCornerKicks: Int? = null
     override var awayCornerKicks: Int? = null
+    override var homeHalfScore: String? = null
+    override var awayHalfScore: String? = null
 
     //BB
     override var attack: String? = null

@@ -1343,4 +1343,6 @@
     <string name="my_favorite_empty">您还没有收藏赛事</string>
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="cruel_write_off">残忍注销</string>
+    <string name="half">半</string>
+
 </resources>

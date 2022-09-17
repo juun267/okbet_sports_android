@@ -556,7 +556,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      * 配置賽事資訊(隊伍名稱、是否延期、賽制)
      */
     private fun setupMatchInfo(matchInfo: MatchInfo) {
-        LogUtil.toJson(matchInfo)
         //region 隊伍名稱
         tv_game_title.text = matchInfo.leagueName
         tv_home_name.text = matchInfo.homeName ?: ""
@@ -902,6 +901,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         setScoreTextAtFront(matchInfo)
         setCardText(matchInfo)
         setFbKicks(matchInfo)
+        setFtHalfScore(matchInfo)
     }
 
     private fun setBkScoreText(matchInfo: MatchInfo) {
@@ -998,6 +998,21 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 else -> ""
             }
         }
+    }
+
+    /**
+     * 设置足球半场比分
+     */
+    private fun setFtHalfScore(matchInfo: MatchInfo) {
+        tv_ft_half.apply {
+            visibility = when {
+                (!matchInfo.homeHalfScore.isNullOrEmpty()) || (!matchInfo.awayHalfScore.isNullOrEmpty()) -> View.VISIBLE
+                else -> View.GONE
+            }
+            text =
+                getString(R.string.half) + ": " + matchInfo.homeHalfScore + "-" + matchInfo.awayHalfScore
+        }
+
     }
 
     /**

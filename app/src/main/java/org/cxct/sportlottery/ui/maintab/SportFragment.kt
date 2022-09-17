@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
+import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
@@ -37,7 +38,7 @@ import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.greenrobot.eventbus.EventBus
 
 
-class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
+class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabViewModel::class) {
 
     companion object {
         fun newInstance(matchType: MatchType? = null, gameType: GameType? = null): SportFragment {
@@ -72,11 +73,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         initToolBar()
         initTabLayout()
         initObserve()
-        setupDataSourceChange()
+        viewModel.getMatchData()
         viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
-        jumpGameType?.let {
-            navGameFragment(jumpMatchType!!, gameType = it.key)
-        }
     }
 
     fun initToolBar() {
@@ -204,10 +202,6 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
         }
 
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            getAnnouncement()
-        }
-
         //使用者沒有電話號碼
         viewModel.showPhoneNumberMessageDialog.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
@@ -218,20 +212,13 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
         viewModel.curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) {
             it?.let {
-                LogUtil.d("curMatchType=" + it.name)
                 matchTypeTabPositionMap[it]?.let { it1 -> goTab(it1) }
-                navGameFragment(it)
             }
         }
 
         viewModel.sportMenuResult.distinctUntilChanged().observe(viewLifecycleOwner) {
             hideLoading()
             updateUiWithResult(it)
-        }
-        viewModel.errorPromptMessage.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()
-                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
-
         }
     }
 
@@ -293,11 +280,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
+            EventBus.getDefault().post(sportMenuResult)
         }
-    }
-
-    private fun getAnnouncement() {
-        viewModel.getAnnouncement()
     }
 
     private fun updateSelectTabState(matchType: MatchType?) {
@@ -339,7 +323,7 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
 
     private fun setupDataSourceChange() {
         setDataSourceChangeEvent {
-            viewModel.fetchDataFromDataSourceChange(
+            viewModel.setCurMatchType(
                 matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
             )
         }
@@ -350,7 +334,8 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
     }
 
-    private fun navGameFragment(matchType: MatchType, gameType: String? = null) {
+    private fun navGameFragment(matchType: MatchType) {
+        var gameType = jumpGameType?.key
         val fragment = when (matchType) {
             MatchType.OUTRIGHT ->
                 SportOutrightFragment.newInstance(gameType = gameType)
@@ -360,16 +345,20 @@ class SportFragment : BaseBottomNavigationFragment<SportViewModel>(SportViewMode
         childFragmentManager.beginTransaction()
             .replace(R.id.fl_content, fragment)
             .commit()
+        jumpMatchType = null
+        jumpGameType = null
+
     }
 
     fun setJumpSport(matchType: MatchType, gameType: GameType) {
+        jumpMatchType = matchType
+        jumpGameType = gameType
         if (isAdded) {
             viewModel.setCurMatchType(matchType)
-            navGameFragment(matchType, gameType.key)
-        } else {
-            jumpMatchType = matchType
-            jumpGameType = gameType
         }
     }
 
+    fun updateSportMenuResult(sportMenuResult: SportMenuResult) {
+        viewModel.setSportMenuResult(sportMenuResult)
+    }
 }

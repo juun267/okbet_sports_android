@@ -60,19 +60,35 @@
                 android:layout_weight="1" />
 
 
-            <Button
-                android:id="@+id/btn_sport"
+            <LinearLayout
+                android:id="@+id/lin_menu"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:minWidth="90dp"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:background="@drawable/selector_bg_home_tab_menu"
-                android:textColor="@color/selector_blue_white"
-                android:textSize="12sp"
-                android:text="@string/all_sport"
-                android:visibility="visible"
-                tools:visibility="visible" />
+                android:layout_height="28dp"
+                android:minWidth="100dp"
+                android:duplicateParentState="true"
+                android:background="@drawable/selector_bg_home_tab_menu">
+
+                <TextView
+                    android:id="@+id/tv_all_sports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="13dp"
+                    android:textSize="14sp"
+                    android:duplicateParentState="true"
+                    android:text="@string/all_sport"
+                    android:textColor="@color/selector_blue_white" />
+
+                <ImageView
+                    android:id="@+id/iv_all_sports_arrow"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="6dp"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/selector_blue_white_arrow" />
+            </LinearLayout>
         </LinearLayout>
 
         <org.cxct.sportlottery.widget.RadiusCardView

@@ -131,9 +131,6 @@ class SportViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
-    val curChildMatchType: LiveData<MatchType?>
-        get() = _curChildMatchType
-
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
@@ -689,7 +686,7 @@ class SportViewModel(
         filterLeague(listOf())
     }
 
-    private fun recordSportType(matchType: MatchType, sportType: String) {
+    fun recordSportType(matchType: MatchType, sportType: String) {
         lastSportTypeHashMap[matchType.postValue] = sportType
     }
 
@@ -701,28 +698,27 @@ class SportViewModel(
 
     fun checkGameInList(matchType: MatchType, leagueChangeEvent: LeagueChangeEvent?) {
         val nowMatchType = curMatchType.value ?: matchType
-        val nowChildMatchType = curChildMatchType.value ?: matchType
         val sportCode = getSportSelectedCode(nowMatchType)
         sportCode?.let { code ->
-            when (nowChildMatchType) {
+            when (nowMatchType) {
                 MatchType.IN_PLAY -> {
                     checkOddsList(
                         code,
-                        nowChildMatchType.postValue,
+                        nowMatchType.postValue,
                         leagueChangeEvent = leagueChangeEvent,
                     )
                 }
                 MatchType.AT_START -> {
                     checkOddsList(
                         code,
-                        nowChildMatchType.postValue,
+                        nowMatchType.postValue,
                         leagueChangeEvent = leagueChangeEvent,
                     )
                 }
                 MatchType.CS -> {
                     checkOddsList(
                         code,
-                        nowChildMatchType.postValue,
+                        nowMatchType.postValue,
                         leagueChangeEvent = leagueChangeEvent,
                     )
                 }
@@ -753,8 +749,6 @@ class SportViewModel(
             return
         }
         val nowMatchType = curMatchType.value ?: matchType
-        val nowChildMatchType = curChildMatchType.value ?: matchType
-
         var reloadedDateRow: List<Date>? = null
 
         if (isReloadDate) {
@@ -768,12 +762,10 @@ class SportViewModel(
 
         val sportCode = getSportSelectedCode(nowMatchType)
 
-        val mt = if (matchType == nowChildMatchType) matchType else nowChildMatchType
-
         //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間\
         val requestTimeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams()
         sportCode?.let { code ->
-            when (mt) {
+            when (nowMatchType) {
                 MatchType.IN_PLAY -> {
                     getOddsList(
                         code,
@@ -873,7 +865,7 @@ class SportViewModel(
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
     ) {
-        val nowMatchType = curChildMatchType.value ?: matchType
+        val nowMatchType = _curMatchType.value ?: matchType
         val timeRangeParams =
             if (matchType == MatchType.IN_PLAY) null else getCurrentTimeRangeParams()
         getSportSelected(nowMatchType)?.let { item ->
@@ -1099,7 +1091,7 @@ class SportViewModel(
             startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
             endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
         }
-        var playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code
+        var playCateMenuCode = MenuCode.MAIN.code
 //        Timber.e("getPlayCateSelected: ${getPlayCateSelected()}")
         if (matchType == MatchType.CS.postValue) {
             playCateMenuCode = MenuCode.CS.code
@@ -1142,9 +1134,6 @@ class SportViewModel(
 //                    matchOdd.setupPlayCate()
 //                    matchOdd.refactorPlayCode() //改成在OddButtonPagerAdapter處理
                     matchOdd.sortOdds()
-
-                    if (!getPlayCateCodeList().isNullOrEmpty())
-                        matchOdd.oddsMap?.entries?.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
 
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
@@ -1895,15 +1884,6 @@ class SportViewModel(
     }
 
 
-    private fun getPlayCateSelected(): Play? =
-        _playList.value?.peekContent()?.find { it.isSelected }
-
-    private fun getPlayCateCodeList(): List<String>? {
-        _playCate.value?.peekContent()?.let {
-            return listOf(it)
-        }
-        return null
-    }
 
     private fun SportQueryData.updateSportSelectState(
         gameTypeCode: String?,
@@ -2906,7 +2886,7 @@ class SportViewModel(
                     gameType,
                     matchType,
                     leagueIdList = leagueIdList,
-                    playCateMenuCode = getPlayCateSelected()?.code ?: MenuCode.MAIN.code,
+                    playCateMenuCode = MenuCode.MAIN.code,
                 )
             )
         }
@@ -3007,6 +2987,7 @@ class SportViewModel(
         }
 
         val matchType = curMatchType.value ?: return
+        LogUtil.d("matchType=" + matchType)
 
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
@@ -3037,7 +3018,6 @@ class SportViewModel(
 //            }
 
             clearGameHallContentBySwitchGameType()
-
             recordSportType(matchType, item.code)
 
             getGameHallList(matchType, true, isReloadPlayCate = true)

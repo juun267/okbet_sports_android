@@ -27,6 +27,8 @@ interface MatchInfo {
     var awayYellowCards: Int?
     var homeCornerKicks: Int?
     var awayCornerKicks: Int?
+    var homeHalfScore: String?
+    var awayHalfScore: String?
 
     //BB
     var attack: String?

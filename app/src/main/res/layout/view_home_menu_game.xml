@@ -14,7 +14,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/image_e_game_empty"
+        tools:src="@drawable/bg_egame"
         tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="@+id/ivThirdGame"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/ivThirdGame"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"

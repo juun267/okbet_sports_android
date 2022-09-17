@@ -168,6 +168,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         initView()
         initObserver()
         initSocketObserver()
+        favoriteAdapter.setPreloadItem()
         viewModel.getFavoriteMatch()
     }
 
@@ -179,7 +180,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun initView() {
         setupToolbar()
-        btn_sport.setOnClickListener {
+        lin_menu.setOnClickListener {
             showSportType()
         }
     }
@@ -209,7 +210,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             )
         )
         mListPop.setAdapter(SportTypeTextAdapter(dataSport))
-        mListPop.setAnchorView(btn_sport) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.setAnchorView(lin_menu) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.verticalOffset = 5
         mListPop.setModal(true) //设置是否是模式
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
@@ -223,19 +224,19 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 mListPop.dismiss()
                 var sportItem = dataSport[position]
                 sportItem.isSelected = true
-                btn_sport.text = sportItem.name
+                tv_all_sports.text = sportItem.name
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(sportItem)
             }
         })
         mListPop.setOnDismissListener {
-            btn_sport.isSelected = false
+            lin_menu.isSelected = false
         }
         if (mListPop.isShowing) {
-            btn_sport.isSelected = false
+            lin_menu.isSelected = false
             mListPop.dismiss()
         } else {
-            btn_sport.isSelected = true
+            lin_menu.isSelected = true
             mListPop.show()
         }
     }

@@ -87,7 +87,11 @@ class SportOutrightAdapter : BaseGameAdapter() {
         }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = if (data.isEmpty()) {
+        1
+    } else {
+        data.size
+    }
 
     override fun getItemViewType(position: Int): Int {
         if (isPreload) {

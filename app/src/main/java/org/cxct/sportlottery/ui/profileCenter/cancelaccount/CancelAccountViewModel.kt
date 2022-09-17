@@ -1,17 +1,13 @@
 package org.cxct.sportlottery.ui.profileCenter.cancelaccount
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.IndexService
-import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.ui.base.BaseViewModel
 
 class CancelAccountViewModel(
     androidContext: Application,

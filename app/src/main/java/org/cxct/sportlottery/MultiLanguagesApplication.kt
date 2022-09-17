@@ -60,6 +60,8 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.ui.selflimit.SelfLimitViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.ui.sport.SportListViewModel
+import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
 import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
@@ -151,6 +153,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { SportViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { FavoriteViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

@@ -78,6 +78,10 @@ data class MatchInfo(
 
     override var awayCornerKicks: Int? = null
 
+    override var homeHalfScore: String? = null
+    override var awayHalfScore: String? = null
+
+
     override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
 
     /**

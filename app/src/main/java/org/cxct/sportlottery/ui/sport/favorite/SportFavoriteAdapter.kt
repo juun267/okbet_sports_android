@@ -186,7 +186,11 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         }
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount(): Int = if (data.isEmpty()) {
+        1
+    } else {
+        data.size
+    }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)

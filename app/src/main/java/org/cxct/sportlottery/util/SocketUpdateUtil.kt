@@ -118,6 +118,15 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
                         isNeedRefresh = true
                     }
+                    if (gameType == GameType.FT.key && matchStatusCO.homeHalfScore != null && matchStatusCO.homeHalfScore != matchOdd.matchInfo?.homeHalfScore) {
+                        matchOdd.matchInfo?.homeHalfScore = matchStatusCO.homeHalfScore
+                        isNeedRefresh = true
+                    }
+
+                    if (gameType == GameType.FT.key && matchStatusCO.awayHalfScore != null && matchStatusCO.awayHalfScore != matchOdd.matchInfo?.awayHalfScore) {
+                        matchOdd.matchInfo?.awayHalfScore = matchStatusCO.awayHalfScore
+                        isNeedRefresh = true
+                    }
 
                     if (needAttack(gameType) && matchStatusCO.attack != null && matchStatusCO.attack != matchOdd.matchInfo?.attack) {
                         matchOdd.matchInfo?.attack = matchStatusCO.attack
@@ -252,6 +261,15 @@ object SocketUpdateUtil {
 
                 if (gameType == GameType.FT.key && matchStatusCO.awayYellowCards != null && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) {
                     matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
+                    isNeedRefresh = true
+                }
+                if (gameType == GameType.FT.key && matchStatusCO.homeHalfScore != null && matchStatusCO.homeHalfScore != matchOdd.matchInfo?.homeHalfScore) {
+                    matchOdd.matchInfo?.homeHalfScore = matchStatusCO.homeHalfScore
+                    isNeedRefresh = true
+                }
+
+                if (gameType == GameType.FT.key && matchStatusCO.awayHalfScore != null && matchStatusCO.awayHalfScore != matchOdd.matchInfo?.awayHalfScore) {
+                    matchOdd.matchInfo?.awayHalfScore = matchStatusCO.awayHalfScore
                     isNeedRefresh = true
                 }
 

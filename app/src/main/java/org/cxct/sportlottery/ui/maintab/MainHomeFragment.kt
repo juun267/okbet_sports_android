@@ -6,7 +6,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RadioGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,7 +52,6 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.GalleryLayoutManager
 import org.cxct.sportlottery.widget.Transformer
 import org.greenrobot.eventbus.EventBus
@@ -167,7 +165,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     private fun initView() {
         initToolBar()
-        tv_customer_service.setOnClickListener {
+        iv_customer_service.setOnClickListener {
             clickCustomService(requireContext(), childFragmentManager)
         }
         tv_hot_recommend.setOnClickListener {
@@ -423,17 +421,17 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             mainHomeMenuAdapter.setNewData(it.toMutableList())
         }
         lin_menu_game.apply {
-            llThirdGamePlayNowContainer.isVisible = true
-            llThirdGameComingSoonContainer.isVisible = false
-            val ivPlayNowLayoutParams = ivPlayNow.layoutParams as LinearLayout.LayoutParams
-            if (isCreditSystem()) {
-                tvNewGamesBeta.visibility = View.GONE
-                ivPlayNowLayoutParams.setMargins(0, 8.dp, 0, 0)
-            } else {
-                tvNewGamesBeta.visibility = View.VISIBLE
-                ivPlayNowLayoutParams.setMargins(0, 0, 0, 0)
-            }
-            ivThirdGame.setImageResource(R.drawable.image_e_game_empty)
+//            llThirdGamePlayNowContainer.isVisible = true
+//            llThirdGameComingSoonContainer.isVisible = false
+//            val ivPlayNowLayoutParams = ivPlayNow.layoutParams as LinearLayout.LayoutParams
+//            if (isCreditSystem()) {
+//                tvNewGamesBeta.visibility = View.GONE
+//                ivPlayNowLayoutParams.setMargins(0, 8.dp, 0, 0)
+//            } else {
+//                tvNewGamesBeta.visibility = View.VISIBLE
+//                ivPlayNowLayoutParams.setMargins(0, 0, 0, 0)
+//            }
+            ivThirdGame.setImageResource(R.drawable.bg_egame)
             ivThirdGame.setOnClickListener {
                 publicityMenuData?.eGameMenuData?.let { thirdDictValues ->
                     avoidFastDoubleClick()
