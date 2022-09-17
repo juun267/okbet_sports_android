@@ -109,7 +109,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             mListPop.setBackgroundDrawable(
                 ContextCompat.getDrawable(
                     context,
-                    R.drawable.bg_play_category_pop
+                    R.drawable.bg_pop_up_arrow
                 )
             )
         }
@@ -117,8 +117,8 @@ class StatusSpinnerView @JvmOverloads constructor(
         mListPop.setAdapter(spinnerAdapter)
         mListPop.anchorView = tv_name  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
-
-    //    mListPop.setHorizontalOffset(ScreenUtils.getScreenWidth(context) / 4)
+        mListPop.verticalOffset = 5
+        mListPop.setHorizontalOffset(5)
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
