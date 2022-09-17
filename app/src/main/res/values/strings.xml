@@ -1346,5 +1346,5 @@
     <string name="download">DOWNLOAD</string>
     <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
     <string name="half">半</string>
-
+    <string name="other_bet">其他投注</string>
 </resources>
