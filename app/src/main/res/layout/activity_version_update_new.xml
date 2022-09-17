@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.cxct.sportlottery.ui.common.CustomTopToolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topTitleText="@string/version_update"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+        android:layout_marginTop="40dp"
+        android:src="@drawable/logo_download1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:layout_marginTop="73dp"
+        android:src="@drawable/logo_download2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:id="@+id/iv_logo_app"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logo_app_down" />
+        <LinearLayout
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_logo_app"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/color_535D76"
+                android:textSize="@dimen/textSize14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OKbet Sportsbook"/>
+            <TextView
+                android:textColor="@color/color_6C7BA8"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best Sportsbook Platform"/>
+            <TextView
+                android:textColor="@color/color_6C7BA8"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version 6.0.1"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <Button
+        android:layout_marginTop="32dp"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/download"
+        android:background="@drawable/bg_download_button"
+        android:layout_width="296dp"
+        android:layout_height="@dimen/dp_40"/>
+    <LinearLayout
+        android:layout_marginTop="37dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/logo_google"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_marginLeft="@dimen/margin_24"
+            android:src="@drawable/logo_huawei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

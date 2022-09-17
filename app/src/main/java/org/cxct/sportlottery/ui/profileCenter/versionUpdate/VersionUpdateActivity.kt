@@ -26,6 +26,7 @@ class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_version_update)
 
         initView()

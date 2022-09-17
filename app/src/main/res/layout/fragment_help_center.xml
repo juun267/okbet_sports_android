@@ -8,7 +8,9 @@
     android:dividerPadding="1dp"
     android:orientation="vertical"
     android:showDividers="middle|end">
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="11dp"/>
     <LinearLayout
         android:id="@+id/linear_common_problem"
         android:layout_width="match_parent"

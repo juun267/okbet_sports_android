@@ -23,6 +23,7 @@ class SelfLimitActivity : BaseSocketActivity<SelfLimitViewModel>(SelfLimitViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySelfLimitBinding.inflate(layoutInflater)
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(binding.root)
 
         initToolbar()

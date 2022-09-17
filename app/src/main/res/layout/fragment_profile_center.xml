@@ -14,12 +14,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/v_statusbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_25"
-            android:background="@color/color_FFFFFF" />
-
         <FrameLayout
             android:id="@+id/lin_person"
             android:layout_width="match_parent"
@@ -31,7 +25,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
+                <View
+                    android:id="@+id/v_statusbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_25"
+                    android:background="@color/color_FFFFFF" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tool_bar_height"
@@ -104,7 +102,7 @@
                             android:layout_height="55dp"
                             android:layout_centerVertical="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/img_avatar_default"
+                            android:src="@drawable/ic_person_avatar"
                             app:riv_border_color="@color/exo_white"
                             app:riv_border_width="@dimen/margin_1"
                             app:riv_oval="true" />
@@ -796,9 +794,11 @@
                                     android:textSize="@dimen/textSize12sp" />
 
                                 <ImageView
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp"
-                                    android:src="@drawable/shape_red_circle" />
+                                    android:id="@+id/iv_version_new"
+                                    android:visibility="gone"
+                                    android:layout_width="31dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/icon_tag_new" />
                             </LinearLayout>
 
                             <View
@@ -1071,8 +1071,7 @@
                         android:gravity="center"
                         android:minHeight="48dp"
                         android:orientation="horizontal"
-                        android:visibility="gone"
-                        tools:visibility="gone">
+                        >
 
                         <ImageView
                             android:layout_width="wrap_content"

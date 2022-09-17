@@ -670,7 +670,7 @@
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
     <string name="write_suggestion">Submission</string>
-    <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
+   <!-- <string name="can_input_1_to_500_word">Can enter 1–500 words</string>&lt;!&ndash;请描述您遇到的问题&ndash;&gt;-->
     <string name="third_game_ky">KY games</string>
     <string name="odd_type_title">Odds Setting</string>
     <string name="odd_type_eu">EU Odds</string>
@@ -898,7 +898,7 @@
     <string name="self_limit_per_bet_limit_impotent">·You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
     <string name="self_limit_per_bet_limit_user">Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
-    <string name="self_limit_per_bet_limit_user_limit"> (Maximum limited bet:%1$s %2$s-%1$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user_limit">・Maximum limited bet:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
     <string name="self_limit_input_password_for_confirm">Please enter the login password to confirm the application.</string>
     <string name="self_limit_input_password_for_modification">Please enter the login password to confirm the modification.</string>
@@ -1137,7 +1137,7 @@
     <string name="register_currency">Currency</string>
     <string name="register_nation">Country</string>
     <string name="deposits">DEPOSIT</string>
-    <string name="withdraw_down">WITHDRAWAL</string>
+    <string name="withdraw_down">WITHDRAW</string>
     <string name="my_message">My message</string>
     <string name="betting_setting">Betting setting</string>
     <string name="transaction_record">交易记录明细</string>
@@ -1343,6 +1343,8 @@
     <string name="my_favorite_empty">您还没有收藏赛事</string>
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="cruel_write_off">残忍注销</string>
+    <string name="download">DOWNLOAD</string>
+    <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
     <string name="half">半</string>
 
 </resources>

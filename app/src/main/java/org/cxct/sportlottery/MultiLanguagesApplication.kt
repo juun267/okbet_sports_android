@@ -47,6 +47,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
@@ -155,6 +156,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { CancelAccountViewModel(get(),get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

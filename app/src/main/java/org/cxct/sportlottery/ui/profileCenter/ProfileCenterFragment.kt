@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import kotlinx.android.synthetic.main.fragment_profile_center.btn_about_us
 import kotlinx.android.synthetic.main.fragment_profile_center.btn_account_transfer
@@ -73,6 +74,7 @@ import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActiv
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
 import org.cxct.sportlottery.ui.vip.VipActivity
@@ -80,6 +82,7 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 /**
@@ -96,7 +99,7 @@ class ProfileCenterFragment :
             return fragment
         }
     }
-
+    private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
     private var noticeCount: Int? = null
@@ -147,6 +150,7 @@ class ProfileCenterFragment :
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
@@ -155,9 +159,26 @@ class ProfileCenterFragment :
         btn_promotion.setVisibilityByCreditSystem()
         //   btn_affiliate.setVisibilityByCreditSystem()
         btn_feedback.setVisibilityByCreditSystem()
+        mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
+            if (it.isNewVersion) {
+                //下载更新要做判断 当前有没有新版本
+                update_version.setOnClickListener{
+                    //外部下載
+                    btn_external_download.setOnClickListener {
+                        JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
+                    }
+                    // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
+                }
+                iv_version_new.visibility = View.VISIBLE
+            }
+            else{
+                iv_version_new.visibility = View.GONE
+            }
+        }
         val version = "V${BuildConfig.VERSION_NAME}"
         tv_current_version.text = version
-        tv_version_code.text = version
+        tv_version_code.text = getString(R.string.current_version)+version
+
     }
 
     fun initToolBar() {
@@ -383,9 +404,8 @@ class ProfileCenterFragment :
                 }
             }
         }
-        update_version.setOnClickListener{
-            startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
-        }
+
+
         //关于我们
         btn_about_us.setOnClickListener {
             JumpUtil.toInternalWeb(
@@ -659,6 +679,8 @@ class ProfileCenterFragment :
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
         }
+
+
     }
 
     @SuppressLint("SetTextI18n")

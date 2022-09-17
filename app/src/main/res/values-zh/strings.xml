@@ -662,7 +662,7 @@
     <string name="all_out_plat">全部转出</string>
     <string name="all_in_plat">全部转入</string>
     <string name="write_suggestion">填写建议</string>
-    <string name="can_input_1_to_500_word">可输入1–500字</string>
+    <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
     <string name="third_game_ky">开元棋牌</string>
     <string name="odd_type_title">盘口类型</string>
     <string name="odd_type_eu">欧洲盘</string>
@@ -905,7 +905,7 @@
     <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
     <string name="self_limit_per_bet_limit_user">已设置投注上限：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">无</string>
-    <string name="self_limit_per_bet_limit_user_limit"> (最高可设定:%1$s %2$s-%1$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user_limit">・最高可设定:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
     <string name="self_limit_input_password_for_confirm">请输入登录密码以确认申请</string>
     <string name="self_limit_input_password_for_modification">请输入登录密码以确认修改</string>

@@ -114,7 +114,15 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                 getString(R.string.self_limit_per_bet_limit_user),
                 sConfigData?.systemCurrencySign,
                 TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit?.toDouble() ?: 0.0)
-            )
+            ).apply {
+                if (viewModel.userInfo.value?.perBetLimit?.toDouble() == 0.0){
+                    String.format(
+                        getString(R.string.self_limit_per_bet_limit_user),
+                        "",
+                        TextUtil.formatMoney(viewModel.userInfo.value?.perBetLimit?.toDouble() ?: "无")
+                    )
+                }
+            }
         }
 
         val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0

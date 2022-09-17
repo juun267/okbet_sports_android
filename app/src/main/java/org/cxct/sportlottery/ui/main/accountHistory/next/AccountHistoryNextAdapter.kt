@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
@@ -18,14 +17,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentBinding
-import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentOutrightBinding
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextContentParlayBinding
 import org.cxct.sportlottery.databinding.ItemAccountHistoryNextTotalBinding
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -214,7 +211,7 @@ class AccountHistoryNextAdapter(
 //                        tvParlayType.text = LocalUtils.getString(parlayTypeStringResId)
                         val parlayTitle = itemView.context.getString(R.string.bet_record_parlay) +
                                 "(${itemView.context.getString(parlayTypeStringResId)})" +
-                                "-${getGameTypeName(row.gameType.orEmpty())}"
+                                "-${GameType.getGameTypeString(itemView.context, row.gameType)}"
                         tvParlayType.text = parlayTitle
                     }
                 }
@@ -243,10 +240,6 @@ class AccountHistoryNextAdapter(
 
                 executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
             }
-        }
-
-        private fun getGameTypeName(gameType: String): String {
-            return itemView.context.getString(GameType.valueOf(gameType).string)
         }
 
         companion object {
@@ -283,24 +276,17 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
-                val gameType = row.gameType.orEmpty()
-
                 val singleTitle = itemView.context.getString(R.string.bet_record_single) +
-                        "-${getGameTypeName(gameType)}"
+                        "-${GameType.getGameTypeString(itemView.context, row.gameType)}"
                 binding.tvTitle.text = singleTitle
 
-                val oddsTypeStr = when (this.oddsType) {
-                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
-                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
-                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
-                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
-                }
-                binding.tvGameTypePlayCate.text = if (row.matchType != null) {
-                    //篮球 滚球 全场让分【欧洲盘】
-                    "${getGameTypeName(gameType)} ${getMatchTypeName(row.matchType)} ${this.playCateName}$oddsTypeStr"
-                } else {
-                    "${getGameTypeName(gameType)} ${this.playCateName}$oddsTypeStr"
-                }
+                //篮球 滚球 全场让分【欧洲盘】
+                binding.tvGameTypePlayCate.setGameType_MatchType_PlayCateName_OddsType(
+                    row.gameType,
+                    row.matchType,
+                    this.playCateName,
+                    this.oddsType
+                )
 
                 if (!homeName.isNullOrEmpty() && !awayName.isNullOrEmpty()) {
                     binding.tvTeamNamesSingles.setTeamsNameWithVS(homeName, awayName)
@@ -318,14 +304,6 @@ class AccountHistoryNextAdapter(
                 }
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
-        }
-
-        private fun getGameTypeName(gameType: String): String {
-            return itemView.context.getString(GameType.valueOf(gameType).string)
-        }
-
-        private fun getMatchTypeName(matchType: String?): String {
-            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
 
         companion object {
@@ -401,26 +379,19 @@ class AccountHistoryNextAdapter(
 //                }
 //                roundAdapter.submitList(scoreList)
 
-                val gameType = row.gameType.orEmpty()
-
                 val singleTitle = itemView.context.getString(R.string.bet_record_single) +
-                        "-${getGameTypeName(gameType)}"
+                        "-${GameType.getGameTypeString(itemView.context, row.gameType)}"
                 binding.tvTitle.text = singleTitle
 
                 binding.tvTeamNamesSingles.setTeamsNameWithVS(it.homeName, it.awayName)
 
-                val oddsTypeStr = when (it.oddsType) {
-                    OddsType.HK.code -> "【" + itemView.context.getString(OddsType.HK.res) + "】"
-                    OddsType.MYS.code -> "【" + itemView.context.getString(OddsType.MYS.res) + "】"
-                    OddsType.IDN.code -> "【" + itemView.context.getString(OddsType.IDN.res) + "】"
-                    else -> "【" + itemView.context.getString(OddsType.EU.res) + "】"
-                }
-                binding.tvGameTypePlayCate.text = if (row.matchType != null) {
-                    //篮球 滚球 全场让分【欧洲盘】
-                    "${getGameTypeName(gameType)} ${getMatchTypeName(row.matchType)} ${it.playCateName}$oddsTypeStr"
-                } else {
-                    "${getGameTypeName(gameType)} ${it.playCateName}$oddsTypeStr"
-                }
+                //篮球 滚球 全场让分【欧洲盘】
+                binding.tvGameTypePlayCate.setGameType_MatchType_PlayCateName_OddsType(
+                    row.gameType,
+                    row.matchType,
+                    it.playCateName,
+                    it.oddsType
+                )
 
                 binding.llCopyBetOrder.setOnClickListener {
                     itemView.context.copyToClipboard(row.orderNo.orEmpty())
@@ -432,10 +403,6 @@ class AccountHistoryNextAdapter(
 
         private fun getGameTypeName(gameType: String): String {
             return itemView.context.getString(GameType.valueOf(gameType).string)
-        }
-
-        private fun getMatchTypeName(matchType: String?): String {
-            return itemView.context.getString(MatchType.getMatchTypeStringRes(matchType))
         }
 
         companion object {

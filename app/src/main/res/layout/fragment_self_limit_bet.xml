@@ -67,7 +67,7 @@
                     android:layout_marginLeft="@dimen/margin_14"
                     android:layout_weight="1"
                     android:text="@string/self_limit_impotent"
-                    android:textColor="@color/color_BBBBBB_333333"
+                    android:textColor="@color/color_FFFFFF_414655"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
                 android:layout_marginEnd="@dimen/margin_10"
                 android:minWidth="62dp"
                 android:text="@string/self_limit_per_bet_limit_highest"
-                android:textColor="@color/color_BBBBBB_333333"
+                android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize13sp"
                 android:textStyle="bold" />
 
@@ -148,7 +148,7 @@
             android:id="@+id/tvDot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dot2"
+            android:text="@string/dot"
             android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +173,7 @@
             android:text="@string/self_limit_per_bet_limit_user_limit"
             android:textColor="@color/color_E44438_e44438"
             android:textSize="@dimen/textSize12sp"
-            app:layout_constraintStart_toStartOf="@id/tvPerBetLimit"
+            app:layout_constraintStart_toStartOf="@id/tvDot"
             app:layout_constraintTop_toBottomOf="@id/tvPerBetLimit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

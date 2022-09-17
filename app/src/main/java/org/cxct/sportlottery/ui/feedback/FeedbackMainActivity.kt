@@ -9,13 +9,15 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 
 /**
- * @app_destination 建議反饋
+ * @app_destination 建议反馈
  */
 class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewModel::class) {
     private val navController by lazy { findNavController(R.id.myNavHostFragment) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //沉浸式颜色修改
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_feedback_main)
 
         viewModel.getUserInfo()
