@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.annotation.SuppressLint
 import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -768,7 +769,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         var oddsId = ""
         var oldOdds = ""
-        var handler = Handler()
+        var handler = Handler(Looper.getMainLooper())
+        private val totalAnimationDuration = 3000L //動畫總共呈現時間
+        private val animationDuration = 750L //單次動畫持續時間
+        private val delayResetTime = totalAnimationDuration - animationDuration * 2
 
         var repeatCount = 0
         private fun setAnimation(ivArrow: ImageView, tvOdds: TextView, isUp: Boolean) {
@@ -778,7 +782,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
             val anim = if (isUp) R.anim.arrow_up else R.anim.arrow_down
             val animation = AnimationUtils.loadAnimation(ivArrow.context, anim)
-            animation.duration = 750L
+            animation.duration = animationDuration
             animation.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
                     if (isUp) {
@@ -797,7 +801,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         repeatCount = 0
                         handler.postDelayed({
                             resetOddsUI()
-                        }, 1000L)
+                        }, delayResetTime)
                     } else {
                         setAnimation(ivArrow, tvOdds, isUp)
                     }
@@ -848,7 +852,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         if (handler != null) View.VISIBLE else View.GONE
                     handler?.postDelayed({
                         odds_change_layout?.visibility = View.GONE
-                    }, 3000)
+                    }, totalAnimationDuration)
 //                    tv_odd_content_changed.text =
 //                        if (itemData.matchOdd.playCode == PlayCate.LCS.value) context.getString(
 //                            R.string.bet_info_odd_content_changed2,
