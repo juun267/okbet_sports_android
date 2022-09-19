@@ -105,10 +105,18 @@ class BetButton @JvmOverloads constructor(
                     context.getString(R.string.bet_info_list_bet)
                 }
                 isParlay -> {
-                    context.getString(R.string.confirm_multiple_bets, betCounts)
+                    val multipleBetText = context.getString(R.string.confirm_multiple_bets, betCounts)
+                    when (betCounts) {
+                        1 -> multipleBetText.removeSuffix("s")
+                        else -> multipleBetText
+                    }
                 }
                 else -> {
-                    context.getString(R.string.confirm_single_bets, betCounts)
+                    val singleBetText = context.getString(R.string.confirm_single_bets, betCounts)
+                    when (betCounts) {
+                        1 -> singleBetText.removeSuffix("s")
+                        else -> singleBetText
+                    }
                 }
             }
         tv_bet.text = betContent
