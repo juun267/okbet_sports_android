@@ -24,7 +24,7 @@ import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import java.util.*
 
 /**
- * @app_destination 建議反饋-反饋紀錄
+ * @app_destination 意见反馈-反馈记录
  */
 class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel::class) {
 

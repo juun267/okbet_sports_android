@@ -11,7 +11,7 @@
         android:layout_width="256dp"
         android:layout_height="199dp"
         android:layout_marginTop="80dp"
-        android:src="@drawable/ic_img_no_game_record"
+        android:src="@drawable/ic_no_data_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

@@ -122,43 +122,6 @@
                             tools:listitem="@layout/content_bet_info_item_v3" />
                     </LinearLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cl_no_data"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/color_191919_FCFCFC"
-                        android:visibility="gone"
-                        tools:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/iv_no_data"
-                            android:layout_width="65dp"
-                            android:layout_height="69dp"
-                            android:src="@drawable/icon_no_data"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/guide_line" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="19dp"
-                            android:text="@string/bet_list_empty"
-                            android:textColor="@color/color_909090_666666"
-                            android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_no_data" />
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guide_line"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            app:layout_constraintGuide_percent="0.25" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
                     <View
                         android:id="@+id/line_shadow"
                         android:layout_width="match_parent"

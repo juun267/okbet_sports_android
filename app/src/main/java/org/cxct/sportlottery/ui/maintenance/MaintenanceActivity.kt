@@ -7,6 +7,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 
 class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(MaintenanceViewModel::class) {
@@ -37,7 +38,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                    GamePublicityActivity.reStart(this)
+                    MainTabActivity.reStart(this)
                     finish()
                 }
             }

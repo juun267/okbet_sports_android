@@ -24,7 +24,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 
 /**
- * @app_destination 额度转换
+ * @app_destination 转换记录
  */
 class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 

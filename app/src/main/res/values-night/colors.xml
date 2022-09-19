@@ -151,4 +151,9 @@
     <color name="color_232C4F_FFFFFF">@color/color_232C4F</color>
 
     <color name="color_33131932_33414655">@color/color_33131932</color>
+
+    <!--其他投注StatusSpinnerView颜色-->
+    <color name="color_232C4F_F3F9FF">@color/color_232C4F</color>
+    <color name="color_232C4F_F4F4F4">@color/color_232C4F</color>
+    <color name="color_FFFFFF_535D76">@color/color_FFFFFF</color>
 </resources>

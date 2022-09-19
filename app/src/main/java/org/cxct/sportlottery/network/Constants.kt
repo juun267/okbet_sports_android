@@ -7,6 +7,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -46,10 +47,10 @@ object Constants {
         }
     }
 
-    //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
+    //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
         return try {
-            "${getBaseUrl()}/activity/mobile/#/useractilist?lang=${language.key}&token=${
+            "${getBaseUrl()}/activity/mobile/#/useractilistV2?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"

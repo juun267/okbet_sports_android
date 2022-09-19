@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:text="@string/bet_slip"
-        android:textAllCaps="true"
         android:textColor="@color/color_FFFFFF_414655"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="parent"

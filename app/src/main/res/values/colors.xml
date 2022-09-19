@@ -458,4 +458,10 @@
     //日历范围颜色
     <!--沉浸式状态栏颜色处理-->
     <color name="color_232C4F_FFFFFF">@color/color_FFFFFF</color>
+    <!--其他投注StatusSpinnerView颜色-->
+    <color name="color_232C4F_F3F9FF">@color/color_F3F9FF</color>
+    <color name="color_232C4F_F4F4F4">@color/color_F4F4F4</color>
+    <color name="color_FFFFFF_535D76">@color/color_535D76</color>
+    <!--意见与反馈-反馈记录-->
+
 </resources>

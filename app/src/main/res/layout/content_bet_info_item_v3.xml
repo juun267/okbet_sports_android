@@ -222,6 +222,7 @@
                         android:id="@+id/tv_win"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxWidth="60dp"
                         android:text="@string/bet_win"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
@@ -251,14 +252,16 @@
 
                     <TextView
                         android:id="@+id/tv_win_hint_default"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:paddingHorizontal="10dp"
                         android:textColor="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/et_win"
                         app:layout_constraintEnd_toEndOf="@+id/et_win"
+                        app:layout_constraintStart_toStartOf="@+id/et_win"
                         app:layout_constraintTop_toTopOf="@+id/et_win"
                         tools:text="@string/hint_bet_limit_range" />
 
@@ -268,7 +271,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="@string/bet_info_list_bet"
+                        android:maxWidth="60dp"
+                        android:text="@string/bet_stake"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/et_bet"
@@ -297,14 +301,16 @@
 
                     <TextView
                         android:id="@+id/tv_hint_default"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:paddingHorizontal="10dp"
                         android:textColor="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/et_bet"
                         app:layout_constraintEnd_toEndOf="@+id/et_bet"
+                        app:layout_constraintStart_toStartOf="@+id/et_bet"
                         app:layout_constraintTop_toTopOf="@+id/et_bet"
                         tools:text="@string/hint_bet_limit_range" />
 
@@ -333,23 +339,6 @@
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView
-                        android:id="@+id/tv_odd_content_changed"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/bet_info_hint_view_height"
-                        android:background="@color/color_26E23434"
-                        android:drawablePadding="@dimen/margin_10"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="@dimen/margin_14"
-                        android:text="@string/bet_info_odd_content_changed2"
-                        android:textColor="@color/color_E23434_E23434"
-                        android:textSize="@dimen/textSize14sp"
-                        android:visibility="gone"
-                        app:drawableStartCompat="@drawable/ic_bet_lock_tip"
-                        app:drawableTint="@color/color_E23434_E23434"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="visible" />
-
-                    <TextView
                         android:id="@+id/tv_no_parlay"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/bet_info_hint_view_height"
@@ -364,7 +353,7 @@
                         app:drawableStartCompat="@drawable/ic_bet_lock_tip"
                         app:drawableTint="@color/color_EBA900"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="gone" />
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tv_bet_lock"
@@ -382,6 +371,30 @@
                         app:drawableTint="@color/color_141931_F9F9F9"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:visibility="gone" />
+
+                    <FrameLayout
+                        android:id="@+id/odds_change_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/bet_info_hint_view_height"
+                        android:background="@drawable/bg_bet_hint_no_top_stroke"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tv_odd_content_changed"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_26E23434"
+                            android:drawablePadding="@dimen/margin_6"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="@dimen/margin_10"
+                            android:text="@string/bet_info_odd_content_changed2"
+                            android:textColor="@color/color_E23434_E23434"
+                            android:textSize="@dimen/textSize14sp"
+                            app:drawableStartCompat="@drawable/ic_bet_lock_tip"
+                            app:drawableTint="@color/color_E23434_E23434" />
+                    </FrameLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
