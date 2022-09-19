@@ -88,8 +88,9 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
                 clickListener.onClick(item)
             }
             tvStatus.text = tvStatus.context.getString(getMsgStatus(item.status))
-            val statusColor = if (item.status == 0) R.color.color_909090_666666 else R.color.color_08dc6e_08dc6e
-            tvStatus.setTextColor(ContextCompat.getColor(tvStatus.context, statusColor))
+            //取消变色设置
+         /*   val statusColor = if (item.status == 0) R.color.color_909090_666666 else R.color.color_08dc6e_08dc6e
+            tvStatus.setTextColor(ContextCompat.getColor(tvStatus.context, statusColor))*/
         }
 
         companion object {
