@@ -13,7 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <View
+            android:id="@+id/v_statusbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_25"
+            android:background="@color/color_FFFFFF" />
         <FrameLayout
             android:id="@+id/lin_person"
             android:layout_width="match_parent"
@@ -25,11 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <View
-                    android:id="@+id/v_statusbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_25"
-                    android:background="@color/color_FFFFFF" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tool_bar_height"
@@ -255,7 +255,7 @@
                         android:contentDescription="@null"
                         android:padding="@dimen/margin_4"
                         android:scaleType="fitXY"
-                        android:src="@drawable/ic_icon_money_refresh02"
+                        android:src="@drawable/icon_money_refresh"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_account_balance" />
@@ -507,10 +507,8 @@
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
                     </LinearLayout>
-
-
                     <LinearLayout
-                        android:id="@+id/btn_self_limit"
+                        android:id="@+id/btn_other_bet_record"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -524,8 +522,8 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="20dp"
                             android:contentDescription="@null"
-                            android:src="@drawable/ic_icon_banned_01" />
-                        <!--缺翻譯-->
+                            android:src="@drawable/icon_other_betting" />
+
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -537,7 +535,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_weight="1"
-                                android:text="@string/self_limit"
+                                android:text="@string/other_bet"
                                 android:textColor="@color/color_6C7BA8"
                                 android:textSize="@dimen/textSize14sp" />
 
@@ -555,11 +553,12 @@
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
+
                     </LinearLayout>
 
 
                     <LinearLayout
-                        android:id="@+id/btn_time_zone"
+                        android:id="@+id/btn_game_settlement"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -573,7 +572,7 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="20dp"
                             android:contentDescription="@null"
-                            android:src="@drawable/ic_icon_timev_01" />
+                            android:src="@drawable/ic_icon_advice_01" />
 
                         <RelativeLayout
                             android:layout_width="0dp"
@@ -586,7 +585,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_weight="1"
-                                android:text="@string/timezone_change"
+                                android:text="@string/game_settlement"
                                 android:textColor="@color/color_6C7BA8"
                                 android:textSize="@dimen/textSize14sp" />
 
@@ -604,9 +603,8 @@
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
+
                     </LinearLayout>
-
-
                     <LinearLayout
                         android:id="@+id/btn_help_center"
                         android:layout_width="match_parent"
@@ -676,9 +674,8 @@
                         </RelativeLayout>
                     </LinearLayout>
 
-
                     <LinearLayout
-                        android:id="@+id/btn_game_settlement"
+                        android:id="@+id/btn_self_limit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -692,8 +689,8 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="20dp"
                             android:contentDescription="@null"
-                            android:src="@drawable/ic_icon_advice_01" />
-
+                            android:src="@drawable/ic_icon_banned_01" />
+                        <!--缺翻譯-->
                         <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -705,7 +702,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_weight="1"
-                                android:text="@string/game_settlement"
+                                android:text="@string/self_limit"
                                 android:textColor="@color/color_6C7BA8"
                                 android:textSize="@dimen/textSize14sp" />
 
@@ -723,8 +720,63 @@
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
-
                     </LinearLayout>
+
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/btn_time_zone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:minHeight="48dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_icon_timev_01" />
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_weight="1"
+                                android:text="@string/timezone_change"
+                                android:textColor="@color/color_6C7BA8"
+                                android:textSize="@dimen/textSize14sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_arrow_right" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/margin_1"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/color_E3E8EE" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+
+
+
+
 
                     <LinearLayout
                         android:id="@+id/btn_version_now"
@@ -1063,40 +1115,7 @@
                         </RelativeLayout>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/btn_other_bet_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:gravity="center"
-                        android:minHeight="48dp"
-                        android:orientation="horizontal"
-                        >
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="20dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_other_betrecord" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/other_bet_record"
-                            android:textColor="@color/color_6C7BA8"
-                            android:textSize="@dimen/textSize14sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_arrow_right" />
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/btn_member_level"

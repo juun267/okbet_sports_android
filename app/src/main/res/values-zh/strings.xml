@@ -877,7 +877,7 @@
     <string name="verify_failed">(验证失败)</string>
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
-    <string name="text_us_east_time">以美东（UTC-4）时间计算</string>
+    <string name="text_us_east_time">• 以美东 (UTC-4) 时间计算</string>
     <string name="text_cant_play">发生错误,请稍后再试。</string>
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>

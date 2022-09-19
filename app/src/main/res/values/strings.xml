@@ -869,7 +869,7 @@
     <string name="verify_failed">(Verify failed)</string>
     <string name="select_id_type">Select ID Type</string>
     <string name="scan_tool_bar">Scan results</string>
-    <string name="text_us_east_time">The time is reported in UTC-4 time zone.</string>
+    <string name="text_us_east_time">• The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
@@ -944,7 +944,7 @@
     <string name="account_hint">(your member account)</string>
     <string name="submit_success">submitted successfully</string>
     <!-- 搜尋 -->
-    <string name="text_search">Search Matches</string>
+    <string name="text_search">Search</string>
     <string name="text_clear">Clear</string>
     <string name="text_search_history">Search history</string>
     <string name="text_top_search">Top Searches</string>
@@ -1210,7 +1210,7 @@
     <string name="customer_service">如需帮助，请</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="filter">筛选</string>
+    <string name="filter">filter</string>
 
     <string name="next_step">Next</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
@@ -1231,8 +1231,8 @@
     <string name="customer_service_help">如需帮助，请联系客服</string>
     <string name="league_filter">select matches</string>
     <string name="reverse_select">reverse select</string>
-    <string name="video">Video</string>
-    <string name="anime">Animation</string>
+    <string name="video">video</string>
+    <string name="anime">anim</string>
 
     <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
@@ -1344,6 +1344,7 @@
     <string name="download">DOWNLOAD</string>
     <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
     <string name="half">半</string>
+    <string name="other_bet">其他投注</string>
     <string name="skin_mode">皮肤: 日/夜间</string>
     <string name="main_tab_home">@string/bottom_nav_home</string>
     <string name="main_tab_sport">体育赛事</string>

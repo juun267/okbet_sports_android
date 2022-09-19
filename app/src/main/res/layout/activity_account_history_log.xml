@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:background="@color/color_191919_FCFCFC"
             app:defaultStatusText="@string/text_account_history_bet"
+            app:listBackground="@drawable/bg_pop_up_arrow"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
     </LinearLayout>

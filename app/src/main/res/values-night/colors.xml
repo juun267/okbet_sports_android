@@ -149,4 +149,6 @@
     <!--endregion 新UI 日夜間色系-->
     <!--沉浸式状态栏颜色处理-->
     <color name="color_232C4F_FFFFFF">@color/color_232C4F</color>
+
+    <color name="color_33131932_33414655">@color/color_33131932</color>
 </resources>

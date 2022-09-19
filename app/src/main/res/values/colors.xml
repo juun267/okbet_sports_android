@@ -388,7 +388,8 @@
     <color name="color_131932">#131932</color>
     <color name="color_202541">#202541</color>
     <color name="color_EBA900">#EBA900</color>
-
+    <color name="color_33414655">#80414655</color>
+    <color name="color_33131932">#33131932</color>
 
     <color name="color_E8EFFD">#E8EFFD</color>
     <color name="color_FFCC15">#FFCC15</color>
@@ -448,6 +449,7 @@
     <color name="color_DCB345_ECCD86">@color/color_ECCD86</color>
     <color name="color_131932_F0F5FA">@color/color_F0F5FA</color>
     <color name="color_202541_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_33131932_33414655">@color/color_33414655</color>
     <!--endregion 新UI 日夜間色系-->
 
     <color name="color_1E6C7BA8">#1e6c7ba8</color>
@@ -456,5 +458,4 @@
     //日历范围颜色
     <!--沉浸式状态栏颜色处理-->
     <color name="color_232C4F_FFFFFF">@color/color_FFFFFF</color>
-
 </resources>

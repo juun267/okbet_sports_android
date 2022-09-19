@@ -912,7 +912,7 @@
     <string name="verify_failed">(Xác minh không thành công)</string>
     <string name="select_id_type">Chọn loại ID</string>
     <string name="scan_tool_bar">Quét kết quả</string>
-    <string name="text_us_east_time">Thời gian được báo cáo theo múi giờ UTC-4.</string>
+    <string name="text_us_east_time">• Thời gian được báo cáo theo múi giờ UTC-4</string>
     <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
     <string name="text_cant_play">Đã xảy ra lỗi. Vui lòng thử lại sau.</string>
     <string name="text_bet_not_success">Trạng thái phiếu cược đang&#160;</string>
