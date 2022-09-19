@@ -33,11 +33,17 @@
             android:layout_alignParentBottom="true"
             android:layout_marginVertical="14dp"
             android:gravity="end"
+            android:layout_marginRight="@dimen/margin_20"
             android:textColor="@color/color_B3FFFFFF_99000000"
             android:textSize="@dimen/textSize14sp"
             android:layout_alignParentRight="true"
             tools:text="0 / 500" />
-
+        <ImageView
+            android:src="@drawable/ic_union"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
 
