@@ -74,11 +74,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     override fun onResume() {
         super.onResume()
-        if (MultiLanguagesApplication.isNightMode) {
-            cb_appearance.isChecked = true
-        } else {
-            cb_appearance.isChecked = false
-        }
+        cb_appearance.isChecked = MultiLanguagesApplication.isNightMode
         tv_language.text = LanguageManager.getLanguageStringResource(requireContext())
         iv_language.setImageResource(LanguageManager.getLanguageFlag(requireContext()))
 
@@ -116,7 +112,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 MultiLanguagesApplication.saveNightMode(false)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
-            EventBus.getDefault().post(MenuEvent(false))
         }
         //在線客服 (取代原有的客服懸浮按鈕)
         lin_customer.setOnClickListener {

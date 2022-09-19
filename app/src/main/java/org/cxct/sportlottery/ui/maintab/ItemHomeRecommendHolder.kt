@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.view.View
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
@@ -17,10 +16,7 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ViewHolderUtils
-import org.cxct.sportlottery.util.needCountStatus
+import org.cxct.sportlottery.util.*
 
 //TODO 棒球比分狀態顯示
 class ItemHomeRecommendHolder(
@@ -58,102 +54,7 @@ class ItemHomeRecommendHolder(
     }
 
     fun update(data: Recommend, oddsType: OddsType) {
-        //設置賽事資訊是否顯示
-        setupGameInfoVisibility(data)
 
-        //設置背景、隊伍名稱、點擊事件
-        setupGameInfo(data)
-
-        //玩法Code
-        var oddPlayCateCode = ""
-
-        var oddList = listOf<Odd?>()
-
-        val oddsMap = mutableMapOf<String, List<Odd?>?>()
-        data.oddsMap?.forEach {
-            oddsMap[it.key] = it.value
-        }
-        val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
-            .filterPlayCateSpanned(data.gameType)
-        if (sortOddsMap.isNotEmpty()) {
-            sortOddsMap.iterator().next().key.let {
-                oddPlayCateCode = it
-            }
-            sortOddsMap.iterator().next().value?.let { it ->
-                oddList = it
-            }
-        } else
-            return
-        //玩法名稱
-        val playCateName =
-            data.playCateNameMap?.get(oddPlayCateCode)
-                ?.get(LanguageManager.getSelectLanguage(binding.root.context).key)
-                ?: ""
-        binding.tvGamePlayCateCodeName.text = playCateName
-
-        with(binding) {
-            //配置賽事比分及機制
-            data.matchType?.let { matchType ->
-                setupMatchScore(data, matchType)
-            }
-
-            //region 第1個按鈕
-            if (oddList.isNotEmpty()) {
-                val odd1 = oddList[0]
-                with(oddBtn1) {
-                    visibility = View.VISIBLE
-                    setupOddsButton(this, odd1)
-                    setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType)
-                    setButtonBetClick(
-                        data = data,
-                        odd = odd1,
-                        playCateCode = oddPlayCateCode,
-                        playCateName = playCateName,
-                        homeRecommendListener = homeRecommendListener
-                    )
-                }
-            } else {
-                oddBtn1.visibility = View.GONE
-            }
-            //endregion
-
-            //region 第2個按鈕
-            if (oddList.size > 1) {
-                val odd2 = oddList[1]
-                with(oddBtn2) {
-                    visibility = View.VISIBLE
-                    setupOddsButton(this, odd2)
-                    setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
-                    if (oddList.size > 2) setupOdd4hall(
-                        oddPlayCateCode,
-                        odd2,
-                        oddList,
-                        oddsType,
-                        true
-                    )
-                    setButtonBetClick(
-                        data = data,
-                        odd = odd2,
-                        playCateCode = oddPlayCateCode,
-                        playCateName = playCateName,
-                        homeRecommendListener = homeRecommendListener
-                    )
-                }
-            } else {
-                oddBtn2.visibility = View.GONE
-            }
-            //endregion
-
-            //region 比賽狀態(狀態、時間)
-            val gameType = data.gameType
-            val matchType = data.matchType
-            setupMatchTimeAndStatus(
-                item = data,
-                isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
-                isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
-            )
-            //endregion
-        }
     }
 
     /**
@@ -169,19 +70,8 @@ class ItemHomeRecommendHolder(
             //endregion
 
             //region 隊伍圖示
-            Glide.with(binding.root.context)
-                .load(data.matchInfo?.homeIcon)
-                .apply(mRequestOptions)
-                .fallback(R.color.transparent)
-                .error(R.color.transparent)
-                .into(ivHomeIcon)
-
-            Glide.with(binding.root.context)
-                .load(data.matchInfo?.awayIcon)
-                .apply(mRequestOptions)
-                .fallback(R.color.transparent)
-                .error(R.color.transparent)
-                .into(ivAwayIcon)
+            ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
+            ivAwayIcon.setTeamLogo(data.matchInfo?.awayIcon)
             //endregion
 
             //玩法數量

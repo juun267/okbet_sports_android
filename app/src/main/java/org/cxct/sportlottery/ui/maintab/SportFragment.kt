@@ -77,9 +77,13 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupLogin()
+    }
+
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        setupLogin()
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
         }
@@ -198,6 +202,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun initObserve() {
+        viewModel.isLogin.observe(viewLifecycleOwner) {
+            setupLogin()
+        }
         viewModel.userMoney.observe(viewLifecycleOwner) {
 
         }

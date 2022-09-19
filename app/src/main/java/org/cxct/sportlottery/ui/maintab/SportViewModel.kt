@@ -2496,18 +2496,29 @@ class SportViewModel(
 
     //region 宣傳頁 優惠活動文字跑馬燈、圖片公告
     fun getPublicityPromotion() {
-
         sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }
             ?.let { promotionList ->
                 //優惠活動文字跑馬燈
-                promotionList.filter { it.viewType == 1 }.mapNotNull { it.imageText1 }.let {
-                    _publicityPromotionAnnouncementList.postValue(it)
+                promotionList.filter {
+                    it.viewType == 1 && LanguageManager.getSelectLanguage(androidContext).key.equals(it.lang,
+                        true)
                 }
+                    .mapNotNull { it.imageText1 }
+                    .let {
+                        _publicityPromotionAnnouncementList.postValue(it)
+                    }
 
-                //優惠活動圖片公告清單
-                _publicityPromotionList.postValue(promotionList.map {
-                    PublicityPromotionItemData.createData(it)
-                })
+                promotionList.filter {
+                    it.viewType == 1 && LanguageManager.getSelectLanguage(androidContext).key.equals(it.lang,
+                        true)
+                }
+                    .mapNotNull { it.imageText1 }
+                    .let {
+                        //優惠活動圖片公告清單
+                        _publicityPromotionList.postValue(promotionList.map {
+                            PublicityPromotionItemData.createData(it)
+                        })
+                    }
             }
     }
     //endregion

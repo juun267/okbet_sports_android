@@ -17,7 +17,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
-import com.youth.banner.indicator.CircleIndicator
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.item_flipper.view.*
 import kotlinx.android.synthetic.main.view_home_menu_game.*
@@ -45,6 +44,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
+import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -56,6 +56,7 @@ import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.DepthPageTransformer
+import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -178,7 +179,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        setupLogin()
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
         }
@@ -188,6 +188,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         lin_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
         }
+        setupLogin()
     }
     private fun initObservable() {
         if(viewModel == null){
@@ -225,7 +226,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 //新版宣傳頁
                 if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
                 homeRecommendAdapter.setupRecommendItem(recommendList, viewModel.oddsType.value!!)
-                //先解除全部賽事訂閱
+                //先解除全部賽事訂
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
             }
@@ -273,6 +274,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 setupAnnouncement(titleList)
             }
         }
+//        //文字跑马灯
 //        viewModel.publicityPromotionAnnouncementList.observe(viewLifecycleOwner) {
 //            //非信用盤才顯示優惠活動跑馬燈
 //            if (!isCreditSystem())
@@ -284,11 +286,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             if (!isCreditSystem())
                 if (it.isNotEmpty()) {
                     lin_activity.visibility = View.VISIBLE
-                    val titleList: MutableList<String> = mutableListOf()
-                    it.forEach { data ->
-                        titleList.add(data.title ?: "")
-                    }
-                    setupFlipper(titleList)
+                    setupFlipper(it)
                 } else {
                     lin_activity.visibility = View.GONE
                 }
@@ -353,7 +351,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                     }
                 }
             })
-            .setIndicator(CircleIndicator(requireContext()));
+            .setIndicator(HomeBannerIndicator(requireContext()));
     }
 
     private fun setupAnnouncement(titleList: List<String>) {
@@ -375,17 +373,18 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         }
     }
 
-    private fun setupFlipper(titleList: List<String>) {
+    private fun setupFlipper(list: List<PublicityPromotionItemData>) {
         var views = arrayListOf<View>()
-        for (i in titleList) {
+        for (i in list) {
             var view = layoutInflater.inflate(R.layout.item_flipper, null)
-            view.tv_marquee.text = i
+            view.tv_marquee.text = i.title
             view.setOnClickListener {
                 context?.let {
                     JumpUtil.toInternalWeb(
                         it,
-                        Constants.getPromotionUrl(
+                        Constants.getPromotionDetailUrl(
                             viewModel.token,
+                            i.id,
                             LanguageManager.getSelectLanguage(it)
                         ),
                         getString(R.string.promotion)
@@ -441,6 +440,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         lin_menu_game.apply {
             ivThirdGame.setImageResource(R.drawable.bg_egame)
             ivThirdGame.setOnClickListener {
+                avoidFastDoubleClick()
                 publicityMenuData?.eGameMenuData?.let { thirdDictValues ->
                     avoidFastDoubleClick()
                     if (viewModel.isLogin.value != true) {
@@ -460,7 +460,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
 //                    loading()
-                    queryData()
                     subscribeSportChannelHall()
                 }
             }
@@ -808,34 +807,10 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
     private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
         (activity as MainTabActivity).jumpToTheSport(matchType, gameType)
     }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        clearObservers()
-    }
-
-    private fun clearObservers() {
-        viewModel.isLogin.removeObservers(viewLifecycleOwner)
-        viewModel.userInfo.removeObservers(viewLifecycleOwner)
-        viewModel.userMoney.removeObservers(viewLifecycleOwner)
-        viewModel.publicityRecommend.removeObservers(viewLifecycleOwner)
-        viewModel.gotConfig.removeObservers(viewLifecycleOwner)
-        viewModel.messageListResult.removeObservers(viewLifecycleOwner)
-        viewModel.publicityMenuData.removeObservers(viewLifecycleOwner)
-
-        receiver.serviceConnectStatus.removeObservers(viewLifecycleOwner)
-        receiver.matchStatusChange.removeObservers(viewLifecycleOwner)
-        receiver.matchClock.removeObservers(viewLifecycleOwner)
-        receiver.matchOddsLock.removeObservers(viewLifecycleOwner)
-        receiver.leagueChange.removeObservers(viewLifecycleOwner)
-        receiver.globalStop.removeObservers(viewLifecycleOwner)
-        receiver.producerUp.removeObservers(viewLifecycleOwner)
-    }
 
     private fun setupLogin() {
-        if(viewModel != null && viewModel.isLogin!=null && viewModel.isLogin.value!!){
-            val isLogin = viewModel.isLogin != null
-            btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
-        }
+        val isLogin = viewModel.isLogin != null && viewModel.isLogin.value!!
+        btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
     }
 
     private fun updateRecommend(recommendList: List<Recommend>) {
