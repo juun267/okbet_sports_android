@@ -807,10 +807,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 showReceipt = result != null
                 result?.let { resultNotNull ->
                     //隱藏betLoading
-                    binding.apply {
-                        blockTouchView.isVisible = false
-                        betLoadingView.isVisible = false
-                    }
+                    setBetLoadingVisibility(false)
                     if (resultNotNull.success) {
                         //多筆和單筆投注單，下注成功後的行為不同
 //                        if (isMultiBet) {
@@ -925,10 +922,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun addBet() {
         //顯示betLoading
-        binding.apply {
-            blockTouchView.isVisible = true
-            betLoadingView.isVisible = true
-        }
+        setBetLoadingVisibility(true)
+
         val betList = getCurrentBetList()
         val betListFilter = betList.filter { it.matchOdd.status == BetStatus.ACTIVATED.code }
 
@@ -952,7 +947,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //下注總金額大於用戶餘額，提示餘額不足
         if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
-            hideLoading()
+            setBetLoadingVisibility(false)
             showErrorPromptDialog(
                 getString(R.string.prompt),
                 getString(R.string.bet_info_bet_balance_insufficient)
@@ -966,6 +961,16 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             oddsType,
             tabPosition
         )
+    }
+
+    /**
+     * 是否顯示 betLoading
+     */
+    private fun setBetLoadingVisibility(isVisible: Boolean) {
+        binding.apply {
+            blockTouchView.isVisible = isVisible
+            betLoadingView.isVisible = isVisible
+        }
     }
 
     private fun MutableList<BetInfoListData>.isEmptyBetList(): Boolean {
