@@ -35,8 +35,113 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/status_selector"
         android:visibility="visible" />
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_10"
+        app:layout_constraintTop_toBottomOf="@id/tvUsTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/rech_log_column"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/margin_1"
+            android:layout_marginLeft="@dimen/margin_1"
+            android:layout_marginRight="@dimen/margin_1"
+            android:background="@drawable/bg_white_top_radius_deposit_10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingStart="2dp"
+                android:text="@string/recharge_log_order_time"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize12sp" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/bet_number"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize12sp" />
+            <TextView
+                android:id="@+id/rech_log_recharge_amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/recharge_log_recharge_amount"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize12sp" />
+
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/profit_and_loss"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize12sp" />
+        </LinearLayout>
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/view_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="386dp"
+            android:layout_marginLeft="@dimen/margin_1"
+            android:layout_marginRight="@dimen/margin_1"
+            android:layout_marginBottom="@dimen/margin_7"
+            app:layout_constraintTop_toBottomOf="@id/rech_log_column"
+            app:srlDragRate="0.3"
+            app:srlEnableLoadMore="true"
+            app:srlEnablePureScrollMode="true">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/view_item_recharge_log" />
+
+                <include
+                    android:id="@+id/view_no_record"
+                    layout="@layout/view_no_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rech_log_column"
+                    tools:visibility="gone" />
+
+            </FrameLayout>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+   <!-- <LinearLayout
         android:layout_marginLeft="@dimen/margin_20"
         android:layout_marginRight="@dimen/margin_20"
         android:id="@+id/linearLayout5"
@@ -108,7 +213,7 @@
             />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
+-->
     <ImageView
         android:id="@+id/iv_scroll_to_top"
         android:layout_width="48dp"

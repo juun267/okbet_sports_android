@@ -24,7 +24,7 @@ import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
- * @app_destination 存款記錄
+ * @app_destination 存款记录
  */
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 

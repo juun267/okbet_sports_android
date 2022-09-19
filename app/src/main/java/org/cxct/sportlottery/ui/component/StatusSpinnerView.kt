@@ -85,7 +85,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             setSelectCode(first.code)
         }
         spinnerAdapter = StatusSpinnerAdapter(dataList)
-        spinnerAdapter!!.setItmeColor(resources.getColor(R.color.color_414655))
+        spinnerAdapter!!.setItmeColor(resources.getColor(R.color.color_FFFFFF))
         mListPop = ListPopupWindow(context)
         var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
             0F
