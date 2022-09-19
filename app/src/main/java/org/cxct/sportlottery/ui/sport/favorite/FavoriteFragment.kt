@@ -34,6 +34,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
@@ -55,7 +56,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         }
     }
 
-    var dataSport = listOf<Item>()
+    var dataSport = mutableListOf<Item>()
         set(value) {
             field = value
             field.forEachIndexed { index, item ->
@@ -170,14 +171,10 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         initObserver()
         initSocketObserver()
         favoriteAdapter.setPreloadItem()
+        viewModel.getSportList()
         viewModel.getFavoriteMatch()
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden)
-            viewModel.getSportQuery(getLastPick = true, false, getFavoriteMatch = true)
-    }
 
     private fun initView() {
         setupToolbar()
@@ -231,6 +228,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 tv_all_sports.text = sportItem.name
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(sportItem)
+                favoriteAdapter.setPreloadItem()
             }
         })
         mListPop.setOnDismissListener {
@@ -384,23 +382,24 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
 
-        receiver.leagueChange.observe(this.viewLifecycleOwner) { event ->
-            event?.let {
-                viewModel.getSportQuery(getLastPick = true) //而收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
-
-                if (event.gameType == dataSport.find { gameType -> gameType.isSelected }?.code) {
-                    val updateLeague =
-                        favoriteAdapter.data.find { it.league.id == event?.matchIdList?.firstOrNull() }
-                    if (updateLeague != null) {
-                        val updateMatch =
-                            updateLeague.matchOdds.find { it.matchInfo?.id == event?.matchIdList?.firstOrNull() }
-                        if (updateMatch != null) {
-                            viewModel.getFavoriteMatch()
-                        }
-                    }
-                }
-            }
-        }
+//        receiver.leagueChange.observe(this.viewLifecycleOwner) { event ->
+//            event?.let {
+//                LogUtil.d("leagueChange")
+//                viewModel.getSportQuery(getLastPick = true) //而收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+//
+//                if (event.gameType == dataSport.find { gameType -> gameType.isSelected }?.code) {
+//                    val updateLeague =
+//                        favoriteAdapter.data.find { it.league.id == event?.matchIdList?.firstOrNull() }
+//                    if (updateLeague != null) {
+//                        val updateMatch =
+//                            updateLeague.matchOdds.find { it.matchInfo?.id == event?.matchIdList?.firstOrNull() }
+//                        if (updateMatch != null) {
+//                            viewModel.getFavoriteMatch()
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
             event?.peekContent()?.let {
@@ -451,27 +450,13 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         viewModel.userInfo.observe(this.viewLifecycleOwner) {
             favoriteAdapter.discount = it?.discount ?: 1.0F
         }
-
-        viewModel.sportQueryData.observe(this.viewLifecycleOwner) {
-            it?.peekContent()?.let { sportQueryData ->
-                updateGameTypeList(sportQueryData.items?.map { item ->
-                    Item(
-                        code = item.code ?: "",
-                        name = item.name ?: "",
-                        num = item.num ?: 0,
-                        play = null,
-                        sortNum = item.sortNum ?: 0
-                    ).apply {
-                        isSelected = true
-                    }
-                })
-
-            }
+        viewModel.sportCodeList.observe(viewLifecycleOwner) {
+            updateSportList(it)
         }
-
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) {
             it.peekContent()?.let { leagueOddList ->
                 hideLoading()
+                favoriteAdapter.removePreloadItem()
                 favorite_game_list.layoutManager =
                     SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 val leagueData = leagueOddList.toMutableList()
@@ -480,17 +465,13 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 when {
                     leagueData.isNullOrEmpty() && dataSport.size > 1 -> {
                         unSubscribeChannelHallAll()
-                        viewModel.getSportQuery(getLastPick = false,
-                            isReloadPlayCate = true,
-                            getFavoriteMatch = true)
-                        return@observe
+                        noFavoriteMatchViewState()
                     }
                     leagueData.isNullOrEmpty() -> noFavoriteMatchViewState()
                     else -> {
                         showFavoriteMatchViewState()
                     }
                 }
-
                 favoriteAdapter.data = leagueData
                 try {
                     /*目前流程 需要先解除再綁定 socket流程下才會回傳內容*/
@@ -567,23 +548,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     private fun showFavoriteMatchViewState() {
         fl_no_game.visibility = View.GONE
         favorite_game_list.visibility = View.VISIBLE
-    }
-
-    private fun updateGameTypeList(items: List<Item>?) {
-        dataSport = mutableListOf<Item>().apply {
-            add(Item(code = "", name = getString(R.string.all_sport), 0, null, 0))
-            items?.let {
-                addAll(it)
-            }
-        }
-        //如果没有选中的就默认选中第一个
-        items?.find {
-            it.isSelected
-        }.let {
-            if (it == null) {
-                dataSport[0].isSelected = true
-            }
-        }
     }
 
     private fun addOddsDialog(
@@ -709,4 +673,26 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         }
     }
 
+    private fun updateSportList(list: List<StatusSheetData>) {
+        if (dataSport.isNotEmpty()) return
+        list.forEach {
+            dataSport.add(
+                Item(
+                    code = it.code.orEmpty(),
+                    name = it.showName.orEmpty(),
+                    num = 0,
+                    play = null,
+                    sortNum = 0
+                )
+            )
+        }
+        //如沒有選過的，預設選第一個
+        dataSport.find {
+            it.isSelected
+        }.let {
+            if (it == null) {
+                dataSport.firstOrNull()?.isSelected = true
+            }
+        }
+    }
 }

@@ -299,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_10"
                         android:layout_weight="1"
-                        android:text="@string/self_limit_per_bet_limit_user_none"
+                        android:text="@string/skin_mode"
                         android:textColor="@color/color_2b2b2b_ffffff"
                         android:textSize="@dimen/textSize14sp" />
 

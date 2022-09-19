@@ -1,42 +1,35 @@
-package org.cxct.sportlottery.util;
+package org.cxct.sportlottery.util
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
-public class FragmentHelper {
-    FragmentManager fragmentManager;
-    private int viewId;
-    private Fragment[] fragments;
-    private int curPos = -1;
-
-    public FragmentHelper(FragmentManager fragmentManager, int viewId, Fragment[] fragments) {
-        this.fragmentManager = fragmentManager;
-        this.viewId = viewId;
-        this.fragments = fragments;
-    }
-
-    public void showFragment(int index) {
+class FragmentHelper(
+    var fragmentManager: FragmentManager,
+    private val viewId: Int,
+    private val fragments: Array<Fragment>,
+) {
+    private var curPos = -1
+    fun showFragment(index: Int) {
         if (curPos == index) {
-            return;
+            return
         }
         if (curPos >= 0) {
-            switchContent(fragments[curPos], fragments[index]);
+            switchContent(fragments[curPos], fragments[index])
         } else {
-            switchContent(null, fragments[index]);
+            switchContent(null, fragments[index])
         }
-        curPos = index;
+        curPos = index
     }
 
-    public void switchContent(Fragment from, Fragment to) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+    fun switchContent(from: Fragment?, to: Fragment) {
+        val transaction = fragmentManager.beginTransaction()
         if (from == null) {
-            transaction.add(viewId, to).commitAllowingStateLoss();
-        } else if (from != to) {
-            if (!to.isAdded()) {
-                transaction.hide(from).add(viewId, to).commitAllowingStateLoss();
+            transaction.replace(viewId, to).commitAllowingStateLoss()
+        } else if (from !== to) {
+            if (!to.isAdded) {
+                transaction.hide(from).add(viewId, to).commitAllowingStateLoss()
             } else {
-                transaction.hide(from).show(to).commitAllowingStateLoss();
+                transaction.hide(from).show(to).commitAllowingStateLoss()
             }
         }
     }

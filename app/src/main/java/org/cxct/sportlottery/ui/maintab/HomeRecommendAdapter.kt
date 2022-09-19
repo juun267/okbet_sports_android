@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
@@ -12,7 +11,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListener) :
     RecyclerView.Adapter<ItemHomeRecommendHolder>() {
@@ -52,7 +50,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
 
     override fun onBindViewHolder(holder: ItemHomeRecommendHolder, position: Int) {
         val itemData = mRecommendList[position]
-        holder.setupItemMargin(itemData)
         holder.bind(data = itemData, oddsType = mOddsType)
     }
 
@@ -67,7 +64,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
             payloads.forEach { payload ->
                 when (payload) {
                     is Recommend -> {
-                        holder.setupItemMargin(payload)
                         holder.update(payload, oddsType = mOddsType)
                     }
                 }
@@ -76,24 +72,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
     }
 
     override fun getItemCount(): Int = mRecommendList.size
-
-    /**
-     * 根據Item的位置配置不同的Margin
-     */
-    private fun ItemHomeRecommendHolder.setupItemMargin(recommend: Recommend) {
-        val cvBlockLayoutParams = (binding.cvBlock.layoutParams as ConstraintLayout.LayoutParams)
-        when (recommend) {
-            mRecommendList.firstOrNull() -> {
-                cvBlockLayoutParams.setMargins(10.dp, 10.dp, 4.dp, 10.dp)
-            }
-            mRecommendList.lastOrNull() -> {
-                cvBlockLayoutParams.setMargins(4.dp, 10.dp, 10.dp, 10.dp)
-            }
-            else -> {
-                cvBlockLayoutParams.setMargins(4.dp, 10.dp, 4.dp, 10.dp)
-            }
-        }
-    }
 
     open class HomeRecommendListener(
         private val onItemClickListener: () -> Unit,

@@ -4,24 +4,29 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
-import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.setupQuickPlayCate
+import org.cxct.sportlottery.util.sortQuickPlayCate
 
 
 class FavoriteViewModel(
@@ -44,72 +49,13 @@ class FavoriteViewModel(
     val sportQueryData: LiveData<Event<SportQueryData?>>
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
+    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
 
     val favoriteRepository = myFavoriteRepository
     val lastSportType = myFavoriteRepository.lastSportType
 
-    fun getSportQuery(
-        getLastPick: Boolean? = false,
-        isReloadPlayCate: Boolean = false,
-        getFavoriteMatch: Boolean = false,
-    ) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.sportService.getQuery(
-                    SportQueryRequest(
-                        TimeUtil.getNowTimeStamp().toString(),
-                        TimeUtil.getTodayStartTimeStamp().toString(),
-                        MatchType.MY_EVENT.postValue,
-                        matchIdList = favorMatchList.value
-                    )
-                )
-            }
-
-            result?.sportQueryData?.let { newSportQueryData ->
-                _sportQueryData.postValue(
-                    Event(
-                        newSportQueryData.apply {
-                            if (!newSportQueryData.items?.filter { it.code == lastSportType.value?.code }
-                                    .isNullOrEmpty() && getLastPick == true) {
-                                newSportQueryData.items?.find { it.code == lastSportType.value?.code }
-                                    .apply {
-                                        this?.isSelected = true
-                                        if (isReloadPlayCate)
-                                            this?.play?.firstOrNull()?.isSelected = true
-                                        else {
-                                            //若不刷新玩法篩選狀態, 將舊的篩選更新至新獲取的資料中
-                                            setupPlayState()
-                                        }
-                                    }
-                            } else {
-                                newSportQueryData.items?.firstOrNull()?.apply NewSportData@{
-                                    favoriteRepository.setLastSportType(Item(
-                                        code = code ?: "",
-                                        name = name ?: "",
-                                        num = num ?: 0,
-                                        play = null,
-                                        sortNum = sortNum ?: 0
-                                    ).apply Item@{
-                                        this@Item.isSelected = this@NewSportData.isSelected
-                                    })
-                                    this.isSelected = true
-                                    if (isReloadPlayCate)
-                                        this.play?.firstOrNull()?.isSelected = true
-                                }
-                            }
-                        }
-                    ))
-
-                if (getFavoriteMatch) {
-                    val selectItem = newSportQueryData.items?.find { it.isSelected }
-                    getFavoriteMatch(
-                        selectItem?.code,
-                        selectItem?.play?.firstOrNull()?.code, null
-                    )
-                }
-            }
-        }
-    }
 
     /**
      * 將新資料配置原本玩法篩選的狀態
@@ -131,19 +77,6 @@ class FavoriteViewModel(
                 val oldPlayCate =
                     oldSportPlay?.playCateList?.find { oldPlayCate -> oldPlayCate.code == newPlayCate.code }
                 newPlayCate.isSelected = oldPlayCate?.isSelected ?: false
-            }
-        }
-    }
-
-    //獲取體育篩選菜單
-    fun getSportMenuFilter() {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.sportService.getSportListFilter()
-            }
-
-            result?.let {
-                PlayCateMenuFilterUtils.filterList = it.t?.sportMenuList
             }
         }
     }
@@ -199,46 +132,7 @@ class FavoriteViewModel(
 
     }
 
-    fun switchPlay(play: Play) {
-        if (play.selectionType == SelectionType.SELECTABLE.code) {
-            _sportQueryData.postValue(
-                Event(
-                    _sportQueryData.value?.peekContent()?.updatePlaySelected(play)
-                )
-            )
-            val playCateCode =
-                sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.find { it.isSelected }?.code
 
-            switchPlayCategory(play, playCateCode)
-        } else {
-            _sportQueryData.postValue(
-                Event(
-                    _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {
-                        val curPlayCate =
-                            this?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList
-
-                        curPlayCate?.forEach {
-                            it.isSelected =
-                                (curPlayCate.indexOf(it) == 0)
-                                        && (this?.items?.find { item -> item.isSelected }?.play?.find { play -> play.isSelected }?.selectionType == SelectionType.SELECTABLE.code)
-                        }
-                    }
-                )
-            )
-        }
-
-        getSportQuery(getLastPick = true, getFavoriteMatch = true)
-    }
-
-    fun switchPlayCategory(play: Play, playCateCode: String?, hasItemSelect: Boolean = false) {
-        _sportQueryData.postValue(
-            Event(
-                _sportQueryData.value?.peekContent()?.updatePlaySelected(play)
-                    ?.updatePlayCateSelected(playCateCode)
-            )
-        )
-        if (!hasItemSelect) getSportQuery(getLastPick = true, getFavoriteMatch = true)
-    }
 
     private fun SportQueryData.updateGameTypeSelected(item: Item): SportQueryData {
         this.items?.forEach {
@@ -305,4 +199,38 @@ class FavoriteViewModel(
         return this
     }
 
+    /**
+     * 獲取當前可用球種清單
+     */
+    fun getSportList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList(type = 1)
+            }?.let { sportListResponse ->
+                if (sportListResponse.success) {
+                    val sportCodeList = mutableListOf<StatusSheetData>()
+                    //第一項為全部球種
+                    sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
+                    //根據api回傳的球類添加進當前啟用球種篩選清單
+                    sportListResponse.rows.sortedBy { it.sortNum }.map {
+                        if (it.state == 1) { //僅添加狀態為啟用的資料
+                            sportCodeList.add(
+                                StatusSheetData(
+                                    it.code,
+                                    GameType.getGameTypeString(
+                                        LocalUtils.getLocalizedContext(),
+                                        it.code
+                                    )
+                                )
+                            )
+                        }
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _sportCodeSpinnerList.value = sportCodeList
+                    }
+                }
+            }
+        }
+    }
 }

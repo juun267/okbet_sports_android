@@ -58,7 +58,32 @@ object Constants {
                 if (isMultipleSitePlat()) {
                     "&platform=onbet"
                 } else {
-                    ""
+                    "&platform=okbet"
+                }
+            }"
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
+    fun getPromotionDetailUrl(
+        token: String?,
+        id: Int?,
+        language: LanguageManager.Language,
+    ): String? {
+        return try {
+            "${getBaseUrl()}/activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
+                URLEncoder.encode(
+                    token,
+                    "utf-8"
+                )
+            }${
+                if (isMultipleSitePlat()) {
+                    "&platform=onbet"
+                } else {
+                    "&platform=okbet"
                 }
             }"
         } catch (e: UnsupportedEncodingException) {

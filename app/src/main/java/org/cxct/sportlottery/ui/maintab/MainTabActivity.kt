@@ -57,7 +57,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 return
             }
             val intent = Intent(context, MainTabActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
     }
@@ -187,10 +187,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         try {
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-
             //選單選擇結束要收起選單
-            val fragment =
-                supportFragmentManager.findFragmentById(R.id.left_menu) as MainLeftFragment
             left_menu.layoutParams.width = MetricsUtil.getScreenWidth() / 5 * 4 //動態調整側邊欄寬
 
         } catch (e: Exception) {
