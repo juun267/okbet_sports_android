@@ -11,9 +11,12 @@
     tools:context=".ui.feedback.record.FeedbackListAdapter">
 
     <LinearLayout
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginRight="@dimen/margin_20"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:background="@color/color_FFFFFF"
         android:orientation="horizontal">
 
         <TextView

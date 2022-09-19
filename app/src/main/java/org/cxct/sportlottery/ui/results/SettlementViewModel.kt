@@ -412,7 +412,7 @@ class SettlementViewModel(
     fun getSportList() {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.sportService.getSportList(type = 1)
+                OneBoSportApi.sportService.getSportList()//BUG修复删除参数 后续需要找产品确认
             }?.let { sportListResponse ->
                 if (sportListResponse.success) {
                     val sportCodeList = mutableListOf<StatusSheetData>()

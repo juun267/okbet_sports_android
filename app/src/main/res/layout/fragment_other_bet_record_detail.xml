@@ -6,12 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_141414_F3F4F5"
     tools:context=".ui.profileCenter.otherBetRecord.detail.OtherBetRecordDetailFragment">
-    <View
-        android:id="@+id/view_top"
-        android:background="@color/color_E3E8EE"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+
     <TextView
         android:id="@+id/tvUsTime"
         android:layout_width="match_parent"
@@ -22,7 +17,8 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintEnd_toEndOf="parent"
          android:gravity="end|center_vertical"
-        app:layout_constraintTop_toBottomOf="@+id/view_top"
+        android:layout_marginTop="@dimen/margin_20"
+       app:layout_constraintTop_toTopOf="parent"
         android:paddingEnd="@dimen/margin_20"
         android:visibility="visible" />
     <LinearLayout
@@ -30,7 +26,7 @@
         android:layout_marginRight="@dimen/margin_20"
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/margin_36"
         android:background="@color/color_232C4F_F4F4F4"
         android:orientation="horizontal"
         android:paddingVertical="4dp"
