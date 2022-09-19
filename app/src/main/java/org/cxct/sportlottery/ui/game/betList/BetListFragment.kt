@@ -64,8 +64,6 @@ import org.cxct.sportlottery.util.getOdds
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
 
-    private var isAutoCloseWhenNoData = false
-
     private var oddsType: OddsType = OddsType.EU
 
     private var discount = 1.0F
@@ -458,7 +456,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initAdapter() {
         val adapterItemClickListener = object : BetListRefactorAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                    isAutoCloseWhenNoData = betListRefactorAdapter?.betList?.size ?: 0 <= 1
                     betListRefactorAdapter?.closeAllKeyboard()
                     betSingleListAdapter?.closeAllKeyboard()
                     betParlayListRefactorAdapter?.closeAllKeyboard()
@@ -674,13 +671,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
-                isAutoCloseWhenNoData = true
                 viewModel.removeBetInfoAll()
             }
         }*/
 
         binding.btnDeleteAll.setOnClickListener {
-            isAutoCloseWhenNoData = true
             viewModel.removeBetInfoAll()
         }
     }
@@ -732,13 +727,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
-                if (list.size == 0 && isAutoCloseWhenNoData) {
+                if (list.size == 0) {
                     activity?.onBackPressed()
                     return@observe
                 }
-
-                //顯示無資料畫面
-                cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
 
                 //依照注單數量動態調整高度
                 if (list.size == 1) {
@@ -748,8 +740,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     binding.betTypeTabLayout.selectTab(binding.betTypeTabLayout.getTabAt(0))
                     binding.betTypeTabLayout.isVisible = false
                     binding.clTotalInfo.isVisible = false
-                } else if (!isAutoCloseWhenNoData) {
-                    //多筆注單 or 空注單
+                } else {
+                    //多筆注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
                     binding.betTypeTabLayout.isVisible = true
                     binding.clTotalInfo.isVisible = true
@@ -815,7 +807,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                             viewModel.betInfoList.removeObservers(this.viewLifecycleOwner)
 //                        } else {
 //                            //單筆的要關掉再顯示 dialog
-//                            isAutoCloseWhenNoData = true
 //                        }
                         betResultListener?.onBetResult(
                             resultNotNull.receipt,
@@ -1049,7 +1040,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun removeClosedPlat() {
         viewModel.removeClosedPlatBetInfo()
-        isAutoCloseWhenNoData = true
     }
 
     private fun queryData() {
