@@ -320,7 +320,7 @@
     <string name="champion_play">Champion gameplay</string>
     <string name="inquire">Search</string>
     <string name="order_number">Betting order no.</string>
-    <string name="order_number_colon">Betting order no.</string>
+    <string name="order_number_colon">Betting Slip No.</string>
     <string name="bet_type">Betting method</string>
     <string name="total_bet_money">Total bet amount</string>
     <string name="total_bet_money_colon">Total bet amount</string>
