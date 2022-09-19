@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bg_radius_4_button_f0f8ff_light" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_radius_4_button_blue" android:state_selected="true" />
     <item android:drawable="@drawable/bg_radius_4_button_f7f8fc_silver_light" />
 </selector>

@@ -3,21 +3,21 @@
     <item
         android:id="@+id/i_home"
         android:icon="@drawable/selector_tab_home"
-        android:title="@string/bottom_nav_home" />
+        android:title="@string/main_tab_home" />
     <item
         android:id="@+id/i_sport"
         android:icon="@drawable/selector_tab_sport"
-        android:title="@string/sport" />
+        android:title="@string/main_tab_sport" />
     <item
         android:id="@+id/i_betlist"
         android:icon="@drawable/selector_tab_betlist"
-        android:title="@string/bet_slip" />
+        android:title="@string/main_tab_betlist" />
     <item
         android:id="@+id/i_favorite"
         android:icon="@drawable/selector_tab_fav"
-        android:title="@string/my_favorite" />
+        android:title="@string/main_tab_favorite" />
     <item
         android:id="@+id/i_user"
         android:icon="@drawable/selector_tab_user"
-        android:title="@string/bottom_nav_my_account" />
+        android:title="@string/main_tab_mine" />
 </menu>

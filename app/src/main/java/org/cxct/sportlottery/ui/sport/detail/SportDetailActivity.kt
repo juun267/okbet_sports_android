@@ -184,6 +184,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             } else {
                 toolBar.isVisible = true
                 live_view_tool_bar.isVisible = false
+                setScrollEnable(true)
                 collaps_toolbar.isVisible = false
                 live_view_tool_bar.release()
             }
@@ -335,7 +336,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     matchOdd?.let { matchOdd ->
                         val fastBetDataBean = FastBetDataBean(
                             matchType = matchType,
-                            gameType = GameType.getGameType(matchOdd.matchInfo.id)!!,
+                            gameType = GameType.getGameType(matchOdd.matchInfo.gameType)!!,
                             playCateCode = oddsDetail?.gameType ?: "",
                             playCateName = oddsDetail?.name ?: "",
                             matchInfo = matchOdd.matchInfo,
@@ -846,7 +847,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             live_view_tool_bar.isVisible = true
             collaps_toolbar.isVisible = true
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            setScrollEnable(true)
+            setScrollEnable(false)
         }
         web_view_layout.layoutParams.apply {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
@@ -860,6 +861,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         live_view_tool_bar.invalidate()
     }
 
+    /**
+     * 设置是否可以滑动折叠
+     */
     private fun setScrollEnable(enable: Boolean) {
         (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
             scrollFlags = if (enable)
@@ -938,6 +942,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setScoreTextAtFront(matchInfo)
             setAttack(matchInfo)
             setBBStatus(matchInfo)
+            setCurrentPeroid(matchInfo)
         } else
             setBkScoreText(matchInfo)
     }
@@ -990,12 +995,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setCurrentPeroid(matchInfo: MatchInfo) {
         matchInfo.matchStatusList?.let {
             tv_match_status.visibility = View.VISIBLE
-            tv_match_status.text = when (matchInfo.gameType) {
-                GameType.TN.key -> String.format(getString(R.string.format_plat),
-                    it.size.toString())
-                GameType.VB.key, GameType.TT.key, GameType.BM.key -> String.format(getString(R.string.format_round),
-                    it.size.toString())
-                else -> ""
+            matchInfo.matchStatusList?.let { it ->
+                tv_match_status.visibility = View.VISIBLE
+                it.last()?.let {
+                    tv_match_status.text = it.statusNameI18n?.get(
+                        LanguageManager.getSelectLanguage(context = this).key
+                    ) ?: it.statusName
+                }
             }
         }
     }
@@ -1186,17 +1192,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         content_baseball_status.isVisible = true
         league_odd_match_bb_status.isVisible = false
         league_odd_match_halfStatus.isVisible = false
-        tv_match_status.apply {
-            text = String.format(getString(R.string.format_round), matchInfo.statusName18n)
-            isVisible = true
-        }
 
         txvOut.apply {
             text = getString(R.string.game_out,
                 matchInfo.outNumber ?: "")
             isVisible = true
         }
-
         tv_match_time.apply {
             text =
                 if (matchInfo.halfStatus == 0) getString(R.string.half_first_short) else getString(R.string.half_second_short)

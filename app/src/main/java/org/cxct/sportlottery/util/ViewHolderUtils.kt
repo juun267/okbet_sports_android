@@ -3,12 +3,11 @@ package org.cxct.sportlottery.util
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.publicity.OddStatePublicityViewHolder
+import org.cxct.sportlottery.ui.game.publicity.OddStateHomeViewHolder
 import java.util.*
 
 object ViewHolderUtils {
-    abstract class TimerViewHolderTimer(itemView: View) : OddStatePublicityViewHolder(itemView) {
+    abstract class TimerViewHolderTimer(itemView: View) : OddStateHomeViewHolder(itemView) {
         interface TimerListener {
             fun onTimerUpdate(timeMillis: Long)
         }
@@ -21,7 +20,7 @@ object ViewHolderUtils {
             isTimerEnable: Boolean,
             isTimerPause: Boolean,
             startTime: Int,
-            isDecrease: Boolean
+            isDecrease: Boolean,
         ) {
             when (isTimerEnable) {
                 false -> {
@@ -68,4 +67,5 @@ object ViewHolderUtils {
             timer = null
         }
     }
+
 }

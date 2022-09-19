@@ -641,7 +641,7 @@
     <string name="sorry_website_is_now_maintenance">目前网站维护中</string>
     <string name="if_there_is_any_question_please_consult">若有疑问请咨询%1$s</string>
     <string name="bottom_nav_home">首页</string>
-    <string name="bottom_nav_game">赛事</string>
+    <string name="bottom_nav_game">体育赛事</string>
     <string name="bottom_nav_promotion">活动</string>
     <string name="bottom_nav_chat">聊天</string>
     <string name="bottom_nav_my_account">我的</string>
@@ -713,8 +713,6 @@
     <string name="spt_number_5_3">5盘3胜</string>
     <string name="spt_number_5_3_vb">5局3胜</string>
     <string name="spt_number_7_4_tt">7局4胜</string>
-    <string name="format_plat">第%s盘</string>
-    <string name="format_round">第%s局</string>
     <string name="bet_notify_max_limit">最多可添加10个选项至投注单</string>
     <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
     <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>

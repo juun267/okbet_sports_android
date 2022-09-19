@@ -716,8 +716,6 @@
     <string name="spt_number_5_3">5 kèo 3 thắng</string>
     <string name="spt_number_5_3_vb">5 hiệp thắng 3 hiệp</string>
     <string name="spt_number_7_4_tt">7 hiệp thắng 4 hiệp</string>
-    <string name="format_plat">Kèo thứ %s</string>
-    <string name="format_round">Kèo thứ %s</string>
     <string name="bet_notify_max_limit">Có thể thêm tối đa 10 lựa chọn vào phiếu đặt cược</string>
     <string name="myfavorite_notify_league_add">Đã thêm vào giải đấu của tôi</string>
     <string name="myfavorite_notify_league_remove">Xóa khỏi giải đấu của tôi</string>

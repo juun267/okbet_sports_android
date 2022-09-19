@@ -108,6 +108,7 @@ class SportListFragment :
                     item.isSelected = (item.code == gameType)
                 }
                 notifyDataSetChanged()
+                viewModel.cleanGameHallResult()
                 sportLeagueAdapter.setPreloadItem()
                 //切換球種後要重置位置
                 loading()
@@ -266,6 +267,7 @@ class SportListFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //打开指定球类
+        viewModel.matchType = matchType
         gameType = arguments?.getString("gameType")
         gameType?.let {
             viewModel.gameType = it
@@ -276,6 +278,7 @@ class SportListFragment :
         setupGameListView()
         initObserve()
         initSocketObserver()
+        viewModel.cleanGameHallResult()
         sportLeagueAdapter.setPreloadItem()
     }
 
@@ -600,18 +603,6 @@ class SportListFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     viewModel.switchMatchType(matchType = matchType)
-                    if (!gameType.isNullOrEmpty() && matchType == MatchType.OUTRIGHT) {
-                        gameType?.let { gameType ->
-                            viewModel.getOutrightOddsList(gameType = gameType,
-                                leagueIdList = leagueIdList)
-                        }
-                    } else {
-                        viewModel.getGameHallList(
-                            isReloadDate = true,
-                            isReloadPlayCate = false,
-                            isLastSportType = true
-                        )
-                    }
                     subscribeSportChannelHall()
                 } else {
                     stopTimer()
@@ -883,13 +874,21 @@ class SportListFragment :
 
     private fun updateSportType(gameTypeList: List<Item>) {
         //处理默认不选中的情况
-        gameTypeList.find {
-            if (gameType.isNullOrEmpty()) {
+        if (gameType.isNullOrEmpty()) {
+            gameTypeList.find {
                 it.num > 0
-            } else {
-                it.code == gameType
+            }?.let {
+                it.isSelected = true
+                gameType = it.code
+                viewModel.switchGameType(it)
             }
-        }?.let { viewModel.switchGameType(it) }
+        } else {
+            gameTypeList.find {
+                it.code == gameType
+            }?.let {
+                it.isSelected = true
+            }
+        }
         gameTypeAdapter.dataSport = gameTypeList
         //post待view繪製完成
         sport_type_list?.post {

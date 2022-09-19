@@ -86,15 +86,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_marginLeft="@dimen/margin_15"
         android:layout_marginVertical="@dimen/margin_10">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/rv_type_list"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            tools:listitem="@layout/item_main_home_menu"
-            tools:visibility="visible" />
+            android:orientation="horizontal" />
 
         <include
             android:id="@+id/lin_menu_game"

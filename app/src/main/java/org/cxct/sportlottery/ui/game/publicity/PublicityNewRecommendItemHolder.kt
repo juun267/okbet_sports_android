@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
+import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
@@ -200,12 +200,12 @@ class PublicityNewRecommendItemHolder(
     /**
      * 配置投注按鈕Callback
      */
-    private fun OddsButtonPublicity.setButtonBetClick(
+    private fun OddsButtonHome.setButtonBetClick(
         data: Recommend,
         odd: Odd?,
         playCateCode: String,
         playCateName: String,
-        publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
+        publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener,
     ) {
         setOnClickListener {
             data.matchType?.let { matchType ->
@@ -597,7 +597,7 @@ class PublicityNewRecommendItemHolder(
     }
     //endregion
 
-    private fun setupOddsButton(oddsButton: OddsButtonPublicity, odd: Odd?) {
+    private fun setupOddsButton(oddsButton: OddsButtonHome, odd: Odd?) {
 
         oddsButton.apply {
             setupOddState(oddsButton, odd)
