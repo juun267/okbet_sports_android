@@ -308,7 +308,7 @@
     <string name="champion_play">Trò chơi vô địch</string>
     <string name="inquire">Kiểm tra</string>
     <string name="order_number">Mã số đặt cược</string>
-    <string name="order_number_colon">mã đặt cược</string>
+    <string name="order_number_colon">Mã đơn cược</string>
     <string name="bet_type">Cách đặt cược</string>
     <string name="total_bet_money">Tổng tiền cược</string>
     <string name="total_bet_money_colon">Tổng tiền cược</string>
@@ -552,7 +552,7 @@
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_input_quota">Vui lòng nhập số tiền</string>
     <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
-    <string name="bet_info_bet_quota">Số tiền đặt cược</string>
+    <string name="bet_info_bet_quota">Tiền cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
     <string name="bet_info_odd_content_changed2">Tỷ lệ cược đã thay đổi</string>

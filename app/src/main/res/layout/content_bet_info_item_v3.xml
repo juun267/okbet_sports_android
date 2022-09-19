@@ -222,6 +222,7 @@
                         android:id="@+id/tv_win"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxWidth="60dp"
                         android:text="@string/bet_win"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
@@ -251,14 +252,16 @@
 
                     <TextView
                         android:id="@+id/tv_win_hint_default"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:paddingHorizontal="10dp"
                         android:textColor="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/et_win"
                         app:layout_constraintEnd_toEndOf="@+id/et_win"
+                        app:layout_constraintStart_toStartOf="@+id/et_win"
                         app:layout_constraintTop_toTopOf="@+id/et_win"
                         tools:text="@string/hint_bet_limit_range" />
 
@@ -268,6 +271,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
+                        android:maxWidth="60dp"
                         android:text="@string/bet_info_list_bet"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
@@ -297,14 +301,16 @@
 
                     <TextView
                         android:id="@+id/tv_hint_default"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:gravity="end"
                         android:paddingHorizontal="10dp"
                         android:textColor="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/et_bet"
                         app:layout_constraintEnd_toEndOf="@+id/et_bet"
+                        app:layout_constraintStart_toStartOf="@+id/et_bet"
                         app:layout_constraintTop_toTopOf="@+id/et_bet"
                         tools:text="@string/hint_bet_limit_range" />
 
