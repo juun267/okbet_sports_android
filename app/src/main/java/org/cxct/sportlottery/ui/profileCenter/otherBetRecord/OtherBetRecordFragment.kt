@@ -19,6 +19,9 @@ import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setProfitFormat
 import java.util.*
 
+/**
+ * @app_destination 其他投注
+ */
 class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

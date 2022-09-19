@@ -11,24 +11,37 @@
     </data>
 
     <LinearLayout
+        android:layout_marginLeft="@dimen/margin_20"
+        android:layout_marginRight="@dimen/margin_20"
         android:layout_width="match_parent"
         android:minHeight="48dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/color_191919_FCFCFC"
+        android:background="@color/color_202541_FFFFFF"
         android:orientation="horizontal"
         android:paddingHorizontal="4dp"
         android:paddingVertical="12dp">
-
         <TextView
-            android:id="@+id/tv_datetime"
+            android:id="@+id/tv_date_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:textColor="@color/color_BBBBBB_333333"
+            android:textSize="@dimen/textSize12sp"
+            android:text="@{data.betTime}"
+            tools:text="999,999,999.000" />
+        <TextView
+            android:id="@+id/tv_game_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.25"
             android:gravity="center"
             android:maxLines="1"
-            android:textColor="@color/color_BBBBBB_333333"
+            android:textColor="@color/color_FFFFFF_535D76"
             android:textSize="@dimen/textSize12sp"
+            android:textStyle="bold"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:text="@{data.gameName}"
