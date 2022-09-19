@@ -1,22 +1,22 @@
 package org.cxct.sportlottery.ui.game.widget
 
 
-import android.animation.Animator
-import android.animation.AnimatorInflater
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail_publicity.view.*
+import kotlinx.android.synthetic.main.button_odd_home.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
@@ -38,12 +38,11 @@ import org.cxct.sportlottery.util.getOdds
  * 2021/07/29 新增特優賠率樣式
  * 2021/08/16 新增isSelect判斷
  * 2022/06/16 大廳賠率按鈕顯示邏輯搬移至OddsButton
- * 2022/06/28 更換layout
  */
-class OddsButtonPublicity @JvmOverloads constructor(
+class OddsButtonHome @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     var betStatus: Int? = null
@@ -66,8 +65,6 @@ class OddsButtonPublicity @JvmOverloads constructor(
 
     private var mOddsType: OddsType = OddsType.EU
 
-    private var mFillet = true
-
     private var hideItem = false
 
     private var mBackground: Drawable? = null
@@ -76,16 +73,19 @@ class OddsButtonPublicity @JvmOverloads constructor(
         init(attrs)
     }
 
+
+    //为了在赔率不显示队名，按钮内传入队名，过滤
+    private var matchInfo: MatchInfo? = null
+    private var hideName = true
+
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
-        mFillet = typedArray.getBoolean(R.styleable.OddsButton_ob_fillet, true)
         hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
-                ?: if (MultiLanguagesApplication.isNightMode) context.theme.getDrawable(R.drawable.selector_button_radius_4_odds_publicity_dark)
-                else context.theme.getDrawable(R.drawable.selector_button_radius_4_odds_publicity)
+                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
         try {
-            inflate(context, R.layout.button_odd_detail_publicity, this).apply {
+            inflate(context, R.layout.button_odd_home, this).apply {
                 button_odd_detail.background = mBackground
             }
         } catch (e: Exception) {
@@ -93,9 +93,19 @@ class OddsButtonPublicity @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null, isOddPercentage: Boolean? = false) {
+    fun setupOdd(
+        odd: Odd?,
+        oddsType: OddsType,
+        gameType: String? = null,
+        isOddPercentage: Boolean? = false,
+        matchInfo: MatchInfo?,
+    ) {
         mOdd = odd
         mOddsType = oddsType
+        this.matchInfo = matchInfo
+        hideName = TextUtils.equals(matchInfo?.homeName,
+            odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name) || TextUtils.equals(
+            getString(R.string.draw), odd?.name)
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
@@ -107,7 +117,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
             requestLayout()
 
             visibility =
-                if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
+                if (odd?.name.isNullOrEmpty() || gameType == "disable" || hideName) View.GONE else View.VISIBLE
         }
 
         tv_spread.apply {
@@ -122,13 +132,18 @@ class OddsButtonPublicity @JvmOverloads constructor(
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
-        updateOddsTextColor()
+//        updateOddsTextColor()
 
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
+        if (hideName && !tv_spread.isVisible) {
+            lin_name.isVisible = false
+        } else {
+            lin_name.isVisible = true
+        }
     }
 
     fun setupOdd4hall(
@@ -136,7 +151,8 @@ class OddsButtonPublicity @JvmOverloads constructor(
         odds: Odd?,
         oddList: List<Odd?>?,
         oddsType: OddsType,
-        isDrawBtn: Boolean? = false
+        isDrawBtn: Boolean? = false,
+        isOtherBtn: Boolean? = false,
     ) {
         mOdd = odds
         mOddsType = oddsType
@@ -157,7 +173,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
                 betStatus = BetStatus.DEACTIVATED.code
                 return
             }
-            (oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) -> {
+            ((oddList.size < 2 || odds?.odds ?: 0.0 <= 0.0) && isOtherBtn == false) -> {
                 betStatus = BetStatus.LOCKED.code
                 return
             }
@@ -186,12 +202,27 @@ class OddsButtonPublicity @JvmOverloads constructor(
                 }
             } else {
                 visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() -> View.VISIBLE
                     else -> View.GONE
                 }
 
                 text = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
+                    playCateCode.isCSType() -> {
+                        odds?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds?.name
+                    }
+                    playCateCode.isOUType() -> {
+                        //越南語大小顯示又要特殊處理(用O/U)
+                        val language =
+                            if (LanguageManager.getSelectLanguage(context).key == LanguageManager.Language.VI.key) LanguageManager.Language.EN.key else LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        (odds?.nameMap?.get(
+                            language
+                        ) ?: odds?.name)?.abridgeOddsName()
+                    }
+                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
                         (odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(
                                 context
@@ -232,6 +263,8 @@ class OddsButtonPublicity @JvmOverloads constructor(
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
 
+//        updateOddsTextColor()
+
 //        isSelected = odds?.isSelected ?: false
         isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
 
@@ -266,14 +299,24 @@ class OddsButtonPublicity @JvmOverloads constructor(
             )
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
-
-        if (getOdds(odd, oddsType) < 0.0) {
+        val diff = getOdds(odd, oddsType)
+        if (diff < 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
                     R.color.selector_button_odd_bottom_text_red
                 )
             )
+            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_down)
+
+        } else if (diff > 0.0) {
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_green
+                )
+            )
+            iv_arrow.setImageResource(R.drawable.ic_arrow_odd_up)
         } else {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
@@ -281,6 +324,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
                     R.color.selector_button_odd_bottom_text_eps
                 )
             )
+            iv_arrow.setImageDrawable(null)
         }
 
         isSelected = odd?.isSelected ?: false
@@ -295,7 +339,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
         img_odd_lock.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+                R.drawable.bg_radius_4_button_odds_lock
             )
 
             visibility =
@@ -309,7 +353,7 @@ class OddsButtonPublicity @JvmOverloads constructor(
         img_odd_unknown.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+                R.drawable.bg_radius_4_button_odds_lock
             )
 
             visibility =
@@ -321,11 +365,6 @@ class OddsButtonPublicity @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-
-        //隱藏賠率顯示箭頭
-        if (betStatus == BetStatus.LOCKED.code || betStatus == BetStatus.DEACTIVATED.code) {
-            ivOddsArrow.visibility = View.GONE
-        }
     }
 
     private fun setupOddState(oddState: Int) {
@@ -333,43 +372,47 @@ class OddsButtonPublicity @JvmOverloads constructor(
 
         when (oddState) {
             OddState.LARGER.state -> {
-                //箭頭
-                ivOddsArrow.visibility = View.VISIBLE
-                ivOddsArrow.setImageResource(R.drawable.ic_arrow_up)
-                setAnimation(true)
-                //賠率顏色
-                tv_odds.setTextColor(ContextCompat.getColor(context, R.color.color_0C8A29))
-
-                isActivated = true
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text_green
+                    )
+                )
+                iv_arrow.apply {
+                    setImageResource(R.drawable.selector_odds_arrow_up)
+                    visibility = View.VISIBLE
+                }
+                isActivated = false
             }
             OddState.SMALLER.state -> {
-                //箭頭
-                ivOddsArrow.visibility = View.VISIBLE
-                ivOddsArrow.setImageResource(R.drawable.ic_arrow_down)
-                setAnimation(false)
-                //賠率顏色
-                tv_odds.setTextColor(ContextCompat.getColor(context, R.color.color_E23434_E23434))
-
-                isActivated = true
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text_red
+                    )
+                )
+                iv_arrow.apply {
+                    setImageResource(R.drawable.selector_odds_arrow_down)
+                    visibility = View.VISIBLE
+                }
+                isActivated = false
             }
-            else -> {
-                //箭頭
-                ivOddsArrow.visibility = View.GONE
-                //賠率顏色
-                updateOddsTextColor()
-
+            OddState.SAME.state -> {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
+                        context,
+                        if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
+                        else R.color.selector_button_odd_bottom_text
+                    )
+                )
+                iv_arrow.apply {
+                    setImageDrawable(null)
+                    visibility = View.GONE
+                }
                 isActivated = false
             }
         }
-    }
-
-    var animationSet: Animator? = null
-    private fun setAnimation(isUp: Boolean) {
-        animationSet?.cancel()
-        animationSet = AnimatorInflater.loadAnimator(context, if (isUp) R.animator.publicity_odd_arrow_up else R.animator.publicity_odd_arrow_down).apply {
-            setTarget(ivOddsArrow)
-            start()
-        }
+//        updateOddsTextColor()
     }
 
     /**
@@ -377,27 +420,51 @@ class OddsButtonPublicity @JvmOverloads constructor(
      */
     private fun updateOddsTextColor() {
         //負盤
-        if (getOdds(mOdd, mOddsType) < 0.0) {
+        val diff = getOdds(mOdd, mOddsType)
+        if (diff < 0.0) {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
                     R.color.selector_button_odd_bottom_text_red
                 )
             )
+            iv_arrow.apply {
+                setImageResource(R.drawable.selector_odds_arrow_down)
+                visibility = View.VISIBLE
+            }
+        } else if (diff > 0.0) {//正盤
+            tv_odds.setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_green
+                )
+            )
+            iv_arrow.apply {
+                setImageResource(R.drawable.selector_odds_arrow_up)
+                visibility = View.VISIBLE
+            }
         } else {
             tv_odds.setTextColor(
                 ContextCompat.getColorStateList(
                     context,
                     if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                    else R.color.selector_button_odd_bottom_text_publicity
+                    else R.color.selector_button_odd_bottom_text
                 )
             )
+            iv_arrow.apply {
+                setImageDrawable(null)
+                visibility = GONE
+            }
         }
     }
 
     /**
      * 玩法判斷
      * */
+    private fun String.isCSType(): Boolean {
+        return this.contains(PlayCate.CS.value) && !this.isCombination()
+    }
+
     private fun String.isOUType(): Boolean {
         return this.contains(PlayCate.OU.value) && !this.isCombination()
     }
@@ -430,3 +497,4 @@ class OddsButtonPublicity @JvmOverloads constructor(
     }
 
 }
+

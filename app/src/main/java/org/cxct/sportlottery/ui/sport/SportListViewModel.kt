@@ -134,22 +134,27 @@ class SportListViewModel(
         val reloadedTimeRange = reloadedDateRow?.find {
             it.isSelected
         }?.timeRangeParams
-        val sportCode = getSportSelectedCode(matchType)
         //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間\
         val requestTimeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams()
-        sportCode?.let { code ->
             when (matchType) {
                 MatchType.IN_PLAY -> {
                     getOddsList(
-                        code,
+                        gameType = gameType,
                         matchType.postValue,
-                        requestTimeRangeParams,
                         leagueIdList = leagueIdList
+                    )
+                }
+                MatchType.AT_START -> {
+                    getOddsList(
+                        gameType = gameType,
+                        matchType.postValue,
+                        TimeUtil.getAtStartTimeRangeParams(),
+                        leagueIdList = leagueIdList,
                     )
                 }
                 MatchType.TODAY -> {
                     getOddsList(
-                        gameType = code,
+                        gameType = gameType,
                         matchType.postValue,
                         getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList
@@ -157,7 +162,7 @@ class SportListViewModel(
                 }
                 MatchType.EARLY -> {
                     getOddsList(
-                        gameType = code,
+                        gameType = gameType,
                         matchType.postValue,
                         requestTimeRangeParams,
                         leagueIdList = leagueIdList,
@@ -165,7 +170,7 @@ class SportListViewModel(
                 }
                 MatchType.CS -> {
                     getOddsList(
-                        code,
+                        gameType = gameType,
                         matchType.postValue,
                         requestTimeRangeParams,
                         leagueIdList = leagueIdList,
@@ -173,7 +178,7 @@ class SportListViewModel(
                 }
                 MatchType.PARLAY -> {
                     getOddsList(
-                        code,
+                        gameType = gameType,
                         matchType.postValue,
                         requestTimeRangeParams,
                         leagueIdList = leagueIdList,
@@ -181,26 +186,10 @@ class SportListViewModel(
 
                 }
                 MatchType.OUTRIGHT -> {
-                    getOutrightOddsList(code)
-                    //getOutrightSeasonList(code, false)
-                }
-                MatchType.AT_START -> {
-                    getOddsList(
-                        code,
-                        matchType.postValue,
-                        TimeUtil.getAtStartTimeRangeParams(),
-                        leagueIdList = leagueIdList,
-                    )
-                }
-                MatchType.EPS -> {
-//                    getEpsList(code, startTime = TimeUtil.getTodayStartTimeStamp())
-                }
-                MatchType.OTHER_EPS -> {
-
+                    getOutrightOddsList(gameType)
                 }
                 else -> {
                 }
-            }
         }
 
     }
@@ -239,18 +228,18 @@ class SportListViewModel(
     }
 
     fun switchGameType(item: Item) {
+        gameType = item.code
         if (jobSwitchGameType?.isActive == true) {
             jobSwitchGameType?.cancel()
         }
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         jobSwitchGameType = viewModelScope.launch {
-            clearGameHallContentBySwitchGameType()
             getGameHallList(true, isReloadPlayCate = true)
         }
     }
 
-    private fun clearGameHallContentBySwitchGameType() {
+    fun cleanGameHallResult() {
         _oddsListGameHallResult.postValue(Event(null))
     }
 

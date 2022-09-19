@@ -62,7 +62,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 favoriteAdapter.notifyItemChanged(index, item)
             }
         }
-    private val mListPop by lazy { ListPopupWindow(requireContext()) }
+    private lateinit var mListPop: ListPopupWindow
     private val favoriteAdapter by lazy {
         FavoriteAdapter(MatchType.MY_EVENT).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
@@ -166,6 +166,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initPopwindow()
         initObserver()
         initSocketObserver()
         favoriteAdapter.setPreloadItem()
@@ -180,8 +181,14 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun initView() {
         setupToolbar()
-        lin_menu.setOnClickListener {
-            showSportType()
+        cl_bet_all_sports.setOnClickListener {
+            if (mListPop.isShowing) {
+                cl_bet_all_sports.isSelected = false
+                mListPop.dismiss()
+            } else {
+                cl_bet_all_sports.isSelected = true
+                mListPop.show()
+            }
         }
     }
 
@@ -197,10 +204,8 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         }
     }
 
-    private fun showSportType() {
-        if (dataSport.isEmpty()) {
-            return
-        }
+    private fun initPopwindow() {
+        mListPop = ListPopupWindow(requireContext())
         mListPop.width = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.setBackgroundDrawable(
@@ -210,14 +215,13 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             )
         )
         mListPop.setAdapter(SportTypeTextAdapter(dataSport))
-        mListPop.setAnchorView(lin_menu) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.anchorView = cl_bet_all_sports //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.verticalOffset = 5
-        mListPop.setModal(true) //设置是否是模式
+        mListPop.isModal = true //设置是否是模式
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
                 view: View?,
-
                 position: Int,
                 id: Long,
             ) {
@@ -230,14 +234,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         })
         mListPop.setOnDismissListener {
-            lin_menu.isSelected = false
-        }
-        if (mListPop.isShowing) {
-            lin_menu.isSelected = false
-            mListPop.dismiss()
-        } else {
-            lin_menu.isSelected = true
-            mListPop.show()
+            cl_bet_all_sports.isSelected = false
         }
     }
 

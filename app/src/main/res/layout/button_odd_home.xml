@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="3dp">
+    android:layout_height="26dp"
+    android:layout_gravity="center_vertical"
+    android:background="@drawable/selector_button_radius_4_odds">
 
-    <FrameLayout
-        android:id="@+id/button_odd_detail"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/selector_button_radius_4_odds">
-
-
-        <LinearLayout
-            android:paddingHorizontal="6dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="6dp"
+        android:gravity="center"
             android:orientation="horizontal"
             tools:ignore="SpUsage">
 
@@ -37,9 +32,9 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textSize="@dimen/textSize12sp"
                     android:paddingRight="5dp"
-                    android:text="义大利义大利00000000000000000000000000000000000"
+                    android:text="义大利义大利"
                     tools:textColor="@color/color_A7B2C4" />
 
                 <TextView
@@ -49,7 +44,7 @@
                     android:fontFamily="@font/helvetica"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize13sp"
+                    android:textSize="@dimen/textSize10sp"
                     tools:text="-0.5/1"
                     tools:textColor="@color/color_A7B2C4" />
 
@@ -108,5 +103,3 @@
             android:visibility="gone" />
 
     </FrameLayout>
-
-</FrameLayout>

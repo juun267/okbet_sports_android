@@ -5,9 +5,9 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.game.widget.OddsButtonPublicity
+import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 
-abstract class OddStatePublicityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class OddStateHomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     interface OddStateChangeListener {
         fun refreshOddButton(odd: Odd)
     }
@@ -19,7 +19,7 @@ abstract class OddStatePublicityViewHolder(itemView: View) : RecyclerView.ViewHo
     abstract val oddStateChangeListener: OddStateChangeListener
     private val mHandler: Handler by lazy { Handler() }
 
-    protected fun setupOddState(oddsButton: OddsButtonPublicity, itemOdd: Odd?) {
+    protected fun setupOddState(oddsButton: OddsButtonHome, itemOdd: Odd?) {
         itemOdd?.let { odd ->
             if (oddsButton.oddStatus == odd.oddState) return
             when (odd.oddState) {
@@ -38,7 +38,7 @@ abstract class OddStatePublicityViewHolder(itemView: View) : RecyclerView.ViewHo
         }
     }
 
-    private fun highLightRunnable(oddsButton: OddsButtonPublicity, itemOdd: Odd): Runnable {
+    private fun highLightRunnable(oddsButton: OddsButtonHome, itemOdd: Odd): Runnable {
         return Runnable {
             itemOdd.oddState = OddState.SAME.state
             setupOddState(oddsButton, itemOdd)
@@ -48,7 +48,7 @@ abstract class OddStatePublicityViewHolder(itemView: View) : RecyclerView.ViewHo
         }
     }
 
-    private fun resetRunnable(oddsButton: OddsButtonPublicity, itemOdd: Odd) {
+    private fun resetRunnable(oddsButton: OddsButtonHome, itemOdd: Odd) {
         itemOdd.runnable?.let {
             mHandler.removeCallbacks(it)
         }

@@ -10,7 +10,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail_detail.view.*
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -85,7 +85,7 @@ class OddsButtonDetail @JvmOverloads constructor(
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
         try {
-            inflate(context, R.layout.button_odd_detail_detail, this).apply {
+            inflate(context, R.layout.button_odd_detail, this).apply {
                 button_odd_detail.background = mBackground
             }
         } catch (e: Exception) {

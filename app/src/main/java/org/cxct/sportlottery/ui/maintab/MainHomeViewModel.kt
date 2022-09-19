@@ -16,7 +16,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.isTimeAtStart
 import org.cxct.sportlottery.util.TimeUtil.isTimeToday
 import java.text.SimpleDateFormat
@@ -131,15 +130,4 @@ class MainHomeViewModel(
         }
     }
 
-    /**
-     * 設置賽事時間參數
-     */
-    private fun setupMatchTime(matchInfo: MatchInfo) {
-        matchInfo.startDateDisplay = TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
-
-        matchInfo.startTimeDisplay = TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
-
-        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
-    }
-    //endregion
 }

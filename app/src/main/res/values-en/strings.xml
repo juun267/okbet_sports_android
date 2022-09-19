@@ -719,8 +719,6 @@
     <string name="spt_number_5_3">Best of 5</string>
     <string name="spt_number_5_3_vb">Best Of 5</string>
     <string name="spt_number_7_4_tt">Best Of 7</string>
-    <string name="format_plat">Best of %s</string>
-    <string name="format_round">Best of %s</string>
     <string name="bet_notify_max_limit">Can add maximum 10 options to betslip</string>
     <string name="myfavorite_notify_league_add">Added to My Competitions.</string>
     <string name="myfavorite_notify_league_remove">Remove from My Competitions.</string>
@@ -944,7 +942,7 @@
     <string name="account_hint">(your member account)</string>
     <string name="submit_success">submitted successfully</string>
     <!-- 搜尋 -->
-    <string name="text_search">Search</string>
+    <string name="text_search">Search Matches</string>
     <string name="text_clear">Clear</string>
     <string name="text_search_history">Search history</string>
     <string name="text_top_search">Top Searches</string>
@@ -1130,7 +1128,7 @@
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
     <string name="my_message">My message</string>
     <string name="betting_setting">Betting setting</string>
-    <string name="filter">filter</string>
+    <string name="filter">Filter</string>
 
     <string name="kyc_type">ID Type</string>
     <string name="kyc_num">ID Number</string>
@@ -1202,8 +1200,8 @@
     <string name="correct">Correct</string>
     <string name="league_filter">select matches</string>
     <string name="reverse_select">reverse select</string>
-    <string name="video">video</string>
-    <string name="anime">anim</string>
+    <string name="video">Video</string>
+    <string name="anime">Animation</string>
 
     <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>

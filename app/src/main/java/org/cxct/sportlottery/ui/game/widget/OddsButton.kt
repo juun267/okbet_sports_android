@@ -81,7 +81,7 @@ open class OddsButton @JvmOverloads constructor(
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
         try {
-            inflate(context, R.layout.button_odd_detail, this).apply {
+            inflate(context, R.layout.button_odd, this).apply {
                 button_odd_detail.background = mBackground
             }
         } catch (e: Exception) {

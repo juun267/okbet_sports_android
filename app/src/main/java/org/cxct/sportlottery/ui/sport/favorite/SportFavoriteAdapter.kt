@@ -638,12 +638,13 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         private fun setCurrentPeroid(matchInfo: MatchInfo) {
             matchInfo.matchStatusList?.let {
                 itemView.tv_peroid.visibility = View.VISIBLE
-                itemView.tv_peroid.text = when (matchInfo.gameType) {
-                    GameType.TN.key -> String.format(itemView.context.getString(R.string.format_plat),
-                        it.size.toString())
-                    GameType.VB.key, GameType.TT.key, GameType.BM.key -> String.format(itemView.context.getString(
-                        R.string.format_round), it.size.toString())
-                    else -> ""
+                matchInfo.matchStatusList?.let { it ->
+                    itemView.tv_peroid.visibility = View.VISIBLE
+                    it.last()?.let {
+                        itemView.tv_peroid.text = it.statusNameI18n?.get(
+                            LanguageManager.getSelectLanguage(context = itemView.context).key
+                        ) ?: it.statusName
+                    }
                 }
             }
         }

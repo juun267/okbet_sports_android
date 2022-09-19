@@ -10,7 +10,6 @@ import android.widget.ListPopupWindow
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
@@ -24,7 +23,8 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel.Companion.PAGE_SIZE
-import org.cxct.sportlottery.ui.main.accountHistory.first.*
+import org.cxct.sportlottery.ui.main.accountHistory.first.AccountHistoryAdapter
+import org.cxct.sportlottery.ui.main.accountHistory.first.ItemClickListener
 import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
 import org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter
 import org.greenrobot.eventbus.EventBus
@@ -169,7 +169,6 @@ class BetRecordFragment :
         }
 
         cl_bet_all_sports.setOnClickListener(View.OnClickListener {
-            System.out.println("============ 000yetetet ================")
             if (mListPop.isShowing) {
                 cl_bet_all_sports.isSelected = false
                 mListPop.dismiss()

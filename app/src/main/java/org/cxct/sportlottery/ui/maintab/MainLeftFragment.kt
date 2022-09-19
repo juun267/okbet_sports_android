@@ -6,22 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.util.*
+import org.greenrobot.eventbus.EventBus
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {
@@ -72,12 +75,8 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onResume() {
         super.onResume()
         if (MultiLanguagesApplication.isNightMode) {
-            tv_appearance.text =
-                getString(R.string.appearance) + ": " + getString(R.string.night_mode)
             cb_appearance.isChecked = true
         } else {
-            tv_appearance.text =
-                getString(R.string.appearance) + ": " + getString(R.string.day_mode)
             cb_appearance.isChecked = false
         }
         tv_language.text = LanguageManager.getLanguageStringResource(requireContext())
@@ -88,36 +87,36 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initView() {
+        iv_menu_back.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(false))
+        }
         lin_message.setOnClickListener {
-            startActivity(
-                Intent(requireContext(), InfoCenterActivity::class.java)
-                    .putExtra(InfoCenterActivity.KEY_READ_PAGE, InfoCenterActivity.YET_READ)
-            )
+            startActivity(Intent(requireContext(), NewsActivity::class.java))
         }
         lin_odds_type.setOnClickListener {
             isExpendOddsType = !isExpendOddsType
-            rv_odds_type.visibility = if (isExpendOddsType) View.VISIBLE else View.GONE
+            rv_odds_type.isVisible = isExpendOddsType
+            lin_odds_type.isSelected = isExpendOddsType
         }
         lin_betting_setting.setOnClickListener {
             isExpendOddsPrice = !isExpendOddsPrice
-            rv_odds_price.visibility = if (isExpendOddsPrice) View.VISIBLE else View.GONE
+            rv_odds_price.isVisible = isExpendOddsPrice
+            lin_betting_setting.isSelected = isExpendOddsPrice
         }
         lin_language.setOnClickListener {
             isExpendLanguage = !isExpendLanguage
-            rv_language.visibility = if (isExpendLanguage) View.VISIBLE else View.GONE
+            rv_language.isVisible = isExpendLanguage
+            lin_language.isSelected = isExpendLanguage
         }
         cb_appearance.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 MultiLanguagesApplication.saveNightMode(true)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                tv_appearance.text =
-                    getString(R.string.appearance) + ": " + getString(R.string.night_mode)
             } else {
                 MultiLanguagesApplication.saveNightMode(false)
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                tv_appearance.text =
-                    getString(R.string.appearance) + ": " + getString(R.string.day_mode)
             }
+            EventBus.getDefault().post(MenuEvent(false))
         }
         //在線客服 (取代原有的客服懸浮按鈕)
         lin_customer.setOnClickListener {
@@ -296,7 +295,8 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             listOf(
                 LanguageManager.Language.ZH,
                 LanguageManager.Language.EN,
-                LanguageManager.Language.VI
+                LanguageManager.Language.VI,
+                LanguageManager.Language.TH
             )
         )
         languageAdapter.setOnItemClickListener { adapter, view, position ->
@@ -329,11 +329,11 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         if (viewModel.isLogin.value == true) {
             lin_message.visibility = View.VISIBLE
             lin_odds_type.visibility = View.VISIBLE
-            lin_betting_setting.visibility = View.VISIBLE
+//            lin_betting_setting.visibility = View.VISIBLE
         } else {
             lin_message.visibility = View.GONE
             lin_odds_type.visibility = View.GONE
-            lin_betting_setting.visibility = View.GONE
+//            lin_betting_setting.visibility = View.GONE
         }
     }
 

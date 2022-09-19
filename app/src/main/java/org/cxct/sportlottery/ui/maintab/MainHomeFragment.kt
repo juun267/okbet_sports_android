@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
@@ -52,8 +54,8 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.GalleryLayoutManager
-import org.cxct.sportlottery.widget.Transformer
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.widget.DepthPageTransformer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -378,11 +380,22 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         for (i in titleList) {
             var view = layoutInflater.inflate(R.layout.item_flipper, null)
             view.tv_marquee.text = i
+            view.setOnClickListener {
+                context?.let {
+                    JumpUtil.toInternalWeb(
+                        it,
+                        Constants.getPromotionUrl(
+                            viewModel.token,
+                            LanguageManager.getSelectLanguage(it)
+                        ),
+                        getString(R.string.promotion)
+                    )
+                }
+            }
             views.add(view)
         }
         um_activity.setViews(views)
     }
-
     private fun setupType(publicityMenuData: PublicityMenuData) {
         rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -403,14 +416,19 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             }
         })
         mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
-        rv_type_list.onFlingListener = null
-        val manager = GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL)
-        manager.attach(rv_type_list, 0)
-        manager.setItemTransformer(Transformer())
-        manager.setOnItemSelectedListener { recyclerView, item, position ->
-            //当滑动切换时
-
-        }
+//        rv_type_list.onFlingListener = null
+//        val manager = GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL)
+//        manager.attach(rv_type_list, 0)
+//        manager.setItemTransformer(Transformer())
+//        manager.setOnItemSelectedListener { recyclerView, item, position ->
+//            //当滑动切换时
+//
+//        }
+        var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
+        rvChiild.setPadding(0, 0, 40.dp, 0)
+        rvChiild.clipToPadding = false
+        rv_type_list.offscreenPageLimit = 3
+        rv_type_list.setPageTransformer(DepthPageTransformer())
         rv_type_list.adapter = mainHomeMenuAdapter
         mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
             publicityMenuData.sportMenuDataList?.let {
@@ -421,16 +439,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             mainHomeMenuAdapter.setNewData(it.toMutableList())
         }
         lin_menu_game.apply {
-//            llThirdGamePlayNowContainer.isVisible = true
-//            llThirdGameComingSoonContainer.isVisible = false
-//            val ivPlayNowLayoutParams = ivPlayNow.layoutParams as LinearLayout.LayoutParams
-//            if (isCreditSystem()) {
-//                tvNewGamesBeta.visibility = View.GONE
-//                ivPlayNowLayoutParams.setMargins(0, 8.dp, 0, 0)
-//            } else {
-//                tvNewGamesBeta.visibility = View.VISIBLE
-//                ivPlayNowLayoutParams.setMargins(0, 0, 0, 0)
-//            }
             ivThirdGame.setImageResource(R.drawable.bg_egame)
             ivThirdGame.setOnClickListener {
                 publicityMenuData?.eGameMenuData?.let { thirdDictValues ->
@@ -835,4 +843,5 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             homeRecommendAdapter.updateRecommendItem(recommendList = recommendList, oddsType = it)
         }
     }
+
 }
