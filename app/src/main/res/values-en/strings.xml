@@ -1209,5 +1209,6 @@
     <string name="bet_receipt_win_quota_with_sign">EST winning(%s)：</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
+    <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
 
 </resources>
