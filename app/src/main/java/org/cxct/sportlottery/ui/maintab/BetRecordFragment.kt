@@ -236,6 +236,7 @@ class BetRecordFragment :
     }
 
     private fun updateSportList(list: List<StatusSheetData>) {
+        if (dataSport.isNotEmpty()) return
         list.forEach {
             dataSport.add(
                 Item(
