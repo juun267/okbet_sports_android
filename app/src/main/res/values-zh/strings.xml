@@ -1215,6 +1215,7 @@
     <string name="bet_receipt_win_quota_with_sign">可赢金额(%s)：</string>
     <string name="bet_record_single">单串</string>
     <string name="bet_record_parlay">复式</string>
+    <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
 
     <string name="bank_memory_card">储蓄卡</string>
 </resources>
