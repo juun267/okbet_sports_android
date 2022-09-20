@@ -353,7 +353,6 @@
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>
 
-
         <!-- 充值金額 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_recharge_amount"
@@ -361,6 +360,7 @@
             android:layout_height="wrap_content"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
+            app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitle="@string/title_deposit_money" />
 
         <!-- 微信 -->
@@ -370,6 +370,7 @@
             android:layout_height="wrap_content"
             app:cvHint="@string/edt_hint_wx_id"
             app:cvInputType="text"
+            app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitle="@string/title_wx_id" />
 
         <!-- 認證姓名 -->
@@ -379,6 +380,7 @@
             android:layout_height="wrap_content"
             app:cvHint="@string/edt_hint_check_real_name"
             app:cvInputType="text"
+            app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitle="@string/title_real_name" />
 
         <!-- 銀行卡號 -->
@@ -388,6 +390,7 @@
             android:layout_height="wrap_content"
             app:cvHint="@string/please_enter_bank_card_rule"
             app:cvInputType="number"
+            app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitle="@string/title_bank_account" />
 
         <!-- 暱稱 -->
@@ -397,6 +400,7 @@
             android:layout_height="wrap_content"
             app:cvHint="@string/edt_hint_nick_name"
             app:cvInputType="text"
+            app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitle="@string/title_nick_name" />
 
 
@@ -424,7 +428,7 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
-                    android:textColor="@color/color_BBBBBB_333333"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -490,7 +494,7 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_current_money"
-                    android:textColor="@color/color_BBBBBB_333333"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize13sp"
                     android:textStyle="bold" />
 
@@ -511,7 +515,7 @@
                     android:background="@null"
                     android:gravity="start|center_vertical"
                     android:singleLine="true"
-                    android:textColor="@color/color_BBBBBB_333333"
+                    android:textColor="@color/color_FFFFFF_414655"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="₱ 15,282.42" />
 

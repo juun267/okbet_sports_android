@@ -4,9 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
@@ -457,6 +460,9 @@ class ProfileCenterFragment :
                 getString(R.string.about_us)
             )
         }
+
+        //资产检测
+
     }
 
     // TODO 跳轉Promotion 20220108新增 by Hewie
@@ -723,6 +729,42 @@ class ProfileCenterFragment :
             updateUserIdentity(it?.testFlag)
         }
 
+        //总资产锁定金额
+        viewModel.lockMoney.observe(this) {
+            if (it?.toInt()!! > 0) {
+
+                iv_deposit_tip.setOnClickListener { view ->
+                    val depositSpannable =
+                        SpannableString(
+                            getString(
+                                R.string.text_security_money,
+                                TextUtil.formatMoneyNoDecimal(it)
+                            )
+                        )
+                    val daysLeftText = getString(
+                        R.string.text_security_money2,
+                        TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                    )
+                    val remainDaySpannable = SpannableString(daysLeftText)
+                    val remainDay = TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
+                    remainDaySpannable.setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(requireContext(), R.color.color_317FFF_1053af)
+                        ),
+                        remainDayStartIndex,
+                        remainDayStartIndex + remainDay.length, 0
+                    )
+
+                    fragmentManager?.let { it1 ->
+                        SecurityDepositDialog().apply {
+                            this.depositText = depositSpannable
+                            this.daysLeftText = remainDaySpannable
+                        }.show(it1, this::class.java.simpleName)
+                    }
+                }
+            }
+        }
 
     }
 

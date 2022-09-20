@@ -214,7 +214,16 @@
                         app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
                         app:layout_constraintTop_toTopOf="@+id/tv_account_balance"
                         tools:ignore="MissingConstraints" />
-
+                    <ImageView
+                        android:id="@+id/iv_deposit_tip"
+                        android:src="@drawable/deposit_tips"
+                        android:layout_marginStart="@dimen/margin_5"
+                        app:layout_constraintStart_toEndOf="@+id/tv_funds"
+                        app:layout_constraintTop_toTopOf="@+id/tv_funds"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_funds"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"/>
+                
                     <TextView
                         android:id="@+id/tv_currency_type"
                         android:layout_width="wrap_content"
