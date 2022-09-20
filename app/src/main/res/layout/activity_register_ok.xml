@@ -264,6 +264,7 @@
                                 android:layout_height="wrap_content"
                                 android:imeOptions="actionNext"
                                 android:inputType="phone"
+                                android:maxLength="11"
                                 android:maxLines="1"
                                 android:textColor="@color/color_FFFFFF_DE000000"
                                 android:textSize="@dimen/textSize14sp"
@@ -1125,6 +1126,7 @@
 
                             <TextView
                                 android:id="@+id/tvDuty"
+                                android:autoLink="all"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/margin_4"

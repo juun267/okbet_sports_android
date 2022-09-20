@@ -189,7 +189,7 @@ class MoneyTransferViewModel(
         defaultSubOutList = list
         _subOutPlatSheetList.value = list
     }
-
+    //转入选项
     private fun setRecordInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
         list.add(StatusSheetData(allPlat, LocalUtils.getString(R.string.all_in_plat)))
@@ -201,7 +201,7 @@ class MoneyTransferViewModel(
         _recordInPlatSheetList.value = list
     }
 
-
+    //转出选项
     private fun setRecordOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
         list.add(StatusSheetData(allPlat, LocalUtils.getString(R.string.all_out_plat)))

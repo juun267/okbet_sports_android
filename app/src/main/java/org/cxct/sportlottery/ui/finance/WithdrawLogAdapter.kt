@@ -111,12 +111,12 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
-
+    //TODO 位置改动 这个后续要删除掉 暂时隐藏
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(isFinalPage: Boolean, hasData: Boolean) {
             itemView.visibility = if (isFinalPage && hasData) {
-                View.VISIBLE
+                View.GONE
             } else {
                 View.GONE
             }

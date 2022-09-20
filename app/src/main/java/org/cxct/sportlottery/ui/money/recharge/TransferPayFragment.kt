@@ -35,7 +35,7 @@ import java.util.*
 import kotlin.math.abs
 
 /**
- * @app_destination 轉帳支付
+ * @app_destination 转账支付  //存款时间格式需要修改
  */
 class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 

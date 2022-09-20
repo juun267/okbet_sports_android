@@ -33,7 +33,7 @@
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">Sign up now</string>
     <string name="not_sign_up">Not Sign up</string>
-    <string name="recommend_code">Invite Code</string>
+    <string name="recommend_code">Invite Code(Optional)</string>
     <string name="hint_recommend_code">(Please enter your invite code)</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
     <string name="member_account">Username</string>
@@ -1106,7 +1106,7 @@
     <string name="current_time">Time</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">EST Winning</string>
+    <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Total Stake(%s)：</string>
     <string name="total_win_amount">EST Winning(%s)：</string>

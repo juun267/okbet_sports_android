@@ -80,6 +80,7 @@ class ContentParlayMatchAdapter(val status: Int) :
                 )
 
                 parlay_play_time.text = TimeUtil.timeFormat(data.startTime, TimeUtil.DM_HM_FORMAT)
+                itemView.iv_country.setSvgDrawable(data.categoryIcon)
                 content_league.text = data.leagueName
 //                if (position == 0) {
 //                    if(betConfirmTime?.toInt() != 0){

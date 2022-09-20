@@ -27,14 +27,14 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
  * @app_destination 存款记录
  */
 class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
-
+    private var isSlidingToLast:Boolean = false
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
             iv_scroll_to_top.apply {
                 when {
                     firstVisibleItemPosition > 0 && alpha == 0f -> {
-                        visibility = View.VISIBLE
+                     //   visibility = View.VISIBLE
                         animate().alpha(1f).setDuration(300).setListener(null)
                     }
                     firstVisibleItemPosition <= 0 && alpha == 1f -> {
@@ -59,6 +59,27 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
 
                 scrollToTopControl(firstVisibleItemPosition)
             }
+            isSlidingToLast = dy>0 //dy表示水平方向的滑动 大于0表示向下 小于0表示向上
+        }
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+            if(newState == RecyclerView.SCROLL_STATE_IDLE){//如果停止滑动
+                layoutManager.apply {
+                    val itemCount:Int = this.itemCount
+                    val position =
+                        this.findLastCompletelyVisibleItemPosition()
+                    if ((position==itemCount-1)&& isSlidingToLast ){//如果最后一个可见item等于列表最后一个数据的下标并且向下滑动
+                        //显示 没有更多数据的文字
+                        tv_no_data.visibility = View.VISIBLE
+                    }else{
+                        tv_no_data.visibility = View.GONE
+                    }
+                }
+            }
+
+
         }
     }
 
@@ -144,6 +165,9 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             it?.apply {
                 rechargeLogAdapter.data = it
                 setupNoRecordView(it.isEmpty())
+                if (it.isEmpty()||it.size==0){
+                    tv_no_data.visibility = View.GONE
+                }
             }
         }
 
