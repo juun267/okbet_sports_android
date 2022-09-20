@@ -18,6 +18,7 @@
     android:textSize="@dimen/textSize12sp"
     android:paddingStart="3dp"
     android:paddingEnd="3dp"
+    android:textStyle="bold"
     tools:checked="true"
     tools:ignore="SpUsage"
     tools:text="10月20日" />
