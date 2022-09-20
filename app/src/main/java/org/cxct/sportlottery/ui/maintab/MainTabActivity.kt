@@ -77,6 +77,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initObserve()
     }
 
+
+    override fun onNightModeChanged(mode: Int) {
+        super.onNightModeChanged(mode)
+        switchTabByPosition(0)
+    }
+
     private fun initObserve() {
         viewModel.userMoney.observe(this) {
             it?.let { money ->
