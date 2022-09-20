@@ -25,18 +25,19 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
 
 /**
- * @app_destination 提款記錄
+ * @app_destination 提款记录
  */
 class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
     private var reserveTime: String = ""
+    private var isSlidingToLast:Boolean = false
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
         object : RecyclerView.OnScrollListener() {
-
+            //TODO 位置改动 这个后续要删除掉 暂时隐藏
             private fun scrollToTopControl(firstVisibleItemPosition: Int) {
                 iv_scroll_to_top.apply {
                     when {
                         firstVisibleItemPosition > 0 && alpha == 0f -> {
-                            visibility = View.VISIBLE
+                           // visibility = View.VISIBLE
                             animate().alpha(1f).setDuration(300).setListener(null)
                         }
                         firstVisibleItemPosition <= 0 && alpha == 1f -> {
@@ -65,6 +66,27 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     )
                     scrollToTopControl(firstVisibleItemPosition)
                 }
+                isSlidingToLast = dy>0 //dy表示水平方向的滑动 大于0表示向下 小于0表示向上
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){//如果停止滑动
+                    layoutManager.apply {
+                        val itemCount:Int = this.itemCount
+                        val position =
+                            this.findLastCompletelyVisibleItemPosition()
+                        if ((position==itemCount-1)&& isSlidingToLast ){//如果最后一个可见item等于列表最后一个数据的下标并且向下滑动
+                            //显示 没有更多数据的文字
+                            tv_no_data.visibility = View.VISIBLE
+                        }else{
+                            tv_no_data.visibility = View.GONE
+                        }
+                    }
+                }
+
+
             }
         }
 
@@ -103,7 +125,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     }
 
     private fun initOnclick(view: View) {
-
+        //TODO 位置改动 这个方法要删除掉 暂时隐藏
         view.iv_scroll_to_top.setOnClickListener {
             view.rvlist.smoothScrollToPosition(0)
         }

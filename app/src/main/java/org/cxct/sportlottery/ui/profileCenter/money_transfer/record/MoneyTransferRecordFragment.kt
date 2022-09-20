@@ -34,7 +34,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
             iv_scroll_to_top.apply {
                 when {
                     firstVisibleItemPosition > 0 && alpha == 0f -> {
-                        visibility = View.VISIBLE
+                      //  visibility = View.VISIBLE
                         animate().alpha(1f).setDuration(300).setListener(null)
                     }
                     firstVisibleItemPosition <= 0 && alpha == 1f -> {

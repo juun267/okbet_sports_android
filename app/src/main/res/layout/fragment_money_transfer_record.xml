@@ -92,10 +92,7 @@
             android:layout_marginTop="@dimen/margin_10"
             android:layout_marginRight="@dimen/margin_10"
             android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/linearLayout5"
@@ -106,10 +103,7 @@
                 android:layout_marginRight="@dimen/margin_1"
                 android:background="@drawable/bg_white_top_radius_deposit_10"
                 android:orientation="horizontal"
-                android:paddingVertical="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/selector_transfer_status">
+                android:paddingVertical="4dp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -195,6 +189,7 @@
         </LinearLayout>
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_scroll_to_top"
             android:layout_width="48dp"
             android:layout_height="48dp"

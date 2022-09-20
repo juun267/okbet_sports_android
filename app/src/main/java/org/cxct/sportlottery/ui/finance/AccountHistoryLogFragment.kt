@@ -21,7 +21,7 @@ import org.cxct.sportlottery.ui.finance.df.AccountHistory
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
- * @app_destination 歷史紀錄
+ * @app_destination 历史记录
  */
 class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
 

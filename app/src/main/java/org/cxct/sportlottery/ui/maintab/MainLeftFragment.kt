@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -187,6 +188,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions)
             )
+            Log.d("duck222", "initView:规则与条款url "+Constants.getAgreementRuleUrl(requireContext()))
         }
         //隱私權條款
         tv_privacy.setVisibilityByCreditSystem()

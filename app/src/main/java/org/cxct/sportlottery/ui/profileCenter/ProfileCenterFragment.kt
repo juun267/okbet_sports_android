@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,9 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
@@ -38,6 +42,7 @@ import kotlinx.android.synthetic.main.fragment_profile_center.iv_flag
 import kotlinx.android.synthetic.main.fragment_profile_center.iv_head1
 import kotlinx.android.synthetic.main.fragment_profile_center.iv_logout
 import kotlinx.android.synthetic.main.fragment_profile_center.lin_wallet_operation
+import kotlinx.android.synthetic.main.fragment_profile_center.rl_head
 import kotlinx.android.synthetic.main.fragment_profile_center.tv_account_balance
 import kotlinx.android.synthetic.main.fragment_profile_center.tv_appearance
 import kotlinx.android.synthetic.main.fragment_profile_center.tv_currency_type
@@ -71,6 +76,7 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivi
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
@@ -83,7 +89,9 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.io.File
+import java.io.FileNotFoundException
 
 /**
  * @app_destination 个人中心
@@ -213,16 +221,51 @@ class ProfileCenterFragment :
 //        }
 
     }
+    private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
+        override fun onResult(result: MutableList<LocalMedia>?) {
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
 
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.path
+                }
+
+                val file = File(path!!)
+                if (file.exists())
+                    uploadImg(file)
+                else
+                    throw FileNotFoundException()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(
+                    activity,
+                    getString(R.string.error_reading_file)
+                )
+            }
+        }
+
+        override fun onCancel() {
+            Timber.i("PictureSelector Cancel")
+        }
+
+    }
     private fun setupEditNickname() {
-        btn_edit_nickname.setOnClickListener {
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    ModifyProfileInfoActivity::class.java
-                ).apply {
-                    putExtra(ModifyProfileInfoActivity.MODIFY_INFO, ModifyType.NickName)
-                })
+        rl_head.setOnClickListener{
+                fragmentManager?.let { it1 ->
+                    AvatarSelectorDialog(
+                        activity as Activity,
+                        mSelectMediaListener
+                    ).show(it1, null)
+                }
+
         }
     }
 

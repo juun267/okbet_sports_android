@@ -140,7 +140,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(isFinalPage: Boolean, hasData: Boolean) {
             itemView.visibility = if (isFinalPage && hasData) {
-                View.VISIBLE
+                View.GONE
             } else {
                 View.GONE
             }
