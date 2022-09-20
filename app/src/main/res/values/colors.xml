@@ -123,6 +123,8 @@
     <color name="color_a3a3a3">#a3a3a3</color>
     <color name="color_232C4F">#232C4F</color>
     <color name="color_F7F8FC">#F7F8FC</color>
+    <color name="color_DDE1F4">#DDE1F4</color>
+    <color name="color_334266">#334266</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -466,5 +468,5 @@
     <!--意见与反馈-反馈记录-->
     <!--赛果结算-->
     <color name="color_202541_F7F8FC">@color/color_F7F8FC</color>
-
+    <color name="color_334266_DDE1F4">@color/color_DDE1F4</color>
 </resources>
