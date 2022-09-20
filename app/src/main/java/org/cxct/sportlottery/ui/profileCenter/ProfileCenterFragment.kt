@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -730,9 +731,8 @@ class ProfileCenterFragment :
         }
 
         //总资产锁定金额
-        viewModel.lockMoney.observe(this) {
+        viewModel.lockMoney.observe(viewLifecycleOwner) {
             if (it?.toInt()!! > 0) {
-
                 iv_deposit_tip.setOnClickListener { view ->
                     val depositSpannable =
                         SpannableString(
@@ -784,6 +784,7 @@ class ProfileCenterFragment :
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
+        viewModel.getLockMoney()
 //        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
 //            ivNotice.visibility = View.VISIBLE
 //            ivNotice.setOnClickListener {
