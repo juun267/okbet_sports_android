@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * @app_destination 赛过结算
+ * @app_destination 赛果结算
  */
 class ResultsSettlementActivity :
     BaseSocketActivity<SettlementViewModel>(SettlementViewModel::class) {
