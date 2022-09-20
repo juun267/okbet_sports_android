@@ -35,13 +35,13 @@ class StatusSpinnerView @JvmOverloads constructor(
     private val arrowImg by lazy {
         typedArray.getResourceId(
             R.styleable.StatusBottomSheetStyle_arrowSrc,
-            R.drawable.ic_arrow_gray_down
+            R.drawable.icon_arrow_down
         )
     }
     private val arrowImgUp by lazy {
         typedArray.getResourceId(
             R.styleable.StatusBottomSheetStyle_arrowSrc,
-            R.drawable.ic_arrow_gray_top
+            R.drawable.icon_arrow_up
         )
     }
     private val textGravity by lazy {
@@ -73,8 +73,10 @@ class StatusSpinnerView @JvmOverloads constructor(
                 this@StatusSpinnerView.callOnClick()
                 if (mListPop.isShowing) {
                     mListPop.dismiss()
+                    iv_arrow.setImageResource(arrowImg)
                 } else {
                     mListPop.show()
+                    iv_arrow.setImageResource(arrowImgUp)
                 }
             }
         }
@@ -113,12 +115,15 @@ class StatusSpinnerView @JvmOverloads constructor(
                 )
             )
         }
-
+        mListPop.setOnDismissListener {
+            iv_arrow.setImageResource(arrowImg)
+        }
         mListPop.setAdapter(spinnerAdapter)
         mListPop.anchorView = tv_name  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
         mListPop.verticalOffset = 5
-        mListPop.setHorizontalOffset(5)
+        mListPop.setHorizontalOffset(-5)
+        mListPop.setDropDownGravity(Gravity.CENTER)
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
