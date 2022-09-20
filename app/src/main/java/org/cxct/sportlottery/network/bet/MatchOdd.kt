@@ -51,4 +51,6 @@ data class MatchOdd(
     val oddsType: String,
     @Json(name = "rtScore")
     val rtScore: String?,
+    @Json(name = "categoryIcon")
+    val categoryIcon: String?,
 ): Parcelable

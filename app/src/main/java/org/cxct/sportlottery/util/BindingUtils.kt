@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -503,4 +504,17 @@ fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
         LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click
     this.setText(spannableString, TextView.BufferType.SPANNABLE)
     this.highlightColor = Color.TRANSPARENT //設定點擊links的背景色
+}
+
+@BindingAdapter("svgDrawable")
+fun ImageView.setSvgDrawable(svgData: String?) {
+    val svgIcon = SvgUtil.getSvgDrawable(
+        context,
+        if (svgData.isNullOrEmpty()) {
+            SvgUtil.defaultIconPath
+        } else {
+            svgData
+        }
+    )
+    this.setImageDrawable(svgIcon)
 }
