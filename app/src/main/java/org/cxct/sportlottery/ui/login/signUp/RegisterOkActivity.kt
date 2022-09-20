@@ -197,6 +197,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
+        //Html.fromHtml("<u>"+getString(R.string.register_privacy_policy)+"</u>")
+        //TODO  遗留富文本下划线需要设置
         binding.tvPrivacy.text =
             "1." + getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
                 R.string.register_privacy_policy_promotions

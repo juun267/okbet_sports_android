@@ -33,7 +33,7 @@
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">Sign up now</string>
     <string name="not_sign_up">Not Sign up</string>
-    <string name="recommend_code">Invite Code</string>
+    <string name="recommend_code">Invite Code(Optional)</string>
     <string name="hint_recommend_code">(Please enter your invite code)</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
     <string name="member_account">Username</string>
