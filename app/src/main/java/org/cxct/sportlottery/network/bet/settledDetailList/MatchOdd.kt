@@ -66,5 +66,7 @@ data class MatchOdd(
     @Json(name = "playCateMatchResultList")
     val playCateMatchResultList: List<PlayCateMatchResult>?,
     @Json(name = "oddsType")
-    val oddsType: String?
+    val oddsType: String?,
+    @Json(name = "categoryIcon")
+    val categoryIcon: String?
 ) : Parcelable
