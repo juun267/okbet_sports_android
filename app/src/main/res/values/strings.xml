@@ -750,7 +750,7 @@
     <string name="bet_fail">Betting fails</string>
     <string name="bet_fail_btn">Bet unsuccessful</string>
     <string name="credit_record_deactivate">Credit function disabled</string>
-    <string name="game_postponed">Game postponed</string>
+    <string name="game_postponed">Match postponed</string>
     <string name="game_out">Outs:%s</string>
     <string name="money_recharge_hint1">Please transfer success before you submit deposit information.</string>
     <string name="money_recharge_hint2">Please refresh the page every time into the, get the latest payment account, avoid into your overdue account, into the wrong not compensation.</string>
@@ -1261,5 +1261,6 @@
     <string name="main_tab_mine">@string/bottom_nav_my_account</string>
     <string name="sport_match">场赛事</string>
     <string name="match_analyze">赛事分析</string>
-
+    <string name="no_search_match">没有搜索到赛事</string>
+    <string name="no_more">没有更多了</string>
 </resources>

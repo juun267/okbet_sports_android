@@ -9,6 +9,7 @@ import android.os.Handler
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,13 +18,11 @@ import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
-import kotlinx.android.synthetic.main.activity_detail_sport.iv_arrow
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
-import kotlinx.android.synthetic.main.view_toolbar_live.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -48,7 +47,6 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
-import org.cxct.sportlottery.ui.statistics.StatisticsFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
@@ -85,7 +83,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         })
     }
     private var betListFragment = BetListFragment()
-    private var statisticsFrament = lazy { StatisticsFragment.newInstance(matchId = matchInfo?.id) }
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
 
@@ -136,8 +133,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     text = this.context.getString(R.string.time_null)
                     isVisible = true
                 }
-                tv_toolbar_bottom.text = text
-                tv_toolbar_bottom.isVisible = isVisible
+                tv_toolbar_match_time.text = text
+                tv_toolbar_match_time.isVisible = isVisible
             }
         }
         return@Handler false
@@ -182,11 +179,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.showFullScreen(false)
                 showFullScreen(false)
             } else {
-                toolBar.isVisible = true
-                live_view_tool_bar.isVisible = false
-                setScrollEnable(true)
-                collaps_toolbar.isVisible = false
-                live_view_tool_bar.release()
+                if (toolBar.isVisible) {
+                    onBackPressed()
+                } else {
+                    toolBar.isVisible = true
+                    live_view_tool_bar.isVisible = false
+                    setScrollEnable(true)
+                    collaps_toolbar.isVisible = false
+                    live_view_tool_bar.release()
+                }
             }
         }
         iv_refresh.setOnClickListener {
@@ -196,9 +197,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         ImmersionBar.with(this)
             .statusBarDarkFont(false)
             .init()
-        v_statusbar.minimumHeight = ImmersionBar.getStatusBarHeight(this)
-        v_statusbar_1.minimumHeight = ImmersionBar.getStatusBarHeight(this)
-        toolbar_layout.minimumHeight = ImmersionBar.getStatusBarHeight(this)
+        ImmersionBar.getStatusBarHeight(this).let {
+            v_statusbar.minimumHeight = it
+//            v_statusbar_1.minimumHeight = it
+            toolbar_layout.minimumHeight = it
+            iv_toolbar_bg.layoutParams.apply {
+                height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+            }
+        }
+
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 if (state === State.COLLAPSED) {
@@ -269,14 +276,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
-            setAnchorView(R.id.fl_bet_list)
+            setAnchorView(R.id.snackbar_holder)
             show()
         }
     }
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
         setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
-
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
@@ -327,8 +333,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
-        supportFragmentManager.beginTransaction().add(R.id.frameBottom, statisticsFrament.value)
-            .commit()
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
@@ -377,17 +381,23 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 isSelected = !isSelected
                 oddsDetailListAdapter?.apply {
                     oddsDetailDataList.forEach {
-                        it.isExpand = isSelected
+                        it.isExpand = !isSelected
                     }
                     notifyDataSetChanged()
                 }
             }
+        }
+        matchInfo?.id?.let {
+            setupAnalyze(it)
         }
         isShowOdd(true)
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
+        viewModel.notifyLogin.observe(this) {
+            showLoginNotify()
+        }
         viewModel.userInfo.observe(this) { userInfo ->
             oddsDetailListAdapter?.discount = userInfo?.discount ?: 1.0F
         }
@@ -549,7 +559,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
         viewBtnAnalyze.isVisible = !isShowOdd
-        frameBottom.isVisible = !isShowOdd
+        wv_analyze.isVisible = !isShowOdd
 
     }
 
@@ -601,6 +611,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_bottom.isVisible = false
+            tv_toolbar_match_status.text = tv_match_status.text
+            tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+            tv_toolbar_match_time.text = tv_match_time.text
+            tv_toolbar_match_time.isVisible = tv_match_time.isVisible
+            tv_toolbar_home_score.isVisible = tv_score.isVisible
+            tv_toolbar_away_score.isVisible = tv_score.isVisible
         }
     }
 
@@ -802,13 +818,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =
                 TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true && matchInfo?.liveVideo == 0
+                    ?.getGameDetailAnimationNeedShow() == true
             lin_video.setOnClickListener {
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
                     collaps_toolbar.isVisible = true
                     live_view_tool_bar.showVideo()
+                    setScrollEnable(false)
                 }
             }
             lin_anime.setOnClickListener {
@@ -817,6 +834,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     live_view_tool_bar.isVisible = true
                     collaps_toolbar.isVisible = true
                     live_view_tool_bar.showAnime()
+                    setScrollEnable(false)
                 }
             }
             if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {
@@ -849,7 +867,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             app_bar_layout.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             setScrollEnable(false)
         }
-        web_view_layout.layoutParams.apply {
+        live_view_tool_bar.layoutParams.apply {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
                 height = if (enable) ViewGroup.LayoutParams.MATCH_PARENT else 250.dp
@@ -916,7 +934,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setVbScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAllScoreTextAtBottom(matchInfo)
-//        setSptText(matchInfo)
+        setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
@@ -924,7 +942,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setTnScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAllScoreTextAtBottom(matchInfo)
-//        setSptText(matchInfo)
+        setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
@@ -932,7 +950,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setBmScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAllScoreTextAtBottom(matchInfo)
-//        setSptText(matchInfo )
+        setSptText(matchInfo)
         setCurrentPeroid(matchInfo)
         setAttack(matchInfo)
     }
@@ -994,6 +1012,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     @SuppressLint("SetTextI18n")
     private fun setCurrentPeroid(matchInfo: MatchInfo) {
         matchInfo.matchStatusList?.let {
+            if (it.isEmpty()) return
             tv_match_status.visibility = View.VISIBLE
             matchInfo.matchStatusList?.let { it ->
                 tv_match_status.visibility = View.VISIBLE
@@ -1003,9 +1022,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     ) ?: it.statusName
                 }
             }
+            tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+            tv_toolbar_match_status.text = tv_match_status.text
         }
     }
-
     /**
      * 设置足球半场比分
      */
@@ -1182,6 +1202,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     matchInfo.startDateDisplay
             }
         }
+        tv_toolbar_match_status.text = tv_match_status.text
     }
 
     /**
@@ -1219,6 +1240,21 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             )
             isVisible = true
+        }
+    }
+
+    fun setupAnalyze(matchId: String) {
+        wv_analyze.apply {
+            settings.javaScriptEnabled = true
+
+            webViewClient = WebViewClient()
+
+            sConfigData?.analysisUrl?.replace("{lang}",
+                LanguageManager.getSelectLanguage(this@SportDetailActivity).key)
+                ?.replace("{eventId}", matchId)?.let {
+                loadUrl(it)
+            }
+            setWebViewCommonBackgroundColor()
         }
     }
 }

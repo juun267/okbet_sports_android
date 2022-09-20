@@ -18,7 +18,6 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="25dp"
             android:fitsSystemWindows="false"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
@@ -47,11 +46,19 @@
                     tools:visibility="gone" />
             </LinearLayout>
 
-            <include
+            <!-- 这边必须使用ToolBar -->
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/collaps_toolbar"
-                layout="@layout/view_toolbar_detail_collaps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentInsetStart="0dp"
+                app:contentScrim="@color/transparent"
                 app:layout_collapseMode="pin"
-                android:visibility="gone" />
+                app:theme="@style/Widget.AppCompat.Toolbar">
+
+                <include layout="@layout/view_toolbar_detail_collaps" />
+            </androidx.appcompat.widget.Toolbar>
+
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -190,8 +197,8 @@
                 android:paddingTop="5dp"
                 tools:listitem="@layout/content_odds_detail_list_item" />
 
-            <FrameLayout
-                android:id="@+id/frameBottom"
+            <WebView
+                android:id="@+id/wv_analyze"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="false"
@@ -200,19 +207,14 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-    <!--    <FrameLayout-->
-    <!--        android:id="@+id/lin_fullscreen"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        app:layout_collapseMode="pin">-->
-    <!--      -->
-    <!--        <FrameLayout-->
-    <!--            android:id="@+id/fl_video"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"/>-->
-    <!--    </FrameLayout>-->
 
-    <!-- 投注單列表 & 快捷投注單 -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_holder"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <include
         android:id="@+id/cl_bet_list_bar"
         layout="@layout/bet_bar_layout"

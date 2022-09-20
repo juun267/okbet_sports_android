@@ -6,10 +6,12 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RadioGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -170,9 +172,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         initToolBar()
         iv_customer_service.setOnClickListener {
             clickCustomService(requireContext(), childFragmentManager)
-        }
-        tv_hot_recommend.setOnClickListener {
-            (activity as MainTabActivity).switchTabByPosition(1)
         }
         initRecommendView()
     }
@@ -347,7 +346,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                         .apply(requestOptions)
                         .into(holder.imageView)
                     holder.imageView.setOnClickListener {
-                        (activity as MainTabActivity).switchTabByPosition(1)
+                        data?.imageLink?.let {
+                            JumpUtil.toExternalWeb(requireContext(), it)
+                        }
                     }
                 }
             })
@@ -402,10 +403,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                     R.id.rbtn_sport -> {
                         lin_menu_game.isVisible = false
                         rv_type_list.isVisible = true
-                        publicityMenuData?.sportMenuDataList?.let {
-                            lin_menu_game.isVisible = false
-                            mainHomeMenuAdapter.setNewData(it.toMutableList())
-                        }
                     }
                     R.id.rbtn_egame -> {
                         rv_type_list.isVisible = false
@@ -415,27 +412,35 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             }
         })
         mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
-//        rv_type_list.onFlingListener = null
-//        val manager = GalleryLayoutManager(GalleryLayoutManager.HORIZONTAL)
-//        manager.attach(rv_type_list, 0)
-//        manager.setItemTransformer(Transformer())
-//        manager.setOnItemSelectedListener { recyclerView, item, position ->
-//            //当滑动切换时
-//
-//        }
         var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
         rvChiild.setPadding(0, 0, 40.dp, 0)
         rvChiild.clipToPadding = false
         rv_type_list.offscreenPageLimit = 3
         rv_type_list.setPageTransformer(DepthPageTransformer())
         rv_type_list.adapter = mainHomeMenuAdapter
+        rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (position == mainHomeMenuAdapter.itemCount - 1) {
+                    rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
+                }
+            }
+        })
         mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
             publicityMenuData.sportMenuDataList?.let {
                 enterTheSport(it[position])
             }
         }
+
         publicityMenuData?.sportMenuDataList?.let {
             mainHomeMenuAdapter.setNewData(it.toMutableList())
+            mainHomeMenuAdapter.removeAllFooterView()
+            mainHomeMenuAdapter.addFooterView(LayoutInflater.from(requireContext())
+                .inflate(R.layout.item_main_home_empty, null))
+            mainHomeMenuAdapter.footerLayout.apply {
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT)
+            }
         }
         lin_menu_game.apply {
             ivThirdGame.setImageResource(R.drawable.bg_egame)
@@ -483,7 +488,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                         //TODO 更新邏輯待補，跟進GameV3Fragment
                     }
                 }
-
                 if (needUpdate) {
                     updateRecommend(targetList)
                 }
@@ -563,11 +567,11 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             }
         }
 
-        receiver.leagueChange.observe(viewLifecycleOwner) {
-            it?.let { leagueChangeEvent ->
-                viewModel.publicityLeagueChange(leagueChangeEvent)
-            }
-        }
+//        receiver.leagueChange.observe(viewLifecycleOwner) {
+//            it?.let { leagueChangeEvent ->
+//                viewModel.publicityLeagueChange(leagueChangeEvent)
+//            }
+//        }
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
@@ -815,7 +819,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     private fun updateRecommend(recommendList: List<Recommend>) {
         viewModel.oddsType.value?.let {
-            homeRecommendAdapter.updateRecommendItem(recommendList = recommendList, oddsType = it)
+            homeRecommendAdapter.setupRecommendItem(recommendList = recommendList, oddsType = it)
         }
     }
 

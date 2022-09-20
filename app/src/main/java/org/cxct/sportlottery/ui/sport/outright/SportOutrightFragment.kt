@@ -261,12 +261,11 @@ class SportOutrightFragment :
             sportOutrightAdapter.data.forEach { it ->
                 when (it) {
                     is OutrightItem ->
-                        it.leagueExpanded = iv_arrow.isSelected
+                        it.leagueExpanded = !iv_arrow.isSelected
                 }
             }
             sportOutrightAdapter.notifyDataSetChanged()
         }
-        iv_arrow.isSelected = true
     }
 
 
@@ -368,6 +367,9 @@ class SportOutrightFragment :
     }
 
     private fun initObserve() {
+        viewModel.notifyLogin.observe(this) {
+            (activity as MainTabActivity).showLoginNotify()
+        }
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
             if (it != null && it.isNotBlank()) {
                 context?.let { context ->
@@ -645,6 +647,7 @@ class SportOutrightFragment :
                 it.code == gameType
             }?.let {
                 it.isSelected = true
+                viewModel.switchGameType(it)
             }
         }
         gameTypeAdapter.dataSport = gameTypeList

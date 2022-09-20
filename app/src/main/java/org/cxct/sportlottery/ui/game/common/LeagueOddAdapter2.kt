@@ -375,7 +375,7 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                 item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
+                    ?.getGameDetailAnimationNeedShow() == true
         }
 
         private fun setupMatchInfo(

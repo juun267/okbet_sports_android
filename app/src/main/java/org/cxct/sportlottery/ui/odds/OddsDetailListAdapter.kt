@@ -685,11 +685,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             controlExpandBottom(oddsDetail.isExpand)
-            odd_detail_fold.isSelected = oddsDetail.isExpand
+            odd_detail_fold.isSelected = !oddsDetail.isExpand
             clItem?.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(adapterPosition)
-                odd_detail_fold.isSelected = oddsDetail.isExpand
+                odd_detail_fold.isSelected = !oddsDetail.isExpand
 
             }
             //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名

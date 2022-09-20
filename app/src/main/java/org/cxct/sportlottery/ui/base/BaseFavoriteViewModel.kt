@@ -308,7 +308,6 @@ abstract class BaseFavoriteViewModel(
             val result = doNetwork(androidContext) {
                 myFavoriteRepository.pinFavorite(type, content, gameType)
             }
-
             result?.t?.let {
                 if (content == null) return@let
                 when (type) {

@@ -59,7 +59,6 @@ class LeagueSelectActivity :
         setContentView(R.layout.activity_league_select)
         setupToolbar()
         setupMatchListView()
-        setIndexbar()
         initObserve()
         viewModel.getLeagueList(gameType,
             matchType.postValue,
@@ -82,7 +81,7 @@ class LeagueSelectActivity :
         }
         tv_reverse_select.setOnClickListener {
             leagueList.forEach {
-                it.isSelected = false
+                it.isSelected = !it.isSelected
             }
             leagueSelectAdapter.notifyDataSetChanged()
             setSelectSum()
@@ -99,9 +98,9 @@ class LeagueSelectActivity :
         }
     }
 
-    private fun setIndexbar() {
+    private fun setIndexbar(indexArr: Array<CharSequence>) {
         //自定义索引数组，默认是26个大写字母
-//        indexBar.setTextArray(new CharSequence[]{...});
+        indexBar.setTextArray(indexArr);
         //添加相关监听
         indexBar.setOnIndexLetterChangedListener(object : IndexBar.OnIndexLetterChangedListener {
             override fun onTouched(touched: Boolean) {
@@ -154,6 +153,7 @@ class LeagueSelectActivity :
                     }
                 }
                 leagueSelectAdapter.setNewData(itemData)
+                setIndexbar(map.keys.toTypedArray())
                 setSelectSum()
             }
         }

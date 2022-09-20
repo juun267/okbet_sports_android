@@ -769,14 +769,7 @@ class SportListViewModel(
     }
 
     private suspend fun updateSportInfo(matchType: MatchType) {
-
         setCurMatchType(matchType)
-
-        // 無數量直接顯示無資料UI
-        if (getMatchCount(matchType) < 1) {
-            _isNoEvents.postValue(true)
-            return
-        }
     }
 
     private fun SportMenuResult.updateSportSelectState(

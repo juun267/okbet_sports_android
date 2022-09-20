@@ -34,6 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginHorizontal="@dimen/margin_5"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="12sp"
             android:textColor="@color/color_535D76"
             tools:text="德国巴伐利亚地区联赛" />

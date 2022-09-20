@@ -411,7 +411,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
+                    ?.getGameDetailAnimationNeedShow() == true
         }
 
         private fun setupMatchInfo(
@@ -491,7 +491,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             with(itemView.iv_animation) {
                 isVisible =
                     TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                        ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
+                        ?.getGameDetailAnimationNeedShow() == true
                 setOnClickListener {
                     leagueOddListener?.onClickAnimationIconListener(
                         item.matchInfo?.id,
@@ -637,6 +637,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         @SuppressLint("SetTextI18n")
         private fun setCurrentPeroid(matchInfo: MatchInfo) {
             matchInfo.matchStatusList?.let {
+                if (it.isEmpty()) return
                 itemView.tv_peroid.visibility = View.VISIBLE
                 matchInfo.matchStatusList?.let { it ->
                     itemView.tv_peroid.visibility = View.VISIBLE

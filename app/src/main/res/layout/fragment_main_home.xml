@@ -93,11 +93,18 @@
                 android:layout_marginLeft="@dimen/margin_15"
                 android:layout_marginVertical="@dimen/margin_10">
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/rv_type_list"
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:orientation="horizontal" />
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="ifContentScrolls">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/rv_type_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:orientation="horizontal"
+                        android:nestedScrollingEnabled="false" />
+                </androidx.core.widget.NestedScrollView>
 
                 <include
                     android:id="@+id/lin_menu_game"
@@ -171,10 +178,10 @@
                 android:id="@+id/rv_recommend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingVertical="10dp"
+                android:layout_marginLeft="@dimen/margin_15"
                 tools:ignore="SpUsage, ContentDescription"
                 tools:itemCount="1"
-                tools:listitem="@layout/publicity_recommend_item">
+                tools:listitem="@layout/item_home_recommend">
 
             </androidx.recyclerview.widget.RecyclerView>
 

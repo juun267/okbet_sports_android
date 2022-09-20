@@ -40,14 +40,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
         notifyDataSetChanged()
     }
 
-    fun updateRecommendItem(recommendList: List<Recommend>, oddsType: OddsType) {
-        mRecommendList = recommendList
-        mOddsType = oddsType
-        mRecommendList.forEachIndexed { index, recommend ->
-            notifyItemChanged(index, recommend)
-        }
-    }
-
     override fun onBindViewHolder(holder: ItemHomeRecommendHolder, position: Int) {
         val itemData = mRecommendList[position]
         holder.bind(data = itemData, oddsType = mOddsType)

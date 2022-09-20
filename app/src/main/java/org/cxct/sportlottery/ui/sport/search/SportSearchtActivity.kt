@@ -5,7 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zhy.adapter.recyclerview.CommonAdapter
@@ -53,10 +52,10 @@ class SportSearchtActivity :
     private fun initSearchView() {
         etSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                layoutSearch.visibility = View.VISIBLE
+                layoutSearchHistory.visibility = View.VISIBLE
                 initSearch()
             } else {
-                layoutSearch.visibility = View.GONE
+                layoutSearchHistory.visibility = View.GONE
             }
         }
         etSearch.addTextChangedListener(object : TextWatcher {
@@ -70,8 +69,9 @@ class SportSearchtActivity :
                 if (etSearch.text.isNotEmpty()) {
                     startSearch()
                 } else {
-                    layoutSearch.visibility = View.VISIBLE
+                    layoutSearchHistory.visibility = View.VISIBLE
                     layoutSearchResult.visibility = View.GONE
+                    layoutNoData.visibility = View.GONE
                     searchHistoryAdapter?.notifyDataSetChanged()
                 }
             }
@@ -92,7 +92,9 @@ class SportSearchtActivity :
     private var searchHistoryAdapter: CommonAdapter<String>? = null
 
     private fun initSearch() {
-        layoutSearch.visibility = View.VISIBLE
+        layoutSearchHistory.visibility = View.VISIBLE
+        layoutSearchResult.visibility = View.GONE
+        layoutNoData.visibility = View.GONE
         MultiLanguagesApplication.searchHistory?.let {
             searchHistoryList = it
         }
@@ -230,18 +232,15 @@ class SportSearchtActivity :
     private fun initObservable() {
         viewModel.searchResult.observe(this) {
             it.getContentIfNotHandled()?.let { list ->
-                if (!layoutSearchResult.isVisible) {
-                    layoutSearchResult.visibility = View.VISIBLE
-                    layoutSearch.visibility = View.GONE
-                }
+                layoutSearchHistory.visibility = View.GONE
                 if (list.isNotEmpty()) {
-                    rvSearchResult.visibility = View.VISIBLE
+                    layoutSearchResult.visibility = View.VISIBLE
                     layoutNoData.visibility = View.GONE
                     searchResult.clear()
                     searchResult.addAll(list)
                     searchResultAdapter.notifyDataSetChanged()
                 } else {
-                    rvSearchResult.visibility = View.GONE
+                    layoutSearchResult.visibility = View.GONE
                     layoutNoData.visibility = View.VISIBLE
                 }
             }

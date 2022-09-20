@@ -404,7 +404,7 @@ class SportOddAdapter(private val matchType: MatchType) :
                 item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =
                 TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                    ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
+                    ?.getGameDetailAnimationNeedShow() == true
         }
 
         private fun setupMatchInfo(
@@ -483,7 +483,7 @@ class SportOddAdapter(private val matchType: MatchType) :
             with(itemView.iv_animation) {
                 isVisible =
                     TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
-                        ?.getGameDetailAnimationNeedShow() == true && item.matchInfo?.liveVideo == 0
+                        ?.getGameDetailAnimationNeedShow() == true
                 setOnClickListener {
                     leagueOddListener?.onClickAnimationIconListener(
                         item.matchInfo?.id,
@@ -629,6 +629,7 @@ class SportOddAdapter(private val matchType: MatchType) :
         @SuppressLint("SetTextI18n")
         private fun setCurrentPeroid(matchInfo: MatchInfo) {
             matchInfo.matchStatusList?.let { it ->
+                if (it.isEmpty()) return
                 itemView.tv_peroid.visibility = View.VISIBLE
                 it.last()?.let {
                     itemView.tv_peroid.text = it.statusNameI18n?.get(
