@@ -1101,7 +1101,7 @@
     <string name="current_time">Time</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">EST Winning</string>
+    <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Total Stake(%s)：</string>
     <string name="total_win_amount">EST Winning(%s)：</string>
