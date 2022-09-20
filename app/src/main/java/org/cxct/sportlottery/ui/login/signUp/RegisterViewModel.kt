@@ -324,6 +324,7 @@ class RegisterViewModel(
     fun checkPhone(phone: String?) {
         val msg = when {
             phone.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+           !VerifyConstUtil.verifyPhone(phone) -> LocalUtils.getString(R.string.error_phone_number)
             else -> null
         }
         _phoneMsg.value = Pair(msg, msg == null)
