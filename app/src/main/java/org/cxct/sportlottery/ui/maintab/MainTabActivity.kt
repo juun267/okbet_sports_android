@@ -57,7 +57,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 return
             }
             val intent = Intent(context, MainTabActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK and Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
     }
@@ -80,7 +80,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
-        switchTabByPosition(0)
+        reStart(this)
     }
 
     private fun initObserve() {
