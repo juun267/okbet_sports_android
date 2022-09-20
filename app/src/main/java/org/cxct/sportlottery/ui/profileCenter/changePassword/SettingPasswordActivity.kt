@@ -19,7 +19,7 @@ import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformatio
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
 /**
- * @app_destination 密碼設置
+ * @app_destination 密码设置
  */
 class SettingPasswordActivity :
     BaseSocketActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
@@ -34,6 +34,7 @@ class SettingPasswordActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_setting_password)
 
         initView()
