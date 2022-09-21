@@ -322,8 +322,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
 
         viewModel.withdrawAmountTotal.observe(this.viewLifecycleOwner) {
-
-            tv_withdrawal_total.text = it
+            //提款总计加入千分符
+            tv_withdrawal_total.text = TextUtil.format(it)
 
         }
 
