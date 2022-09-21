@@ -1263,4 +1263,5 @@
     <string name="match_analyze">赛事分析</string>
     <string name="no_search_match">没有搜索到赛事</string>
     <string name="no_more">没有更多了</string>
+    <string name="reset_password">重设密码</string>
 </resources>
