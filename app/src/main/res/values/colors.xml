@@ -470,4 +470,7 @@
     <!--赛果结算-->
     <color name="color_202541_F7F8FC">@color/color_F7F8FC</color>
     <color name="color_334266_DDE1F4">@color/color_DDE1F4</color>
+
+    <!--存款记录弹窗交易状态后续修改深夜模式-->
+    <color name="color_1EB65B">#1EB65B</color>
 </resources>

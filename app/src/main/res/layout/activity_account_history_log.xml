@@ -131,6 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:overScrollMode="never"
+                        tools:itemCount="3"
                         tools:listitem="@layout/view_item_recharge_log" />
                     <include
                         android:id="@+id/view_no_record"
