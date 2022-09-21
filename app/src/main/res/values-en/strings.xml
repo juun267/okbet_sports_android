@@ -1188,7 +1188,7 @@
     <string name="kyc_text_operations">[TEXT] Operations</string>
     <string name="kyc_add">Add</string>
 
-    <string name="next_step">Next</string>
+    <string name="next_step">NEXT STEP</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
     <string name="hint_select_document_number">(Enter ID number)</string>
     <string name="identity_number">ID Number</string>

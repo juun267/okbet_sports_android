@@ -1211,7 +1211,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="filter">筛选</string>
 
-    <string name="next_step">Next</string>
+    <string name="next_step">NEXT STEP</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
     <string name="hint_select_document_number">(Enter ID number)</string>
     <string name="identity_number">ID Number</string>
