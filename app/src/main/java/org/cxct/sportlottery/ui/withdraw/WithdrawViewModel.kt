@@ -982,6 +982,6 @@ class WithdrawViewModel(
     //关于提款设置按钮的显示隐藏
 
     fun setVisibleView(boolean: Boolean){
-        _isVisibleView.value = boolean
+        _isVisibleView.postValue(boolean)
     }
 }

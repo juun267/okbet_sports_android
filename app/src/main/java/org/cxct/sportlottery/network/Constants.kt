@@ -27,7 +27,7 @@ object Constants {
     }
 
     fun getH5BaseUrl(): String {
-        return if (BuildConfig.DEBUG) "https://okbet-v2.cxsport.net/" else getBaseUrl()
+        return if (BuildConfig.CHANNEL_NAME.equals("spplat1")) "https://okbet-v2.cxsport.net/" else getBaseUrl()
     }
 
     fun setSocketUrl(baseUrl: String) {

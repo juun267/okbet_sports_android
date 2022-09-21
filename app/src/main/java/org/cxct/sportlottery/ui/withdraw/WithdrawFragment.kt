@@ -4,27 +4,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
-import kotlinx.android.synthetic.main.fragment_profile_center.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
-import kotlinx.android.synthetic.main.fragment_withdraw.btn_withdraw
-import kotlinx.android.synthetic.main.fragment_withdraw.tv_currency_type
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
-import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
-import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.bank.my.BankCardList
@@ -36,12 +29,9 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.TransferTypeAddSwitch
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
  * @app_destination 提款-tab
@@ -209,9 +199,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     }
                 }
                 tab?.let {
-                    if (tab_layout.getTabAt(tab.position)?.equals(getString(R.string.Outlets_Reserve)) == true){
-                            viewModel.setVisibleView(false)
-                    }else{
+                    if (TextUtils.equals(it.text, getString(R.string.Outlets_Reserve))) {
+                        viewModel.setVisibleView(false)
+                    } else {
                         viewModel.setVisibleView(true)
                     }
                 }
