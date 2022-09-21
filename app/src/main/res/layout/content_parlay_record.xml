@@ -48,7 +48,7 @@
                 android:background="@drawable/bg_square_shape_8dp_green"
                 android:gravity="center"
                 android:paddingHorizontal="10dp"
-                android:text="@string/undone"
+                android:text="@string/bet_info_add_bet_success"
                 android:textColor="@color/color_FFFFFF_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"

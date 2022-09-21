@@ -583,7 +583,7 @@
     <string name="recharge_channel_alipay">Alipay transfer</string>
     <string name="recharge_channel_weixin">Wechat transfer</string>
     <string name="recharge_channel_cft">Tenpay transfer</string>
-    <string name="recharge_channel_crypto">USDT Transactions</string>
+    <string name="recharge_channel_crypto">USDT</string>
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">Grabpay</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
@@ -1211,7 +1211,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="filter">筛选</string>
 
-    <string name="next_step">Next</string>
+    <string name="next_step">NEXT STEP</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
     <string name="hint_select_document_number">(Enter ID number)</string>
     <string name="identity_number">ID Number</string>
@@ -1263,4 +1263,5 @@
     <string name="match_analyze">赛事分析</string>
     <string name="no_search_match">没有搜索到赛事</string>
     <string name="no_more">没有更多了</string>
+    <string name="reset_password">重设密码</string>
 </resources>

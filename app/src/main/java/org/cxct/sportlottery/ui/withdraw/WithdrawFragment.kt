@@ -44,7 +44,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
- * @app_destination 提款
+ * @app_destination 提款-tab
  */
 class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -184,7 +184,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun setupClickEvent() {
-
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
@@ -209,6 +208,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         clearEvent()
                     }
                 }
+                tab?.let {
+                    if (tab_layout.getTabAt(tab.position)?.equals(getString(R.string.Outlets_Reserve)) == true){
+                            viewModel.setVisibleView(false)
+                    }else{
+                        viewModel.setVisibleView(true)
+                    }
+                }
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {

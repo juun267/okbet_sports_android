@@ -147,7 +147,7 @@ fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
 fun TextView.setBetReceiptStatus(status: Int?, cancelBy: String? = null) {
     text = when (status) {
         0 -> String.format(context.getString(R.string.pending), " ")
-        1 -> context.getString(R.string.undone)
+        1 -> context.getString(R.string.bet_info_add_bet_success)
         2 -> context.getString(R.string.win)
         3 -> context.getString(R.string.win_half)
         4 -> context.getString(R.string.lose)
