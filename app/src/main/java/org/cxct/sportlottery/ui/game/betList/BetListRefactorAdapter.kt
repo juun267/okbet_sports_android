@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -31,8 +32,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListRefactorAdapter.BetRvType.*
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.transactionStatus.ParlayType
-import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
@@ -907,6 +906,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
 
+                //設定playCateCode為OU時, container背景, 文字大小和顏色
+                if (itemData.matchOdd.playCode == PlayCate.OU.value) {
+                    odds_content_container.setBackgroundResource(R.drawable.bg_gradient_bet_ou)
+                    tv_odds_content.setOUStyle(true)
+                    tvContent.setOUStyle(true)
+                } else {
+                    odds_content_container.setBackgroundResource(R.color.transparent)
+                    tv_odds_content.setOUStyle(false)
+                    tvContent.setOUStyle(false)
+                }
+
                 //設定隊伍名稱, 聯賽名稱, 開賽時間
                 when (itemData.matchType) {
                     MatchType.OUTRIGHT -> {
@@ -1016,6 +1026,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     val matchTypeName = context.getString(it.resId)
                     tv_name.text = matchTypeName.plus(" ${tv_name.text}")
                 }
+            }
+        }
+
+        private fun TextView.setOUStyle(isOUType: Boolean) {
+            if (isOUType) {
+                setTextColor(ContextCompat.getColor(context, R.color.color_141931_F9F9F9))
+                setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
+            } else {
+                setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
+                setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
             }
         }
 
