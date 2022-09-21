@@ -42,10 +42,9 @@
                 <View
                     android:id="@+id/topContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="34dp"
                     android:background="@drawable/bg_shape_top_8dp_blue_stroke_no_bottom_stroke"
-                    app:layout_constraintBottom_toBottomOf="@+id/odds_content_container"
-                    app:layout_constraintTop_toTopOf="@+id/odds_content_container" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/ivSportLogo"
@@ -63,13 +62,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="6dp"
-                    android:gravity="bottom"
                     android:orientation="horizontal"
-                    app:layout_constraintEnd_toStartOf="@+id/odds_change_container"
+                    app:layout_constraintBottom_toBottomOf="@+id/topContainer"
                     app:layout_constraintStart_toEndOf="@+id/ivSportLogo"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="@+id/topContainer">
 
                     <TextView
                         android:id="@+id/tv_odds_content"
@@ -85,7 +81,7 @@
                         android:id="@+id/tvContent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="4dp"
                         android:maxLines="1"
                         android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize14sp"
@@ -99,9 +95,9 @@
                     android:layout_marginEnd="11dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="@+id/odds_content_container"
+                    app:layout_constraintBottom_toBottomOf="@+id/topContainer"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/odds_content_container">
+                    app:layout_constraintTop_toTopOf="@+id/topContainer">
 
                     <TextView
                         android:id="@+id/tvOdds"
@@ -135,7 +131,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/tv_match"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
+                    app:layout_constraintTop_toBottomOf="@+id/topContainer"
                     tools:text="让球(1-1) [歐洲盤]" />
 
                 <androidx.constraintlayout.widget.Guideline
