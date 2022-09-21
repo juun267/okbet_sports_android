@@ -35,17 +35,19 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/margin_26"
         android:layout_weight="1"
-        android:layout_marginLeft="@dimen/margin_12"
+        android:layout_marginLeft="@dimen/margin_16"
         layout="@layout/view_search" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginLeft="@dimen/margin_12"
+        android:layout_height="22dp"
+        android:minWidth="64dp"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/margin_16"
         android:background="@drawable/bg_btn_login_radius_11"
         android:textColor="@color/color_FFFFFF"
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:text="@string/register_and_login"
         android:visibility="gone"
         tools:visibility="visible" />

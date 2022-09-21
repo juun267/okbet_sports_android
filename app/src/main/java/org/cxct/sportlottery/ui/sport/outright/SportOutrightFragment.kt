@@ -104,7 +104,10 @@ class SportOutrightFragment :
                         RecyclerView.State(),
                         dataSport.indexOfFirst { item -> TextUtils.equals(it.code, item.code) })
                 }
-
+                gameType = it.code
+                dataSport.forEach { item ->
+                    item.isSelected = (item.code == gameType)
+                }
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
                 sportOutrightAdapter.setPreloadItem()
@@ -646,8 +649,11 @@ class SportOutrightFragment :
             gameTypeList.find {
                 it.code == gameType
             }?.let {
-                it.isSelected = true
-                viewModel.switchGameType(it)
+                //遍历出来的球类已经是选中状态，就不继续刷新列表
+                if (!it.isSelected) {
+                    it.isSelected = true
+                    viewModel.switchGameType(it)
+                }
             }
         }
         gameTypeAdapter.apply {

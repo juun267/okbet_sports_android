@@ -11,8 +11,6 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
-import kotlinx.android.synthetic.main.view_toolbar_main.*
-import kotlinx.android.synthetic.main.view_toolbar_main.btn_login
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -27,7 +25,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
@@ -77,11 +74,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupLogin()
-    }
-
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
@@ -93,6 +85,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         lin_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
         }
+        setupLogin()
     }
 
     fun showLoginNotify() {
@@ -244,32 +237,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
-    }
-
-    fun updateUiWithLogin(isLogin: Boolean) {
-        if (isLogin) {
-            btn_login.visibility = View.GONE
-            iv_menu.visibility = View.VISIBLE
-            iv_notice.visibility = View.VISIBLE
-            btn_register.visibility = View.GONE
-            toolbar_divider.visibility = View.GONE
-            iv_head.visibility = View.GONE
-            tv_odds_type.visibility = View.GONE
-        } else {
-            btn_login.visibility = View.VISIBLE
-            btn_register.visibility = View.VISIBLE
-            toolbar_divider.visibility = View.VISIBLE
-            iv_head.visibility = View.GONE
-            tv_odds_type.visibility = View.GONE
-            iv_menu.visibility = View.GONE
-            iv_notice.visibility = View.GONE
-            btn_register.setVisibilityByCreditSystem()
-            toolbar_divider.setVisibilityByCreditSystem()
-        }
-    }
-
-    fun updateOddsType(oddsType: OddsType) {
-        tv_odds_type.text = getString(oddsType.res)
     }
 
     fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {

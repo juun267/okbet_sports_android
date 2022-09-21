@@ -7,7 +7,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -25,6 +24,10 @@ object Constants {
 
     fun getBaseUrl(): String {
         return mBaseUrl.httpFormat()
+    }
+
+    fun getH5BaseUrl(): String {
+        return if (BuildConfig.DEBUG) "https://okbet-v2.cxsport.net/" else getBaseUrl()
     }
 
     fun setSocketUrl(baseUrl: String) {
@@ -50,7 +53,7 @@ object Constants {
     //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
         return try {
-            "${getBaseUrl()}/activity/mobile/#/useractilistV2?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"
@@ -75,7 +78,7 @@ object Constants {
         language: LanguageManager.Language,
     ): String? {
         return try {
-            "${getBaseUrl()}/activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"
@@ -107,7 +110,7 @@ object Constants {
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -115,7 +118,7 @@ object Constants {
     //關於我們
     fun getAboutUsUrl(context: Context): String? {
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}about-us?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}about-us?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -123,14 +126,14 @@ object Constants {
     //博彩责任
     fun getDutyRuleUrl(context: Context): String? {
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}responsibility?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}responsibility?platform=" + context.getString(
             R.string.app_name
         )
     }
 
     //代理加盟
     fun getAffiliateUrl(context: Context): String {
-        return "${getBaseUrl()}sports-rule/#/${getLanguageTag(context)}affiliate?platform=${
+        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}affiliate?platform=${
             context.getString(
                 R.string.app_name
             )
@@ -140,7 +143,7 @@ object Constants {
     //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}privacy-policy?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}privacy-policy?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -150,7 +153,7 @@ object Constants {
 
         val checkCreditQuery = if (sConfigData?.creditSystem == 1) "credit=1" else context.getString(R.string.app_name)
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}terms-conditions?" + checkCreditQuery
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}terms-conditions?" + checkCreditQuery
     }
 
     //KYC人工客服審核
@@ -166,7 +169,7 @@ object Constants {
     //常见问题
     fun getFAQsUrl(context: Context): String? {
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}faq?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}faq?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -174,7 +177,7 @@ object Constants {
     //联系我们
     fun getContactUrl(context: Context): String? {
 
-        return getBaseUrl() + "sports-rule/#/${getLanguageTag(context)}contact-us?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}contact-us?platform=" + context.getString(
             R.string.app_name
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }

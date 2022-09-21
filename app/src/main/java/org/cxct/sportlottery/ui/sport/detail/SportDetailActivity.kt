@@ -522,7 +522,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         viewModel.videoUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
-                LogUtil.d("videoUrl=" + url)
                 if (lin_video.isVisible)
                     live_view_tool_bar.videoUrl = url
             }

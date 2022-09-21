@@ -890,8 +890,10 @@ class SportListFragment :
             gameTypeList.find {
                 it.code == gameType
             }?.let {
-                it.isSelected = true
-                viewModel.switchGameType(it)
+                if (!it.isSelected) {
+                    it.isSelected = true
+                    viewModel.switchGameType(it)
+                }
             }
         }
         gameTypeAdapter.apply {

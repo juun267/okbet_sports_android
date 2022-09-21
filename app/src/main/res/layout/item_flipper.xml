@@ -8,6 +8,6 @@
     android:gravity="center_vertical"
     android:singleLine="true"
     android:ellipsize="end"
-    android:textColor="@color/color_A65B0A"
+    android:textColor="@color/color_A36200"
     android:textSize="@dimen/textSize14sp"
     android:text="2022世界杯来临，OKBET特邀球届专来讲座" />

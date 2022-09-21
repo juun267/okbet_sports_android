@@ -3,23 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:layout_width="wrap_content"
-    tools:layout_height="200dp"
-    android:layout_marginRight="10dp"
+    tools:layout_height="wrap_content"
     tools:ignore="ContentDescription, SpUsage">
 
-    <ImageView
-        android:id="@+id/iv_bg"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_10"
         android:layout_gravity="bottom"
-        android:layout_height="160dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/card_sport_home" />
+        app:cardElevation="@dimen/margin_3"
+        app:cardCornerRadius="@dimen/margin_8">
+
+        <ImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="160dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/card_sport_home" />
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/iv_people"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginBottom="@dimen/margin_10"
+        android:elevation="@dimen/margin_3"
         android:layout_gravity="right"
         android:adjustViewBounds="true"
         android:src="@drawable/card_sport_esports" />
@@ -29,6 +41,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom"
+        android:elevation="@dimen/margin_4"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="25dp">
 
