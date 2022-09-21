@@ -584,7 +584,7 @@
     <string name="recharge_channel_alipay">Alipay transfer</string>
     <string name="recharge_channel_weixin">Wechat transfer</string>
     <string name="recharge_channel_cft">Tenpay transfer</string>
-    <string name="recharge_channel_crypto">USDT Transactions</string>
+    <string name="recharge_channel_crypto">USDT</string>
     <string name="recharge_channel_gcash">Gcash</string>
     <string name="recharge_channel_grabpay">Grabpay</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
