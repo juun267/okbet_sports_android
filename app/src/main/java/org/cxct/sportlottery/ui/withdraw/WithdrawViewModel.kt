@@ -52,7 +52,9 @@ class WithdrawViewModel(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
-
+    private val _isVisibleView = MutableLiveData<Boolean>()
+    val isVisibleView: LiveData<Boolean> //使用者餘額
+        get() = _isVisibleView
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<List<BankCardList>>()
@@ -975,5 +977,11 @@ class WithdrawViewModel(
                 }
             }
         }
+    }
+
+    //关于提款设置按钮的显示隐藏
+
+    fun setVisibleView(boolean: Boolean){
+        _isVisibleView.value = boolean
     }
 }
