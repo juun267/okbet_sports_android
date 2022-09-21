@@ -109,7 +109,7 @@ class SportListFragment :
                 }
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
-                sportLeagueAdapter.setPreloadItem()
+                sportLeagueAdapter.removePreloadItem()
                 //切換球種後要重置位置
                 loading()
                 unSubscribeChannelHallAll()
@@ -272,6 +272,7 @@ class SportListFragment :
         gameType?.let {
             viewModel.gameType = it
         }
+        LogUtil.d("matchType=" + matchType + ",gameType=" + gameType)
         setupSportTypeList()
         setupToolbar()
         setupGameRow()
@@ -287,7 +288,8 @@ class SportListFragment :
             this.layoutManager =
                 ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
-
+            //波胆不需要显示球类
+            visibility = if (matchType == MatchType.CS) View.GONE else View.VISIBLE
             this.adapter = gameTypeAdapter
             removeItemDecorations()
         }
@@ -334,11 +336,10 @@ class SportListFragment :
         iv_arrow.setOnClickListener {
             iv_arrow.isSelected = !iv_arrow.isSelected
             sportLeagueAdapter.data.forEach { it ->
-                it.unfold = if (iv_arrow.isSelected) FoldState.UNFOLD.code else FoldState.FOLD.code
+                it.unfold = if (iv_arrow.isSelected) FoldState.FOLD.code else FoldState.UNFOLD.code
             }
             sportLeagueAdapter.notifyDataSetChanged()
         }
-        iv_arrow.isSelected = true
     }
 
 
@@ -408,6 +409,9 @@ class SportListFragment :
 
 
     private fun initObserve() {
+        viewModel.notifyLogin.observe(this) {
+            (activity as MainTabActivity).showLoginNotify()
+        }
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
             if (it != null && it.isNotBlank()) {
                 context?.let { context ->
@@ -887,9 +891,16 @@ class SportListFragment :
                 it.code == gameType
             }?.let {
                 it.isSelected = true
+                viewModel.switchGameType(it)
             }
         }
-        gameTypeAdapter.dataSport = gameTypeList
+        gameTypeAdapter.apply {
+            dataSport = gameTypeList
+            (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                sport_type_list,
+                RecyclerView.State(),
+                dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) })
+        }
         //post待view繪製完成
         sport_type_list?.post {
             if (gameTypeList.isEmpty()) {
@@ -897,7 +908,6 @@ class SportListFragment :
                 iv_calendar?.visibility = View.GONE
                 game_filter_type_list?.visibility = View.GONE
             } else {
-                sport_type_list?.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
                 iv_calendar?.apply {
                     visibility = when (matchType) {
                         MatchType.EARLY -> View.VISIBLE

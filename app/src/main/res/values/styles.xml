@@ -9,7 +9,6 @@
 
         <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
         <item name="android:colorControlHighlight">@android:color/transparent</item>
-        <item name="android:windowBackground">@color/background</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
         <item name="android:overScrollMode">never</item>

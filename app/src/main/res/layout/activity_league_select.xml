@@ -35,6 +35,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="20dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginTop="60dp"
             android:layout_marginLeft="@dimen/margin_6"
             android:layout_marginRight="@dimen/margin_10"
@@ -44,7 +45,7 @@
             <org.cxct.sportlottery.widget.IndexBar
                 android:id="@+id/indexBar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
                 app:text_color_normal="@color/color_535D76"
                 app:text_color_pressed="@color/color_025BE8"
@@ -109,6 +110,7 @@
             android:layout_width="73dp"
             android:layout_height="32dp"
             android:layout_marginRight="@dimen/margin_14"
+            android:textAllCaps="false"
             android:background="@drawable/bg_theme_radius_22"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/margin_12"

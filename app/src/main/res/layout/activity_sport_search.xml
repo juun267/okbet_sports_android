@@ -20,7 +20,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_DFE8F2" />
 
     <LinearLayout
@@ -74,7 +74,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutSearch"
+        android:id="@+id/layoutSearchHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
@@ -120,78 +120,82 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_bbbbbb_ffffff"
                 android:paddingVertical="10dp"
                 android:overScrollMode="never"
-                android:id="@+id/rvHistory" />
+                tools:listitem="@layout/item_search_history"
+                tools:itemCount="2" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/layoutSearchResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_F2F5FA"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:id="@+id/rvSearchResult"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_search_result_sport"
+                tools:itemCount="2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/color_6C7BA8_A7B2C4"
+                android:textSize="12sp"
+                android:text="@string/no_data" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutNoData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_20"
         android:visibility="gone"
         tools:visibility="visible">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rvSearchResult"
-            android:overScrollMode="never"
+        <ImageView
+            android:id="@+id/list_no_record_img"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bg_search_nodata"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutNoData"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/margin_20"
-            android:visibility="visible"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
-
-            <ImageView
-                android:id="@+id/list_no_record_img"
-                android:layout_width="256dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/bg_search_nodata"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/list_no_record_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="@string/text_search_no_result"
-                android:textColor="@color/color_BBBBBB_333333"
-                android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
-                app:layout_constraintStart_toStartOf="@id/list_no_record_img"
-                app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:text="@string/text_search_try_another"
-                android:textColor="@color/color_909090_666666"
-                android:textSize="@dimen/textSize14sp"
-                app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
-                app:layout_constraintStart_toStartOf="@id/list_no_record_img"
-                app:layout_constraintTop_toBottomOf="@id/list_no_record_text" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/list_no_record_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_search_match"
+            android:textColor="@color/color_6C7BA8_A7B2C4"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintEnd_toEndOf="@id/list_no_record_img"
+            app:layout_constraintStart_toStartOf="@id/list_no_record_img"
+            app:layout_constraintTop_toBottomOf="@id/list_no_record_img" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

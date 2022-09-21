@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp"
-    android:paddingRight="@dimen/margin_10"
     tools:ignore="SpUsage, ContentDescription">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvBlock"
         android:layout_width="320dp"
         android:layout_height="140dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginRight="@dimen/margin_10"
         app:cardBackgroundColor="@color/color_202020_FCFCFC"
         app:cardCornerRadius="@dimen/margin_10"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,6 +54,7 @@
                     android:id="@+id/blockNormalGame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent">
@@ -72,10 +73,9 @@
                         android:id="@+id/tvGameStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginEnd="4dp"
                         android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="2ND" />
@@ -85,7 +85,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="6dp"
                         android:layout_marginEnd="4dp"
                         android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize10sp"
@@ -99,7 +98,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="6dp"
                         android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize10sp"
                         app:layout_constraintStart_toEndOf="@id/tv_game_play_time"
@@ -169,12 +167,14 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
                         <TextView
                             android:id="@+id/tvVs"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:gravity="center"
                             android:includeFontPadding="false"
                             android:text="@string/verse_upper"
@@ -185,10 +185,12 @@
 
                         <LinearLayout
                             android:id="@+id/blockScore"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            tools:visibility="visible">
 
                             <TextView
                                 android:id="@+id/tvHomeScore"

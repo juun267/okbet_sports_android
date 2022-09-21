@@ -361,7 +361,12 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         jumpMatchType = matchType
         jumpGameType = gameType
         if (isAdded) {
-            viewModel.setCurMatchType(matchType)
+            //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
+            if (viewModel.curMatchType.value == matchType) {
+                navGameFragment(matchType)
+            } else {
+                viewModel.setCurMatchType(matchType)
+            }
         }
     }
 

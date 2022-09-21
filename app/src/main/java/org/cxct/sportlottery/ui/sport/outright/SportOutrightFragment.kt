@@ -261,12 +261,11 @@ class SportOutrightFragment :
             sportOutrightAdapter.data.forEach { it ->
                 when (it) {
                     is OutrightItem ->
-                        it.leagueExpanded = iv_arrow.isSelected
+                        it.leagueExpanded = !iv_arrow.isSelected
                 }
             }
             sportOutrightAdapter.notifyDataSetChanged()
         }
-        iv_arrow.isSelected = true
     }
 
 
@@ -368,6 +367,9 @@ class SportOutrightFragment :
     }
 
     private fun initObserve() {
+        viewModel.notifyLogin.observe(this) {
+            (activity as MainTabActivity).showLoginNotify()
+        }
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
             if (it != null && it.isNotBlank()) {
                 context?.let { context ->
@@ -444,7 +446,7 @@ class SportOutrightFragment :
 
         }
         viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
-            it.peekContent()?.let { outrightMatchList ->
+            it.getContentIfNotHandled()?.let { outrightMatchList ->
                 sportOutrightAdapter.data = outrightMatchList as List<OutrightItem>
                 setOutrightLeagueAdapter()
                 hideLoading()
@@ -645,10 +647,16 @@ class SportOutrightFragment :
                 it.code == gameType
             }?.let {
                 it.isSelected = true
+                viewModel.switchGameType(it)
             }
         }
-        gameTypeAdapter.dataSport = gameTypeList
-        //post待view繪製完成
+        gameTypeAdapter.apply {
+            dataSport = gameTypeList
+            (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                sport_type_list,
+                RecyclerView.State(),
+                dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) })
+        }
         sport_type_list?.post {
             //球種如果選過，下次回來也需要滑動置中
             if (gameTypeList.isEmpty()) {

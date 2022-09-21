@@ -123,7 +123,6 @@ class SportListViewModel(
         isReloadPlayCate: Boolean = false,
         isLastSportType: Boolean = false,
     ) {
-
         var reloadedDateRow: List<Date>? = null
 
         if (isReloadDate) {
@@ -417,6 +416,9 @@ class SportListViewModel(
                                     }
                                     LanguageManager.Language.VI -> {
                                         it.vi
+                                    }
+                                    LanguageManager.Language.TH -> {
+                                        it.th
                                     }
                                     else -> {
                                         it.en
@@ -769,14 +771,7 @@ class SportListViewModel(
     }
 
     private suspend fun updateSportInfo(matchType: MatchType) {
-
         setCurMatchType(matchType)
-
-        // 無數量直接顯示無資料UI
-        if (getMatchCount(matchType) < 1) {
-            _isNoEvents.postValue(true)
-            return
-        }
     }
 
     private fun SportMenuResult.updateSportSelectState(

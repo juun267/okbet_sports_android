@@ -2998,7 +2998,6 @@ class SportViewModel(
         }
 
         val matchType = curMatchType.value ?: return
-        LogUtil.d("matchType=" + matchType)
 
         //視覺上需要優先跳轉 tab
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
