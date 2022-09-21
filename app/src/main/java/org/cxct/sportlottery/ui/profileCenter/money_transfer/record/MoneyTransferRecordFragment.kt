@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_range_selector
 
-import kotlinx.android.synthetic.main.fragment_money_transfer_record.iv_scroll_to_top
+
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.rv_record
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -31,7 +31,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
         private fun scrollToTopControl(firstVisibleItemPosition: Int) {
-            iv_scroll_to_top.apply {
+           /* iv_scroll_to_top.apply {
                 when {
                     firstVisibleItemPosition > 0 && alpha == 0f -> {
                       //  visibility = View.VISIBLE
@@ -45,7 +45,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                         })
                     }
                 }
-            }
+            }*/
         }
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -55,6 +55,11 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
                 viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
                 scrollToTopControl(firstVisibleItemPosition)
+            }
+            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+                tv_no_data_tips.visibility = View.VISIBLE
+            }else{
+                tv_no_data_tips.visibility = View.GONE
             }
         }
     }
@@ -92,9 +97,9 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     }
 
     private fun initOnclick() {
-        iv_scroll_to_top.setOnClickListener {
+       /* iv_scroll_to_top.setOnClickListener {
             rv_record.smoothScrollToPosition(0)
-        }
+        }*/
 
         date_range_selector.btn_search.setOnClickListener  {
             viewModel.queryTransfers(startTime = date_range_selector.startTime.toString(),
