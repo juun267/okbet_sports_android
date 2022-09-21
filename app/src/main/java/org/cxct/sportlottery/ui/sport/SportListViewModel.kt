@@ -123,7 +123,6 @@ class SportListViewModel(
         isReloadPlayCate: Boolean = false,
         isLastSportType: Boolean = false,
     ) {
-
         var reloadedDateRow: List<Date>? = null
 
         if (isReloadDate) {
@@ -417,6 +416,9 @@ class SportListViewModel(
                                     }
                                     LanguageManager.Language.VI -> {
                                         it.vi
+                                    }
+                                    LanguageManager.Language.TH -> {
+                                        it.th
                                     }
                                     else -> {
                                         it.en

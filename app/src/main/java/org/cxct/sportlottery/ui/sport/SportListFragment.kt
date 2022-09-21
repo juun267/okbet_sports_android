@@ -894,7 +894,13 @@ class SportListFragment :
                 viewModel.switchGameType(it)
             }
         }
-        gameTypeAdapter.dataSport = gameTypeList
+        gameTypeAdapter.apply {
+            dataSport = gameTypeList
+            (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                sport_type_list,
+                RecyclerView.State(),
+                dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) })
+        }
         //post待view繪製完成
         sport_type_list?.post {
             if (gameTypeList.isEmpty()) {
