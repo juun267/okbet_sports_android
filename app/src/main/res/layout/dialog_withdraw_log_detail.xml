@@ -163,7 +163,7 @@
             tools:text="处理中" />
 
         <TextView
-            android:visibility="gone"
+
             android:id="@+id/wd_log_detail_review_time_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_status_subtitle" />
 
         <TextView
-            android:visibility="gone"
+
             android:id="@+id/wd_log_detail_review_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -214,7 +214,6 @@
             tools:text="GCash" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/wd_log_detail_reason_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -229,7 +228,7 @@
             app:layout_constraintTop_toBottomOf="@id/wd_log_detail_review_time_subtitle" />
 
         <TextView
-            android:visibility="gone"
+
             android:id="@+id/wd_log_detail_reason"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
