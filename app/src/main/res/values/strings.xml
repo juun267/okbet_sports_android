@@ -1266,4 +1266,5 @@
     <string name="no_more">没有更多了</string>
     <string name="reset_password">重设密码</string>
     <string name="transact_type">Transaction Type：</string>
+    <string name="unbound_bank_card">您尚末绑定银行卡/eWallet</string>
 </resources>

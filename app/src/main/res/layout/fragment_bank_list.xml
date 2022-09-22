@@ -95,6 +95,15 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/tv_unbind_bank_card"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:textColor="@color/color_A5A9B3"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="@string/unbound_bank_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
