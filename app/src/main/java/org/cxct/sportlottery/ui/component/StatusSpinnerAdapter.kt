@@ -48,7 +48,7 @@ class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableList
     inner class PlayItemViewHolder(private val binding: ItemPlaySpinnerBinding) {
         fun bind(data: StatusSheetData, position: Int) {
             with(binding) {
-                tvPlay.text = "data.showName"
+                tvPlay.text = data.showName
               //  ivTick.visibility = if (data.isChecked) View.VISIBLE else View.INVISIBLE
                 viewDivider.visibility = if (position >= count - 1) View.GONE else View.VISIBLE
             }
