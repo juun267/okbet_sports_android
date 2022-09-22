@@ -5,21 +5,21 @@
     android:id="@+id/account_balance_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_141414_F3F4F5"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     tools:context=".ui.profileCenter.money_transfer.transfer.MoneyTransferSubFragment">
 
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_10"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="@dimen/margin_10"
+
+       android:layout_margin="@dimen/margin_10"
         android:background="@drawable/icon_mask_group"
         android:orientation="vertical"
-        android:paddingBottom="12dp">
+       >
 
         <RelativeLayout
             android:layout_width="wrap_content"
