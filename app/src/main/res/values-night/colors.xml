@@ -146,6 +146,11 @@
     <color name="color_DCB345_ECCD86">@color/color_DCB345</color>
     <color name="color_131932_F0F5FA">@color/color_131932</color>
     <color name="color_202541_FFFFFF">@color/color_202541</color>
+    <color name="color_131932_F3F9FF">@color/color_131932</color>
+    <color name="color_336C7BA8_F4F4F4">@color/color_336C7BA8</color>
+    <color name="color_334266_D8E7FF">@color/color_334266</color>
+    <color name="color_202541_FAFCFF">@color/color_202541</color>
+    <color name="color_2B3859_F3F9FF">@color/color_2B3859</color>
     <!--endregion 新UI 日夜間色系-->
     <!--沉浸式状态栏颜色处理-->
     <color name="color_232C4F_FFFFFF">@color/color_232C4F</color>

@@ -1269,4 +1269,5 @@
     <string name="betting">Betting</string>
     <string name="total_assets">总资产</string>
 
+    <string name="unbound_bank_card">您尚末绑定银行卡/eWallet</string>
 </resources>

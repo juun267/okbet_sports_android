@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
@@ -55,9 +56,10 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val item = data[position]
                 holder.bind(item, rechargeLogListener)
             }
-           /* is NoDataViewHolder -> {
+            is NoDataViewHolder -> {
                 holder.bind(isFinalPage, data.isNotEmpty())
-            }*/
+                holder.itemView.isVisible = false
+            }
         }
     }
 

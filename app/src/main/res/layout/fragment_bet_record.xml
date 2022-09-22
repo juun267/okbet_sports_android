@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_131932_F0F5FA"
     tools:ignore="SpUsage">
 
     <ImageView
@@ -153,7 +154,6 @@
             android:id="@+id/cl_bet_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/bet_tab"
             tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
@@ -209,7 +209,7 @@
                     android:id="@+id/linearLayout5"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
-                    android:background="@color/color_F3F9FF"
+                    android:background="@color/color_131932_F3F9FF"
                     android:gravity="center"
                     android:orientation="horizontal">
 

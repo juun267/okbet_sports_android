@@ -57,19 +57,19 @@
             app:srlEnablePureScrollMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bank_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingBottom="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="5"
+                tools:listitem="@layout/content_rv_bank_card_list"
+                tools:orientation="vertical" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_bank_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingBottom="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="5"
-            tools:listitem="@layout/content_rv_bank_card_list"
-            tools:orientation="vertical" />
+
         <androidx.cardview.widget.CardView
             app:cardCornerRadius="@dimen/margin_8"
             android:layout_marginStart="@dimen/margin_14"
@@ -95,6 +95,15 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/tv_unbind_bank_card"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:textColor="@color/color_A5A9B3"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="@string/unbound_bank_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

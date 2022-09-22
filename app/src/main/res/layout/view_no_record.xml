@@ -11,7 +11,7 @@
         android:layout_width="256dp"
         android:layout_height="400dp"
         android:layout_marginTop="85dp"
-        android:src="@drawable/ic_no_data_img"
+        android:src="@drawable/ic_default_map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -258,7 +258,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:visibility="gone"
+
                         app:cardBackgroundColor="@color/color_191919_FCFCFC"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="@null"

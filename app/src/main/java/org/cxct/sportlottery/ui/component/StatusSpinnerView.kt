@@ -120,9 +120,9 @@ class StatusSpinnerView @JvmOverloads constructor(
         }
         mListPop.setAdapter(spinnerAdapter)
         mListPop.anchorView = tv_name  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
-        mListPop.setModal(true) //设置是否是模式
+        mListPop.isModal = true //设置是否是模式
         mListPop.verticalOffset = 5
-        mListPop.setHorizontalOffset(-5)
+        mListPop.horizontalOffset = -5
         mListPop.setDropDownGravity(Gravity.CENTER)
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(
