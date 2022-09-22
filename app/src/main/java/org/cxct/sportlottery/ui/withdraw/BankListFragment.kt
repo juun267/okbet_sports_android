@@ -80,6 +80,11 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 }
                 viewModel.checkBankCardCount()
             }
+            if (bankCardList.isNullOrEmpty()){
+                tv_unbind_bank_card.visibility = View.VISIBLE
+            }else{
+                tv_unbind_bank_card.visibility = View.GONE
+            }
         })
         //银行卡数量
         viewModel.numberOfBankCard.observe(this.viewLifecycleOwner,Observer{
