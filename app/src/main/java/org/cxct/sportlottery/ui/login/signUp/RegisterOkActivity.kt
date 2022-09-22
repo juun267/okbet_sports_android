@@ -314,6 +314,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 binding.etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                binding.endButton2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
                 setupFullName()
                 setupWithdrawalPassword()
@@ -611,10 +612,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
 
             endButton.visibility =
-                if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
-                        "1"
-                    )
-                ) View.VISIBLE else View.GONE
+                if (sConfigData?.enableKYCVerify == FLAG_OPEN) View.VISIBLE else View.GONE
             endButton.setOnClickListener {
                 PicSelectorDialog(
                     this@RegisterOkActivity,
@@ -626,8 +624,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
             endButton2.visibility =
                 if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
-                        "2"
-                    )
+                        "2")
                 ) View.VISIBLE else View.GONE
             endButton2.setOnClickListener {
                 PicSelectorDialog(

@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
+import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -134,8 +135,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     text = this.context.getString(R.string.time_null)
                     isVisible = true
                 }
-                tv_toolbar_match_time.text = text
-                tv_toolbar_match_time.isVisible = isVisible
+                collaps_toolbar.tv_toolbar_match_time.text = text
+                collaps_toolbar.tv_toolbar_match_time.isVisible = isVisible
             }
         }
         return@Handler false
@@ -187,6 +188,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     live_view_tool_bar.isVisible = false
                     setScrollEnable(true)
                     collaps_toolbar.isVisible = false
+                    collaps_toolbar.iv_toolbar_bg.isVisible = true
                     live_view_tool_bar.release()
                 }
             }
@@ -200,11 +202,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .init()
         ImmersionBar.getStatusBarHeight(this).let {
             v_statusbar.minimumHeight = it
-//            v_statusbar_1.minimumHeight = it
+            v_statusbar_1.minimumHeight = it
             toolbar_layout.minimumHeight = it
             iv_toolbar_bg.layoutParams.apply {
                 height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
             }
+            collaps_toolbar.layoutParams.height =
+                it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
         }
 
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
@@ -611,12 +615,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_bottom.isVisible = false
-            tv_toolbar_match_status.text = tv_match_status.text
-            tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-            tv_toolbar_match_time.text = tv_match_time.text
-            tv_toolbar_match_time.isVisible = tv_match_time.isVisible
-            tv_toolbar_home_score.isVisible = tv_score.isVisible
-            tv_toolbar_away_score.isVisible = tv_score.isVisible
+            collaps_toolbar.tv_toolbar_match_status.text = tv_match_status.text
+            collaps_toolbar.tv_toolbar_match_status.isVisible = tv_match_status.isVisible
+            collaps_toolbar.tv_toolbar_match_time.text = tv_match_time.text
+            collaps_toolbar.tv_toolbar_match_time.isVisible = tv_match_time.isVisible
+            collaps_toolbar.tv_toolbar_home_score.isVisible = tv_score.isVisible
+            collaps_toolbar.tv_toolbar_away_score.isVisible = tv_score.isVisible
         }
     }
 
@@ -824,6 +828,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
                     collaps_toolbar.isVisible = true
+                    collaps_toolbar.iv_toolbar_bg.isVisible = false
                     live_view_tool_bar.showVideo()
                     setScrollEnable(false)
                 }
@@ -833,6 +838,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     toolBar.isVisible = false
                     live_view_tool_bar.isVisible = true
                     collaps_toolbar.isVisible = true
+                    collaps_toolbar.iv_toolbar_bg.isVisible = false
                     live_view_tool_bar.showAnime()
                     setScrollEnable(false)
                 }
@@ -1154,19 +1160,42 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setAllScoreTextAtBottom(matchInfo: MatchInfo) {
         matchInfo.matchStatusList?.let { matchStatusList ->
             var spanny = Spanny()
-            matchStatusList.forEachIndexed { index, it ->
-                val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
-                //9表示已结束，其他代表进行中的
-                if (index < matchStatusList.lastIndex) {
-                    spanny.append(spanScore)
-                    spanny.append("  ")
-                } else {
-                    spanny.append(spanScore,
-                        ForegroundColorSpan(getColor(R.color.color_F0A536)))
+            if (matchInfo.gameType == GameType.BK.key) {
+                //篮球类 1:第一节 2:第二节 6:上半场 7:下半场 13:第一节 14:第二节 15:第三节 16:第四节 31:半场 32:等待加时赛 40:加时 80:中断 90:弃赛 100:完场 110:加时赛后 301:第1次休息 302:第2次休息 303:第3次休息 999:滚球
+                var peroid = when (matchInfo.socketMatchStatus) {
+                    1, 13 -> 0
+                    2, 14 -> 1
+                    15 -> 2
+                    16 -> 3
+                    else -> 4//其他情况全部显示
                 }
+                matchStatusList.forEachIndexed { index, it ->
+                    val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+                    //9表示已结束，其他代表进行中的
+                    if (index < peroid) {
+                        spanny.append(spanScore)
+                        spanny.append("  ")
+                    } else {
+                        spanny.append(spanScore,
+                            ForegroundColorSpan(getColor(R.color.color_F0A536)))
+                    }
+                }
+            } else {
+                matchStatusList.forEachIndexed { index, it ->
+                    val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
+                    //9表示已结束，其他代表进行中的
+                    if (index < matchStatusList.lastIndex) {
+                        spanny.append(spanScore)
+                        spanny.append("  ")
+                    } else {
+                        spanny.append(spanScore,
+                            ForegroundColorSpan(getColor(R.color.color_F0A536)))
+                    }
+                }
+                tv_peroids_score.isVisible = true
+                tv_peroids_score.text = spanny
             }
-            tv_peroids_score.isVisible = true
-            tv_peroids_score.text = spanny
+
         }
     }
 
@@ -1257,4 +1286,5 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setWebViewCommonBackgroundColor()
         }
     }
+
 }

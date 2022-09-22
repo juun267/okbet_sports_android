@@ -204,6 +204,11 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         viewModel.userMoney.observe(viewLifecycleOwner) {
 
         }
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
+            it?.let { oddsType ->
+                homeRecommendAdapter.oddsType = oddsType
+            }
+        }
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
@@ -224,7 +229,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 }
                 //新版宣傳頁
                 if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-                homeRecommendAdapter.setupRecommendItem(recommendList, viewModel.oddsType.value!!)
+                homeRecommendAdapter.setupRecommendItem(recommendList)
                 //先解除全部賽事訂
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
@@ -445,9 +450,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         lin_menu_game.apply {
             ivThirdGame.setImageResource(R.drawable.bg_egame)
             ivThirdGame.setOnClickListener {
-                avoidFastDoubleClick()
                 publicityMenuData?.eGameMenuData?.let { thirdDictValues ->
-                    avoidFastDoubleClick()
                     if (viewModel.isLogin.value != true) {
                         (activity as MainTabActivity).showLoginNotify()
                     } else {
@@ -819,7 +822,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     private fun updateRecommend(recommendList: List<Recommend>) {
         viewModel.oddsType.value?.let {
-            homeRecommendAdapter.setupRecommendItem(recommendList = recommendList, oddsType = it)
+            homeRecommendAdapter.setupRecommendItem(recommendList = recommendList)
         }
     }
 

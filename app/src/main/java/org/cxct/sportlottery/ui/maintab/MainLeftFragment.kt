@@ -70,7 +70,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initLanguageView()
         initObserver()
         getOddsType()
-        viewModel.getMessageCount()
     }
 
     override fun onResume() {
@@ -78,9 +77,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         cb_appearance.isChecked = MultiLanguagesApplication.isNightMode
         tv_language.text = LanguageManager.getLanguageStringResource(requireContext())
         iv_language.setImageResource(LanguageManager.getLanguageFlag(requireContext()))
-
-        setMessageCount(viewModel.totalUnreadMsgCount.value)
+//        setMessageCount(viewModel.totalUnreadMsgCount.value)
         setLogin()
+        viewModel.getMessageCount()
     }
 
     private fun initView() {
@@ -229,9 +228,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.oddsType.observe(viewLifecycleOwner) {
             setOddsType(it)
         }
-        viewModel.totalUnreadMsgCount.observe(viewLifecycleOwner) {
-            setMessageCount(it)
-        }
+//        viewModel.totalUnreadMsgCount.observe(viewLifecycleOwner) {
+//            setMessageCount(it)
+//        }
     }
 
 

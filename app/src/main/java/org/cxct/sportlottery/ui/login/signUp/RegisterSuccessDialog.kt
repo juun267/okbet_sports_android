@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_register_success.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class RegisterSuccessDialog(context: Context) : DialogFragment() {
@@ -70,7 +70,7 @@ class RegisterSuccessDialog(context: Context) : DialogFragment() {
 //        if (sConfigData?.thirdOpen == FLAG_OPEN) {
 //            MainActivity.reStart(mContext)
 //        } else {
-        GamePublicityActivity.reStart(mContext)
+        MainTabActivity.reStart(mContext)
 //        }
     }
 

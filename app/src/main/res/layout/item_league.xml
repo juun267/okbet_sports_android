@@ -24,7 +24,6 @@
             android:layout_height="20dp"
             android:layout_marginLeft="9dp"
             android:padding="3dp"
-            android:background="@drawable/bg_circle_stroke_team_log"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_earth" />
 

@@ -48,6 +48,11 @@ class SportOutrightAdapter : BaseGameAdapter() {
         notifyDataSetChanged()
     }
 
+    fun removePreloadItem() {
+        data = mutableListOf()
+        notifyDataSetChanged()
+    }
+
     //TODO need review
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {

@@ -23,8 +23,7 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.util.SvgUtil
-import org.cxct.sportlottery.util.SvgUtil.defaultIconPath
+import org.cxct.sportlottery.util.setLeagueLogo
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
@@ -283,15 +282,7 @@ class SportLeagueAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
         ) {
             itemView.league_text.text = item.league.name
-            val countryIcon = SvgUtil.getSvgDrawable(
-                itemView.context,
-                if (item.league.categoryIcon.isEmpty()) {
-                    defaultIconPath
-                } else {
-                    item.league.categoryIcon
-                }
-            )
-            itemView.iv_country.setImageDrawable(countryIcon)
+            itemView.iv_country.setLeagueLogo(item.league.categoryIcon)
             itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
@@ -300,15 +291,7 @@ class SportLeagueAdapter(private val matchType: MatchType) :
         // region update functions
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
             itemView.league_text.text = item.league.name
-            val countryIcon = SvgUtil.getSvgDrawable(
-                itemView.context,
-                if (item.league.categoryIcon.isEmpty()) {
-                    defaultIconPath
-                } else {
-                    item.league.categoryIcon
-                }
-            )
-            itemView.iv_country.setImageDrawable(countryIcon)
+            itemView.iv_country.setLeagueLogo(item.league.categoryIcon)
             itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)

@@ -204,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_icon_wallet_small"
                         android:drawablePadding="@dimen/margin_3"
-                        android:text="总资产"
+                        android:text="@string/total_assets"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/margin_14"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
@@ -652,25 +652,52 @@
                                 android:contentDescription="@null"
                                 android:src="@drawable/ic_arrow_right" />
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
                                 android:layout_centerVertical="true"
-                                android:layout_toStartOf="@+id/tv_feedback"
-                                android:text="常见问题  |  游戏规则  |  "
-                                android:textColor="@color/color_A7B2C4"
-                                android:textSize="@dimen/textSize12sp" />
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="20dp"
+                                android:orientation="horizontal">
 
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="@string/faqs"
+                                    android:textColor="@color/color_A7B2C4"
+                                    android:textSize="@dimen/textSize12sp" />
 
-                            <TextView
-                                android:id="@+id/tv_feedback"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_toStartOf="@+id/iv_line2"
-                                android:text="意见反馈"
-                                android:textColor="@color/color_A7B2C4"
-                                android:textSize="@dimen/textSize12sp" />
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="@dimen/margin_12"
+                                    android:layout_marginHorizontal="6dp"
+                                    android:background="@color/color_A7B2C4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="@string/game_rule"
+                                    android:textColor="@color/color_A7B2C4"
+                                    android:textSize="@dimen/textSize12sp" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="@dimen/margin_12"
+                                    android:layout_marginHorizontal="6dp"
+                                    android:background="@color/color_A7B2C4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="@string/feedback"
+                                    android:textColor="@color/color_A7B2C4"
+                                    android:textSize="@dimen/textSize12sp" />
+                            </LinearLayout>
+
 
                             <View
                                 android:layout_width="match_parent"

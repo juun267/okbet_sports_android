@@ -415,7 +415,9 @@ class SportViewModel(
             var searchResult = allSearchData?.filter { row ->
                 row.leagueMatchList.any { leagueMatch ->
                     leagueMatch.matchInfoList.any { matchInfo ->
-                        matchInfo.homeName.contains(key, true) ||
+                        leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
+                            key,
+                            true) ||
                                 matchInfo.awayName.contains(key, true)
                     }
                 }
@@ -430,7 +432,9 @@ class SportViewModel(
             var leagueMatchSearchResult = searchResult?.map { row ->
                 row.leagueMatchList.filter { leagueMatch ->
                     leagueMatch.matchInfoList.any { matchInfo ->
-                        matchInfo.homeName.contains(key, true) ||
+                        leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
+                            key,
+                            true) ||
                                 matchInfo.awayName.contains(key, true)
                     }
                 }
@@ -448,7 +452,9 @@ class SportViewModel(
             var matchSearchResult = leagueMatchSearchResult?.map { row ->
                 row.map { leagueMatch ->
                     leagueMatch.matchInfoList.filter { matchInfo ->
-                        matchInfo.homeName.contains(key, true) ||
+                        leagueMatch.leagueName.contains(key, true) || matchInfo.homeName.contains(
+                            key,
+                            true) ||
                                 matchInfo.awayName.contains(key, true)
                     }
                 }
@@ -2753,6 +2759,8 @@ class SportViewModel(
         }
     }
 
+    //避免多次请求游戏
+    var jumpingGame = false
     fun requestEnterThirdGame(gameData: ThirdDictValues?) {
 //        Timber.e("gameData: $gameData")
         when {
@@ -2775,6 +2783,10 @@ class SportViewModel(
                 )
             }
             else -> {
+                if (jumpingGame) {
+                    return
+                }
+                jumpingGame = true
                 viewModelScope.launch {
                     val thirdLoginResult = thirdGameLogin(gameData)
 
@@ -2800,11 +2812,13 @@ class SportViewModel(
                                 )
                             )
                         }
+                        jumpingGame = false
                     }
 
                 }
             }
         }
+
     }
 
     //20200302 記錄問題：新增一個 NONE type，來清除狀態，避免 fragment 畫面重啟馬上就會觸發 observe，重複開啟第三方遊戲

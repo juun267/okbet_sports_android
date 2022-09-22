@@ -877,6 +877,13 @@ class SportListFragment :
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
+        if (gameTypeList.isEmpty()) {
+            sport_type_list.isVisible = true
+            iv_calendar.isVisible = matchType == MatchType.EARLY
+            sportLeagueAdapter.removePreloadItem()
+            hideLoading()
+            return
+        }
         //处理默认不选中的情况
         if (gameType.isNullOrEmpty()) {
             gameTypeList.find {
@@ -898,10 +905,13 @@ class SportListFragment :
         }
         gameTypeAdapter.apply {
             dataSport = gameTypeList
-            (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                sport_type_list,
-                RecyclerView.State(),
-                dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) })
+            dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) }
+                .takeIf { it > 0 }?.let {
+                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                        sport_type_list,
+                        RecyclerView.State(),
+                        it)
+                }
         }
         //post待view繪製完成
         sport_type_list?.post {
@@ -910,6 +920,7 @@ class SportListFragment :
                 iv_calendar?.visibility = View.GONE
                 game_filter_type_list?.visibility = View.GONE
             } else {
+                sport_type_list?.visibility = View.VISIBLE
                 iv_calendar?.apply {
                     visibility = when (matchType) {
                         MatchType.EARLY -> View.VISIBLE

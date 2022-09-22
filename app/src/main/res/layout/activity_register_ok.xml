@@ -616,8 +616,8 @@
                         android:textSize="@dimen/textSize14sp"
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/etIdentity2"
-                        app:layout_constraintTop_toTopOf="@+id/etIdentity"
-                        app:layout_constraintBottom_toBottomOf="@+id/etIdentity" />
+                        app:layout_constraintTop_toTopOf="@+id/etIdentity2"
+                        app:layout_constraintBottom_toBottomOf="@+id/etIdentity2" />
 
                     <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/etBettingShop"

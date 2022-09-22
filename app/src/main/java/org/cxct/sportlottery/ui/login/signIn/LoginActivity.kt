@@ -93,15 +93,15 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
         }
-//        binding.eetAccount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-//            if (!hasFocus)
-//                checkInputData()
-//        }
-//        binding.eetAccount.setOnFocusChangeListener { v, hasFocus ->
-//            if (!hasFocus)
-//                checkInputData()
-//        }
-        binding.eetAccount.addTextChangedListener(object: TextWatcher{
+        binding.eetAccount.setOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                checkInputData()
+        }
+        binding.eetAccount.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus)
+                checkInputData()
+        }
+        binding.eetAccount.addTextChangedListener(object : TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -110,7 +110,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if(s!= null && s.toString().length > 0){
+                if (s != null && s.toString().length > 0) {
                     adjustEnableLoginButton(true)
                 }else{
                     adjustEnableLoginButton(false)

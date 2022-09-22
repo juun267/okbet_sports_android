@@ -636,6 +636,13 @@ class SportOutrightFragment :
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
+        if (gameTypeList.isEmpty()) {
+            sport_type_list.isVisible = true
+            iv_calendar.isVisible = matchType == MatchType.EARLY
+            sportOutrightAdapter.removePreloadItem()
+            hideLoading()
+            return
+        }
         //处理默认不选中的情况
         if (gameType.isNullOrEmpty()) {
             gameTypeList.find {
@@ -658,10 +665,13 @@ class SportOutrightFragment :
         }
         gameTypeAdapter.apply {
             dataSport = gameTypeList
-            (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                sport_type_list,
-                RecyclerView.State(),
-                dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) })
+            dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) }
+                .takeIf { it > 0 }?.let {
+                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                        sport_type_list,
+                        RecyclerView.State(),
+                        it)
+                }
         }
         sport_type_list?.post {
             //球種如果選過，下次回來也需要滑動置中

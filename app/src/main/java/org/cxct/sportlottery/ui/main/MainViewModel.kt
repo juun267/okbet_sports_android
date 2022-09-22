@@ -268,7 +268,7 @@ class MainViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 val infoCenterRequest =
-                    InfoCenterRequest(1, 10, 0)
+                    InfoCenterRequest(1, 1, 0)
                 infoCenterRepository.getUserNoticeList(infoCenterRequest)
             }
         }

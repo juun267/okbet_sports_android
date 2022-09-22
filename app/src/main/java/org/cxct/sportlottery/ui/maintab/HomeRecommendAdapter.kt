@@ -24,8 +24,13 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
         )
     }
 
-    private var mOddsType: OddsType =
-        MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.IDN
+    var oddsType: OddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
 
     private var mRecommendList: List<Recommend> = listOf()
 
@@ -34,15 +39,14 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setupRecommendItem(recommendList: List<Recommend>, oddsType: OddsType) {
+    fun setupRecommendItem(recommendList: List<Recommend>) {
         mRecommendList = recommendList
-        mOddsType = oddsType
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ItemHomeRecommendHolder, position: Int) {
         val itemData = mRecommendList[position]
-        holder.bind(data = itemData, oddsType = mOddsType)
+        holder.bind(data = itemData, oddsType = oddsType)
     }
 
     override fun onBindViewHolder(
@@ -56,7 +60,7 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
             payloads.forEach { payload ->
                 when (payload) {
                     is Recommend -> {
-                        holder.update(payload, oddsType = mOddsType)
+                        holder.update(payload, oddsType = oddsType)
                     }
                 }
             }

@@ -52,7 +52,7 @@
     <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
     <string name="register_not_ph_school">I am not a student of any school, college, or university in the Philippines.</string>
     <string name="register_rule_okbet">I understand that should my provided information has been found incorrect, OKbet has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
-    <string name="register_rule_agree_all">I agree to all terms and conditions of the above.</string>
+    <string name="register_rule_agree_all">I agree to all the above terms and conditions.</string>
     <string name="register_success">Register successfully</string>
     <string name="register_jump">The page will be jumping to %1$s 5 sec later.</string>
     <string name="register_recharge_now">Deposit now</string>
@@ -233,7 +233,7 @@
     <string name="table_tennis">Table tennis</string>
     <string name="ice_hockey">Ice hockey</string>
     <string name="boxing">Boxing</string>
-    <string name="snooker">Snooker</string>
+    <string name="snooker">Billiards</string>
     <string name="cricket">Cricket</string>
     <string name="baseball">Baseball</string>
     <string name="rugby_football">Rugby</string>
@@ -272,7 +272,7 @@
     <string name="account_transfer">Transfer Limit</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Messages</string>
-    <string name="help_center">Support center</string>
+    <string name="help_center">Help</string>
     <string name="fund_detail">Funds Details</string>
     <string name="feedback">Feedback</string>
     <string name="promotion">Promotions</string>
@@ -512,9 +512,9 @@
     <string name="withdraw_amount">Withdraw</string>
     <string name="withdraw_password">Withdraw Password</string>
     <string name="withdraw_all">EXTRACT ALL</string>
-    <string name="withdraw_handling_fee_hint">· Transaction Fee: %1$S %% Transaction Fee to be paid: %2$s%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Withdraw：%1$s%2$s</string>
-    <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee：%1$s%2$s</string>
+    <string name="withdraw_handling_fee_hint">· Transaction Fee: %1$S %% Transaction Fee to be paid(%2$s): %3$s</string>
+    <string name="withdraw_crypto_amount_hint">· Withdraw(%2$s)：%1$s</string>
+    <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee(%2$s)：%1$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
@@ -1233,5 +1233,9 @@
     <string name="payment_method">Payment method</string>
     <string name="select_file">Select file</string>
     <string name="error_recommend_agent">No matched</string>
-    <string name="login_welcome">Hi，Welcome to OkBet~</string>
+    <string name="login_welcome">Hi，Welcome to OKBet~</string>
+    <string name="betting">Betting</string>
+    <string name="other_bet">Other Betting History</string>
+    <string name="sport_match">Matches</string>
+    <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
 </resources>
