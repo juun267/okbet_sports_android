@@ -733,6 +733,7 @@ class ProfileCenterFragment :
         //总资产锁定金额
         viewModel.lockMoney.observe(viewLifecycleOwner) {
             if (it?.toInt()!! > 0) {
+                iv_deposit_tip.visibility = View.VISIBLE
                 iv_deposit_tip.setOnClickListener { view ->
                     val depositSpannable =
                         SpannableString(
@@ -763,6 +764,8 @@ class ProfileCenterFragment :
                         }.show(it1, this::class.java.simpleName)
                     }
                 }
+            }else{
+                iv_deposit_tip.visibility = View.GONE
             }
         }
 
