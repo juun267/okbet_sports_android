@@ -110,7 +110,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/color_212121_eeeeee" />
+                            android:background="@color/color_80334266_E3E8EE" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_bet_list"

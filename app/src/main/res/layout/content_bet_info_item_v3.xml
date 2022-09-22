@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_14"
             android:layout_marginBottom="@dimen/margin_14"
+            app:cardBackgroundColor="@color/color_80334266_E3E8EE"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp">
 
@@ -43,7 +44,7 @@
                     android:id="@+id/topContainer"
                     android:layout_width="match_parent"
                     android:layout_height="34dp"
-                    android:background="@drawable/bg_shape_top_8dp_blue_stroke_no_bottom_stroke"
+                    android:background="@drawable/bg_bet_slip_shape_top_8dp_blue_stroke_no_bottom_stroke"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView

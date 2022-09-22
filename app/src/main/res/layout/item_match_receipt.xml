@@ -97,7 +97,7 @@
                     android:id="@+id/topContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_shape_top_8dp_blue_stroke_no_bottom_stroke"
+                    android:background="@drawable/bg_bet_slip_shape_top_8dp_blue_stroke_no_bottom_stroke"
                     android:paddingVertical="6dp"
                     android:paddingStart="10dp"
                     android:paddingEnd="11dp"
