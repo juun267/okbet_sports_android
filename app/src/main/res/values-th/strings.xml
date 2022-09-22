@@ -297,6 +297,7 @@
     <string name="terms_conditions">กฎและข้อกำหนด</string>
     <string name="faqs">ปัญหาที่พบบ่อย</string>
     <string name="text_us_east_time">คำนวณตามเวลาสหรัฐอเมริกาฝั่งตะวันออก (UTC-4)</string>
+    <string name="text_us_east_time_bet_record">คำนวณตามเวลาสหรัฐอเมริกาฝั่งตะวันออก (UTC-4)</string>
     <string name="profile_center">ศูนย์ส่วนบุคคล</string>
     <string name="member_level">ระดับสมาชิก</string>
     <string name="odd_type_title">ประเภทวิธีแทงบอล</string>

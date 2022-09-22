@@ -55,9 +55,9 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val item = data[position]
                 holder.bind(item, rechargeLogListener)
             }
-            is NoDataViewHolder -> {
+           /* is NoDataViewHolder -> {
                 holder.bind(isFinalPage, data.isNotEmpty())
-            }
+            }*/
         }
     }
 

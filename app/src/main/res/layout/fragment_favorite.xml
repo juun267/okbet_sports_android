@@ -26,7 +26,6 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tool_bar_height"
-            android:paddingHorizontal="18dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -36,6 +35,7 @@
                 android:id="@+id/iv_menu_left"
                 android:layout_width="wrap_content"
                 android:layout_height="24dp"
+                android:layout_marginStart="18dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="fitStart"
@@ -61,14 +61,16 @@
                 android:id="@+id/cl_bet_all_sports"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
-                android:background="@drawable/selector_bg_home_tab_menu"
                 android:minWidth="100dp"
+                android:paddingHorizontal="5dp"
+                android:layout_marginEnd="13dp"
                 tools:ignore="SpUsage,RtlSymmetry,ContentDescription">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:duplicateParentState="true"
+                    android:background="@drawable/selector_bg_home_tab_menu"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -82,6 +84,7 @@
                         android:layout_marginStart="13dp"
                         android:duplicateParentState="true"
                         android:text="@string/all_sport"
+                        android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/selector_blue_white" />
 
                     <ImageView

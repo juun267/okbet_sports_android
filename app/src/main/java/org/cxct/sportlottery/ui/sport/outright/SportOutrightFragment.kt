@@ -393,7 +393,7 @@ class SportOutrightFragment :
             }
         }
 
-        viewModel.sportMenuResult.observe(this.viewLifecycleOwner) {
+        viewModel.sportMenuResult.distinctUntilChanged().observe(this.viewLifecycleOwner) {
             when (matchType) {
                 MatchType.IN_PLAY -> {
                     updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())

@@ -1,204 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_F0F5FA"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity"
-    tools:ignore="spUsage">
+    android:background="@color/color_FFFFFF"
+    tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
+    <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
+                android:id="@+id/date_range_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:minusDays="6"  />
+            <LinearLayout
+                android:id="@+id/ll_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_191919_FCFCFC"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/date_range_selector">
 
+                <org.cxct.sportlottery.ui.component.StatusSpinnerView
+                    android:id="@+id/selector_out_plat"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="#F3F9FF"
+                    app:defaultStatusText="@string/all_order_status"
+                    app:layout_constraintTop_toBottomOf="@id/date_range_selector"
+                    app:listBackground="@drawable/bg_pop_up_arrow"
+                    app:listWidth="120dp"
+                    app:textColor="#6C7BA8" />
+                <View
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/color_191919_EEEFF0" />
+
+                <org.cxct.sportlottery.ui.component.StatusSpinnerView
+                    android:id="@+id/selector_in_plat"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="#F3F9FF"
+                    app:defaultStatusText="@string/all_order_status"
+                    app:layout_constraintTop_toBottomOf="@id/date_range_selector"
+                    app:listBackground="@drawable/bg_pop_up_arrow"
+                    app:listWidth="120dp"
+                    app:textColor="#6C7BA8" />
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/color_191919_EEEFF0" />
+
+                <org.cxct.sportlottery.ui.component.StatusSpinnerView
+                    android:id="@+id/selector_transfer_status"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="#F3F9FF"
+                    app:defaultStatusText="@string/all_order_status"
+                    app:layout_constraintTop_toBottomOf="@id/date_range_selector"
+                    app:listBackground="@drawable/bg_pop_up_arrow"
+                    app:listWidth="120dp"
+                    app:textColor="#6C7BA8" />
+
+            </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/exo_white"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
         android:orientation="vertical"
-        android:paddingBottom="20dp">
-
-        <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
-            android:id="@+id/date_range_selector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            app:layout_constraintTop_toTopOf="parent"
-            app:minusDays="6" />
-
-        <LinearLayout
-            android:id="@+id/ll_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_191919_FCFCFC"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/date_search_bar">
-
-            <org.cxct.sportlottery.ui.component.StatusSpinnerView
-                android:id="@+id/selector_out_plat"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="#F3F9FF"
-                app:defaultStatusText="@string/all_order_status"
-                app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-                app:listBackground="@drawable/bg_pop_up_arrow"
-                app:listWidth="120dp"
-                app:textColor="#6C7BA8" />
-
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/color_191919_EEEFF0" />
-
-            <org.cxct.sportlottery.ui.component.StatusSpinnerView
-                android:id="@+id/selector_in_plat"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="#F3F9FF"
-                app:defaultStatusText="@string/all_order_status"
-                app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-                app:listBackground="@drawable/bg_pop_up_arrow"
-                app:listWidth="120dp"
-                app:textColor="#6C7BA8" />
-
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="14dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/color_191919_EEEFF0" />
-
-            <org.cxct.sportlottery.ui.component.StatusSpinnerView
-                android:id="@+id/selector_transfer_status"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="#F3F9FF"
-                app:defaultStatusText="@string/all_order_status"
-                app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-                app:listBackground="@drawable/bg_pop_up_arrow"
-                app:listWidth="120dp"
-                app:textColor="#6C7BA8" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
-            android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_1"
-                android:layout_marginTop="@dimen/margin_1"
-                android:layout_marginRight="@dimen/margin_1"
-                android:background="@drawable/bg_white_top_radius_deposit_10"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:gravity="center"
-
-                    android:text="@string/record_time"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize12sp"
-                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                    app:autoSizeMinTextSize="@dimen/textSize8sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="@string/money"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize12sp"
-                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                    app:autoSizeMinTextSize="@dimen/textSize8sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/transfer_platform"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize12sp"
-                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                    app:autoSizeMinTextSize="@dimen/textSize8sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="@string/status"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize12sp"
-                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                    app:autoSizeMinTextSize="@dimen/textSize8sp" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                    android:id="@+id/view_refresh"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srlDragRate="0.3"
-                    app:srlEnableLoadMore="true"
-
-                    app:srlEnablePureScrollMode="true">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_record"
+        android:layout_marginTop="@dimen/margin_10"
+        app:layout_constraintTop_toBottomOf="@id/ll_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+                    <LinearLayout
+                        android:id="@+id/linearLayout5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/margin_36"
                         android:layout_marginLeft="@dimen/margin_1"
+                        android:layout_marginTop="@dimen/margin_1"
                         android:layout_marginRight="@dimen/margin_1"
-                        android:layout_marginBottom="@dimen/margin_7"
-                        android:overScrollMode="never"
+                        android:background="@drawable/bg_white_top_radius_deposit_10"
+                        android:orientation="horizontal"
+                        android:paddingVertical="4dp">
 
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="2"
-                        tools:listitem="@layout/item_money_transfer_history" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:gravity="center"
 
-                </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+                            android:text="@string/record_time"
+                            android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize12sp"
+                            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:text="@string/money"
+                            android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize12sp"
+                            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
-            </FrameLayout>
-        </LinearLayout>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/transfer_platform"
+                            android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize12sp"
+                            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
-        <ImageView
-            android:visibility="gone"
-            android:id="@+id/iv_scroll_to_top"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom|start"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:background="@drawable/bg_circle_gray6_alpha50"
-            android:padding="14dp"
-            android:src="@drawable/ic_scroll_to_top" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:text="@string/status"
+                            android:textColor="@color/color_BBBBBB_333333"
+                            android:textSize="@dimen/textSize12sp"
+                            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+                    </LinearLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                            android:id="@+id/view_refresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="386dp"
+                            app:srlDragRate="0.3"
+                            app:srlEnableLoadMore="true"
+
+                            app:srlEnablePureScrollMode="true">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_record"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/margin_1"
+                                android:layout_marginRight="@dimen/margin_1"
+                                android:layout_marginBottom="@dimen/margin_7"
+                                android:overScrollMode="never"
+
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:itemCount="2"
+                                tools:listitem="@layout/item_money_transfer_history" />
+
+                        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+                    </FrameLayout>
+
     </LinearLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_no_data_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_191919_FCFCFC"
+        android:gravity="center"
+        android:paddingVertical="12dp"
+        android:text="@string/no_data"
+        android:textColor="@color/color_909090_666666"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/textSize12sp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 

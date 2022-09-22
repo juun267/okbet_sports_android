@@ -17,7 +17,7 @@
         android:layout_marginStart="@dimen/margin_10"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="@dimen/margin_10"
-        android:background="@drawable/ic_mask_group"
+        android:background="@drawable/icon_mask_group"
         android:orientation="vertical"
         android:paddingBottom="12dp">
 

@@ -870,6 +870,7 @@
     <string name="select_id_type">Select ID Type</string>
     <string name="scan_tool_bar">Scan results</string>
     <string name="text_us_east_time">• The time is reported in UTC-4 time zone.</string>
+    <string name="text_us_east_time_bet_record">The time is reported in UTC-4 time zone.</string>
     <string name="verify_failed_please_retry">Verification failed, please try again</string>
     <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_bet_not_success">Bet slip status is&#160;</string>
@@ -1263,6 +1264,7 @@
     <string name="no_search_match">没有搜索到赛事</string>
     <string name="no_more">没有更多了</string>
     <string name="reset_password">重设密码</string>
+    <string name="transact_type">Transaction Type：</string>
     <string name="login_welcome">Hi，Welcome to OkBet~</string>
 
 </resources>

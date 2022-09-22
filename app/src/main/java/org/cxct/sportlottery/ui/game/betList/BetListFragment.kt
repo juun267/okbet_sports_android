@@ -686,6 +686,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setupBetButtonType(it)
             updateCommonToolbarLoginStatus(it)
             if (needUpdateBetLimit) {
+                viewModel.getMoney()
                 viewModel.updateBetLimit()
                 needUpdateBetLimit = false
             }
@@ -728,7 +729,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
                 if (list.size == 0) {
-                    activity?.onBackPressed()
+                    activity?.supportFragmentManager?.popBackStack()
                     return@observe
                 }
 

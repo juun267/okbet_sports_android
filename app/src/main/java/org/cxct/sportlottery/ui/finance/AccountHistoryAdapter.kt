@@ -55,9 +55,9 @@ class AccountHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val item = data[position]
                 holder.bind(item)
             }
-            is NoDataViewHolder -> {
+           /* is NoDataViewHolder -> {
                 holder.bind(isFinalPage, data.isNotEmpty())
-            }
+            }*/
         }
     }
 
