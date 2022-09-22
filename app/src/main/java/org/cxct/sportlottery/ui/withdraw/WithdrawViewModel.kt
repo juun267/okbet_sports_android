@@ -667,7 +667,9 @@ class WithdrawViewModel(
                     (userMoney.value),
                     (cardConfig?.feeVal?.times(cardConfig?.exchangeRate ?: 0.0))
                 ),
-                cardConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
+                cardConfig?.exchangeRate ?: 1.0,
+                3,
+                RoundingMode.FLOOR
             )
             TransferType.E_WALLET -> ArithUtil.div(
                 (userMoney.value ?: 0.0),
