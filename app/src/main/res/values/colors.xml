@@ -457,6 +457,9 @@
     <color name="color_33131932_33414655">@color/color_33414655</color>
     <color name="color_131932_F3F9FF">@color/color_F3F9FF</color>
     <color name="color_336C7BA8_F4F4F4">@color/color_F4F4F4</color>
+    <color name="color_334266_D8E7FF">@color/color_D8E7FF</color>
+    <color name="color_202541_FAFCFF">@color/color_FAFCFF</color>
+    <color name="color_2B3859_F3F9FF">@color/color_F3F9FF</color>
     <!--endregion 新UI 日夜間色系-->
 
     <color name="color_1E6C7BA8">#1e6c7ba8</color>
