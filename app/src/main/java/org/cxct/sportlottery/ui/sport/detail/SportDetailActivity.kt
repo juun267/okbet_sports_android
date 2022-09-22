@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
+import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R

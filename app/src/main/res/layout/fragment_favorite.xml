@@ -20,10 +20,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/v_statusbar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp" />
+        <include layout="@layout/view_status_bar" />
 
         <LinearLayout
             android:id="@+id/toolBar"

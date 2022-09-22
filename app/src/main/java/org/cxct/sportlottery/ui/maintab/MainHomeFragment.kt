@@ -258,6 +258,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             event.peekContent().let { isReload ->
                 if (isReload) {
                     setupBanner()
+                    viewModel.getPublicityPromotion()
                 }
                 viewModel.getSportMenuFilter()
             }
@@ -289,7 +290,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 } else {
                     lin_activity.visibility = View.GONE
                 }
-
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
@@ -316,7 +316,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         mPublicityVersionUpdateViewModel.checkAppVersion()
         viewModel.getPublicitySportMenu()
         viewModel.getAnnouncement()
-        viewModel.getPublicityPromotion()
+        viewModel.getConfigData()
         viewModel.getRecommend()
         viewModel.getMenuThirdGame()
         viewModel.getMoney()

@@ -113,7 +113,7 @@
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="get_security_code">Send code</string>
     <string name="phone_verify_content">Welcome back to game. Please complete verification for account security.</string>
-    <string name="dialog_security_title">Enter the verification code.</string>
+    <string name="dialog_security_title">Enter code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
     <string name="hint_security_code">Enter Code</string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
@@ -564,7 +564,7 @@
 
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Singles</string>
-    <string name="bet_list_single_type">Singles</string>
+    <string name="bet_list_single_type">Single Bets</string>
     <string name="bet_list_parlay_type">Parlay</string>
     <string name="bet_list_view_more_options">More options</string>
     <string name="bet_list_cant_parlay_warn">Remind that if the same event, different ball types, outright and other betting items cannot be parlayed</string>
@@ -942,7 +942,7 @@
     <string name="text_chose_language">Select your language</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint">(your login password)</string>
-    <string name="account_hint">(your member account)</string>
+    <string name="account_hint">(your username)</string>
     <string name="submit_success">submitted successfully</string>
     <!-- 搜尋 -->
     <string name="text_search">Search</string>
@@ -1139,14 +1139,13 @@
     <string name="withdraw_down">WITHDRAW</string>
     <string name="my_message">My message</string>
     <string name="betting_setting">Betting setting</string>
-    <string name="transaction_record">交易记录明细</string>
-    <string name="transaction_recor">意见反馈</string>
-    <string name="current_version">当前版本</string>
+    <string name="transaction_record">Transaction history details</string>
+    <string name="current_version">Current version</string>
     <string name="updatable_version">可更新</string>
-    <string name="join_us_win_wealth">加入我们，共赢财富</string>
+    <string name="join_us_win_wealth">Join us, win-win wealth</string>
     <string name="personal_information">个人信息</string>
-    <string name="cancel_account">注销账号</string>
-    <string name="payment_method">支付方式</string>
+    <string name="cancel_account">Delete account</string>
+    <string name="payment_method">Payment method</string>
     <string name="kyc_type">ID Type</string>
     <string name="kyc_num">ID Number</string>
     <string name="kyc_upload">Upload Photo</string>
@@ -1210,7 +1209,7 @@
 
     <string name="customer_service">如需帮助，请</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="filter">筛选</string>
+    <string name="filter">Filter</string>
 
     <string name="next_step">NEXT STEP</string>
     <string name="hint_select_document_type">(Valid ID Type)</string>
@@ -1221,17 +1220,17 @@
     <string name="hint_no_file_selected">Unselect files</string>
     <string name="upload_id_photo">Upload Photo</string>
     <string name="hint_file_selected">Selected file</string>
-    <string name="select_file">选择档案</string>
+    <string name="select_file">Select file</string>
     <string name="error_recommend_agent">No matched</string>
     <string name="local_time">当地时间:</string>
     <string name="pls_file_type">请选择文件的类型</string>
-    <string name="click_upload_id_photo">点击上传证件照片</string>
+    <string name="click_upload_id_photo">Click upload ID photo</string>
     <string name="change_other_ID_photos">变更其他证件照</string>
-    <string name="customer_service_help">如需帮助，请联系客服</string>
-    <string name="league_filter">赛事筛选</string>
-    <string name="reverse_select">反选</string>
-    <string name="video">视频</string>
-    <string name="anime">动画</string>
+    <string name="customer_service_help">If you need help, please contact CS</string>
+    <string name="league_filter">Match filter</string>
+    <string name="reverse_select">Inverse</string>
+    <string name="video">Video</string>
+    <string name="anime">Animation</string>
 
     <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
@@ -1242,29 +1241,31 @@
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
 
     <string name="register_and_login">注册/登录</string>
-    <string name="live_streaming">直播</string>
+    <string name="live_streaming">Livestream</string>
     <string name="half_first_short">上</string>
     <string name="half_second_short">下</string>
     <string name="bank_memory_card">储存卡</string>
     <string name="my_bank_card">我的银行卡</string>
-    <string name="my_favorite_empty">您还没有收藏赛事</string>
+    <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
-    <string name="cruel_write_off">残忍注销</string>
-    <string name="download">下载</string>
+    <string name="cruel_write_off">Still delete</string>
+    <string name="download">Download</string>
     <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字)</string>
-    <string name="half">半</string>
+    <string name="half">Half</string>
     <string name="other_bet">其他投注</string>
-    <string name="skin_mode">皮肤: 日/夜间</string>
-    <string name="main_tab_home">@string/bottom_nav_home</string>
-    <string name="main_tab_sport">体育赛事</string>
-    <string name="main_tab_betlist">注单</string>
-    <string name="main_tab_favorite">收藏赛事</string>
-    <string name="main_tab_mine">@string/bottom_nav_my_account</string>
+    <string name="skin_mode">Mode: Day/Night</string>
+    <string name="main_tab_home">HOME</string>
+    <string name="main_tab_sport">Sports</string>
+    <string name="main_tab_betlist">Bet Slip</string>
+    <string name="main_tab_favorite">Favorite</string>
+    <string name="main_tab_mine">My</string>
     <string name="sport_match">场赛事</string>
-    <string name="match_analyze">赛事分析</string>
+    <string name="match_analyze">Match analysis</string>
     <string name="no_search_match">没有搜索到赛事</string>
     <string name="no_more">没有更多了</string>
     <string name="reset_password">重设密码</string>
     <string name="transact_type">Transaction Type：</string>
+    <string name="login_welcome">Hi，Welcome to OkBet~</string>
+
     <string name="unbound_bank_card">您尚末绑定银行卡/eWallet</string>
 </resources>

@@ -1154,5 +1154,29 @@
 
     <string name="transfer_time">เวลาในการแปลง</string> <!--J662-->
     <string name="bet_receipt_win_quota">จำนวนที่ชนะได้</string>
-    <string name="winnable_amount_colon">จำนวนที่ชนะได้</string> <!--F005-->
+    <string name="winnable_amount_colon">จำนวนที่ชนะได้</string>
+    <string name="main_tab_favorite">เก็บรายการแข่งขัน</string>
+    <string name="cruel_write_off">ลบบัญชี</string>
+    <string name="cancel_account">ลบบัญชี</string>
+    <string name="match_analyze">รายละเอียดการแข่งขัน</string>
+    <string name="half">ครึ่ง</string>
+    <string name="customer_service_help">หากคุณต้องการความช่วยเหลือ โปรดติดต่อฝ่ายบริการลูกค้า</string>
+    <string name="click_upload_id_photo">คลิกเพื่ออัพโหลดรูปบัตรประจำตัว</string>
+    <string name="main_tab_sport">กีฬา</string>
+    <string name="main_tab_betlist">เดิมพัน</string>
+    <string name="main_tab_mine">ของฉัน</string>
+    <string name="main_tab_home">บ้าน</string>
+    <string name="skin_mode">ผิวหนัง：วัน/คืน</string>
+    <string name="download">ดาวน์โหลด</string>
+    <string name="live_streaming">ถ่ายทอดสด</string>
+    <string name="transaction_record">รายละเอียดบันทึกการทำธุรกรรม</string>
+    <string name="current_version">เวอร์ชั่นปัจจุบัน</string>
+    <string name="join_us_win_wealth">เข้าร่วมกับเราชนะความรวย</string>
+    <string name="payment_method">วิธีการชำระเงิน</string>
+    <string name="select_file">เลือกไฟล์</string>
+    <string name="filter">คัดเลือก</string>
+    <string name="anime">แอนิเมชั่น</string>
+    <string name="video">วีดีโอ</string>
+    <string name="reverse_select">ย้อนการเลือก</string>
+    <!--F005-->
 </resources>

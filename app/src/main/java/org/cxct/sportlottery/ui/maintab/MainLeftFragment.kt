@@ -326,10 +326,12 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         if (viewModel.isLogin.value == true) {
             lin_message.visibility = View.VISIBLE
             lin_odds_type.visibility = View.VISIBLE
+            lin_timezone.visibility = View.VISIBLE
 //            lin_betting_setting.visibility = View.VISIBLE
         } else {
             lin_message.visibility = View.GONE
             lin_odds_type.visibility = View.GONE
+            lin_timezone.visibility = View.GONE
 //            lin_betting_setting.visibility = View.GONE
         }
     }

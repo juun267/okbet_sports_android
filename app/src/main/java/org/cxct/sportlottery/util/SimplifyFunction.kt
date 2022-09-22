@@ -646,6 +646,7 @@ fun View.setSpinnerView(
         selectItem = first
     }
     spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
+    spinnerAdapter.setItmeColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
     mListPop = ListPopupWindow(context)
     mListPop.width = textFieldBoxes.width
     mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
@@ -714,6 +715,7 @@ fun View.setSpinnerView(
         selectItem = first
     }
     spinnerAdapter = StatusSpinnerAdapter(spinnerList.toMutableList())
+    spinnerAdapter.setItmeColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
     mListPop = ListPopupWindow(context)
     mListPop.width = textFieldBoxes.width
     mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT

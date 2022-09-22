@@ -4,11 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
 import kotlinx.android.synthetic.main.item_play_spinner.view.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemPlaySpinnerBinding
-import org.cxct.sportlottery.network.sport.query.PlayCate
 import org.cxct.sportlottery.ui.common.StatusSheetData
 
 class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableListOf()) : BaseAdapter() {
@@ -51,7 +48,7 @@ class StatusSpinnerAdapter(dataItems: MutableList<StatusSheetData> = mutableList
     inner class PlayItemViewHolder(private val binding: ItemPlaySpinnerBinding) {
         fun bind(data: StatusSheetData, position: Int) {
             with(binding) {
-                tvPlay.text = data.showName
+                tvPlay.text = "data.showName"
               //  ivTick.visibility = if (data.isChecked) View.VISIBLE else View.INVISIBLE
                 viewDivider.visibility = if (position >= count - 1) View.GONE else View.VISIBLE
             }

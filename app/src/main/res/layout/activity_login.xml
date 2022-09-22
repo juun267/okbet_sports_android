@@ -8,6 +8,10 @@
     tools:context=".ui.login.signIn.LoginActivity"
     tools:ignore="SpUsage">
 
+    <include
+        android:id="@+id/v_top"
+        layout="@layout/view_status_bar" />
+
     <ImageButton
         android:id="@+id/btn_back"
         android:layout_width="26dp"
@@ -20,7 +24,7 @@
         android:scaleY="0.9"
         android:src="@drawable/ic_arrow_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
 
     <ImageButton
         android:id="@+id/btn_custom_serivce"
@@ -51,7 +55,7 @@
         android:layout_height="45dp"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="@dimen/margin_10"
-        android:text="Hi, 欢迎来到OKBet～"
+        android:text="@string/login_welcome"
         android:textColor="@color/color_414655"
         android:textSize="@dimen/textSize20sp"
         android:textStyle="bold"
@@ -161,6 +165,8 @@
                         android:imeOptions="actionNext"
                         android:inputType="number"
                         android:textColor="@color/color_FFFFFF_DE000000"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:maxLines="1"
                         android:textSize="@dimen/textSize14sp" />
 
