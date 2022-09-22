@@ -11,6 +11,8 @@ import android.view.View
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
+import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +50,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .statusBarView(v_statusbar)
+            .fitsSystemWindows(false)
+            .init()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupBackButton()

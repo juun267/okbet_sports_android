@@ -112,7 +112,7 @@
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="get_security_code">Send code</string>
     <string name="phone_verify_content">Welcome back to game. Please complete verification for account security.</string>
-    <string name="dialog_security_title">Enter the verification code.</string>
+    <string name="dialog_security_title">Enter code.</string>
     <string name="dialog_security_error">You have entered a wrong verification code.</string>
     <string name="hint_security_code"><font size="12">Enter Code</font></string>
     <string name="dialog_security_need_phone">Your personal information is not complete, please contact customer service.</string>
@@ -272,7 +272,7 @@
     <string name="account_transfer">Transfer Limit</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Messages</string>
-    <string name="help_center">Help</string>
+    <string name="help_center">Support center</string>
     <string name="fund_detail">Funds Details</string>
     <string name="feedback">Feedback</string>
     <string name="promotion">Promotions</string>
@@ -565,7 +565,7 @@
 
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Singles</string>
-    <string name="bet_list_single_type">Singles</string>
+    <string name="bet_list_single_type">Single Bets</string>
     <string name="bet_list_parlay_type">Parlay</string>
     <string name="bet_list_view_more_options">More options</string>
     <string name="bet_list_cant_parlay_warn">Remind that if the same event, different ball types, outright and other betting items cannot be parlayed</string>
@@ -939,7 +939,7 @@
     <string name="text_chose_language">Select your language</string>
     <!-- 複式串關詳情 -->
     <string name="password_hint">(your login password)</string>
-    <string name="account_hint">(your member account)</string>
+    <string name="account_hint">(your username)</string>
     <string name="submit_success">submitted successfully</string>
     <!-- 搜尋 -->
     <string name="text_search">Search Matches</string>
@@ -1198,8 +1198,8 @@
     <string name="upload_id_photo">Upload Photo</string>
     <string name="hint_file_selected">Selected file</string>
     <string name="correct">Correct</string>
-    <string name="league_filter">select matches</string>
-    <string name="reverse_select">reverse select</string>
+    <string name="league_filter">Match filter</string>
+    <string name="reverse_select">Inverse</string>
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
@@ -1211,4 +1211,26 @@
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
     <string name="no_more">No more data to display</string>
+    <string name="main_tab_favorite">Favorite</string>
+    <string name="my_favorite_empty">You don\'t have favorite events yet</string>
+    <string name="cruel_write_off">Still delete</string>
+    <string name="cancel_account">Delete account</string>
+    <string name="match_analyze">Match analysis</string>
+    <string name="half">Half</string>
+    <string name="customer_service_help">If you need help, please contact CS</string>
+    <string name="click_upload_id_photo">Click upload ID photo</string>
+    <string name="main_tab_sport">Sports</string>
+    <string name="main_tab_betlist">Bet Slip</string>
+    <string name="main_tab_mine">My</string>
+    <string name="main_tab_home">HOME</string>
+    <string name="skin_mode">Mode: Day/Night</string>
+    <string name="download">Download</string>
+    <string name="live_streaming">Livestream</string>
+    <string name="transaction_record">Transaction history details</string>
+    <string name="current_version">Current version</string>
+    <string name="join_us_win_wealth">Join us, win-win wealth</string>
+    <string name="payment_method">Payment method</string>
+    <string name="select_file">Select file</string>
+    <string name="error_recommend_agent">No matched</string>
+    <string name="login_welcome">Hi，Welcome to OkBet~</string>
 </resources>

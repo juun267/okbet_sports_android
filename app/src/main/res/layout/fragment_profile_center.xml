@@ -13,11 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <View
-            android:id="@+id/v_statusbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_25"
-            android:background="@color/color_FFFFFF" />
+        <include layout="@layout/view_status_bar" />
         <FrameLayout
             android:id="@+id/lin_person"
             android:layout_width="match_parent"

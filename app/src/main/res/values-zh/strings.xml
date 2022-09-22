@@ -1218,4 +1218,25 @@
 
     <string name="bank_memory_card">储蓄卡</string>
     <string name="no_more">没有更多了</string>
+    <string name="main_tab_favorite">收藏赛事</string>
+    <string name="my_favorite_empty">您还没有收藏赛事</string>
+    <string name="cruel_write_off">残忍注销</string>
+    <string name="cancel_account">注销账号</string>
+    <string name="match_analyze">赛事分析</string>
+    <string name="half">半</string>
+    <string name="customer_service_help">如需帮助，请联系客服</string>
+    <string name="click_upload_id_photo">点击上传证件照片</string>
+    <string name="main_tab_sport">体育赛事</string>
+    <string name="main_tab_betlist">注单</string>
+    <string name="main_tab_mine">我的</string>
+    <string name="main_tab_home">主页</string>
+    <string name="skin_mode">皮肤: 日/夜间</string>
+    <string name="download">下载</string>
+    <string name="live_streaming">直播</string>
+    <string name="transaction_record">交易记录明细</string>
+    <string name="current_version">当前版本</string>
+    <string name="join_us_win_wealth">加入我们，共赢财富</string>
+    <string name="payment_method">支付方式</string>
+    <string name="error_recommend_agent">未匹配到相关代理</string>
+    <string name="login_welcome">Hi, 欢迎来到OKBet～</string>
 </resources>

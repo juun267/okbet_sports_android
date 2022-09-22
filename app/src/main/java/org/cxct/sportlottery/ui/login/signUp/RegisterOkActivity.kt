@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.login.signUp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +12,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -24,41 +25,11 @@ import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
+import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.block_sms_valid_code
-import kotlinx.android.synthetic.main.activity_register.btn_register
-import kotlinx.android.synthetic.main.activity_register.clAgreement
-import kotlinx.android.synthetic.main.activity_register.etBettingShop
-import kotlinx.android.synthetic.main.activity_register.etBirth
-import kotlinx.android.synthetic.main.activity_register.etIdentity
-import kotlinx.android.synthetic.main.activity_register.etIdentityType
-import kotlinx.android.synthetic.main.activity_register.etSalary
-import kotlinx.android.synthetic.main.activity_register.etSecurityPb
-import kotlinx.android.synthetic.main.activity_register.etSecurityPbType
-import kotlinx.android.synthetic.main.activity_register.et_address
-import kotlinx.android.synthetic.main.activity_register.et_city
-import kotlinx.android.synthetic.main.activity_register.et_confirm_password
-import kotlinx.android.synthetic.main.activity_register.et_full_name
-import kotlinx.android.synthetic.main.activity_register.et_login_password
-import kotlinx.android.synthetic.main.activity_register.et_mail
-import kotlinx.android.synthetic.main.activity_register.et_member_account
-import kotlinx.android.synthetic.main.activity_register.et_phone
-import kotlinx.android.synthetic.main.activity_register.et_postal
-import kotlinx.android.synthetic.main.activity_register.et_province
-import kotlinx.android.synthetic.main.activity_register.et_recommend_code
-import kotlinx.android.synthetic.main.activity_register.et_withdrawal_pwd
 import kotlinx.android.synthetic.main.activity_register_ok.*
-import kotlinx.android.synthetic.main.activity_register_ok.bettingShopSpinner
-import kotlinx.android.synthetic.main.activity_register_ok.block_valid_code
-import kotlinx.android.synthetic.main.activity_register_ok.eetBettingShop
-import kotlinx.android.synthetic.main.activity_register_ok.et_facebook
-import kotlinx.android.synthetic.main.activity_register_ok.et_qq
-import kotlinx.android.synthetic.main.activity_register_ok.et_telegram
-import kotlinx.android.synthetic.main.activity_register_ok.et_we_chat
-import kotlinx.android.synthetic.main.activity_register_ok.et_whats_app
-import kotlinx.android.synthetic.main.activity_register_ok.et_zalo
+import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
@@ -72,7 +43,6 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -144,6 +114,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .statusBarView(v_statusbar)
+            .transparentStatusBar()
+            .fitsSystemWindows(false)
+            .init()
         setupBettingShop()
         setPage()
         setupBackButton()
@@ -197,6 +173,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
+        binding.tvDuty.apply {
+            paint.flags = Paint.UNDERLINE_TEXT_FLAG
+            paint.isAntiAlias = true
+        }
         //Html.fromHtml("<u>"+getString(R.string.register_privacy_policy)+"</u>")
         //TODO  遗留富文本下划线需要设置
         binding.tvPrivacy.text =
@@ -435,8 +415,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 }
                 else -> {
                     page--
-                    btn_register.isEnabled = true
                     setPage()
+                    binding.etMemberAccount.requestFocus()
+                    btn_register.isEnabled = true
                 }
             }
 
@@ -589,11 +570,11 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 etBirth.hasFocus = true
                 //隱藏光標
                 eetBirth.isCursorVisible = false
-                if(view != null && view.windowToken != null){
+                if (binding.root != null && binding.root.windowToken != null) {
                     //隱藏鍵盤
                     val inputMethodManager =
                         getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                    inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
                 }
                 birthdayTimePickerView?.show()
             }
@@ -1574,6 +1555,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
+            spannableString.setSpan(UnderlineSpan(),
+                startIndexOfLink,
+                startIndexOfLink + link.first.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         this.movementMethod =
             LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click

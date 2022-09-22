@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_bet_record.*
+import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.android.synthetic.main.view_toolbar_home.iv_menu_left
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent

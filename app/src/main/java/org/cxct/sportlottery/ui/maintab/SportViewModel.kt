@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.app.Application
 import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -2498,19 +2499,9 @@ class SportViewModel(
     fun getPublicityPromotion() {
         sConfigData?.imageList?.filter { it.imageType == ImageType.PROMOTION.code }
             ?.let { promotionList ->
-                //優惠活動文字跑馬燈
                 promotionList.filter {
-                    it.viewType == 1 && LanguageManager.getSelectLanguage(androidContext).key.equals(it.lang,
-                        true)
-                }
-                    .mapNotNull { it.imageText1 }
-                    .let {
-                        _publicityPromotionAnnouncementList.postValue(it)
-                    }
-
-                promotionList.filter {
-                    it.viewType == 1 && LanguageManager.getSelectLanguage(androidContext).key.equals(it.lang,
-                        true)
+                    (it.viewType == 1) && TextUtils.equals(LanguageManager.getSelectLanguage(
+                        androidContext).key, it.lang)
                 }
                     .mapNotNull { it.imageText1 }
                     .let {
