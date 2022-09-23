@@ -682,7 +682,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }*/
 
         binding.btnDeleteAll.setOnClickListener {
-            viewModel.removeBetInfoAll()
+            if (mIsEnabled) {
+                avoidFastDoubleClick()
+                viewModel.betInfoList.removeObservers(viewLifecycleOwner)
+                viewModel.removeBetInfoAll()
+                activity?.supportFragmentManager?.popBackStack()
+            }
         }
     }
 
