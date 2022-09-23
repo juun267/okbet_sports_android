@@ -86,8 +86,8 @@ class ModifyProfileInfoActivity :
         setEditTextFocusChangeMethod(eet_real_name)
 //        //QQ號碼
 //        setEditTextFocusChangeMethod(et_qq_number)
-//        //郵箱
-//        setEditTextFocusChangeMethod(et_e_mail)
+        //郵箱
+        setEditTextFocusChangeMethod(eet_e_mail)
 //        //手機號碼
 //        setEditTextFocusChangeMethod(et_phone_number)
 //        //微信
