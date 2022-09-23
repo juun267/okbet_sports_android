@@ -7,7 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -25,10 +25,15 @@ public class IndexBar extends View {
     private int mTextColorPressed;
     private int mTextSizeNormal;
     private int mTextSizePressed;
+    private int mTextBgNormal;
+    private int mTextBgPressed;
+    private int mTextBgRadius;
     private int mBgColorNormal;
     private int mBgColorPressed;
     private Paint mPaintNormal;
     private Paint mPaintPressed;
+    private Paint mPaintBgNormal;
+    private Paint mPaintBgPressed;
     private int mTotalWidth;
     private int mTotalHeight;
     private int mItemHeight;
@@ -54,11 +59,14 @@ public class IndexBar extends View {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.IndexBar);
         if (ta != null) {
             mTextColorNormal = ta.getColor(R.styleable.IndexBar_text_color_normal, Color.BLACK);
-            mTextColorPressed = ta.getColor(R.styleable.IndexBar_text_color_normal, Color.BLUE);
+            mTextColorPressed = ta.getColor(R.styleable.IndexBar_text_color_pressed, Color.BLUE);
             mBgColorNormal = ta.getColor(R.styleable.IndexBar_bg_color_normal, Color.TRANSPARENT);
             mBgColorPressed = ta.getColor(R.styleable.IndexBar_bg_color_pressed, Color.TRANSPARENT);
             mTextSizeNormal = ta.getDimensionPixelSize(R.styleable.IndexBar_text_size_normal, 12);
             mTextSizePressed = ta.getDimensionPixelSize(R.styleable.IndexBar_text_size_pressed, 12);
+            mTextBgNormal = ta.getColor(R.styleable.IndexBar_text_bg_normal, Color.TRANSPARENT);
+            mTextBgPressed = ta.getColor(R.styleable.IndexBar_text_bg_pressed, Color.TRANSPARENT);
+            mTextBgRadius = ta.getDimensionPixelSize(R.styleable.IndexBar_text_bg_radius, 0);
             mCharArray = ta.getTextArray(R.styleable.IndexBar_text_array);
             if (mCharArray == null) {
                 mCharArray = resources.getStringArray(R.array.index_bar_array);
@@ -74,8 +82,15 @@ public class IndexBar extends View {
         mPaintPressed.setAntiAlias(true);
         mPaintPressed.setTextSize(mTextSizePressed);
         mPaintPressed.setColor(mTextColorPressed);
-        mPaintPressed.setFakeBoldText(true);
-        mPaintPressed.setTypeface(Typeface.DEFAULT_BOLD);
+
+        mPaintBgNormal = new Paint();
+        mPaintBgNormal.setAntiAlias(true);
+        mPaintBgNormal.setColor(mTextBgNormal);
+
+        mPaintBgPressed = new Paint();
+        mPaintBgPressed.setAntiAlias(true);
+        mPaintBgPressed.setColor(mTextBgPressed);
+
         //设置初始背景
         setBackgroundColor(mBgColorNormal);
     }
@@ -110,7 +125,7 @@ public class IndexBar extends View {
                 float charHeight = Math.max(normalHeight, pressedHeight);
 
                 maxCharWidth = Math.max(maxCharWidth, charWidth);
-                totalCharHeight += charHeight;
+                totalCharHeight += mTotalWidth;
             }
         }
 
@@ -139,9 +154,13 @@ public class IndexBar extends View {
                 Pair<Float, Float> position;
                 if (i == mLastIndex) {
                     position = calPosition(c, mPaintPressed, i);
+                    canvas.drawRoundRect(new RectF(0, i * mItemHeight + getPaddingTop(), mTotalWidth, (i + 1) * mItemHeight + getPaddingTop()),
+                            mTextBgRadius, mTextBgRadius, mPaintBgPressed);
                     canvas.drawText(c, 0, c.length(), position.first, position.second, mPaintPressed);
                 } else {
                     position = calPosition(c, mPaintNormal, i);
+//                    canvas.drawRoundRect(new RectF(0,i*mItemHeight+getPaddingTop(),mTotalWidth,(i+1)*mItemHeight+getPaddingTop()),
+//                            mTextBgRadius, mTextBgRadius,mPaintBgNormal);
                     canvas.drawText(c, 0, c.length(), position.first, position.second, mPaintNormal);
                 }
             }

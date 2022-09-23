@@ -513,8 +513,8 @@
     <string name="withdraw_password">Withdraw Password</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">· Transaction Fee: %1$S %% Transaction Fee to be paid(%2$s): %3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Withdraw(%2$s)：%1$s</string>
-    <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee(%2$s)：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Withdraw(%1$s)：%2$s</string>
+    <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
@@ -1127,7 +1127,7 @@
     <string name="outlets_address_">Outlets Address：</string>
     <string name="error_recharge_amount_format">The format of the amount you entered is incorrect.</string>
     <string name="error_amount_limit_exceeded">Amount limit exceeded</string>
-    <string name="my_message">My message</string>
+    <string name="my_message">Messages</string>
     <string name="betting_setting">Betting setting</string>
     <string name="filter">Filter</string>
 
@@ -1223,7 +1223,7 @@
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet Slip</string>
     <string name="main_tab_mine">My</string>
-    <string name="main_tab_home">HOME</string>
+    <string name="main_tab_home">Home</string>
     <string name="skin_mode">Mode: Day/Night</string>
     <string name="download">Download</string>
     <string name="live_streaming">Livestream</string>
@@ -1233,9 +1233,10 @@
     <string name="payment_method">Payment method</string>
     <string name="select_file">Select file</string>
     <string name="error_recommend_agent">No matched</string>
-    <string name="login_welcome">Hi，Welcome to OKBet~</string>
+    <string name="login_welcome">Hi，Welcome to OKbet~</string>
     <string name="betting">Betting</string>
     <string name="other_bet">Other Betting History</string>
     <string name="sport_match">Matches</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
+    <string name="register_and_login">Sign Up/Login</string>
 </resources>

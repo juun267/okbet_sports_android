@@ -505,8 +505,8 @@
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
     <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Số tiền rút(%2$s)：%1$s</string>
-    <string name="withdraw_crypto_fee_hint">· Phí rút tiền(%2$s)：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Số tiền rút(%1$s)：%2$s</string>
+    <string name="withdraw_crypto_fee_hint">· Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_new">Thêm mới</string>
@@ -1226,4 +1226,6 @@
     <string name="other_bet">Các lịch sử cá cược khác</string>
     <string name="sport_match">Trận đấu</string>
     <string name="remove_account_warning">Bạn có chắc chắn muốn xoá tài khoản hiện tại của mình không?</string>
+    <string name="my_message">Tin nhắn</string>
+    <string name="register_and_login">Đăng ký/Đăng nhập</string>
 </resources>

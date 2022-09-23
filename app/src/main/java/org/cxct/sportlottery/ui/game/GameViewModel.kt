@@ -1435,6 +1435,9 @@ class GameViewModel(
                                             LanguageManager.Language.VI -> {
                                                 it.vi
                                             }
+                                            LanguageManager.Language.TH -> {
+                                                it.th
+                                            }
                                             else -> {
                                                 it.en
                                             }

@@ -48,15 +48,19 @@ class TimeZoneAdapter(private val clickListener: ItemClickListener) :
             when(LanguageManager.getSelectLanguage(itemView.context)){
                 LanguageManager.Language.ZH->{
                     binding.tvCity.text=data.city_zh
-                    binding.tvCountry.text=data.country_zh
+                    binding.tvCountry.text = data.country_zh
                 }
-                LanguageManager.Language.EN->{
-                    binding.tvCity.text=data.city_en
-                    binding.tvCountry.text=data.country_en
+                LanguageManager.Language.EN -> {
+                    binding.tvCity.text = data.city_en
+                    binding.tvCountry.text = data.country_en
                 }
-                LanguageManager.Language.VI->{
-                    binding.tvCity.text=data.city_vi
-                    binding.tvCountry.text=data.country_vi
+                LanguageManager.Language.VI -> {
+                    binding.tvCity.text = data.city_vi
+                    binding.tvCountry.text = data.country_vi
+                }
+                LanguageManager.Language.TH -> {
+                    binding.tvCity.text = data.city_th
+                    binding.tvCountry.text = data.country_th
                 }
             }
             binding.tvDateWeek.text = getDateAndWeek(data.name)

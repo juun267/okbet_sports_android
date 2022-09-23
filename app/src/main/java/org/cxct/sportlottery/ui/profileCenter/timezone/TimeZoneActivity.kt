@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.common.reflect.TypeToken
@@ -14,7 +13,6 @@ import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
@@ -109,6 +107,9 @@ class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     }
                     LanguageManager.Language.VI -> {
                         it.city_vi.contains(key, true)
+                    }
+                    LanguageManager.Language.TH -> {
+                        it.city_th.contains(key, true)
                     }
                     else -> {
                         it.city_en.contains(key, true)
