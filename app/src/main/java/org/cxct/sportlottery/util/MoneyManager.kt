@@ -60,7 +60,7 @@ object MoneyManager {
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
             MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//202 Peter說要隱藏掉
-            MoneyType.ONLINEBANK.code -> R.drawable.ic_bank_default//阿喵說照Ian回應用此圖
+            MoneyType.ONLINEBANK.code -> R.drawable.icon_bank_default//阿喵說照Ian回應用此圖
             MoneyType.GCASH.code -> R.drawable.ic_g_cash
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
@@ -87,7 +87,7 @@ object MoneyManager {
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash_type
             MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash_type//202 Peter說要隱藏掉
-            MoneyType.ONLINEBANK.code -> R.drawable.ic_bank_default//阿喵說照Ian回應用此圖
+            MoneyType.ONLINEBANK.code -> R.drawable.icon_bank_default//阿喵說照Ian回應用此圖
             MoneyType.GCASH.code -> R.drawable.ic_g_cash_type
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay_type
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya_type
@@ -142,7 +142,7 @@ object MoneyManager {
         PNB("PNB",  R.drawable.ic_bank_pnb),
         GCASH("Gcash", R.drawable.ic_g_cash_type),
         PAYMAYA("Paymaya", R.drawable.ic_pay_maya_type),
-        JUANCASH("JuanCash", R.drawable.ic_juancash),
+        JUANCASH("JuanCash", R.drawable.ic_juancash_type),
         GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
         ALIPAY("Alipay", R.drawable.ic_alipay_type)
     }

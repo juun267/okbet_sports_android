@@ -54,6 +54,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import timber.log.Timber
 
 /**
  * @app_destination 滿版注單(點擊賠率彈出)
@@ -240,7 +241,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
 
-            cl_bet.setOnClickListener { addBet() }
+            cl_bet.setOnClickListener {
+                if (mIsEnabled) {
+                    avoidFastDoubleClick()
+                    addBet()
+                }
+            }
 
             tv_remove_closed_selections.setOnClickListener { removeClosedPlat() }
         }
@@ -569,13 +575,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //只取得對應tab內的totalBetAmount
         val totalBetAmount = if (tabPosition == 0) {
-            list.sumByDouble { it.realAmount }
+            list.sumOf { it.realAmount }
         } else {
-            parlayList.sumByDouble { it.betAmount * it.num }
+            parlayList.sumOf { it.betAmount * it.num }
         }
 
         val winnableAmount = if (tabPosition == 0) {
-            list.sumByDouble {
+            list.sumOf {
                 var currentOddsType = oddsType
                 if (it.matchOdd.odds == it.matchOdd.malayOdds
                     || it.matchType == MatchType.OUTRIGHT
@@ -587,7 +593,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 getWinnable(it.betAmount, getOdds(it.matchOdd, currentOddsType), currentOddsType)
             }
         } else {
-            parlayList.sumByDouble {
+            parlayList.sumOf {
                 getComboWinnable(
                     it.betAmount,
                     getOdds(it, OddsType.EU),
@@ -604,7 +610,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val betCount = if (tabPosition == 0) {
             list.count { it.betAmount > 0 }
         } else {
-            parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
+            parlayList.filter { it.betAmount > 0 }.sumOf { it.num }
         }
         binding.btnBet.apply {
             isParlay = tabPosition == 1
@@ -930,12 +936,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //只取得對應tab內的totalBetAmount
         val totalBetAmount = if (tabPosition == 0) {
-            betListFilter.sumByDouble { it.realAmount }
+            betListFilter.sumOf { it.realAmount }
         } else {
-            parlayList.sumByDouble { it.betAmount * it.num }
+            parlayList.sumOf { it.betAmount * it.num }
         }
 //        val totalBetAmount =
 //            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
+
+        if (totalBetAmount.toString().isEmpty()) {
+            Timber.w("totalBetAmount isEmpty")
+            return
+        }
 
         //下注總金額大於用戶餘額，提示餘額不足
         if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {

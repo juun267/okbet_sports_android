@@ -233,6 +233,7 @@ class SettingPasswordActivity :
             et_current_password.labelText = getString(R.string.current_login_password)
             et_current_password.setHintText(getString(R.string.hint_current_login_password))
             et_new_password.setHintText(getString(R.string.hint_register_password))
+            et_new_password.setHintText(getString(R.string.hint_current_login_password))
         } else {
 
             if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW) {
@@ -243,6 +244,7 @@ class SettingPasswordActivity :
                 et_current_password.setHintText(getString(R.string.hint_current_withdrawal_password))
             }
             et_new_password.setHintText(getString(R.string.hint_withdrawal_new_password))
+            et_new_password.setHintText(getString(R.string.hint_confirm_withdrawal_password))
         }
     }
 

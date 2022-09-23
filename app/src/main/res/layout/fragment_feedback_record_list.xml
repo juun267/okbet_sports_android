@@ -8,13 +8,20 @@
     android:orientation="vertical"
     tools:context=".ui.feedback.record.FeedbackRecordListFragment">
     <!-- Tab bar-->
-
+    <View
+        android:id="@+id/view_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_10"/>
     <org.cxct.sportlottery.ui.component.DateRangeSearchNewView
         android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_layout"
         app:minusDays="8" />
 
     <org.cxct.sportlottery.ui.component.StatusSpinnerView
@@ -101,6 +108,7 @@
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/iv_scroll_to_top"
         android:layout_width="48dp"
         android:layout_height="48dp"
