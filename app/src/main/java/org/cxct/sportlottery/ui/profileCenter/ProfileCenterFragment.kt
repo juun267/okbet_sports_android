@@ -557,14 +557,14 @@ class ProfileCenterFragment :
         }
 
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_setting_withdraw_password),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
+            val dialog = context?.let { it1 ->
+                CustomAlertDialog(it1).apply {
+                    setTitle(getString(R.string.withdraw_setting))
+                    setMessage(getString(R.string.please_setting_withdraw_password))
+                    setPositiveButtonText(getString(R.string.go_to_setting))
+                    setNegativeButtonText(getString(R.string.cancel))
+                    setCanceledOnTouchOutside(false)
+                    setPositiveClickListener{
                         startActivity(
                             Intent(
                                 requireActivity(),
@@ -575,7 +575,14 @@ class ProfileCenterFragment :
                                     SettingPasswordActivity.PwdPage.BANK_PWD
                                 )
                             })
+                        dismiss()
                     }
+
+                }
+            }
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    dialog?.show(childFragmentManager, null)
                 } else {
                     viewModel.checkProfileInfoComplete()
                 }

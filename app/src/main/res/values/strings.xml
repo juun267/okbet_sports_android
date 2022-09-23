@@ -1271,4 +1271,6 @@
 
     <string name="unbound_bank_card">您尚末绑定银行卡/eWallet</string>
     <string name="hint_confirm_withdrawal_password">请确认提款密码</string>
+    <string name="text_security_money3"><font color='#025BE8'>%1$s</font> 日后解封</string>
+    <string name="hint_please_enter_the_password_again">请再次输入密码</string>
 </resources>

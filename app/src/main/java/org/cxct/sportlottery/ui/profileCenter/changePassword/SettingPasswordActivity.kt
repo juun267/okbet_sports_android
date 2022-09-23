@@ -244,12 +244,12 @@ class SettingPasswordActivity :
                 et_current_password.setHintText(getString(R.string.hint_current_withdrawal_password))
             }
             et_new_password.setHintText(getString(R.string.hint_withdrawal_new_password))
-            et_new_password.setHintText(getString(R.string.hint_confirm_withdrawal_password))
+            et_new_password.setHintText(getString(R.string.hint_withdrawal_new_password))
         }
     }
 
     private fun cleanField() {
-        eet_current_password.setText(null)
+        eet_current_password.text = null
         et_current_password.setError(null, false)
 
         eet_new_password.setText(null)

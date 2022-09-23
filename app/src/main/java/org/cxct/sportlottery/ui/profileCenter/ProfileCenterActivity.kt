@@ -503,7 +503,7 @@ class ProfileCenterActivity :
                             )
                         )
                     val daysLeftText = getString(
-                        R.string.text_security_money2,
+                        R.string.text_security_money3,
                         getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
                     )
                     val remainDaySpannable = SpannableString(daysLeftText)

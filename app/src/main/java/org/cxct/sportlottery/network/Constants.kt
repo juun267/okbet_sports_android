@@ -14,6 +14,7 @@ import java.net.URLEncoder
 object Constants {
     val SERVER_URL_LIST = listOf("cscdawww.com", "mcziulal.com", "toomzqyq.com", "oiobnbss.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
+    var currentFilename: String? = null //當前選擇的apk name
     private var mBaseUrl = ""
     private var mSocketUrl = ""
 
@@ -193,12 +194,12 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android.json"
+        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.STORE_NAME.isNullOrEmpty()) "" else "-${BuildConfig.STORE_NAME}") + ".json"
     }
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/OKbet.apk"
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/${currentFilename}.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {

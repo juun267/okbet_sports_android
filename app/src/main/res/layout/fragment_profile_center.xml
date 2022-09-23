@@ -285,7 +285,6 @@
             android:background="@drawable/bg_white_walle"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/margin_10"
             app:layout_constraintTop_toBottomOf="@id/block_amount">
 
             <LinearLayout
@@ -293,7 +292,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:elevation="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 

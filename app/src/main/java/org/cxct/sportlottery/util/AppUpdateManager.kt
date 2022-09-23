@@ -11,6 +11,7 @@ import android.os.Looper
 import android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES
 import androidx.core.content.FileProvider
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.network.Constants
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -35,7 +36,7 @@ object AppUpdateManager {
         request.setMimeType("application/vnd.android.package-archive")
 
         context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) //创建下載目录
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "OKbet_${System.currentTimeMillis()}.apk") //设置文件存放路径
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "${Constants.currentFilename}_${System.currentTimeMillis()}.apk") //设置文件存放路径
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
 
         return request

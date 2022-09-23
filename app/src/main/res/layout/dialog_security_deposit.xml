@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:gravity="center"
-            android:textColor="@color/color_BBBBBB_333333"
+            android:textColor="@color/color_FFFFFF_535D76"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             tools:text="@string/text_security_money" />
@@ -44,10 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:gravity="center"
-            android:textColor="@color/color_7F7F7F_999999"
+            android:textColor="@color/color_FFFFFF_535D76"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintTop_toBottomOf="@id/tvDeposit"
-            tools:text="@string/text_security_money2" />
+            tools:text="@string/text_security_money3" />
 
         <View
             android:id="@+id/viewLine"
