@@ -205,12 +205,17 @@
                     android:layout_marginLeft="@dimen/margin_10"
                     android:src="@drawable/icon_active" />
 
-                <org.cxct.sportlottery.ui.common.UPMarqueeView
-                    android:id="@+id/um_activity"
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner_activity"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="44dp"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:layout_gravity="center_vertical" />
+                    tl:banner_orientation="vertical"
+                    tl:banner_infinite_loop="true"
+                    tl:banner_auto_loop="true"
+                    tl:banner_loop_time="3000" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

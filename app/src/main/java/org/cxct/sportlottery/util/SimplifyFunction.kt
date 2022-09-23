@@ -623,7 +623,7 @@ fun View.setSpinnerView(
     var mListPop = ListPopupWindow(context)
 
     setOnClickListener {
-
+        mListPop.width = textFieldBoxes.width
         if (mListPop.isShowing) {
             mListPop.dismiss()
         } else {

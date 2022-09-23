@@ -103,6 +103,7 @@ object Constants {
         return when (getSelectLanguage(context)) {
             LanguageManager.Language.ZH -> ""
             LanguageManager.Language.VI -> "vi/"
+            LanguageManager.Language.TH -> "th/"
             else -> "us/"
         }
     }

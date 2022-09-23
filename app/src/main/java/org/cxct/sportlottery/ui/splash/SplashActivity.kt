@@ -34,8 +34,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
-            .fullScreen(true)
             .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .fitsSystemWindows(false)
             .init()
         setContentView(R.layout.activity_splash)
         setupVersion()

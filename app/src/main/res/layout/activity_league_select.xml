@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         app:topTitleText="@string/league_filter" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -28,16 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_36"
             android:layout_weight="1"
             tools:listitem="@layout/item_league_select"
             tools:itemCount="3" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_index"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="@dimen/margin_6"
+            android:layout_gravity="center_vertical|right"
             android:layout_marginRight="@dimen/margin_10"
             app:cardCornerRadius="@dimen/margin_10"
             app:cardBackgroundColor="@color/color_bbbbbb_ffffff">
@@ -48,13 +48,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
                 app:text_color_normal="@color/color_535D76"
-                app:text_color_pressed="@color/color_025BE8"
-                app:text_size_normal="@dimen/textSize12sp"
-                app:text_size_pressed="@dimen/textSize15sp" />
+                app:text_color_pressed="@color/color_FFFFFF"
+                app:text_size_normal="@dimen/textSize10sp"
+                app:text_size_pressed="@dimen/textSize12sp"
+                app:text_bg_radius="10dp"
+                app:text_bg_normal="@color/color_FFFFFF"
+                app:text_bg_pressed="@color/color_025BE8" />
         </androidx.cardview.widget.CardView>
 
-
-    </LinearLayout>
+        <TextView
+            android:id="@+id/iv_union"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="30dp"
+            android:layout_gravity="right"
+            android:background="@drawable/bg_index_union"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            tools:text="A"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="28sp"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"

@@ -512,7 +512,7 @@
     <string name="total_withdrawal">Total Withdrawal</string>
     <string name="withdraw_all">EXTRACT ALL</string>
     <string name="withdraw_handling_fee_hint">· Service fee: %1$S %% Service fee to be paid(%2$s):%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Withdraw(%2$s)：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· Withdraw(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">· Withdraw service fee：%1$s%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
@@ -1137,7 +1137,7 @@
     <string name="register_nation">Country</string>
     <string name="deposits">DEPOSIT</string>
     <string name="withdraw_down">WITHDRAW</string>
-    <string name="my_message">My message</string>
+    <string name="my_message">Messages</string>
     <string name="betting_setting">Betting setting</string>
     <string name="transaction_record">Transaction history details</string>
     <string name="current_version">Current version</string>
@@ -1240,7 +1240,7 @@
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
 
-    <string name="register_and_login">注册/登录</string>
+    <string name="register_and_login">Sign Up/Login</string>
     <string name="live_streaming">Livestream</string>
     <string name="half_first_short">上</string>
     <string name="half_second_short">下</string>
@@ -1254,7 +1254,7 @@
     <string name="half">Half</string>
     <string name="other_bet">Other Betting History</string>
     <string name="skin_mode">Mode: Day/Night</string>
-    <string name="main_tab_home">HOME</string>
+    <string name="main_tab_home">Home</string>
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet Slip</string>
     <string name="main_tab_favorite">Favorite</string>
@@ -1265,7 +1265,7 @@
     <string name="no_more">没有更多了</string>
     <string name="reset_password">重设密码</string>
     <string name="transact_type">Transaction Type：</string>
-    <string name="login_welcome">Hi，Welcome to OKBet~</string>
+    <string name="login_welcome">Hi，Welcome to OKbet~</string>
     <string name="betting">Betting</string>
     <string name="total_assets">总资产</string>
 

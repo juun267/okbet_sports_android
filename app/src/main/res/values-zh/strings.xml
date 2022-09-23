@@ -504,8 +504,8 @@
     <string name="total_withdrawal">提款总计</string>
     <string name="withdraw_all">全部提取</string>
     <string name="withdraw_handling_fee_hint">· 手续费率：%1$s%% 须支付手续费(%2$s)：%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· 提款金额(%2$s)：%1$s</string>
-    <string name="withdraw_crypto_fee_hint">· 提款手续费(%2$s)：%1$s</string>
+    <string name="withdraw_crypto_amount_hint">· 提款金额(%1$s)：%2$s</string>
+    <string name="withdraw_crypto_fee_hint">· 提款手续费(%1$s)：%2$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
@@ -1239,9 +1239,10 @@
     <string name="join_us_win_wealth">加入我们，共赢财富</string>
     <string name="payment_method">支付方式</string>
     <string name="error_recommend_agent">未匹配到相关代理</string>
-    <string name="login_welcome">Hi, 欢迎来到OKBet～</string>
+    <string name="login_welcome">Hi, 欢迎来到OKbet～</string>
     <string name="betting">投注</string>
     <string name="other_bet">其他投注</string>
     <string name="sport_match">场赛事</string>
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
+    <string name="register_and_login">注册/登录</string>
 </resources>

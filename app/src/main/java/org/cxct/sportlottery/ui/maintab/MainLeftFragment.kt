@@ -142,7 +142,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 getString(R.string.faqs)
             )
         }
-        //常見問題
+        //时区切换
         lin_timezone.setOnClickListener {
             startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
         }

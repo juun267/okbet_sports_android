@@ -20,7 +20,6 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
-import kotlinx.android.synthetic.main.item_flipper.view.*
 import kotlinx.android.synthetic.main.view_home_menu_game.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -291,7 +290,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             if (!isCreditSystem())
                 if (it.isNotEmpty()) {
                     lin_activity.visibility = View.VISIBLE
-                    setupFlipper(it)
+                    setupActivity(it)
                 } else {
                     lin_activity.visibility = View.GONE
                 }
@@ -379,27 +378,21 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         }
     }
 
-    private fun setupFlipper(list: List<PublicityPromotionItemData>) {
-        var views = arrayListOf<View>()
-        for (i in list) {
-            var view = layoutInflater.inflate(R.layout.item_flipper, null)
-            view.tv_marquee.text = i.title
-            view.setOnClickListener {
-                context?.let {
+    private fun setupActivity(list: List<PublicityPromotionItemData>) {
+        banner_activity.addBannerLifecycleObserver(this) //添加生命周期观察者
+            .setAdapter(HomeActivityAdapter(list))
+            .setOnBannerListener { data, position ->
+                data?.let {
                     JumpUtil.toInternalWeb(
-                        it,
+                        requireContext(),
                         Constants.getPromotionDetailUrl(
                             viewModel.token,
-                            i.id,
-                            LanguageManager.getSelectLanguage(it)
+                            (data as PublicityPromotionItemData).id,
+                            LanguageManager.getSelectLanguage(requireContext())
                         ),
-                        getString(R.string.promotion)
-                    )
+                        getString(R.string.promotion))
                 }
             }
-            views.add(view)
-        }
-        um_activity.setViews(views)
     }
     private fun setupType(publicityMenuData: PublicityMenuData) {
         rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {

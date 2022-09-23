@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_league_select.*
@@ -100,12 +101,12 @@ class LeagueSelectActivity :
 
     private fun setIndexbar(indexArr: Array<CharSequence>) {
         //自定义索引数组，默认是26个大写字母
-        indexBar.setTextArray(indexArr);
+//        indexBar.setTextArray(indexArr);
         //添加相关监听
         indexBar.setOnIndexLetterChangedListener(object : IndexBar.OnIndexLetterChangedListener {
             override fun onTouched(touched: Boolean) {
                 //TODO 手指按下和抬起会回调这里
-
+                iv_union.isVisible = touched
             }
 
             override fun onLetterChanged(indexChar: CharSequence?, index: Int, y: Float) {
@@ -116,6 +117,9 @@ class LeagueSelectActivity :
                 if (pos > 0) {
                     linearLayoutManager.scrollToPositionWithOffset(pos, 0)
                 }
+
+                iv_union.y = y + cv_index.top
+                iv_union.text = indexChar
             }
 
         })

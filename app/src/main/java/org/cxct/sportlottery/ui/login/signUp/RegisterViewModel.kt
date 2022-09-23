@@ -10,10 +10,10 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.OneBoSportApi.bettingStationService
-import org.cxct.sportlottery.network.index.config.Currency
-import org.cxct.sportlottery.network.index.config.NationCurrency
 import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
+import org.cxct.sportlottery.network.index.config.Currency
+import org.cxct.sportlottery.network.index.config.NationCurrency
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
@@ -294,7 +294,7 @@ class RegisterViewModel(
     fun checkFullName(fullName: String?) {
         val msg = when {
             fullName.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> LocalUtils.getString(R.string.error_input_has_blank)
+            !VerifyConstUtil.verifyFullName(fullName) -> LocalUtils.getString(R.string.error_incompatible_format)
             else -> null
         }
         _fullNameMsg.value = Pair(msg, msg == null)
@@ -882,7 +882,8 @@ class RegisterViewModel(
                         return false
                     if (sConfigData?.enableFundPwd == FLAG_OPEN && checkInputPair(fundPwdMsg))
                         return false
-
+                    if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
+                        return false
                     if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(
                             securityCodeMsg
                         )
@@ -899,15 +900,12 @@ class RegisterViewModel(
                 }
                 else -> {
                     if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(
-                            bettingShopMsg
-                        )
+                            bettingShopMsg)
                     )
                         return false
                     if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
                         return false
                     if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
-                        return false
-                    if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
                         return false
                     if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
                         return false

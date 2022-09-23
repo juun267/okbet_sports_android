@@ -299,6 +299,9 @@
         <attr name="text_size_pressed" format="dimension" />
         <attr name="text_color_normal" format="color" />
         <attr name="text_color_pressed" format="color" />
+        <attr name="text_bg_normal" format="color" />
+        <attr name="text_bg_pressed" format="color" />
+        <attr name="text_bg_radius" format="dimension" />
         <attr name="bg_color_normal" format="color" />
         <attr name="bg_color_pressed" format="color" />
         <attr name="text_array" format="reference" />
