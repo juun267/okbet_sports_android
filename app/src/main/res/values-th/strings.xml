@@ -6,7 +6,7 @@
     <string name="btn_login">เข้าสู่ระบบ</string>
     <string name="member_account">บัญชีสมาชิก</string>
     <string name="please_input_account">กรุณาใส่บัญชีสมาชิกของคุณ</string>
-    <string name="password_hint">(กรุณาใส่รหัสผ่านเข้าสู่ระบบของคุณ)</string>
+    <string name="password_hint">กรุณาใส่รหัสผ่านเข้าสู่ระบบของคุณ</string>
     <string name="error_member_account">หมายเลขบัญชีเป็นตัวเลขและตัวอักษรรวมกัน 4~16 หลัก</string>
     <string name="error_register_password">รหัสผ่านประกอบด้วยตัวเลขและตัวอักษร 6~20 ตัว</string>
     <string name="remember_password">จดจำรหัสผ่าน</string>
@@ -20,8 +20,8 @@
     <string name="error_recommend_code">ไม่มีรหัสแนะนำ</string>
     <string name="error_register_id_exist">มีชื่อบัญชีนี้อยู่แล้ว</string>
     <string name="confirm_password">ยืนยันรหัสผ่าน</string>
-    <string name="hint_confirm_password">(กรุณาใส่รหัสผ่านอีกครั้ง)</string>
-    <string name="hint_confirm_new_password">(กรุณาใส่รหัสผ่านอีกครั้ง)</string>
+    <string name="hint_confirm_password">กรุณาใส่รหัสผ่านอีกครั้ง</string>
+    <string name="hint_confirm_new_password">กรุณาใส่รหัสผ่านอีกครั้ง</string>
     <string name="register_not_ph_official">ฉันไม่ใช่ข้าราชการหรือลูกจ้างของรัฐบาลฟิลิปปินส์หรือหน่วยงานที่เกี่ยวข้อง</string>
     <string name="register_not_ph_school">ฉันไม่ใช่นักเรียนของโรงเรียน วิทยาลัย หรือมหาวิทยาลัยใดๆ ในฟิลิปปินส์</string>
     <string name="register_rule_okbet">ฉันเข้าใจว่าหากพบว่าข้อมูลที่ฉันได้ให้ไว้ไม่ถูกต้อง OkBet ขอสงวนสิทธิ์ในการกำหนดบทลงโทษในบัญชีของฉันตามข้อ 5.1 - 5.2 ของข้อกำหนดและเงื่อนไข</string>
@@ -215,7 +215,7 @@
     <string name="match_names_3">หลัก %s เทียบกับ %s ลูกค้า</string>
     <string name="choose_bet_state">เลือกสถานะการเดิมพัน</string>
     <string name="bet_detail">รายละเอียดการเดิมพัน</string>
-    <string name="match_names">(เจ้าภาพ)%s กับ %s(แขก)</string>
+    <string name="match_names">เจ้าภาพ)%s กับ %s(แขก</string>
     <string name="order_number">รหัสเดิมพัน</string>
     <string name="order_number_colon">รหัสเดิมพัน</string>
     <string name="play_type">การเล่นการพนัน</string>
@@ -271,8 +271,8 @@
     <string name="verification_code">รหัสยืนยัน</string>
     <string name="register_verification_code">รหัสยืนยัน</string>
     <string name="withdrawal_pwd">รหัสผ่านการถอน</string>
-    <string name="hint_withdrawal_pwd">(รหัสผ่านคือ 4 ตัวเลข)</string>
-    <string name="hint_withdrawal_new_password">(รหัสผ่านคือ 4 ตัวเลข)</string>
+    <string name="hint_withdrawal_pwd">รหัสผ่านคือ 4 ตัวเลข)</string>
+    <string name="hint_withdrawal_new_password">รหัสผ่านคือ 4 ตัวเลข</string>
     <string name="verification_code_by_sms">รหัสยืนยันทาง SMS</string>
     <string name="title_weixin">WeChat</string>
     <string name="phone_number">หมายเลขโทรศัพท์มือถือ</string>
@@ -316,12 +316,12 @@
     <string name="message_source_change">ระบบจะกลับไปที่หน้าแรกโดยอัตโนมัติหลังจากได้รับข้อมูลเหตุการณ์ล่าสุด</string>
     <string name="dialog_security_need_phone">ข้อมูลส่วนตัวไม่ครบถ้วน กรุณาติดต่อฝ่ายบริการลูกค้า</string>
     <string name="sign_out">ออกจากระบบ</string>
-    <string name="hint_member_account">(ยาว4-16ตัวเลขมีอังกฤษประกอบ)</string>
-    <string name="hint_register_password">(ยาว6-20ตัวเลขมีอังกฤษประกอบ)</string>
-    <string name="hint_real_name">(ชื่อต้องตรงกับบัญชีธนาคาร)</string>
-    <string name="hint_postal_code">(กรุณากรอกรหัสไปรษณีย์)</string>
-    <string name="hint_province">(กรุณากรอกจังหวัดของท่าน)</string>
-    <string name="hint_city">(กรุณากรอกชื่อเมืองของคุณ)</string>
+    <string name="hint_member_account">ยาว4-16ตัวเลขมีอังกฤษประกอบ</string>
+    <string name="hint_register_password">ยาว6-20ตัวเลขมีอังกฤษประกอบ</string>
+    <string name="hint_real_name">ชื่อต้องตรงกับบัญชีธนาคาร</string>
+    <string name="hint_postal_code">กรุณากรอกรหัสไปรษณีย์</string>
+    <string name="hint_province">กรุณากรอกจังหวัดของท่าน</string>
+    <string name="hint_city">กรุณากรอกชื่อเมืองของคุณ</string>
     <string name="hint_enter_city">กรุณากรอกชื่อเมืองของคุณ</string>
     <string name="error_confirm_password">ใส่รหัสผ่านไม่ตรงกันสองครั้ง</string>
     <string name="error_wallet_address">ที่อยู่ที่คุณป้อนมีรูปแบบไม่ถูกต้อง</string>
@@ -442,7 +442,7 @@
     <string name="edt_hint_payer">กรุณาใส่หมายเลขบัญชีของคุณ</string>
     <string name="title_real_name">ชื่อรับรอง</string>
     <string name="title_wx_id">วีแชทไอดี</string>
-    <string name="hint_we_chat_number">(กรุณากรอก WeChat ID)</string>
+    <string name="hint_we_chat_number">กรุณากรอก WeChat ID</string>
     <string name="edt_hint_wx_id">กรุณากรอก WeChat ID</string>
     <string name="title_nick_name">ชื่อเล่นส่วนตัว</string>
     <string name="hint_nickname">กรุณากรอกชื่อ</string> <!--J547-->
@@ -496,7 +496,7 @@
     <string name="bank_card">บัตรเครดิตธนาคาร</string>
     <string name="crypto">สกุลเงินเสมือน</string>
     <string name="ewallet">eWallet</string>
-    <string name="hint_current_withdrawal_password">(กรุณาใส่รหัสผ่านการถอนเงิน)</string>
+    <string name="hint_current_withdrawal_password">กรุณาใส่รหัสผ่านการถอนเงิน</string>
     <string name="hint_four_number_password">กรุณาใส่รหัสผ่านการถอนเงิน</string>
     <string name="text_bank_card_add_success">ผูกบัตรธนาคารสำเร็จ</string>
     <string name="text_bank_card_delete_success">ลบบัตรธนาคารเรียบร้อยแล้ว</string>
@@ -572,7 +572,7 @@
     <string name="real_name">ชื่อจริง</string>
     <string name="need_improve">ต้องปรับปรุง</string>
     <string name="identity">การตรวจสอบชื่อจริง</string>
-    <string name="not_verify">(ไม่ได้รับการยืนยัน)</string>
+    <string name="not_verify">ไม่ได้รับการยืนยัน</string>
     <string name="scan_tool_bar">ผลการสแกน</string>
     <string name="upload_success">อัพโหลดรูปภาพเรียบร้อยแล้ว</string>
     <string name="save_avatar_success">อัพโหลดอวาตาร์เรียบร้อยแล้ว</string>
@@ -756,13 +756,13 @@
     <string name="self_limit_per_bet_limit_highest">ขีดจำกัดบน</string>
     <string name="self_limit_per_bet_limit_input_highest">กรุณากรอกตัวเลข</string>
     <string name="self_limit_per_bet_limit_user">กำหนดวงเงินเดิมพัน: %1$s %2$s</string>
-    <string name="self_limit_per_bet_limit_user_limit">(การตั้งค่าสูงสุด: %1$s %2$s-%1$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user_limit">การตั้งค่าสูงสุด: %1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_fix_confirm">ยืนยันการเปลี่ยนแปลง</string>
     <string name="self_limit_fix_confirm_done">การปรับเปลี่ยนมีผล</string>
     <string name="withdraw_log_state_un_pass">ไม่ผ่าน</string>
-    <string name="passed">(ผ่าน)</string>
-    <string name="verifying">(กำลังยืนยัน)</string>
-    <string name="verify_failed">(การตรวจสอบล้มเหลว)</string>
+    <string name="passed">ผ่าน</string>
+    <string name="verifying">กำลังยืนยัน</string>
+    <string name="verify_failed">การตรวจสอบล้มเหลว</string>
     <string name="match_type_row_in_play">กลิ้งลูกบอล</string>
     <string name="title_name">ชื่อ:</string>
     <string name="title_account">บัญชีผู้ใช้:</string>
@@ -771,7 +771,7 @@
     <string name="title_rebate_rate">・ส่วนลด：</string>
     <string name="title_rebate_amount">จำนวนเงินคืน</string>
     <string name="hint_feeback_amount">・จำนวนเงินคืน：%1$s %2$s</string>
-    <string name="hint_birth_date">(YYYY/MM/DD)</string>
+    <string name="hint_birth_date">YYYY/MM/DD</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="selected_bank_card">%1$s (เลขท้าย%2$s)</string>
     <string name="plus">+</string>
@@ -904,16 +904,16 @@
 \n4. ฉันไม่ใช่นักเรียนของโรงเรียน วิทยาลัย หรือมหาวิทยาลัยใดๆ ในฟิลิปปินส์
 \n5. ฉันเข้าใจว่า OKbet มีสิทธิ์สุดท้ายในการลงโทษบัญชีของฉันตามข้อกำหนดและเงื่อนไขหากพบว่าข้อมูลที่ฉันได้ให้ไว้ไม่ถูกต้อง</string>
     <string name="txv_recharge_money">・จำนวนเงินฝาก: %1$s %2$s</string>
-    <string name="hint_security_answer">(กรุณาใส่คำตอบของคุณ)</string>
-    <string name="hint_register_identity">(กรุณากรอกหมายเลขประจำตัวประชาชนของท่าน)</string>
-    <string name="hint_e_address">(กรุณากรอกที่อยู่ติดต่อ)</string>
-    <string name="hint_facebook">(กรุณาใส่บัญชี Facebook ของคุณ)</string>
-    <string name="hint_telegram">(กรุณาป้อนบัญชีโทรเลขของคุณ)</string>
-    <string name="hint_whats_app">(โปรดป้อนบัญชี WhatsApp ของคุณ)</string>
-    <string name="hint_zalo">(โปรดป้อนหมายเลขบัญชี Zalo ของคุณ)</string>
+    <string name="hint_security_answer">กรุณาใส่คำตอบของคุณ</string>
+    <string name="hint_register_identity">กรุณากรอกหมายเลขประจำตัวประชาชนของท่าน</string>
+    <string name="hint_e_address">กรุณากรอกที่อยู่ติดต่อ</string>
+    <string name="hint_facebook">กรุณาใส่บัญชี Facebook ของคุณ</string>
+    <string name="hint_telegram">กรุณาป้อนบัญชีโทรเลขของคุณ</string>
+    <string name="hint_whats_app">โปรดป้อนบัญชี WhatsApp ของคุณ</string>
+    <string name="hint_zalo">โปรดป้อนหมายเลขบัญชี Zalo ของคุณ</string>
     <string name="btm_navigation_hint">%1$s เป็นเครื่องหมายการค้าจดทะเบียน แบรนด์ และชื่อธุรกิจที่เป็นเจ้าของโดย Ekxinum Inc. ควบคุมและอนุญาตโดย Philippine Amusement and Gaming Corporation (PAGCOR)</string>
     <string name="credit_record_day">%s วัน</string>
-    <string name="account_hint">(กรุณาใส่หมายเลขบัญชีสมาชิกของท่าน)</string>
+    <string name="account_hint">กรุณาใส่หมายเลขบัญชีสมาชิกของท่าน</string>
     <string name="hint_pay2">2. หากไม่มีการตอบสนองเป็นเวลานาน โปรดติดต่อฝ่ายบริการลูกค้า</string>
     <string name="january">มกราคม</string>
     <string name="july">กรกฎาคม</string>
@@ -1150,7 +1150,7 @@
     <string name="register_rule_agree_all">ฉันยอมรับข้อกำหนดและเงื่อนไขข้างต้นทั้งหมด</string> <!--A039-->
     <string name="register_nation">ประเทศ</string> <!--A050-->
     <string name="register_currency">สกุลเงิน</string> <!--A051-->
-    <string name="hint_verification_code_by_sms">(กรุณากรอกรหัสยืนยันทาง SMS)</string> <!--M354-->
+    <string name="hint_verification_code_by_sms">กรุณากรอกรหัสยืนยันทาง SMS</string> <!--M354-->
 
     <string name="transfer_time">เวลาในการแปลง</string> <!--J662-->
     <string name="bet_receipt_win_quota">จำนวนที่ชนะได้</string>

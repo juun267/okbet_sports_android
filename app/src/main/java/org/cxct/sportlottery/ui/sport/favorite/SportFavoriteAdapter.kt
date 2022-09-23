@@ -867,12 +867,16 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
 
             when {
                 TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
+                    if (matchInfo.gameType == GameType.TN.key) {
+                        itemView.league_odd_match_time.visibility = View.GONE
+                        return
+                    }
                     val socketValue = matchInfo.socketMatchStatus
-
                     if (needCountStatus(socketValue)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
+                                LogUtil.d("timeMillis")
                                 if (timeMillis > 1000) {
                                     itemView.league_odd_match_time.text =
                                         TimeUtil.longToMmSs(timeMillis)
@@ -930,8 +934,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                     }
                 }
                 else -> {
-                    itemView.league_odd_match_time.text =
-                        TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+                    itemView.league_odd_match_time.visibility = View.GONE
 //                    itemView.league_odd_match_remain_time_icon.visibility = if (TimeUtil.isTimeToday(matchInfo.startTime)) View.VISIBLE else View.GONE
                 }
             }
