@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport.favorite
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
+import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -72,7 +74,11 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             leagueListener = LeagueListener {
                 subscribeChannelHall(it)
             }
-
+            //目前無法監聽收合動畫
+            Handler().postDelayed(
+                { game_list?.firstVisibleRange(this, activity ?: requireActivity()) },
+                400
+            )
             leagueOddListener = LeagueOddListener(
                 clickListenerPlayType = { matchId, _, gameMatchType, _ ->
                     data.forEach {
@@ -174,6 +180,12 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         favoriteAdapter.setPreloadItem()
         viewModel.getSportList()
         viewModel.getFavoriteMatch()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden)
+            viewModel.getFavoriteMatch()
     }
 
 

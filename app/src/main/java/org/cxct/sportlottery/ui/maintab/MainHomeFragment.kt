@@ -140,7 +140,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             )
         )
     }
-    private var isNewestDataFromApi = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -211,7 +210,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
-                isNewestDataFromApi = true
                 mRecommendList = recommendList
                 val adapterRecommendListData = homeRecommendAdapter.getRecommendListData()
                 recommendList.forEach { recommend ->
@@ -237,7 +235,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
             event.peekContent().let { betList ->
-                val targetList = getNewestRecommendData()
+                val targetList = homeRecommendAdapter.getRecommendListData()
                 targetList.forEachIndexed { index, recommend ->
                     var needUpdate = false
                     recommend.oddsMap?.values?.forEach { oddList ->
@@ -315,6 +313,12 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 //        }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            viewModel.getRecommend()
+        }
+    }
 
     private fun queryData() {
         mPublicityVersionUpdateViewModel.checkAppVersion()
@@ -468,7 +472,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
-                val targetList = getNewestRecommendData()
+                val targetList = homeRecommendAdapter.getRecommendListData()
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -492,7 +496,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
-                val targetList = getNewestRecommendData()
+                val targetList = homeRecommendAdapter.getRecommendListData()
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -514,8 +518,8 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         }
 
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-                val targetList = getNewestRecommendData()
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+            val targetList = homeRecommendAdapter.getRecommendListData()
+            var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
@@ -534,9 +538,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                             updateBetInfo(recommend, oddsChangeEvent)
                             needUpdate = true
                         }
-
-                        if (isNewestDataFromApi)
-                            isNewestDataFromApi = false
                     }
                 }
                 if (needUpdate) {
@@ -546,7 +547,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
-                val targetList = getNewestRecommendData()
+                val targetList = homeRecommendAdapter.getRecommendListData()
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -571,7 +572,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
-                val targetList = getNewestRecommendData()
+                val targetList = homeRecommendAdapter.getRecommendListData()
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -727,10 +728,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             map.putAll(sortedMap)
         }
     }
-
-    private fun getNewestRecommendData(): List<Recommend> =
-        if (isNewestDataFromApi) mRecommendList else homeRecommendAdapter.getRecommendListData()
-
 
     private fun subscribeQueryData(recommendList: List<Recommend>) {
         recommendList.forEach { subscribeChannelHall(it) }
