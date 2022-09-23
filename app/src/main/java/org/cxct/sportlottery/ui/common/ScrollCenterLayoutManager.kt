@@ -5,6 +5,7 @@ import android.util.DisplayMetrics
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 
 /**
@@ -20,7 +21,11 @@ class ScrollCenterLayoutManager(context: Context?, @RecyclerView.Orientation ori
     override fun smoothScrollToPosition(recyclerView: RecyclerView, state: RecyclerView.State, position: Int) {
         val smoothScroller: RecyclerView.SmoothScroller = CenterSmoothScroller(recyclerView.context)
         smoothScroller.targetPosition = position
-        startSmoothScroll(smoothScroller)
+        try {
+            startSmoothScroll(smoothScroller)
+        } catch (e: IllegalArgumentException) {
+            Timber.e("position: $position, error message: ${e.message}")
+        }
     }
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
