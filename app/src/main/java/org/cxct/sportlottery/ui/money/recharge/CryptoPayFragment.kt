@@ -125,7 +125,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             ToastUtil.showToastInCenter(activity, getString(R.string.text_money_copy_success))
         }
         //上傳照片
-        cv_upload.setOnClickListener {
+        cv_upload_image.setOnClickListener {
             this.activity?.let { activity ->
                 activity.supportFragmentManager.let { fragmentManager ->
                     RechargePicSelectorDialog(
