@@ -84,14 +84,14 @@ class ModifyProfileInfoActivity :
         setEditTextFocusChangeMethod(eet_nickname)
         //真實姓名
         setEditTextFocusChangeMethod(eet_real_name)
-//        //QQ號碼
-//        setEditTextFocusChangeMethod(et_qq_number)
+        //QQ號碼
+        setEditTextFocusChangeMethod(eet_qq_number)
         //郵箱
         setEditTextFocusChangeMethod(eet_e_mail)
-//        //手機號碼
-//        setEditTextFocusChangeMethod(et_phone_number)
-//        //微信
-//        setEditTextFocusChangeMethod(et_we_chat)
+        //手機號碼
+        setEditTextFocusChangeMethod(eet_phone_number)
+        //微信
+        setEditTextFocusChangeMethod(eet_we_chat)
     }
 
     private fun setEditTextFocusChangeMethod(editText: ExtendedEditText) {
@@ -137,7 +137,7 @@ class ModifyProfileInfoActivity :
                 hideLoading()
         }
 
-//        setupEditTextErrorMsgObserve()
+        setupEditTextErrorMsgObserve()
 
         viewModel.nicknameResult.observe(this) {
             updateUiWithResult(it)
