@@ -1110,7 +1110,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
             itemData.realAmount = realAmount
             odds = ArithUtil.toOddFormat(odds).toDouble()
-            Timber.e("odds: $odds")
+//            Timber.e("odds: $odds")
             return odds
         }
 
