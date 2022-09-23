@@ -1596,8 +1596,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betList: MutableList<BetInfoListData>
         ): Double {
             val defaultMax = 999999999L
-            var min = betList.first().parlayOdds?.min ?: 0
-            var max = betList.first().parlayOdds?.max ?: defaultMax
+            var min = betList.firstOrNull()?.parlayOdds?.min ?: 0
+            var max = betList.firstOrNull()?.parlayOdds?.max ?: defaultMax
             betList.forEach {
                 if (it.parlayOdds?.min ?: 0 > min) {
                     min = it.parlayOdds?.min ?: 0

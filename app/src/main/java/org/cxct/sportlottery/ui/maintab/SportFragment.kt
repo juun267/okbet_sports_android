@@ -304,8 +304,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun setupLogin() {
-        val isLogin = viewModel.isLogin != null && viewModel.isLogin.value!!
-        btn_login.visibility = if (isLogin) View.GONE else View.VISIBLE
+        btn_login.visibility = if (viewModel.isLogin.value == true) View.GONE else View.VISIBLE
     }
 
     private fun navGameFragment(matchType: MatchType) {
