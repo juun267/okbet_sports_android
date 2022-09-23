@@ -105,6 +105,7 @@ class VersionUpdateViewModel(
                             response.isSuccessful && result != null -> {
                                 appVersionChecked = true
                                 Constants.currentServerUrl = serverUrl //紀錄成功獲取檢查版本的 serverUrl
+                                Constants.currentFilename = result.fileName //記錄成功獲取版本的apk name
                                 compareFun(result)
                             }
                             else -> {
