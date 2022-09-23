@@ -27,7 +27,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
 /**
- * @app_destination 新增銀行卡
+ * @app_destination 新增银行卡
  */
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
     private var transferType: TransferType = TransferType.BANK
