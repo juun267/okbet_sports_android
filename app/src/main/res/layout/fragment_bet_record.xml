@@ -134,7 +134,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/settled"
+                android:text="@string/settled_order"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize14sp" />
 

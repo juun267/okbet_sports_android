@@ -319,7 +319,7 @@
     <string name="select_all">全选</string>
     <string name="all_order">全部注单</string>
     <string name="not_settled_order">未结算注单</string>
-    <string name="settled_order">已结算注单</string>
+    <string name="settled_order">已结算</string> <!--I046-->
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="no_data">没有更多数据了</string>
@@ -787,7 +787,7 @@
     <string name="parlay_10_block_rule">10串1013是由10个不同的赛事组成的1013个不同的投注，45个2串1，120个3串1，210个4串1，252个5串1，210个6串1，120个7串1，45个8串1，10个9串1以及1个10串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
     <string name="table_tennis">乒乓球</string>
     <string name="ice_hockey">冰球</string>
-    <string name="boxing">拳击/格斗</string>
+    <string name="boxing">拳击</string> <!--C029-->
     <string name="snooker">台球</string>
     <string name="cricket">板球</string>
     <string name="baseball">棒球</string>
