@@ -1185,5 +1185,6 @@
     <string name="remove_account_warning">คุณแน่ใจไหมว่าจะลบบัญชี</string>
     <string name="my_message">ข้อความ</string>
     <string name="register_and_login">ลงทะเบียน/เข้าสู่ระบบ</string>
+    <string name="km">กิโลเมตร</string>
     <!--F005-->
 </resources>

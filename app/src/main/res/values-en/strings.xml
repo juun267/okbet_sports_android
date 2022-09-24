@@ -1240,4 +1240,5 @@
     <string name="sport_match">Matches</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="register_and_login">Sign Up/Login</string>
+    <string name="km">Km</string>
 </resources>
