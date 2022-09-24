@@ -211,13 +211,13 @@
     <string name="volleyball">Bóng Chuyền</string>
     <string name="table_tennis">Bóng bàn</string>
     <string name="ice_hockey">Khúc côn cầu trên sân băng</string>
-    <string name="boxing">Đấm bốc</string>
+    <string name="boxing">Quyền anh</string> <!--C029-->
     <string name="snooker">Bida</string>
     <string name="cricket">Bóng gậy</string>
     <string name="baseball">Bóng chày</string>
     <string name="rugby_football">Bóng bầu dục</string>
     <string name="america_football">Bóng đá Mỹ</string>
-    <string name="motor_racing">Công thức 1</string>
+    <string name="motor_racing">Đua xe motor</string> <!--C035-->
     <string name="golf">Golf</string>
     <string name="financial_bets">Cược Tài Chính</string>
     <string name="upload_title">Tải lên tài liệu chứng minh nhân dân</string>
@@ -320,13 +320,13 @@
     <string name="select_all">chọn tất cả</string>
     <string name="all_order">Tất cả đơn cược</string>
     <string name="not_settled_order">Đơn cược chưa được thanh toán</string>
-    <string name="settled_order">đặt cược đã được thanh toán</string>
+    <string name="settled_order">Đã kết toán</string> <!--I046-->
     <string name="start_date">Ngày bắt đầu</string>
     <string name="end_date">Ngày kết thúc</string>
     <string name="no_data">Không có thêm dữ liệu</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
-    <string name="not_settled">Đơn cược chưa được thanh toán</string>
+    <string name="not_settled">chưa thanh toán</string> <!--I045-->
     <string name="settled">đặt cược đã được thanh toán</string>
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
@@ -545,9 +545,9 @@
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
 
-    <string name="bet_receipt_bet_quota">Tiền Cược : </string>
-    <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
-    <string name="bet_receipt_win_quota">Số tiền có thể thắng:</string>
+    <string name="bet_receipt_bet_quota">Tiền Cược：</string>
+    <string name="bet_info_list_win_quota">Ước tính thắng：</string> <!--I010-->
+    <string name="bet_receipt_win_quota">Số tiền có thể thắng：</string>
     <string name="bet_info_add_bet_success">Đặt cược thành công</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
@@ -1096,8 +1096,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Thắng</string>
     <string name="bet_stake">Tiền Cược</string>
-    <string name="total_capital">Tiền Cược(%s)：</string>
-    <string name="total_win_amount">Thắng(%s)：</string>
+    <string name="total_capital">Tổng tiền đặt cược(%s)：</string> <!--F008-->
+    <string name="total_win_amount">Ước tính thắng(%s)：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
     <string name="btn_login_bet">Đăng nhập để đặt cược</string>
     <string name="confirm_single_bets">Xác nhận %d Cược đơn</string>
