@@ -1125,9 +1125,9 @@
     <string name="confirm_multiple_bets">ยืนยัน %d เดิมพันหลายรายการ</string>
     <string name="text_account_history_bet">เดิมพัน</string>
     <string name="error_amount_limit_exceeded">เกินขีดจำกัดจำนวนเงินฝาก</string>
-    <string name="total_win_amount">ชนะทั้งหมด</string>
+    <string name="total_win_amount">จำนวนที่ชนะได้(%s)：</string> <!--F005-->
 
-    <string name="total_capital">เงินต้นทั้งหมด</string>
+    <string name="total_capital">เดิมพันทั้งหมด(%s)：</string> <!--F008-->
     <string name="delete_bet">ลบ</string>
     <string name="btn_login_bet">เข้าสู่ระบบและเดิมพัน</string>
     <string name="btn_remove_closed_selections">ลบตัวเลือกที่ปิดอยู่</string>
