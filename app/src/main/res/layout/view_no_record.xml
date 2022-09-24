@@ -10,7 +10,7 @@
         android:id="@+id/list_no_record_img"
         android:layout_width="256dp"
         android:layout_height="400dp"
-        android:layout_marginTop="85dp"
+       android:layout_marginTop="-20dp"
         android:src="@drawable/ic_default_map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
