@@ -431,7 +431,7 @@ public class TextFormFieldBoxes extends FrameLayout {
         this.editTextLayout = findViewById(R.id.text_field_boxes_editTextLayout);
 
         this.inputLayout.addView(this.editText);
-        this.editTextLayout.setAlpha(0f);
+//        this.editTextLayout.setAlpha(0f);
         this.floatingLabel.setPivotX(0f);
         this.floatingLabel.setPivotY(0f);
         this.floatingSubLabel.setPivotX(0f);
@@ -632,7 +632,7 @@ public class TextFormFieldBoxes extends FrameLayout {
 
             } else {
                 // If not, animate the label and hide the EditText.
-                this.editTextLayout.setAlpha(0);
+//                this.editTextLayout.setAlpha(0);
                 ViewCompat.animate(floatingLabel)
                         .alpha(1)
                         .scaleX(1)
@@ -677,7 +677,7 @@ public class TextFormFieldBoxes extends FrameLayout {
 
         if (this.editText.getText().toString().isEmpty() && !isActivated()) {
 
-            this.editTextLayout.setAlpha(0f);
+//            this.editTextLayout.setAlpha(0f);
             this.floatingLabel.setScaleX(1f);
             this.floatingLabel.setScaleY(1f);
             this.floatingLabel.setTranslationY(0);

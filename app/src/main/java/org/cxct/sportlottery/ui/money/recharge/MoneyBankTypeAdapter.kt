@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,11 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_money_pay_type_rv.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MoneyManager
 
 class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
@@ -29,10 +32,12 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
         return ViewHolder.from(parent)
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
         holder.bind(item)
         holder.rootItem.isSelected = mSelectedPosition == position //選中改變背景
+        holder.tvType.isSelected = mSelectedPosition == position
         holder.imgTri.visibility = if (mSelectedPosition == position) View.VISIBLE else View.GONE
         holder.rootItem.setOnClickListener {
             mSelectedPosition = position
@@ -45,7 +50,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icBank: ImageView = itemView.findViewById(R.id.ic_bank)
-        private val tvType: TextView = itemView.findViewById(R.id.tv_type)
+        val tvType: TextView = itemView.findViewById(R.id.tv_type)
         val rootItem: RelativeLayout = itemView.findViewById(R.id.rootItem)
         val imgTri: ImageView = itemView.findViewById(R.id.img_tri)
 

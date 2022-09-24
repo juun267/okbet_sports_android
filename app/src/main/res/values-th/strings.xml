@@ -128,7 +128,7 @@
     <string name="bet_info_list_win_quota">จำนวนที่ชนะได้</string>
     <string name="keyboard_max">ใหญ่สุด</string>
     <string name="bet_info_list_bet">เดิมพัน</string>
-    <string name="edt_hint_deposit_money">จำกัด %1$s %2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">%1$s จำกัด%2$s～%3$s</string>
     <string name="conspire">พาร์เลย์</string>
     <string name="bet_info_content_has_been_changed">อัตราต่อรองหรือสถานะของเกมที่คุณเลือกมีการเปลี่ยนแปลง โปรดเดิมพันใหม่</string>
     <string name="bet_info_list_minimum_limit_amount">เงินเดิมพันน้อยกว่าจำนวนขั้นต่ำ</string>

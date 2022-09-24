@@ -24,10 +24,7 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
 import kotlin.math.min
 
@@ -76,6 +73,9 @@ class WithdrawViewModel(
     val withdrawAddResult: LiveData<WithdrawAddResult>
         get() = _withdrawAddResult
     private var _withdrawAddResult = MutableLiveData<WithdrawAddResult>()
+    val withdrawAddResultData: LiveData<WithdrawAddResult>
+        get() = _withdrawAddResultData
+    private var _withdrawAddResultData = MutableLiveData<WithdrawAddResult>()
 
     //獲取資金設定
     val rechargeConfigs: LiveData<MoneyRechCfgData>
@@ -243,6 +243,7 @@ class WithdrawViewModel(
                     )
                 }?.let { result ->
                     _withdrawAddResult.value = result
+                    _withdrawAddResultData.value = result
                     hideLoading()
                 }
             }
@@ -626,7 +627,7 @@ class WithdrawViewModel(
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
             LocalUtils.getString(R.string.edt_hint_deposit_money),
-            sConfigData?.systemCurrencySign,
+            sConfigData?.systemCurrency,
             limit.min.toLong(), limit.max.toLong()
         )
     }

@@ -180,16 +180,19 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     0 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.BANK)
+                        tv_add_bank.text= resources.getText(R.string.bank_list_bank)
                         clearEvent()
                     }
                     1 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.CRYPTO)
+                        tv_add_bank.text = resources.getText(R.string.bank_list_crypto)
                         clearEvent()
                     }
                     2 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.E_WALLET)
+                        tv_add_bank.text = resources.getText(R.string.bank_list_e_wallet)
                         clearEvent()
                     }
                     3 -> {
@@ -239,6 +242,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
+            LogUtil.d("tikuan提款按钮")
             withdrawBankCardData?.let {
                 viewModel.addWithdraw(
                     withdrawBankCardData,
@@ -248,6 +252,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     null,
                     null,
                 )
+                LogUtil.d("tikuan提款参数")
             }
         }
 
@@ -455,9 +460,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.withdrawPasswordMsg.observe(this.viewLifecycleOwner) {
             et_withdrawal_password.setError(it ?: "")
         }
-
         //提款
-        viewModel.withdrawAddResult.observe(this.viewLifecycleOwner) {
+        viewModel.withdrawAddResultData.observe(this.viewLifecycleOwner) {
             if (lin_withdraw.isVisible)
                 if (it.success) {
                     clearEvent()
@@ -466,7 +470,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         getString(R.string.text_money_get_success)
                     ) { viewModel.getMoney() }
                 } else {
-                    showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
+                   showErrorPromptDialog(getString(R.string.prompt), it.msg) {}
                 }
         }
     }
@@ -627,7 +631,7 @@ class WithdrawBankCardAdapter(
                     notifyDataSetChanged()
                 }
 
-                tvNumber.text = bankCard.cardNo
+                tvNumber.text = "(尾号${bankCard.cardNo})"
                 tvBankCard.text = bankCard.bankName
                 ivBankIcon.setImageResource(
                     when (bankCard.transferType) {

@@ -31,7 +31,8 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
-    private var mTextColor = R.color.color_BBBBBB_333333
+    private var mTextColor = R.color.color_9FADC6_535D76
+    private var mNegateTextColor = R.color.color_BBBBBB_333333
     private var isShowDivider: Boolean = false
     private var isShowDividerBottom: Boolean = true
 
@@ -84,7 +85,7 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
         }
 
         tv_message.setTextColor(ContextCompat.getColor(context?:requireContext(), mTextColor))
-
+        btn_negative.setTextColor(ContextCompat.getColor(context?:requireContext(), mNegateTextColor))
         divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
         divider.visibility = if (isShowDividerBottom) View.VISIBLE else View.GONE
 
@@ -113,6 +114,9 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
 
     fun setTextColor(@ColorRes colorResource: Int) {
         mTextColor = colorResource
+    }
+    fun setNegativeTextColor(@ColorRes colorResource: Int) {
+        mNegateTextColor = colorResource
     }
 
     //set .html 語法文字

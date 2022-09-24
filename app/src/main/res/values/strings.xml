@@ -395,7 +395,7 @@
     <string name="title_deposit_money">Deposit Amount</string>
     <string name="title_payer">Account</string>
     <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
-    <string name="edt_hint_deposit_money">Limit %1$s %2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">%1$s Limit%2$s～%3$s</string>
     <string name="edt_hint_payer">Please enter your account</string>
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
@@ -1269,6 +1269,6 @@
     <string name="betting">Betting</string>
     <string name="unbound_bank_card">您尚末绑定银行卡/eWallet</string>
     <string name="hint_confirm_withdrawal_password">请确认提款密码</string>
-    <string name="text_security_money3"><font color='#025BE8'>%1$s</font> 日后解封</string>
+    <string name="text_security_money3"><font color='#025BE8'>%1$s</font> 日后解冻</string>
     <string name="hint_please_enter_the_password_again">请再次输入密码</string>
 </resources>

@@ -211,7 +211,7 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_account_balance"
                         tools:ignore="MissingConstraints" />
                     <ImageView
-                        android:visibility="gone"
+
                         android:layout_margin="@dimen/dp_4"
                         android:id="@+id/iv_deposit_tip"
                         android:src="@drawable/deposit_tips"

@@ -235,12 +235,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
                     tv_verified.text = getString(R.string.passed)
-                    tv_verified.setTextColor(
-                        ContextCompat.getColor(
-                            tv_verified.context,
-                            R.color.color_317FFF_1053af
-                        )
-                    )
+
                     icon_identity.visibility = View.GONE
                 }
                 VerifiedType.NOT_YET.value -> {
@@ -259,24 +254,14 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
                     tv_verified.text = getString(R.string.verifying)
-                    tv_verified.setTextColor(
-                        ContextCompat.getColor(
-                            tv_verified.context,
-                            R.color.color_E44438_e44438
-                        )
-                    )
+
                     icon_identity.visibility = View.GONE
                 }
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.verify_failed)
-                    tv_verified.setTextColor(
-                        ContextCompat.getColor(
-                            tv_verified.context,
-                            R.color.color_E44438_e44438
-                        )
-                    )
+
                     icon_identity.visibility = View.VISIBLE
                 }
             }
@@ -409,15 +394,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         tvInfo.apply {
             if (infoData.isNullOrEmpty()) {
                 text = getString(R.string.need_improve)
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_317FFF_0760D4))
+
                 iconModify.visibility = View.VISIBLE
                 itemLayout.isEnabled = true
             } else {
                 text = infoData
-                setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
+
                 iconModify.visibility = View.GONE
                 itemLayout.isEnabled = false
             }
+            setTextColor(ContextCompat.getColor(this@ProfileActivity, R.color.color_939393_999999))
         }
     }
 

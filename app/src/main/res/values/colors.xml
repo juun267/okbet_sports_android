@@ -80,6 +80,7 @@
     <color name="color_D8E7FF">#D8E7FF</color>
     <color name="color_DB6372">#DB6372</color>
     <color name="color_FFF7F7">#FFF7F7</color>
+    <color name="color_9FADC6">#9FADC6</color>
 
     <color name="color_F5F5F5">#F5F5F5</color>
     <color name="color_7F7F7F">#7F7F7F</color>
@@ -480,4 +481,6 @@
 
     <!--存款记录弹窗交易状态后续修改深夜模式-->
     <color name="color_1EB65B">#1EB65B</color>
+    <!--弹窗内容颜色-->
+    <color name="color_9FADC6_535D76">@color/color_535D76</color>
 </resources>

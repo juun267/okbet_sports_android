@@ -381,7 +381,7 @@
     <string name="title_address">地址：</string>
     <string name="title_deposit_money">存款金额</string>
     <string name="title_payer">账号</string>
-    <string name="edt_hint_deposit_money">限额 %1$s %2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">%1$s 限额%2$s～%3$s</string>
     <string name="edt_hint_payer">请输入您的账号</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
@@ -882,8 +882,8 @@
     <string name="text_cant_play">发生错误,请稍后再试。</string>
     <string name="text_bet_not_success">滚球投注注单状态&#160;</string>
     <string name="text_bet_not_success3">&#160;您的注单正在处理中请检查您的&#160;</string>
-    <string name="text_security_money">押金：%s</string>
-    <string name="text_security_money2">还有%s天</string>
+    <string name="text_security_money">存款押金：%s</string>
+    <string name="text_security_money2">%s 日后解冻</string>
     <string name="customer_service_title">客服中心</string>
 
     <!--自我禁制-->
