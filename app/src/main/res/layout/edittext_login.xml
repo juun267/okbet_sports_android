@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/withdraw_all"
-            android:textColor="@color/color_317FFF_1F4780"
+            android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize13sp" />
 
         <ImageView

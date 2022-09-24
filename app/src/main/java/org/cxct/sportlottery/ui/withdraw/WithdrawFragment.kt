@@ -180,16 +180,19 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     0 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.BANK)
+                        tv_add_bank.text= resources.getText(R.string.bank_list_bank)
                         clearEvent()
                     }
                     1 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.CRYPTO)
+                        tv_add_bank.text = resources.getText(R.string.bank_list_crypto)
                         clearEvent()
                     }
                     2 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.E_WALLET)
+                        tv_add_bank.text = resources.getText(R.string.bank_list_e_wallet)
                         clearEvent()
                     }
                     3 -> {
@@ -627,7 +630,7 @@ class WithdrawBankCardAdapter(
                     notifyDataSetChanged()
                 }
 
-                tvNumber.text = bankCard.cardNo
+                tvNumber.text = "(尾号${bankCard.cardNo})"
                 tvBankCard.text = bankCard.bankName
                 ivBankIcon.setImageResource(
                     when (bankCard.transferType) {
