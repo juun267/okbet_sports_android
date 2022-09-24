@@ -526,7 +526,7 @@
     <string name="create_name">Full Name</string>
     <string name="hint_please_enter_create_name">Please enter your bank card name</string>
     <string name="edit_bank_card">Edit bank card</string>
-    <string name="edit_crypto_card">Edit virtual</string>
+    <string name="edit_crypto_card">Edit USDT</string>
     <string name="edit_e_wallet">Edit eWallet</string>
     <string name="bank_card_number">Account number</string>
     <string name="wallet_address">The wallet address</string>

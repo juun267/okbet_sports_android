@@ -242,7 +242,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         btn_withdraw.setOnClickListener {
             modifyFinish()
-            LogUtil.d("tikuan提款按钮")
             withdrawBankCardData?.let {
                 viewModel.addWithdraw(
                     withdrawBankCardData,
@@ -252,7 +251,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     null,
                     null,
                 )
-                LogUtil.d("tikuan提款参数")
             }
         }
 
