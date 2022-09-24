@@ -906,10 +906,10 @@
     <string name="identity_other_name">Bí danh</string>
     <string name="identity_country">quốc gia / khu vực</string>
     <string name="identity_sex">Giới tính</string>
-    <string name="not_verify">Chưa được xác minh)</string>
-    <string name="passed">Đang xác minh)</string>
-    <string name="verifying">Xác minh không thành công)</string>
-    <string name="verify_failed">Xác minh không thành công)</string>
+    <string name="not_verify">Chưa được xác minh</string>
+    <string name="passed">Đang xác minh</string>
+    <string name="verifying">Xác minh không thành công</string>
+    <string name="verify_failed">Xác minh không thành công</string>
     <string name="select_id_type">Chọn loại ID</string>
     <string name="scan_tool_bar">Quét kết quả</string>
     <string name="text_us_east_time">• Thời gian được báo cáo theo múi giờ UTC-4</string>

@@ -862,7 +862,7 @@
     <string name="passport">Passport</string>
     <string name="face_scan_result">face scan result</string>
     <string name="not_verify">Not yet verified</string>
-    <string name="passed">Passed)</string>
+    <string name="passed">Passed</string>
     <string name="verifying">Verifying</string>
     <string name="verify_failed">Verify failed</string>
     <string name="select_id_type">Select ID Type</string>

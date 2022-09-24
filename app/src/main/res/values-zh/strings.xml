@@ -871,10 +871,10 @@
     <string name="passport">Passport</string>
     <string name="face_scan_result">脸部扫描结果</string>
     <string name="verify_failed_please_retry">验证失败 请重新再试</string>
-    <string name="not_verify">未验证)</string>
-    <string name="passed">已通过)</string>
-    <string name="verifying">验证中)</string>
-    <string name="verify_failed">验证失败)</string>
+    <string name="not_verify">未验证</string>
+    <string name="passed">已通过</string>
+    <string name="verifying">验证中</string>
+    <string name="verify_failed">验证失败</string>
     <string name="select_id_type">选择身份证件类型</string>
     <string name="scan_tool_bar">扫描结果</string>
     <string name="text_us_east_time">• 以美东 (UTC-4) 时间计算</string>
