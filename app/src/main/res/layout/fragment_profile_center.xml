@@ -204,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_icon_wallet_small"
                         android:drawablePadding="@dimen/margin_3"
-                        android:text="@string/total_assets"
+                        android:text="@string/account_balance"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/margin_14"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"

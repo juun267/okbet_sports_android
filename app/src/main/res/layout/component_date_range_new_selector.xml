@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_FFFFFF"
-    android:paddingStart="10dp"
-    android:paddingTop="5dp"
-    android:paddingEnd="10dp"
+    android:paddingStart="20dp"
+    android:paddingTop="15dp"
+    android:paddingEnd="20dp"
     android:paddingBottom="5dp">
 
     <TextView
@@ -35,9 +35,10 @@
     <RelativeLayout
         android:id="@+id/ll_start_date_box"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginTop="6dp"
         android:layout_marginRight="@dimen/margin_10"
-        android:background="@drawable/bg_white_square_shape_4dp_gray_2_stroke"
+        android:background="@drawable/selector_button_radius_4_stroke"
         app:layout_constraintEnd_toStartOf="@+id/ll_end_date_box"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,27 +56,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:hint="@string/start_date"
-            android:textColor="@color/color_BBBBBB_333333"
-            android:textColorHint="@color/color_AEAEAE_404040"
-            android:textSize="@dimen/textSize13sp"
+            android:hint="@string/hint_birth_date"
+            android:fontFamily="@font/din_font"
+            android:textColor="@color/color_FFFFFF_535D76"
+            android:textSize="@dimen/textSize14sp"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_margin="11dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:src="@drawable/icon_calendar"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/ll_end_date_box"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_white_square_shape_4dp_gray_2_stroke"
+        android:layout_height="35dp"
+        android:background="@drawable/selector_button_radius_4_stroke"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/ll_start_date_box"
@@ -92,20 +94,21 @@
             android:id="@+id/tv_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:hint="@string/end_date"
-            android:textColor="@color/color_BBBBBB_333333"
-            android:textColorHint="@color/color_AEAEAE_404040"
-            android:textSize="@dimen/textSize13sp"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/din_font"
+            android:hint="@string/hint_birth_date"
+            android:textColor="@color/color_FFFFFF_535D76"
+            android:textSize="@dimen/textSize14sp" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_margin="11dp"
+            android:layout_marginRight="@dimen/margin_10"
             android:src="@drawable/icon_calendar"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 

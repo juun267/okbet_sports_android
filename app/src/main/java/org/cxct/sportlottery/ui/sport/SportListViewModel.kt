@@ -307,7 +307,6 @@ class SportListViewModel(
             }?.updateMatchType()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                leagueOdd.unfold = 1
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
@@ -331,9 +330,14 @@ class SportListViewModel(
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
                     matchOdd.filterQuickPlayCate(matchType)
+                    //波胆的数据获取方式
+                    if (matchType == MatchType.CS.postValue) {
+                        matchOdd.playCateNameMap = leagueOdd.playCateNameMap
+                    }
                 }
             }
             result?.oddsListData.getPlayCateNameMap(matchType)
+
             when (matchType) {
                 MatchType.IN_PLAY.postValue,
                 MatchType.TODAY.postValue,
@@ -617,10 +621,11 @@ class SportListViewModel(
     private fun OddsListData?.getPlayCateNameMap(matchType: String) {
         this?.leagueOdds?.onEach { LeagueOdd ->
             LeagueOdd.matchOdds.onEach { matchOdd ->
+                //上方已经把leagueOdds.playCateNameMap 赋值给 matchOdd.playCateNameMap，所以这里不再对波胆玩法处理
                 if (matchType == MatchType.CS.postValue) {
-                    matchOdd.playCateNameMap =
-                        PlayCateMenuFilterUtils.filterList?.get(GameType.FT.name)
-                            ?.get(PlayCate.CS.value)?.playCateNameMap
+//                    matchOdd.playCateNameMap =
+//                        PlayCateMenuFilterUtils.filterList?.get(GameType.FT.name)
+//                            ?.get(PlayCate.CS.value)?.playCateNameMap
 //                    Timber.e("matchOdd.playCateNameMap: ${matchOdd.playCateNameMap}")
                 } else {
                     matchOdd.playCateNameMap =

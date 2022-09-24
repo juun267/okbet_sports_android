@@ -876,7 +876,6 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
-                                LogUtil.d("timeMillis")
                                 if (timeMillis > 1000) {
                                     itemView.league_odd_match_time.text =
                                         TimeUtil.longToMmSs(timeMillis)

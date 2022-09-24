@@ -272,7 +272,6 @@ class SportListFragment :
         gameType?.let {
             viewModel.gameType = it
         }
-        LogUtil.d("matchType=" + matchType + ",gameType=" + gameType)
         setupSportTypeList()
         setupToolbar()
         setupGameRow()
@@ -289,7 +288,7 @@ class SportListFragment :
                 ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             //波胆不需要显示球类
-            visibility = if (matchType == MatchType.CS) View.GONE else View.VISIBLE
+            isVisible = matchType != MatchType.CS
             this.adapter = gameTypeAdapter
             removeItemDecorations()
         }
@@ -563,7 +562,7 @@ class SportListFragment :
 
         //當前玩法無賽事
         viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
-            sport_type_list.isVisible = !it
+            sport_type_list.isVisible = !it && matchType != MatchType.CS
             iv_calendar.isVisible = matchType == MatchType.EARLY && !it
             sportLeagueAdapter.removePreloadItem()
             hideLoading()
@@ -878,7 +877,7 @@ class SportListFragment :
 
     private fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
-            sport_type_list.isVisible = true
+            sport_type_list.isVisible = matchType != MatchType.CS
             iv_calendar.isVisible = matchType == MatchType.EARLY
             sportLeagueAdapter.removePreloadItem()
             hideLoading()
@@ -916,11 +915,11 @@ class SportListFragment :
         //post待view繪製完成
         sport_type_list?.post {
             if (gameTypeList.isEmpty()) {
-                sport_type_list?.visibility = View.GONE
+                sport_type_list?.isVisible = false
                 iv_calendar?.visibility = View.GONE
                 game_filter_type_list?.visibility = View.GONE
             } else {
-                sport_type_list?.visibility = View.VISIBLE
+                sport_type_list?.isVisible = matchType != MatchType.CS
                 iv_calendar?.apply {
                     visibility = when (matchType) {
                         MatchType.EARLY -> View.VISIBLE

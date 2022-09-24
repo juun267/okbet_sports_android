@@ -372,15 +372,10 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 animationLoadFinish = true
             }
         }
-        if (!animationLoadFinish) {
-            if (curType == LiveType.VIDEO) {
-                web_view.loadUrl(videoUrl!!)
-            } else if (curType == LiveType.ANIMATION) {
-                web_view.loadUrl(animeUrl!!)
-            }
-        } else {
-            web_view.onResume()
-//            setWebViewHeight()
+        if (curType == LiveType.VIDEO) {
+            web_view.loadUrl(videoUrl!!)
+        } else if (curType == LiveType.ANIMATION) {
+            web_view.loadUrl(animeUrl!!)
         }
     }
 

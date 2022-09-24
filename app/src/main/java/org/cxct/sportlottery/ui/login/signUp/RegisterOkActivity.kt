@@ -120,7 +120,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             .transparentStatusBar()
             .fitsSystemWindows(false)
             .init()
-        setupBettingShop()
         setPage()
         setupBackButton()
         setupAgreement()
@@ -310,6 +309,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etIdentityType.isVisible = isEnableKYCVerify
                 binding.etIdentityNumber.isVisible = isEnableKYCVerify
                 binding.etIdentity.isVisible = isEnableKYCVerify
+                binding.endButton.isVisible = isEnableKYCVerify
 
                 binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
@@ -330,17 +330,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             else -> {
                 btn_register.text = getString(R.string.btn_register)
 
-                setupMail()
-                setupAddress()
-                setupValidCode()
-                setupQQ()
-                setupWeChat()
-                setupZalo()
-                setupFacebook()
-                setupWhatsApp()
-                setupTelegram()
-                setupSecurityPb()
-
                 binding.clAgreement.visibility = View.GONE
                 binding.etRecommendCode.visibility = View.GONE
                 binding.etMemberAccount.visibility = View.GONE
@@ -350,7 +339,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etFullName.visibility = View.GONE
                 binding.etWithdrawalPwd.visibility = View.GONE
                 binding.etPhone.visibility = View.GONE
-                block_sms_valid_code.visibility = View.GONE
+                binding.blockSmsValidCode.visibility = View.GONE
                 binding.etBirth.visibility = View.GONE
                 binding.etSalary.visibility = View.GONE
 
@@ -364,9 +353,20 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
                 if (bettingStationVisibility) {
                     binding.etBettingShop.visibility = View.VISIBLE
+                    setupBettingShop()
                 } else {
                     binding.etBettingShop.visibility = View.GONE
                 }
+                setupMail()
+                setupAddress()
+                setupValidCode()
+                setupQQ()
+                setupWeChat()
+                setupZalo()
+                setupFacebook()
+                setupWhatsApp()
+                setupTelegram()
+                setupSecurityPb()
             }
 
         }
@@ -524,7 +524,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             eetSecurityPbType.setText(securityPbTypeList.firstOrNull()?.showName)
             //設置預設文字後會變成選中狀態, 需清除focus
             etSecurityPbType.hasFocus = false
-            viewModel.checkIdentityType(eetSecurityPbType.text.toString())
+            viewModel.checkSecurityPb(eetSecurityPbType.text.toString())
 
             //配置點擊展開選項選單
             etSecurityPbType.post {
@@ -922,8 +922,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 }
             }
 
-
-
             eetBettingShop.apply {
                 checkRegisterListener {
                     if (it != "") {
@@ -931,7 +929,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     }
                 }
             }
-
 
             eetWithdrawalPwd.apply {
                 checkRegisterListener { viewModel.checkFundPwd(it) }
@@ -1682,12 +1679,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         firstFile = file
         if (firstFile != null) {
             //binding.endButton.setImageResource(R.drawable.ic_upload_done)
-            viewModel.checkBackupIdentity(firstFile)
+            viewModel.checkIdentity(firstFile)
             binding.etIdentity.setHintText(getString(R.string.hint_file_selected))
             isUploaded = true
         } else {
             //binding.endButton.setImageResource(R.drawable.ic_camera)
-            viewModel.checkBackupIdentity(firstFile)
+            viewModel.checkIdentity(firstFile)
             binding.etIdentity.setHintText(getString(R.string.hint_no_file_selected))
             isUploaded = false
         }
