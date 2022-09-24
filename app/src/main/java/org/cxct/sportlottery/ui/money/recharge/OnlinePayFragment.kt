@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
+import kotlinx.android.synthetic.main.fragment_bet_station.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
+import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
+import kotlinx.android.synthetic.main.online_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -17,6 +20,7 @@ import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
@@ -71,6 +75,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         initView()
         setPayGapBottomSheet()
         setPayBankBottomSheet(view)
+        setupServiceButton()
     }
 
     private fun initObserve() {
@@ -397,5 +402,30 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun needPayerField(): Boolean = when (mMoneyPayWay?.onlineType) {
         OnlineType.GCASH.type, OnlineType.PAYMAYA.type, OnlineType.DRAGON_PAY.type  -> true
         else -> false
+    }
+
+
+    //联系客服
+    private fun setupServiceButton() {
+        tv_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    activity?.supportFragmentManager?.let { it1 ->
+                        ServiceDialog().show(
+                            it1,
+                            null
+                        )
+                    }
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                }
+            }
+        }
     }
 }

@@ -1229,4 +1229,5 @@
     <string name="remove_account_warning">Bạn có chắc chắn muốn xoá tài khoản hiện tại của mình không?</string>
     <string name="my_message">Tin nhắn</string>
     <string name="register_and_login">Đăng ký/Đăng nhập</string>
+    <string name="km">Km</string>
 </resources>

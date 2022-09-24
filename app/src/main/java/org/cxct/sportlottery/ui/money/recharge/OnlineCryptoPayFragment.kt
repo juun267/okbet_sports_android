@@ -17,18 +17,23 @@ import kotlinx.android.synthetic.main.online_crypto_pay_fragment.cv_currency
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.et_recharge_account
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_fee_amount
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_fee_rate
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_hint
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_rate
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_recharge_money
+import kotlinx.android.synthetic.main.online_crypto_pay_fragment.tv_remark
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_account
 import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_currency
+import kotlinx.android.synthetic.main.online_pay_fragment.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import java.util.ArrayList
@@ -72,6 +77,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         initObserve()
         setCurrencyBottomSheet()
         setAccountBottomSheet()
+        setupServiceButton()
     }
 
     //幣種選項
@@ -382,5 +388,28 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         clearFocus()
         et_recharge_account.setText("")
         viewModel.clearnRechargeStatus()
+    }
+    //联系客服
+    private fun setupServiceButton() {
+        tv_service_online.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    activity?.supportFragmentManager?.let { it1 ->
+                        ServiceDialog().show(
+                            it1,
+                            null
+                        )
+                    }
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                }
+            }
+        }
     }
 }

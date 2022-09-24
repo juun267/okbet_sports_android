@@ -216,7 +216,30 @@
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             style="?android:attr/borderlessButtonStyle"/>
+        <LinearLayout
+            android:layout_marginBottom="@dimen/dp_40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_service"
+                android:textColor="@color/color_A5A9B3"
+                android:textSize="@dimen/textSize14sp"/>
+
+            <TextView
+                android:id="@+id/tv_service_online"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_service"
+                android:textColor="@color/color_025BE8"
+                android:textSize="@dimen/textSize14sp"/>
+
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

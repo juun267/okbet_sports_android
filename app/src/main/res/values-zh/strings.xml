@@ -1246,4 +1246,5 @@
     <string name="sport_match">场赛事</string>
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="register_and_login">注册/登录</string>
+    <string name="km">千米</string>
 </resources>

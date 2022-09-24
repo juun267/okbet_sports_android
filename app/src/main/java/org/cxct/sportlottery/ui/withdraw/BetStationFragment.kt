@@ -23,6 +23,12 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
+import kotlinx.android.synthetic.main.fragment_bet_station.btn_info
+import kotlinx.android.synthetic.main.fragment_bet_station.ll_commission
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_balance
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_commission
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_detail
+import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
@@ -35,6 +41,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -62,7 +69,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         }
     private var appointmentTime = ""
         set(value) {
-            tv_hour.text = value
+            tv_hour.text = "$value(GTM+8)"
             field = value
         }
 
@@ -73,8 +80,31 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bet_station, container, false).apply {
         }
-    }
 
+    }
+    //联系客服
+    private fun setupServiceButton() {
+        tv_service_show.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    activity?.supportFragmentManager?.let { it1 ->
+                        ServiceDialog().show(
+                            it1,
+                            null
+                        )
+                    }
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                }
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.apply {
@@ -82,6 +112,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             initView()
             setupEvent()
             setupObserve()
+            setupServiceButton()
         }
     }
 
@@ -173,7 +204,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     distance?.div(1000)?.toDouble(),
                     2,
                     RoundingMode.HALF_UP
-                ) + " KM"
+                ) + getString(R.string.km)
             }
         }
     }
@@ -312,6 +343,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 ArithUtil.toMoneyFormat(it).toDouble()
             )
             tv_current_time.text = TimeUtil.dateToFormat(Date())
+            LogUtil.d("duck1111"+TimeUtil.dateToFormat(Date()))
         })
         viewModel.areaList.observe(this.viewLifecycleOwner) {
             areaAll = it
