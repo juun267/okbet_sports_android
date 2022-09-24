@@ -593,13 +593,17 @@ class ProfileCenterFragment :
         viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(
-                        getString(R.string.withdraw_setting),
-                        getString(R.string.please_complete_profile_info),
-                        getString(R.string.go_to_setting),
-                        true
-                    ) {
-                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
+                    context?.let {context ->
+                        val dialog = CustomAlertDialog(context)
+                        dialog.setTitle(getString(R.string.withdraw_setting))
+                        dialog.setMessage(getString(R.string.please_complete_profile_info))
+                        dialog.setPositiveButtonText(getString(R.string.go_to_setting))
+                        dialog.setNegativeButtonText(getString(R.string.cancel))
+                        dialog.setNegativeTextColor(R.color.color_FFFFFF_414655)
+                        dialog.setCanceledOnTouchOutside(false)
+                        dialog. setPositiveClickListener{
+                            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
+                        }
                     }
                 } else {
                     viewModel.checkBankCardPermissions()
