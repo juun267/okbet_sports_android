@@ -576,7 +576,7 @@ class RegisterViewModel(
             else -> null
         }
         _identityMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete(0)
+        focusChangeCheckAllInputComplete(2)
     }
 
     fun checkBackupIdentity(secondFile: File?) {
@@ -885,27 +885,39 @@ class RegisterViewModel(
                     if (sConfigData?.enablePhone == FLAG_OPEN && checkInputPair(phoneMsg))
                         return false
                     if (sConfigData?.enableSmsValidCode == FLAG_OPEN && checkInputPair(
-                            securityCodeMsg
-                        )
+                            securityCodeMsg)
                     )
                         return false
                     if (sConfigData?.enableBirthday == FLAG_OPEN && checkInputPair(birthMsg))
                         return false
-                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
+                    if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
                         return false
                     if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityTypeMsg))
                         return false
-                    if (sConfigData?.enableSalarySource == FLAG_OPEN && checkInputPair(salaryMsg))
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(
+                            eetIdentityNumber)
+                    )
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && checkInputPair(identityMsg))
+                        return false
+
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
+                            "2") && checkInputPair(identityBackupTypeMsg)
+                    )
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
+                            "2") && checkInputPair(eetIdentityBackupNumber)
+                    )
+                        return false
+                    if (sConfigData?.enableKYCVerify == FLAG_OPEN && sConfigData?.idUploadNumber.equals(
+                            "2") && checkInputPair(identityBackupMsg)
+                    )
                         return false
                 }
                 else -> {
                     if (sConfigData?.enableBettingStation == FLAG_OPEN && checkInputPair(
                             bettingShopMsg)
                     )
-                        return false
-                    if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
-                        return false
-                    if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
                         return false
                     if (sConfigData?.enableEmail == FLAG_OPEN && checkInputPair(emailMsg))
                         return false
@@ -914,6 +926,12 @@ class RegisterViewModel(
                         ) || checkInputPair(cityMsg) || checkInputPair(addressMsg))
                     )
                         return false
+                    if (sConfigData?.enableQQ == FLAG_OPEN && checkInputPair(qqMsg))
+                        return false
+                    if (sConfigData?.enableRegValidCode == FLAG_OPEN && checkInputPair(validCodeMsg))
+                        return false
+
+
                     if (sConfigData?.enableWechat == FLAG_OPEN && checkInputPair(weChatMsg))
                         return false
                     if (sConfigData?.enableZalo == FLAG_OPEN && checkInputPair(zaloMsg))

@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -273,63 +272,44 @@ class SportOddAdapter(private val matchType: MatchType) :
                         correct2 = correct2Split[1] + correct2Split[0]
                     }
                     tv_correct_2.text = correct2
-
                     var correct3 = item.playCateNameMap?.get(PlayCate.LCS.value)
                         ?.getPlayCateName(context) ?: ""
                     tv_correct_3.text = correct3
                     when (item.csTabSelected) {
                         PlayCate.CS -> {
-                            tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_535D76))
-                            tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_6C7BA8))
-                            tv_correct_3.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_6C7BA8))
+                            tv_correct_1.isSelected = true
+                            tv_correct_2.isSelected = false
+                            tv_correct_3.isSelected = false
                         }
                         PlayCate.CS_1ST_SD -> {
-                            tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_6C7BA8))
-                            tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_535D76))
-                            tv_correct_3.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_6C7BA8))
+                            tv_correct_1.isSelected = false
+                            tv_correct_2.isSelected = true
+                            tv_correct_3.isSelected = false
                         }
                         else -> {
-                            tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_6C7BA8))
-                            tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_6C7BA8))
-                            tv_correct_3.setTextColor(ContextCompat.getColor(context,
-                                R.color.color_535D76))
+                            tv_correct_1.isSelected = false
+                            tv_correct_2.isSelected = false
+                            tv_correct_3.isSelected = true
                         }
                     }
 
                     tv_correct_1.setOnClickListener {
-                        tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_535D76))
-                        tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_6C7BA8))
-                        tv_correct_3.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_6C7BA8))
+                        tv_correct_1.isSelected = true
+                        tv_correct_2.isSelected = false
+                        tv_correct_3.isSelected = false
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS, item)
                     }
 
                     tv_correct_2.setOnClickListener {
-                        tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_6C7BA8))
-                        tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_535D76))
-                        tv_correct_3.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_6C7BA8))
+                        tv_correct_1.isSelected = false
+                        tv_correct_2.isSelected = true
+                        tv_correct_3.isSelected = false
                         leagueOddListener?.onClickCsTabListener(PlayCate.CS_1ST_SD, item)
                     }
                     tv_correct_3.setOnClickListener {
-                        tv_correct_1.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_6C7BA8))
-                        tv_correct_2.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_6C7BA8))
-                        tv_correct_3.setTextColor(ContextCompat.getColor(context,
-                            R.color.color_535D76))
+                        tv_correct_1.isSelected = false
+                        tv_correct_2.isSelected = false
+                        tv_correct_3.isSelected = true
                         leagueOddListener?.onClickCsTabListener(PlayCate.LCS, item)
                     }
                 } else {

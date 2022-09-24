@@ -3,8 +3,6 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -29,6 +27,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -77,48 +76,18 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             binding.btnLogin.letterSpacing = 0.6f
         }
     }
-
-//    private fun setUpLoginForGuestButton() {
-//        binding.btnVisitFirst.setOnClickListener {
-//            viewModel.loginAsGuest()
-//        }
-//    }
-
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener { finish() }
     }
 
     private fun setupAccount() {
+        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
+        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetAccount.setText(viewModel.account)
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
         }
-        binding.eetAccount.setOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
-        binding.eetAccount.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus)
-                checkInputData()
-        }
-        binding.eetAccount.addTextChangedListener(object : TextWatcher {
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s != null && s.toString().length > 0) {
-                    adjustEnableLoginButton(true)
-                }else{
-                    adjustEnableLoginButton(false)
-                }
-            }
-
-        })
-
     }
 
     private fun setupPassword() {
@@ -167,20 +136,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupLoginButton() {
         binding.btnLogin.setOnClickListener {
-            if (checkInputData()) {
-                login()
-            }
+            login()
         }
         binding.btnLogin.setTitleLetterSpacing()
-    }
-
-    private fun checkInputData(): Boolean {
-        return viewModel.checkInputData(
-            this,
-            binding.eetAccount.text.toString(),
-            binding.eetPassword.text.toString(),
-            binding.eetVerificationCode.text.toString()
-        )
     }
 
     private fun updateValidCode() {
@@ -265,12 +223,27 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.loginFormState.observe(this, Observer {
-            val loginState = it ?: return@Observer
-            binding.etAccount.setError(loginState.accountError, false)
-            binding.etPassword.setError(loginState.passwordError, false)
-            binding.etVerificationCode.setError(loginState.validCodeError, false)
-        })
+        viewModel.accountMsg.observe(this) {
+            binding.etAccount.setError(
+                it.first,
+                false
+            )
+        }
+        viewModel.passwordMsg.observe(this) {
+            binding.etPassword.setError(
+                it.first,
+                false
+            )
+        }
+        viewModel.validateCodeMsg.observe(this) {
+            binding.etVerificationCode.setError(
+                it.first,
+                false
+            )
+        }
+        viewModel.loginEnable.observe(this) {
+            adjustEnableLoginButton(it)
+        }
 
         viewModel.loginResult.observe(this, Observer {
             loginScope.launch {

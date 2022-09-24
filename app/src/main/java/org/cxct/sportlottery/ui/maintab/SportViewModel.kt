@@ -1124,7 +1124,6 @@ class SportViewModel(
             }?.updateMatchType()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                leagueOdd.unfold = 1
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
@@ -3154,7 +3153,6 @@ class SportViewModel(
                     matchOdd.playCateNameMap =
                         PlayCateMenuFilterUtils.filterList?.get(GameType.FT.name)
                             ?.get(PlayCate.CS.value)?.playCateNameMap
-//                    Timber.e("matchOdd.playCateNameMap: ${matchOdd.playCateNameMap}")
                 } else {
                     matchOdd.playCateNameMap =
                         PlayCateMenuFilterUtils.filterList?.get(matchOdd.matchInfo?.gameType)

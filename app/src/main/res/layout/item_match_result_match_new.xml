@@ -1,126 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_content"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/color_191919_FCFCFC"
-        android:orientation="vertical"
-        android:showDividers="middle|end"
-        android:layout_weight="1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ll_score"
-        tools:ignore="SpUsage">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_vs"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_content"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_26"
-            android:text="VS"
-            android:textColor="@color/color_A7B2C4"
-            android:textSize="@dimen/textSize16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="60dp"
+            android:layout_weight="2"
+            android:background="@color/color_191919_FCFCFC"
+            android:orientation="vertical"
+            android:showDividers="middle|end"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/ll_score"
+            tools:ignore="SpUsage">
+
+            <TextView
+                android:id="@+id/tv_vs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_12"
+                android:text="VS"
+                android:textColor="@color/color_A7B2C4"
+                android:textSize="@dimen/textSize16sp"
+                android:fontFamily="@font/din_font"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/tv_tame_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_vs"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_home_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_FFFFFF_535D76"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="域堡" />
+
+                <TextView
+                    android:id="@+id/tv_away_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/color_FFFFFF_535D76"
+                    android:textSize="@dimen/textSize12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_home_vs"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="赫尔辛格" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/tv_tame_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_vs"
-            app:layout_constraintTop_toTopOf="parent">
+            android:id="@+id/ll_score"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/cl_content"
+            android:layout_weight="1"
+            android:background="#fff"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cl_content"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
-                android:id="@+id/tv_home_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_first_half_score"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/color_AEAEAE_404040"
-                android:textSize="@dimen/textSize13sp"
+                android:textColor="@color/color_FFFFFF_535D76"
+                android:textSize="@dimen/textSize14sp"
+                android:fontFamily="@font/din_font"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
+                app:layout_constraintEnd_toStartOf="@+id/tv_full_game_score"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="域堡" />
+                tools:text="1-0" />
+
 
             <TextView
-                android:id="@+id/tv_away_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_full_game_score"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/color_AEAEAE_404040"
-                android:textSize="@dimen/textSize13sp"
+                android:textColor="@color/color_FFFFFF_535D76"
+                android:textSize="@dimen/textSize14sp"
+                android:fontFamily="@font/din_font"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_home_vs"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="赫尔辛格" />
+                tools:text="3-0" />
+
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_score"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/cl_content"
-        android:layout_weight="1"
-        android:background="#fff"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cl_content"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/tv_first_half_score"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="#535D76"
-            android:textSize="@dimen/textSize18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_full_game_score"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1-0" />
-
-
-        <TextView
-            android:id="@+id/tv_full_game_score"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textColor="#535D76"
-            android:textSize="@dimen/textSize18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="3-0" />
-
     </LinearLayout>
+
 
     <View
         android:id="@+id/divider_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_1F1F1F_E2E2E2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,21 +141,21 @@
     <LinearLayout
         android:id="@+id/ll_game_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/margin_36"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
-        android:background="#F7F8FC"
+        android:background="@color/color_979797"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider_line">
 
         <ImageView
             android:id="@+id/iv_switch"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginEnd="5dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="10dp"
             android:background="@drawable/bg_radius_20_white"
             android:src="@drawable/icon_more" />
 
@@ -153,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_6C7BA8"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintEnd_toStartOf="@+id/line2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -163,10 +174,10 @@
     <View
         android:id="@+id/bottom_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_1F1F1F_E2E2E2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_game_detail" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

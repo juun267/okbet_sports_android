@@ -72,7 +72,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         }
         binding.eetVerificationCode.apply {
             checkRegisterListener {
-                var errMsg = viewModel.checkValidCode(context, it)
+                var errMsg = viewModel.checkValidCode(it)
                 binding.btnSubmit.isEnabled = errMsg.isNullOrEmpty()
                 binding.etVerificationCode.setError(errMsg, true)
             }
@@ -155,7 +155,8 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     }
 
     private fun checkInputData(): Boolean {
-        return !viewModel.checkValidCode(this@PhoneVerifyActivity,binding.eetVerificationCode.text.toString()).isNullOrEmpty()
+        return !viewModel.checkValidCode(binding.eetVerificationCode.text.toString())
+            .isNullOrEmpty()
     }
 
 
