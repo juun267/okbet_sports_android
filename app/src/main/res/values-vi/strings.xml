@@ -688,7 +688,7 @@
     <string name="account_history_overview">Tổng quan lịch sử tài khoản</string>
     <string name="bet_num_and_bet_date">Số đơn cược / ngày thanh toán</string>
     <string name="date">Ngày tháng</string>
-    <string name="bet_amount">Cổ phần</string>
+    <string name="bet_amount">Tiền Cược</string> <!--I005-->
     <string name="available_amount">Số tiền hợp lệ</string>
     <string name="win_lose">Thắng hay thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
