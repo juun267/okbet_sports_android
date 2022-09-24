@@ -125,7 +125,7 @@
     <string name="bet_info_input_quota">ใส่จำนวนเงิน</string>
     <string name="bet_info_all_bet">เดิมพันทั้งหมด</string>
     <string name="bet_receipt_all_bet">เดิมพันทั้งหมด</string>
-    <string name="bet_info_list_win_quota">จำนวนที่ชนะได้</string>
+    <string name="bet_info_list_win_quota">จำนวนที่ชนะได้：</string>
     <string name="keyboard_max">ใหญ่สุด</string>
     <string name="bet_info_list_bet">เดิมพัน</string>
     <string name="edt_hint_deposit_money">%1$s จำกัด%2$s～%3$s</string>

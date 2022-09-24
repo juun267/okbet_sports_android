@@ -551,7 +551,7 @@
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
     <string name="bet_receipt_bet_quota">Stake：</string>
-    <string name="bet_info_list_win_quota">To win: </string>
+    <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
     <string name="bet_info_add_bet_success">Successful betting</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>

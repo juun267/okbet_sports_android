@@ -545,9 +545,9 @@
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
 
-    <string name="bet_receipt_bet_quota">Tiền Cược : </string>
-    <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
-    <string name="bet_receipt_win_quota">Số tiền có thể thắng:</string>
+    <string name="bet_receipt_bet_quota">Tiền Cược：</string>
+    <string name="bet_info_list_win_quota">Ước tính thắng：</string> <!--I010-->
+    <string name="bet_receipt_win_quota">Số tiền có thể thắng：</string>
     <string name="bet_info_add_bet_success">Đặt cược thành công</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
