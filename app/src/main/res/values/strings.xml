@@ -539,6 +539,7 @@
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
+    <string name="error_withdraw_password_for_new">Password must be 4 numbers combination</string> <!--J170-->
     <string name="error_wallet_address">The format of the address you entered is incorrect</string>
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
