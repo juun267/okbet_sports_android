@@ -254,7 +254,7 @@
     <string name="fourth_session">第四节</string>
     <string name="add_time_first_half_game">加时赛上半场</string>
     <string name="add_time_second_half_game">加时赛下半场</string>
-    <string name="account_balance">账户余额</string>
+    <string name="account_balance">总资产</string>
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">存款</string>
     <string name="account_transfer">额度转换</string>
@@ -531,6 +531,7 @@
     <string name="delete_e_wallet">刪除eWallet</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_withdraw_password">您输入的密码错误</string>
+    <string name="error_withdraw_password_for_new">密码须为4个数字的组合</string> <!--J170-->
     <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_crypto_delete_success">虚拟币删除成功</string>
@@ -652,7 +653,7 @@
     <string name="my_favorite">赛事收藏</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
-    <string name="visit_first">來去逛逛</string>
+    <string name="visit_first">来去逛逛</string>
     <string name="bet_number">注数</string>
     <string name="bet_money">下注金額</string>
     <string name="profit_and_loss">盈亏</string>
@@ -912,7 +913,7 @@
 
     <!--自我禁制-->
     <string name="e_address">详细地址</string>
-    <string name="hint_e_address">请输入联系地址)</string>
+    <string name="hint_e_address">请输入联系地址</string>
     <string name="initial_withdrawal_needs_credited">初次提款需入账：%1$s %2$s</string>
     <string name="make_sure_valid_account">初次提款会暂时扣留 %1$s %2$s，以确保您是有效账户。此款项于 30 天后会返还。</string>
     <!--登入手機驗證-->
@@ -941,8 +942,8 @@
     <string name="self_limit_froze_impotent_6">在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="text_chose_language">请选择您的语言</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint">请输入您的登录密码)</string>
-    <string name="account_hint">请输入您的会员帐号)</string>
+    <string name="password_hint">请输入您的登录密码</string>
+    <string name="account_hint">请输入您的会员帐号</string>
     <string name="submit_success">提交成功</string>
     <!-- 搜尋 -->
     <string name="text_search">搜索赛事</string>
@@ -1191,8 +1192,8 @@
     <string name="kyc_add">添加</string>
 
     <string name="next_step">下一步</string>
-    <string name="hint_select_document_type">请选择证件类型)</string>
-    <string name="hint_select_document_number">请填写证件号码)</string>
+    <string name="hint_select_document_type">请选择证件类型</string>
+    <string name="hint_select_document_number">请填写证件号码</string>
     <string name="identity_number">证件号码</string>
     <string name="identity_two_number">证件2号码</string>
     <string name="identity_two_type">证件2类型</string>

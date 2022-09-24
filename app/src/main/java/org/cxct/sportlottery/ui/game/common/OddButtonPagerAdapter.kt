@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 
 
@@ -51,6 +52,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
+            LogUtil.toJson(value)
             this.playCateNameMap = playCateNameMap.addSplitPlayCateTranslation()
             val oddsSortCount = oddsSort?.split(",")?.size ?: 999 // 最大顯示數量
             field = value.sortScores().refactorPlayCode().sortOdds().mappingCSList(matchOdd).filterOddsStatus().splitPlayCate()
@@ -646,7 +648,7 @@ class OddButtonPagerViewHolder private constructor(
             else -> playCateName.updatePlayCateColor()
         }
         if (playCateCode.isCSType()) {
-            oddBtnType.visibility = View.INVISIBLE
+            oddBtnType.visibility = View.GONE
         }
 
         if(matchType == MatchType.CS && odds?.second?.size == 1){
@@ -781,7 +783,7 @@ class OddButtonPagerViewHolder private constructor(
             else -> playCateName.updatePlayCateColor()
         }
         if (playCateCode.isCSType()) {
-            oddBtnType.visibility = View.INVISIBLE
+            oddBtnType.visibility = View.GONE
         }
         if(matchType == MatchType.CS && odds?.second?.size == 1){
             oddBtnOther.apply homeButtonSettings@{

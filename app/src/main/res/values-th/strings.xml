@@ -525,6 +525,7 @@
     <string name="withdraw_password">รหัสผ่านการถอน</string>
     <string name="hint_please_enter_withdraw_password">กรุณาใส่รหัสผ่านการถอนเงิน</string>
     <string name="error_withdraw_password">รหัสผ่านที่คุณป้อนไม่ถูกต้อง</string>
+    <string name="error_withdraw_password_for_new">รหัสผ่านต้องประกอบด้วยตัวเลข 4 ตัว</string> <!--J170-->
     <string name="withdraw_amount">จำนวนเงินที่ถอน</string>
     <string name="error_withdraw_amount_bank">รูปแบบจำนวนเงินที่ถอนหรือมูลค่าไม่ถูกต้อง</string>
     <string name="error_withdraw_amount_bigger_than_balance">จำนวนถอนมากกว่ายอดเงินในบัญชี</string>

@@ -540,6 +540,7 @@
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
+    <string name="error_withdraw_password_for_new">Password must be 4 numbers combination</string> <!--J170-->
     <string name="error_wallet_address">The format of the address you entered is incorrect</string>
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
@@ -614,7 +615,7 @@
     <string name="feedback_detail">Feedback details</string>
     <string name="feedback_tabName_problem">Suggestions</string>
     <string name="feedback_tabName_record">Feedback history</string>
-    <string name="feedback_description">If you have a good suggestion for the game or platform or find a Bug to submit, the official customer service will reply within 48 hours. We will timely fix bugs or refer to your feedback to continuously optimize our products and services. (If there are many people who give feedback on the same suggestion or Bug, the bonus will be given to the first person who gives feedback. Remember to give feedback as soon as you find any problem.)</string>
+    <string name="feedback_description">If you have a good suggestion for the game or platform or find a Bug to submit, the official customer service will reply within 48 hours. We will timely fix bugs or refer to your feedback to continuously optimize our products and services. (If there are many people who give feedback on the same suggestion or Bug, the bonus will be given to the first person who gives feedback. Remember to give feedback as soon as you find any problem.</string>
     <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is %1$s 3000 (or other equivalent currency).</string>
     <string name="feedback_submit_succeed">Feedback submitted successfully</string>
     <string name="all_status">All Status</string>
@@ -1233,7 +1234,7 @@
     <string name="payment_method">Payment method</string>
     <string name="select_file">Select file</string>
     <string name="error_recommend_agent">No matched</string>
-    <string name="login_welcome">Hi，Welcome to OKbet~</string>
+    <string name="login_welcome">Hi,Welcome to OKbet~</string>
     <string name="betting">Betting</string>
     <string name="other_bet">Other Betting History</string>
     <string name="sport_match">Matches</string>

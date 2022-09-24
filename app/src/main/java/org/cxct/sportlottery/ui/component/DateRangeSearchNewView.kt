@@ -1,24 +1,16 @@
 package org.cxct.sportlottery.ui.component
 
 import android.content.Context
-import android.os.Build
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.Window
-import android.view.WindowManager
+import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDialog
-import androidx.fragment.app.DialogFragment
+import android.widget.PopupWindow
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.component_date_range_new_selector.view.*
-import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.btn_search
-import kotlinx.android.synthetic.main.component_date_range_selector.view.ll_end_date
 import kotlinx.android.synthetic.main.component_date_range_selector.view.tv_end_date
 import kotlinx.android.synthetic.main.component_date_range_selector.view.tv_start_date
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
@@ -33,8 +25,10 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     private var minusDays = 6
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_calendar) }
-    private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
-    private val calendarBottomSheet: AppCompatDialog by lazy { AppCompatDialog(context) }
+    private val bottomSheetView by lazy {
+        LayoutInflater.from(context).inflate(bottomSheetLayout, null)
+    }
+    private val calendarPopup: PopupWindow by lazy { PopupWindow(context) }
     var timeZone: TimeZone = TimeZone.getDefault()
 
     val startTime: Long?
@@ -43,6 +37,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
             TimeUtil.TimeType.START_OF_DAY,
             timeZone = timeZone
         )
+
 
     val endTime: Long?
         get() = TimeUtil.dateToTimeStamp(
@@ -91,18 +86,29 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
         ll_start_date_box.setOnClickListener {
             bottomSheetView.calendar.setDateSelectedType(DateSelectedType.START)
             bottomSheetView.tv_calendar_title.setText(R.string.start_date)
-            calendarBottomSheet.show()
+            ll_start_date_box.isSelected = !ll_start_date_box.isSelected
+            ll_end_date_box.isSelected = false
+            if (ll_start_date_box.isSelected) {
+                calendarPopup.showAsDropDown(it)
+            } else {
+                calendarPopup.dismiss()
+            }
         }
 
         ll_end_date_box.setOnClickListener {
             bottomSheetView.calendar.setDateSelectedType(DateSelectedType.END)
             bottomSheetView.tv_calendar_title.setText(R.string.end_date)
-            calendarBottomSheet.show()
+            ll_start_date_box.isSelected = false
+            ll_end_date_box.isSelected = !ll_end_date_box.isSelected
+            if (ll_end_date_box.isSelected) {
+                calendarPopup.showAsDropDown(it)
+            } else {
+                calendarPopup.dismiss()
+            }
         }
     }
 
     fun setRecordTimeRange(dateSelectedType: DateSelectedType? = null, start: Calendar, end: Calendar? = null) {
-
         if (end != null) {
             setRecordStartTime(start)
             setRecordEndTime(end)
@@ -129,20 +135,31 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
 
     private fun setupCalendarBottomSheet() {
         setCalendarRange()
-        calendarBottomSheet.setContentView(bottomSheetView)
-        val win = calendarBottomSheet.window
-        win?.setGravity(Gravity.TOP)
-        win?.attributes?.y = 330
-      //  win?.attributes?.width = win?.windowManager?.currentWindowMetrics?.bounds?.width()//设置dialog宽度等于屏幕宽度但是没有起作用
+        calendarPopup.setContentView(bottomSheetView)
+        calendarPopup.width = ViewGroup.LayoutParams.MATCH_PARENT
+        calendarPopup.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        calendarPopup.setBackgroundDrawable(ColorDrawable())
+        calendarPopup.isOutsideTouchable = true
+        calendarPopup.setOnDismissListener {
+            ll_start_date_box.isSelected = false
+            ll_start_date_box.isSelected = false
+        }
         bottomSheetView.calendar.setCalendarListener(object : CalendarListener {
-            override fun onFirstDateSelected(dateSelectedType: DateSelectedType, startDate: Calendar) {
+            override fun onFirstDateSelected(
+                dateSelectedType: DateSelectedType,
+                startDate: Calendar,
+            ) {
                 setRecordTimeRange(dateSelectedType, startDate)
-                calendarBottomSheet.dismiss()
+                calendarPopup.dismiss()
             }
 
-            override fun onDateRangeSelected(dateSelectedType: DateSelectedType, startDate: Calendar, endDate: Calendar) {
+            override fun onDateRangeSelected(
+                dateSelectedType: DateSelectedType,
+                startDate: Calendar,
+                endDate: Calendar,
+            ) {
                 setRecordTimeRange(null, startDate, endDate)
-                calendarBottomSheet.dismiss()
+                calendarPopup.dismiss()
             }
         })
     }

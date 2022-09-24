@@ -4,8 +4,7 @@
     android:minWidth="340dp"
     android:layout_height="260dp"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:background="@color/background">
+    android:orientation="vertical">
 
     <include
         layout="@layout/layout_calendar_nav"

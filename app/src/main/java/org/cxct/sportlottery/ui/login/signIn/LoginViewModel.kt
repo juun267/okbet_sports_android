@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.LocalUtils
 
 
 class LoginViewModel(
@@ -43,6 +44,21 @@ class LoginViewModel(
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<LogoutResult>()
 
+    val accountMsg: LiveData<Pair<String?, Boolean>>
+        get() = _accountMsg
+    private val _accountMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val passwordMsg: LiveData<Pair<String?, Boolean>>
+        get() = _passwordMsg
+    private val _passwordMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val validateCodeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _validateCodeMsg
+    private val _validateCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val loginEnable: LiveData<Boolean>
+        get() = _loginEnable
+    private val _loginEnable = MutableLiveData<Boolean>()
 
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
@@ -52,22 +68,6 @@ class LoginViewModel(
         set(value) {
             loginRepository.isRememberPWD = value
         }
-
-    fun checkInputData(
-        context: Context,
-        account: String,
-        password: String,
-        validCode: String,
-    ): Boolean {
-        val accountError = checkAccount(context, account)
-        val passwordError = checkPassword(context, password)
-        val validCodeError = checkValidCode(context, validCode)
-        val isDataValid = accountError == null && passwordError == null &&
-                (sConfigData?.enableValidCode != FLAG_OPEN || validCodeError == null)
-        _loginFormState.value = LoginFormState(accountError, passwordError, validCodeError)
-
-        return isDataValid
-    }
 
     fun login(loginRequest: LoginRequest, originalPassword: String) {
         viewModelScope.launch {
@@ -146,25 +146,54 @@ class LoginViewModel(
         }
     }
 
-    private fun checkAccount(context: Context, username: String): String? {
-        return when {
-            username.isBlank() -> context.getString(R.string.error_input_empty)
+    fun checkAccount(username: String): String? {
+        val msg = when {
+            username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
+        _accountMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
     }
 
-    private fun checkPassword(context: Context, password: String): String? {
-        return when {
-            password.isBlank() -> context.getString(R.string.error_input_empty)
+    fun checkPassword(password: String): String? {
+        val msg = when {
+            password.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
+        _passwordMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
     }
 
-    fun checkValidCode(context: Context, validCode: String): String? {
-        return when {
-            validCode.isBlank() -> context.getString(R.string.error_input_empty)
+    fun checkValidCode(validCode: String): String? {
+        val msg = when {
+            validCode.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
+        _validateCodeMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
     }
 
+    private fun focusChangeCheckAllInputComplete() {
+        _loginEnable.value = checkAllInputComplete()
+    }
+
+    private fun checkAllInputComplete(): Boolean {
+        if (checkInputPair(accountMsg)) {
+            return false
+        }
+        if (checkInputPair(passwordMsg)) {
+            return false
+        }
+        if (sConfigData?.enableValidCode == FLAG_OPEN && checkInputPair(validateCodeMsg)) {
+            return false
+        }
+        return true
+    }
+
+    private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
+        return data.value?.first != null || data.value?.second != true
+    }
 }
