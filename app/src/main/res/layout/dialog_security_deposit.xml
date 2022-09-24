@@ -22,7 +22,7 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@string/prompt"
-            android:textColor="@color/color_CCCCCC_000000"
+            android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
