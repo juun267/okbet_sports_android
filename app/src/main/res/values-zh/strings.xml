@@ -1247,4 +1247,5 @@
     <string name="remove_account_warning">您确定要注销当前账号吗？</string>
     <string name="register_and_login">注册/登录</string>
     <string name="km">千米</string>
+    <string name="outlet">投注站</string>
 </resources>
