@@ -164,4 +164,6 @@
     <color name="color_202541_F7F8FC">@color/color_202541</color>
     <color name="color_334266_DDE1F4">@color/color_334266</color>
     <color name="color_9FADC6_535D76">@color/color_9FADC6</color>
+    <color name="color_1D1F2D_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_131932_FAFCFF">@color/color_131932</color>
 </resources>

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_131932_F0F5FA"
     tools:context=".ui.feedback.record.FeedbackDetailFragment">
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/color_191919_FCFCFC"
+        android:background="@color/color_131932_F0F5FA"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

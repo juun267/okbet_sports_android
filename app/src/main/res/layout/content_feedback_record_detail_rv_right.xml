@@ -4,84 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="15dp"
     tools:context=".ui.feedback.record.FeedbackListDetailAdapter">
-
+<LinearLayout
+    android:gravity="right"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
+        android:padding="@dimen/dp_10"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:minHeight="80dp"
         android:background="@drawable/bg_rectangle_4dp_blue"
-        android:orientation="vertical">
+       >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="16dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/feedback_triangle_blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txv_reply"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginStart="10dp"
+            android:gravity="center"
             android:background="@null"
-            android:textColor="@color/color_317FFF_1F4780"
+            android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             tools:text="怎么没有办法投注?下单后没有反应" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/submit_time"
-            android:textColor="@color/color_7F7F7F_999999"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txv_reply_time"
-            app:layout_constraintTop_toBottomOf="@+id/txv_reply" />
-
-        <TextView
-            android:id="@+id/txv_reply_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/color_7F7F7F_999999"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txv_reply"
-            tools:text="2021-02-16 13:34:43" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/img_my_pic"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="5dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_avatar_default"
-        app:riv_border_color="@color/color_317FFF_0760D4"
-        app:riv_border_width="1dp"
-        app:riv_oval="true"/>
+</LinearLayout>
+    <TextView
+        android:id="@+id/txv_reply_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/color_C9CFD7"
+        android:textSize="@dimen/textSize10sp"
+       android:gravity="center_horizontal"
+        tools:text="2021-02-16 13:34:43" />
 
 </LinearLayout>
