@@ -1669,6 +1669,7 @@ class SportViewModel(
                         "${sConfigData?.sportStream}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
                     val animeUrl =
                         "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                    LogUtil.d(videoUrl)
                     _videoUrl.postValue(Event(videoUrl))
                     _animeUrl.postValue(Event(animeUrl))
                     notifyFavorite(FavoriteType.PLAY_CATE)

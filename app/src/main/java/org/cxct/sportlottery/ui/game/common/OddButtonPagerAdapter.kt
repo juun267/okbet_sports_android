@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v6.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -645,9 +646,7 @@ class OddButtonPagerViewHolder private constructor(
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
             else -> playCateName.updatePlayCateColor()
         }
-        if (playCateCode.isCSType()) {
-            oddBtnType.visibility = View.GONE
-        }
+        oddBtnType.isVisible = matchType != MatchType.CS
 
         if(matchType == MatchType.CS && odds?.second?.size == 1){
             oddBtnOther.apply otherButtonSettings@{
@@ -780,17 +779,20 @@ class OddButtonPagerViewHolder private constructor(
                 ?: true) -> itemView.resources.getString(R.string.unknown_data)
             else -> playCateName.updatePlayCateColor()
         }
-        if (playCateCode.isCSType()) {
-            oddBtnType.visibility = View.GONE
-        }
-        if(matchType == MatchType.CS && odds?.second?.size == 1){
+        oddBtnType.isVisible = matchType != MatchType.CS
+
+        if (matchType == MatchType.CS && odds?.second?.size == 1) {
             oddBtnOther.apply homeButtonSettings@{
-                setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType, isOtherBtn = true)
+                setupOdd4hall(playCateCode,
+                    odds.second?.getOrNull(0),
+                    odds.second,
+                    oddsType,
+                    isOtherBtn = true)
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
             }
         } else {
             oddBtnHome.apply homeButtonSettings@{
-                setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType)
+                setupOdd4hall(playCateCode, odds.second?.getOrNull(0), odds.second, oddsType)
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
             }
             oddBtnAway.apply awayButtonSettings@{

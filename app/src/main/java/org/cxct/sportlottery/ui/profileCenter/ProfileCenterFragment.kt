@@ -535,7 +535,7 @@ class ProfileCenterFragment :
                         dialog.setTitle(getString(R.string.withdraw_setting))
                         dialog.setMessage(getString(R.string.please_setting_withdraw_password))
                         dialog.setPositiveButtonText(getString(R.string.go_to_setting))
-                        dialog.setNegativeButtonText(getString(R.string.cancel))
+                        dialog.setNegativeButtonText(getString(R.string.btn_cancel))
                         dialog.setNegativeTextColor(R.color.color_FFFFFF_414655)
                         dialog.setCanceledOnTouchOutside(false)
                         dialog. setPositiveClickListener{

@@ -490,7 +490,7 @@
                     android:layout_height="30dp"
                     android:background="@color/color_bbbbbb_ffffff"
                     android:orientation="horizontal"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     tools:visibility="visible">
 
                     <TextView
