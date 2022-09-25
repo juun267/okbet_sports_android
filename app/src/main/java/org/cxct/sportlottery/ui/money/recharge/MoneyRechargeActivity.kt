@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_money_recharge.*
-import kotlinx.android.synthetic.main.activity_money_recharge.custom_tab_layout
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -20,6 +19,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
@@ -120,7 +120,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
                 with(customAlertDialog) {
-                    setTitle(resources.getString(R.string.prompt))
+                    setTitle(LocalUtils.getString(R.string.prompt))
                     setMessage(apiResult.msg)
                     setNegativeButtonText(null)
                 }.let {
@@ -156,7 +156,7 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
                 with(customAlertDialog) {
-                    setTitle(resources.getString(R.string.prompt))
+                    setTitle(LocalUtils.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
                     setTextColor(R.color.color_E44438_e44438)

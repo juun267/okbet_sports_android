@@ -99,6 +99,11 @@ class SportOddAdapter(private val matchType: MatchType) :
         }
     }
 
+    fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
+        val index = data.indexOf(data.find { it == matchOdd })
+        notifyItemChanged(index, matchOdd)
+    }
+
     fun updateBySelectCsTab(matchOdd: MatchOdd) {
         val index = data.indexOf(data.find { it == matchOdd })
         notifyItemChanged(index, matchOdd)
@@ -1074,7 +1079,7 @@ class SportOddAdapter(private val matchType: MatchType) :
                     stateRestorationPolicy = StateRestorationPolicy.PREVENT
                     this.oddsType = oddsType
                     this.odds = item.oddsMap ?: mutableMapOf()
-                    //update()
+//                    update()
                     //notifyDataSetChanged() // TODO
                 }
             }

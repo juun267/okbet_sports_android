@@ -199,7 +199,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(iv_head.context)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_avatar_default))
+            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(iv_head) //載入頭像
     }
 
@@ -242,12 +242,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
                     tv_verified.text = getString(R.string.not_verify)
-                    tv_verified.setTextColor(
-                        ContextCompat.getColor(
-                            tv_verified.context,
-                            R.color.color_E44438_e44438
-                        )
-                    )
+
                     icon_identity.visibility = View.VISIBLE
                 }
                 VerifiedType.VERIFYING.value -> {

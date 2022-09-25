@@ -63,7 +63,7 @@ class FeedbackListDetailAdapter(var userId: Long) :
 
     class MineViewHolder(itemView: View, val iconUrl: String?) : RecyclerView.ViewHolder(itemView) {
 
-        private val imgPic: ImageView = itemView.findViewById(R.id.img_my_pic)
+
         private val txvReply: TextView = itemView.findViewById(R.id.txv_reply)
         private val txvReplyTime: TextView = itemView.findViewById(R.id.txv_reply_time)
 
@@ -71,10 +71,7 @@ class FeedbackListDetailAdapter(var userId: Long) :
             txvReply.text = item.content
             txvReplyTime.text = TimeUtil.stampToDateHMS(item.addTime ?: 0)
 
-            Glide.with(imgPic.context)
-                .load(iconUrl)
-                .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
-                .into(imgPic)
+
         }
 
         companion object {

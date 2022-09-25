@@ -268,7 +268,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/ic_live" />
+                    android:src="@drawable/ic_live_white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -297,7 +297,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/ic_video" />
+                    android:src="@drawable/ic_video_white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -324,7 +324,7 @@
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:src="@drawable/ic_action" />
+                    android:src="@drawable/ic_action_white" />
 
                 <TextView
                     android:layout_width="wrap_content"

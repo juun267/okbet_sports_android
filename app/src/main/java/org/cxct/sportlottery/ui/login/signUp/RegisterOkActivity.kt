@@ -417,8 +417,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 else -> {
                     page--
                     setPage()
-                    binding.etMemberAccount.requestFocus()
-                    btn_register.isEnabled = true
+                    viewModel.focusChangeCheckAllInputComplete(page)
                 }
             }
 
@@ -1036,6 +1035,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             if (page < 3) {
                 page++
                 setPage()
+                viewModel.focusChangeCheckAllInputComplete(page)
             }
 
 

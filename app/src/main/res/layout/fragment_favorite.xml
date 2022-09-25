@@ -51,19 +51,24 @@
                 android:scaleType="fitStart"
                 android:src="@drawable/logo_okbet_color" />
 
-            <androidx.legacy.widget.Space
+            <include
+                android:id="@+id/lin_search"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
+                android:layout_height="@dimen/margin_26"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="@dimen/margin_15"
+                layout="@layout/view_search"
+                android:visibility="visible" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_bet_all_sports"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
-                android:minWidth="100dp"
                 android:paddingHorizontal="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginEnd="13dp"
+                android:visibility="gone"
                 tools:ignore="SpUsage,RtlSymmetry,ContentDescription">
 
                 <LinearLayout
@@ -80,9 +85,12 @@
                         android:id="@+id/tv_all_sports"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="13dp"
                         android:duplicateParentState="true"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:text="@string/all_sport"
                         android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/selector_blue_white" />

@@ -101,7 +101,7 @@ class LeagueSelectActivity :
 
     private fun setIndexbar(indexArr: Array<CharSequence>) {
         //自定义索引数组，默认是26个大写字母
-//        indexBar.setTextArray(indexArr);
+        indexBar.setTextArray(indexArr);
         //添加相关监听
         indexBar.setOnIndexLetterChangedListener(object : IndexBar.OnIndexLetterChangedListener {
             override fun onTouched(touched: Boolean) {

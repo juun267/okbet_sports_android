@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,43 +15,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile_center.*
 import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_about_us
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_account_transfer
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_affiliate
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_appearance
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_custom_serivce
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_edit_nickname
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_feedback
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_fund_detail
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_game_rule
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_game_settlement
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_help_center
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_language
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_member_level
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_news_center
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_other_bet_record
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_promotion
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_recharge
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_refresh_money
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_self_limit
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_time_zone
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_withdraw
-import kotlinx.android.synthetic.main.fragment_profile_center.btn_withdrawal_setting
-import kotlinx.android.synthetic.main.fragment_profile_center.iv_flag
-import kotlinx.android.synthetic.main.fragment_profile_center.iv_head1
-import kotlinx.android.synthetic.main.fragment_profile_center.iv_logout
-import kotlinx.android.synthetic.main.fragment_profile_center.lin_wallet_operation
-import kotlinx.android.synthetic.main.fragment_profile_center.rl_head
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_account_balance
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_appearance
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_currency_type
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_language
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_user_id
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_user_nickname
 import kotlinx.android.synthetic.main.view_toolbar_main.iv_menu
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -76,14 +40,13 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
-import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
-import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
-import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.selflimit.SelfLimitActivity
@@ -493,7 +456,14 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-
+          viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
         viewModel.userInfo.observe(viewLifecycleOwner) {
             updateUI(it)
         }
@@ -598,12 +568,14 @@ class ProfileCenterFragment :
                         dialog.setTitle(getString(R.string.withdraw_setting))
                         dialog.setMessage(getString(R.string.please_complete_profile_info))
                         dialog.setPositiveButtonText(getString(R.string.go_to_setting))
-                        dialog.setNegativeButtonText(getString(R.string.cancel))
+                        dialog.setNegativeButtonText(getString(R.string.btn_cancel))
                         dialog.setNegativeTextColor(R.color.color_FFFFFF_414655)
                         dialog.setCanceledOnTouchOutside(false)
-                        dialog. setPositiveClickListener{
+                        dialog.setPositiveClickListener {
+                            dialog.dismiss()
                             startActivity(Intent(requireActivity(), ProfileActivity::class.java))
                         }
+                        dialog.show(childFragmentManager, null)
                     }
                 } else {
                     viewModel.checkBankCardPermissions()
@@ -623,10 +595,12 @@ class ProfileCenterFragment :
                         startActivity(Intent(requireActivity(), BankActivity::class.java))
                     }
                 } else {
+                    LogUtil.d("duck点击提款准备跳转")
                     startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
                 }
             }
         }
+
 
         viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
@@ -728,8 +702,9 @@ class ProfileCenterFragment :
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
 
-        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
+        viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
             it.getContentIfNotHandled()?.let {
+                LogUtil.d("duck$it")
                 startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
         }
@@ -787,7 +762,7 @@ class ProfileCenterFragment :
     private fun updateUI(userInfo: UserInfo?) {
         Glide.with(this)
             .load(userInfo?.iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(iv_head1) //載入頭像
 
         tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
@@ -860,5 +835,33 @@ class ProfileCenterFragment :
     private fun updateNoticeButton() {
         iv_circle?.visibility =
             (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
+    }
+    //实名验证
+    private fun showKYCVerifyDialog() {
+        VerifyIdentityDialog().apply {
+            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            }
+            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                val serviceUrl = sConfigData?.customerServiceUrl
+                val serviceUrl2 = sConfigData?.customerServiceUrl2
+                when {
+                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.supportFragmentManager?.let { it1 ->
+                            ServiceDialog().show(
+                                it1,
+                                null
+                            )
+                        }
+                    }
+                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                    }
+                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                    }
+                }
+            }
+        }.show(childFragmentManager, null)
     }
 }

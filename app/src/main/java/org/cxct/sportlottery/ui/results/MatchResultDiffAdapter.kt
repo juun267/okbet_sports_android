@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -239,19 +237,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun titleArrowRotate(itemView: View, item: MatchResultData) {
             itemView.apply {
                 if (item.titleExpanded) {
-                    iv_arrow.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ic_arrow_dark
-                        )
-                    )
+                    iv_arrow.rotation = 0f
                 } else {
-                    iv_arrow.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context,
-                            R.drawable.ic_arrow_down_dark
-                        )
-                    )
+                    iv_arrow.rotation = 180f
                 }
             }
         }

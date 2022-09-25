@@ -35,7 +35,7 @@
     <string name="recommend_code">Mã giới thiệu</string>
     <string name="hint_recommend_code">Vui lòng nhập Mã giới thiệu</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
-    <string name="member_account">Đăng nhập tài khoản</string>
+    <string name="member_account">Tài khoản</string>
     <string name="hint_member_account">Độ dài từ 4-16 ký tự bao gồm cả chữ và số</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
@@ -167,7 +167,7 @@
     <string name="fish_game">Trò trời bắn cá</string>
     <string name="premium_odds">CƯỢC ĐẶC BIỆT</string>
     <string name="infomation_center">Trung tâm thông tin</string>
-    <string name="left_menu_odds_type_setting">Cài đặt kèo chấp</string>
+    <string name="left_menu_odds_type_setting">Cài đặt thị trường</string>
     <string name="go_back_home_page">Quay lại trang chủ</string>
     <string name="profile_center">Trung tâm cá nhân</string>
     <string name="member_level">Cấp bậc hội viên</string>
@@ -255,7 +255,7 @@
     <string name="fourth_session">hiệp bốn</string>
     <string name="add_time_first_half_game">Tăng ca hiệp 1</string>
     <string name="add_time_second_half_game">Tăng ca hiệp 2</string>
-    <string name="account_balance">Số dư tài khoản</string>
+    <string name="account_balance">Tổng tài chính</string>
     <string name="user_id_colon">ID người dùng：</string>
     <string name="recharge">Gửi tiền</string>
     <string name="account_transfer">Chuyển đổi hạn mức</string>
@@ -317,7 +317,7 @@
     <string name="rebates">Hoàn lãi</string>
     <string name="remark_by_mts">Không được thiết lập do hệ thống kiểm duyệt</string>
     <string name="remark_by_own_source">Không thiết lập được do cơ chế kiểm duyệt</string>
-    <string name="select_all">chọn tất cả</string>
+    <string name="select_all">" Chọn tất cả"</string>
     <string name="all_order">Tất cả đơn cược</string>
     <string name="not_settled_order">Đơn cược chưa được thanh toán</string>
     <string name="settled_order">Đã kết toán</string> <!--I046-->
@@ -977,7 +977,7 @@
     <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn)</string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
-    <string name="text_search">Tìm kiếm</string>
+    <string name="text_search">Tìm trận đấu</string>
     <string name="text_clear">Xóa</string>
     <string name="text_search_history">Lịch sử tìm kiếm</string>
     <string name="text_top_search">Tìm kiếm hàng đầu</string>
@@ -1189,7 +1189,6 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Kết Quả Đúng</string>
-
     <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
@@ -1198,11 +1197,11 @@
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
     <string name="no_more">Không còn dữ liệu hiển thị</string>
-    <string name="main_tab_favorite">Trận đấu yêu thích</string>
+    <string name="main_tab_favorite">Yêu thích</string>
     <string name="my_favorite_empty">Bạn vẫn chưa có trận đấu yêu thích</string>
     <string name="cruel_write_off">Chắc chắn xoá</string>
     <string name="cancel_account">Xoá tài khoản</string>
-    <string name="match_analyze">Bình luận trận đấu</string>
+    <string name="match_analyze">Phân tích trận đấu</string>
     <string name="half">Nửa</string>
     <string name="customer_service_help">Nếu cần trợ giúp, vui lòng liên hệ CSKH</string>
     <string name="click_upload_id_photo">Nhấn tải lên ảnh ID</string>
@@ -1230,4 +1229,5 @@
     <string name="my_message">Tin nhắn</string>
     <string name="register_and_login">Đăng ký/Đăng nhập</string>
     <string name="km">Km</string>
+    <string name="league_filter">Lọc trận đấu</string>
 </resources>
