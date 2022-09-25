@@ -9,13 +9,12 @@
     tools:background="@drawable/frame_color_silver_light_stroke">
 
     <TextView
-
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:ellipsize="end"
         android:gravity="center"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/color_AEAEAE_404040"
         android:textSize="@dimen/textSize14sp"
        app:layout_constraintEnd_toEndOf="parent"

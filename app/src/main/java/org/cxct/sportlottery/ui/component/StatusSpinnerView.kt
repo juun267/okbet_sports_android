@@ -10,11 +10,13 @@ import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class StatusSpinnerView @JvmOverloads constructor(
     context: Context,
@@ -89,18 +91,21 @@ class StatusSpinnerView @JvmOverloads constructor(
         spinnerAdapter = StatusSpinnerAdapter(dataList)
         spinnerAdapter!!.setItmeColor(resources.getColor(R.color.color_FFFFFF))
         mListPop = ListPopupWindow(context)
-        var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
-            0F
-        )
-        if(listWidth > 0){
-            mListPop.width = listWidth.toInt()
-        } else {
-            mListPop.width = ScreenUtils.getScreenWidth(context) / 2
+        cl_root.doOnLayout {
+            var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
+                0F
+            )
+            if (listWidth > 0) {
+                mListPop.width = listWidth.toInt()
+            } else {
+                mListPop.width = cl_root.width - 10.dp
+            }
         }
         mListPop.height = LayoutParams.WRAP_CONTENT
 
-        var listBackResource = typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_listBackground,0)
-        if(listBackResource != 0){
+        var listBackResource =
+            typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_listBackground, 0)
+        if (listBackResource != 0) {
             mListPop.setBackgroundDrawable(
                 ContextCompat.getDrawable(
                     context,
@@ -119,17 +124,17 @@ class StatusSpinnerView @JvmOverloads constructor(
             iv_arrow.setImageResource(arrowImg)
         }
         mListPop.setAdapter(spinnerAdapter)
-        mListPop.anchorView = tv_name  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.anchorView = cl_root  //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.isModal = true //设置是否是模式
         mListPop.verticalOffset = 5
-        mListPop.horizontalOffset = -5
+        mListPop.horizontalOffset = 5.dp
         mListPop.setDropDownGravity(Gravity.CENTER)
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
-                id: Long
+                id: Long,
             ) {
                 mListPop.dismiss()
                 selectItem = dataList.get(position)

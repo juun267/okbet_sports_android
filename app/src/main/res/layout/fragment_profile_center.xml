@@ -13,11 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <include layout="@layout/view_status_bar" />
+
         <FrameLayout
             android:id="@+id/lin_person"
             android:layout_width="match_parent"
-            android:layout_height="282dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/ic_personal_bg"
             android:orientation="vertical">
 
@@ -26,6 +26,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <include layout="@layout/view_status_bar" />
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/tool_bar_height"
@@ -280,7 +281,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="@dimen/margin_14"
-            android:layout_marginTop="-70dp"
+            android:layout_marginTop="-45dp"
             android:layout_marginEnd="@dimen/margin_14"
             android:background="@drawable/bg_white_walle"
             android:gravity="center"
@@ -811,12 +812,6 @@
                         </RelativeLayout>
                     </LinearLayout>
 
-
-
-
-
-
-
                     <LinearLayout
                         android:id="@+id/btn_version_now"
                         android:layout_width="match_parent"
@@ -949,8 +944,9 @@
                                 android:layout_centerVertical="true"
                                 android:layout_toStartOf="@+id/iv_line4"
                                 android:layout_toEndOf="@+id/tv_aboutus"
-                                android:singleLine="true"
                                 android:ellipsize="end"
+                                android:singleLine="true"
+                                android:gravity="right"
                                 android:text="@string/join_us_win_wealth"
                                 android:textColor="@color/color_A7B2C4"
                                 android:textSize="@dimen/textSize12sp" />

@@ -20,7 +20,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -44,7 +43,6 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
@@ -308,14 +306,12 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
                 binding.etIdentityType.isVisible = isEnableKYCVerify
                 binding.etIdentityNumber.isVisible = isEnableKYCVerify
-                binding.etIdentity.isVisible =
-                    isEnableKYCVerify && sConfigData?.enableIdentityNumber == FLAG_OPEN
+                binding.etIdentity.isVisible = isEnableKYCVerify
                 binding.endButton.isVisible = isEnableKYCVerify
 
                 binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-                binding.etIdentity2.isVisible =
-                    isEnableKYCVerify && sConfigData?.enableIdentityNumber == FLAG_OPEN
+                binding.etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 binding.endButton2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
                 setupFullName()
