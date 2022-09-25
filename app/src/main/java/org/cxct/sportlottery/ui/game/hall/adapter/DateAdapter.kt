@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_date_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.game.data.Date
-import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
@@ -54,25 +54,30 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
             val dateStr = TimeUtil.timeFormat(item.timeRangeParams.startTime?.toLong(),
                 TimeUtil.YMDE_FORMAT_1)
+            var cal = Calendar.getInstance().apply {
+                timeInMillis = item.timeRangeParams.startTime?.toLong()!!
+            }
+            itemView.date_text_week.text =
+                TimeUtil.setupDayOfWeekVi(itemView.context, cal).uppercase()
             //格式: 2021-December-28-Tue
             itemView.date_text_date.text = dateStr.split("-")[DateSplitPart.MONTH_DATE.part]
 
-            when (LanguageManager.getSelectLanguage(itemView.context)) {
-                LanguageManager.Language.VI -> {
-                    itemView.date_text_week.text =
-                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
-                            .replace("Th", "Thứ")
-                }
-                LanguageManager.Language.EN -> {
-                    itemView.date_text_week.text =
-                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
-                            .substring(0, 3)
-                }
-                else -> {
-                    itemView.date_text_week.text =
-                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
-                }
-            }
+//            when (LanguageManager.getSelectLanguage(itemView.context)) {
+//                LanguageManager.Language.VI -> {
+//                    itemView.date_text_week.text =
+//                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
+//                            .replace("Th", "Thứ")
+//                }
+//                LanguageManager.Language.EN -> {
+//                    itemView.date_text_week.text =
+//                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
+//                            .substring(0, 3)
+//                }
+//                else -> {
+//                    itemView.date_text_week.text =
+//                        dateStr.split("-")[DateSplitPart.WEEKDAY.part]
+//                }
+//            }
         }
 
 

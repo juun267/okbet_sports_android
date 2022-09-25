@@ -773,9 +773,9 @@ class RegisterViewModel(
         return checkAllInputComplete(3)
     }
 
-    private fun focusChangeCheckAllInputComplete(page: Int) {
-        _registerEnable.value = checkAllInputComplete(page)
-    }
+     fun focusChangeCheckAllInputComplete(page: Int) {
+         _registerEnable.value = checkAllInputComplete(page)
+     }
 
     private fun checkAllInputComplete(): Boolean {
         if (sConfigData?.enableInviteCode == FLAG_OPEN && inviteCodeMsg.value != null) {

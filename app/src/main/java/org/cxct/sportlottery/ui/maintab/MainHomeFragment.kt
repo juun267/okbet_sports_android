@@ -159,6 +159,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
+        viewModel.getRecommend()
     }
 
     override fun onPause() {
@@ -516,7 +517,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 }
             }
         }
+        receiver.matchOddsChange.observe(viewLifecycleOwner) {
 
+        }
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             val targetList = homeRecommendAdapter.getRecommendListData()
             var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單

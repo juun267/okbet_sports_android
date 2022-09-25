@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
@@ -67,6 +68,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
     private lateinit var mListPop: ListPopupWindow
+    private var gameType: GameType? = null
     private val favoriteAdapter by lazy {
         FavoriteAdapter(MatchType.MY_EVENT).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
@@ -240,6 +242,8 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 sportItem.isSelected = true
                 tv_all_sports.text = sportItem.name
                 unSubscribeChannelHallAll()
+                gameType =
+                    if (sportItem.code.isNullOrBlank()) null else GameType.getGameType(sportItem.code)
                 viewModel.switchGameType(sportItem)
                 favoriteAdapter.setPreloadItem()
             }
@@ -497,6 +501,11 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
                 } catch (e: Exception) {
                     e.printStackTrace()
+                }
+                //全部球类的时候，赛事数据为空，则隐藏筛选按钮，显示搜索
+                (gameType == null && leagueOddList.isEmpty()).let {
+                    cl_bet_all_sports.isVisible = !it
+                    lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
                 }
             }
         }

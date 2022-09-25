@@ -34,7 +34,7 @@
                     android:textColor="@color/selector_button_odd_top_text"
                     android:textSize="@dimen/textSize12sp"
                     android:paddingRight="5dp"
-                    android:text="义大利义大利"
+                    android:text=""
                     tools:textColor="@color/color_A7B2C4" />
 
                 <TextView

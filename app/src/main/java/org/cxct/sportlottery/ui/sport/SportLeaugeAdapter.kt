@@ -207,25 +207,32 @@ class SportLeagueAdapter(private val matchType: MatchType) :
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         } else {
             // Update with payload
-            when (payloads.first()) {
-                is LeagueOdd -> {
-                    val leagueOdd = payloads.first() as LeagueOdd
-                    (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
-                }
+            payloads.forEach {
+                when (it) {
+                    is LeagueOdd -> {
+                        val leagueOdd = payloads.first() as LeagueOdd
+                        (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
+                    }
 
-                is PayLoadEnum -> {
-                    (payloads.first() as PayLoadEnum).apply {
-                        when (this) {
-                            PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                (holder as ItemViewHolder).updateByBetInfo()
-                            }
-                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                (holder as ItemViewHolder).updateByPlayCate()
-                            }
-                            PayLoadEnum.EXPAND -> {
-                                (holder as ItemViewHolder).updateLeagueExpand(data[position], matchType)
+                    is PayLoadEnum -> {
+                        (payloads.first() as PayLoadEnum).apply {
+                            when (this) {
+                                PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                    (holder as ItemViewHolder).updateByBetInfo()
+                                }
+                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                    (holder as ItemViewHolder).updateByPlayCate()
+                                }
+                                PayLoadEnum.EXPAND -> {
+                                    (holder as ItemViewHolder).updateLeagueExpand(data[position],
+                                        matchType)
+                                }
                             }
                         }
+                    }
+                    // 作用於賠率刷新、波坦tab切換
+                    is MatchOdd -> {
+                        (holder as SportLeagueAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
                     }
                 }
             }
@@ -303,6 +310,16 @@ class SportLeagueAdapter(private val matchType: MatchType) :
 
         fun updateByPlayCate() {
             sportOddAdapter.updateByPlayCate()
+        }
+
+        fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
+            if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
+                sportOddAdapter.updateByMatchIdForOdds(matchOdd)
+            }
+        }
+
+        fun updateBySelectCsTab(matchOdd: MatchOdd) {
+            sportOddAdapter.updateBySelectCsTab(matchOdd)
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {

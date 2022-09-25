@@ -190,7 +190,7 @@
     <string name="fish_game">Fishing Casino</string>
     <string name="premium_odds">PRICE BOOSTS</string>
     <string name="infomation_center">Information</string>
-    <string name="left_menu_odds_type_setting">Odds Setting</string>
+    <string name="left_menu_odds_type_setting">Market settings</string>
     <string name="go_back_home_page">Back to main page</string>
     <string name="profile_center">Profile</string>
     <string name="member_level">Member level</string>
@@ -266,7 +266,7 @@
     <string name="fourth_session">4th period</string>
     <string name="add_time_first_half_game">Overtime 1st Half</string>
     <string name="add_time_second_half_game">Overtime 2nd Half</string>
-    <string name="account_balance">Current Balance</string>
+    <string name="account_balance">Total</string>
     <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposit</string>
     <string name="account_transfer">Transfer Limit</string>
@@ -694,7 +694,7 @@
     <string name="available_amount">Winable</string>
     <string name="win_lose">Win / Lose</string>
     <string name="win_lose_mark">Win / Lose: </string>
-    <string name="all_sport">All sports</string>
+    <string name="all_sport">All Sports</string>
     <string name="back_to_top">Back to top</string>
     <string name="total">Total</string>
     <string name="verse">v</string>

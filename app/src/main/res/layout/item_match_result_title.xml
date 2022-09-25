@@ -25,7 +25,7 @@
                 android:layout_width="@dimen/margin_12"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_arrow_gray_up" />
+                android:src="@drawable/ic_arrow_up_gray" />
 
             <TextView
                 android:id="@+id/tv_type"

@@ -357,14 +357,17 @@ class SportListFragment :
                 )
             )
         }
-        if (matchType == MatchType.EARLY) {
-            mCalendarSelected = true
-            iv_calendar.visibility = View.VISIBLE
-            game_filter_type_list.visibility = View.VISIBLE
-        } else {
-            mCalendarSelected = false
-            iv_calendar.visibility = View.GONE
-            game_filter_type_list.visibility = View.GONE
+        when (matchType) {
+            MatchType.EARLY, MatchType.CS -> {
+                mCalendarSelected = true
+                iv_calendar.isVisible = true
+                game_filter_type_list.isVisible = true
+            }
+            else -> {
+                mCalendarSelected = false
+                iv_calendar.isVisible = false
+                game_filter_type_list?.isVisible = iv_calendar.isVisible && iv_calendar.isSelected
+            }
         }
     }
 
@@ -563,7 +566,8 @@ class SportListFragment :
         //當前玩法無賽事
         viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
             sport_type_list.isVisible = !it && matchType != MatchType.CS
-            iv_calendar.isVisible = matchType == MatchType.EARLY && !it
+            iv_calendar.isVisible =
+                (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
             sportLeagueAdapter.removePreloadItem()
             hideLoading()
         }
@@ -878,7 +882,7 @@ class SportListFragment :
     private fun updateSportType(gameTypeList: List<Item>) {
         if (gameTypeList.isEmpty()) {
             sport_type_list.isVisible = matchType != MatchType.CS
-            iv_calendar.isVisible = matchType == MatchType.EARLY
+            iv_calendar.isVisible = matchType == MatchType.EARLY || matchType == MatchType.CS
             sportLeagueAdapter.removePreloadItem()
             hideLoading()
             return
@@ -916,17 +920,18 @@ class SportListFragment :
         sport_type_list?.post {
             if (gameTypeList.isEmpty()) {
                 sport_type_list?.isVisible = false
-                iv_calendar?.visibility = View.GONE
-                game_filter_type_list?.visibility = View.GONE
+                iv_calendar?.isVisible = false
+                game_filter_type_list?.isVisible = false
             } else {
                 sport_type_list?.isVisible = matchType != MatchType.CS
                 iv_calendar?.apply {
                     visibility = when (matchType) {
-                        MatchType.EARLY -> View.VISIBLE
+                        MatchType.EARLY, MatchType.CS -> View.VISIBLE
                         else -> View.GONE
                     }
                     isSelected = mCalendarSelected
                 }
+                game_filter_type_list?.isVisible = iv_calendar.isVisible && iv_calendar.isSelected
             }
         }
     }

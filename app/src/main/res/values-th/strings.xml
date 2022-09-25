@@ -307,7 +307,7 @@
     <string name="odd_type_idn">ID</string>
     <string name="text_chose_language">กลับไปหน้าหลัก</string>
     <string name="go_back_home_page">กลับไปที่บ้าน</string> <!--J721-->
-    <string name="left_menu_odds_type_setting">การตั้งค่าอัตราต่อรอง</string>
+    <string name="left_menu_odds_type_setting">ตั้งค่าแบบฟอร์ม</string>
     <string name="infomation_center">ศูนย์ข้อมูล</string>
     <string name="appearance">ภายนอก</string>
     <string name="day_mode">โหมดกลางวัน</string>
@@ -1184,5 +1184,6 @@
     <string name="remove_account_warning">คุณแน่ใจไหมว่าจะลบบัญชี</string>
     <string name="my_message">ข้อความ</string>
     <string name="register_and_login">ลงทะเบียน/เข้าสู่ระบบ</string>
+    <string name="league_filter">คัดเลือกเหตุการณ์</string>
     <!--F005-->
 </resources>

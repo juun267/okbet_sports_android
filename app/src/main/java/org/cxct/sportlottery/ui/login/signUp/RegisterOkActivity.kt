@@ -308,12 +308,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
                 binding.etIdentityType.isVisible = isEnableKYCVerify
                 binding.etIdentityNumber.isVisible = isEnableKYCVerify
-                binding.etIdentity.isVisible = isEnableKYCVerify
+                binding.etIdentity.isVisible =
+                    isEnableKYCVerify && sConfigData?.enableIdentityNumber == FLAG_OPEN
                 binding.endButton.isVisible = isEnableKYCVerify
 
                 binding.etIdentityType2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
                 binding.etIdentityNumber2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
-                binding.etIdentity2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
+                binding.etIdentity2.isVisible =
+                    isEnableKYCVerify && sConfigData?.enableIdentityNumber == FLAG_OPEN
                 binding.endButton2.isVisible = isEnableKYCVerify && isSecondVerifyKYCOpen
 
                 setupFullName()
@@ -417,8 +419,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 else -> {
                     page--
                     setPage()
-                    binding.etMemberAccount.requestFocus()
-                    btn_register.isEnabled = true
+                    viewModel.focusChangeCheckAllInputComplete(page)
                 }
             }
 
@@ -1036,6 +1037,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             if (page < 3) {
                 page++
                 setPage()
+                viewModel.focusChangeCheckAllInputComplete(page)
             }
 
 
