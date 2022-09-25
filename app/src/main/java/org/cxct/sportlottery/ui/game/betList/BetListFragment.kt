@@ -810,9 +810,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.getContentIfNotHandled().let { result ->
                 showReceipt = result != null
                 result?.let { resultNotNull ->
-                    //隱藏betLoading
-                    setBetLoadingVisibility(false)
                     if (resultNotNull.success) {
+                        setBetLoadingVisibility(false, keepShowingBetLoading = true)
                         //多筆和單筆投注單，下注成功後的行為不同
 //                        if (isMultiBet) {
                             //多筆的是直接 replace fragment
@@ -836,6 +835,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                             })
                         }
                     } else {
+                        setBetLoadingVisibility(false)
                         showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
                     }
                 }
@@ -974,10 +974,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     /**
      * 是否顯示 betLoading
      */
-    private fun setBetLoadingVisibility(isVisible: Boolean) {
+    private fun setBetLoadingVisibility(
+        isVisible: Boolean,
+        keepShowingBetLoading: Boolean = false
+    ) {
         binding.apply {
             blockTouchView.isVisible = isVisible
-            betLoadingView.isVisible = isVisible
+            if (keepShowingBetLoading) {
+                betLoadingView.isVisible = true
+            } else {
+                betLoadingView.isVisible = isVisible
+            }
         }
     }
 
