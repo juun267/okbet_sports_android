@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
     android:orientation="vertical"
-    android:layout_margin="@dimen/dp_10"
     tools:context=".ui.feedback.suggest.FeedbackSubmitFragment">
 
     <androidx.cardview.widget.CardView
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginHorizontal="@dimen/margin_9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/transparent_black_0"
         app:cardCornerRadius="@dimen/margin_5"
-        app:cardElevation="5dp"
+        app:cardElevation="@dimen/margin_5"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -87,9 +88,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginHorizontal="@dimen/margin_9"
         app:cardBackgroundColor="@color/transparent_black_0"
         app:cardCornerRadius="@dimen/margin_5"
-        app:cardElevation="5dp"
+        app:cardElevation="@dimen/margin_5"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -137,9 +139,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginHorizontal="@dimen/margin_15"
         android:textColor="@color/color_E44438_e44438"
         android:textSize="@dimen/textSize14sp"
-        tools:text="• 以美东 (UTC-4) 时间计算"
+        tools:text="@string/text_us_east_time"
         />
 
     <TextView
@@ -157,8 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_45"
         android:layout_marginTop="@dimen/margin_10"
-        android:layout_marginEnd="@dimen/margin_14"
-        android:layout_marginStart="@dimen/margin_14"
+        android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginBottom="@dimen/margin_6"
         android:background="@drawable/ic_submit"
         android:enabled="false"
