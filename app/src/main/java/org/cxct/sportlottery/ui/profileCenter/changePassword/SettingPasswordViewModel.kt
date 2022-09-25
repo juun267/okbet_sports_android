@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
@@ -116,30 +117,30 @@ class SettingPasswordViewModel(
 
     fun checkCurrentPwd(currentPwd: String) {
         _currentPwdError.value = when {
-            currentPwd.isBlank() -> androidContext.getString(R.string.error_input_empty)
+            currentPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
     }
 
     fun checkNewPwd(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String) {
         _newPwdError.value = when {
-            newPwd.isBlank() -> androidContext.getString(R.string.error_input_empty)
+            newPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
-                !VerifyConstUtil.verifyPwdFormat(newPwd) -> androidContext.getString(R.string.error_password_format)
-                newPwd.length !in 6..20 -> androidContext.getString(R.string.error_register_password)
-                !VerifyConstUtil.verifyPwd(newPwd) -> androidContext.getString(R.string.error_incompatible_format)
+                !VerifyConstUtil.verifyPwdFormat(newPwd) -> LocalUtils.getString(R.string.error_password_format)
+                newPwd.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
+                !VerifyConstUtil.verifyPwd(newPwd) -> LocalUtils.getString(R.string.error_incompatible_format)
                 else -> ""
             }
-            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> androidContext.getString(R.string.error_withdraw_password_for_new)
-            currentPwd == newPwd -> androidContext.getString(R.string.error_password_cannot_be_same)
+            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> LocalUtils.getString(R.string.error_withdraw_password_for_new)
+            currentPwd == newPwd -> LocalUtils.getString(R.string.error_password_cannot_be_same)
             else -> ""
         }
     }
 
     fun checkConfirmPwd(newPwd: String, confirmPwd: String) {
         _confirmPwdError.value = when {
-            confirmPwd.isBlank() -> androidContext.getString(R.string.error_input_empty)
-            newPwd != confirmPwd -> androidContext.getString(R.string.error_confirm_password)
+            confirmPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            newPwd != confirmPwd -> LocalUtils.getString(R.string.error_confirm_password)
             else -> ""
         }
     }
