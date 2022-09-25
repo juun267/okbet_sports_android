@@ -76,6 +76,8 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -493,7 +495,14 @@ class ProfileCenterFragment :
                 tv_account_balance.text = TextUtil.format(it)
             }
         }
-
+          viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
         viewModel.userInfo.observe(viewLifecycleOwner) {
             updateUI(it)
         }
@@ -627,6 +636,7 @@ class ProfileCenterFragment :
                 }
             }
         }
+
 
         viewModel.needToSendTwoFactor.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
@@ -787,7 +797,7 @@ class ProfileCenterFragment :
     private fun updateUI(userInfo: UserInfo?) {
         Glide.with(this)
             .load(userInfo?.iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+            .apply(RequestOptions().placeholder(R.drawable.ic_person_avatar))
             .into(iv_head1) //載入頭像
 
         tv_user_nickname.text = if (userInfo?.nickName.isNullOrEmpty()) {
@@ -860,5 +870,33 @@ class ProfileCenterFragment :
     private fun updateNoticeButton() {
         iv_circle?.visibility =
             (if (noticeCount ?: 0 > 0 && isGuest == false) View.VISIBLE else View.GONE)
+    }
+    //实名验证
+    private fun showKYCVerifyDialog() {
+        VerifyIdentityDialog().apply {
+            positiveClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                startActivity(Intent(context, VerifyIdentityActivity::class.java))
+            }
+            serviceClickListener = VerifyIdentityDialog.PositiveClickListener { number ->
+                val serviceUrl = sConfigData?.customerServiceUrl
+                val serviceUrl2 = sConfigData?.customerServiceUrl2
+                when {
+                    !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.supportFragmentManager?.let { it1 ->
+                            ServiceDialog().show(
+                                it1,
+                                null
+                            )
+                        }
+                    }
+                    serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
+                    }
+                    !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                        activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
+                    }
+                }
+            }
+        }.show(childFragmentManager, null)
     }
 }
