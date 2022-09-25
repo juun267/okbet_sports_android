@@ -664,7 +664,7 @@
     <string name="bet_money">Amount</string>
     <string name="profit_and_loss">Result</string>
     <string name="total_bet_number">Total bets：</string>
-    <string name="total_profit_and_loss">Winning total：</string>
+    <string name="total_profit_and_loss">Total Win：</string>
     <string name="game_name">Game name</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
@@ -892,7 +892,7 @@
     <string name="self_limit_per_bet_limit">Limit Bet</string>
     <string name="self_limit_per_bet_limit_content">You can apply for a \"limit bet\" to limit your bet amount each time. After applying for a limit bet, your total bet will not exceed your set value:</string>
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
-    <string name="self_limit_per_bet_limit_input_highest">Please enter numbers</string>
+    <string name="self_limit_per_bet_limit_input_highest">Please enter the number</string>
     <string name="self_limit_per_bet_limit_impotent">• You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
     <string name="self_limit_per_bet_limit_user">Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
