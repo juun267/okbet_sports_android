@@ -4,78 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="15dp"
     tools:ignore="dpUsage">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="2dp"
-        android:src="@drawable/ic_account_service" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/bg_rectangle_4dp_gray"
-        android:minHeight="80dp"
-        android:orientation="vertical">
-
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="16dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/feedback_triangle_gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txv_reply"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="35dp"
-            android:background="@null"
-            android:textColor="@color/color_BBBBBB_333333"
-            android:textSize="@dimen/textSize14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="您好，您有任何疑问，可点击我司在线客服人员咨询详情哦！谢谢" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/feedback_time"
-            android:textColor="@color/color_616161_b4b4b4"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txv_reply_time"
-            app:layout_constraintTop_toBottomOf="@+id/txv_reply"
-            app:layout_constraintVertical_bias="1" />
-        <TextView
-            android:id="@+id/txv_reply_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="15dp"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
             android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/color_616161_b4b4b4"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txv_reply"
-            app:layout_constraintVertical_bias="1"
-            tools:text="2021-02-16 13:34:43" />
+            android:layout_marginTop="2dp"
+            android:src="@drawable/ic_person_avatar" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ct_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rectangle_4dp_gray">
 
+
+            <TextView
+                android:id="@+id/txv_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="35dp"
+                android:background="@null"
+                android:textColor="@color/color_BBBBBB_333333"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="您好，您有任何疑问，可点击我司在线客服人员咨询详情哦！谢谢" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <TextView
+        android:gravity="center_horizontal"
+        android:id="@+id/txv_reply_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/color_C9CFD7"
+        android:textSize="@dimen/textSize10sp"
+        tools:text="2021-02-16 13:34:43" />
 
 </LinearLayout>

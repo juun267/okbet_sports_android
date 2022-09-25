@@ -126,6 +126,7 @@
     <color name="color_F7F8FC">#F7F8FC</color>
     <color name="color_DDE1F4">#DDE1F4</color>
     <color name="color_334266">#334266</color>
+    <color name="color_1D1F2D">#1D1F2D</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -483,4 +484,7 @@
     <color name="color_1EB65B">#1EB65B</color>
     <!--弹窗内容颜色-->
     <color name="color_9FADC6_535D76">@color/color_535D76</color>
+    <!--反馈详情-->
+    <color name="color_1D1F2D_FFFFFF">@color/color_FFFFFF</color>
+    <color name="color_131932_FAFCFF">@color/color_FAFCFF</color>
 </resources>
