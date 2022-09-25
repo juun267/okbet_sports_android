@@ -120,12 +120,12 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     ) {
 //        if (isMultiBet) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(
-                    R.anim.push_right_to_left_enter,
-                    R.anim.pop_bottom_to_top_exit,
-                    R.anim.push_right_to_left_enter,
-                    R.anim.pop_bottom_to_top_exit
-                )
+//                .setCustomAnimations(
+//                    R.anim.push_right_to_left_enter,
+//                    R.anim.pop_bottom_to_top_exit,
+//                    R.anim.push_right_to_left_enter,
+//                    R.anim.pop_bottom_to_top_exit
+//                )
                 .replace(
                     containerId,
                     BetReceiptFragment.newInstance(betResultData, betParlayList)
