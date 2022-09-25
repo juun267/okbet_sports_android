@@ -632,6 +632,7 @@ class ProfileCenterFragment :
                         startActivity(Intent(requireActivity(), BankActivity::class.java))
                     }
                 } else {
+                    LogUtil.d("duck点击提款准备跳转")
                     startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
                 }
             }
@@ -738,8 +739,9 @@ class ProfileCenterFragment :
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(title = "", msg) {} }
         }
 
-        viewModel.intoWithdraw.observe(viewLifecycleOwner) {
+        viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
             it.getContentIfNotHandled()?.let {
+                LogUtil.d("duck$it")
                 startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
         }
