@@ -3,25 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_select_bank_card"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/margin_42"
+    android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="@dimen/margin_10"
     android:layout_marginEnd="8dp">
 
 
     <TextView
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_below="@+id/tv_name_num"
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/margin_10"
         android:layout_marginLeft="@dimen/margin_10"
-        android:layout_marginBottom="7dp"
+        android:textStyle="bold"
         android:fontFamily="@font/helvetica_bold"
-        android:gravity="center"
-        android:textColor="@color/color_BCBCBC_666666"
-        android:textSize="@dimen/textSize14sp"
+        android:textColor="@color/selector_text_color_money_bank"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="BetStation" />
+    <TextView
+        android:id="@+id/tv_name_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:textStyle="bold"
+        android:fontFamily="@font/helvetica_bold"
+        android:textColor="@color/selector_text_color_money_bank"
+        android:textSize="@dimen/textSize12sp"
         tools:text="BetStation" />
 
     <ImageView
@@ -29,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBottom="@+id/tv_name"
         android:src="@drawable/ic_bule_check" />
 
 </RelativeLayout>

@@ -582,8 +582,11 @@ class BetStationAdapter(
                     selectBank(position)
                     listener.onSelect(station)
                 }
-                tvName.text = station.name
+                tvName.isSelected =  selectedPosition == position
+                tvNameNum.isSelected =  selectedPosition == position
 
+                tvName.text = station.name
+                tvNameNum.text = itemView.context.getString(R.string.outlet)+"${position+1}"
                 if (station.isSelected) {
                     selectedPosition = position
                     imgCheck.visibility = View.VISIBLE
