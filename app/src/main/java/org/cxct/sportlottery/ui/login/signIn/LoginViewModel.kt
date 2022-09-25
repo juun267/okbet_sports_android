@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.VerifyConstUtil
 
 
 class LoginViewModel(
@@ -149,6 +150,9 @@ class LoginViewModel(
     fun checkAccount(username: String): String? {
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyCombinationAccount(username) -> {
+                LocalUtils.getString(R.string.error_member_account)
+            }
             else -> null
         }
         _accountMsg.value = Pair(msg, msg == null)
@@ -158,7 +162,10 @@ class LoginViewModel(
 
     fun checkPassword(password: String): String? {
         val msg = when {
-            password.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
+            password.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
+            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _passwordMsg.value = Pair(msg, msg == null)
