@@ -2,9 +2,9 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
+import kotlinx.android.synthetic.main.text_form_field_boxes_layout.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
@@ -31,6 +31,7 @@ class SettingPasswordActivity :
 
     private var mPwdPage = PwdPage.LOGIN_PWD //登入密碼 or 提款密碼 page flag
     private var mUserInfo: UserInfo? = null
+    private val bottomLineColorRes = R.color.color_80334266_E3E8EE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +55,14 @@ class SettingPasswordActivity :
             AsteriskPasswordTransformationMethod()
         eet_confirm_password.transformationMethod =
             AsteriskPasswordTransformationMethod()
+        //region調整bottomLine
+        et_current_password.useDefaultBottomLineColor(false)
+        et_new_password.useDefaultBottomLineColor(false)
+        et_confirm_password.useDefaultBottomLineColor(false)
+        et_current_password.bottom_line.setBackgroundResource(bottomLineColorRes)
+        et_new_password.bottom_line.setBackgroundResource(bottomLineColorRes)
+        et_confirm_password.bottom_line.setBackgroundResource(bottomLineColorRes)
+        //endregion
         et_current_password.endIconImageButton.setOnClickListener {
             if (et_current_password.endIconResourceId == R.drawable.ic_eye_open) {
                 eet_current_password.transformationMethod =
@@ -142,6 +151,23 @@ class SettingPasswordActivity :
         setupEditTextFocusChangeEvent(eet_confirm_password) {
             viewModel.checkConfirmPwd(
                 eet_new_password.getText().toString(),
+                it
+            )
+        }
+
+        eet_current_password.afterTextChanged {
+            viewModel.checkCurrentPwd(it)
+        }
+        eet_new_password.afterTextChanged {
+            viewModel.checkNewPwd(
+                mPwdPage,
+                eet_current_password.text.toString(),
+                it
+            )
+        }
+        eet_confirm_password.afterTextChanged {
+            viewModel.checkConfirmPwd(
+                eet_new_password.text.toString(),
                 it
             )
         }
