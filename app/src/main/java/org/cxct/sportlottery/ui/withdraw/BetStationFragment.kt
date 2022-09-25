@@ -51,7 +51,7 @@ import java.util.*
 
 
 /**
- * @app_destination 新增銀行卡
+ * @app_destination 网点预约
  */
 class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
 

@@ -49,6 +49,19 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 log_detail_time.text = it.rechDateAndTime ?: ""
                 log_detail_type.text = it.rechTypeDisplay ?: ""
                 log_detail_status.text = it.rechState ?: ""
+                it.rechState.let {mState->
+                    when {
+                        mState.equals("成功") -> {
+                            log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
+                        }
+                        mState.equals("失败") -> {
+                            log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
+                        }
+                        else -> {
+                            log_detail_status.setTextColor(resources.getColor(R.color.color_BBBBBB_333333))
+                        }
+                    }
+                }
                 log_detail_amount.text = "${sConfigData?.systemCurrencySign} ${it.displayMoney}"
                 log_detail_reason.text = it.reason ?: ""
 
