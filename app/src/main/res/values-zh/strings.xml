@@ -375,7 +375,7 @@
     <string name="bottom_sheet_title_play_type">变更玩法</string>
     <string name="message_recharge_maintain">存款相关系统升级中,请稍等</string>
     <string name="title_bank">选择银行</string>
-    <string name="title_main_account">选择帐户</string>
+    <string name="title_main_account">选择账户</string>
     <string name="title_name">姓名：</string>
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
@@ -391,7 +391,7 @@
     <string name="title_wx_id">微信号</string>
     <string name="edt_hint_wx_id">请输入微信号</string>
     <string name="title_bank_account">银行卡号</string>
-    <string name="please_enter_bank_card_rule">请输入银行卡号</string>
+    <string name="please_enter_bank_card_rule">请输入银行卡卡号</string>
     <string name="title_recharge_time">存款时间</string>
     <string name="title_current_money">当前余额</string>
     <string name="btn_submit">提交</string>
