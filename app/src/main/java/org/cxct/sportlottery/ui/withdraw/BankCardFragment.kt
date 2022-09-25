@@ -31,7 +31,7 @@ import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
  */
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
     private var transferType: TransferType = TransferType.BANK
-
+    //TODO 虚拟币添加后续样式修改
     private lateinit var mBankSelectorBottomSheetDialog: BottomSheetDialog
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
     private val mNavController by lazy { findNavController() }
@@ -62,7 +62,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupBankList() {
         viewModel.getMoneyConfigs()
     }
-
+    //编辑银行卡跳转的方法
     private fun setupInitData(view: View) {
         viewModel.clearBankCardFragmentStatus()
 

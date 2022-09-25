@@ -1332,7 +1332,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                else
 //                    ll_winnable.visibility = View.VISIBLE
 
-                tv_single_count.text = betList.size.toString()
+//                tv_single_count.text = betList.size.toString()
+                val singleType = "${context.getString(R.string.bet_list_single)}*${betList.size}"
+                tv_single_type.text = singleType
 
                 val initValue = if (itemData.singleInput != null) itemData.allSingleInput else ""
 

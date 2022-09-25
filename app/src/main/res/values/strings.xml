@@ -525,7 +525,7 @@
     <string name="create_name">Full Name</string>
     <string name="hint_please_enter_create_name">Please enter your bank card name</string>
     <string name="edit_bank_card">Edit bank card</string>
-    <string name="edit_crypto_card">Edit virtual</string>
+    <string name="edit_crypto_card">Edit USDT</string>
     <string name="edit_e_wallet">Edit eWallet</string>
     <string name="bank_card_number">Account number</string>
     <string name="wallet_address">The wallet address</string>
@@ -539,6 +539,7 @@
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
+    <string name="error_withdraw_password_for_new">Password must be 4 numbers combination</string> <!--J170-->
     <string name="error_wallet_address">The format of the address you entered is incorrect</string>
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
@@ -550,7 +551,7 @@
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
     <string name="bet_receipt_bet_quota">Stake：</string>
-    <string name="bet_info_list_win_quota">To win: </string>
+    <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
     <string name="bet_info_add_bet_success">Successful betting</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
@@ -1271,4 +1272,5 @@
     <string name="hint_confirm_withdrawal_password">请确认提款密码</string>
     <string name="text_security_money3"><font color='#025BE8'>%1$s</font> 日后解冻</string>
     <string name="hint_please_enter_the_password_again">请再次输入密码</string>
+    <string name="km">Km</string>
 </resources>

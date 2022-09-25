@@ -125,7 +125,7 @@
     <string name="bet_info_input_quota">ใส่จำนวนเงิน</string>
     <string name="bet_info_all_bet">เดิมพันทั้งหมด</string>
     <string name="bet_receipt_all_bet">เดิมพันทั้งหมด</string>
-    <string name="bet_info_list_win_quota">จำนวนที่ชนะได้</string>
+    <string name="bet_info_list_win_quota">จำนวนที่ชนะได้：</string>
     <string name="keyboard_max">ใหญ่สุด</string>
     <string name="bet_info_list_bet">เดิมพัน</string>
     <string name="edt_hint_deposit_money">%1$s จำกัด%2$s～%3$s</string>
@@ -525,6 +525,7 @@
     <string name="withdraw_password">รหัสผ่านการถอน</string>
     <string name="hint_please_enter_withdraw_password">กรุณาใส่รหัสผ่านการถอนเงิน</string>
     <string name="error_withdraw_password">รหัสผ่านที่คุณป้อนไม่ถูกต้อง</string>
+    <string name="error_withdraw_password_for_new">รหัสผ่านต้องประกอบด้วยตัวเลข 4 ตัว</string> <!--J170-->
     <string name="withdraw_amount">จำนวนเงินที่ถอน</string>
     <string name="error_withdraw_amount_bank">รูปแบบจำนวนเงินที่ถอนหรือมูลค่าไม่ถูกต้อง</string>
     <string name="error_withdraw_amount_bigger_than_balance">จำนวนถอนมากกว่ายอดเงินในบัญชี</string>
@@ -1124,9 +1125,9 @@
     <string name="confirm_multiple_bets">ยืนยัน %d เดิมพันหลายรายการ</string>
     <string name="text_account_history_bet">เดิมพัน</string>
     <string name="error_amount_limit_exceeded">เกินขีดจำกัดจำนวนเงินฝาก</string>
-    <string name="total_win_amount">ชนะทั้งหมด</string>
+    <string name="total_win_amount">จำนวนที่ชนะได้(%s)：</string> <!--F005-->
 
-    <string name="total_capital">เงินต้นทั้งหมด</string>
+    <string name="total_capital">เดิมพันทั้งหมด(%s)：</string> <!--F008-->
     <string name="delete_bet">ลบ</string>
     <string name="btn_login_bet">เข้าสู่ระบบและเดิมพัน</string>
     <string name="btn_remove_closed_selections">ลบตัวเลือกที่ปิดอยู่</string>
@@ -1184,6 +1185,7 @@
     <string name="remove_account_warning">คุณแน่ใจไหมว่าจะลบบัญชี</string>
     <string name="my_message">ข้อความ</string>
     <string name="register_and_login">ลงทะเบียน/เข้าสู่ระบบ</string>
+    <string name="km">กิโลเมตร</string>
     <string name="league_filter">คัดเลือกเหตุการณ์</string>
     <!--F005-->
 </resources>

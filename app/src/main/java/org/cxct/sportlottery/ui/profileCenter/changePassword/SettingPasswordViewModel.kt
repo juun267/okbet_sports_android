@@ -130,7 +130,7 @@ class SettingPasswordViewModel(
                 !VerifyConstUtil.verifyPwd(newPwd) -> androidContext.getString(R.string.error_incompatible_format)
                 else -> ""
             }
-            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> androidContext.getString(R.string.error_withdraw_password)
+            pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> androidContext.getString(R.string.error_withdraw_password_for_new)
             currentPwd == newPwd -> androidContext.getString(R.string.error_password_cannot_be_same)
             else -> ""
         }
