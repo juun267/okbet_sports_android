@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_1D1F2D_FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.otherBetRecord.OtherBetRecordFragment">
 
@@ -50,7 +50,7 @@
         <LinearLayout
             android:id="@+id/rech_log_column"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="36dp"
             android:layout_marginTop="@dimen/margin_1"
             android:layout_marginLeft="@dimen/margin_1"
             android:layout_marginRight="@dimen/margin_1"
@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingStart="2dp"
-                android:text="@string/recharge_log_order_time"
+                android:text="@string/date"
                 android:textColor="@color/color_414655"
                 android:textSize="@dimen/textSize12sp" />
             <TextView
@@ -85,7 +85,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/recharge_log_recharge_amount"
+                android:text="@string/bet_money"
                 android:textColor="@color/color_414655"
                 android:textSize="@dimen/textSize12sp" />
 

@@ -30,9 +30,9 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
                 else -> {
                     when {
                         list.isEmpty() -> listOf(DataItem.NoData)
-                        isLastPage -> {
-                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                        }
+//                        isLastPage -> {
+//                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+//                        }
                         else -> {
                             list.map { DataItem.Item(it) }
                         }
@@ -49,7 +49,7 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+//            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -70,7 +70,7 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.Item -> ItemType.ITEM.ordinal
-            is DataItem.Footer -> ItemType.FOOTER.ordinal
+//            is DataItem.Footer -> ItemType.FOOTER.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
     }
@@ -131,9 +131,9 @@ sealed class DataItem {
         override val statDate = data.statDate
     }
 
-    object Footer : DataItem() {
-        override val statDate: Long? = null
-    }
+//    object Footer : DataItem() {
+//        override val statDate: Long? = null
+//    }
 
     object NoData : DataItem() {
         override val statDate: Long? = null
