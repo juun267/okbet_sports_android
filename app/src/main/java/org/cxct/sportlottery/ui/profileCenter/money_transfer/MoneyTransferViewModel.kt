@@ -129,9 +129,6 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
 
-             /*   for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
-                    thirdGameMap[value.firmType] = value.firmShowName
-                }*/
                 val thirdGameList = mutableListOf<GameFirmValues>()
 
                 for ((_, value) in result.t?.gameFirmMap ?: mapOf()) {
