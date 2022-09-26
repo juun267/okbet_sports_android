@@ -32,10 +32,11 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
+        /*return when (viewType) {
             ItemType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
             else -> ViewHolder.from(parent)
-        }
+        }*/
+        return  ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -50,15 +51,10 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         }
     }
 
-    override fun getItemCount(): Int = data.size + 1
+    override fun getItemCount(): Int = data.size
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            (data.size) -> {
-                ItemType.NO_DATA.ordinal
-            }
-            else -> ItemType.ITEM.ordinal
-        }
+       return ItemType.ITEM.ordinal
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

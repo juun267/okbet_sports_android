@@ -34,11 +34,11 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var withdrawLogListener: WithdrawLogListener? = null
 
     override fun getItemViewType(position: Int): Int {
-        return RechargeLogAdapter.ItemType.ITEM.ordinal
+        return ItemType.ITEM.ordinal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return RechargeLogAdapter.ViewHolder.from(parent)
+        return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

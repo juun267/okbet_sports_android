@@ -10,10 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.date_range_selector
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.status_selector
+import kotlinx.android.synthetic.main.fragment_feedback_record_list.tv_no_data
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.view_no_record
 import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
@@ -57,6 +59,11 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
                 viewModel.getFbQueryList(isReload = false, currentTotalCount = adapter?.itemCount ?: 0)
                 scrollToTopControl(firstVisibleItemPosition)
+            }
+            if ( !recyclerView.canScrollVertically(1)&& viewModel.feedbackList.value?.isNotEmpty()==true){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+                tv_no_data.visibility = View.VISIBLE
+            }else{
+                tv_no_data.visibility = View.GONE
             }
         }
     }
