@@ -56,7 +56,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                 viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
                 scrollToTopControl(firstVisibleItemPosition)
             }
-            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+            if ( !recyclerView.canScrollVertically(1)&& viewModel.recordDataList.isNotEmpty()){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
                 tv_no_data_tips.visibility = View.VISIBLE
             }else{
                 tv_no_data_tips.visibility = View.GONE
@@ -83,7 +83,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getThirdGames()
         initView()
         initOnclick()
         initObserver()

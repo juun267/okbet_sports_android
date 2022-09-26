@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,9 @@ import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.ll_g
 import kotlinx.android.synthetic.main.content_game_detail_result_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tn_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tt_rv.view.*
-import kotlinx.android.synthetic.main.item_match_result_match.view.*
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_away_name
-import kotlinx.android.synthetic.main.item_match_result_match.view.tv_home_name
+import kotlinx.android.synthetic.main.item_match_result_match_new.view.*
+import kotlinx.android.synthetic.main.item_match_result_match_new.view.tv_away_name
+import kotlinx.android.synthetic.main.item_match_result_match_new.view.tv_home_name
 import kotlinx.android.synthetic.main.item_match_result_title.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
@@ -190,36 +191,41 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             itemView.apply {
                 titleArrowRotate(itemView, item)
 
+                val params = ll_title_layout.layoutParams as LinearLayout.LayoutParams
+                params.weight = 1.0f
+
                 tv_type.text = item.titleData?.name
                 when (gameType) {
                     GameType.FT.key -> { //上半場, 全場
                         tv_first_half.visibility = View.VISIBLE
-//                        tv_second_half.visibility = View.GONE
-//                        tv_end_game.visibility = View.GONE
+                        tv_second_half.visibility = View.GONE
+                        tv_end_game.visibility = View.GONE
                         tv_full_game.visibility = View.VISIBLE
                     }
                     GameType.BK.key -> { //上半場, 下半場, 賽果
                         tv_first_half.visibility = View.VISIBLE
-//                        tv_second_half.visibility = View.VISIBLE
-//                        tv_end_game.visibility = View.VISIBLE
+                        tv_second_half.visibility = View.VISIBLE
+                        tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
 
-//                        tv_end_game.text = context.getString(R.string.full_game)
+                        tv_end_game.text = context.getString(R.string.full_game)
+                        params.weight = 2.2f
                     }
                     GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
-                    GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key -> {
+                    GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key -> { //賽果
                         tv_first_half.visibility = View.GONE
-//                        tv_second_half.visibility = View.GONE
-//                        tv_end_game.visibility = View.VISIBLE
+                        tv_second_half.visibility = View.GONE
+                        tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
                     }
                     else -> {
                         tv_first_half.visibility = View.GONE
-//                        tv_second_half.visibility = View.GONE
-//                        tv_end_game.visibility = View.GONE
+                        tv_second_half.visibility = View.GONE
+                        tv_end_game.visibility = View.GONE
                         tv_full_game.visibility = View.GONE
                     }
                 }
+                ll_title_layout.layoutParams = params
             }
         }
 
@@ -279,33 +285,38 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
         private fun setupViewType(itemView: View, gameType: String) {
             itemView.apply {
+                val params = ll_score.layoutParams as LinearLayout.LayoutParams
+                params.weight = 1.0f
+
                 when (gameType) {
                     GameType.FT.key -> { //上半場, 全場
                         tv_first_half_score.visibility = View.VISIBLE
-                     //   tv_second_half_score.visibility = View.GONE
-                      //  tv_end_game_score.visibility = View.GONE
+                        tv_second_half_score.visibility = View.GONE
+                        tv_end_game_score.visibility = View.GONE
                         tv_full_game_score.visibility = View.VISIBLE
                     }
                     GameType.BK.key -> { //上半場, 下半場, 賽果
                         tv_first_half_score.visibility = View.VISIBLE
-                      //  tv_second_half_score.visibility = View.VISIBLE
-                  //      tv_end_game_score.visibility = View.VISIBLE
+                        tv_second_half_score.visibility = View.VISIBLE
+                        tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
+                        params.weight = 2.2f
                     }
                     GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
                     GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key  -> { //賽果
                         tv_first_half_score.visibility = View.GONE
-                      //  tv_second_half_score.visibility = View.GONE
-                   //     tv_end_game_score.visibility = View.VISIBLE
+                        tv_second_half_score.visibility = View.GONE
+                        tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
                     else -> {
                         tv_first_half_score.visibility = View.GONE
-                      //  tv_second_half_score.visibility = View.GONE
-                     //   tv_end_game_score.visibility = View.GONE
+                        tv_second_half_score.visibility = View.GONE
+                        tv_end_game_score.visibility = View.GONE
                         tv_full_game_score.visibility = View.GONE
                     }
                 }
+                ll_score.layoutParams = params
             }
         }
 
@@ -332,10 +343,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         ?: it.find { it.status == StatusType.END_GAME.code }
                     tv_first_half_score.text =
                         firstHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
-               //     tv_second_half_score.text =
-              //          secondHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
-                 //   tv_end_game_score.text =
-                   //     endGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
+                    tv_second_half_score.text =
+                        secondHalf?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
+                    tv_end_game_score.text =
+                        endGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                     tv_full_game_score.text =
                         fullGame?.let { filteredItem -> "${filteredItem.homeScore}-${filteredItem.awayScore}" }
                 }

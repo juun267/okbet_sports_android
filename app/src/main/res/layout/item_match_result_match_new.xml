@@ -18,7 +18,6 @@
             android:layout_weight="2"
             android:background="@color/color_bbbbbb_ffffff"
             android:orientation="vertical"
-            android:showDividers="middle|end"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ll_score"
@@ -39,11 +38,12 @@
 
             <LinearLayout
                 android:id="@+id/tv_tame_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
+                android:paddingHorizontal="6dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/line"
                 app:layout_constraintStart_toEndOf="@+id/tv_vs"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -52,44 +52,51 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="start"
                     android:textColor="@color/color_FFFFFF_535D76"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="域堡" />
+                    tools:text="域堡ahsfshgfaksghasgklhlhkhgahklg" />
 
                 <TextView
                     android:id="@+id/tv_away_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="start"
                     android:textColor="@color/color_FFFFFF_535D76"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_home_vs"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="赫尔辛格" />
+                    tools:text="赫尔辛格ahsgasghiasghasighaisghsg" />
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/color_E8EFFD" />
+            <View
+                android:id="@+id/line"
+                android:layout_width="1dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/color_80334266_E3E8EE" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/ll_score"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/cl_content"
             android:layout_weight="1"
             android:background="@color/color_bbbbbb_ffffff"
             app:layout_constraintTop_toTopOf="parent"
@@ -112,6 +119,22 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="1-0" />
 
+            <TextView
+                android:id="@+id/tv_second_half_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF_535D76"
+                android:textSize="@dimen/textSize14sp"
+                android:fontFamily="@font/din_font"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_full_game_score"
+                app:layout_constraintStart_toEndOf="@id/tv_first_half_score"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="3-0" />
+
 
             <TextView
                 android:id="@+id/tv_full_game_score"
@@ -125,6 +148,22 @@
                 android:fontFamily="@font/din_font"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="3-0" />
+
+            <TextView
+                android:id="@+id/tv_end_game_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF_535D76"
+                android:textSize="@dimen/textSize14sp"
+                android:fontFamily="@font/din_font"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_full_game_score"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="3-0" />
 
@@ -167,12 +206,12 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_6C7BA8"
+            android:textColor="@color/color_6C7BA8_6C7BA8"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintEnd_toStartOf="@+id/line2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="15/12 01:00" />
+            tools:text="2022/08/02 18:30" />
     </LinearLayout>
 
     <View
