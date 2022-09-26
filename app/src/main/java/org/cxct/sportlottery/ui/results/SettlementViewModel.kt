@@ -118,6 +118,7 @@ class SettlementViewModel(
     private fun setupExpandData(matchResultList: List<MatchResultData>?) {
         val expandData = mutableListOf<MatchResultData>()
         var showMatch = false
+        var showMatchByTeamName = false
         var showDetail = false
         var nowLeague: MatchResultData? = null
         matchResultList?.apply {
@@ -131,11 +132,25 @@ class SettlementViewModel(
                         } else {
                             false
                         }
+                        showMatchByTeamName = if (!it.leagueShow && it.leagueShowByTeamName) {
+                            expandData.add(it)
+                            it.titleExpanded
+                        } else {
+                            false
+                        }
                     }
                     ListType.MATCH -> {
+                        //如果關鍵字匹配的是聯賽名稱，顯示聯賽下所有賽事
                         if (nowLeague?.leagueShow == true && showMatch) {
                             expandData.add(it)
                             showDetail = it.matchExpanded
+                        }
+                        //如果關鍵字只匹配到比賽隊伍名，就只顯示包含該球隊名的比賽
+                        if (nowLeague?.leagueShowByTeamName == true && showMatchByTeamName) {
+                            if (filterTeamNameByKeyWord(it.matchData?.matchInfo, gameKeyWord)) {
+                                expandData.add(it)
+                                showDetail = it.matchExpanded
+                            }
                         }
                     }
                     ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL,
@@ -352,7 +367,7 @@ class SettlementViewModel(
                         }
                         ListType.MATCH -> {
                             if (filterTeamNameByKeyWord(matchResultData.matchData?.matchInfo, gameKeyWord)) {
-                                nowLeagueItem?.leagueShow = true
+                                nowLeagueItem?.leagueShowByTeamName = true
                             }
                         }
                         else -> {

@@ -14,6 +14,7 @@ data class MatchResultData(
     val matchDetailData: MatchResultPlayList? = null
 ) {
     var leagueShow: Boolean = false //聯賽過濾顯示, 顯示:true , 不顯示:false
+    var leagueShowByTeamName: Boolean = false //依隊名的聯賽過濾顯示(賽事僅顯示匹配到的隊伍), 顯示:true , 不顯示:false
     var titleExpanded: Boolean = true //聯賽是否展開, true:展開, false:收合
     var matchExpanded: Boolean = false
 }
