@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:paddingHorizontal="@dimen/margin_15"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center_vertical">
 
             <ImageView
@@ -34,13 +34,14 @@
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
-                android:textColor="@color/color_025BE8"
+                android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="Miền Bắc" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_title_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -53,10 +54,20 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/first_half_game"
-                android:textColor="@color/color_6C7BA8"
+                android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/first_half_game" />
 
+            <TextView
+                android:id="@+id/tv_second_half"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/second_half_game"
+                android:textColor="@color/color_6C7BA8_6C7BA8"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="@string/second_half_game" />
 
             <TextView
                 android:id="@+id/tv_full_game"
@@ -65,10 +76,19 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/full_game"
-                android:textColor="@color/color_6C7BA8"
+                android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="@string/full_game" />
 
+            <TextView
+                android:id="@+id/tv_end_game"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/game_result"
+                android:textColor="@color/color_6C7BA8_6C7BA8"
+                android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
     </LinearLayout>
