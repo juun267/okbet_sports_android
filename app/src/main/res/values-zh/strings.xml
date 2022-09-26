@@ -311,7 +311,7 @@
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">总投注额</string>
     <string name="total_bet_money_colon">总投注额：</string>
-    <string name="status">订单状态</string>
+    <string name="status">状态</string>
     <string name="status_colon">状 态：</string>
     <string name="rebates">返 水：</string>
     <string name="remark_by_mts">因系统审核不成立</string>
