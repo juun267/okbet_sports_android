@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
@@ -33,19 +34,11 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var withdrawLogListener: WithdrawLogListener? = null
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            (data.size) -> {
-                ItemType.NO_DATA.ordinal
-            }
-            else -> ItemType.ITEM.ordinal
-        }
+        return RechargeLogAdapter.ItemType.ITEM.ordinal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ItemType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
-            else -> ViewHolder.from(parent)
-        }
+        return RechargeLogAdapter.ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -56,11 +49,12 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is NoDataViewHolder -> {
                 holder.bind(isFinalPage, data.isNotEmpty())
+                holder.itemView.isVisible = false
             }
         }
     }
 
-    override fun getItemCount(): Int = data.size + 1
+    override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
