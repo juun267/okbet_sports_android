@@ -7,5 +7,5 @@ data class LeagueListRequest(
     val startTime: String? = null,
     val endTime: String? = null,
     var playCateMenuCode: String? = null,
-    val isApp: Boolean = true,
+    val isMobile: Int = 1,
 )

@@ -77,6 +77,7 @@ class StatusSpinnerView @JvmOverloads constructor(
                     mListPop.dismiss()
                     iv_arrow.setImageResource(arrowImg)
                 } else {
+                    mListPop.horizontalOffset = (cl_root.width - mListPop.width) / 2
                     mListPop.show()
                     iv_arrow.setImageResource(arrowImgUp)
                 }
