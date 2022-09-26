@@ -939,9 +939,9 @@
     <string name="self_limit_per_bet_limit">Giới hạn</string>
     <string name="self_limit_per_bet_limit_input_highest">Vui lòng nhập số</string>
     <string name="self_limit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
-    <string name="self_limit_per_bet_limit_user">Cược giới hạn hiện tại: %1$s %2$s</string>
+    <string name="self_limit_per_bet_limit_user">• Cược giới hạn hiện tại: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Không có</string>
-    <string name="self_limit_per_bet_limit_user_limit">・Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s</string>
+    <string name="self_limit_per_bet_limit_user_limit">• Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">Định dạng trường không chính xác, vui lòng nhập một số nguyên.</string>
     <string name="self_limit_input_password_for_confirm">Vui lòng nhập mật khẩu đăng nhập để xác nhận ứng dụng.</string>
     <string name="self_limit_input_password_for_modification">Vui lòng nhập mật khẩu đăng nhập để xác nhận sửa đổi.</string>
@@ -1230,4 +1230,5 @@
     <string name="register_and_login">Đăng ký/Đăng nhập</string>
     <string name="km">Km</string>
     <string name="league_filter">Lọc trận đấu</string>
+    <string name="outlet">Trạm cược</string>
 </resources>

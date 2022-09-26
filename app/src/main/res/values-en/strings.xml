@@ -894,7 +894,7 @@
     <string name="self_limit_per_bet_limit_highest">Upper limit</string>
     <string name="self_limit_per_bet_limit_input_highest">Please enter the number</string>
     <string name="self_limit_per_bet_limit_impotent">• You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
-    <string name="self_limit_per_bet_limit_user">Current limit Bet: %1$s %2$s</string>
+    <string name="self_limit_per_bet_limit_user">• Current limit Bet: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">None</string>
     <string name="self_limit_per_bet_limit_user_limit">• Maximum limited bet:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">The field format is incorrect, please enter an integer.</string>
@@ -1241,4 +1241,5 @@
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="register_and_login">Sign Up/Login</string>
     <string name="km">Km</string>
+    <string name="outlet">Outlet</string>
 </resources>

@@ -1273,4 +1273,5 @@
     <string name="text_security_money3"><font color='#025BE8'>%1$s</font> 日后解冻</string>
     <string name="hint_please_enter_the_password_again">请再次输入密码</string>
     <string name="km">Km</string>
+    <string name="outlet">Outlet</string>
 </resources>
