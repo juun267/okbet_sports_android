@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -223,6 +224,12 @@ public class TextFormFieldBoxes extends FrameLayout {
     protected SimpleTextChangedWatcher textChangeListener;
     private ColorDrawable mPasswordToggleDummyDrawable;
     private Drawable mOriginalEditTextEndDrawable;
+
+    private boolean useDefaultBottomLineColor = true;
+
+    public void useDefaultBottomLineColor(boolean useDefaultColor) {
+        this.useDefaultBottomLineColor = useDefaultColor;
+    }
 
     public TextFormFieldBoxes(Context context) {
 
@@ -619,6 +626,7 @@ public class TextFormFieldBoxes extends FrameLayout {
      */
     protected void deactivate() {
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext);
+        if (useDefaultBottomLineColor)
         this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_E3E8EE));
         if (this.editText.getText().toString().isEmpty()) {
 
@@ -685,6 +693,7 @@ public class TextFormFieldBoxes extends FrameLayout {
         //final boolean keepHint = this.alwaysShowHint && !this.editText.getHint().toString().isEmpty();
         if (animated) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
+            if (useDefaultBottomLineColor)
             this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_317FFF_0760D4));
             ViewCompat.animate(this.editTextLayout)
                     .alpha(1f)
@@ -995,6 +1004,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     public void setError(@Nullable String errorText, boolean giveFocus) {
         if (this.enabled && errorText != null) {
             //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_error);
+            if (useDefaultBottomLineColor)
             this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_E44438));
             this.onError = true;
             //activate(true);
@@ -1006,6 +1016,15 @@ public class TextFormFieldBoxes extends FrameLayout {
 
         this.helperLabel.setText(errorText);
         updateBottomViewVisibility();
+
+        //暫使用這兩種色系，如有其他需求再行擴充
+        if (!useDefaultBottomLineColor) {
+            if (TextUtils.isEmpty(errorText)) {
+                this.bottomLine.setBackgroundResource(R.color.color_80334266_E3E8EE);
+            } else {
+                this.bottomLine.setBackgroundResource(R.color.color_E23434_E23434);
+            }
+        }
 
         if (errorText == null && hasFocus) {
             activate(true);
@@ -1026,6 +1045,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     public void removeError() {
         this.onError = false;
         //this.mainLayout.setBackgroundResource(R.drawable.bg_bounds_edittext_h);
+        if (useDefaultBottomLineColor)
         this.bottomLine.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.color_317FFF_0760D4));
         if (this.hasFocus) setHighlightColor(this.primaryColor);
         else setHighlightColor(this.secondaryColor);

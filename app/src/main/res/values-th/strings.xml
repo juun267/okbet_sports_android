@@ -296,7 +296,7 @@
     <string name="register_privacy_policy">นโยบายความเป็นส่วนตัว</string>
     <string name="terms_conditions">กฎและข้อกำหนด</string>
     <string name="faqs">ปัญหาที่พบบ่อย</string>
-    <string name="text_us_east_time">คำนวณตามเวลาสหรัฐอเมริกาฝั่งตะวันออก (UTC-4)</string>
+    <string name="text_us_east_time">• คำนวณตามเวลาสหรัฐอเมริกาฝั่งตะวันออก (UTC-4)</string>
     <string name="text_us_east_time_bet_record">คำนวณตามเวลาสหรัฐอเมริกาฝั่งตะวันออก (UTC-4)</string>
     <string name="profile_center">ศูนย์ส่วนบุคคล</string>
     <string name="member_level">ระดับสมาชิก</string>
@@ -756,8 +756,8 @@
     <string name="self_limit_per_bet_limit_impotent">คุณสามารถแก้ไขขีดจำกัดต่อการเดิมพันของคุณได้ตลอดเวลา การแก้ไขจะมีผลเมื่อส่งใบสมัคร</string>
     <string name="self_limit_per_bet_limit_highest">ขีดจำกัดบน</string>
     <string name="self_limit_per_bet_limit_input_highest">กรุณากรอกตัวเลข</string>
-    <string name="self_limit_per_bet_limit_user">กำหนดวงเงินเดิมพัน: %1$s %2$s</string>
-    <string name="self_limit_per_bet_limit_user_limit">การตั้งค่าสูงสุด: %1$s %2$s-%1$s %3$s)</string>
+    <string name="self_limit_per_bet_limit_user">• กำหนดวงเงินเดิมพัน: %1$s %2$s</string>
+    <string name="self_limit_per_bet_limit_user_limit">• การตั้งค่าสูงสุด: %1$s %2$s-%1$s %3$s)</string>
     <string name="self_limit_fix_confirm">ยืนยันการเปลี่ยนแปลง</string>
     <string name="self_limit_fix_confirm_done">การปรับเปลี่ยนมีผล</string>
     <string name="withdraw_log_state_un_pass">ไม่ผ่าน</string>

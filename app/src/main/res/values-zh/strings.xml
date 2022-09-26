@@ -903,9 +903,9 @@
     <string name="self_limit_per_bet_limit_highest">上限</string>
     <string name="self_limit_per_bet_limit_input_highest">请输入数字</string>
     <string name="self_limit_per_bet_limit_impotent">您随时可以修改您的每次投注上限。修改将于申请送出后生效</string>
-    <string name="self_limit_per_bet_limit_user">已设置投注上限：%1$s %2$s</string>
+    <string name="self_limit_per_bet_limit_user">• 已设置投注上限：%1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">无</string>
-    <string name="self_limit_per_bet_limit_user_limit">・最高可设定:%1$s %2$s-%1$s %3$s</string>
+    <string name="self_limit_per_bet_limit_user_limit">• 最高可设定:%1$s %2$s-%1$s %3$s</string>
     <string name="self_limit_error">资料格式不符，请输入整数</string>
     <string name="self_limit_input_password_for_confirm">请输入登录密码以确认申请</string>
     <string name="self_limit_input_password_for_modification">请输入登录密码以确认修改</string>

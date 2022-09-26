@@ -117,6 +117,7 @@ class SettingPasswordViewModel(
 
     fun checkCurrentPwd(currentPwd: String) {
         _currentPwdError.value = when {
+            currentPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             currentPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
@@ -124,6 +125,7 @@ class SettingPasswordViewModel(
 
     fun checkNewPwd(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String) {
         _newPwdError.value = when {
+            newPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             newPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
                 !VerifyConstUtil.verifyPwdFormat(newPwd) -> LocalUtils.getString(R.string.error_password_format)
@@ -139,6 +141,7 @@ class SettingPasswordViewModel(
 
     fun checkConfirmPwd(newPwd: String, confirmPwd: String) {
         _confirmPwdError.value = when {
+            confirmPwd.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             confirmPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             newPwd != confirmPwd -> LocalUtils.getString(R.string.error_confirm_password)
             else -> ""
