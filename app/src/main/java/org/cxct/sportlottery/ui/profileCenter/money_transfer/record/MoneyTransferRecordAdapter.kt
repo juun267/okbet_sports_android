@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.third_game.query_transfers.Row
 class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        ITEM, NO_DATA, FOOTER
+        ITEM, NO_DATA
     }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -30,9 +30,6 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
                 else -> {
                     when {
                         list.isEmpty() -> listOf(DataItem.NoData)
-                        isLastPage -> {
-                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                        }
                         else -> {
                             list.map { DataItem.Item(it) }
                         }
@@ -49,7 +46,6 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -70,7 +66,7 @@ class MoneyTransferRecordAdapter (private val clickListener: ItemClickListener) 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.Item -> ItemType.ITEM.ordinal
-            is DataItem.Footer -> ItemType.FOOTER.ordinal
+         //   is DataItem.Footer -> ItemType.FOOTER.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
     }
@@ -130,9 +126,7 @@ sealed class DataItem {
     data class Item(val row: Row) : DataItem() {
         override val orderNo: String? = row.orderNo
     }
-    object Footer : DataItem() {
-        override val orderNo: String = ""
-    }
+
 
     object NoData : DataItem() {
         override val orderNo: String? = null

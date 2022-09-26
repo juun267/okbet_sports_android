@@ -1274,4 +1274,5 @@
     <string name="hint_please_enter_the_password_again">请再次输入密码</string>
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
+    <string name="transfer_time">Time</string>
 </resources>

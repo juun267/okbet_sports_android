@@ -302,7 +302,7 @@
     <string name="unread_letters">未读邮件 (%1$d)</string>
     <string name="index">序号</string>
     <string name="title">标题</string>
-    <string name="record_time">时间</string>
+    <string name="record_time">转换时间</string>
     <string name="choose_bet_state">选择注单状态</string>
     <string name="champion_play">冠军玩法</string>
     <string name="inquire">查询</string>
@@ -311,7 +311,7 @@
     <string name="bet_type">投注玩法</string>
     <string name="total_bet_money">总投注额</string>
     <string name="total_bet_money_colon">总投注额：</string>
-    <string name="status">状态</string>
+    <string name="status">订单状态</string>
     <string name="status_colon">状 态：</string>
     <string name="rebates">返 水：</string>
     <string name="remark_by_mts">因系统审核不成立</string>
@@ -626,7 +626,7 @@
     <string name="transfer_money_minimum">限额1.000以上</string>
     <string name="confirm_transform">确认转换</string>
     <string name="plat_money">平台余额</string>
-    <string name="money">金额</string>
+    <string name="money">转换金额</string>
     <string name="transfer_platform">转换平台</string>
     <string name="transfer_money_succeed">额度转换成功</string>
     <string name="third_game_df">德丰捕鱼</string>
@@ -1248,4 +1248,5 @@
     <string name="register_and_login">注册/登录</string>
     <string name="km">千米</string>
     <string name="outlet">投注站</string>
+    <string name="transfer_time">转换时间</string>
 </resources>
