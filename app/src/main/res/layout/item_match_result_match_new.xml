@@ -110,7 +110,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textColor="@color/color_FFFFFF_535D76"
+                android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize14sp"
                 android:fontFamily="@font/din_font"
                 app:layout_constraintBottom_toBottomOf="parent"
