@@ -32,10 +32,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        /*return when (viewType) {
-            ItemType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
-            else -> ViewHolder.from(parent)
-        }*/
+
         return  ViewHolder.from(parent)
     }
 
