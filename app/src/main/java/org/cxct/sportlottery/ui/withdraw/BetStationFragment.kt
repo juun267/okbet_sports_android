@@ -23,12 +23,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
-import kotlinx.android.synthetic.main.fragment_bet_station.btn_info
-import kotlinx.android.synthetic.main.fragment_bet_station.ll_commission
-import kotlinx.android.synthetic.main.fragment_bet_station.tv_balance
-import kotlinx.android.synthetic.main.fragment_bet_station.tv_commission
-import kotlinx.android.synthetic.main.fragment_bet_station.tv_detail
-import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
@@ -39,14 +33,11 @@ import org.cxct.sportlottery.network.bettingStation.Province
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import java.math.RoundingMode
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -62,17 +53,12 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     private var selectCity: City? = null
     private var selectBettingStation: BettingStation? = null
     private var location: Location? = null
-    private var appointmentDate = ""
+    private var selectDate: Date? = null
         set(value) {
-            tv_calendar.text = value
+            tv_time.text =
+                (TimeUtil.dateToDateFormat(value, TimeUtil.YMD_HMS_FORMAT) ?: "") + "(GTM+8)"
             field = value
         }
-    private var appointmentTime = ""
-        set(value) {
-            tv_hour.text = "$value(GTM+8)"
-            field = value
-        }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -132,8 +118,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         View.OnClickListener { hideKeyboard() }.let {
             spinner_area.setOnClickListener(it)
             spinner_city.setOnClickListener(it)
-            tv_calendar.setOnClickListener(it)
-            tv_calendar.setOnClickListener(it)
+            tv_time.setOnClickListener(it)
         }
         spinner_area.setOnItemSelectedListener {
             selectProvince = areaAll?.provinces?.find { province ->
@@ -155,9 +140,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 BetStationSelectorAdapterListener {
                     hideKeyboard()
                     selectBettingStation = it
-                    //appointmentDate = ""
-                    appointmentTime = ""
-                    tv_hour.text = getString(R.string.select_time)
+                    tv_time.text = getString(R.string.select_time)
                     updateStation()
                 })
 
@@ -174,7 +157,7 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             CommissionInfoDialog().show(childFragmentManager, null)
         }
 
-        appointmentDate = TimeUtil.dateToDateFormat(Date(), TimeUtil.YMD_FORMAT) ?: ""
+        tv_time.text = TimeUtil.dateToDateFormat(selectDate, TimeUtil.YMD_HMS_FORMAT) ?: ""
         spinner_area.tv_name.gravity = Gravity.CENTER_VERTICAL
         spinner_city.tv_name.gravity = Gravity.CENTER_VERTICAL
     }
@@ -272,11 +255,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
 
     private fun setupClickEvent() {
-        tv_calendar.setOnClickListener {
+        tv_time.setOnClickListener {
             showDatePicker()
-        }
-        tv_hour.setOnClickListener {
-            showTimePicker()
         }
         lin_station_detail.setOnClickListener {
             selectBettingStation?.let {
@@ -297,8 +277,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 et_amount.getText(),
                 et_password.getText(),
                 if (selectBettingStation == null) null else selectBettingStation!!.id,
-                appointmentDate,
-                appointmentTime,
+                TimeUtil.dateToDateFormat(selectDate, TimeUtil.YMD_FORMAT) ?: "",
+                TimeUtil.dateToDateFormat(selectDate, TimeUtil.HM_FORMAT_SS) ?: "",
             )
         }
     }
@@ -428,13 +408,17 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         val dateTimePicker: TimePickerView = TimePickerBuilder(
             requireContext()
         ) { date, _ ->
-            appointmentDate = TimeUtil.dateToDateFormat(date, TimeUtil.YMD_FORMAT) ?: ""
+            selectDate = date
         }
             .setLabel("", "", "", "", "", "")
             .setRangDate(Calendar.getInstance(), null)
-            .setDate(Calendar.getInstance())
+            .setDate(Calendar.getInstance().apply {
+                selectDate?.let {
+                    time = selectDate
+                }
+            })
             .setTimeSelectChangeListener { }
-            .setType(booleanArrayOf(true, true, true, false, false, false))
+            .setType(booleanArrayOf(true, true, true, true, true, false))
             .setCancelText("")
             .setSubmitText(requireContext().getString(R.string.picker_submit))
             .setTitleColor(ContextCompat.getColor(requireContext(), R.color.color_CCCCCC_000000))
@@ -447,46 +431,46 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         dateTimePicker.show()
     }
 
-    private fun showTimePicker() {
-        var items = mutableListOf<StatusSheetData>()
-        var startCal = Calendar.getInstance()
-        var endCal = Calendar.getInstance()
-
-        selectBettingStation?.let {
-            if (it.officeStartTime.isNotEmpty() && it.officeEndTime.isNotEmpty()) {
-                try {
-                    startCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().apply {
-                        time = SimpleDateFormat(TimeUtil.HM_FORMAT_SS).parse(it.officeStartTime)
-                    }.get(Calendar.HOUR_OF_DAY))
-                    endCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().apply {
-                        time = SimpleDateFormat(TimeUtil.HM_FORMAT_SS).parse(it.officeEndTime)
-                    }.get(Calendar.HOUR_OF_DAY))
-                } catch (e: java.lang.Exception) {
-                    e.printStackTrace()
-                }
-            } else {
-                startCal.set(Calendar.HOUR_OF_DAY, 0)
-                endCal.set(Calendar.HOUR_OF_DAY, 23)
-            }
-
-            for (i in startCal.get(Calendar.HOUR_OF_DAY)..endCal.get(Calendar.HOUR_OF_DAY)) {
-                var cal = Calendar.getInstance()
-                cal.set(Calendar.MINUTE, 0)
-                cal.set(Calendar.HOUR_OF_DAY, i)
-                var start = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT_SS)
-                cal.add(Calendar.HOUR_OF_DAY, 1)
-                var end = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT_SS)
-                items.add(StatusSheetData(start, "$start~$end"))
-            }
-            showBottomSheetDialog(
-                getString(R.string.select_time),
-                items,
-                items[0],
-                StatusSheetAdapter.ItemCheckedListener { _, data ->
-                    appointmentTime = data.showName!!
-                })
-        }
-    }
+//    private fun showTimePicker() {
+//        var items = mutableListOf<StatusSheetData>()
+//        var startCal = Calendar.getInstance()
+//        var endCal = Calendar.getInstance()
+//
+//        selectBettingStation?.let {
+//            if (it.officeStartTime.isNotEmpty() && it.officeEndTime.isNotEmpty()) {
+//                try {
+//                    startCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().apply {
+//                        time = SimpleDateFormat(TimeUtil.HM_FORMAT_SS).parse(it.officeStartTime)
+//                    }.get(Calendar.HOUR_OF_DAY))
+//                    endCal.set(Calendar.HOUR_OF_DAY, Calendar.getInstance().apply {
+//                        time = SimpleDateFormat(TimeUtil.HM_FORMAT_SS).parse(it.officeEndTime)
+//                    }.get(Calendar.HOUR_OF_DAY))
+//                } catch (e: java.lang.Exception) {
+//                    e.printStackTrace()
+//                }
+//            } else {
+//                startCal.set(Calendar.HOUR_OF_DAY, 0)
+//                endCal.set(Calendar.HOUR_OF_DAY, 23)
+//            }
+//
+//            for (i in startCal.get(Calendar.HOUR_OF_DAY)..endCal.get(Calendar.HOUR_OF_DAY)) {
+//                var cal = Calendar.getInstance()
+//                cal.set(Calendar.MINUTE, 0)
+//                cal.set(Calendar.HOUR_OF_DAY, i)
+//                var start = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT_SS)
+//                cal.add(Calendar.HOUR_OF_DAY, 1)
+//                var end = TimeUtil.dateToDateFormat(cal.time, TimeUtil.HM_FORMAT_SS)
+//                items.add(StatusSheetData(start, "$start~$end"))
+//            }
+//            showBottomSheetDialog(
+//                getString(R.string.select_time),
+//                items,
+//                items[0],
+//                StatusSheetAdapter.ItemCheckedListener { _, data ->
+//                    appointmentTime = data.showName!!
+//                })
+//        }
+//    }
 
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private val locationCallback = object : LocationCallback() {

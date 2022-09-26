@@ -33,11 +33,11 @@
 
     <ImageView
         android:id="@+id/img_tick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="right"
         android:layout_marginEnd="@dimen/textSize8sp"
-        android:src="@drawable/ic_tick"
+        android:src="@drawable/ic_icon_success"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/iv_bank_icon"
         app:layout_constraintEnd_toEndOf="parent"

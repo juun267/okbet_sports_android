@@ -45,6 +45,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:visibility="invisible"
                     android:background="@color/color_666666_bcbcbc" />
 
                 <ImageView
@@ -429,8 +430,7 @@
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
                     android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize13sp" />
 
                 <View
                     android:layout_width="1dp"
@@ -439,6 +439,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:visibility="invisible"
                     android:background="@color/color_1F1F1F_E2E2E2" />
 
 
@@ -495,8 +496,7 @@
                     android:maxLines="1"
                     android:text="@string/title_current_money"
                     android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize13sp" />
 
                 <View
                     android:layout_width="1dp"
@@ -505,6 +505,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:visibility="invisible"
                     android:background="@color/color_1F1F1F_E2E2E2" />
 
                 <TextView

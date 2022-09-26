@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_2b2b2b_ffffff"
     tools:context=".ui.money.recharge.BtsRvAdapter">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_141414_f3f3f3"
         android:gravity="center"
         android:paddingStart="20dp"
         android:paddingTop="10dp"
@@ -36,7 +35,7 @@
             android:layout_height="match_parent"
             android:text="@string/bottom_sheet_close"
             android:textAllCaps="true"
-            android:textColor="@color/color_7F7F7F_999999"
+            android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

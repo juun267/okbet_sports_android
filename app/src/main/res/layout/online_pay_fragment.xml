@@ -23,6 +23,7 @@
             android:id="@+id/et_recharge_online_payer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cvTitleTextStyle="normal"
             app:cvEms="20"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvHint="@string/edt_hint_payer"
@@ -36,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvTitleTextStyle="normal"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
             app:cvTitle="@string/title_deposit_money" />
@@ -60,9 +62,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_pay_gap"
-                    android:textColor="@color/color_CCCCCC_000000"
-                    android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize13sp" />
 
                 <View
                     android:layout_width="1dp"
@@ -70,6 +71,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
+                    android:visibility="invisible"
                     android:background="@color/color_666666_bcbcbc" />
 
                 <ImageView
@@ -122,9 +124,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@string/title_pay_bank"
-                    android:textColor="@color/color_CCCCCC_000000"
-                    android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize13sp" />
 
                 <View
                     android:layout_width="1dp"
@@ -132,6 +133,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
+                    android:visibility="invisible"
                     android:background="@color/color_666666_bcbcbc" />
 
                 <ImageView
