@@ -150,17 +150,17 @@ class AccountHistoryNextAdapter(
 
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType, position)
+                holder.bind(data.row, oddsType, position, itemClickListener)
             }
 
             is OutrightItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType, position)
+                holder.bind(data.row, oddsType, position, itemClickListener)
             }
 
             is ParlayItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, oddsType, position)
+                holder.bind(data.row, oddsType, position, itemClickListener)
             }
 
 //            is FooterViewHolder -> {
@@ -196,7 +196,7 @@ class AccountHistoryNextAdapter(
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(row: Row, oddsType: OddsType, position: Int) {
+        fun bind(row: Row, oddsType: OddsType, position: Int, itemClickListener: ItemClickListener) {
             binding.topViewParlay.isVisible = position == 0
 
             val parlayAdapter by lazy { ParlayItemAdapter() }
@@ -205,6 +205,12 @@ class AccountHistoryNextAdapter(
 
             binding.apply {
                 matchOdd = row.matchOdds?.firstOrNull()
+
+                matchOdd?.apply {
+                    binding.root.setOnClickListener {
+                        itemClickListener.onClick(row, this)
+                    }
+                }
 
                 row.parlayType?.let { parlayType ->
                     ParlayType.getParlayStringRes(parlayType)?.let { parlayTypeStringResId ->
@@ -258,7 +264,7 @@ class AccountHistoryNextAdapter(
 
     class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(row: Row, oddsType: OddsType, position: Int) {
+        fun bind(row: Row, oddsType: OddsType, position: Int, itemClickListener: ItemClickListener) {
             binding.topView.isVisible = position == 0
 
             val first = row.matchOdds?.firstOrNull()
@@ -267,6 +273,10 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.apply {
+                binding.root.setOnClickListener {
+                    itemClickListener.onClick(row, first)
+                }
+
                 first.oddsType?.let {
                     val formatForOdd = if (playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage((odds ?: 0.0) - 1.0) else TextUtil.formatForOdd(odds ?: 0)
                     binding.tvContent.setPlayContent(
@@ -323,7 +333,7 @@ class AccountHistoryNextAdapter(
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(row: Row, oddsType: OddsType, position: Int) {
+        fun bind(row: Row, oddsType: OddsType, position: Int, itemClickListener: ItemClickListener) {
             binding.topView.isVisible = position == 0
 
             val first = row.matchOdds?.firstOrNull()
@@ -334,6 +344,9 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let { it ->
+                binding.root.setOnClickListener {
+                    itemClickListener.onClick(row, first)
+                }
 
                 val formatForOdd = if (it.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage((it.odds ?: 0.0) - 1.0) else TextUtil.formatForOdd(it.odds ?: 0)
                 binding.tvContent.setPlayContent(
@@ -542,8 +555,8 @@ class AccountHistoryNextAdapter(
     }
 }
 
-class ItemClickListener(val clickListener: (data: MatchOdd) -> Unit) {
-    fun onClick(data: MatchOdd) = clickListener(data)
+class ItemClickListener(val clickListener: (data: Row, matchData: MatchOdd) -> Unit) {
+    fun onClick(data: Row, matchData: MatchOdd) = clickListener(data, matchData)
 }
 
 class BackClickListener(val clickListener: () -> Unit) {

@@ -12,13 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_results_settlement.*
+import kotlinx.android.synthetic.main.activity_results_settlement_new.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_settlement_league_type.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league.view.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.*
 import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
-import kotlinx.android.synthetic.main.view_status_spinner.*
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -32,6 +30,13 @@ import java.util.*
  */
 class ResultsSettlementActivity :
     BaseSocketActivity<SettlementViewModel>(SettlementViewModel::class) {
+
+    companion object {
+        const val EXTRA_GAME_TYPE = "EXTRA_GAME_TYPE"
+        const val EXTRA_START_TIME = "EXTRA_START_TIME"
+        const val EXTRA_MATCH_ID = "EXTRA_MATCH_ID"
+    }
+
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
@@ -212,19 +217,30 @@ class ResultsSettlementActivity :
      * 初始化球種篩選清單選項及當前選中第一項
      */
     private fun initSettleGameTypeBottomSheet(gameTypeSpinnerList: MutableList<StatusSheetData>) {
-        //初始化當前選中第一項
-        val initSpinnerItem = gameTypeSpinnerList.firstOrNull()
-        status_game_type.tv_name.text = initSpinnerItem?.showName
-        gameType = initSpinnerItem?.code ?: ""
+        gameType = intent.getStringExtra(EXTRA_GAME_TYPE).orEmpty()
+        //region 開賽時間和賽事Id (目前暫用不到，但如要比對注單詳情，需用以下資訊過濾)
+        val startTime = intent.getLongExtra(EXTRA_START_TIME, System.currentTimeMillis())
+        val matchId = intent.getStringExtra(EXTRA_MATCH_ID).orEmpty()
+        //endregion
+        val spinnerItem: StatusSheetData? = if (gameType.isNotEmpty()) {
+            //如intent有傳gameType，改為選中此gameTypeCode
+            gameTypeSpinnerList.find { it.code == gameType }
+        } else {
+            //初始化當前選中第一項
+            gameTypeSpinnerList.firstOrNull()
+        }
         viewModel.getMatchResultList(gameType, null, timeRangeParams)
 
         status_game_type.setItemData(gameTypeSpinnerList)
+        spinnerItem?.let {
+            status_game_type.setSelectInfo(it)
+            gameType = it.code.orEmpty()
+        }
     }
 
     private fun setupSettleGameTypeBottomSheet() {
         status_game_type.setOnItemSelectedListener {
-            gameType = it.code!!
-            this@ResultsSettlementActivity.tv_name.text = it.showName
+            gameType = it.code.orEmpty()
             when (settleType) {
                 SettleType.MATCH -> {
                     viewModel.getMatchResultList(gameType, null, timeRangeParams)

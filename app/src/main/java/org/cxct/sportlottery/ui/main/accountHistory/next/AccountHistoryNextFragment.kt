@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.TextUtil
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
@@ -26,7 +28,13 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     private var date = ""
     private var gameType = ""
 
-    private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
+    private val rvAdapter = AccountHistoryNextAdapter(
+        ItemClickListener { data, matchData ->
+            val intent = Intent(requireContext(), ResultsSettlementActivity::class.java)
+            intent.putExtra(ResultsSettlementActivity.EXTRA_GAME_TYPE, data.gameType)
+            intent.putExtra(ResultsSettlementActivity.EXTRA_START_TIME, matchData.startTime)
+            intent.putExtra(ResultsSettlementActivity.EXTRA_MATCH_ID, matchData.matchId)
+            startActivity(intent)
     }, BackClickListener {
 //        findNavController().navigateUp()
         activity?.onBackPressed()
