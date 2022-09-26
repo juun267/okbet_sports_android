@@ -603,7 +603,7 @@
     <string name="log_detail_handle_fee">手续费用：</string>
     <string name="log_detail_rebate_money">返利金额：</string>
     <string name="log_detail_review_time">审核时间：</string>
-    <string name="log_detail_reason">&#12288;&#12288;备注：</string>
+    <string name="log_detail_reason">备注：</string>
     <string name="finance_log_selector_until">到</string>
     <string name="finance_list_no_record">暂无任何内容</string>
     <string name="feedback_detail">反馈详情</string>
