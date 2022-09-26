@@ -22,8 +22,9 @@ fun commonCheckDialog(
     title: String?,
     errorMessageSpan: Spanned,
     buttonText: String?,
+    negativeText: String?,
     positiveClickListener: () -> Unit?,
-    isOutsideCancelable: Boolean = false
+    isOutsideCancelable: Boolean = false,
 ) {
     if (checkDialogIsShowing(fm, errorMessageSpan.toString())) {
         return
@@ -37,7 +38,7 @@ fun commonCheckDialog(
         setTitle(title)
         setMessage(errorMessageSpan)
         setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
-        setNegativeButtonText(null)
+        setNegativeButtonText(negativeText)
         setPositiveClickListener {
             positiveClickListener()
             this.dismiss()
@@ -57,7 +58,8 @@ fun commonCheckDialog(
     title: String?,
     errorMessage: String? = "",
     buttonText: String?,
-    positiveClickListener: () -> Unit?
+    negativeText: String?,
+    positiveClickListener: () -> Unit?,
 ) {
     if (checkDialogIsShowing(fm, errorMessage ?: "")) {
         return
@@ -71,7 +73,7 @@ fun commonCheckDialog(
         setTitle(title)
         setMessage(errorMessage)
         setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
-        setNegativeButtonText(null)
+        setNegativeButtonText(negativeText)
         setPositiveClickListener {
             positiveClickListener()
             this.dismiss()

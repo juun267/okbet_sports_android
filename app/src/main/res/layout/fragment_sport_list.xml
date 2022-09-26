@@ -41,8 +41,9 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/sport_type_list"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:paddingHorizontal="15dp"
                         android:nestedScrollingEnabled="false"
                         tools:itemCount="1"
                         tools:listitem="@layout/itemview_sport_type_v6" />

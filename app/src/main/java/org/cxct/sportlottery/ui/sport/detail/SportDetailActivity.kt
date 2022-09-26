@@ -9,6 +9,8 @@ import android.os.Handler
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -25,6 +27,8 @@ import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.view.*
+import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
+import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -51,6 +55,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.widget.MyWebView
 import timber.log.Timber
 import java.util.*
 
@@ -87,8 +92,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var betListFragment = BetListFragment()
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
-
-
+    private var isFlowing = false
+    private lateinit var enterAnim: Animation
+    private lateinit var exitAnim: Animation
+    val handler = Handler()
+    private val delayHideRunnable = Runnable { collaps_toolbar.startAnimation(exitAnim) }
     private var isGamePause = false
     override var startTime: Long = 0
     override var timer: Timer = Timer()
@@ -225,6 +233,60 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         })
+        live_view_tool_bar.web_view.setOnTouchScreenListener(object :
+            MyWebView.OnTouchScreenListener {
+            override fun onTouchScreen() {
+                isFlowing = true;
+                if (collaps_toolbar.getVisibility() == View.GONE) {
+                    collaps_toolbar.startAnimation(enterAnim);
+                    collaps_toolbar.setVisibility(View.VISIBLE);
+                }
+            }
+
+            override fun onReleaseScreen() {
+                isFlowing = false;
+                startDelayHideTitle()
+            }
+        })
+    }
+
+    private fun initAnim() {
+        enterAnim = AnimationUtils.loadAnimation(this, R.anim.pop_top_to_bottom_enter)
+        enterAnim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                collaps_toolbar.isVisible = true
+                iv_fullscreen.isVisible = true
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+        })
+        enterAnim.duration = 300
+        exitAnim = AnimationUtils.loadAnimation(this, R.anim.push_bottom_to_top_exit)
+        exitAnim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                collaps_toolbar.isVisible = false
+                iv_fullscreen.isVisible = false
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+        })
+        exitAnim.duration = 300
+    }
+
+    private fun startDelayHideTitle() {
+        collaps_toolbar.isVisible = true
+        handler.removeCallbacks(delayHideRunnable)
+        handler.postDelayed(delayHideRunnable, 2000)
     }
 
     override fun initMenu() {
@@ -307,11 +369,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         super.onResume()
         startTimer()
         isLogin = viewModel.loginRepository.isLogin.value == true
-        if (MultiLanguagesApplication.colorModeChanging) {
-            initObserve()
-            initSocketObserver()
-            MultiLanguagesApplication.colorModeChanging = false
-        }
         live_view_tool_bar.initLoginStatus(isLogin)
 
     }
@@ -396,6 +453,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setupAnalyze(it)
         }
         isShowOdd(true)
+        initAnim()
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
@@ -831,6 +889,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     collaps_toolbar.iv_toolbar_bg.isVisible = false
                     live_view_tool_bar.showVideo()
                     setScrollEnable(false)
+                    startDelayHideTitle()
                 }
             }
             lin_anime.setOnClickListener {
@@ -841,6 +900,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     collaps_toolbar.iv_toolbar_bg.isVisible = false
                     live_view_tool_bar.showAnime()
                     setScrollEnable(false)
+                    startDelayHideTitle()
                 }
             }
             if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {

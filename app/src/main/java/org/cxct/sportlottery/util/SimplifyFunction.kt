@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Rect
-import android.graphics.drawable.PictureDrawable
 import android.os.Environment
 import android.text.SpannableString
 import android.text.Spanned
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.caverock.androidsvg.SVG
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
@@ -1012,14 +1010,7 @@ fun ImageView.setTeamLogo(icon: String?) {
                     .error(R.drawable.ic_team_default))
                 .into(this)
         } else {
-            try {
-                val data =
-                    String.format(context.getString(R.string.svg_format), 48, 48, 24, 24, icon)
-                val svgFile = SVG.getFromString(data)
-                setImageDrawable(PictureDrawable(svgFile.renderToPicture()))
-            } catch (e: Exception) {
-                setImageResource(R.drawable.ic_league_default)
-            }
+            setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
         }
     }
 }
@@ -1035,14 +1026,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
                     .error(R.drawable.ic_league_default))
                 .into(this)
         } else {
-            try {
-                val data =
-                    String.format(context.getString(R.string.svg_format), 48, 48, 24, 24, icon)
-                val svgFile = SVG.getFromString(data)
-                setImageDrawable(PictureDrawable(svgFile.renderToPicture()))
-            } catch (e: Exception) {
-                setImageResource(R.drawable.ic_league_default)
-            }
+            setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
         }
     }
 }

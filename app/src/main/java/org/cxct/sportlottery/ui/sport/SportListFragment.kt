@@ -36,7 +36,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
-import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
@@ -98,10 +97,6 @@ class SportListFragment :
                     viewModel.tempDatePosition = 0
                     //日期圖示選取狀態下，切換球種要重置UI狀態
                     if (iv_calendar.isSelected) iv_calendar.performClick()
-                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                        sport_type_list,
-                        RecyclerView.State(),
-                        dataSport.indexOf(it))
                 }
                 gameType = it.code
                 dataSport.forEach { item ->
@@ -285,7 +280,7 @@ class SportListFragment :
     private fun setupSportTypeList() {
         sport_type_list.apply {
             this.layoutManager =
-                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             //波胆不需要显示球类
             isVisible = matchType != MatchType.CS
@@ -345,7 +340,7 @@ class SportListFragment :
     private fun setupGameRow() {
         game_filter_type_list.apply {
             this.layoutManager =
-                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = dateAdapter
@@ -481,11 +476,6 @@ class SportListFragment :
         viewModel.curDatePosition.observe(this.viewLifecycleOwner) {
             var position = viewModel.tempDatePosition
             position = if (position != 0) position else it
-            (game_filter_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
-                game_filter_type_list,
-                RecyclerView.State(),
-                position
-            )
         }
 
         viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
@@ -908,13 +898,6 @@ class SportListFragment :
         }
         gameTypeAdapter.apply {
             dataSport = gameTypeList
-            dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) }
-                .takeIf { it > 0 }?.let {
-                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                        sport_type_list,
-                        RecyclerView.State(),
-                        it)
-                }
         }
         //post待view繪製完成
         sport_type_list?.post {

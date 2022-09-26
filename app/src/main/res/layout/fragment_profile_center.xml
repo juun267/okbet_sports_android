@@ -438,14 +438,15 @@
                                 android:src="@drawable/ic_arrow_right" />
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:gravity="right"
                                 android:layout_marginEnd="@dimen/margin_5"
-                                android:singleLine="true"
-                                android:ellipsize="end"
                                 android:layout_toStartOf="@+id/iv_line"
                                 android:layout_toEndOf="@+id/tv_fund_detail"
+                                android:ellipsize="end"
+                                android:singleLine="true"
                                 android:text="@string/transaction_record"
                                 android:textColor="@color/color_A7B2C4"
                                 android:textSize="@dimen/textSize12sp" />

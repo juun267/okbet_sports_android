@@ -61,52 +61,40 @@
                 layout="@layout/view_search"
                 android:visibility="visible" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/cl_bet_all_sports"
                 android:layout_width="wrap_content"
                 android:layout_height="28dp"
-                android:paddingHorizontal="5dp"
-                android:layout_marginLeft="10dp"
+                android:minWidth="90dp"
                 android:layout_marginEnd="13dp"
-                android:visibility="gone"
-                tools:ignore="SpUsage,RtlSymmetry,ContentDescription">
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:duplicateParentState="true"
+                android:background="@drawable/selector_bg_home_tab_menu">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_all_sports"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="13dp"
                     android:duplicateParentState="true"
-                    android:background="@drawable/selector_bg_home_tab_menu"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:text="@string/all_sport"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/selector_blue_white" />
 
-                    <TextView
-                        android:id="@+id/tv_all_sports"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="13dp"
-                        android:duplicateParentState="true"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:text="@string/all_sport"
-                        android:textSize="@dimen/textSize14sp"
-                        android:textColor="@color/selector_blue_white" />
-
-                    <ImageView
-                        android:id="@+id/iv_all_sports_arrow"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="6dp"
-                        android:duplicateParentState="true"
-                        android:src="@drawable/selector_blue_white_arrow" />
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/iv_all_sports_arrow"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="6dp"
+                    android:duplicateParentState="true"
+                    android:src="@drawable/selector_blue_white_arrow" />
+            </LinearLayout>
         </LinearLayout>
 
         <org.cxct.sportlottery.widget.RadiusCardView
