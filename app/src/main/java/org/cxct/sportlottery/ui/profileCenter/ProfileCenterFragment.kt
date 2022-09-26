@@ -530,30 +530,23 @@ class ProfileCenterFragment :
 
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    context?.let { context ->
-                        val dialog = CustomAlertDialog(context)
-                        dialog.setTitle(getString(R.string.withdraw_setting))
-                        dialog.setMessage(getString(R.string.please_setting_withdraw_password))
-                        dialog.setPositiveButtonText(getString(R.string.go_to_setting))
-                        dialog.setNegativeButtonText(getString(R.string.btn_cancel))
-                        dialog.setNegativeTextColor(R.color.color_FFFFFF_414655)
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog. setPositiveClickListener{
-                            startActivity(
-                                Intent(
-                                    requireActivity(),
-                                    SettingPasswordActivity::class.java
-                                ).apply {
-                                    putExtra(
-                                        PWD_PAGE,
-                                        SettingPasswordActivity.PwdPage.BANK_PWD
-                                    )
-                                })
-                        }
-                        dialog.isCancelable = false
-                        dialog.show(childFragmentManager, null)
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                requireActivity(),
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
                     }
-
                 } else {
                     viewModel.checkProfileInfoComplete()
                 }
@@ -563,19 +556,13 @@ class ProfileCenterFragment :
         viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    context?.let {context ->
-                        val dialog = CustomAlertDialog(context)
-                        dialog.setTitle(getString(R.string.withdraw_setting))
-                        dialog.setMessage(getString(R.string.please_complete_profile_info))
-                        dialog.setPositiveButtonText(getString(R.string.go_to_setting))
-                        dialog.setNegativeButtonText(getString(R.string.btn_cancel))
-                        dialog.setNegativeTextColor(R.color.color_FFFFFF_414655)
-                        dialog.setCanceledOnTouchOutside(false)
-                        dialog.setPositiveClickListener {
-                            dialog.dismiss()
-                            startActivity(Intent(requireActivity(), ProfileActivity::class.java))
-                        }
-                        dialog.show(childFragmentManager, null)
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(requireActivity(), ProfileActivity::class.java))
                     }
                 } else {
                     viewModel.checkBankCardPermissions()

@@ -32,7 +32,7 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
     private var mTextColor = R.color.color_9FADC6_535D76
-    private var mNegateTextColor = R.color.color_BBBBBB_333333
+    private var mNegateTextColor = R.color.color_FFFFFF_414655
     private var isShowDivider: Boolean = false
     private var isShowDividerBottom: Boolean = true
 

@@ -256,7 +256,6 @@
                             android:textColorHint="@color/color_C9CFD7" />
 
                     </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
-
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/block_sms_valid_code"
                         android:layout_width="match_parent"
@@ -264,7 +263,7 @@
                         android:layout_marginTop="4dp"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/et_phone">
 
@@ -280,6 +279,7 @@
                             app:labelTextStyle="normal"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintRight_toLeftOf="@+id/btn_send_sms"
                             app:primaryColor="@color/color_AFAFB1">
 
                             <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -292,44 +292,22 @@
                                 android:textColor="@color/color_FFFFFF_DE000000"
                                 android:textSize="@dimen/textSize14sp"
                                 android:textColorHint="@color/color_C9CFD7" />
-
                         </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
-                        <!--                <org.cxct.sportlottery.ui.login.LoginEditText-->
-                        <!--                    android:id="@+id/et_sms_valid_code"-->
-                        <!--                    android:layout_width="0dp"-->
-                        <!--                    android:layout_height="wrap_content"-->
-                        <!--                    android:layout_weight="1"-->
-                        <!--                    app:cvEnableVerificationCode="false"-->
-                        <!--                    app:cvHint="@string/hint_verification_code_by_sms"-->
-                        <!--                    app:cvInputType="number"-->
-                        <!--                    app:cvTitle="@string/verification_code_by_sms"-->
-                        <!--                    app:necessarySymbol="visible" />-->
 
-                        <!--                            <LinearLayout-->
-                        <!--                                android:id="@+id/ll_send_sms"-->
-                        <!--                                android:layout_width="wrap_content"-->
-                        <!--                                android:layout_height="40dp"-->
-                        <!--                                android:layout_marginStart="5dp"-->
-                        <!--                                android:layout_marginTop="5dp"-->
-                        <!--                                android:background="@color/transparent_black_0"-->
-                        <!--                                android:gravity="center"-->
-                        <!--                                android:minWidth="80dp"-->
-                        <!--                                android:orientation="horizontal"-->
-                        <!--                                app:layout_constraintEnd_toEndOf="parent"-->
-                        <!--                                app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code">-->
-
-                        <!--                                <Button-->
-                        <!--                                    android:id="@+id/btn_send_sms"-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="match_parent"-->
-                        <!--                                    android:background="@drawable/btn_send_sms"-->
-                        <!--                                    android:minHeight="32dp"-->
-                        <!--                                    android:text="@string/get_verification_code"-->
-                        <!--                                    android:textAllCaps="false"-->
-                        <!--                                    android:textColor="@color/color_FCFCFC"-->
-                        <!--                                    android:textSize="@dimen/textSize14sp" />-->
-
-                        <!--                            </LinearLayout>-->
+                        <Button
+                            android:id="@+id/btn_send_sms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/btn_send_sms"
+                            android:minHeight="32dp"
+                            android:text="@string/get_verification_code"
+                            android:textAllCaps="false"
+                            android:textColor="@color/color_2b2b2b_ffffff"
+                            android:textSize="@dimen/textSize14sp"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="@+id/et_sms_valid_code"
+                            app:layout_constraintTop_toTopOf="@+id/et_sms_valid_code"
+                            app:layout_constraintBottom_toBottomOf="@+id/et_sms_valid_code" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -344,7 +322,7 @@
                         app:labelText="@string/birth_date"
                         app:labelTextStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/block_sms_valid_code"
+                        app:layout_constraintTop_toBottomOf="@+id/et_phone"
                         app:primaryColor="@color/color_AFAFB1">
 
                         <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -505,7 +483,7 @@
                         android:minHeight="32dp"
                         android:text="@string/select_file"
                         android:textAllCaps="false"
-                        android:textColor="@color/color_FCFCFC"
+                        android:textColor="@color/color_2b2b2b_ffffff"
                         android:textSize="@dimen/textSize14sp"
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@+id/etIdentity"
@@ -1264,7 +1242,7 @@
                     android:background="@drawable/ic_submit"
                     android:enabled="false"
                     android:text="@string/next_step"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize17sp" />
             </RelativeLayout>
         </LinearLayout>

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
@@ -41,7 +39,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
-import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -99,10 +96,6 @@ class SportOutrightFragment :
                     viewModel.tempDatePosition = 0
                     //日期圖示選取狀態下，切換球種要重置UI狀態
                     if (iv_calendar.isSelected) iv_calendar.performClick()
-                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                        sport_type_list,
-                        RecyclerView.State(),
-                        dataSport.indexOfFirst { item -> TextUtils.equals(it.code, item.code) })
                 }
                 gameType = it.code
                 dataSport.forEach { item ->
@@ -217,7 +210,7 @@ class SportOutrightFragment :
     private fun setupSportTypeList() {
         sport_type_list.apply {
             this.layoutManager =
-                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = gameTypeAdapter
@@ -275,7 +268,7 @@ class SportOutrightFragment :
     private fun setupGameRow() {
         game_filter_type_list.apply {
             this.layoutManager =
-                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = dateAdapter
@@ -438,11 +431,6 @@ class SportOutrightFragment :
         viewModel.curDatePosition.observe(this.viewLifecycleOwner) {
             var position = viewModel.tempDatePosition
             position = if (position != 0) position else it
-            (game_filter_type_list.layoutManager as ScrollCenterLayoutManager?)?.smoothScrollToPosition(
-                game_filter_type_list,
-                RecyclerView.State(),
-                position
-            )
         }
 
         viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
@@ -665,13 +653,6 @@ class SportOutrightFragment :
         }
         gameTypeAdapter.apply {
             dataSport = gameTypeList
-            dataSport.indexOfFirst { item -> TextUtils.equals(gameType, item.code) }
-                .takeIf { it > 0 }?.let {
-                    (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                        sport_type_list,
-                        RecyclerView.State(),
-                        it)
-                }
         }
         sport_type_list?.post {
             //球種如果選過，下次回來也需要滑動置中
