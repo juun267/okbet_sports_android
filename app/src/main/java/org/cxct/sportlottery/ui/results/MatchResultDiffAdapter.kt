@@ -211,17 +211,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game.text = context.getString(R.string.full_game)
                         params.weight = 2.2f
                     }
-                    GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
-                    GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key -> { //賽果
+                    else -> { //賽果 (比照iOS，其他都顯示賽果)
                         tv_first_half.visibility = View.GONE
                         tv_second_half.visibility = View.GONE
                         tv_end_game.visibility = View.VISIBLE
-                        tv_full_game.visibility = View.GONE
-                    }
-                    else -> {
-                        tv_first_half.visibility = View.GONE
-                        tv_second_half.visibility = View.GONE
-                        tv_end_game.visibility = View.GONE
                         tv_full_game.visibility = View.GONE
                     }
                 }
@@ -302,17 +295,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_full_game_score.visibility = View.GONE
                         params.weight = 2.2f
                     }
-                    GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
-                    GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key  -> { //賽果
+                    else -> { //賽果 (比照iOS，其他都顯示賽果)
                         tv_first_half_score.visibility = View.GONE
                         tv_second_half_score.visibility = View.GONE
                         tv_end_game_score.visibility = View.VISIBLE
-                        tv_full_game_score.visibility = View.GONE
-                    }
-                    else -> {
-                        tv_first_half_score.visibility = View.GONE
-                        tv_second_half_score.visibility = View.GONE
-                        tv_end_game_score.visibility = View.GONE
                         tv_full_game_score.visibility = View.GONE
                     }
                 }
