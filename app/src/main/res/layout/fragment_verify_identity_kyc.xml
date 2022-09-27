@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_F0F5FA"
     android:orientation="vertical"
-    tools:context=".ui.profileCenter.identity.VerifyIdentityFragment">
+    tools:context=".ui.profileCenter.identity.VerifyKYCFragment">
 
 
         <LinearLayout
