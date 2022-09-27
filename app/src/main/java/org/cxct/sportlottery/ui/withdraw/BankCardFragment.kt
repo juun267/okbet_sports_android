@@ -21,6 +21,7 @@ import org.cxct.sportlottery.databinding.ItemListviewBankCardBinding
 import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
