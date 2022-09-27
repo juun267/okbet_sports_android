@@ -70,7 +70,15 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 }
            //     isSlidingToLast = dy>0 //dy表示水平方向的滑动 大于0表示向下 小于0表示向上
                 if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-                    tv_no_data.visibility = View.VISIBLE
+                    viewModel.userWithdrawListResult.observe(this@WithdrawLogFragment) {
+                        if (it.isNullOrEmpty()){
+                            LogUtil.d("隐藏")
+                            tv_no_data.visibility = View.GONE
+                        }else{
+                            LogUtil.d("显示")
+                            tv_no_data.visibility = View.VISIBLE
+                        }
+                    }
                 }else{
                     tv_no_data.visibility = View.GONE
                 }
@@ -145,7 +153,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private fun setupWithdrawLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
+            LogUtil.d("setupWithdrawLogList")
             addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = withdrawLogAdapter
             addItemDecoration(
@@ -197,7 +205,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             it?.let {
                 withdrawLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
-                if (it.isNullOrEmpty())tv_no_data.visibility = View.GONE
             }
         }
 

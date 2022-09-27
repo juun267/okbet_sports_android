@@ -23,7 +23,9 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
+import org.cxct.sportlottery.util.LogUtil
 import java.util.*
+import kotlin.math.log
 
 /**
  * @app_destination 意见反馈-反馈记录
@@ -60,10 +62,18 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 viewModel.getFbQueryList(isReload = false, currentTotalCount = adapter?.itemCount ?: 0)
                 scrollToTopControl(firstVisibleItemPosition)
             }
-            if ( !recyclerView.canScrollVertically(1)&& viewModel.feedbackList.value?.isNotEmpty()==true){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
-                tv_no_data.visibility = View.VISIBLE
+            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+
+                viewModel.feedbackList.observe(this@FeedbackRecordListFragment){
+                    if (it.isNullOrEmpty()){
+                        tv_no_data.visibility = View.GONE
+                    }else{
+                        tv_no_data.visibility = View.VISIBLE
+                    }
+                }
             }else{
                 tv_no_data.visibility = View.GONE
+
             }
         }
     }
@@ -124,7 +134,6 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         viewModel.feedbackList.observe(this.viewLifecycleOwner) {
             val listData = it ?: return@observe
             adapter?.data = listData
-
             if (listData.size == 0) {
                 view_no_record.visibility = View.VISIBLE
                 rv_pay_type.visibility = View.GONE

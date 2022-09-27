@@ -66,6 +66,7 @@
         android:layout_marginRight="@dimen/margin_10"
         android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_3"
         android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +145,7 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="410dp"
+            android:layout_height="350dp"
             android:layout_marginLeft="@dimen/margin_1"
             android:layout_marginRight="@dimen/margin_1"
             android:layout_marginBottom="@dimen/margin_7"
@@ -193,8 +194,9 @@
         app:layout_constraintStart_toStartOf="parent" />
     <TextView
         android:id="@+id/tv_no_data"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:background="@color/color_191919_FCFCFC"
         android:gravity="center"
         android:paddingVertical="12dp"
