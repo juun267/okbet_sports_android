@@ -13,7 +13,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
-
+/**
+ * @app_destination 存款详情弹窗
+ */
 class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
         setStyle(R.style.CustomDialogStyle)
@@ -51,10 +53,10 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 log_detail_status.text = it.rechState ?: ""
                 it.rechState.let {mState->
                     when {
-                        mState.equals("通过") -> {
+                        mState.equals("成功") -> {
                             log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
                         }
-                        mState.equals("未通过") -> {
+                        mState.equals("失败") -> {
                             log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
                         }
                         else -> {
