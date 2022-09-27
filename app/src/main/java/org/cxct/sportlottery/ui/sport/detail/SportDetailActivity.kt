@@ -595,6 +595,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     live_view_tool_bar.animeUrl = url
             }
         }
+
+        viewModel.showBetUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true)
+                snackBarBetUpperLimitNotify.apply {
+                    setAnchorView(R.id.cl_bet_list_bar)
+                    show()
+                }
+        }
     }
 
     private fun setupLiveView(liveVideo: Int?) {
