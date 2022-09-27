@@ -22,6 +22,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.LogUtil
 
 /**
  * @app_destination 转换记录
@@ -56,9 +57,11 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
                 viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
                 scrollToTopControl(firstVisibleItemPosition)
             }
-            if ( !recyclerView.canScrollVertically(1)&& viewModel.recordDataList.isNotEmpty()){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+               LogUtil.d("显示")
                 tv_no_data_tips.visibility = View.VISIBLE
             }else{
+                LogUtil.d("隐藏")
                 tv_no_data_tips.visibility = View.GONE
             }
         }
@@ -122,6 +125,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+            if (viewModel.recordDataList.isNullOrEmpty())tv_no_data_tips.visibility = View.GONE
         }
 
         viewModel.recordInPlatSheetList.observe(viewLifecycleOwner) {

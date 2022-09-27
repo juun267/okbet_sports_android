@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
 
 /**
  * @app_destination 提款记录
@@ -67,10 +68,12 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                     scrollToTopControl(firstVisibleItemPosition)
                 }
            //     isSlidingToLast = dy>0 //dy表示水平方向的滑动 大于0表示向下 小于0表示向上
-                if ( !recyclerView.canScrollVertically(1)&& viewModel.userWithdrawListResult.value?.isNotEmpty() ==true){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+                if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
                     tv_no_data.visibility = View.VISIBLE
+                    LogUtil.d("显示")
                 }else{
                     tv_no_data.visibility = View.GONE
+                    LogUtil.d("隐藏")
                 }
             }
 
@@ -195,6 +198,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             it?.let {
                 withdrawLogAdapter.data = it
                 setupNoRecordView(it.isNullOrEmpty())
+                if (it.isNullOrEmpty())tv_no_data.visibility = View.GONE
             }
         }
 
