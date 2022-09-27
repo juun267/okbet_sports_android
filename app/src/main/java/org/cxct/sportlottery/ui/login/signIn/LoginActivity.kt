@@ -27,7 +27,6 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -68,7 +67,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupServiceButton()
         initObserve()
         setLetterSpace()
-
+        viewModel.focusChangeCheckAllInputComplete()
     }
 
     private fun setLetterSpace() {
@@ -81,9 +80,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupAccount() {
-        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
-        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
-        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetAccount.setText(viewModel.account)
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
@@ -223,6 +219,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun initObserve() {
+        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
+        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
                 it.first,

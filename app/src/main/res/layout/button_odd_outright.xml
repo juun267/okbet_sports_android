@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@drawable/selector_button_radius_4_odds_outright"
+    android:layout_height="38dp"
+    android:background="@drawable/selector_button_radius_4_odds"
     tools:ignore="SpUsage,ContentDescription">
 
 
@@ -82,7 +82,6 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/selector_outright_button_odd_bottom_text"
                 android:textSize="@dimen/textSize15sp"
-                android:textStyle="bold"
                 tools:text="1.067" />
         </LinearLayout>
 

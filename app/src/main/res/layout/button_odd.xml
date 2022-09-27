@@ -72,7 +72,6 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/selector_button_odd_bottom_text"
                 android:textSize="@dimen/textSize14sp"
-                android:textStyle="bold"
                 tools:text="1.067" />
         </LinearLayout>
 

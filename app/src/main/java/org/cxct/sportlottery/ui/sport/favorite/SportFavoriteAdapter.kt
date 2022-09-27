@@ -105,6 +105,11 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         notifyItemChanged(index, matchOdd)
     }
 
+    fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
+        val index = data.indexOf(data.find { it == matchOdd })
+        notifyItemChanged(index, matchOdd)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
