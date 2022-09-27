@@ -183,9 +183,9 @@ class LoginViewModel(
         return msg
     }
 
-    private fun focusChangeCheckAllInputComplete() {
-        _loginEnable.value = checkAllInputComplete()
-    }
+     fun focusChangeCheckAllInputComplete() {
+         _loginEnable.value = checkAllInputComplete()
+     }
 
     private fun checkAllInputComplete(): Boolean {
         if (checkInputPair(accountMsg)) {

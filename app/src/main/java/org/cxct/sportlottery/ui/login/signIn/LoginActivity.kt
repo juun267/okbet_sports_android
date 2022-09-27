@@ -68,7 +68,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupServiceButton()
         initObserve()
         setLetterSpace()
-
+        viewModel.focusChangeCheckAllInputComplete()
     }
 
     private fun setLetterSpace() {
@@ -81,9 +81,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupAccount() {
-        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
-        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
-        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetAccount.setText(viewModel.account)
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
@@ -223,6 +220,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun initObserve() {
+        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
+        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
                 it.first,

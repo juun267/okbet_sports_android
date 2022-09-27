@@ -724,9 +724,7 @@ class ProfileCenterFragment :
                 if (b)
                     showKYCVerifyDialog()
                 else
-                    showKYCVerifyDialog()
-                //TODo Bill ＴＥＳＴ
-                    //viewModel.checkRechargeSystem()
+                    viewModel.checkRechargeSystem()
             }
         }
 

@@ -176,8 +176,8 @@ class SportOutrightAdapter : BaseGameAdapter() {
                 if (adapter == null) {
                     layoutManager = GridLayoutManager(context, 2)
                     addItemDecoration(GridItemDecoration(
-                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
+                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
+                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
                         Color.TRANSPARENT, true))
                     adapter = OddsOutrightOddsAdapter(item, oddsType, oddStateViewHolder).apply {
                         setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener {

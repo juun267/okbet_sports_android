@@ -215,18 +215,16 @@ class SportLeagueAdapter(private val matchType: MatchType) :
                     }
 
                     is PayLoadEnum -> {
-                        it.apply {
-                            when (this) {
-                                PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                    (holder as ItemViewHolder).updateByBetInfo()
-                                }
-                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                    (holder as ItemViewHolder).updateByPlayCate()
-                                }
-                                PayLoadEnum.EXPAND -> {
-                                    (holder as ItemViewHolder).updateLeagueExpand(data[position],
-                                        matchType)
-                                }
+                        when (it) {
+                            PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                (holder as ItemViewHolder).updateByBetInfo()
+                            }
+                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                (holder as ItemViewHolder).updateByPlayCate()
+                            }
+                            PayLoadEnum.EXPAND -> {
+                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
+                                    matchType)
                             }
                         }
                     }

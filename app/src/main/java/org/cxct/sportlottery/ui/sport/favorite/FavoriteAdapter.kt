@@ -9,6 +9,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_favorite.view.*
+import kotlinx.android.synthetic.main.item_favorite.view.iv_arrow
+import kotlinx.android.synthetic.main.item_league.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
@@ -210,25 +212,34 @@ class FavoriteAdapter(private val matchType: MatchType) :
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         } else {
             // Update with payload
-            when (payloads.first()) {
-                is LeagueOdd -> {
-                    val leagueOdd = payloads.first() as LeagueOdd
-                    (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
-                }
+            payloads.forEach {
+                payloads.forEach {
+                    when (it) {
+                        is LeagueOdd -> {
+                            val leagueOdd = payloads.first() as LeagueOdd
+                            (holder as FavoriteAdapter.ItemViewHolder).update(leagueOdd,
+                                matchType,
+                                oddsType)
+                        }
 
-                is PayLoadEnum -> {
-                    (payloads.first() as PayLoadEnum).apply {
-                        when (this) {
-                            PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                (holder as ItemViewHolder).updateByBetInfo()
+                        is PayLoadEnum -> {
+                            when (it) {
+                                PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                    (holder as FavoriteAdapter.ItemViewHolder).updateByBetInfo()
+                                }
+                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                    (holder as FavoriteAdapter.ItemViewHolder).updateByPlayCate()
+                                }
+                                PayLoadEnum.EXPAND -> {
+                                    (holder as FavoriteAdapter.ItemViewHolder).updateLeagueExpand(
+                                        data[position],
+                                        matchType)
+                                }
                             }
-                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                (holder as ItemViewHolder).updateByPlayCate()
-                            }
-                            PayLoadEnum.EXPAND -> {
-                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
-                                    matchType)
-                            }
+                        }
+                        // 作用於賠率刷新、波坦tab切換
+                        is MatchOdd -> {
+                            (holder as FavoriteAdapter.ItemViewHolder).updateByMatchIdForOdds(it)
                         }
                     }
                 }
@@ -317,6 +328,12 @@ class FavoriteAdapter(private val matchType: MatchType) :
 
         fun updateByPlayCate() {
             sportFavoriteAdapter.updateByPlayCate()
+        }
+
+        fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
+            if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
+                sportFavoriteAdapter.updateByMatchIdForOdds(matchOdd)
+            }
         }
 
         private fun updateLeagueOddList(item: LeagueOdd, oddsType: OddsType) {

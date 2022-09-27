@@ -37,6 +37,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
+    private var bankCode: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,9 +72,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.clearBankCardFragmentStatus()
 
         transferType = args.transferType
-
         val initData = args.editBankCard
         initData?.let {
+            bankCode = it.bankCode
             view.apply {
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
@@ -190,6 +191,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 
     private fun updateSelectedBank(bank: Bank) {
+        bankCode = bank.value
         tv_bank_name.text = bank.name
         iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
     }
@@ -264,7 +266,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
-                            bankCode = args.editBankCard?.bankCode.toString()
+                            bankCode = bankCode
                         )
                     }
                     TransferType.CRYPTO -> {
@@ -283,9 +285,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
-                            //后台api报错，tel 说bankcode传值和bankName一样//code为null造成的问题
-//                            bankCode = args.editBankCard?.bankCode.toString()
-                            bankCode = args.editBankCard?.bankCode.toString()
+                            bankCode = bankCode
                         )
                     }
                 }
@@ -374,7 +374,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         eet_network_point.setText("")
         eet_withdrawal_password.setText("")
         eet_phone_number.setText("")
-
+        bankCode = null
         et_bank_card_number.setError(null,false)
         et_network_point.setError(null,false)
         et_withdrawal_password.setError(null,false)

@@ -8,7 +8,7 @@
     <FrameLayout
         android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="38dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/selector_button_radius_4_odds">
 
@@ -40,7 +40,7 @@
                     android:textSize="@dimen/textSize14sp"
                     android:paddingRight="5dp"
                     android:text=""
-                    tools:textColor="@color/color_A7B2C4" />
+                    tools:textColor="@color/color_6C7BA8" />
 
                 <TextView
                     android:id="@+id/tv_spread"
@@ -51,7 +51,7 @@
                     android:textColor="@color/selector_button_odd_top_text"
                     android:textSize="@dimen/textSize13sp"
                     tools:text="-0.5/1"
-                    tools:textColor="@color/color_A7B2C4" />
+                    tools:textColor="@color/color_6C7BA8" />
 
             </LinearLayout>
 
