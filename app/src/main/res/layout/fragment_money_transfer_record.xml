@@ -168,8 +168,8 @@
                                 android:id="@+id/rv_record"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="@dimen/margin_1"
-                                android:layout_marginRight="@dimen/margin_1"
+                                android:layout_marginLeft="@dimen/margin_8"
+                                android:layout_marginRight="@dimen/margin_8"
                                 android:layout_marginBottom="@dimen/margin_7"
                                 android:overScrollMode="never"
 
