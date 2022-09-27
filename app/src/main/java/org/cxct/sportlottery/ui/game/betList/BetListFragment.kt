@@ -760,15 +760,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
-                binding.clTitle.tvBetListCount.text = list.size.toString()
-                betListRefactorAdapter?.betList = list
-                betSingleListAdapter?.betList = list
-                betParlayListRefactorAdapter?.betList = list
-                checkSingleAndParlayBetLayoutVisible()
+                if (list.isNotEmpty()) {
+                    binding.clTitle.tvBetListCount.text = list.size.toString()
+                    betListRefactorAdapter?.betList = list
+                    betSingleListAdapter?.betList = list
+                    betParlayListRefactorAdapter?.betList = list
+                    checkSingleAndParlayBetLayoutVisible()
 
-                subscribeChannel(list)
-                refreshAllAmount(list)
-                checkAllAmountCanBet()
+                    subscribeChannel(list)
+                    refreshAllAmount(list)
+                    checkAllAmountCanBet()
+                }
             }
         }
 

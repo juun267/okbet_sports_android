@@ -1244,6 +1244,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         oddsDetail.nameMap,
                         oddsDetail.rowSort
                     )
+                    od.needShowItem = list
 
                     rvBet?.apply {
                         adapter = TypeOneListAdapter(
@@ -1329,6 +1330,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         oddsDetail.nameMap,
                         oddsDetail.rowSort
                     )
+                    od.needShowItem = list
 
                     rvBet?.apply {
                         adapter = TypeOneListAdapter(
