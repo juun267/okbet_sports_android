@@ -140,6 +140,7 @@ class VerifyKYCFragment :
         setupUploadView()
         initView()
         setEdittext()
+        setSpinnerStyle()
     }
 
     private fun initView() {
