@@ -64,6 +64,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupBankList() {
         viewModel.getMoneyConfigs()
+
+        sv_protocol.setOnItemSelectedListener{
+            tv_usdt_name.text = it.showName
+        }
     }
     //编辑银行卡跳转的方法
     private fun setupInitData(view: View) {
@@ -242,6 +246,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupClickEvent() {
         tabClickEvent()
+
+        item_usdt_selector.setOnClickListener {
+            sv_protocol.invokeClick()
+        }
 
         item_bank_selector.setOnClickListener {
             mBankSelectorBottomSheetDialog.show()
