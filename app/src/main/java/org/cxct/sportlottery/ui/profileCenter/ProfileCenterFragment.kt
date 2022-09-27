@@ -252,7 +252,7 @@ class ProfileCenterFragment :
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkWithdrawSystem()
+            viewModel.checkWithdrawKYCVerify()
         }
     }
 

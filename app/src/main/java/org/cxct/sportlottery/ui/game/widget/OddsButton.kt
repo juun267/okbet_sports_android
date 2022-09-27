@@ -128,9 +128,10 @@ open class OddsButton @JvmOverloads constructor(
     }
 
     fun setupOdd4hall(playCateCode: String, odds: Odd?, oddList: List<Odd?>?, oddsType: OddsType, isDrawBtn: Boolean? = false, isOtherBtn: Boolean? = false) {
+        //判断是否反波胆玩法，显示上要单独处理
+        val isOddPercentage = playCateCode.startsWith(PlayCate.LCS.value)
         mOdd = odds
         mOddsType = oddsType
-
         if (isDrawBtn == true) {
             when {
                 (oddList?.size ?: 0 > 2) -> {
@@ -237,6 +238,10 @@ open class OddsButton @JvmOverloads constructor(
             text = TextUtil.formatForOdd(getOdds(odds, oddsType))
         }
 
+        if (isOddPercentage == true) //反波膽顯示 %
+            tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odds, oddsType) - 1))
+        else
+            tv_odds?.text = TextUtil.formatForOdd(getOdds(odds, oddsType))
 //        updateOddsTextColor()
 
 //        isSelected = odds?.isSelected ?: false

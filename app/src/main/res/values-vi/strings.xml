@@ -1188,7 +1188,7 @@
     <string name="upload_id_photo">Tải ảnh lên</string>
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
-    <string name="correct">Kết Quả Đúng</string>
+    <string name="correct">Cược tỷ số</string>
     <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
@@ -1203,7 +1203,7 @@
     <string name="cancel_account">Xoá tài khoản</string>
     <string name="match_analyze">Phân tích trận đấu</string>
     <string name="half">Nửa</string>
-    <string name="customer_service_help">Nếu cần trợ giúp, vui lòng liên hệ CSKH</string>
+    <string name="customer_service_help">Nếu cần trợ giúp, vui lòng liên hệ UsKH</string>
     <string name="click_upload_id_photo">Nhấn tải lên ảnh ID</string>
     <string name="main_tab_sport">Thể thao</string>
     <string name="main_tab_betlist">Đơn cược</string>
@@ -1240,4 +1240,5 @@
     <string name="unbound_bank_card">Bạn chưa mặc định thẻ ngân hàng / eWallet</string>
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
     <string name="customer_service">Nếu cần trợ giúp, vui lòng</string>
+    <string name="not_sign_up">Chưa có tài khoản</string>
 </resources>
