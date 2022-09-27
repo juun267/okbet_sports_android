@@ -283,7 +283,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             fundPwd = eet_withdrawal_password.getText().toString(),
                             id = args.editBankCard?.id?.toString(),
                             uwType = transferType.type,
-                            //后台api报错，tel 说bankcode传值和bankName一样
+                            //后台api报错，tel 说bankcode传值和bankName一样//code为null造成的问题
 //                            bankCode = args.editBankCard?.bankCode.toString()
                             bankCode = args.editBankCard?.bankCode.toString()
                         )
