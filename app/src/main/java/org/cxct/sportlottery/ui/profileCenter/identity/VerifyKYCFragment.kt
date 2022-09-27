@@ -358,8 +358,14 @@ class VerifyKYCFragment :
             identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
         }
         dataList = identityTypeList
-        identity_1st.selector_type.setItemData(dataList)
-        identity_2nd.selector_type.setItemData(dataList)
+        identity_1st.selector_type.setItemData(dataList, isSelectedDefault = false)
+        identity_1st.selector_type.selectedListener = View.OnClickListener {
+            identity_1st.ic_recharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
+        }
+        identity_2nd.selector_type.setItemData(dataList, isSelectedDefault = false)
+        identity_2nd.selector_type.selectedListener = View.OnClickListener {
+            identity_2nd.ic_recharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
+        }
     }
 
 }

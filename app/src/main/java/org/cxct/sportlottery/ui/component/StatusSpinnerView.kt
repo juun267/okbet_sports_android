@@ -54,6 +54,9 @@ class StatusSpinnerView @JvmOverloads constructor(
     }
     private lateinit var selectItem: StatusSheetData
     private lateinit var mListPop: ListPopupWindow
+
+    var selectedListener: OnClickListener ? = null
+
     var selectedTag: String? = ""
         get() = tv_name.tag?.toString()
 
@@ -145,7 +148,7 @@ class StatusSpinnerView @JvmOverloads constructor(
         })
     }
 
-    fun setItemData(itemData: MutableList<StatusSheetData>) {
+    fun setItemData(itemData: MutableList<StatusSheetData>, isSelectedDefault: Boolean = true) {
         dataList.clear()
         dataList.addAll(itemData)
         spinnerAdapter?.notifyDataSetChanged()
@@ -155,8 +158,10 @@ class StatusSpinnerView @JvmOverloads constructor(
             mListPop.height = ViewGroup.LayoutParams.WRAP_CONTENT
         }
 
-        dataList.firstOrNull()?.let { defaultData ->
-            setSelectCode(defaultData.code)
+        if(isSelectedDefault){
+            dataList.firstOrNull()?.let { defaultData ->
+                setSelectCode(defaultData.code)
+            }
         }
     }
 
@@ -181,5 +186,6 @@ class StatusSpinnerView @JvmOverloads constructor(
     fun setSelectInfo(data: StatusSheetData) {
         tv_name.tag = data.code
         tv_name.text = data.showName
+        selectedListener?.onClick(null)
     }
 }
