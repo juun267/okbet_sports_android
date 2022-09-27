@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_131932_F0F5FA"
+    android:fitsSystemWindows="true"
     tools:context=".ui.feedback.record.FeedbackDetailFragment">
     <View
         android:background="@color/color_272F41_E3E8EE"
