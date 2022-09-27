@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_181922_FFFFFF"
     android:layout_gravity="bottom"
     android:orientation="horizontal">
 
     <View
+        android:visibility="gone"
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
