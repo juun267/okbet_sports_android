@@ -58,7 +58,7 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
                 timeInMillis = item.timeRangeParams.startTime?.toLong()!!
             }
             itemView.date_text_week.text =
-                TimeUtil.setupDayOfWeekVi(itemView.context, cal).uppercase()
+                TimeUtil.setupDayOfWeekVi(itemView.context, cal).toUpperCase()
             //格式: 2021-December-28-Tue
             itemView.date_text_date.text = dateStr.split("-")[DateSplitPart.MONTH_DATE.part]
 

@@ -268,18 +268,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             et_withdrawal_amount.afterTextChanged { checkWithdrawAmount(withdrawBankCardData, it) }
 
             //提款密碼
-            setupEyeButtonVisibility(et_withdrawal_password) { checkWithdrawPassword(it) }
+            et_withdrawal_password.afterTextChanged { checkWithdrawPasswordByWithdrawPage(it) }
         }
     }
-
-    private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
-        setupView.let { view ->
-            view.afterTextChanged {
-                checkFun(it)
-            }
-        }
-    }
-
 
     private fun clearEvent() {
         et_withdrawal_amount.setText("")
@@ -289,7 +280,21 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         modifyFinish()
     }
 
+    private fun updateButtonStatus(isEnable: Boolean) {
+        if (isEnable) {
+            btn_withdraw.isEnabled = true
+            btn_withdraw.alpha = 1.0f
+        } else {
+            btn_withdraw.isEnabled = false
+            btn_withdraw.alpha = 0.5f
+        }
+    }
+
     private fun initObserve(view: View) {
+        viewModel.submitEnable.observe(viewLifecycleOwner){
+            updateButtonStatus(it)
+        }
+
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
             tv_detail.apply {
                 isEnabled = it.isNotEmpty()
