@@ -9,7 +9,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_account_history_log.*
+import kotlinx.android.synthetic.main.activity_account_history_log.date_range_selector
+import kotlinx.android.synthetic.main.activity_account_history_log.selector_order_status
 import kotlinx.android.synthetic.main.activity_account_history_log.view.*
+import kotlinx.android.synthetic.main.activity_account_history_log.view_no_record
+import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
@@ -41,7 +45,17 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-
+            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+                viewModel.accountHistoryList.observe(this@AccountHistoryLogFragment) {
+                    if (it.isNullOrEmpty()){
+                        tv_no_data_history.visibility = View.GONE
+                    }else{
+                        tv_no_data_history.visibility = View.VISIBLE
+                    }
+                }
+            }else{
+                tv_no_data_history.visibility = View.GONE
+            }
         }
     }
 
