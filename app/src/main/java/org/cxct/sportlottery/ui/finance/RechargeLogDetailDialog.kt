@@ -13,7 +13,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
-
+/**
+ * @app_destination 存款详情弹窗
+ */
 class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
         setStyle(R.style.CustomDialogStyle)

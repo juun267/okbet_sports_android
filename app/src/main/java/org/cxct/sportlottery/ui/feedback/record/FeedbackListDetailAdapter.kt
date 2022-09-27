@@ -1,17 +1,15 @@
 package org.cxct.sportlottery.ui.feedback.record
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 class FeedbackListDetailAdapter(var userId: Long) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -69,7 +67,8 @@ class FeedbackListDetailAdapter(var userId: Long) :
 
         fun bind(item: FeedBackRows) {
             txvReply.text = item.content
-            txvReplyTime.text = TimeUtil.stampToDateHMS(item.addTime ?: 0)
+//            txvReplyTime.text = TimeUtil.stampToDateHMS(item.addTime ?: 0)
+            txvReplyTime.text = TimeUtil.getDateFormat12(item.addTime?:0)
 
 
         }
@@ -90,7 +89,7 @@ class FeedbackListDetailAdapter(var userId: Long) :
 
         fun bind(item: FeedBackRows) {
             txvReply.text = item.content
-            txvReplyTime.text = TimeUtil.stampToDateHMS(item.addTime ?: 0)
+            txvReplyTime.text = TimeUtil.getDateFormat12(item.addTime?:0)
         }
 
         companion object {

@@ -245,7 +245,7 @@ class ProfileCenterFragment :
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkRechargeSystem()
+            viewModel.checkRechargeKYCVerify()
         }
     }
 
@@ -472,37 +472,6 @@ class ProfileCenterFragment :
             GamePublicityActivity.reStart(requireContext())
         }
 
-        viewModel.lockMoney.observe(viewLifecycleOwner) {
-//            if (it?.toInt()!! > 0) {
-//                ivNotice.visibility = View.VISIBLE
-//                ivNotice.setOnClickListener { view ->
-//                    val depositSpannable =
-//                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
-//                    val daysLeftText = getString(
-//                        R.string.text_security_money2,
-//                        getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-//                    )
-//                    val remainDaySpannable = SpannableString(daysLeftText)
-//                    val remainDay = getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-//                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
-//                    remainDaySpannable.setSpan(
-//                        ForegroundColorSpan(
-//                            ContextCompat.getColor(this, R.color.color_317FFF_1053af)
-//                        ),
-//                        remainDayStartIndex,
-//                        remainDayStartIndex + remainDay.length, 0
-//                    )
-//
-//                    SecurityDepositDialog().apply {
-//                        this.depositText = depositSpannable
-//                        this.daysLeftText = remainDaySpannable
-//                    }.show(supportFragmentManager, this::class.java.simpleName)
-//                }
-//            } else {
-//                ivNotice.visibility = View.GONE
-//            }
-        }
-
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
@@ -582,7 +551,6 @@ class ProfileCenterFragment :
                         startActivity(Intent(requireActivity(), BankActivity::class.java))
                     }
                 } else {
-                    LogUtil.d("duck点击提款准备跳转")
                     startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
                 }
             }
@@ -691,7 +659,6 @@ class ProfileCenterFragment :
 
         viewModel.intoWithdraw.observe(viewLifecycleOwner) { it ->
             it.getContentIfNotHandled()?.let {
-                LogUtil.d("duck$it")
                 startActivity(Intent(requireActivity(), WithdrawActivity::class.java))
             }
         }
@@ -740,6 +707,26 @@ class ProfileCenterFragment :
                 }
             }else{
                 iv_deposit_tip.visibility = View.GONE
+            }
+        }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    showKYCVerifyDialog()
+                //TODo Bill ＴＥＳＴ
+                    //viewModel.checkRechargeSystem()
             }
         }
 

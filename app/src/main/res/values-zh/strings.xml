@@ -512,7 +512,7 @@
     <string name="add_credit_card">新增银行卡</string>
     <string name="add_crypto_card">新增虚拟币</string>
     <string name="add_e_wallet">新增eWallet</string>
-    <string name="add_credit_or_virtual">新增银行卡 / 虚拟币 / eWallet</string>
+    <string name="add_credit_or_virtual">新增银行卡 / eWallet / 虚拟币</string>
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
@@ -1152,7 +1152,7 @@
     <string name="kyc_reset">重置</string>
     <string name="kyc_verify_first">请先进行实名验证。</string>
     <string name="kyc_go_verify">立即前往认证</string>
-    <string name="kyc_you_wait">您的实名验证资料已提交，请等待审核认证。</string>
+    <string name="kyc_you_wait">您的实名验证资料已提交，\n请等待审核认证。</string>
     <string name="kyc_service_verify">联系客服进行认证</string>
     <string name="kyc_verify_successful">您已完成实名验证！</string>
     <string name="kyc_unverified">未认证</string>

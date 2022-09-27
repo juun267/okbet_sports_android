@@ -59,7 +59,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_main_left, container, false)
     }
@@ -189,7 +189,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions)
             )
-            Log.d("duck222", "initView:规则与条款url " + Constants.getAgreementRuleUrl(requireContext()))
         }
         //隱私權條款
         tv_privacy.setVisibilityByCreditSystem()

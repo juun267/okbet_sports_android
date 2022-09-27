@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListPopupWindow
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.content_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.content_verify_identity_kyc.view.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.view_bottom_navigation.view.*
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import kotlinx.android.synthetic.main.view_upload.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -140,6 +142,7 @@ class VerifyKYCFragment :
         setupUploadView()
         initView()
         setEdittext()
+        setSpinnerStyle()
     }
 
     private fun initView() {
@@ -153,6 +156,26 @@ class VerifyKYCFragment :
         setupPhotoFile()
         checkSubmitStatus()
         getIdentityType()
+    }
+
+    private fun setSpinnerStyle() {
+        val constraintLayout = identity_1st.selector_type.cl_root
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(constraintLayout)
+        constraintSet.clear(R.id.tv_name, ConstraintSet.END)
+        constraintSet.connect(R.id.tv_name, ConstraintSet.START, R.id.cl_root, ConstraintSet.START,14)
+        constraintSet.clear(R.id.iv_arrow, ConstraintSet.START)
+        constraintSet.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END,14)
+        constraintSet.applyTo(constraintLayout)
+
+        val constraintLayout2 = identity_2nd.selector_type.cl_root
+        val constraintSet2 = ConstraintSet()
+        constraintSet2.clone(constraintLayout2)
+        constraintSet2.clear(R.id.tv_name, ConstraintSet.END)
+        constraintSet2.connect(R.id.tv_name, ConstraintSet.START, R.id.cl_root, ConstraintSet.START,14)
+        constraintSet2.clear(R.id.iv_arrow, ConstraintSet.START)
+        constraintSet2.connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END,14)
+        constraintSet2.applyTo(constraintLayout2)
     }
 
     private fun initObserve() {
@@ -358,8 +381,14 @@ class VerifyKYCFragment :
             identityTypeList.add(StatusSheetData(identityType.id.toString(), identityType.name))
         }
         dataList = identityTypeList
-        identity_1st.selector_type.setItemData(dataList)
-        identity_2nd.selector_type.setItemData(dataList)
+        identity_1st.selector_type.setItemData(dataList, isSelectedDefault = false)
+        identity_1st.selector_type.selectedListener = View.OnClickListener {
+            identity_1st.ic_recharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
+        }
+        identity_2nd.selector_type.setItemData(dataList, isSelectedDefault = false)
+        identity_2nd.selector_type.selectedListener = View.OnClickListener {
+            identity_2nd.ic_recharge.setImageResource(R.drawable.ic_recharge_copy_30_2_selected)
+        }
     }
 
 }

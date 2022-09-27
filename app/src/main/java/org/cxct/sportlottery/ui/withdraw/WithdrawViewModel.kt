@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,6 +46,9 @@ class WithdrawViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
+    val submitEnable: LiveData<Boolean>
+        get() = _submitEnable
+    private val _submitEnable = MutableLiveData<Boolean>()
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
@@ -84,29 +88,29 @@ class WithdrawViewModel(
 
     //--銀行卡編輯頁面
     //開戶名錯誤訊息
-    val createNameErrorMsg: LiveData<String>
+    val createNameErrorMsg: LiveData<String?>
         get() = _createNameErrorMsg
-    private var _createNameErrorMsg = MutableLiveData<String>()
+    private var _createNameErrorMsg = MutableLiveData<String?>()
 
     //銀行卡號錯誤訊息
-    val bankCardNumberMsg: LiveData<String>
+    val bankCardNumberMsg: LiveData<String?>
         get() = _bankCardNumberMsg
-    private var _bankCardNumberMsg = MutableLiveData<String>()
+    private var _bankCardNumberMsg = MutableLiveData<String?>()
 
     //開戶網點錯誤訊息
-    val networkPointMsg: LiveData<String>
+    val networkPointMsg: LiveData<String?>
         get() = _networkPointMsg
-    private var _networkPointMsg = MutableLiveData<String>()
+    private var _networkPointMsg = MutableLiveData<String?>()
 
     //電話號碼錯誤訊息
-    val phoneNumberMsg: LiveData<String>
+    val phoneNumberMsg: LiveData<String?>
         get() = _phoneNumberMsg
-    private var _phoneNumberMsg = MutableLiveData<String>()
+    private var _phoneNumberMsg = MutableLiveData<String?>()
 
     //提款密碼錯誤訊息
-    val withdrawPasswordMsg: LiveData<String>
+    val withdrawPasswordMsg: LiveData<String?>
         get() = _withdrawPasswordMsg
-    private var _withdrawPasswordMsg = MutableLiveData<String>()
+    private var _withdrawPasswordMsg = MutableLiveData<String?>()
 
     //提款预约日期錯誤訊息
     val WithdrawAppointmentMsg: LiveData<String>
@@ -135,9 +139,9 @@ class WithdrawViewModel(
     private var _withdrawCryptoFeeHint = MutableLiveData<String>()
 
     //提款手續費提示
-    val walletAddressMsg: LiveData<String>
+    val walletAddressMsg: LiveData<String?>
         get() = _walletAddressMsg
-    private var _walletAddressMsg = MutableLiveData<String>()
+    private var _walletAddressMsg = MutableLiveData<String?>()
 
     //提款总计
     val withdrawAmountTotal: LiveData<String>
@@ -550,6 +554,7 @@ class WithdrawViewModel(
             bankCardNumber.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
+        checkInputCompleteByAddBankCard()
     }
 
     fun checkNetWorkPoint(networkPoint: String) {
@@ -557,6 +562,7 @@ class WithdrawViewModel(
             networkPoint.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
+        checkInputCompleteByAddBankCard()
     }
 
     fun checkPhoneNumber(phoneNumber: String) {
@@ -564,6 +570,7 @@ class WithdrawViewModel(
             phoneNumber.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
+        checkInputCompleteByAddBankCard()
     }
 
     fun checkWalletAddress(walletAddress: String) {
@@ -572,6 +579,7 @@ class WithdrawViewModel(
             !VerifyConstUtil.verifyCryptoWalletAddress(walletAddress) -> LocalUtils.getString(R.string.error_wallet_address)
             else -> ""
         }
+        checkInputCompleteByAddBankCard()
     }
 
     fun checkWithdrawPassword(withdrawPassword: String) {
@@ -582,6 +590,18 @@ class WithdrawViewModel(
             }
             else -> ""
         }
+        checkInputCompleteByAddBankCard()
+    }
+
+    fun checkWithdrawPasswordByWithdrawPage(withdrawPassword: String){
+        _withdrawPasswordMsg.value = when {
+            withdrawPassword.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyWithdrawPassword(withdrawPassword) -> {
+                LocalUtils.getString(R.string.error_withdraw_password)
+            }
+            else -> ""
+        }
+        checkInputCompleteByWithdraw()
     }
 
     fun checkWithdrawAppointment(appointmentDate: String, appointmentHour: String) {
@@ -620,8 +640,49 @@ class WithdrawViewModel(
         if (dealType != TransferType.STATION) {
             getWithdrawRate(withdrawCard, withdrawAmount.toDouble())
         }
+        checkInputCompleteByWithdraw()
     }
 
+    private fun checkInputCompleteByAddBankCard(){
+        var buttonEnableStatus = false
+        when (curTransferType) {
+            TransferType.BANK -> {
+                buttonEnableStatus =
+                    createNameErrorMsg.value.isNullOrEmpty() == true &&
+                            bankCardNumberMsg.value?.isEmpty() == true  &&
+                            networkPointMsg.value?.isEmpty() == true  &&
+                            withdrawPasswordMsg.value?.isEmpty() == true
+            }
+            TransferType.CRYPTO -> {
+                buttonEnableStatus =
+                    walletAddressMsg.value?.isEmpty() == true &&
+                            withdrawPasswordMsg.value?.isEmpty() == true
+            }
+            TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
+                buttonEnableStatus =
+                    createNameErrorMsg.value.isNullOrEmpty() == true &&
+                            phoneNumberMsg.value?.isEmpty() == true  &&
+                            withdrawPasswordMsg.value?.isEmpty() == true
+            }
+        }
+        _submitEnable.value = buttonEnableStatus
+    }
+
+    private fun checkInputCompleteByWithdraw(){
+        _submitEnable.value = withdrawAmountMsg.value.isNullOrEmpty() == true &&
+                withdrawPasswordMsg.value?.isEmpty() == true
+    }
+
+    var curTransferType: TransferType? = null
+     set(value){
+        field = value
+        _createNameErrorMsg.value = null
+        _bankCardNumberMsg.value = null
+        _networkPointMsg.value = null
+        _withdrawPasswordMsg.value = null
+        _walletAddressMsg.value = null
+        _phoneNumberMsg.value = null
+     }
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()

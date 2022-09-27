@@ -202,7 +202,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
                     textColor = R.color.color_E23434_E23434
                 }
                 else -> {
-                    tv_win_or_Lose.text = getString(R.string.win_lose)
+                    tv_win_or_Lose.text = getString(R.string.win) //沒輸沒贏也顯示贏
                     textColor = R.color.color_9BB3D9_535D76
                 }
             }

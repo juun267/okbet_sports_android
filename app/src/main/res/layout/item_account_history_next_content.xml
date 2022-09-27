@@ -291,19 +291,29 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/bet_info_list_win_quota"
-                                android:textAlignment="viewEnd"
                                 android:textColor="@color/color_9BB3D9_535D76"
-                                android:textSize="@dimen/textSize12sp" />
+                                android:textSize="@dimen/textSize12sp"
+                                app:betDetailStatusColor="@{row.status}"
+                                app:betReceiptStatus="@{row.status}"
+                                app:betResultCancelBy="@{row.cancelledBy}"
+                                tools:text="@string/win" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/colon"
+                                android:textColor="@color/color_9BB3D9_535D76"
+                                android:textSize="@dimen/textSize12sp"
+                                app:hideByStatus="@{row.status}" />
 
                             <TextView
                                 android:id="@+id/tv_win_lose_money"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAlignment="viewEnd"
                                 android:textColor="@color/color_DB6372"
                                 android:textSize="@dimen/textSize12sp"
                                 android:textStyle="bold"
+                                app:hideByStatus="@{row.status}"
                                 app:moneyColor="@{row.win}"
                                 app:moneyFormat="@{row.win}"
                                 tools:text="9,999,999.000" />

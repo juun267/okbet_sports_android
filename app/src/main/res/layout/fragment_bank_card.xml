@@ -65,7 +65,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_4"
             android:orientation="vertical">
 
             <LinearLayout
@@ -254,7 +253,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <!-- 協議/幣種 -->
-                   <!-- <LinearLayout
+                  <LinearLayout
                         android:id="@+id/item_usdt_selector"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -310,12 +309,12 @@
                             android:layout_marginTop="@dimen/margin_10"
                             android:background="@color/color_E3E8EE" />
 
-                    </LinearLayout>-->
+                    </LinearLayout>
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-
+                        android:visibility="gone"
                         app:cardBackgroundColor="@color/color_191919_FCFCFC"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="@null"
@@ -392,6 +391,7 @@
                     android:layout_marginStart="@dimen/margin_14"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="@dimen/margin_14"
+                    app:endIcon="@drawable/ic_eye_close"
                     app:hintText="@string/hint_please_enter_withdraw_password"
                     app:isResponsiveIconColor="false"
                     app:labelText="@string/withdraw_password"
@@ -437,7 +437,8 @@
                     android:textAllCaps="true"
                     android:textColor="@color/color_FFFFFF_FFFFFF"
                     android:textSize="@dimen/textSize16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:alpha="0.5"/>
 
                 <TextView
                     android:id="@+id/btn_delete_bank"

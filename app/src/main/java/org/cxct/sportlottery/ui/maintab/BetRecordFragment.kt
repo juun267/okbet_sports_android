@@ -77,13 +77,12 @@ class BetRecordFragment :
         initView()
         initObservable()
         initPopwindow()
-//        queryData()
-//        initSocketObservers()
+        initData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        initData()
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) initData()
     }
 
     private fun initView() {

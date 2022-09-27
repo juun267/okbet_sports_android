@@ -21,7 +21,9 @@ object TimeUtil {
     const val VI_MD_FORMAT = "dd 'TH.'M"
     const val DM_FORMAT = "MM / dd"
     const val HM_FORMAT = "HH:mm"
+    const val HM_FORMAT_12 = "hh:mm" //小写的hh表示12小时制HH表示为24小时制
     const val HM_FORMAT_SS = "HH:mm:ss"
+    const val HM_FORMAT_SS_12 = "hh:mm:ss"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val DM_HM_FORMAT = "MM/dd HH:mm"
     private const val YMDE_FORMAT = "yyyy-MM-dd"
@@ -694,5 +696,20 @@ object TimeUtil {
         } catch (e: ParseException) {
         }
         return mydate1;
+    }
+    /**
+     * 获取上下午时间 格式为 hh:mm:ssAM
+     */
+    fun getDateFormat12(time:Long):String{
+        var times = ""
+        var cal=Calendar.getInstance()
+        cal.timeInMillis = time
+        times = if (cal.get(Calendar.AM_PM) == 0){
+            "AM"
+        }else {
+            "PM"
+        }
+        val timeFormat = timeFormat(time, HM_FORMAT_12)
+        return "$timeFormat $times"
     }
 }

@@ -143,6 +143,10 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
 
     }
 
+    fun invokeClick(){
+        bottomSheet.show()
+    }
+
     fun setAdapter(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>) {
         bottomSheetView.sheet_rv_more.adapter = adapter
     }
