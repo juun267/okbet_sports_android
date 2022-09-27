@@ -34,6 +34,7 @@
 
 
         <ImageView
+            android:id="@+id/ic_recharge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
