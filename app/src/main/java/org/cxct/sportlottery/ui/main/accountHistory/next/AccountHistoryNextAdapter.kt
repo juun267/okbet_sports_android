@@ -207,7 +207,7 @@ class AccountHistoryNextAdapter(
                 matchOdd = row.matchOdds?.firstOrNull()
 
                 matchOdd?.apply {
-                    binding.root.setOnClickListener {
+                    binding.clickableView.setOnClickListener {
                         itemClickListener.onClick(row, this)
                     }
                 }

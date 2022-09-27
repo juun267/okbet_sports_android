@@ -998,7 +998,7 @@
     <string name="text_bank_card_modify_success">แก้ไขบัตรธนาคารสำเร็จ</string>
     <string name="text_e_wallet_modify_success">แก้ไข eWallet สำเร็จ</string>
     <string name="bank_list_add">เพิ่ม %1$s</string>
-    <string name="add_credit_or_virtual">เพิ่มบัตรธนาคาร / สกุลเงินเสมือน / eWallet</string>
+    <string name="add_credit_or_virtual">เพิ่มบัตรธนาคาร / eWallet / สกุลเงินเสมือน</string>
     <string name="label_in_play_games">เปตอง</string>
     <string name="error_url_fail">ที่อยู่กระโดดผิด</string>
     <string name="error">ความผิดพลาด</string>

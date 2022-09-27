@@ -245,14 +245,14 @@ class ProfileCenterFragment :
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkRechargeSystem()
+            viewModel.checkRechargeKYCVerify()
         }
     }
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
             avoidFastDoubleClick()
-            viewModel.checkWithdrawSystem()
+            viewModel.checkWithdrawKYCVerify()
         }
     }
 
@@ -707,6 +707,26 @@ class ProfileCenterFragment :
                 }
             }else{
                 iv_deposit_tip.visibility = View.GONE
+            }
+        }
+
+        viewModel.isWithdrawShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    viewModel.checkWithdrawSystem()
+            }
+        }
+
+        viewModel.isRechargeShowVerifyDialog.observe(this) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b)
+                    showKYCVerifyDialog()
+                else
+                    showKYCVerifyDialog()
+                //TODo Bill ＴＥＳＴ
+                    //viewModel.checkRechargeSystem()
             }
         }
 
