@@ -204,7 +204,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initOddsTypeView() {
         if (!oddsTypeList.isNullOrEmpty()) {
-            oddsTypeAdapter = OddsTypeAdapter(oddsTypeList)
             oddsTypeAdapter.setOnItemClickListener { adapter, view, position ->
                 when (oddsTypeList!![position]) {
                     HandicapType.EU.name -> selectOddsType(OddsType.EU)
