@@ -876,7 +876,7 @@
                                     android:id="@+id/tv_version_code"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/updatable_version"
+                                    android:text="@string/updatable"
                                     android:textColor="@color/color_A7B2C4"
                                     android:textSize="@dimen/textSize12sp" />
 

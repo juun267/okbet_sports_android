@@ -40,7 +40,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val oddsTypeList by lazy {
         sConfigData?.handicapShow?.split(",")?.filter { it.isNotEmpty() }
     }
-    private lateinit var oddsTypeAdapter: OddsTypeAdapter
+    private val oddsTypeAdapter by lazy {
+        OddsTypeAdapter(oddsTypeList)
+    }
     private val oddsPriceList = listOf(
         "自动接受更好赔率",
         "自动接受任何赔率",

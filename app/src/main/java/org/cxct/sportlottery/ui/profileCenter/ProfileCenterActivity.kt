@@ -29,7 +29,6 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
@@ -503,7 +502,7 @@ class ProfileCenterActivity :
                             )
                         )
                     val daysLeftText = getString(
-                        R.string.text_security_money3,
+                        R.string.text_security_money2,
                         getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
                     )
                     val remainDaySpannable = SpannableString(daysLeftText)

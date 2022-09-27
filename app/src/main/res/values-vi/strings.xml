@@ -122,7 +122,7 @@
     <string name="no_announcement">Không có thông báo</string>
     <string name="lottery">Xổ số</string>
     <string name="poker">Cờ vua</string>
-    <string name="slot">GAME</string>
+    <string name="slot">"Trò Chơi "</string>
     <string name="fishing">Bắn cá</string>
     <string name="more">hơn</string>
     <string name="home_tan_main">THỂ THAO</string>
@@ -1196,7 +1196,7 @@
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
-    <string name="no_more">Không còn dữ liệu hiển thị</string>
+    <string name="no_more">Không còn</string>
     <string name="main_tab_favorite">Yêu thích</string>
     <string name="my_favorite_empty">Bạn vẫn chưa có trận đấu yêu thích</string>
     <string name="cruel_write_off">Chắc chắn xoá</string>
@@ -1232,4 +1232,12 @@
     <string name="league_filter">Lọc trận đấu</string>
     <string name="outlet">Trạm cược</string>
     <string name="transfer_time">Thời gian chuyển đổi</string>
+    <string name="reset_password">Đặt lại mật khẩu</string>
+    <string name="my_bank_card">" Thẻ ngân hàng của tôi"</string>
+    <string name="local_time">Giờ địa phương:</string>
+    <string name="half_first_short">Hiệp 1</string>
+    <string name="half_second_short">Hiệp 2</string>
+    <string name="unbound_bank_card">Bạn chưa mặc định thẻ ngân hàng / eWallet</string>
+    <string name="change_other_ID_photos">Thay ảnh ID khác</string>
+    <string name="customer_service">Nếu cần trợ giúp, vui lòng</string>
 </resources>

@@ -4,7 +4,6 @@ package org.cxct.sportlottery.ui.game.widget
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -103,9 +102,6 @@ class OddsButtonHome @JvmOverloads constructor(
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
-        hideName = TextUtils.equals(matchInfo?.homeName,
-            odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name) || TextUtils.equals(
-            getString(R.string.draw), odd?.name)
         tv_name.apply {
             val extInfoStr =
                 odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
@@ -139,11 +135,6 @@ class OddsButtonHome @JvmOverloads constructor(
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        if (hideName && !tv_spread.isVisible) {
-            lin_name.isVisible = false
-        } else {
-            lin_name.isVisible = true
-        }
     }
 
     fun setupOdd4hall(

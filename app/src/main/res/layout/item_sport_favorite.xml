@@ -67,7 +67,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -168,7 +168,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="44dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -309,7 +309,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="44dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -450,7 +450,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="44dp"
                         android:gravity="center_vertical"
                         android:paddingLeft="12dp"
                         android:paddingRight="10dp">
@@ -506,7 +506,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="156dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -521,9 +521,9 @@
 
                     <TextView
                         android:id="@+id/tv_correct_1"
-                        android:layout_width="66dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8"
@@ -532,9 +532,9 @@
 
                     <TextView
                         android:id="@+id/tv_correct_2"
-                        android:layout_width="66dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8"
@@ -543,8 +543,9 @@
 
                     <TextView
                         android:id="@+id/tv_correct_3"
-                        android:layout_width="66dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8"
@@ -557,12 +558,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_league_odd_btn_pager_main"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
-                    tools:itemCount="5"
+                    tools:itemCount="1"
                     tools:listitem="@layout/itemview_odd_btn_2x2_v6" />
             </LinearLayout>
 
