@@ -139,6 +139,21 @@ fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     }
 }
 
+@BindingAdapter("betDetailStatusColor")
+fun TextView.setBetDetailStatusColor(status: Int?) {
+    status?.let {
+        val color = when (it) {
+            7 -> {
+                R.color.color_E23434_E23434
+            }
+            else -> {
+                R.color.color_9BB3D9_535D76
+            }
+        }
+        this.setTextColor(ContextCompat.getColor(context, color))
+    }
+}
+
 /**
  * 根據注單狀態顯示文字
  * @param cancelBy 取消触发来源 0: 自动, 1: 手动
@@ -373,7 +388,7 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
 
     val color = when {
         profit > 0.0 -> R.color.color_1D9F51_1D9F51
-        profit < 0.0 -> R.color.color_E23434_E23434
+        profit < 0.0 -> R.color.color_DB6372
         profit == 0.0 -> R.color.color_9BB3D9_535D76
         else -> R.color.color_9BB3D9_535D76
     }
