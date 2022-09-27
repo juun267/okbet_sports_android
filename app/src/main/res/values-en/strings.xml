@@ -31,7 +31,7 @@
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password?</string>
     <string name="desc_forget_password">Please contact customer service</string>
-    <string name="sign_up_know">Sign up now</string>
+    <string name="sign_up_know">Sign up now!</string>
     <string name="recommend_code">Invite Code</string>
     <string name="hint_recommend_code">Please enter your invite code</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
@@ -1219,7 +1219,7 @@
     <string name="cancel_account">Delete account</string>
     <string name="match_analyze">Match analysis</string>
     <string name="half">Half</string>
-    <string name="customer_service_help">If you need help, please contact CS</string>
+    <string name="customer_service_help">If you need help, please contact Us</string>
     <string name="click_upload_id_photo">Click upload ID photo</string>
     <string name="main_tab_sport">Sports</string>
     <string name="main_tab_betlist">Bet Slip</string>
@@ -1251,4 +1251,5 @@
     <string name="unbound_bank_card">No Bank Card/eWallet attached</string>
     <string name="change_other_ID_photos">Change to other ID photos</string>
     <string name="customer_service">If you need help, please</string>
+    <string name="not_sign_up">Don\'t have an account yet</string>
 </resources>

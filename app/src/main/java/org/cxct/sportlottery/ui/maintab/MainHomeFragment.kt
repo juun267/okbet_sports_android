@@ -809,7 +809,10 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
     }
 
     private fun setupLogin() {
-        btn_login.visibility = if (viewModel.isLogin.value == true) View.GONE else View.VISIBLE
+        viewModel.isLogin.value?.let {
+            btn_login.isVisible = !it
+            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
     }
 
     private fun updateRecommend(recommendList: List<Recommend>) {

@@ -15,7 +15,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import org.cxct.sportlottery.R
@@ -235,12 +234,9 @@ class SportListFragment :
         }
     }
 
-    private var isUpdatingLeague = false
-
     private var mLeagueOddList = ArrayList<LeagueOdd>()
     private var mQuickOddListMap = HashMap<String, MutableList<QuickPlayCate>>()
 
-    private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
 
     override fun loading() {
         stopTimer()

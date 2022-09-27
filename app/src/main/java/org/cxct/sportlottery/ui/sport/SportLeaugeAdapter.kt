@@ -215,7 +215,7 @@ class SportLeagueAdapter(private val matchType: MatchType) :
                     }
 
                     is PayLoadEnum -> {
-                        (payloads.first() as PayLoadEnum).apply {
+                        it.apply {
                             when (this) {
                                 PayLoadEnum.PAYLOAD_BET_INFO -> {
                                     (holder as ItemViewHolder).updateByBetInfo()

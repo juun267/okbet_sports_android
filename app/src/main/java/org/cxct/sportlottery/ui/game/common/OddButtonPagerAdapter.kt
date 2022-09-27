@@ -647,7 +647,6 @@ class OddButtonPagerViewHolder private constructor(
             else -> playCateName.updatePlayCateColor()
         }
         oddBtnType.isVisible = matchType != MatchType.CS
-
         if(matchType == MatchType.CS && odds?.second?.size == 1){
             oddBtnOther.apply otherButtonSettings@{
                 setupOdd4hall(playCateCode,odds.second?.getOrNull(0), odds.second, oddsType, isOtherBtn = true)

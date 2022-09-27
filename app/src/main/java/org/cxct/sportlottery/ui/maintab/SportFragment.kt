@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
@@ -304,7 +305,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun setupLogin() {
-        btn_login.visibility = if (viewModel.isLogin.value == true) View.GONE else View.VISIBLE
+        viewModel.isLogin.value?.let {
+            btn_login.isVisible = !it
+            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
     }
 
     private fun navGameFragment(matchType: MatchType) {

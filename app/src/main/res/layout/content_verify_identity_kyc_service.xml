@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="14dp">
@@ -11,14 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:gravity="center"
-        android:text="@string/customer_service_help"
+        android:text="@string/kyc_contact_service"
         android:textColor="@color/color_BBBBBB_333333"
         android:textSize="@dimen/textSize12sp"
         android:maxLines="2"
         app:highlightColor="@color/transparent"
         app:highlightRadius="0dp"
         app:highlightText="@string/kyc_contact_service_hilight"
-        app:highlightTextColor="@color/color_BBBBBB_333333"
+        app:highlightTextColor="@color/color_025BE8_025BE8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

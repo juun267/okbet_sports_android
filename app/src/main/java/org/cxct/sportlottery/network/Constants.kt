@@ -54,7 +54,7 @@ object Constants {
     //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
         return try {
-            "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/v2/useractilistV2?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"
@@ -79,7 +79,7 @@ object Constants {
         language: LanguageManager.Language,
     ): String? {
         return try {
-            "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/v2/useractivityV2/${id}?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"
@@ -112,7 +112,7 @@ object Constants {
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -120,7 +120,7 @@ object Constants {
     //關於我們
     fun getAboutUsUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}about-us?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}about-us?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -128,14 +128,14 @@ object Constants {
     //博彩责任
     fun getDutyRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}responsibility?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}responsibility?platform=" + context.getString(
             R.string.app_name
         )
     }
 
     //代理加盟
     fun getAffiliateUrl(context: Context): String {
-        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}affiliate?platform=${
+        return "${getH5BaseUrl()}sports-rule/#/v2/${getLanguageTag(context)}affiliate?platform=${
             context.getString(
                 R.string.app_name
             )
@@ -145,7 +145,7 @@ object Constants {
     //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}privacy-policy?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}privacy-policy?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -155,7 +155,7 @@ object Constants {
 
         val checkCreditQuery = if (sConfigData?.creditSystem == 1) "credit=1" else context.getString(R.string.app_name)
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}terms-conditions?" + checkCreditQuery
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}terms-conditions?" + checkCreditQuery
     }
 
     //KYC人工客服審核
@@ -171,7 +171,7 @@ object Constants {
     //常见问题
     fun getFAQsUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}faq?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}faq?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -179,7 +179,7 @@ object Constants {
     //联系我们
     fun getContactUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}contact-us?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}contact-us?platform=" + context.getString(
             R.string.app_name
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
