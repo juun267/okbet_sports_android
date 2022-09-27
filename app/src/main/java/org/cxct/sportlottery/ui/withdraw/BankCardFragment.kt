@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,9 @@ import org.cxct.sportlottery.network.money.config.*
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
 /**
@@ -135,6 +138,20 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         btn_delete_bank.setTitleLetterSpacing()
 
         setupTabLayout(args.transferTypeAddSwitch)
+
+        et_withdrawal_password.endIconImageButton.setOnClickListener {
+            if (et_withdrawal_password.endIconResourceId == R.drawable.ic_eye_open) {
+                eet_withdrawal_password.transformationMethod =
+                    AsteriskPasswordTransformationMethod()
+                et_withdrawal_password.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                et_withdrawal_password.setEndIcon(R.drawable.ic_eye_open)
+                eet_withdrawal_password.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            }
+            et_withdrawal_password.hasFocus = true
+            eet_withdrawal_password.setSelection(eet_withdrawal_password.text.toString().length)
+        }
     }
 
     private fun initEditTextStatus(setupView: ExtendedEditText) {
@@ -200,7 +217,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             setupClearButtonVisibility(eet_phone_number) { checkPhoneNumber(it) }
 
             //提款密碼
-            setupEyeButtonVisibility(eet_withdrawal_password) { checkWithdrawPassword(it) }
+            setupClearButtonVisibility(eet_withdrawal_password) { checkWithdrawPassword(it) }
         }
     }
 
@@ -208,6 +225,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         setupView.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 checkFun.invoke(setupView.text.toString())
+        }
+        setupView.afterTextChanged {
+            checkFun.invoke(setupView.text.toString())
         }
     }
 
@@ -368,6 +388,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         changeTab(type)
         setupTitle()
         changeInputField(type)
+        viewModel.curTransferType = type
+        updateButtonStatus(false)
     }
 
     private fun changeTab(type: TransferType) {
@@ -563,6 +585,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         ) {
             et_withdrawal_password.setError(it ,false)
         }
+
+        viewModel.submitEnable.observe(this.viewLifecycleOwner) {
+            updateButtonStatus(it)
+        }
     }
 
     private fun getBankType(): BankType? = when (transferType) {
@@ -583,6 +609,16 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     override fun onDestroy() {
         super.onDestroy()
         viewModel.clearBankCardFragmentStatus()
+    }
+
+    private fun updateButtonStatus(isEnable: Boolean) {
+        if (isEnable) {
+            btn_submit.isEnabled = true
+            btn_submit.alpha = 1.0f
+        } else {
+            btn_submit.isEnabled = false
+            btn_submit.alpha = 0.5f
+        }
     }
 }
 
