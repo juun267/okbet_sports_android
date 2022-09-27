@@ -31,11 +31,10 @@ class SettingPasswordActivity :
 
     private var mPwdPage = PwdPage.LOGIN_PWD //登入密碼 or 提款密碼 page flag
     private var mUserInfo: UserInfo? = null
-    private val bottomLineColorRes = R.color.color_80334266_E3E8EE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_setting_password)
 
         initView()
@@ -55,14 +54,13 @@ class SettingPasswordActivity :
             AsteriskPasswordTransformationMethod()
         eet_confirm_password.transformationMethod =
             AsteriskPasswordTransformationMethod()
-        //region調整bottomLine
-        et_current_password.useDefaultBottomLineColor(false)
-        et_new_password.useDefaultBottomLineColor(false)
-        et_confirm_password.useDefaultBottomLineColor(false)
+
+        val bottomLineColorRes = R.color.color_80334266_E3E8EE
         et_current_password.bottom_line.setBackgroundResource(bottomLineColorRes)
         et_new_password.bottom_line.setBackgroundResource(bottomLineColorRes)
         et_confirm_password.bottom_line.setBackgroundResource(bottomLineColorRes)
-        //endregion
+        updateButtonStatus(false)
+
         et_current_password.endIconImageButton.setOnClickListener {
             if (et_current_password.endIconResourceId == R.drawable.ic_eye_open) {
                 eet_current_password.transformationMethod =
@@ -201,6 +199,9 @@ class SettingPasswordActivity :
     }
 
     private fun initObserve() {
+        viewModel.submitEnable.observe(this) {
+            updateButtonStatus(it)
+        }
 
         viewModel.currentPwdError.observe(this, Observer {
             et_current_password.setError(it, false)
@@ -281,6 +282,16 @@ class SettingPasswordActivity :
 
         eet_confirm_password.setText(null)
         et_confirm_password.setError(null, false)
+    }
+
+    private fun updateButtonStatus(isEnable: Boolean) {
+        if (isEnable) {
+            btn_confirm.isEnabled = true
+            btn_confirm.alpha = 1.0f
+        } else {
+            btn_confirm.isEnabled = false
+            btn_confirm.alpha = 0.5f
+        }
     }
 
 }

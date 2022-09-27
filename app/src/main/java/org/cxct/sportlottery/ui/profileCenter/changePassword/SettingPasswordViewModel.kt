@@ -50,6 +50,9 @@ class SettingPasswordViewModel(
     val confirmPwdError: LiveData<String>
         get() = _confirmPwdError
 
+    val submitEnable: LiveData<Boolean>
+        get() = _submitEnable
+    private val _submitEnable = MutableLiveData<Boolean>()
 
     fun checkInputField(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String, confirmPwd: String) {
         checkCurrentPwd(currentPwd)
@@ -121,6 +124,7 @@ class SettingPasswordViewModel(
             currentPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             else -> ""
         }
+        checkInputComplete()
     }
 
     fun checkNewPwd(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String) {
@@ -137,6 +141,7 @@ class SettingPasswordViewModel(
             currentPwd == newPwd -> LocalUtils.getString(R.string.error_password_cannot_be_same)
             else -> ""
         }
+        checkInputComplete()
     }
 
     fun checkConfirmPwd(newPwd: String, confirmPwd: String) {
@@ -146,6 +151,11 @@ class SettingPasswordViewModel(
             newPwd != confirmPwd -> LocalUtils.getString(R.string.error_confirm_password)
             else -> ""
         }
+        checkInputComplete()
+    }
+
+    private fun checkInputComplete() {
+        _submitEnable.value = _currentPwdError.value.isNullOrEmpty() == true && _newPwdError.value?.isEmpty() == true && _confirmPwdError.value?.isEmpty() == true
     }
 
 }
