@@ -27,6 +27,7 @@ class VerifyIdentityActivity :
 
     override fun onStart() {
         super.onStart()
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         checkKYCStatus()
     }
 
