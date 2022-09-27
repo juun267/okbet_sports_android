@@ -472,37 +472,6 @@ class ProfileCenterFragment :
             GamePublicityActivity.reStart(requireContext())
         }
 
-        viewModel.lockMoney.observe(viewLifecycleOwner) {
-//            if (it?.toInt()!! > 0) {
-//                ivNotice.visibility = View.VISIBLE
-//                ivNotice.setOnClickListener { view ->
-//                    val depositSpannable =
-//                        SpannableString(getString(R.string.text_security_money, formatMoneyNoDecimal(it)))
-//                    val daysLeftText = getString(
-//                        R.string.text_security_money2,
-//                        getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-//                    )
-//                    val remainDaySpannable = SpannableString(daysLeftText)
-//                    val remainDay = getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-//                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
-//                    remainDaySpannable.setSpan(
-//                        ForegroundColorSpan(
-//                            ContextCompat.getColor(this, R.color.color_317FFF_1053af)
-//                        ),
-//                        remainDayStartIndex,
-//                        remainDayStartIndex + remainDay.length, 0
-//                    )
-//
-//                    SecurityDepositDialog().apply {
-//                        this.depositText = depositSpannable
-//                        this.daysLeftText = remainDaySpannable
-//                    }.show(supportFragmentManager, this::class.java.simpleName)
-//                }
-//            } else {
-//                ivNotice.visibility = View.GONE
-//            }
-        }
-
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
