@@ -47,14 +47,18 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
        // tv_input_count.text = String.format("%d / 500", 0)
         et_content.countTextAmount {
        //     tv_input_count.text = String.format("%d / 500", it)
-            ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
+       //     ll_error.visibility = if (it > 0) View.GONE else View.VISIBLE
         //    val textColor = if (it > 0) R.color.color_616161_b4b4b4 else R.color.color_F75452_E23434
          //   tv_input_count.setTextColor(ContextCompat.getColor(tv_input_count.context, textColor))
         }
     }
 
     private fun initButton() {
-        btn_submit.setOnClickListener {
+        btn_submit_new.setOnClickListener {
+                if (et_content.text.trim().isNotEmpty()) { viewModel.fbReply(et_content.text.toString()) }
+        }
+        btn_submit_new.setTitleLetterSpacing()
+      /*  btn_submit.setOnClickListener {
             if (et_content.text.trim().isNotEmpty()) {
                 viewModel.fbReply(et_content.text.toString())
             } else {
@@ -63,7 +67,7 @@ class FeedbackDetailFragment : BaseFragment<FeedbackViewModel>(FeedbackViewModel
                  //   R.color.color_F75452_E23434))
             }
         }
-        btn_submit.setTitleLetterSpacing()
+        btn_submit.setTitleLetterSpacing()*/
     }
 
     private fun initRecyclerView() {

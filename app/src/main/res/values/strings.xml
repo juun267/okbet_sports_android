@@ -1269,4 +1269,5 @@
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
     <string name="transfer_time">Time</string>
+    <string name="please_enter_question">请描述您遇到的问题</string>
 </resources>

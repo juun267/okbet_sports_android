@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/color_131932_F0F5FA"
     tools:context=".ui.feedback.record.FeedbackDetailFragment">
-
+    <View
+        android:background="@color/color_272F41_E3E8EE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -37,41 +42,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:gravity="center"
         android:paddingHorizontal="14dp"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_top_radius_15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline">
 
         <EditText
+            android:layout_marginTop="@dimen/margin_15"
             android:id="@+id/et_content"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:maxHeight="132dp"
-            android:layout_marginTop="14dp"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_frame_5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:background="@drawable/bg_frame_15dp"
             android:gravity="top"
-            android:maxLength="500"
-            android:hint="@string/can_input_1_to_500_word"
-            android:padding="14dp"
+            android:hint="@string/please_enter_question"
+            android:padding="@dimen/margin_5"
             android:textColor="@color/color_BBBBBB_333333"
-            android:textColorHint="@color/color_AEAEAE_545454"
+            android:textColorHint="@color/color_6C7BA8_A7B2C4"
             android:textSize="@dimen/textSize14sp" />
-
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            layout="@layout/view_submit_with_text_count"/>
+        <TextView
+            android:id="@+id/btn_submit_new"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:background="@drawable/bg_download_button"
+            android:gravity="center"
+            android:text="@string/submit"
+            android:padding="@dimen/margin_5"
+            android:textAllCaps="true"
+            android:textColor="@color/color_FFFFFF_FFFFFF"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_error" />
 
     </LinearLayout>
 
