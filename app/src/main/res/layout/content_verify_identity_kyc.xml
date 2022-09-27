@@ -26,11 +26,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_14"
             android:layout_marginTop="15dp"
-            android:text="@string/kyc_num"
+            android:text="@string/kyc_type"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize14sp"
             tools:ignore="MissingConstraints"
-            tools:text="证件号码" />
+            tools:text="@string/kyc_type" />
 
 
         <ImageView
