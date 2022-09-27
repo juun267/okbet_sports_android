@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_FFFFFF"
+    android:background="@color/color_1D1F2D_FFFFFF"
     tools:context=".ui.feedback.record.FeedbackRecordListFragment">
     <!-- Tab bar-->
     <View
@@ -90,10 +90,10 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="386dp"
+            android:layout_height="380dp"
             android:layout_marginLeft="@dimen/margin_1"
             android:layout_marginRight="@dimen/margin_1"
-            android:layout_marginBottom="@dimen/margin_7"
+            android:layout_marginBottom="@dimen/margin_20"
             app:layout_constraintTop_toBottomOf="@id/rech_log_column"
             app:srlDragRate="0.3"
             app:srlEnableLoadMore="true"
@@ -141,7 +141,7 @@
     <TextView
         android:id="@+id/tv_no_data"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:background="@color/color_191919_FCFCFC"
         android:gravity="center"
         android:paddingVertical="12dp"
