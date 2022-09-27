@@ -14,7 +14,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.TextUtil
 import kotlin.math.abs
-
+/**
+ * @app_destination 提款详情弹窗
+ */
 class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::class) {
     init {
         setStyle(R.style.CustomDialogStyle)
@@ -49,8 +51,8 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_time.text = it.withdrawDateAndTime ?: ""
                 wd_log_detail_status.text = it.withdrawState ?: ""
                 when(it.withdrawState){
-                    "成功" ->wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
-                    "失败" ->wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
+                    "通过" ->wd_log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
+                    "未通过" ->wd_log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
                     else ->wd_log_detail_status.setTextColor(resources.getColor(R.color.color_BBBBBB_333333))
                 }
                 wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""

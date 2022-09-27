@@ -51,10 +51,10 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 log_detail_status.text = it.rechState ?: ""
                 it.rechState.let {mState->
                     when {
-                        mState.equals("成功") -> {
+                        mState.equals("通过") -> {
                             log_detail_status.setTextColor(resources.getColor(R.color.color_1EB65B))
                         }
-                        mState.equals("失败") -> {
+                        mState.equals("未通过") -> {
                             log_detail_status.setTextColor(resources.getColor(R.color.color_E23434))
                         }
                         else -> {

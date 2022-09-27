@@ -323,7 +323,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 ArithUtil.toMoneyFormat(it).toDouble()
             )
             tv_current_time.text = TimeUtil.dateToFormat(Date())
-            LogUtil.d("duck1111"+TimeUtil.dateToFormat(Date()))
         })
         viewModel.areaList.observe(this.viewLifecycleOwner) {
             areaAll = it

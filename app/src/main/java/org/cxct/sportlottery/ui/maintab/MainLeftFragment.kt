@@ -187,7 +187,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions)
             )
-            Log.d("duck222", "initView:规则与条款url "+Constants.getAgreementRuleUrl(requireContext()))
         }
         //隱私權條款
         tv_privacy.setVisibilityByCreditSystem()
