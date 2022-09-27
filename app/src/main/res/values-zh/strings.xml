@@ -1218,8 +1218,7 @@
     <string name="bet_record_parlay">复式</string>
     <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
 
-    <string name="bank_memory_card">储蓄卡</string>
-    <string name="no_more">没有更多了</string>
+    <string name="no_more">没有更多啦</string>
     <string name="main_tab_favorite">收藏赛事</string>
     <string name="my_favorite_empty">您还没有收藏赛事</string>
     <string name="cruel_write_off">残忍注销</string>
@@ -1249,4 +1248,12 @@
     <string name="km">千米</string>
     <string name="outlet">投注站</string>
     <string name="transfer_time">转换时间</string>
+    <string name="reset_password">重设密码</string>
+    <string name="my_bank_card">我的银行卡</string>
+    <string name="local_time">当地时间:</string>
+    <string name="half_first_short">上</string>
+    <string name="half_second_short">下</string>
+    <string name="unbound_bank_card">您尚未绑定银行卡/eWallet</string>
+    <string name="change_other_ID_photos">变更其他证件照</string>
+    <string name="customer_service">如需帮助，请</string>
 </resources>

@@ -1188,5 +1188,13 @@
     <string name="km">กิโลเมตร</string>
     <string name="league_filter">คัดเลือกเหตุการณ์</string>
     <string name="outlet">เดิมพัน</string>
+    <string name="no_more">ไม่มีมากกว่านี้แล้ว</string>
+    <string name="my_bank_card">บัครธนาคารของฉัน</string>
+    <string name="local_time">เวลาปัจจุบัน</string>
+    <string name="half_first_short">ครึ่งแรก</string>
+    <string name="half_second_short">ครึ่งหลัง</string>
+    <string name="unbound_bank_card">ไม่ติดบัตรธนาคาร/eWallet</string>
+    <string name="change_other_ID_photos">เปลี่ยนแปลงเอกสารบัตรประจำตัวอื่นๆ</string>
+    <string name="customer_service">ถ้าต้องการความช่วยเหลือ,กรุณา</string>
     <!--F005-->
 </resources>

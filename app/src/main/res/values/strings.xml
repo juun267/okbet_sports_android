@@ -124,7 +124,7 @@
     <string name="no_announcement">No announcement</string>
     <string name="lottery">Lottery</string>
     <string name="poker">Jackpot</string>
-    <string name="slot">Electric</string>
+    <string name="slot">Slot</string>
     <string name="fishing">Fishing</string>
     <string name="more">More</string>
     <string name="home_tan_main">HOME</string>
@@ -1142,9 +1142,7 @@
     <string name="betting_setting">Betting setting</string>
     <string name="transaction_record">Transaction history details</string>
     <string name="current_version">Current version</string>
-    <string name="updatable_version">可更新</string>
     <string name="join_us_win_wealth">Join us, win-win wealth</string>
-    <string name="personal_information">个人信息</string>
     <string name="cancel_account">Delete account</string>
     <string name="payment_method">Payment method</string>
     <string name="kyc_type">ID Type</string>
@@ -1208,7 +1206,7 @@
 
     <string name="correct">Correct</string>
 
-    <string name="customer_service">如需帮助，请</string>
+    <string name="customer_service">If you need help, please</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="filter">Filter</string>
 
@@ -1223,10 +1221,10 @@
     <string name="hint_file_selected">Selected file</string>
     <string name="select_file">Select file</string>
     <string name="error_recommend_agent">No matched</string>
-    <string name="local_time">当地时间:</string>
+    <string name="local_time">Local Time:</string>
     <string name="pls_file_type">请选择文件的类型</string>
     <string name="click_upload_id_photo">Click upload ID photo</string>
-    <string name="change_other_ID_photos">变更其他证件照</string>
+    <string name="change_other_ID_photos">Change to other ID photos</string>
     <string name="customer_service_help">If you need help, please contact CS</string>
     <string name="league_filter">Match filter</string>
     <string name="reverse_select">Inverse</string>
@@ -1243,15 +1241,14 @@
 
     <string name="register_and_login">Sign Up/Login</string>
     <string name="live_streaming">Livestream</string>
-    <string name="half_first_short">上</string>
-    <string name="half_second_short">下</string>
-    <string name="bank_memory_card">储存卡</string>
-    <string name="my_bank_card">我的银行卡</string>
+    <string name="half_first_short">1st Half</string>
+    <string name="half_second_short">2nd Half</string>
+    <string name="my_bank_card">My bank card</string>
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
     <string name="download">Download</string>
-    <string name="can_input_1_to_500_word">请描述您遇到的问题(可输入1–500字</string>
+    <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
     <string name="half">Half</string>
     <string name="other_bet">Other Betting History</string>
     <string name="skin_mode">Mode: Day/Night</string>
@@ -1263,15 +1260,12 @@
     <string name="sport_match">Matches</string>
     <string name="match_analyze">Match analysis</string>
     <string name="no_search_match">没有搜索到赛事</string>
-    <string name="no_more">没有更多了</string>
-    <string name="reset_password">重设密码</string>
+    <string name="no_more">No more</string>
+    <string name="reset_password">Reset password</string>
     <string name="transact_type">Transaction Type：</string>
     <string name="login_welcome">Hi,Welcome to OKbet~</string>
     <string name="betting">Betting</string>
-    <string name="unbound_bank_card">您尚末绑定银行卡/eWallet</string>
-    <string name="hint_confirm_withdrawal_password">请确认提款密码</string>
-    <string name="text_security_money3"><font color='#025BE8'>%1$s</font> 日后解冻</string>
-    <string name="hint_please_enter_the_password_again">请再次输入密码</string>
+    <string name="unbound_bank_card">No Bank Card/eWallet attached</string>
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
     <string name="transfer_time">Time</string>

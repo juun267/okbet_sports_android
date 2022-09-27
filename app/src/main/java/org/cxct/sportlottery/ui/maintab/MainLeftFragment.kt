@@ -40,7 +40,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val oddsTypeList by lazy {
         sConfigData?.handicapShow?.split(",")?.filter { it.isNotEmpty() }
     }
-    private lateinit var oddsTypeAdapter: OddsTypeAdapter
+    private val oddsTypeAdapter by lazy {
+        OddsTypeAdapter(oddsTypeList)
+    }
     private val oddsPriceList = listOf(
         "自动接受更好赔率",
         "自动接受任何赔率",
@@ -57,7 +59,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_main_left, container, false)
     }
@@ -187,7 +189,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions)
             )
-            Log.d("duck222", "initView:规则与条款url "+Constants.getAgreementRuleUrl(requireContext()))
+            Log.d("duck222", "initView:规则与条款url " + Constants.getAgreementRuleUrl(requireContext()))
         }
         //隱私權條款
         tv_privacy.setVisibilityByCreditSystem()
@@ -203,7 +205,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initOddsTypeView() {
         if (!oddsTypeList.isNullOrEmpty()) {
-            oddsTypeAdapter = OddsTypeAdapter(oddsTypeList)
             oddsTypeAdapter.setOnItemClickListener { adapter, view, position ->
                 when (oddsTypeList!![position]) {
                     HandicapType.EU.name -> selectOddsType(OddsType.EU)
