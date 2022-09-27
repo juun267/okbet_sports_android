@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919_FCFCFC"
-    android:orientation="vertical">
+    android:background="@drawable/bg_no_top_bottom_stroke_white"
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
 
     <LinearLayout
         android:id="@+id/ll_game_detail_first_item"
@@ -34,8 +36,8 @@
                     android:layout_height="match_parent"
                     android:gravity="start"
                     android:text="@string/game_yellow_card"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="@string/game_yellow_card" />
             </LinearLayout>
 
@@ -43,7 +45,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_1F1F1F_E2E2E2" />
+                android:background="@color/color_80334266_E3E8EE" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -60,8 +62,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="0 - 1" />
 
                 <TextView
@@ -70,8 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="0 - 1" />
             </LinearLayout>
 
@@ -80,7 +82,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_1F1F1F_E2E2E2" />
+            android:background="@color/color_80334266_E3E8EE" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,8 +104,8 @@
                     android:layout_height="match_parent"
                     android:gravity="start"
                     android:text="@string/game_corner_kick"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="@string/game_corner_kick" />
             </LinearLayout>
 
@@ -111,7 +113,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_1F1F1F_E2E2E2" />
+                android:background="@color/color_80334266_E3E8EE" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -128,8 +130,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="0 - 1" />
 
                 <TextView
@@ -138,8 +140,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:textColor="@color/color_909090_666666"
-                    android:textSize="@dimen/textSize14sp"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
+                    android:textSize="@dimen/textSize12sp"
                     tools:text="0 - 1" />
             </LinearLayout>
         </LinearLayout>
@@ -148,6 +150,6 @@
             android:id="@+id/bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_1F1F1F_E2E2E2" />
+            android:background="@color/color_80334266_E3E8EE" />
     </LinearLayout>
 </LinearLayout>

@@ -107,8 +107,12 @@ class SettlementViewModel(
         matchResultList?.let { resultList ->
             resultList.forEach { matchResultList ->
                 matchResultData.add(MatchResultData(ListType.TITLE, titleData = matchResultList.league))
-                matchResultList.list.forEach { match ->
-                    matchResultData.add(MatchResultData(ListType.MATCH, matchData = match))
+                matchResultList.list.forEachIndexed { index, match ->
+                    val matchData = MatchResultData(ListType.MATCH, matchData = match)
+                    if (index == matchResultList.list.size - 1) {
+                        matchData.isLastMatchData = true
+                    }
+                    matchResultData.add(matchData)
                 }
             }
         }
@@ -311,8 +315,12 @@ class SettlementViewModel(
         val reformatDataList: MutableList<OutrightResultData> = mutableListOf()
         dataList?.forEach { data ->
             reformatDataList.add(OutrightResultData(OutrightType.TITLE, seasonData = data.season))
-            data.resultList.forEach { outright ->
-                reformatDataList.add(OutrightResultData(OutrightType.OUTRIGHT, seasonData = data.season, outrightData = outright))
+            data.resultList.forEachIndexed { index, outright ->
+                val outrightData = OutrightResultData(OutrightType.OUTRIGHT, seasonData = data.season, outrightData = outright)
+                if (index == data.resultList.size - 1) {
+                    outrightData.isLastOutrightData = true
+                }
+                reformatDataList.add(outrightData)
             }
         }
         return reformatDataList
