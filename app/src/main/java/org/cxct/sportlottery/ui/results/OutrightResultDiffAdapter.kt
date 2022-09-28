@@ -7,8 +7,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.item_match_result_title.view.*
 import kotlinx.android.synthetic.main.item_outright_result_outright.view.*
 import kotlinx.android.synthetic.main.item_outright_result_title.view.*
+import kotlinx.android.synthetic.main.item_outright_result_title.view.iv_arrow
+import kotlinx.android.synthetic.main.item_outright_result_title.view.ll_title_background
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -67,11 +70,7 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             itemView.apply {
                 val seasonData = outrightResultData.seasonData
                 tv_season.text = seasonData?.name
-
-                if (outrightResultData.seasonExpanded)
-                    iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_dark))
-                else
-                    iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_down_dark))
+                titleArrowRotate(itemView, outrightResultData)
             }
         }
 
@@ -79,10 +78,20 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             itemView.apply {
                 setOnClickListener {
                     outrightItemClickListener.seasonClick(outrightResultData)
-                    if (outrightResultData.seasonExpanded)
-                        iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_dark))
-                    else
-                        iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_down_dark))
+                    titleArrowRotate(itemView, outrightResultData)
+                }
+            }
+        }
+
+
+        private fun titleArrowRotate(itemView: View, outrightResultData: OutrightResultData) {
+            itemView.apply {
+                if (outrightResultData.seasonExpanded) {
+                    ll_title_background.setBackgroundResource(R.drawable.bg_shape_top_8dp_blue_stroke_no_bottom_stroke)
+                    iv_arrow.rotation = 0f
+                } else {
+                    ll_title_background.setBackgroundResource(R.drawable.bg_shape_8dp_blue_stroke)
+                    iv_arrow.rotation = 180f
                 }
             }
         }
@@ -106,6 +115,15 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
                 if (seasonData?.end != null) tv_date.text = TimeUtil.timeFormat(seasonData.end, "yyyy/MM/dd HH:mm")
                 tv_content.text = outrightData?.playCateName
                 tv_winner.text = outrightData?.playName
+
+                when (outrightResultData.isLastOutrightData) {
+                    true -> {
+                        tv_date.setBackgroundResource(R.drawable.bg_shape_bottom_8dp_gray_stroke_no_top_stroke)
+                    }
+                    false -> {
+                        tv_date.setBackgroundResource(R.drawable.bg_no_top_bottom_stroke_gray)
+                    }
+                }
             }
         }
     }

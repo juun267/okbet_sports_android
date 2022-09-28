@@ -19,5 +19,5 @@ class MainTabViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-
+    val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 }

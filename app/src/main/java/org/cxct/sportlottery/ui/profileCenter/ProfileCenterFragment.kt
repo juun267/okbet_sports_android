@@ -673,14 +673,14 @@ class ProfileCenterFragment :
 
         //总资产锁定金额
         viewModel.lockMoney.observe(viewLifecycleOwner) {
-            if (it?.toInt()!! > 0) {
+            if ((it?.toInt() ?: 0) > 0) {
                 iv_deposit_tip.visibility = View.VISIBLE
-                iv_deposit_tip.setOnClickListener { view ->
+                iv_deposit_tip.setOnClickListener { _ ->
                     val depositSpannable =
                         SpannableString(
                             getString(
                                 R.string.text_security_money,
-                                TextUtil.formatMoneyNoDecimal(it)
+                                TextUtil.formatMoneyNoDecimal(it ?: 0.0)
                             )
                         )
                     val daysLeftText = getString(

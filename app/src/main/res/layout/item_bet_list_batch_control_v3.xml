@@ -50,7 +50,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/et_bet_height"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.Guideline
@@ -78,7 +78,7 @@
                 <EditText
                     android:id="@+id/et_bet_single"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/et_bet_height"
                     android:layout_marginEnd="@dimen/margin_24"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"
                     android:gravity="end|center_vertical"

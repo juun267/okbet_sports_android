@@ -13,6 +13,7 @@ data class OutrightResultData(
 ) {
     var seasonShow: Boolean = false //聯賽過濾顯示, 顯示:true , 不顯示:false
     var seasonExpanded: Boolean = true
+    var isLastOutrightData = false //是否最後一筆outrightData
 }
 
 enum class OutrightType { TITLE, OUTRIGHT, NO_DATA }

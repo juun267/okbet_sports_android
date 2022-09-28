@@ -9,10 +9,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.Animation
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -51,9 +48,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 
 /**
@@ -603,6 +598,22 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         binding.apply {
+            val totalBetString = TextUtil.formatForOdd(totalBetAmount)
+            val winnableString = TextUtil.formatForOdd(winnableAmount)
+            //region 依照語系or長度自動換行
+            val needChangeLineLength = 7
+            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.VI ||
+                totalBetString.length > needChangeLineLength || winnableString.length > needChangeLineLength
+            ) {
+                llTotalStake.orientation = LinearLayout.VERTICAL
+                llEstWinning.orientation = LinearLayout.VERTICAL
+                llEstWinning.gravity = Gravity.START
+            } else {
+                llTotalStake.orientation = LinearLayout.HORIZONTAL
+                llEstWinning.orientation = LinearLayout.HORIZONTAL
+                llEstWinning.gravity = Gravity.END
+            }
+            //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
             tvTotalWinnableAmount.text = TextUtil.formatForOdd(winnableAmount)
         }
@@ -760,15 +771,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
-                binding.clTitle.tvBetListCount.text = list.size.toString()
-                betListRefactorAdapter?.betList = list
-                betSingleListAdapter?.betList = list
-                betParlayListRefactorAdapter?.betList = list
-                checkSingleAndParlayBetLayoutVisible()
+                if (list.isNotEmpty()) {
+                    binding.clTitle.tvBetListCount.text = list.size.toString()
+                    betListRefactorAdapter?.betList = list
+                    betSingleListAdapter?.betList = list
+                    betParlayListRefactorAdapter?.betList = list
+                    checkSingleAndParlayBetLayoutVisible()
 
-                subscribeChannel(list)
-                refreshAllAmount(list)
-                checkAllAmountCanBet()
+                    subscribeChannel(list)
+                    refreshAllAmount(list)
+                    checkAllAmountCanBet()
+                }
             }
         }
 

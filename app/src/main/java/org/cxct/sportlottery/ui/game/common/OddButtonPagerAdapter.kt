@@ -362,6 +362,21 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     }
                 }
             }
+
+            homeList.sortBy {
+                it.name?.split(" - ")?.get(1)?.toInt()
+            }
+            homeList.sortBy {
+                it.name?.split(" - ")?.get(0)?.toInt()
+            }
+
+            awayList.sortBy {
+                it.name?.split(" - ")?.get(0)?.toInt()
+            }
+            awayList.sortBy {
+                it.name?.split(" - ")?.get(1)?.toInt()
+            }
+
             val newList: MutableList<MutableList<Odd?>> = mutableListOf()
             homeList.forEachIndexed { index, _ ->
                 if(index > drawList.size -1)
@@ -639,7 +654,12 @@ class OddButtonPagerViewHolder private constructor(
                 itemView.context)
             )?.replace(": ", " ")?.replace("||", "\n") ?: ""
 
-        val playCateCode = odds.first ?: ""
+        var playCateCode = odds.first ?: ""
+        //去掉mappingCS playCateCode的後綴
+        if (playCateCode.contains(PlayCate.CS.value) && playCateCode.contains("_")) {
+            playCateCode = playCateCode.split("_")[0]
+        }
+//        Timber.e("playCateCode: $playCateCode")
 
         oddBtnType.text = when {
             (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }

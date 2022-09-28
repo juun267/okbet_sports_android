@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    app:cardElevation="0dp"
     tools:ignore="SpUsage">
 
     <LinearLayout
+        android:id="@+id/ll_title_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_262626_edf4ff"
+        android:background="@drawable/bg_shape_top_8dp_blue_stroke_no_bottom_stroke"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -25,7 +29,7 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_arrow_down_dark" />
+            android:src="@drawable/ic_arrow_up_gray" />
 
         <TextView
             android:id="@+id/tv_season"
@@ -55,4 +59,4 @@
 
 
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -17,6 +17,7 @@ data class MatchResultData(
     var leagueShowByTeamName: Boolean = false //依隊名的聯賽過濾顯示(賽事僅顯示匹配到的隊伍), 顯示:true , 不顯示:false
     var titleExpanded: Boolean = true //聯賽是否展開, true:展開, false:收合
     var matchExpanded: Boolean = false
+    var isLastMatchData: Boolean = false //是否最後一筆matchData
 }
 
 enum class ListType {

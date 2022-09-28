@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_191919_FCFCFC"
-    android:orientation="vertical">
+    android:background="@drawable/bg_no_top_bottom_stroke_white"
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
 
     <LinearLayout
         android:id="@+id/ll_game_detail_first_item"
@@ -35,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/section"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp" />
 
                 <LinearLayout
@@ -48,7 +50,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/first"
-                        android:textColor="@color/color_909090_666666"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -57,7 +59,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/second"
-                        android:textColor="@color/color_909090_666666"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -66,7 +68,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/third"
-                        android:textColor="@color/color_909090_666666"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -75,7 +77,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/fourth"
-                        android:textColor="@color/color_909090_666666"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -84,14 +86,14 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_1F1F1F_E2E2E2" />
+                android:background="@color/color_80334266_E3E8EE" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/total_score_over_time"
-                android:textColor="@color/color_909090_666666"
+                android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize12sp" />
 
 
@@ -100,7 +102,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_1F1F1F_E2E2E2" />
+            android:background="@color/color_80334266_E3E8EE" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -125,13 +127,13 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_home_first"
@@ -142,14 +144,14 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_1F1F1F_E2E2E2" />
+                android:background="@color/color_80334266_E3E8EE" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -168,13 +170,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_home_third"
@@ -185,13 +187,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_home_fourth"
@@ -202,13 +204,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_home_over_time"
@@ -219,7 +221,7 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text=""
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>
@@ -230,7 +232,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_1F1F1F_E2E2E2" />
+            android:background="@color/color_80334266_E3E8EE" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -255,13 +257,13 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_away_first"
@@ -272,14 +274,14 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/color_1F1F1F_E2E2E2" />
+                android:background="@color/color_80334266_E3E8EE" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -298,13 +300,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_away_third"
@@ -315,13 +317,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_away_fourth"
@@ -332,13 +334,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     tools:text="0"
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/color_1F1F1F_E2E2E2" />
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <TextView
                     android:id="@+id/tv_away_over_time"
@@ -349,7 +351,7 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text=""
-                    android:textColor="@color/color_909090_666666"
+                    android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>
@@ -361,7 +363,7 @@
             android:id="@+id/bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_1F1F1F_E2E2E2" />
+            android:background="@color/color_80334266_E3E8EE" />
 
     </LinearLayout>
 </LinearLayout>

@@ -94,6 +94,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 showBetListPage()
             }
         }
+        viewModel.showBetUpperLimit.observe(this) {
+            if (it.getContentIfNotHandled() == true)
+                snackBarBetUpperLimitNotify.apply {
+                    setAnchorView(R.id.cl_bet_list_bar)
+                    show()
+                }
+        }
     }
 
     private fun initBottomFragment() {
