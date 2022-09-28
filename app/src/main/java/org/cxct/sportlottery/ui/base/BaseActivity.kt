@@ -233,6 +233,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
+    fun showPromptDialogNoCancel(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialogNoCancel(title, message, null, positiveClickListener, false)
+    }
+
     fun showPromptDialog(
         title: String? = getString(R.string.prompt),
         message: Spanned,
@@ -309,6 +317,27 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
             negativeText = getString(R.string.btn_cancel)
+        )
+    }
+
+    fun showPromptDialogNoCancel(
+        title: String?,
+        errorMessage: String?,
+        buttonText: String?,
+        positiveClickListener: () -> Unit?,
+        isError: Boolean,
+        isShowDivider: Boolean? = false
+    ) {
+        commonCheckDialog(
+            context = this,
+            fm = supportFragmentManager,
+            isError = isError,
+            isShowDivider = isShowDivider,
+            title = title,
+            errorMessage = errorMessage,
+            buttonText = buttonText,
+            positiveClickListener = positiveClickListener,
+            negativeText = null
         )
     }
 
