@@ -1196,5 +1196,6 @@
     <string name="unbound_bank_card">ไม่ติดบัตรธนาคาร/eWallet</string>
     <string name="change_other_ID_photos">เปลี่ยนแปลงเอกสารบัตรประจำตัวอื่นๆ</string>
     <string name="customer_service">ถ้าต้องการความช่วยเหลือ,กรุณา</string>
+    <string name="no_search_match">ไม่เจอการแข่งนี้</string>
     <!--F005-->
 </resources>

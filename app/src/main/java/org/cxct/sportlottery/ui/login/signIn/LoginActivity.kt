@@ -81,14 +81,21 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupAccount() {
-        binding.eetAccount.setText(viewModel.account)
+        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
+        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
+        if (!viewModel.account.isNullOrBlank()) {
+            binding.eetAccount.setText(viewModel.account)
+        }
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
         }
     }
 
     private fun setupPassword() {
-        binding.eetPassword.setText(viewModel.password)
+        if (!viewModel.password.isNullOrBlank()) {
+            binding.eetPassword.setText(viewModel.password)
+        }
         binding.etPassword.endIconImageButton.setOnClickListener {
             if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
                 binding.eetPassword.transformationMethod =
@@ -141,7 +148,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateValidCode() {
         val data = viewModel.validCodeResult.value?.validCodeData
         viewModel.getValidCode(data?.identity)
-        binding.eetVerificationCode.setText(null)
+        binding.eetVerificationCode.apply {
+            if (text.isNotBlank()) {
+                text = null
+            }
+        }
     }
 
     private fun login() {
@@ -220,9 +231,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun initObserve() {
-        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
-        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
-        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
                 it.first,

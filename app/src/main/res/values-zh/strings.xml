@@ -1256,4 +1256,5 @@
     <string name="unbound_bank_card">您尚未绑定银行卡/eWallet</string>
     <string name="change_other_ID_photos">变更其他证件照</string>
     <string name="customer_service">如需帮助，请</string>
+    <string name="no_search_match">没有搜索到赛事</string>
 </resources>

@@ -1259,7 +1259,7 @@
     <string name="main_tab_mine">My</string>
     <string name="sport_match">Matches</string>
     <string name="match_analyze">Match analysis</string>
-    <string name="no_search_match">没有搜索到赛事</string>
+    <string name="no_search_match">No matches were found</string>
     <string name="no_more">No more</string>
     <string name="reset_password">Reset password</string>
     <string name="transact_type">Transaction Type：</string>

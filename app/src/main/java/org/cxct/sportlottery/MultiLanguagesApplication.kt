@@ -11,6 +11,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import cn.jpush.android.api.JPushInterface
+import com.adjust.sdk.Adjust
+import com.adjust.sdk.AdjustConfig
+import com.adjust.sdk.LogLevel
+import com.appsflyer.AppsFlyerLib
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -77,6 +81,7 @@ import org.koin.dsl.module
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.util.*
+
 
 /**
  * App 內部切換語系
@@ -229,6 +234,23 @@ class MultiLanguagesApplication : Application() {
 
         //生成UUID作為設備識別碼
         setupDeviceCode()
+        initAdjustSDK()
+        initAppsFlyerSDK()
+    }
+
+    private fun initAdjustSDK() {
+        val appToken = "i0n6zrmvo4jk"
+        val environment =
+            if (BuildConfig.DEBUG) AdjustConfig.ENVIRONMENT_SANDBOX else AdjustConfig.ENVIRONMENT_PRODUCTION
+        val config = AdjustConfig(this, appToken, environment)
+        config.setLogLevel(LogLevel.SUPRESS)
+        Adjust.onCreate(config)
+    }
+
+    private fun initAppsFlyerSDK() {
+        AppsFlyerLib.getInstance().init("G7q8UBYftYQfKAxnortTSN", null, this)
+        AppsFlyerLib.getInstance().setDebugLog(BuildConfig.DEBUG);
+        AppsFlyerLib.getInstance().start(this);
     }
 
     private fun setupTimber() {
