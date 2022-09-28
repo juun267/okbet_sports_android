@@ -107,12 +107,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         et_amount.apply {
             clearIsShow = false
             getAllIsShow = true
-            block_editText.setBackgroundResource(R.drawable.effect_edittext_bg_gray)
         }
-        et_password.apply {
-            v_divider.visibility = View.GONE
 
-        }
         initEditTextStatus(et_amount)
         initEditTextStatus(et_password)
         View.OnClickListener { hideKeyboard() }.let {
@@ -293,7 +289,6 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         })
         //提款金額提示訊息
         viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner, Observer {
-
             et_amount.et_input.hint = it
         })
         viewModel.withdrawAmountMsg.observe(
