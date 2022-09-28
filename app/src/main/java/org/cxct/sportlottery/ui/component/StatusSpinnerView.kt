@@ -72,7 +72,7 @@ class StatusSpinnerView @JvmOverloads constructor(
             tv_name.tag = ""
             tv_name.text =
                 typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
-            tv_name.setTextColor(resources.getColor(R.color.color_414655))
+            tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_C9CFD7))
             tv_name.gravity = textGravity
             setOnClickListener {
                 this@StatusSpinnerView.callOnClick()
@@ -188,5 +188,6 @@ class StatusSpinnerView @JvmOverloads constructor(
         tv_name.tag = data.code
         tv_name.text = data.showName
         selectedListener?.onClick(null)
+        tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_414655))
     }
 }

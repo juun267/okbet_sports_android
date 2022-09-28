@@ -29,6 +29,7 @@
             android:text="@string/kyc_verify_successful"
             android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize18sp"
+            android:gravity="center"
             android:visibility="invisible"
             tools:text="@string/kyc_you_wait"
             tools:visibility="visible" />
@@ -62,7 +63,7 @@
 
         <include
             android:id="@+id/btn_service"
-            layout="@layout/content_verify_identity_kyc_service" />
+            layout="@layout/content_verify_identity_kyc_service_gray" />
 
     </LinearLayout>
 
