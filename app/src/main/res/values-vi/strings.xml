@@ -344,7 +344,7 @@
     <string name="game_match">Trận đấu</string>
     <string name="play_type">Cách đặt cược</string>
     <string name="game_odds">tỷ lệ kèo</string>
-    <string name="match_names">Đội chủ nhà) %s vs %s (Đội khách)</string>
+    <string name="match_names">(Đội chủ nhà) %s vs %s (Đội khách)</string>
     <string name="match_names_3">Đội chủ nhà %s V.S %s Đội khách</string>
     <string name="bet_item">Mục đặt cược</string>
     <string name="match_type_row_in_play">Trong trận</string>
@@ -973,8 +973,8 @@
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint">Vui lòng nhập mật khẩu đăng nhập của bạn)</string>
-    <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn)</string>
+    <string name="password_hint">Vui lòng nhập mật khẩu đăng nhập của bạn</string>
+    <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn</string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
     <string name="text_search">Tìm trận đấu</string>
@@ -1179,8 +1179,8 @@
     <string name="kyc_add">Add</string>
 
 
-    <string name="hint_select_document_type">Mời nhập loại giấy tờ)</string>
-    <string name="hint_select_document_number">Mời nhập mã số giấy tờ)</string>
+    <string name="hint_select_document_type">Mời nhập loại giấy tờ</string>
+    <string name="hint_select_document_number">Mời nhập mã số giấy tờ</string>
     <string name="identity_number">Số giấy tờ</string>
     <string name="identity_two_number">Số giấy tờ2</string>
     <string name="identity_two_type">Loại giấy tờ 2</string>
