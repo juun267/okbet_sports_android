@@ -146,7 +146,8 @@ class VerifyKYCFragment :
     }
 
     private fun initView() {
-        identity_2nd.isVisible = sConfigData?.idUploadNumber.equals("2")
+        //PM - Tom Wang 跟QA 要求只跟設計稿一樣只開一個認證上傳，OK-860
+        //identity_2nd.isVisible = sConfigData?.idUploadNumber.equals("2")
     }
 
     override fun onStart() {

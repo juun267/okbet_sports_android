@@ -4,39 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
-    tools:context=".ui.profileCenter.otherBetRecord.detail.OtherBetRecordDetailFragment">
+    android:background="@color/color_202541_FFFFFF"
+    tools:context=".ui.profileCenter.otherBetRecord.detail.OtherBetRecordDetailFragment"
+    tools:ignore="SpUsage">
 
     <TextView
         android:id="@+id/tvUsTime"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:background="@color/color_FFFFFF"
+        android:layout_height="wrap_content"
+        android:gravity="end|center_vertical"
+        android:paddingVertical="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/margin_20"
         android:text="@string/text_us_east_time"
-        android:textColor="@color/color_E23434"
-        android:textSize="@dimen/textSize12sp"
+        android:textColor="@color/color_E23434_E23434"
+        android:textSize="@dimen/textSize14sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-         android:gravity="end|center_vertical"
-        android:layout_marginTop="@dimen/margin_20"
-       app:layout_constraintTop_toTopOf="parent"
-        android:paddingEnd="@dimen/margin_20"
-        android:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
-        android:layout_marginLeft="@dimen/margin_20"
-        android:layout_marginRight="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/layout_total"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsTime">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
+            android:orientation="vertical">
+    <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/margin_14"
         android:layout_height="@dimen/margin_36"
-        android:background="@color/color_232C4F_F4F4F4"
-        android:orientation="horizontal"
-        android:paddingVertical="4dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsTime">
+        android:layout_marginTop="@dimen/margin_1"
+        android:layout_marginLeft="@dimen/margin_1"
+        android:layout_marginRight="@dimen/margin_1"
+        android:background="@drawable/bg_white_top_radius_deposit_10">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.25"
+            android:layout_weight="1.7"
             android:gravity="center"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="@string/date"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -56,6 +71,7 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="@string/bet_money"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -66,6 +82,7 @@
             android:layout_weight="1.5"
             android:gravity="center"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="@string/profit_and_loss"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -76,6 +93,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:maxLines="1"
+            android:ellipsize="end"
             android:text="@string/log_detail_trans_num_sub2"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
@@ -85,21 +103,36 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/view_refresh"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:srlDragRate="0.3"
         app:srlEnableLoadMore="true"
-        app:layout_constraintBottom_toTopOf="@id/layout_total"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout5"
         app:srlEnablePureScrollMode="true">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_record"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="360dp"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_other_bet_record_detail" />
+        tools:listitem="@layout/item_other_bet_record_detail"
+        tools:itemCount="4"/>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_weight="1"
+            android:background="@color/color_131932_F0F5FA"
+            android:gravity="center_horizontal"
+            android:paddingVertical="@dimen/margin_20"
+            tools:text="@string/no_data"
+            android:textColor="@color/color_6C7BA8_A7B2C4"
+            android:textSize="@dimen/textSize12sp" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/iv_scroll_to_top"
         android:layout_width="48dp"

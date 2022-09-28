@@ -344,7 +344,7 @@
     <string name="game_match">Trận đấu</string>
     <string name="play_type">Cách đặt cược</string>
     <string name="game_odds">tỷ lệ kèo</string>
-    <string name="match_names">Đội chủ nhà) %s vs %s (Đội khách)</string>
+    <string name="match_names">(Đội chủ nhà) %s vs %s (Đội khách)</string>
     <string name="match_names_3">Đội chủ nhà %s V.S %s Đội khách</string>
     <string name="bet_item">Mục đặt cược</string>
     <string name="match_type_row_in_play">Trong trận</string>
@@ -382,7 +382,7 @@
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền đặt cọc</string>
     <string name="title_payer">Tài khoản</string>
-    <string name="edt_hint_deposit_money">Giới hạn %1$s %2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">Giới hạn %1$s%2$s～%3$s</string>
     <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
@@ -433,7 +433,7 @@
     <string name="title_choose_currency">chọn thỏa thuận / Loại tiền</string>
     <string name="txv_recharge_count">Số tiền cần nạp</string>
     <string name="edt_hint_crypto_pay_count">Giới hạn %1$s～%2$s</string>
-    <string name="hint_rate">・Tỷ giá：%1$s</string>
+    <string name="hint_rate">Tỷ giá：%1$s</string>
     <string name="title_transaction_id">ID giao dịch chuỗi khối</string>
     <string name="hint_transaction_id">ID blockchain của bạn</string>
     <string name="hint_fee_rate">・Phí xử lý：%1$s</string>
@@ -504,8 +504,8 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Số tiền rút(%1$s)：%2$s</string>
+    <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
+    <string name="withdraw_crypto_amount_hint">Số tiền rút(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">· Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
@@ -973,8 +973,8 @@
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
-    <string name="password_hint">Vui lòng nhập mật khẩu đăng nhập của bạn)</string>
-    <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn)</string>
+    <string name="password_hint">Vui lòng nhập mật khẩu đăng nhập của bạn</string>
+    <string name="account_hint">Vui lòng nhập tài khoản hội viên của bạn</string>
     <string name="submit_success">gửi thành công</string>
     <!-- 搜尋 -->
     <string name="text_search">Tìm trận đấu</string>
@@ -1179,8 +1179,8 @@
     <string name="kyc_add">Add</string>
 
 
-    <string name="hint_select_document_type">Mời nhập loại giấy tờ)</string>
-    <string name="hint_select_document_number">Mời nhập mã số giấy tờ)</string>
+    <string name="hint_select_document_type">Mời nhập loại giấy tờ</string>
+    <string name="hint_select_document_number">Mời nhập mã số giấy tờ</string>
     <string name="identity_number">Số giấy tờ</string>
     <string name="identity_two_number">Số giấy tờ2</string>
     <string name="identity_two_type">Loại giấy tờ 2</string>
@@ -1192,7 +1192,7 @@
     <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
-    <string name="bet_receipt_win_quota_with_sign">Số tiền có thể thắng(%s)：</string>
+    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng(%s)：</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1241,4 +1241,5 @@
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
     <string name="customer_service">Nếu cần trợ giúp, vui lòng</string>
     <string name="not_sign_up">Chưa có tài khoản</string>
+    <string name="no_search_match">Không tìm thấy trận đấu</string>
 </resources>

@@ -11,7 +11,7 @@ data class OrderData(
     @Json(name = "betAmount")
     val betAmount: Double?,
     @Json(name = "betTime")
-    val betTime: String?,
+    val betTime: Long?,
     @Json(name = "dlId")
     val dlId: Int?,
     @Json(name = "dlName")

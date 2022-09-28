@@ -16,10 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setMoneyColor
-import org.cxct.sportlottery.util.setMoneyFormat
-import org.cxct.sportlottery.util.setProfitFormat
+import org.cxct.sportlottery.util.*
 
 class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
@@ -68,7 +65,6 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
     private fun initRv() {
         rv_record.apply {
             adapter = rvAdapter
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
             addOnScrollListener(recyclerViewOnScrollListener)
         }
     }
@@ -94,6 +90,11 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
 
                 layout_total.apply {
                     tv_total_number.text = (totalCount ?: 0).toString()
+                        .plus(
+                            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.ZH)
+                                " ${getString(R.string.bet_count)}"
+                            else ""
+                        )
                     tv_total_bet_profit.setProfitFormat(totalWin, isTotal = true)
                     tv_total_bet_profit.setMoneyColor(totalWin ?: 0.0)
                 }
@@ -101,6 +102,9 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
             }
         }
 
+        viewModel.lastPage.observe(viewLifecycleOwner) {
+            tv_no_data.text = if (it) getString(R.string.no_data) else ""
+        }
     }
 
 }

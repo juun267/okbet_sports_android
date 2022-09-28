@@ -135,6 +135,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 )
             )
         }
+
+        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
     }
 
     private fun checkNotificationVisiable(
@@ -152,7 +154,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initEvent() {
-        setupClickEvent()
         setupTextChangeEvent()
     }
 
@@ -172,30 +173,29 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         }
     }
-
     private fun setupClickEvent() {
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    0 -> {
+                when (tab?.text) {
+                    getString(R.string.bank_card) -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.BANK)
-                        tv_add_bank.text= resources.getText(R.string.bank_list_bank)
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
                         clearEvent()
                     }
-                    1 -> {
+                    getString(R.string.crypto) -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.CRYPTO)
-                        tv_add_bank.text = resources.getText(R.string.bank_list_crypto)
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_crypto))
                         clearEvent()
                     }
-                    2 -> {
+                    getString(R.string.ewallet) -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.E_WALLET)
-                        tv_add_bank.text = resources.getText(R.string.bank_list_e_wallet)
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_e_wallet))
                         clearEvent()
                     }
-                    3 -> {
+                    getString(R.string.Outlets_Reserve) -> {
                         selectBetStationTab(true)
 //                        viewModel.setDealType(TransferType.STATION)
                         clearEvent()
@@ -358,25 +358,27 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             val stationExit =
                 moneyCardSet.find { it.transferType == TransferType.STATION }?.exist
 
+            val tabIndexList = viewModel.withdrawTabIsShow.value
             when {
                 bankCardExist == true -> {
 //                    tab_bank_card.isChecked = true
-                    tab_layout.getTabAt(0)?.select()
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.BANK.type)?:0)?.select()
                     viewModel.setDealType(TransferType.BANK)
                 }
                 cryptoCardExist == true -> {
 //                    tab_crypto.isChecked = true
-                    tab_layout.getTabAt(1)?.select()
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.CRYPTO.type)?:0)?.select()
                     viewModel.setDealType(TransferType.CRYPTO)
                 }
                 eWalletCardExist == true -> {
 //                    tab_e_wallet.isChecked = true
-                    tab_layout.getTabAt(2)?.select()
+                    var aaaa = tabIndexList?.indexOf(TransferType.E_WALLET.type)?:0
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.E_WALLET.type)?:0)?.select()
                     viewModel.setDealType(TransferType.E_WALLET)
                 }
                 stationExit == true -> {
 //                    tab_e_wallet.isChecked = true
-                    tab_layout.getTabAt(3)?.select()
+                    tab_layout.getTabAt(tabIndexList?.indexOf(TransferType.STATION.type)?:0)?.select()
                     viewModel.setDealType(TransferType.STATION)
                 }
                 else -> {
@@ -408,6 +410,19 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     tab_layout.getTabAt(3)?.view?.visibility = View.GONE
                 }
             }
+
+            tab_layout.removeAllTabs()
+            list.forEach { type->
+                when(type){
+                    TransferType.BANK.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.bank_card))
+                    TransferType.CRYPTO.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.crypto))
+                    TransferType.E_WALLET.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.ewallet))
+                    TransferType.STATION.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.Outlets_Reserve))
+                }
+            }
+
+            setupClickEvent()
+
         }
 
         //資金設定
@@ -497,7 +512,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 getString(R.string.please_setting_bank_card)
             }
         }
-        showPromptDialog(getString(R.string.withdraw_setting), content) {
+        showPromptDialogNoCancel(getString(R.string.withdraw_setting), content) {
             this@WithdrawFragment.activity?.finish()
             startActivity(
                 Intent(

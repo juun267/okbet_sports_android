@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="80dp"
     tools:ignore="SpUsage">
 
     <ImageView
         android:id="@+id/list_no_record_img"
         android:layout_width="256dp"
         android:layout_height="199dp"
-        android:layout_marginTop="80dp"
         android:src="@drawable/ic_no_data_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -81,6 +81,12 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         clearFocus()
     }
 
+    fun showPromptDialogNoCancel(title: String, message: String, positiveClickListener: () -> Unit) {
+        if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).showPromptDialogNoCancel(title, message, positiveClickListener)
+        }
+    }
+
     fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showPromptDialog(title, message, positiveClickListener)

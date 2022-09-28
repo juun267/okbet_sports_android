@@ -28,6 +28,7 @@
     <string name="at_symbol">\u0040%1$s</string>
     <string name="nothing">--</string>
     <string name="draw_or_cancel">0.000</string>
+    <string name="bet_count">个</string>
 
     <!--game hall-->
     <string name="match_type_row_btn_double">1 X 2</string>

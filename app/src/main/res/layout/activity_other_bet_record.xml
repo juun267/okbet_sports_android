@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_131932_F0F5FA"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.otherBetRecord.OtherBetRecordActivity">
 
@@ -15,6 +16,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_10"
         app:defaultNavHost="true"
         app:navGraph="@navigation/other_bet_record_navigation" />
 
