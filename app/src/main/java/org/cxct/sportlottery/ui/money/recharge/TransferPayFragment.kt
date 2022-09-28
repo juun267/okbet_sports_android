@@ -15,9 +15,20 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.crypto_pay_fragment.*
+import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
+import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
+import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
+import kotlinx.android.synthetic.main.transfer_pay_fragment.et_recharge_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.ll_qr
+
+
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
+import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
+
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
@@ -54,9 +65,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private var bankPosition = 0
 
     private lateinit var dateTimePicker: TimePickerView
+    private lateinit var dateTimePickerHMS: TimePickerView
 
     var depositDate = Date()
-
+    var depositDate2 = Date()
+    var mCalendar: Calendar =Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,8 +105,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         //選取日曆
-        cv_recharge_time.setOnClickListener {
+       /* cv_recharge_time.setOnClickListener {
             dateTimePicker.show()
+        }*/
+        //年月日的时间选择器
+        ll_transfer_time.setOnClickListener {
+            dateTimePicker.show()
+        }
+        //时分秒的选择器
+        ll_transfer_time2.setOnClickListener {
+            dateTimePickerHMS.show()
         }
 
         //複製姓名
@@ -141,6 +162,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         setupTextChangeEvent()
         setupFocusEvent()
         initTimePicker()
+        initTimePickerForHMS()
         getMoney()
         updateMoneyRange()
         getBankType(0)
@@ -300,7 +322,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             OnTimeSelectListener { date, _ ->
                 try {
                     depositDate = date
-                    txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
+                    txv_transfer_time.text = TimeUtil.dateToStringFormatYMD(date)
+                    upDataTimeYMD()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -309,7 +332,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setRangDate(yesterday, tomorrow)
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
-            .setType(booleanArrayOf(true, true, true, true, true, true))
+            .setType(booleanArrayOf(true, true, true, false, false, false))
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
@@ -346,7 +369,40 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .isDialog(false)
             .build() as TimePickerView
     }
+    private fun initTimePickerForHMS() {
 
+        dateTimePickerHMS = TimePickerBuilder(activity) { date, _ ->
+            try {
+                depositDate2 = date
+//                txv_recharge_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                txv_transfer_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                upDataTimeHMS()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+            .setLabel("", "", "", "", "", "")
+            .setDate(Calendar.getInstance())
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(false, false, false, true, true, true))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setCancelText(" ")
+            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    txv_transfer_time.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    txv_transfer_time2.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .isDialog(false)
+            .build() as TimePickerView
+    }
     //依據選擇的支付渠道，刷新UI
     private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?) {
         //姓名
@@ -462,7 +518,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
 
         //存款時間
-        txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(Date().time)
+        txv_transfer_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
+        txv_transfer_time2.text = TimeUtil.dateToStringFormatHMS(Date())
 
     }
 
@@ -598,7 +655,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_name.getText(),
                     payerBankName = mBottomSheetList[bankPosition].bankName.toString(),
                     payerInfo = "",
-                    depositDate = depositDate.time
+                    depositDate = mCalendar.time.time
                 )
             }
             MoneyType.WX_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
@@ -614,7 +671,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_wx_id.getText(),
                     payerBankName = null,
                     payerInfo = null,
-                    depositDate = depositDate.time
+                    depositDate = mCalendar.time.time
                 )
             }
             MoneyType.ALI_TYPE.code -> {
@@ -630,7 +687,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_nickname.getText(),
                     payerBankName = null,
                     payerInfo = et_name.getText(),
-                    depositDate = depositDate.time
+                    depositDate = mCalendar.time.time
                 )
             }
             else -> null
@@ -648,6 +705,29 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             txv_pay_bank.text = mBottomSheetList[position].bankName.toString()
         } else {
             mSelectRechCfgs = null
+        }
+    }
+
+    private fun upDataTimeHMS(){
+        mCalendar.apply {
+            var despsitCal=Calendar.getInstance().apply {
+                time=depositDate2
+            }
+            mCalendar.set(Calendar.HOUR_OF_DAY,despsitCal.get(Calendar.HOUR_OF_DAY))
+            mCalendar.set(Calendar.MINUTE,despsitCal.get(Calendar.MINUTE))
+            mCalendar.set(Calendar.SECOND,despsitCal.get(Calendar.SECOND))
+
+        }
+    }
+    private fun upDataTimeYMD(){
+        mCalendar.apply {
+            var despsitCal=Calendar.getInstance().apply {
+                time=depositDate
+            }
+            mCalendar.set(Calendar.DAY_OF_MONTH,despsitCal.get(Calendar.DAY_OF_MONTH))
+            mCalendar.set(Calendar.MONTH,despsitCal.get(Calendar.MONTH))
+            mCalendar.set(Calendar.YEAR,despsitCal.get(Calendar.YEAR))
+
         }
     }
 }
