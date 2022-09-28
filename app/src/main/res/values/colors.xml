@@ -130,6 +130,7 @@
     <color name="color_79839F">#79839F</color>
     <color name="color_D2E4FF">#D2E4FF</color>
     <color name="color_272F41">#272F41</color>
+    <color name="color_191D2F">#191D2F</color>
     <!--以下部分，是系统中的白天的色值 -->
     <!--命名規則，color_[夜間色碼]_[白天色碼] -->
 
@@ -502,4 +503,5 @@
     <color name="color_D2E4FF_414655">@color/color_414655</color>
     <!--扫描模块文字标题颜色-->
     <color name="color_9FADC6_A5A9B3">@color/color_A5A9B3</color>
+    <color name="color_191D2F_F3F9FF">@color/color_F3F9FF</color>
 </resources>

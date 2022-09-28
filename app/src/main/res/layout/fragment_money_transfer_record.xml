@@ -8,7 +8,7 @@
     tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
     <View
         android:id="@+id/view"
-        android:background="@color/color_E3E8EE"
+        android:background="@color/color_131932_F0F5FA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,7 +18,6 @@
                 android:id="@+id/date_range_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintTop_toTopOf="parent"
         app:minusDays="6"  />
             <LinearLayout
@@ -26,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_14"
-                android:background="@color/color_191919_FCFCFC"
+                android:background="@color/color_191D2F_F3F9FF"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/date_range_selector">
 
@@ -35,7 +34,7 @@
                     android:layout_width="0dp"
                     android:layout_height="44dp"
                     android:layout_weight="1"
-                    android:background="#F3F9FF"
+
                     app:defaultStatusText="@string/all_order_status"
                     app:layout_constraintTop_toBottomOf="@id/date_range_selector"
                     app:listBackground="@drawable/bg_pop_up_arrow"
@@ -53,7 +52,7 @@
                     android:layout_width="0dp"
                     android:layout_height="44dp"
                     android:layout_weight="1"
-                    android:background="#F3F9FF"
+                    android:background="@color/color_191D2F_F3F9FF"
                     app:defaultStatusText="@string/all_order_status"
                     app:layout_constraintTop_toBottomOf="@id/date_range_selector"
                     app:listBackground="@drawable/bg_pop_up_arrow"
@@ -71,7 +70,7 @@
                     android:layout_width="0dp"
                     android:layout_height="44dp"
                     android:layout_weight="1"
-                    android:background="#F3F9FF"
+                    android:background="@color/color_191D2F_F3F9FF"
                     app:defaultStatusText="@string/all_order_status"
                     app:layout_constraintTop_toBottomOf="@id/date_range_selector"
                     app:listBackground="@drawable/bg_pop_up_arrow"
@@ -79,6 +78,7 @@
 
             </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_10"
@@ -87,6 +87,7 @@
         android:orientation="vertical"
         android:layout_marginTop="@dimen/margin_10"
         android:paddingBottom="@dimen/margin_3"
+
         app:layout_constraintTop_toBottomOf="@id/ll_status"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -158,7 +159,7 @@
                         <com.scwang.smart.refresh.layout.SmartRefreshLayout
                             android:id="@+id/view_refresh"
                             android:layout_width="match_parent"
-                            android:layout_height="421dp"
+                            android:layout_height="360dp"
                             app:srlDragRate="0.3"
                             app:srlEnableLoadMore="true"
 
@@ -168,11 +169,9 @@
                                 android:id="@+id/rv_record"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="@dimen/margin_8"
-                                android:layout_marginRight="@dimen/margin_8"
+                                android:layout_marginHorizontal="@dimen/margin_1"
                                 android:layout_marginBottom="@dimen/margin_7"
                                 android:overScrollMode="never"
-
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 tools:itemCount="2"
                                 tools:listitem="@layout/item_money_transfer_history" />
@@ -186,13 +185,15 @@
     <TextView
         android:id="@+id/tv_no_data_tips"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_191919_FCFCFC"
+        android:layout_height="0dp"
+        android:background="@color/color_131932_F0F5FA"
         android:gravity="center"
         android:paddingVertical="12dp"
+        android:layout_marginTop="@dimen/margin_20"
         android:text="@string/no_data"
         android:textColor="@color/color_909090_666666"
         android:textSize="@dimen/textSize12sp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
