@@ -135,6 +135,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 )
             )
         }
+
+        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
     }
 
     private fun checkNotificationVisiable(
@@ -180,19 +182,19 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     0 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.BANK)
-                        tv_add_bank.text= resources.getText(R.string.bank_list_bank)
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
                         clearEvent()
                     }
                     1 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.CRYPTO)
-                        tv_add_bank.text = resources.getText(R.string.bank_list_crypto)
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_crypto))
                         clearEvent()
                     }
                     2 -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.E_WALLET)
-                        tv_add_bank.text = resources.getText(R.string.bank_list_e_wallet)
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_e_wallet))
                         clearEvent()
                     }
                     3 -> {
