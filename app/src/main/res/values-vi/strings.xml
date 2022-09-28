@@ -382,7 +382,7 @@
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền đặt cọc</string>
     <string name="title_payer">Tài khoản</string>
-    <string name="edt_hint_deposit_money">Giới hạn %1$s %2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">Giới hạn %1$s%2$s～%3$s</string>
     <string name="edt_hint_payer">Vui lòng nhập số tài khoản của bạn</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
@@ -433,7 +433,7 @@
     <string name="title_choose_currency">chọn thỏa thuận / Loại tiền</string>
     <string name="txv_recharge_count">Số tiền cần nạp</string>
     <string name="edt_hint_crypto_pay_count">Giới hạn %1$s～%2$s</string>
-    <string name="hint_rate">・Tỷ giá：%1$s</string>
+    <string name="hint_rate">Tỷ giá：%1$s</string>
     <string name="title_transaction_id">ID giao dịch chuỗi khối</string>
     <string name="hint_transaction_id">ID blockchain của bạn</string>
     <string name="hint_fee_rate">・Phí xử lý：%1$s</string>
@@ -504,8 +504,8 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">· Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Số tiền rút(%1$s)：%2$s</string>
+    <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
+    <string name="withdraw_crypto_amount_hint">Số tiền rút(%1$s)：%2$s</string>
     <string name="withdraw_crypto_fee_hint">· Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>

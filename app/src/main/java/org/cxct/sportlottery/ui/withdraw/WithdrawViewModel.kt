@@ -701,7 +701,7 @@ class WithdrawViewModel(
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
             LocalUtils.getString(R.string.edt_hint_deposit_money),
-            sConfigData?.systemCurrency,
+            sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()
         )
     }
