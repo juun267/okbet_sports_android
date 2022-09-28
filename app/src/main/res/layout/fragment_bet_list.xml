@@ -196,6 +196,7 @@
                             app:layout_constraintGuide_percent="0.5" />
 
                         <LinearLayout
+                            android:id="@+id/ll_total_stake"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
@@ -229,6 +230,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_est_winning"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
