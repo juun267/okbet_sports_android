@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.otherBetRecord
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,8 @@ import org.cxct.sportlottery.util.TextUtil
 class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        ITEM, FOOTER, NO_DATA
+//        ITEM, FOOTER, NO_DATA
+        ITEM, NO_DATA
     }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -58,10 +60,11 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
         when (holder) {
             is ItemViewHolder -> {
                 val item = getItem(position) as DataItem.Item
-                holder.bind(item.data, clickListener)
+                val isLastItem = position == itemCount -1
+                holder.bind(item.data, clickListener, isLastItem)
             }
 
-            is FooterViewHolder -> {}
+//            is FooterViewHolder -> {}
 
             is NoDataViewHolder -> {}
         }
@@ -76,10 +79,11 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
     }
 
     class ItemViewHolder private constructor(val binding: ItemOtherBetRecordBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Order, clickListener: ItemClickListener) {
+        fun bind(data: Order, clickListener: ItemClickListener, isLastItem: Boolean) {
             binding.data = data
             binding.clickListener = clickListener
             binding.executePendingBindings()
+            binding.divider.isVisible = !isLastItem
         }
 
         companion object {
@@ -102,7 +106,7 @@ class OtherBetRecordAdapter(private val clickListener: ItemClickListener) : List
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_game_no_record, parent, false))
         }
     }
 

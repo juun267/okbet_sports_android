@@ -9,11 +9,10 @@
     android:orientation="horizontal">
 
     <View
-        android:visibility="gone"
         android:id="@+id/view2"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_191919_EEEFF0"
+        android:layout_height="0.5dp"
+        android:background="@color/color_80334266_E3E8EE"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView

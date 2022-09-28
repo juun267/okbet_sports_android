@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.otherBetRecord.detail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,8 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.de
 class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        ITEM, FOOTER, NO_DATA
+//        ITEM, FOOTER, NO_DATA
+        ITEM, NO_DATA
     }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -29,9 +31,9 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
                 else -> {
                     when {
                         list.isEmpty() -> listOf(DataItem.NoData)
-                        isLastPage -> {
-                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                        }
+//                        isLastPage -> {
+//                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+//                        }
                         else -> {
                             list.map { DataItem.Item(it) }
                         }
@@ -48,7 +50,7 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+//            ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -57,10 +59,11 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
         when (holder) {
             is ItemViewHolder -> {
                 val item = getItem(position) as DataItem.Item
-                holder.bind(item.data)
+                val isLastItem = position == itemCount -1
+                holder.bind(item.data, isLastItem)
             }
 
-            is FooterViewHolder -> {}
+//            is FooterViewHolder -> {}
 
             is NoDataViewHolder -> {}
         }
@@ -69,15 +72,16 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
             is DataItem.Item -> ItemType.ITEM.ordinal
-            is DataItem.Footer -> ItemType.FOOTER.ordinal
+//            is DataItem.Footer -> ItemType.FOOTER.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
     }
 
     class ItemViewHolder private constructor(val binding: ItemOtherBetRecordDetailBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: OrderData) {
+        fun bind(data: OrderData, isLastItem: Boolean) {
             binding.data = data
             binding.executePendingBindings()
+            binding.divider.isVisible = !isLastItem
         }
 
         companion object {
@@ -100,7 +104,7 @@ class OtherBetRecordDetailAdapter : ListAdapter<DataItem, RecyclerView.ViewHolde
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_game_no_record, parent, false))
         }
     }
 
@@ -129,9 +133,9 @@ sealed class DataItem {
         override val orderNo = data.orderNo
     }
 
-    object Footer : DataItem() {
-        override val orderNo: String? = null
-    }
+//    object Footer : DataItem() {
+//        override val orderNo: String? = null
+//    }
 
     object NoData : DataItem() {
         override val orderNo: String? = null
