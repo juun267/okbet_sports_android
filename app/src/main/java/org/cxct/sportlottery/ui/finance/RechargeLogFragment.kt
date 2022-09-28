@@ -123,7 +123,7 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = rechargeLogAdapter
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
+            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.recycleview_decoration)))
         }
     }
 

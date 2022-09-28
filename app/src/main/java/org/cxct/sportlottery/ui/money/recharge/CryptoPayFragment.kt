@@ -39,7 +39,9 @@ import java.io.FileNotFoundException
 import java.util.*
 import kotlin.math.abs
 
-
+/**
+ * @app_destination 存款-虚拟币转账
+ */
 class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
@@ -247,7 +249,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         dateTimePicker = TimePickerBuilder(activity) { date, _ ->
             try {
                 depositDate = date
+                LogUtil.d("$date")
                 txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
+                val stringFormatDate =
+                    TimeUtil.getStringFormatDate("2022-09-22 12:12:12", TimeUtil.YMD_HMS_FORMAT)
+                LogUtil.d("$stringFormatDate")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -256,7 +262,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setRangDate(yesterday, tomorrow)
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
-            .setType(booleanArrayOf(true, true, true, true, true, false))
+            .setType(booleanArrayOf(false, false, false, true, true, true))
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
@@ -275,7 +281,18 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .isDialog(false)
             .build() as TimePickerView
     }
+     var mCalendar: Calendar =Calendar.getInstance()
+    private fun upDataTime(){
+        mCalendar.apply {
+            var despsitCal=Calendar.getInstance().apply {
+                time=depositDate
+            }
+            mCalendar.set(Calendar.HOUR_OF_DAY,despsitCal.get(Calendar.HOUR_OF_DAY))
+            mCalendar.set(Calendar.MINUTE,despsitCal.get(Calendar.MINUTE))
+            mCalendar.set(Calendar.SECOND,despsitCal.get(Calendar.SECOND))
 
+        }
+    }
     private fun checkVoucherUrl(url: String) {
         if (url.isNotEmpty()) {
             cv_upload.isActivated = false

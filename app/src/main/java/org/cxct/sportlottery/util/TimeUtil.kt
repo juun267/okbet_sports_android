@@ -712,4 +712,16 @@ object TimeUtil {
         val timeFormat = timeFormat(time, HM_FORMAT_12)
         return "$timeFormat $times"
     }
+
+    /**
+     * @strTime 为string类型的时间
+     * @formatType 为要转换的格式 yyy-MM-dd HH:mm:ss
+     * 返回值为一个Date类型的值
+     */
+    fun getStringFormatDate(strTime: String, formatType: String): Date {
+        val simpleDateFormat = SimpleDateFormat(formatType)
+        return simpleDateFormat.parse(strTime)
+    }
+
+
 }

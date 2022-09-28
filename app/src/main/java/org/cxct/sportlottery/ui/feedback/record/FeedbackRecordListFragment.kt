@@ -62,19 +62,14 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 viewModel.getFbQueryList(isReload = false, currentTotalCount = adapter?.itemCount ?: 0)
                 scrollToTopControl(firstVisibleItemPosition)
             }
-            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+           /* if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
 
-                viewModel.feedbackList.observe(this@FeedbackRecordListFragment){
-                    if (it.isNullOrEmpty()){
-                        tv_no_data.visibility = View.GONE
-                    }else{
-                        tv_no_data.visibility = View.VISIBLE
-                    }
-                }
+
             }else{
+                LogUtil.d("隐藏0")
                 tv_no_data.visibility = View.GONE
 
-            }
+            }*/
         }
     }
 
@@ -126,7 +121,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
     private fun initRecyclerView() {
         rv_pay_type.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         rv_pay_type.adapter = adapter
-        rv_pay_type.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(rv_pay_type.context, R.drawable.divider_gray)))
+        rv_pay_type.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(rv_pay_type.context, R.drawable.recycleview_decoration)))
         rv_pay_type.addOnScrollListener(recyclerViewOnScrollListener)
     }
 
@@ -134,6 +129,12 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
         viewModel.feedbackList.observe(this.viewLifecycleOwner) {
             val listData = it ?: return@observe
             adapter?.data = listData
+            if ( !rv_pay_type.canScrollVertically(1)&&!listData.isNullOrEmpty()){
+                tv_no_data.visibility = View.VISIBLE
+            }else{
+                tv_no_data.visibility = View.GONE
+            }
+
             if (listData.size == 0) {
                 view_no_record.visibility = View.VISIBLE
                 rv_pay_type.visibility = View.GONE
@@ -142,6 +143,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
                 rv_pay_type.visibility = View.VISIBLE
             }
         }
+
         viewModel.isFinalPage.observe(this.viewLifecycleOwner) {
             adapter?.isFinalPage = true
         }

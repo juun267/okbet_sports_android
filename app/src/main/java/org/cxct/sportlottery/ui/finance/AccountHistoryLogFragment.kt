@@ -45,7 +45,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
+           /* if ( !recyclerView.canScrollVertically(1)){//1表示是否能向上滚动 false表示已经到底部 -1表示是否能向下滚动false表示已经到顶部
                 viewModel.accountHistoryList.observe(this@AccountHistoryLogFragment) {
                     if (it.isNullOrEmpty()){
                         tv_no_data_history.visibility = View.GONE
@@ -55,7 +55,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
                 }
             }else{
                 tv_no_data_history.visibility = View.GONE
-            }
+            }*/
         }
     }
 
@@ -133,6 +133,11 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
 
         viewModel.accountHistoryList.observe(this.viewLifecycleOwner, {
             accountHistoryAdapter.data = it
+            if (!view.rvlist.canScrollVertically(1)&&!it.isNullOrEmpty()){
+                tv_no_data_history.visibility = View.VISIBLE
+            }else{
+                tv_no_data_history.visibility = View.GONE
+            }
         })
 
         viewModel.getUserAccountHistory(isFirstFetch = true)
