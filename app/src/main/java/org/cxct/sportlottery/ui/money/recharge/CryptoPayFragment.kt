@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.MoneyManager.getCryptoIconByCryptoName
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -67,9 +68,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private var voucherUrl: String? = null
 
     private lateinit var dateTimePicker: TimePickerView
+    private lateinit var dateTimePickerHMS: TimePickerView
 
     var depositDate = Date()
-
+    var depositDate2 = Date()
+    var mCalendar: Calendar =Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,7 +92,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         initView()
         initButton()
         initObserve()
-        initTimePicker()
+        initTimePickerForYMD()
+        initTimePickerForHMS()
         setCurrencyBottomSheet()
         setAccountBottomSheet()
     }
@@ -106,9 +110,14 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 )
             }
         }
-        //選取日曆
-        cv_recharge_time.setOnClickListener {
+
+        //年月日的时间选择器
+        ll_recharge_time.setOnClickListener {
             dateTimePicker.show()
+        }
+        //时分秒的选择器
+        ll_recharge_time2.setOnClickListener {
+            dateTimePickerHMS.show()
         }
         //選擇幣種
         cv_currency.setOnClickListener {
@@ -141,7 +150,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             }
         }
         //去充值
-        btn_qr_recharge.setOnClickListener {
+      /*  btn_qr_recharge.setOnClickListener {
             try {
                 if (!mSelectRechCfgs?.payUrl.isNullOrEmpty()) {
                     val browserIntent = Intent(
@@ -152,7 +161,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+        }*/
     }
 
     private fun initView() {
@@ -241,7 +250,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
     }
 
-    private fun initTimePicker() {
+    private fun initTimePickerForYMD() {
         val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.DAY_OF_MONTH, -30)
         val tomorrow = Calendar.getInstance()
@@ -249,11 +258,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         dateTimePicker = TimePickerBuilder(activity) { date, _ ->
             try {
                 depositDate = date
-                LogUtil.d("$date")
-                txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
-                val stringFormatDate =
-                    TimeUtil.getStringFormatDate("2022-09-22 12:12:12", TimeUtil.YMD_HMS_FORMAT)
-                LogUtil.d("$stringFormatDate")
+                txv_recharge_time.text = TimeUtil.dateToStringFormatYMD(date)
+                upDataTimeYMD()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -262,7 +268,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setRangDate(yesterday, tomorrow)
             .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener { }
-            .setType(booleanArrayOf(false, false, false, true, true, true))
+            .setType(booleanArrayOf(true, true, true, false, false, false))
             .setTitleText(resources.getString(R.string.title_recharge_time))
             .setCancelText(" ")
             .setSubmitText(getString(R.string.picker_submit))
@@ -281,15 +287,59 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .isDialog(false)
             .build() as TimePickerView
     }
-     var mCalendar: Calendar =Calendar.getInstance()
-    private fun upDataTime(){
+    private fun initTimePickerForHMS() {
+
+        dateTimePickerHMS = TimePickerBuilder(activity) { date, _ ->
+            try {
+                depositDate2 = date
+                txv_recharge_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                upDataTimeHMS()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+            .setLabel("", "", "", "", "", "")
+            .setDate(Calendar.getInstance())
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(false, false, false, true, true, true))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setCancelText(" ")
+            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    txv_recharge_time2.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    txv_recharge_time2.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .isDialog(false)
+            .build() as TimePickerView
+    }
+
+    private fun upDataTimeHMS(){
         mCalendar.apply {
             var despsitCal=Calendar.getInstance().apply {
-                time=depositDate
+                time=depositDate2
             }
             mCalendar.set(Calendar.HOUR_OF_DAY,despsitCal.get(Calendar.HOUR_OF_DAY))
             mCalendar.set(Calendar.MINUTE,despsitCal.get(Calendar.MINUTE))
             mCalendar.set(Calendar.SECOND,despsitCal.get(Calendar.SECOND))
+
+        }
+    }
+    private fun upDataTimeYMD(){
+        mCalendar.apply {
+            var despsitCal=Calendar.getInstance().apply {
+                time=depositDate
+            }
+            mCalendar.set(Calendar.DAY_OF_MONTH,despsitCal.get(Calendar.DAY_OF_MONTH))
+            mCalendar.set(Calendar.MONTH,despsitCal.get(Calendar.MONTH))
+            mCalendar.set(Calendar.YEAR,despsitCal.get(Calendar.YEAR))
 
         }
     }
@@ -420,7 +470,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             filterRechCfgsList.forEach {
                 val selectCurrency = BtsRvAdapter.SelectBank(
                     it.key.toString(),
-                    null
+                    getCryptoIconByCryptoName(it.key.toString())
                 )
                 mCurrencyBottomSheetList.add(selectCurrency)
             }
@@ -493,15 +543,13 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             //充幣地址
             txv_payee.text = selectRechCfgs?.payee
 
-            //存款時間
-            txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(Date().time)
-
+            //存款时间年月日
+            txv_recharge_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
+            //存款时间时分秒
+            txv_recharge_time2.text = TimeUtil.dateToStringFormatHMS(Date())
             //備註
             txv_remark.visibility = View.VISIBLE
-            txv_remark.text = String.format(
-                getString(R.string.hint_remark),
-                selectRechCfgs?.remark
-            )
+            txv_remark.text = selectRechCfgs?.remark
 
             //更新充值金額&手續費金額
             refreshMoneyDetail(et_recharge_amount.getText())
@@ -700,7 +748,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payerName = "",
             payerBankName = null,
             payerInfo = null,
-            depositDate = depositDate.time
+            depositDate = mCalendar.time.time
         ).apply {
             payee = txv_payee.text.toString()//充幣地址
             payeeName = txv_account.text.toString()//火幣網

@@ -483,8 +483,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
-            startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
-            /*it.getContentIfNotHandled()?.let { b ->
+            it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     startActivity(Intent(requireActivity(), MoneyRechargeActivity::class.java))
                 } else {
@@ -493,7 +492,7 @@ class ProfileCenterFragment :
                         getString(R.string.message_recharge_maintain)
                     ) {}
                 }
-            }*/
+            }
         }
 
         viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {

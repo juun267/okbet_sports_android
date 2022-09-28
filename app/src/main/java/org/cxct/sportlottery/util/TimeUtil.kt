@@ -723,5 +723,47 @@ object TimeUtil {
         return simpleDateFormat.parse(strTime)
     }
 
+    /**
+     * Date转换字符串 年月日转换
+     */
+    fun dateToStringFormatYMD(
+        date: Date?,
+    ): String? {
+        try {
+            if (date == null) return null
+            val   newDateFormatPattern: String = YMD_FORMAT
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
+            return newFormatter.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    /**
+     * Date转换字符串 时分秒转换
+     */
+    fun dateToStringFormatHMS(
+        date: Date?,
+    ): String? {
+        val timeZoneGTM = try {
+            val gtm = SimpleDateFormat("Z").format(Date().time).toInt().div(100)
+            if (gtm < 0)
+                "$gtm"
+            else
+                "+$gtm"
+        } catch (e: NumberFormatException) {
+            ""
+        }
+        try {
+            if (date == null) return null
+           val newDateFormatPattern: String = HM_FORMAT_SS
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
+            return newFormatter.format(date)+" (GMT$timeZoneGTM)"
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
 }
