@@ -128,7 +128,7 @@
         android:animateLayoutChanges="true">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favorite_game_list"
+            android:id="@+id/game_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:overScrollMode="never"

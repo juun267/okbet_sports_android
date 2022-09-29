@@ -212,7 +212,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
                 mRecommendList = recommendList
-                val adapterRecommendListData = homeRecommendAdapter.getRecommendListData()
+                val adapterRecommendListData = homeRecommendAdapter.data
                 recommendList.forEach { recommend ->
                     adapterRecommendListData.firstOrNull { adapterRecommend -> adapterRecommend.id == recommend.id }
                         ?.let { oldRecommend ->
@@ -227,7 +227,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 }
                 //新版宣傳頁
                 if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-                homeRecommendAdapter.setupRecommendItem(recommendList)
+                homeRecommendAdapter.data = recommendList
                 //先解除全部賽事訂
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
@@ -236,7 +236,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
             event.peekContent().let { betList ->
-                val targetList = homeRecommendAdapter.getRecommendListData()
+                val targetList = homeRecommendAdapter.data
                 targetList.forEachIndexed { index, recommend ->
                     var needUpdate = false
                     recommend.oddsMap?.values?.forEach { oddList ->
@@ -251,7 +251,8 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                         }
                     }
                     if (needUpdate) {
-                        updateRecommend(targetList)
+                        LogUtil.e("needUpdate=" + needUpdate)
+                        homeRecommendAdapter.data = targetList
                     }
                 }
             }
@@ -465,7 +466,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
-//                    loading()
                     subscribeSportChannelHall()
                 }
             }
@@ -473,7 +473,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
-                val targetList = homeRecommendAdapter.getRecommendListData()
+                val targetList = homeRecommendAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -490,14 +490,14 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                     }
                 }
                 if (needUpdate) {
-                    updateRecommend(targetList)
+                    homeRecommendAdapter.data = targetList
                 }
             }
         }
 
         receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
-                val targetList = homeRecommendAdapter.getRecommendListData()
+                val targetList = homeRecommendAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -513,7 +513,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 }
 
                 if (needUpdate) {
-                    updateRecommend(targetList)
+                    homeRecommendAdapter.data = targetList
                 }
             }
         }
@@ -521,13 +521,11 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         }
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = homeRecommendAdapter.getRecommendListData()
+            val targetList = homeRecommendAdapter.data
             var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
                 targetList.forEachIndexed { index, recommend ->
                     if (recommend.id == oddsChangeEvent.eventId) {
                         recommend.sortOddsMap()
-
                         //region 翻譯更新
                         oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
                             recommend.playCateNameMap?.putAll(playCateNameMap)
@@ -544,13 +542,13 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                     }
                 }
                 if (needUpdate) {
-                    updateRecommend(targetList)
+                    homeRecommendAdapter.data = targetList
                 }
         }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
-                val targetList = homeRecommendAdapter.getRecommendListData()
+                val targetList = homeRecommendAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -562,7 +560,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 }
 
                 if (needUpdate) {
-                    updateRecommend(targetList)
+                    homeRecommendAdapter.data = targetList
                 }
             }
         }
@@ -575,7 +573,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
-                val targetList = homeRecommendAdapter.getRecommendListData()
+                val targetList = homeRecommendAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
@@ -590,7 +588,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 }
 
                 if (needUpdate) {
-                    updateRecommend(targetList)
+                    homeRecommendAdapter.data = targetList
                 }
             }
         }
@@ -599,13 +597,13 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                subscribeQueryData(homeRecommendAdapter.getRecommendListData())
+                subscribeQueryData(homeRecommendAdapter.data)
             }
         }
 
         receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
-                homeRecommendAdapter.getRecommendListData().forEach { recommend ->
+                homeRecommendAdapter.data.forEach { recommend ->
                     if (recommend.gameType == it.gameType) {
                         recommend.oddsMap?.forEach { map ->
                             if (map.key == it.playCateCode) {
@@ -812,12 +810,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         viewModel.isLogin.value?.let {
             btn_login.isVisible = !it
             lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        }
-    }
-
-    private fun updateRecommend(recommendList: List<Recommend>) {
-        viewModel.oddsType.value?.let {
-            homeRecommendAdapter.setupRecommendItem(recommendList = recommendList)
         }
     }
 

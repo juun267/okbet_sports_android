@@ -112,7 +112,7 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             itemView.apply {
                 val seasonData = outrightResultData.seasonData
                 val outrightData = outrightResultData.outrightData
-                if (seasonData?.end != null) tv_date.text = TimeUtil.timeFormat(seasonData.end, "yyyy/MM/dd HH:mm")
+                if (seasonData?.end != null) tv_date.text = TimeUtil.timeFormat(seasonData.end, TimeUtil.YMD_HM_FORMAT_2)
                 tv_content.text = outrightData?.playCateName
                 tv_winner.text = outrightData?.playName
 

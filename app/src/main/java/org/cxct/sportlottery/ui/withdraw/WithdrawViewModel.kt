@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,6 +24,10 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.MD5Util
+import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
@@ -699,7 +702,7 @@ class WithdrawViewModel(
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
-        _withdrawAmountHint.value = String.format(
+        _withdrawAmountHint.value = "${sConfigData?.systemCurrency} "+String.format(
             LocalUtils.getString(R.string.edt_hint_deposit_money),
             sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()
@@ -724,11 +727,18 @@ class WithdrawViewModel(
             configMaxLimit = cardConfig?.maxWithdrawMoney!!
             isBalanceMax = balanceMaxLimit < configMaxLimit
         }
-        val maxLimit =
-            if (configMaxLimit == null) balanceMaxLimit else min(balanceMaxLimit, configMaxLimit)
+        val maxLimit = when {
+            configMaxLimit == null -> balanceMaxLimit
+            //当用户余额为0时，balanceMaxLimit 会为负数
+            balanceMaxLimit > 0 -> min(balanceMaxLimit, configMaxLimit)
+            else -> configMaxLimit
+        }
         return WithdrawAmountLimit(minLimit, maxLimit, isBalanceMax)
     }
 
+    /**
+     * 注意用户余额为0的时候，可能会出现负数
+     */
     private fun getBalanceMaxLimit(): Double {
         return when (dealType) {
             TransferType.BANK -> ArithUtil.div(

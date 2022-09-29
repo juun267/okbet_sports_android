@@ -212,7 +212,6 @@ class FavoriteAdapter(private val matchType: MatchType) :
             //if(holder is ItemViewHolder) holder.update(data[position], matchType, oddsType)
         } else {
             // Update with payload
-            payloads.forEach {
                 payloads.forEach {
                     when (it) {
                         is LeagueOdd -> {
@@ -243,7 +242,6 @@ class FavoriteAdapter(private val matchType: MatchType) :
                         }
                     }
                 }
-            }
         }
     }
     // endregion
