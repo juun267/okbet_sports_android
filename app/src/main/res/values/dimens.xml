@@ -27,6 +27,7 @@
     <dimen name="textSize26sp">26dp</dimen>
     <dimen name="textSize30sp">30dp</dimen>
 
+    <dimen name="margin_0.5">0.5dp</dimen>
     <dimen name="margin_1">1dp</dimen>
     <dimen name="margin_2">2dp</dimen>
     <dimen name="margin_3">3dp</dimen>'

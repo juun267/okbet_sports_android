@@ -389,7 +389,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/exo_white"
                 app:cardCornerRadius="@dimen/margin_10"
-                app:cardElevation="5dp"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -433,12 +432,12 @@
 
                             <ImageView
                                 android:id="@+id/iv_line"
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/margin_12"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -456,8 +455,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
-                                android:layout_alignParentBottom="true"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
                     </LinearLayout>
@@ -503,7 +501,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -516,7 +514,7 @@
                             <View
 
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -559,11 +557,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -609,11 +607,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -659,7 +657,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -718,7 +716,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -762,12 +760,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
-                                android:layout_alignParentBottom="true"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
                     </LinearLayout>
@@ -812,7 +809,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -871,16 +868,17 @@
                                 android:id="@+id/iv_line3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <LinearLayout
                                 android:id="@+id/lin_version_new"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginRight="@dimen/margin_6"
                                 android:layout_toRightOf="@+id/tv_version_now"
                                 android:layout_toStartOf="@+id/iv_line3">
 
@@ -902,7 +900,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -949,7 +947,7 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -1006,11 +1004,11 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -1058,11 +1056,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -1108,11 +1106,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -1157,11 +1155,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -1200,7 +1198,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
                             android:contentDescription="@null"
-                            android:src="@drawable/ic_arrow_right" />
+                            android:src="@drawable/icon_arrow07" />
 
                     </LinearLayout>
 
@@ -1243,11 +1241,11 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_arrow_right" />
+                                android:src="@drawable/icon_arrow07" />
 
                             <View
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/margin_1"
+                                android:layout_height="@dimen/margin_0.5"
                                 android:layout_alignParentBottom="true"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
@@ -1309,7 +1307,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right" />
+                        android:src="@drawable/icon_arrow07" />
 
                 </LinearLayout>
 
@@ -1367,7 +1365,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right" />
+                        android:src="@drawable/icon_arrow07" />
 
                 </LinearLayout>
 
@@ -1402,7 +1400,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right" />
+                        android:src="@drawable/icon_arrow07" />
 
                 </LinearLayout>
 
@@ -1460,7 +1458,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right" />
+                        android:src="@drawable/icon_arrow07" />
 
                 </LinearLayout>
 
@@ -1494,7 +1492,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_arrow_right" />
+                        android:src="@drawable/icon_arrow07" />
 
                 </LinearLayout>
 

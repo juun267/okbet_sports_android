@@ -41,7 +41,7 @@ import java.io.File
 import java.io.FileNotFoundException
 
 /**
- * @app_destination 个人资讯
+ * @app_destination 个人设置
  */
 class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
 
