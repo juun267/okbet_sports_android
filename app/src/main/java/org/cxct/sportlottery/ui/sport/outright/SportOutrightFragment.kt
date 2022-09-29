@@ -210,7 +210,7 @@ class SportOutrightFragment :
     private fun setupSportTypeList() {
         sport_type_list.apply {
             this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = gameTypeAdapter

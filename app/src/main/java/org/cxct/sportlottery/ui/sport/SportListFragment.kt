@@ -272,7 +272,7 @@ class SportListFragment :
 
     private fun setupSportTypeList() {
         sport_type_list.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             //波胆不需要显示球类
             isVisible = matchType != MatchType.CS
