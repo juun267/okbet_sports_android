@@ -92,10 +92,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    app:cvMarginBottom="8dp"
                     app:cvDividerColor="@color/transparent"
                     app:cvHint="@string/edt_hint_deposit_money"
                     app:cvInputType="number"
+                    app:cvMarginBottom="8dp"
                     app:cvTextColor="@color/color_414655"
                     app:cvTitle="@string/withdraw_amount" />
                 <!--手续费-->
@@ -103,8 +103,8 @@
                     android:id="@+id/tv_tips_handling_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
-                    android:gravity="center"
                     android:layout_marginStart="10dp"
+                    android:gravity="center"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="@string/withdraw_handling_fee_hint" />
@@ -196,9 +196,8 @@
                     android:gravity="center">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
                         android:drawablePadding="5dp"
                         android:text="@string/select_area"
                         android:textColor="@color/color_414655"
@@ -207,16 +206,16 @@
                         android:typeface="monospace"
                         app:autoSizeMaxTextSize="13dp"
                         app:autoSizeMinTextSize="6dp"
-                        app:autoSizeTextType="uniform"/>
+                        app:autoSizeTextType="uniform" />
 
                     <org.cxct.sportlottery.ui.component.StatusSpinnerView
                         android:id="@+id/spinner_area"
                         android:layout_width="0dp"
                         android:layout_height="44dp"
                         android:layout_gravity="center|start"
+                        android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         app:defaultStatusText="@string/waiting" />
-
 
                 </LinearLayout>
 
@@ -231,9 +230,9 @@
                     android:gravity="center">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
+
                         android:drawablePadding="5dp"
                         android:text="@string/select_city"
                         android:textColor="@color/color_414655"
@@ -242,7 +241,7 @@
                         android:typeface="monospace"
                         app:autoSizeMaxTextSize="13dp"
                         app:autoSizeMinTextSize="6dp"
-                        app:autoSizeTextType="uniform"/>
+                        app:autoSizeTextType="uniform" />
 
 
                     <org.cxct.sportlottery.ui.component.StatusSpinnerView
@@ -250,9 +249,9 @@
                         android:layout_width="0dp"
                         android:layout_height="44dp"
                         android:layout_gravity="center|start"
+                        android:layout_marginStart="20dp"
                         android:layout_weight="1"
                         app:defaultStatusText="@string/waiting" />
-
 
                 </LinearLayout>
 

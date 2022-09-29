@@ -115,6 +115,9 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             getAllIsShow = true
         }
 
+        spinner_area.setBetStationStyle()
+        spinner_city.setBetStationStyle()
+
         initEditTextStatus(et_amount)
         initEditTextStatus(et_password)
         View.OnClickListener { hideKeyboard() }.let {

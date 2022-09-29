@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.FrameLayout
 import android.widget.ListPopupWindow
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
 import com.luck.picture.lib.tools.ScreenUtils
@@ -147,6 +148,16 @@ class StatusSpinnerView @JvmOverloads constructor(
                 setSelectInfo(selectItem)
             }
         })
+    }
+
+    fun setBetStationStyle(){
+        ConstraintSet().apply {
+            clone(cl_root)
+            clear(R.id.tv_name, ConstraintSet.END)
+            clear(R.id.iv_arrow, ConstraintSet.START)
+            connect(R.id.iv_arrow, ConstraintSet.END, R.id.cl_root, ConstraintSet.END, 6.dp)
+            applyTo(cl_root)
+        }
     }
 
     fun setItemData(itemData: MutableList<StatusSheetData>, isSelectedDefault: Boolean = true) {
