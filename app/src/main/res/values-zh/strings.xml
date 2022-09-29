@@ -432,7 +432,7 @@
     <string name="title_choose_currency">选择协议/币种</string>
     <string name="txv_recharge_count">存款个数</string>
     <string name="edt_hint_crypto_pay_count">限额 %1$s ~ %2$s 个</string>
-    <string name="hint_rate">・汇率：%1$s</string>
+    <string name="hint_rate">汇率：%1$s</string>
     <string name="title_transaction_id">区块链交易ID</string>
     <string name="hint_transaction_id">请输入您的区块链ID</string>
     <string name="hint_fee_rate">・手续费：%1$s</string>
@@ -503,9 +503,9 @@
     <string name="withdraw_password">提款密码</string>
     <string name="total_withdrawal">提款总计</string>
     <string name="withdraw_all">全部提取</string>
-    <string name="withdraw_handling_fee_hint">· 手续费率：%1$s%% 须支付手续费(%2$s)：%3$s</string>
-    <string name="withdraw_crypto_amount_hint">· 提款金额(%1$s)：%2$s</string>
-    <string name="withdraw_crypto_fee_hint">· 提款手续费(%1$s)：%2$s</string>
+    <string name="withdraw_handling_fee_hint">手续费率：%1$s%% 须支付手续费(%2$s)：%3$s</string>
+    <string name="withdraw_crypto_amount_hint">提款金额(%1$s)：%2$s</string>
+    <string name="withdraw_crypto_fee_hint">提款手续费(%1$s)：%2$s</string>
     <string name="hint_four_number_password">请输入提款密码</string>
     <string name="hint_please_enter_withdraw_password">请输入提款密码</string>
     <string name="add_new">新增</string>
