@@ -256,7 +256,6 @@ class OddsButtonHome @JvmOverloads constructor(
 //        updateOddsTextColor()
 
         isSelected = odds?.isSelected ?: false
-
     }
 
     //主頁精選oddsButton的判斷

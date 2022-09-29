@@ -480,6 +480,7 @@ class SportListFragment :
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
+                    sportLeagueAdapter.removePreloadItem()
                     mLeagueOddList.clear()
                     mLeagueOddList.addAll(
                         oddsListResult.oddsListData?.leagueOddsFilter
@@ -654,9 +655,9 @@ class SportListFragment :
                                     oddsChangeEvent.betPlayCateNameMap?.let {
                                         MatchOdd.betPlayCateNameMap?.putAll(it)
                                     }
-//                                    oddsChangeEvent.odds?.let {
-//                                        MatchOdd.oddsMap?.putAll(it)
-//                                    }
+                                    oddsChangeEvent.odds?.let {
+                                        MatchOdd.oddsMap?.putAll(it)
+                                    }
                                 }
                             }
                         }

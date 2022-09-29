@@ -54,7 +54,7 @@ object Constants {
     //优惠活动 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
         return try {
-            "${getH5BaseUrl()}activity/mobile/#/v2/useractilistV2?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/useractilistV2?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"
@@ -79,7 +79,7 @@ object Constants {
         language: LanguageManager.Language,
     ): String? {
         return try {
-            "${getH5BaseUrl()}activity/mobile/#/v2/useractivityV2/${id}?lang=${language.key}&token=${
+            "${getH5BaseUrl()}activity/mobile/#/useractivityV2/${id}?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"

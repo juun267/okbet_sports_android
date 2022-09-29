@@ -68,13 +68,11 @@ class ItemHomeRecommendHolder(
         val playCateName = data.playCateNameMap?.get(oddPlayCateCode)
             ?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
         binding.tvGamePlayCateCodeName.text = playCateName
-
         with(binding) {
             //配置賽事比分及機制
             data.matchType?.let { matchType ->
                 setupMatchScore(data, matchType)
             }
-
             //region 第1個按鈕
             if (oddList.isNotEmpty()) {
                 val odd1 = oddList[0]

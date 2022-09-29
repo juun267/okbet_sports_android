@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabViewModel
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
@@ -161,7 +162,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { LeagueSelectViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { SportListViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { SportTabViewModel(get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { CancelAccountViewModel(get(),get(), get(), get(), get(), get()) }
+        viewModel { CancelAccountViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -243,7 +245,7 @@ class MultiLanguagesApplication : Application() {
         val environment =
             if (BuildConfig.DEBUG) AdjustConfig.ENVIRONMENT_SANDBOX else AdjustConfig.ENVIRONMENT_PRODUCTION
         val config = AdjustConfig(this, appToken, environment)
-        config.setLogLevel(LogLevel.SUPRESS)
+        config.setLogLevel(LogLevel.VERBOSE)
         Adjust.onCreate(config)
     }
 
