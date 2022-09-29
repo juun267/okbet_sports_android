@@ -272,7 +272,7 @@ class SportListFragment :
 
     private fun setupSportTypeList() {
         sport_type_list.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             //波胆不需要显示球类
             isVisible = matchType != MatchType.CS
@@ -583,9 +583,9 @@ class SportListFragment :
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
-                sportLeagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                sportLeagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
                     if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
-                        leagueOdd.matchOdds.find { m ->
+                        leagueOdd.matchOdds.toList().find { m ->
                             m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
                         }?.let { mo ->
                             leagueOdd.matchOdds.remove(mo)

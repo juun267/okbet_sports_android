@@ -50,13 +50,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="19dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_toLeftOf="@+id/iv_customer_service">
 
 
                         <ImageView
                             android:id="@+id/iv_user_notice"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/margin_20"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:layout_marginStart="16dp"
@@ -76,8 +76,8 @@
 
                     <ImageView
                         android:id="@+id/iv_customer_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="22dp"
+                        android:layout_height="20dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_icon_customer02" />
@@ -298,30 +298,31 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/margin_68"
                     android:layout_height="wrap_content"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_icon_deposit" />
+                    android:src="@drawable/icon_deposits" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/recharge"
-                        android:textColor="@color/color_535D76"
+                        android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize16sp" />
 
                     <TextView
+                        android:id="@+id/tv_deposit_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/deposits"
+                        android:fontFamily="@font/din_font"
                         android:textColor="@color/color_A7B2C4"
-                        android:textSize="@dimen/textSize12sp" />
+                        android:textSize="@dimen/textSize10sp" />
 
                 </LinearLayout>
 
@@ -365,8 +366,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/withdraw_down"
+                        android:fontFamily="@font/din_font"
                         android:textColor="@color/color_A7B2C4"
-                        android:textSize="@dimen/textSize12sp" />
+                        android:textSize="@dimen/textSize10sp" />
 
 
                 </LinearLayout>
