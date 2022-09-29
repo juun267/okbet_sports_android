@@ -583,9 +583,9 @@ class SportListFragment :
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
-                sportLeagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                sportLeagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
                     if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
-                        leagueOdd.matchOdds.find { m ->
+                        leagueOdd.matchOdds.toList().find { m ->
                             m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
                         }?.let { mo ->
                             leagueOdd.matchOdds.remove(mo)
