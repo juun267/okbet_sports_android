@@ -210,8 +210,7 @@ class SportLeagueAdapter(private val matchType: MatchType) :
             payloads.forEach {
                 when (it) {
                     is LeagueOdd -> {
-                        val leagueOdd = payloads.first() as LeagueOdd
-                        (holder as ItemViewHolder).update(leagueOdd, matchType, oddsType)
+                        (holder as ItemViewHolder).update(it, matchType, oddsType)
                     }
 
                     is PayLoadEnum -> {
