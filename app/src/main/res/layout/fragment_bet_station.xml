@@ -124,7 +124,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="扣除金额"
+                        android:text="@string/commission_deducted_amount"
                         android:textColor="@color/color_414655"
                         android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
@@ -378,7 +378,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="18dp"
+                android:layout_marginHorizontal="14dp"
                 android:layout_marginTop="20dp">
 
                 <TextView
@@ -401,13 +401,103 @@
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2022-09" />
             </LinearLayout>
+            <!-- 充值時間 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_recharge_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/color_191919_FCFCFC"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="@string/appointment_time"
+                        android:textColor="@color/color_D2E4FF_414655"
+                        android:textSize="@dimen/textSize13sp" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_withdrawal_time"
+                        android:gravity="center|end"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/txv_withdrawal_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textColor="@color/color_9FADC6_535D76"
+                            android:textSize="@dimen/textSize12sp"
+                            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                            app:autoSizeMinTextSize="@dimen/textSize8sp"
+                            tools:text="2020-13-25" />
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_arrow_gray" />
+                    </LinearLayout>
+                    <View
+                        android:background="@color/color_272F41_E3E8EE"
+                        android:layout_marginVertical="@dimen/margin_12"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"/>
+                    <LinearLayout
+                        android:id="@+id/ll_withdrawal_time2"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/txv_withdrawal_time2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textColor="@color/color_9FADC6_535D76"
+                            android:textSize="@dimen/textSize12sp"
+                            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                            app:autoSizeMinTextSize="@dimen/textSize8sp"
+                            tools:text="19:35:35 (GMT+8)" />
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_arrow_gray" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_radius_4_button_white"
-                android:paddingHorizontal="@dimen/margin_18">
+                android:paddingHorizontal="@dimen/margin_14">
 
                 <TextView
                     android:layout_width="wrap_content"
