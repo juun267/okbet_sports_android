@@ -23,6 +23,12 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
+import kotlinx.android.synthetic.main.fragment_bet_station.btn_info
+import kotlinx.android.synthetic.main.fragment_bet_station.ll_commission
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_balance
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_commission
+import kotlinx.android.synthetic.main.fragment_bet_station.tv_detail
+import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetStationBinding
@@ -107,12 +113,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         et_amount.apply {
             clearIsShow = false
             getAllIsShow = true
-            block_editText.setBackgroundResource(R.drawable.effect_edittext_bg_gray)
         }
-        et_password.apply {
-            v_divider.visibility = View.GONE
 
-        }
         initEditTextStatus(et_amount)
         initEditTextStatus(et_password)
         View.OnClickListener { hideKeyboard() }.let {
@@ -293,9 +295,12 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         })
         //提款金額提示訊息
         viewModel.withdrawAmountHint.observe(this.viewLifecycleOwner, Observer {
-
             et_amount.et_input.hint = it
         })
+        //提款手續費提示
+        viewModel.withdrawRateHint.observe(this.viewLifecycleOwner) {
+            tv_tips_handling_fee.text = it
+        }
         viewModel.withdrawAmountMsg.observe(
             this.viewLifecycleOwner
         ) {

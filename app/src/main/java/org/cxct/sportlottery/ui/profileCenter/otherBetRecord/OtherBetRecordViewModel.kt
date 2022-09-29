@@ -59,10 +59,14 @@ class OtherBetRecordViewModel(
     val thirdGamesResult: LiveData<List<StatusSheetData>?>
         get() = _thirdGamesResult
 
+    val lastPage: LiveData<Boolean>
+        get() = _lastPage
+
     private var _recordResult = MutableLiveData<OtherBetHistoryResult?>()
     private var _recordDetailResult = MutableLiveData<OtherBetHistoryDetailResult?>()
     private var _thirdGamesResult = MutableLiveData<List<StatusSheetData>?>()
     private val _loading = MutableLiveData<Boolean>()
+    private val _lastPage = MutableLiveData<Boolean>()
 
     var isLastPage = false
     private var isLoading = false
@@ -123,6 +127,7 @@ class OtherBetRecordViewModel(
                 isLoading = false
                 recordDataList.addAll(result.t?.orderList as List<Order>)
                 isLastPage = (recordDataList.size >= (result.t.totalCount ?: 0))
+                _lastPage.value = isLastPage
                 _recordResult.value = result
             }
         }
@@ -161,7 +166,7 @@ class OtherBetRecordViewModel(
                 isLoading = false
                 recordDetailDataList.addAll(result.t?.orderList?.dataList as List<OrderData>)
                 isLastPage = (recordDetailDataList.size >= (result.t.totalCount ?: 0))
-
+                _lastPage.value = isLastPage
                 _recordDetailResult.value = result
             }
         }

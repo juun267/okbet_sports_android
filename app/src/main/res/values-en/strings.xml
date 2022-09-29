@@ -394,7 +394,7 @@
     <string name="title_deposit_money">Deposit Amount</string>
     <string name="title_payer">Account</string>
     <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
-    <string name="edt_hint_deposit_money">%1$s Limit%2$s～%3$s</string>
+    <string name="edt_hint_deposit_money">Limit%1$s%2$s～%3$s</string>
     <string name="edt_hint_payer">Please enter your account</string>
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
@@ -445,7 +445,7 @@
     <string name="title_choose_currency">Select agreement/currency</string>
     <string name="txv_recharge_count">Deposit Amount</string>
     <string name="edt_hint_crypto_pay_count">Limit %1$s ~ %2$s</string>
-    <string name="hint_rate">・Exchange rate：%1$s</string>
+    <string name="hint_rate">Exchange rate：%1$s</string>
     <string name="title_transaction_id">Block chain trading ID</string>
     <string name="hint_transaction_id">Your block chain trading ID</string>
     <string name="hint_fee_rate">・Service charge：%1$s</string>
@@ -512,9 +512,9 @@
     <string name="withdraw_amount">Withdraw</string>
     <string name="withdraw_password">Withdraw Password</string>
     <string name="withdraw_all">EXTRACT ALL</string>
-    <string name="withdraw_handling_fee_hint">· Transaction Fee: %1$S %% Transaction Fee to be paid(%2$s): %3$s</string>
-    <string name="withdraw_crypto_amount_hint">· Withdraw(%1$s)：%2$s</string>
-    <string name="withdraw_crypto_fee_hint">· Withdraw Transaction Fee(%1$s)：%2$s</string>
+    <string name="withdraw_handling_fee_hint">Transaction Fee: %1$S %% Transaction Fee to be paid: %2$s%3$s</string>
+    <string name="withdraw_crypto_amount_hint">Withdraw(%1$s)：%2$s</string>
+    <string name="withdraw_crypto_fee_hint">Withdraw Transaction Fee(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>

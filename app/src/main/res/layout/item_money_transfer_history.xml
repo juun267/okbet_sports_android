@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_191919_FCFCFC"
+        android:background="@color/color_1D1F2D_FFFFFF"
         android:orientation="vertical">
 
         <LinearLayout
@@ -113,8 +113,10 @@
 
         <View
             android:id="@+id/divider"
+            android:layout_marginLeft="@dimen/margin_15"
+            android:layout_marginRight="@dimen/margin_15"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_191919_EEEFF0" />
+            android:background="@color/color_272F41_E3E8EE" />
     </LinearLayout>
 </layout>

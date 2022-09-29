@@ -13,8 +13,10 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const val YMD_HMS_FORMAT_CHANGE_LINE = "yyyy/MM/dd\nHH:mm:ss"
     const val YMD_HM_FORMAT = "yyyy-MM-dd HH:mm"
     const val YMD_FORMAT = "yyyy-MM-dd"
+    const val YMD_FORMAT_2 = "yyyy/MM/dd"
     const val DMY_FORMAT = "yyyy / MM / dd /"
     const val MD_FORMAT = "MM-dd"
     const val DAY_FORMAT = "d"
@@ -712,4 +714,58 @@ object TimeUtil {
         val timeFormat = timeFormat(time, HM_FORMAT_12)
         return "$timeFormat $times"
     }
+
+    /**
+     * @strTime 为string类型的时间
+     * @formatType 为要转换的格式 yyy-MM-dd HH:mm:ss
+     * 返回值为一个Date类型的值
+     */
+    fun getStringFormatDate(strTime: String, formatType: String): Date {
+        val simpleDateFormat = SimpleDateFormat(formatType)
+        return simpleDateFormat.parse(strTime)
+    }
+
+    /**
+     * Date转换字符串 年月日转换
+     */
+    fun dateToStringFormatYMD(
+        date: Date?,
+    ): String? {
+        try {
+            if (date == null) return null
+            val   newDateFormatPattern: String = YMD_FORMAT
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
+            return newFormatter.format(date)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    /**
+     * Date转换字符串 时分秒转换
+     */
+    fun dateToStringFormatHMS(
+        date: Date?,
+    ): String? {
+        val timeZoneGTM = try {
+            val gtm = SimpleDateFormat("Z").format(Date().time).toInt().div(100)
+            if (gtm < 0)
+                "$gtm"
+            else
+                "+$gtm"
+        } catch (e: NumberFormatException) {
+            ""
+        }
+        try {
+            if (date == null) return null
+           val newDateFormatPattern: String = HM_FORMAT_SS
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
+            return newFormatter.format(date)+" (GMT$timeZoneGTM)"
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
 }

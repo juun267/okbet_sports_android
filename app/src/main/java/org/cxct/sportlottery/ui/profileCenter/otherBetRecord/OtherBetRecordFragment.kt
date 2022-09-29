@@ -6,14 +6,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_other_bet_record.*
+import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setProfitFormat
@@ -81,12 +84,18 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initRv()
+        initView()
         initOnclick()
         initObserver()
     }
 
-    private fun initRv() {
+    private fun initView() {
+        status_selector.tv_name.setTextColor(
+            ContextCompat.getColor(
+                status_selector.tv_name.context,
+                R.color.color_6C7BA8_6C7BA8
+            )
+        )
         rv_record.apply {
             adapter = rvAdapter
             addOnScrollListener(recyclerViewOnScrollListener)
@@ -122,7 +131,11 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
 
                 layout_total.apply {
-                    tv_total_number.text = (totalCount ?: 0).toString()
+                    tv_total_number.text = (totalCount ?: 0).toString().plus(
+                        if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.ZH)
+                            " ${getString(R.string.bet_count)}"
+                        else ""
+                    )
                     tv_total_bet_profit.setProfitFormat(totalWin, isTotal = true)
                     tv_total_bet_profit.setMoneyColor(totalWin ?: 0.0)
                 }

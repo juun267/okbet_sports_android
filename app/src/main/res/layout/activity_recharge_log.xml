@@ -92,12 +92,7 @@
                 android:text="@string/recharge_log_order_time"
                 android:textColor="@color/color_414655"
                 android:textSize="@dimen/textSize12sp" />
-            <View
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:background="@color/color_E3E8EE"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"/>
+
             <TextView
                 android:id="@+id/rech_log_recharge_amount"
                 android:layout_width="0dp"
@@ -109,12 +104,7 @@
                 android:text="@string/recharge_log_recharge_amount"
                 android:textColor="@color/color_414655"
                 android:textSize="@dimen/textSize12sp" />
-            <View
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:background="@color/color_E3E8EE"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -125,12 +115,7 @@
                 android:text="@string/recharge_log_channel_type"
                 android:textColor="@color/color_414655"
                 android:textSize="@dimen/textSize12sp" />
-            <View
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:background="@color/color_E3E8EE"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"/>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -4,15 +4,14 @@
     android:id="@+id/ll_content"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/color_191919_FCFCFC"
+    android:background="@color/color_1D1F2D_FFFFFF"
     android:gravity="center"
     android:orientation="vertical"
     tools:ignore="SpUsage"
     tools:context=".ui.feedback.record.FeedbackListAdapter">
 
     <LinearLayout
-        android:layout_marginLeft="@dimen/margin_20"
-        android:layout_marginRight="@dimen/margin_20"
+       android:layout_marginHorizontal="@dimen/margin_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

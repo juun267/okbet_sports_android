@@ -28,6 +28,8 @@ import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
 import kotlin.math.min
 
@@ -473,20 +475,32 @@ class WithdrawViewModel(
                     _rechargeConfigs.value = moneyRechCfgData
                     getWithdrawCardList()
                     //判斷Tab要不要顯示
-                    val withdrawConfig = moneyRechCfgData.uwTypes
+                    val withdrawConfig = moneyRechCfgData.uwTypes.sortedBy { it.sort }
                     val tabList: ArrayList<String> = arrayListOf()
-                    if (withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN) tabList.add(
-                        TransferType.CRYPTO.type
-                    )
-                    if (withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN) tabList.add(
-                        TransferType.BANK.type
-                    )
-                    if (withdrawConfig.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(
-                        TransferType.E_WALLET.type
-                    )
-                    if (withdrawConfig.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN) tabList.add(
-                        TransferType.STATION.type
-                    )
+                    withdrawConfig.forEach { uwType ->
+                        when(uwType.type){
+                            UWType.BANK_TRANSFER.type -> {
+                                if (withdrawConfig.find { type -> type.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                    TransferType.BANK.type
+                                )
+                            }
+                            UWType.CRYPTO.type -> {
+                                if (withdrawConfig.find { type -> type.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                    TransferType.CRYPTO.type
+                                )
+                            }
+                            UWType.E_WALLET.type -> {
+                                if (withdrawConfig.find { type -> type.type== TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                    TransferType.E_WALLET.type
+                                )
+                            }
+                            UWType.BETTING_STATION.type -> {
+                                if (withdrawConfig.find { it.type == TransferType.STATION.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                    TransferType.STATION.type
+                                )
+                            }
+                        }
+                    }
                     _withdrawTabIsShow.postValue(tabList)
 
                     checkBankCardCount()
@@ -688,9 +702,9 @@ class WithdrawViewModel(
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
-        _withdrawAmountHint.value = String.format(
+        _withdrawAmountHint.value = "${sConfigData?.systemCurrency} "+String.format(
             LocalUtils.getString(R.string.edt_hint_deposit_money),
-            sConfigData?.systemCurrency,
+            sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()
         )
     }

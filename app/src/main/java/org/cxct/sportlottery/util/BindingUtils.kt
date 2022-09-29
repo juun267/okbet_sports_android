@@ -27,16 +27,28 @@ import org.cxct.sportlottery.util.TimeUtil.DM_HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT_2
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, YMD_HMS_FORMAT)
 }
 
+@BindingAdapter("dateChangeLineTime")
+fun TextView.setDateChangeLineTime(timeStamp: Long?) {
+    text = TimeUtil.timeFormat(timeStamp, YMD_HMS_FORMAT_CHANGE_LINE)
+}
+
 @BindingAdapter("date")
 fun TextView.setDate(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT)
+}
+
+@BindingAdapter("date2")
+fun TextView.setDate2(timeStamp: Long?) {
+    text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT_2)
 }
 
 @BindingAdapter("dateNoYear")

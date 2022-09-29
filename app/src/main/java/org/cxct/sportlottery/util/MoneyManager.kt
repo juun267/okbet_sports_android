@@ -132,6 +132,7 @@ object MoneyManager {
         BPI("BPI",  R.drawable.ic_bank_bpi),
         BDO("BDO",  R.drawable.ic_bank_bdo),
         METROPOLITAN("metropolitan",  R.drawable.ic_bank_metropolitan),
+        METROBANK("metrobank",  R.drawable.ic_bank_metropolitan),
         LAND("land",  R.drawable.ic_bank_land),
         SECURITY("security",  R.drawable.ic_bank_security),
         UB("UB",  R.drawable.ic_bank_ub),

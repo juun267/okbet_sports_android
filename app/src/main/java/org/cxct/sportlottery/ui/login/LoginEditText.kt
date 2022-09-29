@@ -33,6 +33,7 @@ class LoginEditText @JvmOverloads constructor(
 
     private var mVerificationCodeBtnOnClickListener: OnClickListener? = null
     private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+        v_bottom_line.isSelected = hasFocus
         block_editText.isSelected = hasFocus
         setError(null)
     }
@@ -226,9 +227,11 @@ class LoginEditText @JvmOverloads constructor(
         if (tv_error.text.isNullOrEmpty()) {
             tv_error.visibility = View.GONE
             block_editText.isActivated = false
+            v_bottom_line.isActivated = false
         } else {
             tv_error.visibility = View.VISIBLE
             block_editText.isActivated = true
+            v_bottom_line.isActivated = true
         }
     }
 

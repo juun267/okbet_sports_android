@@ -89,7 +89,7 @@
             android:letterSpacing="0.05"
             android:textColor="@color/color_cccccc"
             android:textColorHint="@color/color_cccccc"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
