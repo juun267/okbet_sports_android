@@ -229,7 +229,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
     }
 
     private fun setupLeagueOddList(view: View) {
-        view.favorite_game_list.apply {
+        view.game_list.apply {
             adapter = leagueAdapter
             this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -507,7 +507,8 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
             it.getContentIfNotHandled()?.let { leagueOddList ->
                 hideLoading()
 
-                favorite_game_list.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+                game_list.layoutManager =
+                    SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 val leagueData = leagueOddList.toMutableList()
                 leagueData.updateOddsSort(
                     viewModel.getSportSelectedCode(),
@@ -535,7 +536,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                         unSubscribeChannelHall(leagueOdd)
                     }
 
-                    favorite_game_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
+                    game_list?.firstVisibleRange(leagueAdapter, activity ?: requireActivity())
 
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -596,7 +597,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
         favorite_toolbar.visibility = View.VISIBLE
         fl_no_game.visibility = View.VISIBLE
         appbar_layout.visibility = View.GONE
-        favorite_game_list.visibility = View.GONE
+        game_list.visibility = View.GONE
     }
 
     /**
@@ -606,7 +607,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
         favorite_toolbar.visibility = View.GONE
         fl_no_game.visibility = View.GONE
         appbar_layout.visibility = View.VISIBLE
-        favorite_game_list.visibility = View.VISIBLE
+        game_list.visibility = View.VISIBLE
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
@@ -802,7 +803,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
     }
 
     private fun updateGameListBySubscribePosition(matchId: String?) {
-        favorite_game_list?.let {
+        game_list?.let {
             if (it.scrollState == RecyclerView.SCROLL_STATE_IDLE && !it.isComputingLayout) {
                 leagueAdapter.updateLeagueByPosition(matchId)
             }
@@ -810,8 +811,11 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
     }
 
     private fun updateAllGameList() {
-        if (favorite_game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !favorite_game_list.isComputingLayout) {
-            leagueAdapter.data.forEachIndexed { index, leagueOdd -> leagueAdapter.updateLeague(index, leagueOdd) }
+        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
+            leagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                leagueAdapter.updateLeague(index,
+                    leagueOdd)
+            }
         }
     }
 

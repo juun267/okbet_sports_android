@@ -119,6 +119,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                             }
                         }
                         is FavoriteAdapter -> {
+                            LogUtil.d("111")
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 val viewByPosition =
                                     layoutManager?.findViewByPosition(leaguePosition)
@@ -128,6 +129,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             getChildViewHolder(it) as FavoriteAdapter.ItemViewHolder
                                         viewHolder.itemView.rv_league.getVisibleRangePosition()
                                             .forEach { matchPosition ->
+                                                LogUtil.d("222")
                                                 visibleRangePair.add(Pair(leaguePosition,
                                                     matchPosition))
                                             }

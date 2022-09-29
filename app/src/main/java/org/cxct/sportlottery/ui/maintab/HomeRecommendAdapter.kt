@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,27 +31,22 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
             }
         }
 
-    private var mRecommendList: List<Recommend> = listOf()
+    var data: List<Recommend> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    fun getRecommendListData(): List<Recommend> {
-        return mRecommendList
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setupRecommendItem(recommendList: List<Recommend>) {
-        mRecommendList = recommendList
-        notifyDataSetChanged()
-    }
 
     override fun onBindViewHolder(holder: ItemHomeRecommendHolder, position: Int) {
-        val itemData = mRecommendList[position]
+        val itemData = data[position]
         holder.bind(data = itemData, oddsType = oddsType)
     }
 
     override fun onBindViewHolder(
         holder: ItemHomeRecommendHolder,
         position: Int,
-        payloads: MutableList<Any>
+        payloads: MutableList<Any>,
     ) {
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
@@ -67,7 +61,7 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
         }
     }
 
-    override fun getItemCount(): Int = mRecommendList.size
+    override fun getItemCount(): Int = data.size
 
     open class HomeRecommendListener(
         private val onItemClickListener: () -> Unit,

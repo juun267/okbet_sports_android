@@ -29,18 +29,18 @@
     </LinearLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_131932_F0F5FA"
-        android:orientation="vertical">
+        android:background="@color/color_131932_F0F5FA">
 
-        <TextView
-            android:id="@+id/tv_no_bank_card"
-            android:visibility="gone"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_no_bank_card"
+                android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_191919_FCFCFC"
@@ -65,7 +65,7 @@
                 android:overScrollMode="never"
                 android:paddingBottom="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="5"
+                tools:itemCount="2"
                 tools:listitem="@layout/content_rv_bank_card_list"
                 tools:orientation="vertical" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>

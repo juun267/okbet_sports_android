@@ -28,7 +28,7 @@ object Constants {
     }
 
     fun getH5BaseUrl(): String {
-        return if (BuildConfig.CHANNEL_NAME.equals("spplat1")) "https://okbet-v2.cxsport.net/" else getBaseUrl()
+        return getBaseUrl()
     }
 
     fun setSocketUrl(baseUrl: String) {
@@ -153,9 +153,8 @@ object Constants {
     //规则与条款
     fun getAgreementRuleUrl(context: Context): String? {
 
-        val checkCreditQuery = if (sConfigData?.creditSystem == 1) "credit=1" else context.getString(R.string.app_name)
-
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}terms-conditions?" + checkCreditQuery
+        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}terms-conditions?platform=" + context.getString(
+            R.string.app_name)
     }
 
     //KYC人工客服審核

@@ -38,7 +38,6 @@ import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
-import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -81,7 +80,6 @@ class SportListFragment :
         (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
     }
     private var gameType: String? = null
-    private val outrightLeagueId by lazy { arguments?.getString("outrightLeagueId", null) }
     private var mView: View? = null
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
@@ -235,7 +233,6 @@ class SportListFragment :
     }
 
     private var mLeagueOddList = ArrayList<LeagueOdd>()
-    private var mQuickOddListMap = HashMap<String, MutableList<QuickPlayCate>>()
 
 
     override fun loading() {
@@ -275,12 +272,11 @@ class SportListFragment :
 
     private fun setupSportTypeList() {
         sport_type_list.apply {
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             //波胆不需要显示球类
             isVisible = matchType != MatchType.CS
-            this.adapter = gameTypeAdapter
+            adapter = gameTypeAdapter
             removeItemDecorations()
         }
     }
@@ -288,7 +284,7 @@ class SportListFragment :
     private fun setupToolbar() {
         iv_calendar.apply {
             visibility = when (matchType) {
-                MatchType.EARLY -> View.VISIBLE
+                MatchType.EARLY, MatchType.CS -> View.VISIBLE
                 else -> View.GONE
             }
 
@@ -350,14 +346,14 @@ class SportListFragment :
         }
         when (matchType) {
             MatchType.EARLY, MatchType.CS -> {
-                mCalendarSelected = true
+                mCalendarSelected = false
                 iv_calendar.isVisible = true
-                game_filter_type_list.isVisible = true
+                game_filter_type_list.isVisible = false
             }
             else -> {
                 mCalendarSelected = false
                 iv_calendar.isVisible = false
-                game_filter_type_list?.isVisible = iv_calendar.isVisible && iv_calendar.isSelected
+                game_filter_type_list?.isVisible = iv_calendar.isSelected
             }
         }
     }
@@ -512,28 +508,10 @@ class SportListFragment :
                         sportLeagueAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
                     }
-                    if (game_list.adapter !is SportLeagueAdapter) game_list.adapter =
-                        sportLeagueAdapter
-
-                    //如果data資料為空時，又有其他球種的情況下，自動選取第一個
-                    if (mLeagueOddList.isNullOrEmpty() && gameTypeAdapter.dataSport.size > 1) {
-                        if (matchType == MatchType.OTHER) {
-                            // 待觀察，再決定是否要補
-                        } else {
-//                            viewModel.switchFirstSportType(matchType)
-                        }
-                    }
-
                     mLeagueOddList.forEach { leagueOdd ->
                         unSubscribeChannelHall(leagueOdd)
                     }
 
-                    oddsListResult.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                        leagueOdd.matchOdds.forEachIndexed { _, matchOdd ->
-                            mQuickOddListMap[matchOdd.matchInfo?.id ?: ""] =
-                                matchOdd.quickPlayCateList ?: mutableListOf()
-                        }
-                    }
                     sportLeagueAdapter.limitRefresh()
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
@@ -605,20 +583,17 @@ class SportListFragment :
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
-                when (game_list.adapter) {
-                    is SportLeagueAdapter -> {
-
-                        sportLeagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
-                            if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
-                                leagueOdd.matchOdds.find { m ->
-                                    m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
-                                }?.let { mo ->
-                                    leagueOdd.matchOdds.remove(mo)
-                                    if (leagueOdd.matchOdds.size > 0) {
-                                        sportLeagueAdapter.notifyItemChanged(index)
-                                    } else {
-                                        unSubscribeChannelHall(leagueOdd)
-                                        sportLeagueAdapter.data.remove(leagueOdd)
+                sportLeagueAdapter.data.forEachIndexed { index, leagueOdd ->
+                    if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
+                        leagueOdd.matchOdds.find { m ->
+                            m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
+                        }?.let { mo ->
+                            leagueOdd.matchOdds.remove(mo)
+                            if (leagueOdd.matchOdds.size > 0) {
+                                sportLeagueAdapter.notifyItemChanged(index)
+                            } else {
+                                unSubscribeChannelHall(leagueOdd)
+                                sportLeagueAdapter.data.remove(leagueOdd)
                                         sportLeagueAdapter.notifyItemRemoved(index)
                                     }
                                 }
@@ -642,8 +617,6 @@ class SportListFragment :
                                     sportLeagueAdapter.notifyItemRemoved(index)
                                 }
                             }
-                        }
-                    }
                 }
             }
         }
@@ -673,12 +646,6 @@ class SportListFragment :
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
                 when (game_list?.adapter) {
                     is SportLeagueAdapter -> {
-                        sportLeagueAdapter.data.forEach { leagueOdd ->
-                            leagueOdd.matchOdds.forEach { matchOdd ->
-                                matchOdd.quickPlayCateList =
-                                    mQuickOddListMap[matchOdd.matchInfo?.id]
-                            }
-                        }
 
                         val leagueOdds = sportLeagueAdapter.data
 
@@ -713,10 +680,6 @@ class SportListFragment :
                                 updateGameList(index, leagueOdd)
                             }
                         }
-                    }
-
-                    is OutrightLeagueOddAdapter -> {
-                        viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
                     }
                 }
         }
@@ -910,7 +873,7 @@ class SportListFragment :
                     }
                     isSelected = mCalendarSelected
                 }
-                game_filter_type_list?.isVisible = iv_calendar.isVisible && iv_calendar.isSelected
+                game_filter_type_list?.isVisible = iv_calendar.isSelected
             }
         }
     }
@@ -1000,28 +963,6 @@ class SportListFragment :
                 leagueOdd.gameType?.key,
                 matchOdd.matchInfo?.id
             )
-        }
-    }
-
-    private fun subscribeChannelHall(epsLeagueOddsItem: EpsLeagueOddsItem) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
-        epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
-            when (epsLeagueOddsItem.isClose) {
-                true -> {
-                    unSubscribeChannelHall(
-                        gameType?.key,
-                        matchOddsItem.matchInfo?.id
-                    )
-                }
-                false -> {
-                    subscribeChannelHall(
-                        gameType?.key,
-                        matchOddsItem.matchInfo?.id
-                    )
-                }
-            }
         }
     }
 
