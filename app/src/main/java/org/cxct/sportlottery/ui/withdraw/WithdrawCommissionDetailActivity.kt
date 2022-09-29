@@ -10,7 +10,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
-
+/**
+ * @app_destination 提款-提款详情
+ */
 class WithdrawCommissionDetailActivity :
     BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -20,6 +22,7 @@ class WithdrawCommissionDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStatusbar(R.color.color_232C4F_FFFFFF,true)
         setContentView(R.layout.activity_withdraw_commission_detail)
 
         initView()

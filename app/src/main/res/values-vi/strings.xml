@@ -506,7 +506,7 @@
     <string name="withdraw_all">TẤT CẢ CÁC</string>
     <string name="withdraw_handling_fee_hint">Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s%3$s</string>
     <string name="withdraw_crypto_amount_hint">Số tiền rút(%1$s)：%2$s</string>
-    <string name="withdraw_crypto_fee_hint">· Phí rút tiền(%1$s)：%2$s</string>
+    <string name="withdraw_crypto_fee_hint">Phí rút tiền(%1$s)：%2$s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_new">Thêm mới</string>
@@ -938,7 +938,7 @@
     <string name="self_limit_per_bet_limit_highest">Giới hạn trên</string>
     <string name="self_limit_per_bet_limit">Giới hạn</string>
     <string name="self_limit_per_bet_limit_input_highest">Vui lòng nhập số</string>
-    <string name="self_limit_per_bet_limit_impotent">· Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
+    <string name="self_limit_per_bet_limit_impotent">Bạn có thể sửa đổi giới hạn đặt cược của mình bất cứ lúc nào. Sửa đổi sẽ có hiệu lực sau khi gửi yêu cầu.</string>
     <string name="self_limit_per_bet_limit_user">• Cược giới hạn hiện tại: %1$s %2$s</string>
     <string name="self_limit_per_bet_limit_user_none">Không có</string>
     <string name="self_limit_per_bet_limit_user_limit">• Cược giới hạn tối đa:%1$s %2$s-%1$s %3$s</string>

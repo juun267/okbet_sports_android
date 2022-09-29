@@ -511,8 +511,8 @@
     <string name="please_setting_ewallet">โปรดตั้งค่า eWallet ก่อน</string>
     <string name="please_complete_profile_info">โปรไฟล์ที่สมบูรณ์</string>
     <string name="message_withdraw_maintain">การอัพเกรดระบบที่เกี่ยวข้องกับการถอน กรุณารอสักครู่</string>
-    <string name="withdraw_crypto_amount_hint">· จำนวนเงินที่ถอน(%1$s): %2$s</string>
-    <string name="withdraw_crypto_fee_hint">· ค่าธรรมเนียมการถอน(%1$s): %2$s</string>
+    <string name="withdraw_crypto_amount_hint">จำนวนเงินที่ถอน(%1$s): %2$s</string>
+    <string name="withdraw_crypto_fee_hint">ค่าธรรมเนียมการถอน(%1$s): %2$s</string>
     <string name="create_name">ชื่อผู้ถือบัตร</string>
     <string name="hint_please_enter_create_name">กรุณาใส่ชื่อบัตรธนาคารของคุณ</string>
     <string name="wallet_address">ที่อยู่กระเป๋าสตางค์</string>
