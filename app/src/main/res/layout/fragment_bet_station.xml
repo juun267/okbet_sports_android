@@ -92,12 +92,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    app:cvMarginBottom="8dp"
                     app:cvDividerColor="@color/transparent"
                     app:cvHint="@string/edt_hint_deposit_money"
                     app:cvInputType="number"
                     app:cvTextColor="@color/color_414655"
                     app:cvTitle="@string/withdraw_amount" />
-
+                <!--手续费-->
+                <TextView
+                    android:id="@+id/tv_tips_handling_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33dp"
+                    android:gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/color_E44438_e44438"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="@string/withdraw_handling_fee_hint" />
 
                 <LinearLayout
                     android:id="@+id/ll_commission"

@@ -699,7 +699,7 @@ class WithdrawViewModel(
 
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
-        _withdrawAmountHint.value = String.format(
+        _withdrawAmountHint.value = "${sConfigData?.systemCurrency} "+String.format(
             LocalUtils.getString(R.string.edt_hint_deposit_money),
             sConfigData?.systemCurrencySign,
             limit.min.toLong(), limit.max.toLong()

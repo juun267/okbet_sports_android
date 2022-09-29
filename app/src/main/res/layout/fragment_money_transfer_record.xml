@@ -34,7 +34,7 @@
                     android:layout_width="0dp"
                     android:layout_height="44dp"
                     android:layout_weight="1"
-
+                    android:background="@color/color_191D2F_F3F9FF"
                     app:defaultStatusText="@string/all_order_status"
                     app:layout_constraintTop_toBottomOf="@id/date_range_selector"
                     app:listBackground="@drawable/bg_pop_up_arrow"
