@@ -467,6 +467,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (mMoneyPayWay?.rechType == RechType.CRYPTOPAY.code) {
             filterRechCfgsList =
                 rechCfgsList.groupBy { it.prodName } as HashMap<String?, ArrayList<RechCfg>>
+            LogUtil.d(filterRechCfgsList.toString())
             filterRechCfgsList.forEach {
                 val selectCurrency = BtsRvAdapter.SelectBank(
                     it.key.toString(),

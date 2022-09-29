@@ -61,7 +61,7 @@
             android:layout_weight="1.25"
             android:gravity="center"
             android:maxLines="1"
-            android:text="@string/game_name"
+            android:text="@string/news_tab_plat"
             android:textColor="@color/color_BBBBBB_333333"
             android:textSize="@dimen/textSize12sp"  />
 

@@ -324,7 +324,7 @@
                         app:labelText="@string/birth_date"
                         app:labelTextStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/et_phone"
+                        app:layout_constraintTop_toBottomOf="@+id/block_sms_valid_code"
                         app:primaryColor="@color/color_AFAFB1">
 
                         <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText

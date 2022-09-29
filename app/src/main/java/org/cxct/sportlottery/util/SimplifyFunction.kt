@@ -287,13 +287,13 @@ fun RecyclerView.firstVisibleRange(adapter: SportLeagueAdapter, activity: Activi
                             if (adapter.data.isNotEmpty() && leaguePosition < adapter.data.size) {
                                 Log.d(
                                     "[subscribe]",
-                                    "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
-                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
+                                    "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
+                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.homeName} vs " +
+                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.awayName}"
                                 )
                                 (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    adapter.data[leaguePosition].gameType?.key,
-                                    adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
+                                    adapter.data.getOrNull(leaguePosition)?.gameType?.key,
+                                    adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.id
                                 )
                             }
                         }
@@ -392,13 +392,13 @@ fun RecyclerView.firstVisibleRange(adapter: FavoriteAdapter, activity: Activity)
                             if (adapter.data.isNotEmpty()) {
                                 Log.d(
                                     "[subscribe]",
-                                    "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
-                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                            "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
+                                    "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
+                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.homeName} vs " +
+                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.awayName}"
                                 )
                                 (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    adapter.data[leaguePosition].gameType?.key,
-                                    adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
+                                    adapter.data.getOrNull(leaguePosition)?.gameType?.key,
+                                    adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.id
                                 )
                             }
                         }

@@ -454,10 +454,12 @@
                                 android:textSize="@dimen/textSize12sp" />
 
                             <View
+                                android:layout_alignParentBottom="true"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/margin_0.5"
                                 android:background="@color/color_E3E8EE" />
                         </RelativeLayout>
+
                     </LinearLayout>
 
 
@@ -763,6 +765,7 @@
                                 android:src="@drawable/icon_arrow07" />
 
                             <View
+                                android:layout_alignParentBottom="true"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/margin_0.5"
                                 android:background="@color/color_E3E8EE" />

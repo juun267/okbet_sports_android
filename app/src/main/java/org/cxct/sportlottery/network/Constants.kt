@@ -112,7 +112,7 @@ object Constants {
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -120,7 +120,7 @@ object Constants {
     //關於我們
     fun getAboutUsUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}about-us?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/about-us?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -128,14 +128,14 @@ object Constants {
     //博彩责任
     fun getDutyRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}responsibility?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/responsibility?platform=" + context.getString(
             R.string.app_name
         )
     }
 
     //代理加盟
     fun getAffiliateUrl(context: Context): String {
-        return "${getH5BaseUrl()}sports-rule/#/v2/${getLanguageTag(context)}affiliate?platform=${
+        return "${getH5BaseUrl()}sports-rule/#/${getLanguageTag(context)}v2/affiliate?platform=${
             context.getString(
                 R.string.app_name
             )
@@ -145,7 +145,7 @@ object Constants {
     //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}privacy-policy?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/privacy-policy?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -153,7 +153,7 @@ object Constants {
     //规则与条款
     fun getAgreementRuleUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}terms-conditions?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/terms-conditions?platform=" + context.getString(
             R.string.app_name)
     }
 
@@ -170,7 +170,7 @@ object Constants {
     //常见问题
     fun getFAQsUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}faq?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/faq?platform=" + context.getString(
             R.string.app_name
         )
     }
@@ -178,7 +178,7 @@ object Constants {
     //联系我们
     fun getContactUrl(context: Context): String? {
 
-        return getH5BaseUrl() + "sports-rule/#/v2/${getLanguageTag(context)}contact-us?platform=" + context.getString(
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/contact-us?platform=" + context.getString(
             R.string.app_name
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }

@@ -20,6 +20,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.google.android.gms.location.*
 import com.tbruyelle.rxpermissions2.RxPermissions
+import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_bank_card.btn_submit
 import kotlinx.android.synthetic.main.fragment_bet_station.*
@@ -59,6 +60,11 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
     private var selectCity: City? = null
     private var selectBettingStation: BettingStation? = null
     private var location: Location? = null
+    private lateinit var dateTimePicker: TimePickerView
+    private lateinit var dateTimePickerHMS: TimePickerView
+    var depositDate = Date()
+    var depositDate2 = Date()
+    var mCalendar: Calendar =Calendar.getInstance()
     private var selectDate: Date? = null
         set(value) {
             tv_time.text =
@@ -105,6 +111,8 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             setupEvent()
             setupObserve()
             setupServiceButton()
+            initTimePickerForYMD()
+            initTimePickerForHMS()
         }
     }
 
@@ -123,7 +131,9 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
         View.OnClickListener { hideKeyboard() }.let {
             spinner_area.setOnClickListener(it)
             spinner_city.setOnClickListener(it)
-            tv_time.setOnClickListener(it)
+          //  tv_time.setOnClickListener(it)
+            txv_withdrawal_time.setOnClickListener(it)
+            txv_withdrawal_time2.setOnClickListener(it)
         }
         spinner_area.setOnItemSelectedListener {
             selectProvince = areaAll?.provinces?.find { province ->
@@ -162,7 +172,11 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
             CommissionInfoDialog().show(childFragmentManager, null)
         }
 
-        tv_time.text = TimeUtil.dateToDateFormat(selectDate, TimeUtil.YMD_HMS_FORMAT) ?: ""
+     //   tv_time.text = TimeUtil.dateToDateFormat(selectDate, TimeUtil.YMD_HMS_FORMAT) ?: ""
+        //存款时间年月日
+        txv_withdrawal_time.text = TimeUtil.timeFormat(Date().time,TimeUtil.YMD_FORMAT)
+        //存款时间时分秒
+        txv_withdrawal_time2.text = TimeUtil.dateToStringFormatHMS(Date())
         spinner_area.tv_name.gravity = Gravity.CENTER_VERTICAL
         spinner_city.tv_name.gravity = Gravity.CENTER_VERTICAL
     }
@@ -260,9 +274,18 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
 
 
     private fun setupClickEvent() {
-        tv_time.setOnClickListener {
+       /* tv_time.setOnClickListener {
             showDatePicker()
+        }*/
+        //年月日的时间选择器
+        ll_withdrawal_time.setOnClickListener {
+            dateTimePicker.show()
         }
+        //时分秒的选择器
+        ll_withdrawal_time2.setOnClickListener {
+            dateTimePickerHMS.show()
+        }
+
         lin_station_detail.setOnClickListener {
             selectBettingStation?.let {
                 JumpUtil.toInternalWeb(
@@ -282,8 +305,14 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                 et_amount.getText(),
                 et_password.getText(),
                 if (selectBettingStation == null) null else selectBettingStation!!.id,
-                TimeUtil.dateToDateFormat(selectDate, TimeUtil.YMD_FORMAT) ?: "",
-                TimeUtil.dateToDateFormat(selectDate, TimeUtil.HM_FORMAT_SS) ?: "",
+                TimeUtil.dateToDateFormat(
+                    mCalendar.time,
+                    TimeUtil.YMD_FORMAT
+                ) ?: "",
+                TimeUtil.dateToDateFormat(
+                    mCalendar.time,
+                    TimeUtil.HM_FORMAT_SS
+                ) ?: "",
             )
         }
     }
@@ -524,6 +553,100 @@ class BetStationFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::cl
                     )
                 }
             }
+    }
+
+    private fun initTimePickerForYMD() {
+        val yesterday = Calendar.getInstance()
+        yesterday.add(Calendar.DAY_OF_MONTH, -30)
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DAY_OF_MONTH, +30)
+        dateTimePicker = TimePickerBuilder(activity) { date, _ ->
+            try {
+                depositDate = date
+                txv_withdrawal_time.text = TimeUtil.dateToStringFormatYMD(date)
+                upDataTimeYMD()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+            .setLabel("", "", "", "", "", "")
+            .setRangDate(yesterday, tomorrow)
+            .setDate(Calendar.getInstance())
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(true, true, true, false, false, false))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setCancelText(" ")
+            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    txv_withdrawal_time.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    txv_withdrawal_time.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .isDialog(false)
+            .build() as TimePickerView
+    }
+    private fun initTimePickerForHMS() {
+
+        dateTimePickerHMS = TimePickerBuilder(activity) { date, _ ->
+            try {
+                depositDate2 = date
+                txv_withdrawal_time2.text = TimeUtil.dateToStringFormatHMS(date)
+                upDataTimeHMS()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+            .setLabel("", "", "", "", "", "")
+            .setDate(Calendar.getInstance())
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(false, false, false, true, true, true))
+            .setTitleText(resources.getString(R.string.title_recharge_time))
+            .setCancelText(" ")
+            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    txv_withdrawal_time2.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    txv_withdrawal_time2.context,
+                    R.color.color_7F7F7F_999999
+                )
+            )
+            .isDialog(false)
+            .build() as TimePickerView
+    }
+
+    private fun upDataTimeHMS(){
+        mCalendar.apply {
+            var despsitCal=Calendar.getInstance().apply {
+                time=depositDate2
+            }
+            mCalendar.set(Calendar.HOUR_OF_DAY,despsitCal.get(Calendar.HOUR_OF_DAY))
+            mCalendar.set(Calendar.MINUTE,despsitCal.get(Calendar.MINUTE))
+            mCalendar.set(Calendar.SECOND,despsitCal.get(Calendar.SECOND))
+
+        }
+    }
+    private fun upDataTimeYMD(){
+        mCalendar.apply {
+            var despsitCal=Calendar.getInstance().apply {
+                time=depositDate
+            }
+            mCalendar.set(Calendar.DAY_OF_MONTH,despsitCal.get(Calendar.DAY_OF_MONTH))
+            mCalendar.set(Calendar.MONTH,despsitCal.get(Calendar.MONTH))
+            mCalendar.set(Calendar.YEAR,despsitCal.get(Calendar.YEAR))
+
+        }
     }
 
 }
