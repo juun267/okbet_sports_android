@@ -229,13 +229,12 @@ class ResultsSettlementActivity :
             //初始化當前選中第一項
             gameTypeSpinnerList.firstOrNull()
         }
-        viewModel.getMatchResultList(gameType, null, timeRangeParams)
-
         status_game_type.setItemData(gameTypeSpinnerList)
         spinnerItem?.let {
             status_game_type.setSelectInfo(it)
             gameType = it.code.orEmpty()
         }
+        viewModel.getMatchResultList(gameType, null, timeRangeParams)
     }
 
     private fun setupSettleGameTypeBottomSheet() {

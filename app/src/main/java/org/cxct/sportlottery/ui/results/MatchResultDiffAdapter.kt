@@ -338,7 +338,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 matchInfo?.let {
                     tv_home_name.text = it.homeName
                     tv_away_name.text = it.awayName
-                    tv_time.text = TimeUtil.timeFormat(it.startTime, "yyyy-MM-dd HH:mm")
+                    tv_time.text = TimeUtil.timeFormat(it.startTime, TimeUtil.YMD_HM_FORMAT_2)
                 }
 
                 matchStatusList?.let {
