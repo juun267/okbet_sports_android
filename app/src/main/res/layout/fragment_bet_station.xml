@@ -95,7 +95,7 @@
                     app:cvDividerColor="@color/transparent"
                     app:cvHint="@string/edt_hint_deposit_money"
                     app:cvInputType="number"
-                    app:cvMarginBottom="8dp"
+                    app:cvMarginBottom="0dp"
                     app:cvTextColor="@color/color_414655"
                     app:cvTitle="@string/withdraw_amount" />
                 <!--手续费-->
@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="33dp"
                     android:layout_marginStart="10dp"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:textColor="@color/color_E44438_e44438"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="@string/withdraw_handling_fee_hint" />
@@ -116,6 +116,7 @@
                     android:background="@color/color_191919_FCFCFC"
                     android:focusable="true"
                     android:gravity="center"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:orientation="horizontal"
                     android:paddingStart="10dp"
                     android:visibility="visible">
@@ -170,7 +171,6 @@
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     app:cvDividerColor="@color/transparent"
                     app:cvHint="@string/hint_please_enter_withdraw_password"
                     app:cvInputType="textPassword"
@@ -324,7 +324,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/helvetica_bold"
                             android:textColor="@color/color_1A1A1A_0760D4"
-                            android:textSize="@dimen/textSize22sp"
+                            android:textSize="@dimen/textSize18sp"
                             android:textStyle="bold"
                             tools:text="3.2 km" />
                     </LinearLayout>
