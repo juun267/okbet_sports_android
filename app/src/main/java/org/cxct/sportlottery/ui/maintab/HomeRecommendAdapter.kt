@@ -8,8 +8,11 @@ import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LogUtil
 
 class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListener) :
     RecyclerView.Adapter<ItemHomeRecommendHolder>() {
@@ -21,6 +24,28 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
                 false
             ), homeRecommendListener
         )
+    }
+
+    private fun refreshByBetInfo() {
+        data.forEach { leagueOdd ->
+            leagueOdd.oddsMap?.values?.forEach { oddList ->
+                oddList?.forEach { odd ->
+                    odd?.isSelected = betInfoList.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd?.id
+                    }
+                }
+            }
+            leagueOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                quickPlayCate.quickOdds.forEach { map ->
+                    map.value?.forEach { odd ->
+                        odd?.isSelected = betInfoList.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                    }
+                }
+            }
+        }
+        data.forEachIndexed { index, leagueOdd -> notifyItemChanged(index, leagueOdd) }
     }
 
     var oddsType: OddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.EU
@@ -36,7 +61,37 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
             field = value
             notifyDataSetChanged()
         }
+    var betInfoList: MutableList<BetInfoListData> = mutableListOf()
+        set(value) {
+            field = value
+            var isInMatch = false
+            var isInQuick = false
+            field.forEach {
+                LogUtil.d("field=" + it.matchOdd.oddsId)
+            }
+            data.forEachIndexed { index, recommend ->
+                LogUtil.d("leagueName=" + recommend.leagueName + "," + recommend.oddsMap?.size)
+                recommend.oddsMap?.values?.forEach { oddList ->
+                    oddList?.forEach { odd ->
+                        odd?.isSelected = field.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }.also {
+                            if (it)
+                                LogUtil.d("isSelected=" + odd?.name)
+                        }
+                    }
+                }
+//                if (isInMatch || isInQuick) {
+                notifyItemChanged(index, recommend)
+//                    isInMatch = false
+//                    isInQuick = false
+//                }
+            }
+        }
 
+    fun updateLeague(position: Int, payload: LeagueOdd) {
+        notifyItemChanged(position, payload)
+    }
 
     override fun onBindViewHolder(holder: ItemHomeRecommendHolder, position: Int) {
         val itemData = data[position]
@@ -74,7 +129,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
         private val onClickAnimationIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit
     ) {
         fun onItemClickListener() = onItemClickListener.invoke()
-
         fun onClickBetListener(
             gameType: String,
             matchType: MatchType,
@@ -83,17 +137,19 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
             playCateCode: String,
             playCateName: String,
             betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-            playCateMenuCode: String?
-        ) = onClickBetListener.invoke(
-            gameType,
-            matchType,
-            matchInfo,
-            odd,
-            playCateCode,
-            playCateName,
-            betPlayCateNameMap,
-            playCateMenuCode
-        )
+            playCateMenuCode: String?,
+        ) {
+            onClickBetListener.invoke(
+                gameType,
+                matchType,
+                matchInfo,
+                odd,
+                playCateCode,
+                playCateName,
+                betPlayCateNameMap,
+                playCateMenuCode
+            )
+        }
 
         fun onClickFavoriteListener(matchId: String?) = onClickFavoriteListener.invoke(matchId)
         fun onClickStatisticsListener(matchId: String) = onClickStatisticsListener.invoke(matchId)

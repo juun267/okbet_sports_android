@@ -189,7 +189,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     JumpUtil.toInternalWeb(
                         this,
                         Constants.getPrivacyRuleUrl(this),
-                        resources.getString(R.string.privacy_policy)
+                        resources.getString(R.string.register_privacy_policy)
                     )
                 })
         )
@@ -247,7 +247,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etWithdrawalPwd.visibility = View.GONE
                 binding.etPhone.visibility = View.GONE
                 block_sms_valid_code.visibility = View.GONE
-
+                block_valid_code.visibility = View.GONE
 
                 binding.etIdentityType.visibility = View.GONE
                 binding.etIdentityNumber.visibility = View.GONE
@@ -269,6 +269,13 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 binding.etPostal.visibility = View.GONE
                 binding.etProvince.visibility = View.GONE
                 binding.etCity.visibility = View.GONE
+
+                binding.etQq.visibility = View.GONE
+                binding.etWeChat.visibility = View.GONE
+                binding.etZalo.visibility = View.GONE
+                binding.etFacebook.visibility = View.GONE
+                binding.etWhatsApp.visibility = View.GONE
+                binding.etTelegram.visibility = View.GONE
 
                 binding.clAgreement.visibility = View.VISIBLE
                 binding.etRecommendCode.visibility = View.VISIBLE

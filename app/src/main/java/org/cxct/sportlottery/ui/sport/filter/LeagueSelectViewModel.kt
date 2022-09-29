@@ -8,8 +8,6 @@ import com.github.promeg.pinyinhelper.Pinyin
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -52,11 +50,6 @@ class LeagueSelectViewModel(
         date: String? = null,
         leagueIdList: List<String>? = null,
     ) {
-        //波胆要传 playCateMenuCode
-        var playCateMenuCode: String? = null
-        if (matchType == MatchType.CS.postValue) {
-            playCateMenuCode = MenuCode.CS.code
-        }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.leagueService.getLeagueList(
@@ -65,8 +58,7 @@ class LeagueSelectViewModel(
                         matchType,
                         startTime = startTime,
                         endTime = endTime,
-                        date = date,
-                        playCateMenuCode = playCateMenuCode
+                        date = date
                     )
                 )
             }

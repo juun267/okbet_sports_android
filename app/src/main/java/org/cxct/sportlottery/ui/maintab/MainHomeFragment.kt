@@ -75,7 +75,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private lateinit var mainHomeMenuAdapter: MainHomeMenuAdapter
-    private lateinit var mRecommendList: List<Recommend>
     private val homeRecommendAdapter by lazy {
         HomeRecommendAdapter(
             HomeRecommendAdapter.HomeRecommendListener(
@@ -104,13 +103,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                     viewModel.pinFavorite(FavoriteType.MATCH, it)
                 },
                 onClickStatisticsListener = { matchId ->
-                    mRecommendList.find {
-                        TextUtils.equals(matchId, it.id)
-                    }?.let { recommend ->
-                        recommend.matchInfo?.let {
-                            navOddsDetailFragment(recommend.matchType!!, it)
-                        }
-                    }
+
                 }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
                     checkCreditSystemLogin {
                         matchInfoList.find {
@@ -211,23 +204,20 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
-                mRecommendList = recommendList
-                val adapterRecommendListData = homeRecommendAdapter.data
-                recommendList.forEach { recommend ->
-                    adapterRecommendListData.firstOrNull { adapterRecommend -> adapterRecommend.id == recommend.id }
-                        ?.let { oldRecommend ->
-                            recommend.matchInfo?.status = oldRecommend.matchInfo?.status
-                            recommend.matchInfo?.statusName18n =
-                                oldRecommend.matchInfo?.statusName18n
-                            recommend.matchInfo?.socketMatchStatus =
-                                oldRecommend.matchInfo?.socketMatchStatus
-                            recommend.matchInfo?.leagueTime = oldRecommend.matchInfo?.leagueTime
-                            recommend.runningTime = oldRecommend.runningTime
-                        }
-                }
-                //新版宣傳頁
                 if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-                homeRecommendAdapter.data = recommendList
+                homeRecommendAdapter.data = recommendList.onEach { recommend ->
+                    // 將儲存的賠率表指定的賽事列表裡面
+                    val leagueOddFromMap = leagueOddMap[recommend.leagueId]
+                    var hadSelected = leagueOddFromMap?.oddsMap?.values?.any { oddList ->
+                        oddList?.any { odd ->
+                            odd?.isSelected == true
+                        } == true
+                    } == true
+                    LogUtil.d(leagueOddFromMap?.leagueName + ",hadSelected=" + hadSelected)
+                    leagueOddFromMap?.let {
+                        it.oddsMap = leagueOddFromMap.oddsMap
+                    }
+                }
                 //先解除全部賽事訂
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
@@ -235,29 +225,11 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
-            event.peekContent().let { betList ->
-                val targetList = homeRecommendAdapter.data
-                targetList.forEachIndexed { index, recommend ->
-                    var needUpdate = false
-                    recommend.oddsMap?.values?.forEach { oddList ->
-                        oddList?.forEach { odd ->
-                            val newSelectStatus = betList.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd?.id
-                            }
-                            if (odd?.isSelected != newSelectStatus) {
-                                odd?.isSelected = newSelectStatus
-                                needUpdate = true
-                            }
-                        }
-                    }
-                    if (needUpdate) {
-                        LogUtil.e("needUpdate=" + needUpdate)
-                        homeRecommendAdapter.data = targetList
-                    }
-                }
+            event.peekContent().let { betInfoList ->
+                LogUtil.d("betInfoList=" + betInfoList.size)
+                homeRecommendAdapter.betInfoList = betInfoList
             }
         }
-
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
             event.peekContent().let { isReload ->
                 if (isReload) {
@@ -327,7 +299,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         viewModel.getPublicitySportMenu()
         viewModel.getAnnouncement()
         viewModel.getConfigData()
-        viewModel.getRecommend()
         viewModel.getMenuThirdGame()
         viewModel.getMoney()
     }
@@ -461,12 +432,14 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     }
 
-    // TODO subscribe leagueChange: 此處尚無需實作邏輯, 看之後有沒有相關需求
+    //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
+    private val leagueOddMap = HashMap<String, Recommend>()
     private fun initSocketObservers() {
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
+                    viewModel.getRecommend()
                 }
             }
         }
@@ -534,9 +507,9 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                             recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
                         }
                         //endregion
-
                         if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
                             updateBetInfo(recommend, oddsChangeEvent)
+                            leagueOddMap[recommend.leagueId] = recommend
                             needUpdate = true
                         }
                     }
@@ -680,6 +653,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateMenuCode: String?,
     ) {
+        LogUtil.toJson(odd)
         val gameType = GameType.getGameType(gameTypeCode)
         gameType?.let {
             matchInfo?.let { matchInfo ->

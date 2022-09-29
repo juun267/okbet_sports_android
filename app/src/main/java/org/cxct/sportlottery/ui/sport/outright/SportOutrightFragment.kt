@@ -242,6 +242,8 @@ class SportOutrightFragment :
                 }
             }
         }
+        //冠军不需要筛选
+        lin_filter.isVisible = false
         lin_filter.setOnClickListener {
             gameType?.let {
                 LeagueSelectActivity.start(requireContext(),

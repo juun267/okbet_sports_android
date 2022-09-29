@@ -13,7 +13,7 @@ abstract class OddStateHomeViewHolder(itemView: View) : RecyclerView.ViewHolder(
     }
 
     companion object {
-        private const val HIGH_LIGHT_TIME: Long = 2500
+        private const val HIGH_LIGHT_TIME: Long = 3500
     }
 
     abstract val oddStateChangeListener: OddStateChangeListener

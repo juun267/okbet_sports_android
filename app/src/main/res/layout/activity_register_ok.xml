@@ -57,7 +57,9 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:elevation="0dp"
+                android:overScrollMode="never">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@id/cl_content"
@@ -65,7 +67,7 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="@dimen/margin_24"
                     android:paddingRight="@dimen/margin_24"
-                    android:paddingBottom="100dp">
+                    android:paddingBottom="@dimen/margin_20">
 
                     <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                         android:id="@+id/et_recommend_code"
@@ -1080,7 +1082,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="@dimen/margin_11"
                             android:text="@string/register_please_read"
-                            android:textColor="#6C7BA8"
+                            android:textColor="@color/color_6C7BA8"
                             android:textSize="@dimen/textSize12sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -1093,9 +1095,8 @@
                             android:layout_marginLeft="@dimen/margin_4"
                             android:layout_marginTop="@dimen/margin_11"
                             android:text="@string/register_responsibilities"
-                            android:textColor="@color/color_317FFF_0760D4"
+                            android:textColor="@color/color_025BE8_025BE8"
                             android:textSize="@dimen/textSize12sp"
-                            android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/tvDutyTitle"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -1224,18 +1225,18 @@
             <RelativeLayout
                 android:id="@+id/ll_register"
                 android:layout_width="match_parent"
-                android:layout_height="79dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/register_bg_icon_bottom_bar">
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
 
                 <Button
                     android:id="@+id/btn_register"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginTop="@dimen/margin_20"
-                    android:layout_marginRight="35dp"
+                    android:layout_height="@dimen/margin_45"
+                    android:layout_marginLeft="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_14"
+                    android:layout_marginRight="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_20"
                     android:alpha="0.5"
                     android:background="@drawable/ic_submit"
                     android:enabled="false"

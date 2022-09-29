@@ -23,7 +23,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
@@ -489,8 +488,6 @@ class SportListFragment :
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                     if (mLeagueOddList.isNotEmpty()) {
-                        game_list.layoutManager =
-                            SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                         sportLeagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
                             // 將儲存的賠率表指定的賽事列表裡面
                             val leagueOddFromMap = leagueOddMap[leagueOdd.league.id]
@@ -503,8 +500,6 @@ class SportListFragment :
                             leagueOdd.gameType = gameType
                         }.toMutableList()
                     } else {
-                        game_list.layoutManager =
-                            SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                         sportLeagueAdapter.data = mLeagueOddList
                         // Todo: MatchType.OTHER 要顯示無資料與隱藏篩選清單
                     }
@@ -786,24 +781,6 @@ class SportListFragment :
         }
     }
 
-    private fun updateBetInfo(
-        epsLeagueOddsItem: EpsLeagueOddsItem,
-        oddsChangeEvent: OddsChangeEvent,
-    ) {
-        if (!getBetListPageVisible()) {
-            //尋找是否有加入注單的賠率項
-            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.filter { matchOddsItem -> matchOddsItem.matchInfo?.id == oddsChangeEvent.eventId }
-                    ?.any { matchOdd ->
-                        matchOdd.oddsMap?.values?.any { oddList ->
-                            oddList?.any { odd ->
-                                odd?.isSelected == true
-                            } == true
-                        } == true
-                    } == true) {
-                viewModel.updateMatchOdd(oddsChangeEvent)
-            }
-        }
-    }
 
     private fun updateAllGameList() {
         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {

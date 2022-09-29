@@ -22,7 +22,6 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
-import org.cxct.sportlottery.util.QuickListManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -256,8 +255,7 @@ class OddsButtonHome @JvmOverloads constructor(
 
 //        updateOddsTextColor()
 
-//        isSelected = odds?.isSelected ?: false
-        isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
+        isSelected = odds?.isSelected ?: false
 
     }
 
