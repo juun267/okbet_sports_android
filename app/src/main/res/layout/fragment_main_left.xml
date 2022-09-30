@@ -24,6 +24,7 @@
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="@dimen/margin_50"
                 android:text="@string/setting"
+                android:textFontWeight="500"
                 android:textColor="@color/color_FFF3E1"
                 android:textSize="24dp" />
             <TextView
@@ -41,6 +42,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -91,7 +93,7 @@
                         android:layout_weight="1" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/ic_arrow_gray_right" />
                 </LinearLayout>
@@ -133,7 +135,7 @@
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/selector_arrow_right_up" />
                 </LinearLayout>
@@ -250,7 +252,7 @@
                         tools:src="@drawable/ic_flag_cn" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/selector_arrow_right_up" />
                 </LinearLayout>
@@ -349,7 +351,7 @@
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/ic_arrow_gray_right" />
                 </LinearLayout>
@@ -391,7 +393,7 @@
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/ic_arrow_gray_right" />
                 </LinearLayout>
@@ -433,7 +435,7 @@
                         android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:src="@drawable/ic_arrow_gray_right" />
                 </LinearLayout>
@@ -455,6 +457,7 @@
             android:minHeight="@dimen/margin_68" />
 
         <LinearLayout
+            android:id="@+id/lin_link_zh_en"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
@@ -470,40 +473,32 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_15"
                     android:layout_marginVertical="@dimen/margin_10"
                     android:text="@string/btm_navigation_affiliate"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="@dimen/textSize12sp" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/margin_12"
-                    android:alpha="0.4"
-                    android:background="@color/color_FFFFFF" />
-
                 <TextView
                     android:id="@+id/tv_contact"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_15"
                     android:layout_marginVertical="@dimen/margin_10"
                     android:text="@string/contact"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="@dimen/textSize12sp" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/margin_12"
-                    android:alpha="0.4"
-                    android:background="@color/color_FFFFFF" />
 
                 <TextView
                     android:id="@+id/tv_about_us"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_15"
                     android:layout_marginVertical="@dimen/margin_10"
                     android:text="@string/about_us"
@@ -521,37 +516,133 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_15"
                     android:layout_marginVertical="@dimen/margin_10"
                     android:text="@string/responsible"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="@dimen/textSize12sp" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/margin_12"
-                    android:alpha="0.4"
-                    android:background="@color/color_FFFFFF" />
-
                 <TextView
                     android:id="@+id/tv_terms"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:layout_marginHorizontal="@dimen/margin_15"
                     android:layout_marginVertical="@dimen/margin_10"
                     android:text="@string/terms_conditions"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="@dimen/textSize12sp" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/margin_12"
-                    android:alpha="0.4"
-                    android:background="@color/color_FFFFFF" />
-
                 <TextView
                     android:id="@+id/tv_privacy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginVertical="@dimen/margin_10"
+                    android:text="@string/privacy_policy"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_link_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_affiliate1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginVertical="@dimen/margin_10"
+                    android:text="@string/btm_navigation_affiliate"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_contact1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginVertical="@dimen/margin_10"
+                    android:text="@string/contact"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+
+                <TextView
+                    android:id="@+id/tv_about_us1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginVertical="@dimen/margin_10"
+                    android:text="@string/about_us"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_responsible1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginVertical="@dimen/margin_10"
+                    android:text="@string/responsible"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_terms1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginVertical="@dimen/margin_10"
+                    android:text="@string/terms_conditions"
+                    android:textColor="@color/color_2b2b2b_ffffff"
+                    android:textSize="@dimen/textSize12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_privacy1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

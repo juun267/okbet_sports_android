@@ -37,7 +37,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
     var data: List<Recommend> = mutableListOf()
         set(value) {
             field = value
-
             notifyDataSetChanged()
         }
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()

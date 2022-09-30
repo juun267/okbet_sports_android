@@ -862,7 +862,7 @@ class OddButtonPagerViewHolder private constructor(
 
     private fun String.updatePlayCateColor(): Spanned {
         val color =  if (MultiLanguagesApplication.isNightMode) "#a3a3a3"
-        else "#666666"
+        else "#6C7BA8"
 
         return Html.fromHtml(
             when {

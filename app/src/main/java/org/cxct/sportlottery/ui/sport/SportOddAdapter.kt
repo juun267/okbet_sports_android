@@ -332,7 +332,7 @@ class SportOddAdapter(private val matchType: MatchType) :
 
         private fun String.updatePlayCateColor(): Spanned {
             val color = if (MultiLanguagesApplication.isNightMode) "#a3a3a3"
-            else "#666666"
+            else "#6C7BA8"
 
             return Html.fromHtml(
                 when {
@@ -908,7 +908,9 @@ class SportOddAdapter(private val matchType: MatchType) :
                     }
                 }
                 else -> {
-                    itemView.league_odd_match_time.visibility = View.GONE
+                    itemView.league_odd_match_time.visibility = View.VISIBLE
+                    itemView.league_odd_match_time.text =
+                        TimeUtil.timeFormat(matchInfo?.startTime, TimeUtil.DM_HM_FORMAT)
 //                    itemView.league_odd_match_remain_time_icon.visibility = if (TimeUtil.isTimeToday(matchInfo.startTime)) View.VISIBLE else View.GONE
                 }
             }
@@ -941,11 +943,12 @@ class SportOddAdapter(private val matchType: MatchType) :
                         ""
                     }
                 }
+                TimeUtil.isTimeToday(matchInfo.startTime) -> {
+                    itemView.context.getString((R.string.home_tab_today))
+                }
                 else -> {
-                    if (TimeUtil.isTimeToday(matchInfo.startTime))
-                        itemView.context.getString((R.string.home_tab_today))
-                    else
-                        matchInfo.startDateDisplay
+                    itemView.league_odd_match_status.isVisible = false
+                    ""
                 }
             }
         }

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +47,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         "自动接受任何赔率",
         "不接受任何赔率变动"
     )
+
     private lateinit var oddsPriceAdapter: OddsPriceAdapter
 
     private lateinit var languageAdapter: LanguageAdapter
@@ -72,6 +72,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initLanguageView()
         initObserver()
         getOddsType()
+        setLinkItem()
     }
 
     override fun onResume() {
@@ -149,55 +150,74 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
         }
         //代理加盟
-        tv_affiliate.setOnClickListener {
+        View.OnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAffiliateUrl(requireContext()),
                 resources.getString(R.string.btm_navigation_affiliate)
             )
+        }.apply {
+            tv_affiliate.setOnClickListener(this)
+            tv_affiliate1.setOnClickListener(this)
         }
         //聯繫我們
-        tv_contact.setOnClickListener {
+        View.OnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getContactUrl(requireContext()),
                 getString(R.string.contact)
             )
+        }.apply {
+            tv_contact.setOnClickListener(this)
+            tv_contact1.setOnClickListener(this)
         }
         //關於我們
-        tv_about_us.setOnClickListener {
+        View.OnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAboutUsUrl(requireContext()),
                 getString(R.string.about_us)
             )
+        }.apply {
+            tv_about_us.setOnClickListener(this)
+            tv_about_us1.setOnClickListener(this)
         }
 
         //博彩責任
-        tv_responsible.setOnClickListener {
+        View.OnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getDutyRuleUrl(requireContext()),
                 getString(R.string.responsible)
             )
+        }.apply {
+            tv_responsible.setOnClickListener(this)
+            tv_responsible1.setOnClickListener(this)
         }
 
         //規則與條款
-        tv_terms.setOnClickListener {
+        View.OnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions)
             )
+        }.apply {
+            tv_terms.setOnClickListener(this)
+            tv_terms1.setOnClickListener(this)
         }
         //隱私權條款
         tv_privacy.setVisibilityByCreditSystem()
-        tv_privacy.setOnClickListener {
+        tv_privacy1.setVisibilityByCreditSystem()
+        View.OnClickListener {
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getPrivacyRuleUrl(requireContext()),
                 resources.getString(R.string.privacy_policy)
             )
+        }.apply {
+            tv_privacy.setOnClickListener(this)
+            tv_privacy1.setOnClickListener(this)
         }
 
     }
@@ -333,6 +353,20 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             lin_timezone.visibility = View.GONE
 //            lin_betting_setting.visibility = View.GONE
         }
+    }
+
+    private fun setLinkItem() {
+        when (LanguageManager.getSelectLanguage(context)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.EN -> {
+                lin_link_zh_en.isVisible = true
+                lin_link_other.isVisible = false
+            }
+            else -> {
+                lin_link_zh_en.isVisible = false
+                lin_link_other.isVisible = true
+            }
+        }
+
     }
 
 }

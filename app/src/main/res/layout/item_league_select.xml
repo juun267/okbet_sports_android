@@ -5,7 +5,7 @@
     android:layout_height="@dimen/margin_28"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardBackgroundColor="@color/color_2b2b2b_ffffff"
-    app:cardCornerRadius="@dimen/margin_10"
+    app:cardCornerRadius="@dimen/margin_4"
     app:cardElevation="1dp">
 
     <LinearLayout
@@ -36,6 +36,7 @@
             android:layout_marginHorizontal="@dimen/margin_5"
             android:singleLine="true"
             android:ellipsize="end"
+            android:textFontWeight="500"
             android:textSize="12sp"
             android:textColor="@color/color_535D76"
             tools:text="德国巴伐利亚地区联赛" />
@@ -50,6 +51,9 @@
             android:singleLine="true"
             android:gravity="center"
             android:minWidth="14dp"
+            android:textAlignment="center"
+            android:paddingTop="2dp"
+            android:includeFontPadding="false"
             android:background="@drawable/bg_red_radius_10"
             android:textColor="@color/color_FFFFFF"
             android:textSize="10sp"

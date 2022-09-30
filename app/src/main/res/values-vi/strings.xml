@@ -33,19 +33,19 @@
     <string name="desc_forget_password">vui lòng liên hệ chăm sóc khách hàng</string>
     <string name="sign_up_know">Đăng ký ngay</string>
     <string name="recommend_code">Mã giới thiệu</string>
-    <string name="hint_recommend_code">Vui lòng nhập Mã giới thiệu</string>
+    <string name="hint_recommend_code">Mời nhập mã giới thiệu</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
     <string name="member_account">Tài khoản</string>
-    <string name="hint_member_account">Độ dài từ 4-16 ký tự bao gồm cả chữ và số</string>
+    <string name="hint_member_account">Độ dài từ 4-16 ký tự bao gồm chữ cái và số</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
-    <string name="hint_register_password">Độ dài từ 4-16 ký tự bao gồm chữ cái và số</string>
+    <string name="hint_register_password">Độ dài từ 6-20 ký tự bao gồm chữ cái và số</string>
     <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
     <string name="register_responsibilities">&#160;Chơi có trách nhiệm</string>
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
-    <string name="register_privacy_policy">&#160;chính sách bảo mật</string>
+    <string name="register_privacy_policy">&#160;Chính Sách Bảo Mật</string>
     <string name="register_privacy_policy_promotions"></string>
     <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
     <string name="register_rules_2nd_half">&#160;của %s</string>
@@ -924,7 +924,7 @@
     <string name="customer_service_title">CSKH</string>
 
     <!--自我禁制-->
-    <string name="self_limit">Tự loại trừ</string>
+    <string name="self_limit">vô hiệu hoá</string>
     <string name="self_limit_impotent">Chú ý</string>
     <string name="self_limit_confirm">Xác nhận đơn đăng ký</string>
     <string name="self_limit_fix_confirm">Xác nhận sửa đổi</string>
