@@ -378,7 +378,7 @@
     <string name="title_main_account">选择账户</string>
     <string name="title_name">姓名：</string>
     <string name="title_account">账号：</string>
-    <string name="title_address">地址：</string>
+    <string name="title_address">详细地址：</string>
     <string name="title_deposit_money">存款金额</string>
     <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额%1$s%2$s～%3$s</string>
