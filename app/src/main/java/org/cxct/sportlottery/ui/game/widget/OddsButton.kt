@@ -352,26 +352,26 @@ open class OddsButton @JvmOverloads constructor(
         when (oddState) {
             OddState.LARGER.state -> {
                 tv_odds.setTextColor(
-                    ContextCompat.getColorStateList(
+                    ContextCompat.getColor(
                         context,
-                        R.color.selector_button_odd_bottom_text_green
+                        R.color.color_34CB8A_1D9F51
                     )
                 )
                 iv_arrow.apply {
-                    setImageResource(R.drawable.selector_odds_arrow_up)
+                    setImageResource(R.drawable.ic_arrow_odd_up)
                     visibility = View.VISIBLE
                 }
                 isActivated = false
             }
             OddState.SMALLER.state -> {
                 tv_odds.setTextColor(
-                    ContextCompat.getColorStateList(
+                    ContextCompat.getColor(
                         context,
-                        R.color.selector_button_odd_bottom_text_red
+                        R.color.color_F75452_E23434
                     )
                 )
                 iv_arrow.apply {
-                    setImageResource(R.drawable.selector_odds_arrow_down)
+                    setImageResource(R.drawable.ic_arrow_odd_down)
                     visibility = View.VISIBLE
                 }
                 isActivated = false

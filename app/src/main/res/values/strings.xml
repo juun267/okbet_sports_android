@@ -1206,7 +1206,7 @@
 
     <string name="correct">Correct</string>
 
-    <string name="customer_service">If you need help, please</string>
+    <string name="customer_service">If you need help, please&#160;</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="filter">Filter</string>
 
@@ -1270,4 +1270,5 @@
     <string name="outlet">Outlet</string>
     <string name="transfer_time">Time</string>
     <string name="please_enter_question">请描述您遇到的问题</string>
+    <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
 </resources>

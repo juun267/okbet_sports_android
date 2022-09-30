@@ -62,8 +62,7 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainHomeFragment() :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
+class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -538,7 +537,6 @@ class MainHomeFragment() :
                 }
             }
     }
-
     private fun setupType(publicityMenuData: PublicityMenuData) {
         rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
