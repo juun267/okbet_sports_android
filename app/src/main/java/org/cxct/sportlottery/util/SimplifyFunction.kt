@@ -448,6 +448,17 @@ fun TextView.setTitleLetterSpacing() {
             else -> 0F
         }
 }
+/**
+ * 调整中文文字间距
+ * 中文之外無間距
+ */
+fun TextView.setTitleLetterSpacing2F() {
+    this.letterSpacing =
+        when (LanguageManager.getSelectLanguage(context)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
+            else -> 0F
+        }
+}
 
 /**
  * 目前需求有font weight 500 約等於0.7f

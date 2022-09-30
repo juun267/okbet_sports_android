@@ -1250,7 +1250,7 @@
     <string name="half_second_short">2nd Half</string>
     <string name="unbound_bank_card">No Bank Card/eWallet attached</string>
     <string name="change_other_ID_photos">Change to other ID photos</string>
-    <string name="customer_service">If you need help, please</string>
+    <string name="customer_service">If you need help, please&#160;</string>
     <string name="not_sign_up">Don\'t have an account yet</string>
     <string name="no_search_match">No matches were found</string>
 </resources>

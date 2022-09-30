@@ -153,7 +153,8 @@ class ProfileCenterFragment :
         val version = "V${BuildConfig.VERSION_NAME}"
         tv_current_version.text = version
         tv_version_code.text = getString(R.string.current_version)+version
-
+        tv_withdraw_title.setTitleLetterSpacing2F()
+        tv_deposit_title.setTitleLetterSpacing2F()
     }
 
     fun initToolBar() {

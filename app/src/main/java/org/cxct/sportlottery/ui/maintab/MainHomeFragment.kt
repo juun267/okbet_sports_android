@@ -61,7 +61,9 @@ import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
+/**
+ * @app_destination 首页
+ */
 class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
 
     companion object {
