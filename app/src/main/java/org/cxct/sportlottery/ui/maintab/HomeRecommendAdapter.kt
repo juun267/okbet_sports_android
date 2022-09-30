@@ -12,7 +12,6 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LogUtil
 
 class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListener) :
     RecyclerView.Adapter<ItemHomeRecommendHolder>() {
@@ -26,27 +25,6 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
         )
     }
 
-    private fun refreshByBetInfo() {
-        data.forEach { leagueOdd ->
-            leagueOdd.oddsMap?.values?.forEach { oddList ->
-                oddList?.forEach { odd ->
-                    odd?.isSelected = betInfoList.any { betInfoListData ->
-                        betInfoListData.matchOdd.oddsId == odd?.id
-                    }
-                }
-            }
-            leagueOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                quickPlayCate.quickOdds.forEach { map ->
-                    map.value?.forEach { odd ->
-                        odd?.isSelected = betInfoList.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                    }
-                }
-            }
-        }
-        data.forEachIndexed { index, leagueOdd -> notifyItemChanged(index, leagueOdd) }
-    }
 
     var oddsType: OddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.EU
         set(value) {
@@ -59,33 +37,28 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
     var data: List<Recommend> = mutableListOf()
         set(value) {
             field = value
+
             notifyDataSetChanged()
         }
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
-            var isInMatch = false
-            var isInQuick = false
-            field.forEach {
-                LogUtil.d("field=" + it.matchOdd.oddsId)
-            }
-            data.forEachIndexed { index, recommend ->
-                LogUtil.d("leagueName=" + recommend.leagueName + "," + recommend.oddsMap?.size)
-                recommend.oddsMap?.values?.forEach { oddList ->
+            var needUpdate = false
+            data.forEach {
+                it.oddsMap?.values?.forEach { oddList ->
                     oddList?.forEach { odd ->
-                        odd?.isSelected = field.any { betInfoListData ->
+                        val newSelectStatus = field.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
-                        }.also {
-                            if (it)
-                                LogUtil.d("isSelected=" + odd?.name)
+                        }
+                        if (odd?.isSelected != newSelectStatus) {
+                            odd?.isSelected = newSelectStatus
+                            needUpdate = true
                         }
                     }
                 }
-//                if (isInMatch || isInQuick) {
-                notifyItemChanged(index, recommend)
-//                    isInMatch = false
-//                    isInQuick = false
-//                }
+            }
+            if (needUpdate) {
+                notifyDataSetChanged()
             }
         }
 

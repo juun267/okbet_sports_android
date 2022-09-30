@@ -61,9 +61,7 @@ import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * @app_destination 首页
- */
+
 class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
 
     companion object {
@@ -157,6 +155,13 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         viewModel.getRecommend()
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            viewModel.getRecommend()
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
@@ -207,19 +212,14 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             event?.getContentIfNotHandled()?.let { recommendList ->
                 hideLoading()
                 if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-                homeRecommendAdapter.data = recommendList.onEach { recommend ->
+                recommendList.forEach { recommend ->
                     // 將儲存的賠率表指定的賽事列表裡面
                     val leagueOddFromMap = leagueOddMap[recommend.leagueId]
-                    var hadSelected = leagueOddFromMap?.oddsMap?.values?.any { oddList ->
-                        oddList?.any { odd ->
-                            odd?.isSelected == true
-                        } == true
-                    } == true
-                    LogUtil.d(leagueOddFromMap?.leagueName + ",hadSelected=" + hadSelected)
                     leagueOddFromMap?.let {
-                        it.oddsMap = leagueOddFromMap.oddsMap
+                        recommend.oddsMap = leagueOddFromMap.oddsMap
                     }
                 }
+                homeRecommendAdapter.data = recommendList
                 //先解除全部賽事訂
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
@@ -228,7 +228,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
             event.peekContent().let { betInfoList ->
-                LogUtil.d("betInfoList=" + betInfoList.size)
                 homeRecommendAdapter.betInfoList = betInfoList
             }
         }
@@ -289,12 +288,174 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 //        }
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        if (!hidden) {
-            viewModel.getRecommend()
+    //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
+    private val leagueOddMap = HashMap<String, Recommend>()
+    private fun initSocketObservers() {
+        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    subscribeSportChannelHall()
+                    viewModel.getRecommend()
+                }
+            }
+        }
+
+        receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
+            event?.let { matchStatusChangeEvent ->
+                val targetList = homeRecommendAdapter.data
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+
+                targetList.forEachIndexed { index, recommend ->
+                    val matchList = listOf(recommend).toMutableList()
+                    if (SocketUpdateUtil.updateMatchStatus(
+                            recommend.gameType,
+                            matchList as MutableList<org.cxct.sportlottery.network.common.MatchOdd>,
+                            matchStatusChangeEvent,
+                            context
+                        )
+                    ) {
+                        needUpdate = true
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                    }
+                }
+                if (needUpdate) {
+                    homeRecommendAdapter.data = targetList
+                }
+            }
+        }
+
+        receiver.matchClock.observe(viewLifecycleOwner) {
+            it?.let { matchClockEvent ->
+                val targetList = homeRecommendAdapter.data
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+
+                targetList.forEachIndexed { index, recommend ->
+                    if (
+                        SocketUpdateUtil.updateMatchClock(
+                            recommend,
+                            matchClockEvent
+                        )
+                    ) {
+                        needUpdate = true
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                    }
+                }
+
+                if (needUpdate) {
+                    homeRecommendAdapter.data = targetList
+                }
+            }
+        }
+        receiver.matchOddsChange.observe(viewLifecycleOwner) {
+
+        }
+        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            val targetList = homeRecommendAdapter.data
+                targetList.forEachIndexed { index, recommend ->
+                    if (recommend.id == oddsChangeEvent.eventId) {
+                        recommend.sortOddsMap()
+                        //region 翻譯更新
+                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                            recommend.playCateNameMap?.putAll(playCateNameMap)
+                        }
+                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                            recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                        }
+                        //endregion
+                        if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
+                            updateBetInfo(recommend, oddsChangeEvent)
+                            leagueOddMap[recommend.leagueId] = recommend
+                            homeRecommendAdapter.notifyItemChanged(index, recommend)
+                        }
+                    }
+                }
+        }
+
+        receiver.matchOddsLock.observe(viewLifecycleOwner) {
+            it?.let { matchOddsLockEvent ->
+                val targetList = homeRecommendAdapter.data
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+
+                targetList.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
+                    ) {
+                        needUpdate = true
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                    }
+                }
+
+//                if (needUpdate) {
+//                    homeRecommendAdapter.data = targetList
+//                }
+            }
+        }
+
+//        receiver.leagueChange.observe(viewLifecycleOwner) {
+//            it?.let { leagueChangeEvent ->
+//                viewModel.publicityLeagueChange(leagueChangeEvent)
+//            }
+//        }
+
+        receiver.globalStop.observe(viewLifecycleOwner) {
+            it?.let { globalStopEvent ->
+                val targetList = homeRecommendAdapter.data
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+
+                targetList.forEachIndexed { index, recommend ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            recommend,
+                            globalStopEvent
+                        )
+                    ) {
+                        needUpdate = true
+                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                    }
+                }
+
+//                if (needUpdate) {
+//                    homeRecommendAdapter.data = targetList
+//                }
+            }
+        }
+
+        receiver.producerUp.observe(viewLifecycleOwner) {
+            it?.let {
+                //先解除全部賽事訂閱
+                unSubscribeChannelHallAll()
+                subscribeQueryData(homeRecommendAdapter.data)
+            }
+        }
+
+        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                homeRecommendAdapter.data.forEach { recommend ->
+                    if (recommend.gameType == it.gameType) {
+                        recommend.oddsMap?.forEach { map ->
+                            if (map.key == it.playCateCode) {
+                                map.value?.forEach { odd ->
+                                    odd?.status = BetStatus.DEACTIVATED.code
+                                }
+                            }
+                        }
+                    }
+                }
+                homeRecommendAdapter.notifyDataSetChanged()
+            }
         }
     }
+
+    private fun Recommend.sortOddsMap() {
+        this.oddsMap?.forEach { (_, value) ->
+            if ((value?.size
+                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
+            ) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
+
 
     private fun queryData() {
         mPublicityVersionUpdateViewModel.checkAppVersion()
@@ -434,178 +595,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
     }
 
-    //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
-    private val leagueOddMap = HashMap<String, Recommend>()
-    private fun initSocketObservers() {
-        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    subscribeSportChannelHall()
-                    viewModel.getRecommend()
-                }
-            }
-        }
-
-        receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
-            event?.let { matchStatusChangeEvent ->
-                val targetList = homeRecommendAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
-                    val matchList = listOf(recommend).toMutableList()
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            recommend.gameType,
-                            matchList as MutableList<org.cxct.sportlottery.network.common.MatchOdd>,
-                            matchStatusChangeEvent,
-                            context
-                        )
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-                if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
-                }
-            }
-        }
-
-        receiver.matchClock.observe(viewLifecycleOwner) {
-            it?.let { matchClockEvent ->
-                val targetList = homeRecommendAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (
-                        SocketUpdateUtil.updateMatchClock(
-                            recommend,
-                            matchClockEvent
-                        )
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-
-                if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
-                }
-            }
-        }
-        receiver.matchOddsChange.observe(viewLifecycleOwner) {
-
-        }
-        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = homeRecommendAdapter.data
-            var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-                targetList.forEachIndexed { index, recommend ->
-                    if (recommend.id == oddsChangeEvent.eventId) {
-                        recommend.sortOddsMap()
-                        //region 翻譯更新
-                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                            recommend.playCateNameMap?.putAll(playCateNameMap)
-                        }
-                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                            recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                        }
-                        //endregion
-                        if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
-                            updateBetInfo(recommend, oddsChangeEvent)
-                            leagueOddMap[recommend.leagueId] = recommend
-                            needUpdate = true
-                        }
-                    }
-                }
-                if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
-                }
-        }
-
-        receiver.matchOddsLock.observe(viewLifecycleOwner) {
-            it?.let { matchOddsLockEvent ->
-                val targetList = homeRecommendAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-
-                if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
-                }
-            }
-        }
-
-//        receiver.leagueChange.observe(viewLifecycleOwner) {
-//            it?.let { leagueChangeEvent ->
-//                viewModel.publicityLeagueChange(leagueChangeEvent)
-//            }
-//        }
-
-        receiver.globalStop.observe(viewLifecycleOwner) {
-            it?.let { globalStopEvent ->
-                val targetList = homeRecommendAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend,
-                            globalStopEvent
-                        )
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
-                    }
-                }
-
-                if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
-                }
-            }
-        }
-
-        receiver.producerUp.observe(viewLifecycleOwner) {
-            it?.let {
-                //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(homeRecommendAdapter.data)
-            }
-        }
-
-        receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let {
-                homeRecommendAdapter.data.forEach { recommend ->
-                    if (recommend.gameType == it.gameType) {
-                        recommend.oddsMap?.forEach { map ->
-                            if (map.key == it.playCateCode) {
-                                map.value?.forEach { odd ->
-                                    odd?.status = BetStatus.DEACTIVATED.code
-                                }
-                            }
-                        }
-                    }
-                }
-                homeRecommendAdapter.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private fun Recommend.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size
-                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-
     private fun initRecommendView() {
         with(rv_recommend) {
             if (layoutManager == null) {
@@ -655,7 +644,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateMenuCode: String?,
     ) {
-        LogUtil.toJson(odd)
         val gameType = GameType.getGameType(gameTypeCode)
         gameType?.let {
             matchInfo?.let { matchInfo ->

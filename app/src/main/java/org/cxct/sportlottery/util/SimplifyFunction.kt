@@ -119,7 +119,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                             }
                         }
                         is FavoriteAdapter -> {
-                            LogUtil.d("111")
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 val viewByPosition =
                                     layoutManager?.findViewByPosition(leaguePosition)
@@ -129,7 +128,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             getChildViewHolder(it) as FavoriteAdapter.ItemViewHolder
                                         viewHolder.itemView.rv_league.getVisibleRangePosition()
                                             .forEach { matchPosition ->
-                                                LogUtil.d("222")
                                                 visibleRangePair.add(Pair(leaguePosition,
                                                     matchPosition))
                                             }
@@ -286,7 +284,7 @@ fun RecyclerView.firstVisibleRange(adapter: SportLeagueAdapter, activity: Activi
                     val viewHolder = getChildViewHolder(view) as SportLeagueAdapter.ItemViewHolder
                     viewHolder.itemView.league_odd_list.getVisibleRangePosition()
                         .forEach { matchPosition ->
-                            if (adapter.data.isNotEmpty()) {
+                            if (adapter.data.isNotEmpty() && leaguePosition < adapter.data.size) {
                                 Log.d(
                                     "[subscribe]",
                                     "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +

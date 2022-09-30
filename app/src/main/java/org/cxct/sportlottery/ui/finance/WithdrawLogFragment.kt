@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,8 +22,6 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.toJson
 
 /**
  * @app_destination 提款记录
@@ -151,7 +148,6 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
     private fun setupWithdrawLogList(view: View) {
         view.rvlist.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            LogUtil.d("setupWithdrawLogList")
             addOnScrollListener(recyclerViewOnScrollListener)
             this.adapter = withdrawLogAdapter
             addItemDecoration(
