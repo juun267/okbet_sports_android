@@ -31,16 +31,14 @@
                 android:padding="@dimen/margin_8"
                 android:src="@drawable/ic_arrow_login" />
 
-            <org.cxct.sportlottery.widget.GradientTextView
+            <TextView
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/btn_register"
                 android:textSize="24dp"
-                android:textStyle="bold"
-                app:gt_color_list="@array/register_title_color"
-                app:gt_gradient_direction="right" />
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <LinearLayout
@@ -126,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         app:endIcon="@drawable/ic_eye_close"
-                        app:hintText="@string/error_register_password"
+                        app:hintText="@string/hint_register_password"
                         app:isResponsiveIconColor="false"
                         app:labelText="@string/login_password"
                         app:labelTextStyle="normal"
@@ -1210,6 +1208,7 @@
                             android:gravity="left"
                             android:lineSpacingExtra="3dp"
                             android:textColor="#535D76"
+                            android:textFontWeight="500"
                             android:textColorLink="@color/color_317FFF_0760D4"
                             android:textSize="@dimen/textSize12sp"
                             app:layout_constraintEnd_toEndOf="@+id/clAgreement"

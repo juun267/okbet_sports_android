@@ -28,7 +28,7 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginHorizontal="15dp"
                 tl:cardCornerRadius="10dp"
-                tl:cardMaxElevation="2dp">
+                tl:cardElevation="5dp">
 
                 <com.youth.banner.Banner
                     android:id="@+id/banner"

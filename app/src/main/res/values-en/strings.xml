@@ -39,7 +39,7 @@
     <string name="hint_member_account">4-16 characters and contain numbers and letters.</string>
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="error_register_id_exist">Username already exists</string>
-    <string name="hint_register_password"><![CDATA[(6–20 (English & numbers))]]></string>
+    <string name="hint_register_password">6-20 characters and contain numbers and letters.</string>
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
     <string name="error_password_format">The password must be a combination of numbers, letters</string>
     <string name="register_please_read">Please read our</string>

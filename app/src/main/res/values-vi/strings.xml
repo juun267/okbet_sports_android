@@ -924,7 +924,7 @@
     <string name="customer_service_title">CSKH</string>
 
     <!--自我禁制-->
-    <string name="self_limit">Tự loại trừ</string>
+    <string name="self_limit">vô hiệu hoá</string>
     <string name="self_limit_impotent">Chú ý</string>
     <string name="self_limit_confirm">Xác nhận đơn đăng ký</string>
     <string name="self_limit_fix_confirm">Xác nhận sửa đổi</string>

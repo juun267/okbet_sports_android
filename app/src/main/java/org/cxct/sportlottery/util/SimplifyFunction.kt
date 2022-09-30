@@ -11,6 +11,7 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.os.Environment
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
 import android.view.View
@@ -456,6 +457,19 @@ fun TextView.setTitleLetterSpacing2F() {
             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
             else -> 0F
         }
+}
+
+/**
+ * 设置textview文字渐变
+ */
+fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Boolean) {
+    var spannableStringBuilder = SpannableStringBuilder(text)
+    var span = LinearGradientFontSpan(startColor, endColor, isLeftToRight)
+    spannableStringBuilder.setSpan(span,
+        0,
+        spannableStringBuilder.length,
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    setText(spannableStringBuilder, TextView.BufferType.SPANNABLE)
 }
 
 /**

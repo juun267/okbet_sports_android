@@ -268,9 +268,9 @@ class RegisterViewModel(
     fun checkLoginPassword(password: String?, confirmPassword: String? = null) {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.hint_register_password)
-            password.length !in 6..20 -> LocalUtils.getString(R.string.hint_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.hint_register_password)
+            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
+            password.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
+            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_register_password)
             else -> null
         }
 
