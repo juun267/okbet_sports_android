@@ -62,7 +62,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupObserve() {
         viewModel.loading.observe(this.viewLifecycleOwner, Observer {
             if (it)
-                loading()
+               // loading()
             else
                 hideLoading()
         })

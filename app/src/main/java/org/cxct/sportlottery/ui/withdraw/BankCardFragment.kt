@@ -78,8 +78,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             view.apply {
                 btn_delete_bank.visibility = View.VISIBLE
                 tv_bank_name.text = initData.bankName
+                tv_usdt_name.text = initData.bankName
             }
             return@setupInitData
+
         }
         view.btn_delete_bank.visibility = View.GONE
     }
@@ -462,7 +464,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupObserve() {
         viewModel.loading.observe(this.viewLifecycleOwner, Observer {
             if (it)
-                loading()
+              //  loading()
             else
                 hideLoading()
         })
