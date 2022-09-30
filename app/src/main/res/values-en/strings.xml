@@ -33,10 +33,10 @@
     <string name="desc_forget_password">Please contact customer service</string>
     <string name="sign_up_know">Sign up now!</string>
     <string name="recommend_code">Invite Code</string>
-    <string name="hint_recommend_code">Please enter your invite code</string>
+    <string name="hint_recommend_code">Please enter invite code</string>
     <string name="error_recommend_code">Not available the outlet, please confirm</string>
     <string name="member_account">Username</string>
-    <string name="hint_member_account"><![CDATA[(4-16 characters (English & numbers))]]></string>
+    <string name="hint_member_account">4-16 characters and contain numbers and letters.</string>
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="error_register_id_exist">Username already exists</string>
     <string name="hint_register_password"><![CDATA[(6–20 (English & numbers))]]></string>

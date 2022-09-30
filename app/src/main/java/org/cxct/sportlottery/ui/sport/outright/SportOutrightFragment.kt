@@ -136,9 +136,10 @@ class SportOutrightFragment :
                     }
                 },
                 onClickMatch = { outrightItem ->
-                    outrightItem.matchOdd.matchInfo?.let {
-                        navMatchDetailPage(it)
-                    }
+                    outrightItem.leagueExpanded = !outrightItem.leagueExpanded
+                    outrightItem.matchOdd.isExpand = outrightItem.leagueExpanded
+                    subscribeChannelHall(outrightItem?.matchOdd)
+                    updateOutrightAdapterInMain(outrightItem)
                 },
                 clickExpand = { outrightItem ->
                     outrightItem.leagueExpanded = !outrightItem.leagueExpanded

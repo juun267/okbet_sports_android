@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_marginHorizontal="18dp"
+                android:layout_marginHorizontal="15dp"
                 tl:cardCornerRadius="10dp"
                 tl:cardMaxElevation="2dp">
 
@@ -34,13 +34,13 @@
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="135dp"
-                    tl:banner_indicator_normal_width="6dp"
                     tl:banner_indicator_height="6dp"
-                    tl:banner_indicator_selected_width="24dp"
                     tl:banner_indicator_marginBottom="6dp"
+                    tl:banner_indicator_normal_color="@color/color_bbbbbb_ffffff"
+                    tl:banner_indicator_normal_width="6dp"
                     tl:banner_indicator_radius="3dp"
                     tl:banner_indicator_selected_color="@color/color_bbbbbb_ffffff"
-                    tl:banner_indicator_normal_color="@color/color_bbbbbb_ffffff"
+                    tl:banner_indicator_selected_width="24dp"
                     tl:banner_indicator_space="6dp"
                     tl:banner_loop_time="3000"
                     tl:layout_constraintBottom_toBottomOf="parent"
@@ -54,8 +54,9 @@
                 android:id="@+id/lin_announcement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="18dp">
+                android:layout_marginHorizontal="15dp">
 
                 <ImageView
                     android:id="@+id/iv_broadcast_icon"
@@ -63,7 +64,6 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@null"
-                    android:layout_marginLeft="@dimen/margin_5"
                     android:src="@drawable/icon_notice" />
 
                 <org.cxct.sportlottery.ui.common.AutoScrollRecyclerView
@@ -71,7 +71,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginStart="@dimen/margin_6"
+                    android:layout_marginStart="@dimen/margin_4"
+                    android:layout_marginRight="@dimen/margin_3"
                     android:clipChildren="false"
                     tl:speed_dp_sec="60dp"
                     tools:itemCount="1"
@@ -91,14 +92,15 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_15"
                 android:layout_marginTop="@dimen/margin_10">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/rv_type_list"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp"
+                    android:layout_height="200dp"
                     android:orientation="horizontal"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginLeft="10dp"
                     android:nestedScrollingEnabled="false" />
 
                 <include
@@ -106,14 +108,18 @@
                     layout="@layout/view_home_menu_game"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/margin_15"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="10dp"
                     android:visibility="gone"
-                    android:layout_marginTop="@dimen/margin_40" />
+                    tools:visibility="visible" />
 
                 <RadioGroup
                     android:id="@+id/rg_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
                     android:orientation="horizontal">
 
                     <RadioButton

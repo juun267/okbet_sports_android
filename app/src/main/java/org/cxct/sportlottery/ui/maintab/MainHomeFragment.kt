@@ -181,6 +181,9 @@ class MainHomeFragment() :
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
         }
+        btn_register.setOnClickListener {
+            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+        }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
@@ -774,6 +777,7 @@ class MainHomeFragment() :
 
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
+            btn_register.isVisible = !it
             btn_login.isVisible = !it
             lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

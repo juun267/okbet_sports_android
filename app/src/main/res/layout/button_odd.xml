@@ -19,6 +19,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:divider="@drawable/divider_horizontal_4dp"
             android:orientation="horizontal"
             android:showDividers="middle">
@@ -32,7 +33,8 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
-                android:textSize="@dimen/textSize10sp"
+                android:textSize="@dimen/textSize11sp"
+                android:textFontWeight="400"
                 tools:text="义大利"
                 tools:textColor="@color/color_6C7BA8" />
 
@@ -43,7 +45,8 @@
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
-                android:textSize="@dimen/textSize10sp"
+                android:textSize="@dimen/textSize11sp"
+                android:textFontWeight="400"
                 tools:text="-0.5/1"
                 tools:textColor="@color/color_6C7BA8" />
 
@@ -68,7 +71,8 @@
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/helvetica"
+                android:fontFamily="@font/din_font"
+                android:textFontWeight="700"
                 android:includeFontPadding="false"
                 android:textColor="@color/selector_button_odd_bottom_text"
                 android:textSize="@dimen/textSize14sp"
@@ -83,10 +87,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_radius_4_button_odds_lock"
-        android:scaleType="centerInside"
+        android:padding="@dimen/margin_11"
         android:src="@drawable/ic_lock"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/img_odd_unknown"

@@ -9,11 +9,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cvBlock"
         android:layout_width="320dp"
-        android:layout_height="140dp"
+        android:layout_height="150dp"
         android:layout_marginVertical="10dp"
         android:layout_marginRight="@dimen/margin_10"
         app:cardBackgroundColor="@color/color_202020_FCFCFC"
         app:cardCornerRadius="@dimen/margin_10"
+        app:cardElevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +141,7 @@
                         android:padding="@dimen/margin_5"
                         android:background="@drawable/bg_circle_stroke_team_log"
                         android:layout_marginBottom="@dimen/margin_5"
+                        android:layout_marginTop="10dp"
                         android:scaleType="centerInside"
                         tools:src="@drawable/bg_recommend_game_default" />
 
@@ -257,6 +259,7 @@
                         android:padding="@dimen/margin_5"
                         android:background="@drawable/bg_circle_stroke_team_log"
                         android:layout_marginBottom="@dimen/margin_5"
+                        android:layout_marginTop="10dp"
                         android:scaleType="centerInside"
                         tools:src="@drawable/bg_recommend_game_default" />
 
@@ -280,7 +283,8 @@
                 android:id="@+id/oddsBlock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -289,7 +293,7 @@
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
                     android:id="@+id/oddBtn1"
                     android:layout_width="0dp"
-                    android:layout_height="32dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_10"
                     android:layout_weight="3" />
 
@@ -323,7 +327,7 @@
                 <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
                     android:id="@+id/oddBtn2"
                     android:layout_width="0dp"
-                    android:layout_height="32dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="3" />
 

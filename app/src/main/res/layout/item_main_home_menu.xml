@@ -11,10 +11,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_margin="5dp"
         android:layout_gravity="bottom"
-        app:cardElevation="@dimen/margin_3"
+        app:cardElevation="@dimen/margin_1"
         app:cardCornerRadius="@dimen/margin_8">
 
         <ImageView
@@ -29,8 +28,7 @@
         android:id="@+id/iv_people"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_10"
+        android:layout_margin="5dp"
         android:elevation="@dimen/margin_3"
         android:layout_gravity="right"
         android:adjustViewBounds="true"
@@ -51,6 +49,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_414655"
             android:textSize="20sp"
+            android:textFontWeight="600"
             tools:text="足球" />
 
         <TextView
@@ -59,8 +58,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_025BE8"
             android:fontFamily="@font/din_font"
-            android:textStyle="bold"
-            android:textSize="30sp"
+            android:textFontWeight="700"
+            android:textSize="32sp"
             tools:text="2290" />
 
         <View

@@ -106,10 +106,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun initBottomFragment() {
         fragmentHelper = FragmentHelper(supportFragmentManager, R.id.fl_content, fragments)
         bottom_navigation_view.apply {
-            enableAnimation(true)
+            enableAnimation(false)
             enableShiftingMode(false)
             setTextVisibility(true)
-            setTextSize(12f)
+            setTextSize(10f)
             setIconSize(30f)
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
