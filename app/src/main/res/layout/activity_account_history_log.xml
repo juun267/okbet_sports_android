@@ -26,8 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:background="@color/color_2B3859_F3F9FF"
-        app:layout_constraintTop_toBottomOf="@id/date_range_selector"
-        android:layout_marginTop="@dimen/margin_20">
+        app:layout_constraintTop_toBottomOf="@id/date_range_selector">
 
         <org.cxct.sportlottery.ui.component.StatusSpinnerView
             android:id="@+id/selector_order_status"

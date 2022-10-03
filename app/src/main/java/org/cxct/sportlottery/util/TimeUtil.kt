@@ -173,6 +173,20 @@ object TimeUtil {
     fun dateToTimeStamp(
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
+        dateFormatPattern: String = YMD_FORMAT,
+        timeZone: TimeZone? = TimeZone.getDefault(),
+        locale: Locale = Locale.getDefault()
+    ): Long? {
+        if (date.isNullOrEmpty()) return null
+        val formatter = SimpleDateFormat("$dateFormatPattern", locale)
+        formatter.timeZone = timeZone
+        val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
+        return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
+    }
+    fun dateToTimeStamp2(
+        date: String?,
+        timeType: TimeType = TimeType.START_OF_DAY,
         dateFormatPattern: String = YMD_FORMAT_2,
         timeZone: TimeZone? = TimeZone.getDefault(),
         locale: Locale = Locale.getDefault()

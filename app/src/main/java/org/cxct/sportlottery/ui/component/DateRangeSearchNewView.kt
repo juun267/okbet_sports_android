@@ -32,7 +32,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     var timeZone: TimeZone = TimeZone.getDefault()
 
     val startTime: Long?
-        get() = TimeUtil.dateToTimeStamp(
+        get() = TimeUtil.dateToTimeStamp2(
             tv_start_date.text.toString(),
             TimeUtil.TimeType.START_OF_DAY,
             timeZone = timeZone
@@ -40,7 +40,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
 
 
     val endTime: Long?
-        get() = TimeUtil.dateToTimeStamp(
+        get() = TimeUtil.dateToTimeStamp2(
             tv_end_date.text.toString(),
             TimeUtil.TimeType.END_OF_DAY,
             timeZone = timeZone
