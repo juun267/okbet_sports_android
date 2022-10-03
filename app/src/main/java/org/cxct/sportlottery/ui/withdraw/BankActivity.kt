@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.LogUtil
 import timber.log.Timber
 
 /**
@@ -39,14 +40,20 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
     }
 
     private fun checkMode() {
-        val addBank = intent.getIntExtra("add_bank", 0)
-        if (addBank == 1) {
-            val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
-                null,
-                TransferType.BANK
-            )
-            mNavController.navigate(action)
-        }
+        val addBank = intent.getIntExtra("add_bank",0)
+        addBank?.let { when(addBank){ //从提款页面携带数据跳转相应的新增Tab
+            1 ->{
+                goTOTabFragment(TransferType.BANK)
+            }
+            2 ->{
+                goTOTabFragment(TransferType.CRYPTO)
+            }
+            3 ->{
+                goTOTabFragment(TransferType.E_WALLET)
+            }
+
+        } }
+
 
         val modifyType = intent.getSerializableExtra(ModifyBankTypeKey)?.let { it as TransferType? }
         val transferTypeAddSwitch =
@@ -84,7 +91,14 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
             }
         }
     }
-
+    private fun goTOTabFragment(type: TransferType){
+        val action =
+            BankListFragmentDirections.actionBankListFragmentToBankCardFragment(
+                null,
+                type,
+            )
+        mNavController.navigate(action)
+    }
     private fun setupBankSetting() {
         viewModel.getMoneyConfigs()
     }
