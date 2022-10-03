@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -59,6 +60,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         (activity as BankActivity).changeTitle(getString(R.string.withdraw_setting))
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun setupObserve() {
         viewModel.loading.observe(this.viewLifecycleOwner, Observer {
             if (it)
