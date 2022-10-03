@@ -71,7 +71,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:duplicateParentState="true"
                 android:background="@drawable/selector_bg_home_tab_menu">
 
                 <TextView
@@ -80,7 +79,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="13dp"
-                    android:duplicateParentState="true"
                     android:text="@string/all_sport"
                     android:textSize="@dimen/textSize14sp"
                         android:textColor="@color/selector_blue_white" />
@@ -92,7 +90,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="6dp"
-                        android:duplicateParentState="true"
                         android:src="@drawable/selector_blue_white_arrow" />
                 </LinearLayout>
 

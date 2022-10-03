@@ -65,9 +65,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         initToolBar()
         initMenu()
         initBottomNav()
-//        initServiceButton()
         initObserve()
-        setFontTheme()
 
         if (sConfigData?.thirdOpen == FLAG_OPEN)
             MultiLanguagesApplication.showAgeVerifyDialog(this)
@@ -81,19 +79,6 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun setFontTheme() {
-        when (LanguageManager.getSelectLanguage(this)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                setTheme(R.style.ChineseTheme)
-            }
-            LanguageManager.Language.VI -> {
-                setTheme(R.style.VietnamTheme)
-            }
-            else -> {
-                setTheme(R.style.EnglishTheme)
-            }
-        }
-    }
 
     override fun onBackPressed() {
         if (navController.currentDestination?.id != R.id.mainFragment) {

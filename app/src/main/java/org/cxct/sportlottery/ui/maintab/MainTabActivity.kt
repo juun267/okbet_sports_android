@@ -141,25 +141,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 val mContent: View = drawerLayout.getChildAt(0)
                 //设置1.1，让主界面更缩小
                 val scale = 1 - slideOffset
-                val rightScale = 0.5f + scale * 0.5f
+                val rightScale = 0.55f + scale * 0.45f
                 if (drawerView.tag == "LEFT") {
                     val leftScale = 1 - scale
                     drawerView.scaleX = leftScale
                     drawerView.scaleY = leftScale
                     drawerView.alpha = 1f
-                    mContent.translationX = drawerView.measuredWidth * (1 - scale)
+                    mContent.translationX = drawerView.measuredWidth * (1 - scale) * 0.94f
                     mContent.pivotX = 0f
                     mContent.pivotY = (mContent.measuredHeight / 2).toFloat()
                     mContent.invalidate()
-                    //以下代码是仿QQ效果
-                    mContent.scaleX = rightScale
-                    mContent.scaleY = rightScale
-                } else {
-                    mContent.translationX = -(drawerView.measuredWidth * slideOffset)
-                    mContent.pivotX = mContent.measuredWidth.toFloat()
-                    mContent.pivotY = (mContent.measuredHeight / 2).toFloat()
-                    mContent.invalidate()
-                    //以下代码是仿QQ效果
                     mContent.scaleX = rightScale
                     mContent.scaleY = rightScale
                 }
@@ -201,7 +192,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             //選單選擇結束要收起選單
-            left_menu.layoutParams.width = MetricsUtil.getScreenWidth() / 5 * 4 //動態調整側邊欄寬
+            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.85).toInt() //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()

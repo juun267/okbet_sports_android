@@ -93,6 +93,7 @@
                             android:drawableLeft="@drawable/ic_kicks"
                             android:paddingEnd="5dp"
                             android:textColor="@color/color_6C7BA8"
+                            android:fontFamily="@font/din_font"
                             android:textSize="@dimen/textSize10sp"
                             android:visibility="gone"
                             tools:text="1-5"
@@ -222,7 +223,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/din_font"
                                 android:textColor="@color/color_414655"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 tools:text="999" />
                         </LinearLayout>
 
@@ -360,9 +361,9 @@
                                 android:id="@+id/league_odd_match_score_away"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/helvetica"
+                                android:fontFamily="@font/din_font"
                                 android:textColor="@color/color_414655"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 tools:text="999" />
 
                         </LinearLayout>
@@ -571,6 +572,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_535D76"
                     android:textSize="12sp"
+                    android:fontFamily="@font/din_font"
                     android:visibility="gone"
                     tools:text="1-1 2-2 3-3"
                     tools:visibility="visible" />

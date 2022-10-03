@@ -71,12 +71,12 @@
                 android:id="@+id/tv_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/din_font"
-                android:textFontWeight="700"
                 android:includeFontPadding="false"
                 android:textColor="@color/selector_button_odd_bottom_text"
                 android:textSize="@dimen/textSize14sp"
-                tools:text="1.067" />
+                android:fontFamily="@font/din_font"
+                android:textStyle="bold"
+                android:text="1.067" />
         </LinearLayout>
 
 

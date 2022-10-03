@@ -47,7 +47,7 @@
     <string name="register_responsibilities">&#160;Responsible Gaming</string>
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
     <string name="register_privacy_policy">&#160;Privacy Policy</string>
-    <string name="register_privacy_policy_promotions"></string>
+    <string name="register_privacy_policy_promotions">Send me updates and promotions in accordance with the %s</string>
     <string name="register_over_21">I am over 21 years of age and have read and agree to the %1$s’s&#160;</string>
     <string name="register_rules_2nd_half"></string>
     <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>

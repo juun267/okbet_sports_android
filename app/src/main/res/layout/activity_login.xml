@@ -71,6 +71,7 @@
         android:layout_marginTop="@dimen/margin_10"
         android:layout_marginRight="@dimen/margin_10"
         android:background="@drawable/okbet_bg_login_card"
+        android:elevation="2dp"
         android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/label_register">

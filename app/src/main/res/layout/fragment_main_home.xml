@@ -27,13 +27,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
                 android:layout_marginHorizontal="15dp"
+                tl:cardBackgroundColor="@color/color_bbbbbb_ffffff"
                 tl:cardCornerRadius="10dp"
-                tl:cardElevation="5dp">
+                tl:cardElevation="2dp">
 
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="135dp"
+                    android:layout_height="wrap_content"
+                    android:padding="0.5dp"
+                    android:minHeight="135dp"
                     tl:banner_indicator_height="6dp"
                     tl:banner_indicator_marginBottom="6dp"
                     tl:banner_indicator_normal_color="@color/color_bbbbbb_ffffff"
@@ -44,18 +47,24 @@
                     tl:banner_indicator_space="6dp"
                     tl:banner_loop_time="3000"
                     tl:layout_constraintBottom_toBottomOf="parent"
-                    tl:layout_constraintDimensionRatio="375:130"
                     tl:layout_constraintEnd_toEndOf="parent"
                     tl:layout_constraintStart_toStartOf="parent"
                     tl:layout_constraintTop_toTopOf="parent" />
             </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginTop="-9dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_home_banner_shadow" />
 
             <LinearLayout
                 android:id="@+id/lin_announcement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:layout_marginHorizontal="15dp">
 
                 <ImageView
@@ -97,11 +106,13 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/rv_type_list"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="210dp"
                     android:orientation="horizontal"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="visible"
+                    tools:visibility="visible" />
 
                 <include
                     android:id="@+id/lin_menu_game"
@@ -132,6 +143,9 @@
                         android:button="@null"
                         android:checked="true"
                         android:elevation="2dp"
+                        android:shadowRadius="10"
+                        android:shadowColor="@color/color_0500181E"
+                        android:shadowDy="5"
                         android:background="@drawable/selector_bg_home_tab_menu"
                         android:textColor="@color/selector_blue_white"
                         android:textSize="@dimen/textSize14sp"
@@ -143,7 +157,9 @@
                         android:layout_height="26dp"
                         android:minWidth="80dp"
                         android:layout_marginLeft="@dimen/margin_10"
-                        android:elevation="2dp"
+                        android:elevation="1dp"
+                        android:shadowRadius="10"
+                        android:shadowColor="@color/color_0500181E"
                         android:layout_marginBottom="5dp"
                         android:gravity="center"
                         android:button="@null"
@@ -159,7 +175,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_15"
-                android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore="SpUsage, ContentDescription">
@@ -167,7 +182,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:src="@drawable/icon_hot_recommended" />
+                    android:src="@drawable/ic_hot_recommended" />
 
                 <TextView
                     android:id="@+id/tv_hot_recommend"

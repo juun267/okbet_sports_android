@@ -8,48 +8,54 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_home_menu_left">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/background">
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp">
 
-        <FrameLayout
-            android:id="@+id/fl_content"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/background">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp">
-
-        <org.cxct.sportlottery.widget.bottomnavigationview.BottomNavigationViewEx
-            android:id="@+id/bottom_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:elevation="2dp"
-            android:background="@drawable/bg_icon_bottom_bar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:itemTextColor="@color/main_tab_text_selector"
-            app:itemIconSize="30dp"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/main_menu_navigation" />
-
-            <include
-                android:id="@+id/cl_bet_list_bar"
-                layout="@layout/bet_bar_layout"
+            <FrameLayout
+                android:id="@+id/fl_content"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/bet_list_bar_height"
-                android:layout_marginBottom="58dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:visibility="visible" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp">
 
+                <org.cxct.sportlottery.widget.bottomnavigationview.BottomNavigationViewEx
+                    android:id="@+id/bottom_navigation_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:shadowDy="-5"
+                    android:background="@drawable/bg_icon_bottom_bar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:itemTextColor="@color/main_tab_text_selector"
+                    app:itemIconSize="30dp"
+                    app:labelVisibilityMode="labeled"
+                    app:menu="@menu/main_menu_navigation" />
+
+                <include
+                    android:id="@+id/cl_bet_list_bar"
+                    layout="@layout/bet_bar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/bet_list_bar_height"
+                    android:layout_marginBottom="58dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     <!-- 投注單列表 & 快捷投注單 -->
     <FrameLayout
         android:id="@+id/fl_bet_list"
@@ -57,7 +63,6 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="gone" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/left_menu"
         android:name="org.cxct.sportlottery.ui.maintab.MainLeftFragment"
@@ -69,6 +74,5 @@
         android:layout_gravity="left"
         android:tag="LEFT"
         tools:layout="@layout/fragment_main_left" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

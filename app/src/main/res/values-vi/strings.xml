@@ -40,13 +40,13 @@
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
     <string name="hint_register_password">Độ dài từ 6-20 ký tự bao gồm chữ cái và số</string>
-    <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
+    <string name="error_register_password">Mật khẩu từ 6-20 ký tự bao gồm chữ cái và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
     <string name="register_responsibilities">&#160;Chơi có trách nhiệm</string>
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
-    <string name="register_privacy_policy">&#160;Chính Sách Bảo Mật</string>
-    <string name="register_privacy_policy_promotions"></string>
+    <string name="register_privacy_policy">&#160;Mã giới thiệu không tồn tại</string>
+    <string name="register_privacy_policy_promotions">Gửi cho tôi thông tin cập nhật và khuyến mãi theo %s</string>
     <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
     <string name="register_rules_2nd_half">&#160;của %s</string>
     <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>

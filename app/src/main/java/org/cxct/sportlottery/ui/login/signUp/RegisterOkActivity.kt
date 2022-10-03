@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.login.signUp
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
@@ -20,7 +21,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -44,7 +44,6 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
-import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
@@ -182,9 +181,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         //Html.fromHtml("<u>"+getString(R.string.register_privacy_policy)+"</u>")
         //TODO  遗留富文本下划线需要设置
         binding.tvPrivacy.text =
-            "1." + getString(R.string.register_privacy) + getString(R.string.register_privacy_policy) + getString(
-                R.string.register_privacy_policy_promotions
-            )
+            "1." + String.format(getString(R.string.register_privacy_policy_promotions),
+                getString(R.string.register_privacy_policy))
         binding.tvPrivacy.makeLinks(
             Pair(
                 applicationContext.getString(R.string.register_privacy_policy),
@@ -867,9 +865,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             binding.blockSmsValidCode.visibility = View.GONE
         }
 
-//        binding.btnSendSms.setOnClickListener {
-//            sendSms()
-//        }
+        binding.btnSendSms.setOnClickListener {
+            sendSms()
+        }
     }
 
     private fun setupAgreement() {
@@ -1061,7 +1059,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 getString(R.string.hint_phone_number)
             ) {}
         else {
-            //binding.btnSendSms.isEnabled = false
+            binding.btnSendSms.isEnabled = false
             if (phone.substring(0, 1) == "0") {
                 phone = phone.substring(1, phone.length)
             }
@@ -1071,7 +1069,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
     private fun updateValidCode() {
         viewModel.getValidCode()
-        //binding.eetVerificationCode.setText("");
+        binding.eetVerificationCode.setText("");
     }
 
     private fun setupGoToLoginButton() {
@@ -1473,7 +1471,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun updateUiWithResult(smsResult: SmsResult?) {
-        //binding.btnSendSms.isEnabled = true
+        binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
             showSmeTimer300()
         } else {
@@ -1493,20 +1491,19 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                 override fun run() {
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
-                            //binding.btnSendSms.isEnabled = false
-                            //btn_send_sms.text = getString(R.string.send_timer, sec)
-                            //binding.btnSendSms.text = "${sec}s"
-//                            binding.btnSendSms.setTextColor(
-//                                ContextCompat.getColor(
-//                                    this@RegisterOkActivity,
-//                                    R.color.color_AEAEAE_404040
-//                                )
-//                            )
+                            binding.btnSendSms.isEnabled = false
+                            binding.btnSendSms.text = "${sec}s"
+                            binding.btnSendSms.setTextColor(
+                                ContextCompat.getColor(
+                                    this@RegisterOkActivity,
+                                    R.color.color_AEAEAE_404040
+                                )
+                            )
                         } else {
                             stopSmeTimer()
-//                            binding.btnSendSms.isEnabled = true
-//                            binding.btnSendSms.text = getString(R.string.get_verification_code)
-//                            binding.btnSendSms.setTextColor(Color.WHITE)
+                            binding.btnSendSms.isEnabled = true
+                            binding.btnSendSms.text = getString(R.string.get_verification_code)
+                            binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }
                 }
@@ -1515,8 +1512,8 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             e.printStackTrace()
 
             stopSmeTimer()
-//            binding.btnSendSms.isEnabled = true
-//            binding.btnSendSms.text = getString(R.string.get_verification_code)
+            binding.btnSendSms.isEnabled = true
+            binding.btnSendSms.text = getString(R.string.get_verification_code)
         }
     }
 

@@ -112,6 +112,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:maxLines="1"
+                            android:maxLength="16"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp"
                             android:textColorHint="@color/color_C9CFD7" />
@@ -138,6 +139,7 @@
                             android:layout_height="wrap_content"
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
+                            android:maxLength="20"
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp"
@@ -166,6 +168,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:maxLines="1"
+                            android:maxLength="20"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp"
                             android:textColorHint="@color/color_C9CFD7" />

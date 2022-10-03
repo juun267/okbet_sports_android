@@ -9,7 +9,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.button_odd.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -63,8 +63,6 @@ open class OddsButton @JvmOverloads constructor(
 
     private var mOddsType: OddsType = OddsType.EU
 
-    private var mFillet = true
-
     private var hideItem = false
 
     private var mBackground: Drawable? = null
@@ -75,7 +73,6 @@ open class OddsButton @JvmOverloads constructor(
 
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
-        mFillet = typedArray.getBoolean(R.styleable.OddsButton_ob_fillet, true)
         hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
@@ -318,7 +315,7 @@ open class OddsButton @JvmOverloads constructor(
         img_odd_lock.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+                R.drawable.bg_radius_4_button_odds_lock
             )
 
             visibility =
@@ -332,7 +329,7 @@ open class OddsButton @JvmOverloads constructor(
         img_odd_unknown.apply {
             background = ContextCompat.getDrawable(
                 context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+                R.drawable.bg_radius_4_button_odds_lock
             )
 
             visibility =

@@ -31,9 +31,10 @@ import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
-import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
+import org.cxct.sportlottery.util.HomePageStatusManager
+import org.cxct.sportlottery.util.observe
+import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.greenrobot.eventbus.EventBus
 
 
@@ -137,45 +138,37 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
 
             tabLayout.getTabAt(0)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_in_play), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_in_play)
                 tv_number?.text = countInPlay.toString()
             }
 
             tabLayout.getTabAt(1)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_at_start), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_at_start)
                 tv_number?.text = countAtStart.toString()
             }
 
             tabLayout.getTabAt(2)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_today), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_today)
                 tv_number?.text = countToday.toString()
             }
 
             tabLayout.getTabAt(3)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_early)
                 tv_number?.text = countEarly.toString()
             }
             tabLayout.getTabAt(4)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_outright)
                 tv_number?.text = countOutright.toString()
             }
             tabLayout.getTabAt(5)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_cs), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_cs)
                 tv_number?.text = countCS.toString()
             }
             tabLayout.getTabAt(6)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
+                tv_title?.text = getString(R.string.home_tab_parlay)
                 tv_number?.text = countParlay.toString()
             }
 
-            //英文 越南文稍微加寬padding 不然會太擠
-            if (LanguageManager.getSelectLanguage(requireContext()) != LanguageManager.Language.ZH) {
-                for (i in 0 until tabLayout.tabCount) {
-                    tabLayout.getTabAt(i)?.customView.apply {
-                        this?.setPadding(8.dp, 0, 16.dp, 0)
-                    }
-                }
-            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -33,7 +33,7 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica"
+                    android:fontFamily="@font/din_font"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
@@ -46,10 +46,11 @@
                     android:id="@+id/tv_spread"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica"
+                    android:fontFamily="@font/din_font"
+                    android:textStyle="bold"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize13sp"
+                    android:textSize="@dimen/textSize14sp"
                     tools:text="-0.5/1"
                     tools:textColor="@color/color_6C7BA8" />
 
@@ -76,7 +77,8 @@
                     android:id="@+id/tv_odds"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helvetica"
+                    android:fontFamily="@font/din_font"
+                    android:textStyle="bold"
                     android:textColor="@color/selector_button_odd_bottom_text"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="1.067" />
@@ -102,8 +104,9 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_radius_4_button_odds_lock"
             android:gravity="center"
-            android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_7F7F7F_999999"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_FFFFFF_535D76"
             android:text="@string/unknown_data"
             android:visibility="gone" />
 
