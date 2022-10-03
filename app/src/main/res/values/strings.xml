@@ -520,7 +520,7 @@
     <string name="add_credit_card">Add Bank Card</string>
     <string name="add_crypto_card">Add USDT</string>
     <string name="add_e_wallet">Add eWallet</string>
-    <string name="add_credit_or_virtual">add bank card / eWallet / USDT</string>
+    <string name="add_credit_or_virtual">add %1$s</string>
     <string name="create_bank">Bank</string>
     <string name="create_name">Full Name</string>
     <string name="hint_please_enter_create_name">Please enter your bank card name</string>
@@ -1243,7 +1243,7 @@
     <string name="live_streaming">Livestream</string>
     <string name="half_first_short">1st Half</string>
     <string name="half_second_short">2nd Half</string>
-    <string name="my_bank_card">My bank card / eWallet / USDT</string>
+    <string name="my_bank_card">My %1$s</string>
     <string name="my_favorite_empty">You don\'t have favorite events yet</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="cruel_write_off">Still delete</string>
@@ -1265,7 +1265,7 @@
     <string name="transact_type">Transaction Type：</string>
     <string name="login_welcome">Hi,Welcome to OKbet~</string>
     <string name="betting">Betting</string>
-    <string name="unbound_bank_card">No Bank Card/eWallet attached</string>
+    <string name="unbound_bank_card">You do not have %1$s bound</string>
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
     <string name="transfer_time">Time</string>

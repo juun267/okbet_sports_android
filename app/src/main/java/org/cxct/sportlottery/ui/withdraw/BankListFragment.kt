@@ -71,7 +71,21 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             mBankListAdapter.moneyConfig = it
         })
 
-
+        viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, Observer {
+         //   mBankListAdapter.transferAddSwitch = it
+           it.run {
+                val stringList = arrayListOf<String>()
+                if ((!bankTransfer) && (!cryptoTransfer) && (!walletTransfer)) {
+                    return@Observer
+                }
+                if(bankTransfer) stringList.add(getString(R.string.bank_list_bank))
+                if(cryptoTransfer) stringList.add(getString(R.string.bank_list_crypto))
+                if(walletTransfer) stringList.add(getString(R.string.bank_list_e_wallet))
+               tv_unbind_bank_card.text =  getString(R.string.bank_list_not_bink, stringList.joinToString("/"))
+               tv_add_money_card_type.text= getString(R.string.add_credit_or_virtual, stringList.joinToString("/"))
+               tv_money_card_type.text = getString(R.string.my_bank_card, stringList.joinToString("/"))
+            }
+        })
         viewModel.bankCardList.observe(this.viewLifecycleOwner, Observer { bankCardList ->
             bankCardList.let { data ->
                 mBankListAdapter.bankList = data ?: listOf()

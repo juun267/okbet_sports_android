@@ -41,6 +41,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private lateinit var bankCardAdapter: WithdrawBankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
     private lateinit var betStationFragment: BetStationFragment
+    lateinit var transferTypeAddSwitch :TransferTypeAddSwitch
     private val zero = 0.0
 
     override fun onCreateView(
@@ -87,7 +88,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         }
     }
-
     private fun initView() {
         et_withdrawal_amount.apply {
             clearIsShow = false
@@ -180,18 +180,28 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     getString(R.string.bank_card) -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.BANK)
+                        transferTypeAddSwitch.apply {
+                            add_bank_group.visibility = if (bankTransfer)View.VISIBLE else View.GONE
+                            LogUtil.d("$bankTransfer")
+                        }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
                         clearEvent()
                     }
                     getString(R.string.crypto) -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.CRYPTO)
+                        transferTypeAddSwitch.apply {
+                            add_bank_group.visibility = if (cryptoTransfer)View.VISIBLE else View.GONE
+                        }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_crypto))
                         clearEvent()
                     }
                     getString(R.string.ewallet) -> {
                         selectBetStationTab(false)
                         selectDealType(TransferType.E_WALLET)
+                        transferTypeAddSwitch.apply {
+                            add_bank_group.visibility = if (walletTransfer)View.VISIBLE else View.GONE
+                        }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_e_wallet))
                         clearEvent()
                     }
@@ -294,7 +304,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.submitEnable.observe(viewLifecycleOwner){
             updateButtonStatus(it)
         }
-
+        viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner) {
+            transferTypeAddSwitch = it
+        }
         viewModel.commissionCheckList.observe(this.viewLifecycleOwner) {
             tv_detail.apply {
                 isEnabled = it.isNotEmpty()
@@ -414,7 +426,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             tab_layout.removeAllTabs()
             list.forEach { type->
                 when(type){
-                    TransferType.BANK.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.bank_card))
+                    TransferType.BANK.type -> {
+                        tab_layout.addTab(tab_layout.newTab().setText(R.string.bank_card))
+                        transferTypeAddSwitch.apply {
+                            add_bank_group.visibility = if (bankTransfer)View.VISIBLE else View.GONE
+                            LogUtil.d("$bankTransfer")
+                        }
+                    }
                     TransferType.CRYPTO.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.crypto))
                     TransferType.E_WALLET.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.ewallet))
                     TransferType.STATION.type -> tab_layout.addTab(tab_layout.newTab().setText(R.string.Outlets_Reserve))

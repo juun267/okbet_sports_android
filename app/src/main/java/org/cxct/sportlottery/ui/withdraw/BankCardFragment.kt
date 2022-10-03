@@ -308,6 +308,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun setupTabLayout(transferTypeAddSwitch: TransferTypeAddSwitch?) {
         transferTypeAddSwitch?.apply {
             tab_layout.getTabAt(0)?.view?.visibility = if (bankTransfer) View.VISIBLE else View.GONE
+            LogUtil.d("$bankTransfer")
             tab_layout.getTabAt(1)?.view?.visibility =
                 if (cryptoTransfer) View.VISIBLE else View.GONE
             tab_layout.getTabAt(2)?.view?.visibility =

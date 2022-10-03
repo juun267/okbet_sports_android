@@ -521,7 +521,7 @@
     <string name="add_credit_card">Add Bank Card</string>
     <string name="add_crypto_card">Add USDT</string>
     <string name="add_e_wallet">Add eWallet</string>
-    <string name="add_credit_or_virtual">add bank card / eWallet / USDT</string>
+    <string name="add_credit_or_virtual">add %1$s</string>
     <string name="create_bank">Bank</string>
     <string name="create_name">Full Name</string>
     <string name="hint_please_enter_create_name">Please enter your bank card name</string>
@@ -1244,11 +1244,11 @@
     <string name="outlet">Outlet</string>
     <string name="transfer_time">Time</string>
     <string name="reset_password">Reset password</string>
-    <string name="my_bank_card">My bank card</string>
+    <string name="my_bank_card">My %1$s</string>
     <string name="local_time">Local Time:</string>
     <string name="half_first_short">1st Half</string>
     <string name="half_second_short">2nd Half</string>
-    <string name="unbound_bank_card">No Bank Card/eWallet attached</string>
+    <string name="unbound_bank_card">You do not have %1$s bound</string>
     <string name="change_other_ID_photos">Change to other ID photos</string>
     <string name="customer_service">If you need help, please&#160;</string>
     <string name="not_sign_up">Don\'t have an account yet</string>

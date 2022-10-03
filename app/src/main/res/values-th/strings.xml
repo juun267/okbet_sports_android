@@ -998,7 +998,7 @@
     <string name="text_bank_card_modify_success">แก้ไขบัตรธนาคารสำเร็จ</string>
     <string name="text_e_wallet_modify_success">แก้ไข eWallet สำเร็จ</string>
     <string name="bank_list_add">เพิ่ม %1$s</string>
-    <string name="add_credit_or_virtual">เพิ่มบัตรธนาคาร / eWallet / สกุลเงินเสมือน</string>
+    <string name="add_credit_or_virtual">เพิ่ม %1$s</string>
     <string name="label_in_play_games">เปตอง</string>
     <string name="error_url_fail">ที่อยู่กระโดดผิด</string>
     <string name="error">ความผิดพลาด</string>
@@ -1189,11 +1189,11 @@
     <string name="league_filter">คัดเลือกเหตุการณ์</string>
     <string name="outlet">เดิมพัน</string>
     <string name="no_more">ไม่มีมากกว่านี้แล้ว</string>
-    <string name="my_bank_card">บัครธนาคารของฉัน</string>
+    <string name="my_bank_card">ของฉัน1$s</string>
     <string name="local_time">เวลาปัจจุบัน</string>
     <string name="half_first_short">ครึ่งแรก</string>
     <string name="half_second_short">ครึ่งหลัง</string>
-    <string name="unbound_bank_card">ไม่ติดบัตรธนาคาร/eWallet</string>
+    <string name="unbound_bank_card">คุณไม่ได้ผูกมัด%1$s</string>
     <string name="change_other_ID_photos">เปลี่ยนแปลงเอกสารบัตรประจำตัวอื่นๆ</string>
     <string name="customer_service">ถ้าต้องการความช่วยเหลือ,กรุณา</string>
     <string name="no_search_match">ไม่เจอการแข่งนี้</string>

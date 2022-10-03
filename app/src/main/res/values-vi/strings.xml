@@ -513,7 +513,7 @@
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
     <string name="add_e_wallet">Thêm mới eWallet</string>
-    <string name="add_credit_or_virtual">Thêm mới thẻ ngân hàng / eWallet / tiền ảo</string>
+    <string name="add_credit_or_virtual">Thêm %1$s</string>
 
     <string name="create_bank">Tài khoản ngân hàng</string>
     <string name="create_name">Họ tên chủ thẻ</string>
@@ -1233,11 +1233,11 @@
     <string name="outlet">Trạm cược</string>
     <string name="transfer_time">Thời gian chuyển đổi</string>
     <string name="reset_password">Đặt lại mật khẩu</string>
-    <string name="my_bank_card">" Thẻ ngân hàng của tôi"</string>
+    <string name="my_bank_card">" Của tôi %1$s</string>
     <string name="local_time">Giờ địa phương:</string>
     <string name="half_first_short">Hiệp 1</string>
     <string name="half_second_short">Hiệp 2</string>
-    <string name="unbound_bank_card">Bạn chưa mặc định thẻ ngân hàng / eWallet</string>
+    <string name="unbound_bank_card">Bạn chưa mặc định %1$s</string>
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
     <string name="customer_service">Nếu cần trợ giúp, vui lòng</string>
     <string name="not_sign_up">Chưa có tài khoản</string>
