@@ -432,7 +432,7 @@
     <string name="title_choose_currency">选择协议/币种</string>
     <string name="txv_recharge_count">存款个数</string>
     <string name="edt_hint_crypto_pay_count">限额 %1$s ~ %2$s 个</string>
-    <string name="hint_rate">汇率：%1$s</string>
+    <string name="hint_rate">・汇率：%1$s</string>
     <string name="title_transaction_id">交易ID</string>
     <string name="hint_transaction_id">请输入您的区块链ID</string>
     <string name="hint_fee_rate">・手续费：%1$s</string>

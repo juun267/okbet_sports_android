@@ -446,7 +446,7 @@
     <string name="title_choose_currency">Select agreement/currency</string>
     <string name="txv_recharge_count">Top-up amount</string>
     <string name="edt_hint_crypto_pay_count">Limit %1$s ~ %2$s</string>
-    <string name="hint_rate">Exchange rate：%1$s</string>
+    <string name="hint_rate">・Exchange rate：%1$s</string>
     <string name="title_transaction_id">Block chain trading ID</string>
     <string name="hint_transaction_id">Your block chain trading ID</string>
     <string name="hint_fee_rate">・Service charge：%1$s</string>

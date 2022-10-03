@@ -483,7 +483,7 @@
     <string name="add_credit_card">เพิ่มบัตรธนาคาร</string>
     <string name="add_crypto_card">เพิ่ม USDT</string> <!--J421-->
     <string name="add_e_wallet">เพิ่ม eWallet</string>
-    <string name="hint_rate">อัตราแลกเปลี่ยน：%1$s</string>
+    <string name="hint_rate">・อัตราแลกเปลี่ยน：%1$s</string>
     <string name="go_to_setting">ไปที่การตั้งค่า</string>
     <string name="create_bank">ธนาคารผู้รับฝากเงิน</string>
     <string name="delete_bank_card">ลบบัตรธนาคาร</string>
