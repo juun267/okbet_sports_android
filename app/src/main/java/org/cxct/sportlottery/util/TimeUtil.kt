@@ -173,7 +173,7 @@ object TimeUtil {
     fun dateToTimeStamp(
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
-        dateFormatPattern: String = YMD_HMS_FORMAT,
+        dateFormatPattern: String = YMD_FORMAT_2,
         timeZone: TimeZone? = TimeZone.getDefault(),
         locale: Locale = Locale.getDefault()
     ): Long? {
@@ -335,6 +335,17 @@ object TimeUtil {
         val cPair = getCalendarForDates(minusDays)
         val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT)
         val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT)
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = minusDay
+            override val endTime: String
+                get() = today
+        }
+    }
+    fun getDefaultDate2(minusDays: Int? = 6): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
+        val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT_2)
+        val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT_2)
         return object : TimeRangeParams {
             override val startTime: String
                 get() = minusDay

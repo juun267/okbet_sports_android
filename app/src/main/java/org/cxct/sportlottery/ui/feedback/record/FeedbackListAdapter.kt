@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
+import org.cxct.sportlottery.util.setDate2
 import org.cxct.sportlottery.util.setDateTime
 
 class FeedbackListAdapter(var context: Context, private val clickListener: ItemClickListener) :
@@ -75,7 +76,7 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         }
 
         fun bind(item: FeedBackRows, clickListener: ItemClickListener) {
-            tvTime.setDateTime(item.lastFeedbackTime)
+            tvTime.setDate2(item.lastFeedbackTime)
             tvDescription.text = item.content
             llContent.setOnClickListener {
                 clickListener.onClick(item)

@@ -377,7 +377,7 @@
     <string name="title_main_account">选择账户</string>
     <string name="title_name">姓名：</string>
     <string name="title_account">账号：</string>
-    <string name="title_address">地址：</string>
+    <string name="title_address">详细地址：</string>
     <string name="title_deposit_money">存款金额</string>
     <string name="title_payer">账号</string>
     <string name="edt_hint_deposit_money">限额%1$s%2$s～%3$s</string>
@@ -431,8 +431,8 @@
     <string name="title_choose_currency">选择协议/币种</string>
     <string name="txv_recharge_count">存款个数</string>
     <string name="edt_hint_crypto_pay_count">限额 %1$s ~ %2$s 个</string>
-    <string name="hint_rate">汇率：%1$s</string>
-    <string name="title_transaction_id">区块链交易ID</string>
+    <string name="hint_rate">・汇率：%1$s</string>
+    <string name="title_transaction_id">交易ID</string>
     <string name="hint_transaction_id">请输入您的区块链ID</string>
     <string name="hint_fee_rate">・手续费：%1$s</string>
     <string name="hint_fee_amount">・手续费金额：%1$s %2$s</string>
@@ -511,7 +511,7 @@
     <string name="add_credit_card">新增银行卡</string>
     <string name="add_crypto_card">新增虚拟币地址</string>
     <string name="add_e_wallet">新增eWallet银行</string>
-    <string name="add_credit_or_virtual">新增银行卡 / eWallet / 虚拟币</string>
+    <string name="add_credit_or_virtual">新增%1$s</string>
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
@@ -1248,11 +1248,11 @@
     <string name="outlet">投注站</string>
     <string name="transfer_time">转换时间</string>
     <string name="reset_password">重设密码</string>
-    <string name="my_bank_card">我的银行卡</string>
+    <string name="my_bank_card">我的%1$s</string>
     <string name="local_time">当地时间:</string>
     <string name="half_first_short">上</string>
     <string name="half_second_short">下</string>
-    <string name="unbound_bank_card">您尚未绑定银行卡/eWallet</string>
+    <string name="unbound_bank_card">您尚未绑定%1$s</string>
     <string name="change_other_ID_photos">变更其他证件照</string>
     <string name="customer_service">如需帮助，请</string>
 </resources>

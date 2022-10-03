@@ -184,6 +184,7 @@
 
 
                         <FrameLayout
+                            android:id="@+id/add_bank_group"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/margin_50"
                             android:background="@color/exo_white">

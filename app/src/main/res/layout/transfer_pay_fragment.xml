@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/title_name"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_9FADC6_A5A9B3"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
@@ -114,7 +114,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="使用者姓名" />
 
@@ -148,15 +148,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/title_account"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_9FADC6_A5A9B3"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
                         android:id="@+id/tv_account"
                         android:layout_width="0dp"
+                        android:textStyle="bold"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="1123456789011111" />
 
@@ -192,7 +193,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="@string/title_address"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_9FADC6_A5A9B3"
                         android:textSize="@dimen/textSize13sp" />
 
                     <TextView
@@ -201,7 +202,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:paddingTop="1dp"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize12sp"
                         tools:text="上海市浦东大道2851号" />
 
@@ -219,7 +220,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/title_qr_pay"
-                        android:textColor="@color/color_CCCCCC_000000"
+                        android:textColor="@color/color_9FADC6_A5A9B3"
                         android:textSize="@dimen/textSize13sp" />
 
                     <LinearLayout
@@ -316,6 +317,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:layout_marginStart="@dimen/margin_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dot"
@@ -342,6 +344,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dot"
+                android:layout_marginStart="@dimen/margin_14"
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -615,6 +618,7 @@
 
             <TextView
                 android:id="@+id/title_fee_rate"
+                android:layout_marginStart="@dimen/margin_14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_E44438_e44438"
@@ -644,6 +648,7 @@
             android:layout_marginTop="10dp">
 
             <TextView
+                android:layout_marginStart="@dimen/margin_14"
                 android:id="@+id/title_fee_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -656,7 +661,6 @@
                 android:id="@id/tv_currency_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:textColor="@color/color_E44438_e44438"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="$" />
