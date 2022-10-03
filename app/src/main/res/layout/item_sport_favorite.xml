@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_1"
-    android:background="@drawable/bg_gray_stoke_radius_8"
-    app:cardElevation="1dp"
-    app:cardBackgroundColor="@color/color_bbbbbb_ffffff"
-    app:cardCornerRadius="8dp">
+    android:background="@drawable/bg_gray_stoke_radius_8">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:paddingHorizontal="12dp"
-            android:background="@color/color_bbbbbb_ffffff"
             android:gravity="center_vertical">
 
             <ImageView
@@ -123,6 +118,7 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/ic_kicks"
                         android:paddingEnd="5dp"
+                        android:fontFamily="@font/din_font"
                         android:textColor="@color/color_6C7BA8"
                         android:textSize="@dimen/textSize10sp"
                         android:visibility="gone"
@@ -248,7 +244,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/din_font"
                                 android:textColor="@color/color_414655"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 tools:text="999" />
                         </LinearLayout>
 
@@ -386,9 +382,9 @@
                                 android:id="@+id/league_odd_match_score_away"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/helvetica"
+                                android:fontFamily="@font/din_font"
                                 android:textColor="@color/color_414655"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 tools:text="999" />
 
                         </LinearLayout>
@@ -483,7 +479,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
-                            android:fontFamily="@font/helvetica_bold"
+                            android:fontFamily="@font/din_font"
                             android:gravity="center"
                             android:textColor="@color/color_6C7BA8"
                             android:textSize="@dimen/textSize12sp"
@@ -587,6 +583,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_535D76"
+                    android:fontFamily="@font/din_font"
                     android:textSize="12sp"
                     android:visibility="gone"
                     tools:text="1-1 2-2 3-3"
@@ -614,12 +611,13 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="61dp"
-        android:background="@drawable/bg_dash_hor" />
+        android:layout_height="1dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/bg_dash_hor"
+        android:layerType="software" />
 
     <ImageView
         android:layout_width="4dp"
         android:layout_height="match_parent"
         android:src="@drawable/bg_blue_divide_ver" />
-</androidx.cardview.widget.CardView>
+</FrameLayout>

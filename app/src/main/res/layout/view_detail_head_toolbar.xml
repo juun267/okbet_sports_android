@@ -161,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:text="@string/time_null"
-                        android:fontFamily="@font/helvetica"
+                        android:fontFamily="@font/din_font"
                         android:textColor="@color/color_FFFFFF"
                         android:textSize="@dimen/textSize12sp" />
 
@@ -192,8 +192,9 @@
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:textColor="@color/color_FFFFFF"
-                        android:textSize="@dimen/textSize24sp"
+                        android:textSize="@dimen/textSize26sp"
                         android:fontFamily="@font/din_font"
+                        android:textStyle="bold"
                         android:visibility="gone"
                         tools:text="5 - 5"
                         tools:visibility="visible" />
@@ -392,7 +393,7 @@
                     android:textSize="@dimen/textSize8sp"
                     android:textColor="@color/color_FFFFFF"
                     android:gravity="center"
-                    android:fontFamily="@font/helvetica"
+                    android:fontFamily="@font/din_font"
                     android:visibility="gone"
                     tools:text="1-3"
                     tools:visibility="visible" />
@@ -441,7 +442,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_FFFFFF"
                     android:textSize="@dimen/textSize10sp"
-                    android:fontFamily="@font/helvetica"
+                    android:fontFamily="@font/din_font"
                     android:visibility="gone"
                     android:gravity="center"
                     tools:text="半：2-1"
@@ -479,7 +480,7 @@
                     android:textSize="@dimen/textSize8sp"
                     android:textColor="@color/color_FFFFFF"
                     android:gravity="center"
-                    android:fontFamily="@font/helvetica"
+                    android:fontFamily="@font/din_font"
                     android:visibility="gone"
                     tools:visibility="visible" />
 

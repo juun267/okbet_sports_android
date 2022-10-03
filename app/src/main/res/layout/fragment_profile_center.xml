@@ -50,14 +50,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_toLeftOf="@+id/iv_customer_service">
 
 
                         <ImageView
                             android:id="@+id/iv_user_notice"
-                            android:layout_width="@dimen/margin_20"
-                            android:layout_height="wrap_content"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
                             android:layout_centerInParent="true"
                             android:layout_marginStart="16dp"
                             android:layout_marginEnd="-8dp"
@@ -74,22 +74,22 @@
                     </RelativeLayout>
 
 
-                    <ImageView
-                        android:id="@+id/iv_customer_service"
-                        android:layout_width="22dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_icon_customer02" />
+                        <ImageView
+                            android:id="@+id/iv_customer_service"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_icon_customer02" />
 
-                </RelativeLayout>
+                    </RelativeLayout>
 
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginStart="@dimen/margin_27"
-                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginTop="@dimen/margin_15"
                     android:paddingStart="0dp"
                     android:paddingEnd="@dimen/margin_20">
 
@@ -103,6 +103,7 @@
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_centerVertical="true"
+                            android:elevation="3dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_person_avatar"
                             app:riv_border_color="@color/exo_white"
@@ -159,7 +160,7 @@
                         android:layout_below="@+id/tv_user_nickname"
                         android:layout_marginEnd="20dp"
                         android:layout_toEndOf="@+id/label_user_id"
-                        android:textColor="@color/color_7F7F7F_999999"
+                        android:textColor="@color/color_6C7BA8_A7B2C4"
                         android:textSize="@dimen/textSize12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/label_user_id"
@@ -184,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
-                        android:layout_marginEnd="@dimen/margin_30"
+                        android:layout_marginEnd="@dimen/margin_10"
                         android:paddingStart="@dimen/margin_10"
                         android:paddingTop="@dimen/margin_10"
                         android:paddingBottom="@dimen/margin_10"
@@ -192,26 +193,27 @@
 
                 </RelativeLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/block_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_27"
-                    android:layout_marginTop="@dimen/margin_25"
-                    android:background="@drawable/ic_personal_wallet_bg"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/margin_20"
-                    android:paddingTop="@dimen/margin_5"
-                    android:paddingBottom="@dimen/margin_5">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/block_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_27"
+                        android:layout_marginTop="@dimen/margin_20"
+                        android:background="@drawable/ic_personal_wallet_bg"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="@dimen/margin_5"
+                        android:paddingBottom="@dimen/margin_5">
 
-                    <TextView
-                        android:id="@+id/tv_funds"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:drawableLeft="@drawable/ic_icon_wallet_small"
-                        android:drawablePadding="@dimen/margin_3"
-                        android:text="@string/account_balance"
+                        <TextView
+                            android:id="@+id/tv_funds"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:drawableLeft="@drawable/ic_icon_wallet_small"
+                            android:drawablePadding="@dimen/margin_3"
+                            android:text="@string/account_balance"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/margin_14"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_account_balance"
@@ -234,7 +236,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_3"
-                        android:fontFamily="@font/helvetica_bold"
+                        android:fontFamily="@font/din_font"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize16sp"
                         android:textStyle="bold"
@@ -249,7 +251,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_5"
-                        android:fontFamily="@font/roboto_medium_numbers"
+                        android:fontFamily="@font/din_font"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize20sp"
                         app:autoSizeMaxTextSize="20dp"
@@ -285,6 +287,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginHorizontal="@dimen/margin_14"
+            android:elevation="2dp"
             android:background="@drawable/bg_white_walle"
             android:gravity="center"
             android:orientation="horizontal"
@@ -379,31 +382,30 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/margin_14"
-            android:layout_marginTop="@dimen/margin_5"
-            android:layout_marginEnd="@dimen/margin_14"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/exo_white"
-                app:cardCornerRadius="@dimen/margin_10"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/margin_12"
                     android:orientation="vertical">
 
-
-                    <LinearLayout
-                        android:id="@+id/btn_fund_detail"
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="@dimen/margin_10"
+                        app:cardElevation="2dp"
+                        android:outlineSpotShadowColor="@color/color_0500181E"
+                        app:cardBackgroundColor="@color/color_bbbbbb_ffffff">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <LinearLayout
+                                android:id="@+id/btn_fund_detail"
+                                android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="center"

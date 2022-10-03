@@ -5,8 +5,6 @@
         <item name="colorPrimary">@color/color_317FFF_0760D4</item>
         <item name="colorPrimaryDark">@color/color_317FFF_0760D4</item>
         <item name="colorAccent">@color/color_317FFF_1463cf</item>
-        <item name="fontFamily">@font/helvetica</item>
-
         <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
         <item name="android:colorControlHighlight">@android:color/transparent</item>
 
@@ -19,18 +17,6 @@
 
         <!-- about issue 24880 在設定window背景色時在暗色模式時也會吃這裡 不會吃 night/styles -->
         <!-- <item name="android:windowBackground"></item> -->
-    </style>
-
-    <style name="VietnamTheme" parent="AppTheme">
-        <item name="fontFamily">@font/helvetica</item>
-    </style>
-
-    <style name="ChineseTheme" parent="AppTheme">
-        <item name="fontFamily">@font/helvetica</item>
-    </style>
-
-    <style name="EnglishTheme" parent="AppTheme">
-        <item name="fontFamily">@font/helvetica</item>
     </style>
 
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->
@@ -112,12 +98,10 @@
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
-        <item name="android:elevation">3dp</item>
         <item name="android:clipChildren">false</item>
     </style>
 
     <style name="StyleOddButtonItem">
 <!--        <item name="android:paddingBottom">10dp</item>-->
     </style>
-
 </resources>

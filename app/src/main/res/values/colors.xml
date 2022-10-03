@@ -335,6 +335,7 @@
     <color name="transparent_black_0">#00000000</color>
     <color name="transparent_black_1">#03000000</color>
     <color name="transparent_black_8">#14000000</color>
+    <color name="transparent_black_33">#52000000</color>
     <color name="transparent_black_40">#66000000</color>
     <color name="transparent_black_50">#80000000</color>
     <color name="transparent_black_60">#99000000</color>
@@ -436,6 +437,7 @@
     <color name="color_181922">#181922</color>
     <color name="color_E3E3E3">#E3E3E3</color>
     <color name="color_F1A027">#F1A027</color>
+    <color name="color_0500181E">#0500181E</color>
 
     <!--region keyboard-->
     <color name="color_43546F">#43546F</color>

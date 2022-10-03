@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,18 +12,12 @@ import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
-import kotlinx.android.synthetic.main.content_left_menu_item.view.divider
-import kotlinx.android.synthetic.main.content_left_menu_item.view.tv_count
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
-import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.util.SvgUtil
-import org.cxct.sportlottery.util.isCreditSystem
 import org.cxct.sportlottery.util.listener.OnClickListener
-import org.cxct.sportlottery.util.setVisibilityByCreditSystem
 
 class LeftMenuItemNewAdapter(
     private val isShowMemberLevel: Boolean,
@@ -131,10 +124,6 @@ class LeftMenuItemNewAdapter(
                         txv_price.isSelected = true
                         tv_count.isSelected = true
                     } else {
-                        val typeface: Typeface? =
-                            ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.helvetica_normal)
-                        txv_price.setTypeface(typeface, Typeface.NORMAL)
-                        tv_count.setTypeface(typeface, Typeface.NORMAL)
                         txv_price.isSelected = false
                         tv_count.isSelected = false
                     }

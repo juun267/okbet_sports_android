@@ -1033,7 +1033,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val playNameSpan = SpannableString("$playName ")
             playName?.length?.let {
                 playNameSpan.setSpan(
-                    StyleSpan(Typeface.BOLD), 0,
+                    StyleSpan(Typeface.NORMAL), 0,
                     it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }
@@ -1049,7 +1049,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val playNameSpan = SpannableString(title)
             title?.length?.let {
                 playNameSpan.setSpan(
-                    StyleSpan(Typeface.BOLD),
+                    StyleSpan(Typeface.NORMAL),
                     0,
                     it,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE

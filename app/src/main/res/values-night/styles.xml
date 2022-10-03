@@ -5,7 +5,6 @@
         <item name="colorPrimary">@color/color_317FFF_0760D4</item>
         <item name="colorPrimaryDark">@color/color_317FFF_0760D4</item>
         <item name="colorAccent">@color/color_317FFF_1463cf</item>
-        <item name="fontFamily">@font/helvetica</item>
         <!-- 20210322 紀錄：拿掉按鈕預設 ripple 渲染效果-->
         <item name="android:colorControlHighlight">@android:color/transparent</item>
 
