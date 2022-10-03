@@ -46,6 +46,7 @@ fun TextView.setDate(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT)
 }
 
+
 @BindingAdapter("date2")
 fun TextView.setDate2(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT_2)
