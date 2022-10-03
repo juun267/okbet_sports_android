@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alipay.zoloz.hardware.camera.widget.utils.FocusAreaUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
@@ -474,7 +475,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             it?.fullName?.let { fullName ->
                 if (fullName.isNotEmpty()) eet_create_name.setText(
                     TextUtil.maskFullName(fullName)
-                )
+                ).also {
+                    eet_create_name.isFocusable = false
+                }
             } ?: run {
                 setupClearButtonVisibility(eet_create_name) { inputFullName ->
                     viewModel.checkCreateName(
