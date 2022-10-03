@@ -7,14 +7,14 @@
     android:paddingStart="20dp"
     android:paddingTop="15dp"
     android:paddingEnd="20dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="20dp">
 
     <TextView
         android:id="@+id/tv_start_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="开始日期"
+        android:text="@string/start_date"
         android:textColor="@color/color_535D76"
         android:textSize="@dimen/textSize13sp"
         app:layout_constraintStart_toStartOf="@+id/ll_start_date_box"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="结束日期"
+        android:text="@string/end_date"
         android:textColor="@color/color_535D76"
         android:textSize="@dimen/textSize13sp"
         app:layout_constraintHorizontal_weight="1"
@@ -116,7 +116,7 @@
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_20"
         android:background="@drawable/ic_submit"
         android:ellipsize="end"
         android:gravity="center"
