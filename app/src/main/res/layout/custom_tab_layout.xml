@@ -11,15 +11,15 @@
         android:id="@+id/tab_layout_custom"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:tabTextAppearance="@style/NoUppercaseTab"
+        app:tabTextAppearance="@style/NoCaseTab"
         app:tabIndicator="@drawable/custom_tab_indicator"
         app:tabIndicatorFullWidth="false"
         app:tabMode="fixed"
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
         app:tabRippleColor="@null"
-        app:tabSelectedTextColor="@color/color_BBBBBB_333333"
-        app:tabTextColor="@color/color_909090_666666">
+        app:tabSelectedTextColor="@color/color_D2E4FF_414655"
+        app:tabTextColor="@color/color_6C7BA8_A7B2C4">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/first_tab"
