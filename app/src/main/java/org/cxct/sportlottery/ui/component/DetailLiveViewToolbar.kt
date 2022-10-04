@@ -35,7 +35,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         LIVE, VIDEO, ANIMATION
     }
 
-    private var curType: LiveType? = null
+    open var curType: LiveType? = null
     private var mStreamUrl: String? = null
         set(value) {
             if (value.isNullOrEmpty()) return
@@ -136,6 +136,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun showLive() {
         curType = LiveType.LIVE
+        iv_fullscreen.isVisible = true
         showPlayView()
         switchPlayView(true)
         startPlayer(liveUrl, isLogin)
@@ -145,24 +146,26 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         curType = LiveType.VIDEO
         showPlayView()
 //        setWebViewHeight()
-        if (isLogin) {
-            openWebView()
-            switchPlayView(false)
-        } else {
-            setupNotLogin()
-        }
+//        if (isLogin) {
+        iv_fullscreen.isVisible = true
+        openWebView()
+        switchPlayView(false)
+//        } else {
+//            setupNotLogin()
+//        }
     }
 
     fun showAnime() {
         curType = LiveType.ANIMATION
         showPlayView()
 //        setWebViewHeight()
-        if (isLogin) {
-            openWebView()
-            switchPlayView(false)
-        } else {
-            setupNotLogin()
-        }
+//        if (isLogin) {
+        iv_fullscreen.isVisible = false
+        openWebView()
+        switchPlayView(false)
+//        } else {
+//            setupNotLogin()
+//        }
     }
 
     private fun initOnclick() {

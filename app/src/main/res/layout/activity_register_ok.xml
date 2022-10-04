@@ -976,6 +976,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:visibility="gone"
+                        tools:visibility="visible"
                         app:hintText="@string/hint_telegram"
                         app:isResponsiveIconColor="false"
                         app:labelText="@string/telegram"
@@ -993,6 +994,7 @@
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp"
+                            android:text="111111"
                             android:textColorHint="@color/color_C9CFD7" />
 
                     </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
@@ -1002,9 +1004,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/et_telegram">
 
@@ -1013,26 +1015,29 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:visibility="gone"
-                            app:hideSelectedTitle="true"
+                            android:layout_marginTop="4dp"
+                            app:hintText="@string/dialog_security_title"
                             app:isResponsiveIconColor="false"
-                            app:primaryColor="@color/color_AFAFB1"
-                            app:singleText="@string/verification_code"
-                            app:singleTextStyle="normal">
+                            app:labelText="@string/verification_code"
+                            app:labelTextStyle="normal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_whats_app"
+                            app:primaryColor="@color/color_AFAFB1">
 
                             <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
                                 android:id="@+id/eet_verification_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
                                 android:imeOptions="actionNext"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:textColor="@color/color_FFFFFF_DE000000"
                                 android:textSize="@dimen/textSize14sp"
+                                android:text="111111"
                                 android:textColorHint="@color/color_C9CFD7" />
 
                         </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
 
                         <LinearLayout
                             android:id="@+id/llCheck"
@@ -1042,8 +1047,7 @@
                             android:background="@color/transparent"
                             android:gravity="center"
                             android:minWidth="80dp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
+                            android:orientation="horizontal">
 
                             <com.makeramen.roundedimageview.RoundedImageView
                                 android:id="@+id/ivVerification"

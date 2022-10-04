@@ -34,7 +34,7 @@
     <string name="sign_up_know">Đăng ký ngay</string>
     <string name="recommend_code">Mã giới thiệu</string>
     <string name="hint_recommend_code">Mời nhập mã giới thiệu</string>
-    <string name="error_recommend_code">Not available the outlet, please confirm</string>
+    <string name="error_recommend_code">Mã giới thiệu không tồn tại</string>
     <string name="member_account">Tài khoản</string>
     <string name="hint_member_account">Độ dài từ 4-16 ký tự bao gồm chữ cái và số</string>
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
@@ -45,7 +45,7 @@
     <string name="register_please_read">Hãy đọc kỹ</string>
     <string name="register_responsibilities">&#160;Chơi có trách nhiệm</string>
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
-    <string name="register_privacy_policy">&#160;Mã giới thiệu không tồn tại</string>
+    <string name="register_privacy_policy">&#160;Chính Sách Bảo Mật</string>
     <string name="register_privacy_policy_promotions">Gửi cho tôi thông tin cập nhật và khuyến mãi theo %s</string>
     <string name="register_over_21">Tôi trên 21 tuổi, đã đọc và đồng ý với&#160;</string>
     <string name="register_rules_2nd_half">&#160;của %s</string>
@@ -63,13 +63,13 @@
     <string name="hint_withdrawal_pwd">Mật khẩu gồm 4 chữ số</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="hint_phone_number">Vui lòng nhập số điện thoại</string>
-    <string name="error_phone_number">lỗi định dạng số điện thoại không hợp lệ</string>
+    <string name="error_phone_number">Định dạng số điện thoại không đúng</string>
     <string name="qq_number">QQsố</string>
     <string name="hint_qq_number">Vui lòng nhập QQTài khoản</string>
     <string name="error_qq_number">Lỗi định dạng tài khoản QQ</string>
     <string name="e_mail">Email</string>
     <string name="hint_e_mail">Vui lòng nhập email</string>
-    <string name="error_e_mail">Lỗi định dạng email không đúng</string>
+    <string name="error_e_mail">Lỗi định dạng email</string>
     <string name="postal_code">Mã bưu điện</string>
     <string name="hint_postal_code">Vui lòng nhập mã ZIP</string>
     <string name="province">Tỉnh</string>
@@ -95,7 +95,7 @@
     <string name="hint_security_answer">Hãy nhập câu trả lời</string>
     <string name="real_name">Họ tên thật</string>
     <string name="income_source">Source Of Income</string>
-    <string name="identity_type">Valid ID Type</string>
+    <string name="identity_type">Mời nhập loại giấy tờ</string>
     <string name="betting_shop">Outlet</string>
     <string name="register_identity">Valid ID</string>
     <string name="hint_register_identity">Please enter Valid ID</string>
@@ -1118,7 +1118,7 @@
     <string name="outlets_address_">Địa chỉ：</string>
     <string name="error_recharge_amount_format">Lỗi định dạng số tiền nạp</string>
     <string name="error_amount_limit_exceeded">Số tiền vượt hạn mức</string>
-    <string name="next_step">Bước phía trước</string>
+    <string name="next_step">Bước tiếp theo</string>
 
     <string name="kyc_type">Loại giấy tờ</string>
     <string name="kyc_num">Số giấy tờ</string>

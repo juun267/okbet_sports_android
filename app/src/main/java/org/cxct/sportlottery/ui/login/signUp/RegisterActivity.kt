@@ -19,6 +19,7 @@ import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_register_ok.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
 import org.cxct.sportlottery.network.Constants
@@ -1283,7 +1284,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             }.show(supportFragmentManager, null)
 
         } else {
-            updateValidCode()
             showErrorDialog(loginResult.msg)
         }
     }
@@ -1295,8 +1295,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 .load(bitmap)
                 .into(binding.ivVerification)
         } else {
-            updateValidCode()
-            //et_verification_code.setVerificationCode(null)
+            eet_verification_code.text = null
             ToastUtil.showToastInCenter(
                 this@RegisterActivity,
                 getString(R.string.get_valid_code_fail_point)

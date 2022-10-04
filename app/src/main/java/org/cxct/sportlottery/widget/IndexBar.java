@@ -206,6 +206,15 @@ public class IndexBar extends View {
                 mLastIndex = curIndex;
             }
         }
+//        invalidate();
+    }
+
+    public void updateIndex(int curIndex) {
+        if (curIndex != mLastIndex) {
+            if (curIndex >= 0 && mCharArray != null && curIndex < mCharArray.length) {
+                mLastIndex = curIndex;
+            }
+        }
         invalidate();
     }
 
@@ -237,6 +246,10 @@ public class IndexBar extends View {
     public void setTextArray(CharSequence[] array) {
         this.mCharArray = array;
         invalidate();
+    }
+
+    public CharSequence[] getTextArray() {
+        return this.mCharArray;
     }
 
     /**

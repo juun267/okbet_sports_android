@@ -255,7 +255,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         enterAnim.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
                 collaps_toolbar.isVisible = true
-                iv_fullscreen.isVisible = true
+                if (live_view_tool_bar.curType != DetailLiveViewToolbar.LiveType.ANIMATION) {
+                    iv_fullscreen.isVisible = true
+                }
             }
 
             override fun onAnimationEnd(animation: Animation?) {

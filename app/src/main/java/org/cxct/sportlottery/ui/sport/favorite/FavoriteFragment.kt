@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport.favorite
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -40,6 +41,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
+import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
 
@@ -188,7 +190,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden)
-            viewModel.getFavoriteMatch()
+            viewModel.getFavoriteMatch(gameType?.key)
     }
 
 
@@ -214,6 +216,9 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
+        }
+        lin_search.setOnClickListener {
+            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
         }
     }
 

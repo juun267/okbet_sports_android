@@ -452,7 +452,7 @@ class RegisterViewModel(
             else -> null
         }
         _validCodeMsg.value = Pair(msg, msg == null)
-        focusChangeCheckAllInputComplete(2)
+        focusChangeCheckAllInputComplete(3)
     }
 
     fun sendSms(phone: String) {

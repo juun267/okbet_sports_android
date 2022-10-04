@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_bet_record.*
 import kotlinx.android.synthetic.main.view_status_bar.*
+import kotlinx.android.synthetic.main.view_toolbar_home.*
 import kotlinx.android.synthetic.main.view_toolbar_home.iv_menu_left
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -27,6 +29,7 @@ import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel.Comp
 import org.cxct.sportlottery.ui.main.accountHistory.first.AccountHistoryAdapter
 import org.cxct.sportlottery.ui.main.accountHistory.first.ItemClickListener
 import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
+import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter
 import org.greenrobot.eventbus.EventBus
 
@@ -167,7 +170,9 @@ class BetRecordFragment :
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
         }
-
+        lin_search.setOnClickListener {
+            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
+        }
         cl_bet_all_sports.setOnClickListener(View.OnClickListener {
             if (mListPop.isShowing) {
                 cl_bet_all_sports.isSelected = false

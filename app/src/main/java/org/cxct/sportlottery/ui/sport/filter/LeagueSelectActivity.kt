@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -138,6 +139,24 @@ class LeagueSelectActivity :
             setSelectSum()
         }
         rv_league.adapter = leagueSelectAdapter
+        rv_league.setOnScrollChangeListener(object : View.OnScrollChangeListener {
+            override fun onScrollChange(
+                v: View?,
+                scrollX: Int,
+                scrollY: Int,
+                oldScrollX: Int,
+                oldScrollY: Int,
+            ) {
+                val firstCompletelyVisibleItemPosition =
+                    linearLayoutManager.findFirstCompletelyVisibleItemPosition()
+                var leagueSection = leagueSelectAdapter.getItem(firstCompletelyVisibleItemPosition)
+                leagueSection.let {
+                    var cap =
+                        if (leagueSection?.isHeader == true) leagueSection.header else leagueSection?.t?.firstCap
+                    indexBar.updateIndex(indexBar.getTextArray().indexOf(cap))
+                }
+            }
+        })
     }
 
     private fun initObserve() {
@@ -146,7 +165,9 @@ class LeagueSelectActivity :
                 leagueList = it
                 var map = it.groupBy {
                     it.firstCap
-                }
+                }.toSortedMap(Comparator<String> { o1: String, o2: String ->
+                    o1.compareTo(o2)
+                })
                 map.keys.forEach { name ->
                     itemData.add(LeagueSection(
                         true,
