@@ -46,7 +46,7 @@
          android:layout_marginHorizontal="@dimen/margin_20"
          android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
          android:orientation="vertical"
-         android:layout_marginTop="@dimen/margin_10"
+         android:layout_marginTop="@dimen/margin_14"
          android:paddingBottom="@dimen/margin_3"
          app:layout_constraintTop_toBottomOf="@id/linearLayout"
          app:layout_constraintStart_toStartOf="parent"
@@ -136,8 +136,7 @@
                         android:id="@+id/rvlist"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/margin_10"
-                        android:layout_marginRight="@dimen/margin_10"
+                        android:layout_marginHorizontal="@dimen/margin_1"
                         android:overScrollMode="never"
                         tools:itemCount="3"
                         tools:listitem="@layout/view_item_recharge_log" />

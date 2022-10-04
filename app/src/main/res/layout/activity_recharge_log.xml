@@ -75,7 +75,6 @@
             android:id="@+id/rech_log_column"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:layout_marginTop="@dimen/margin_1"
             android:layout_marginLeft="@dimen/margin_1"
             android:layout_marginRight="@dimen/margin_1"
             android:background="@drawable/bg_white_top_radius_deposit_10">
@@ -130,8 +129,7 @@
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginLeft="@dimen/margin_1"
-            android:layout_marginRight="@dimen/margin_1"
+            android:layout_marginHorizontal="@dimen/margin_1"
             android:layout_marginBottom="@dimen/margin_7"
             app:layout_constraintTop_toBottomOf="@id/rech_log_column"
             app:srlDragRate="0.3"
