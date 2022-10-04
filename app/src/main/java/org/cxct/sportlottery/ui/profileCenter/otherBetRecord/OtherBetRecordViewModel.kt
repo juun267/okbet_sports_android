@@ -136,10 +136,10 @@ class OtherBetRecordViewModel(
     fun querySecondOrders(firmType: String? = null, today: String? = null) {
         val timeZone = TimeZone.getTimeZone(TimeUtil.TIMEZONE_DEFAULT)
         val startTime =
-            TimeUtil.dateToTimeStamp2(today, TimeUtil.TimeType.START_OF_DAY, timeZone = timeZone)
+            TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.START_OF_DAY, timeZone = timeZone)
                 .toString()
         val endTime =
-            TimeUtil.dateToTimeStamp2(today, TimeUtil.TimeType.END_OF_DAY, timeZone = timeZone)
+            TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.END_OF_DAY, timeZone = timeZone)
                 .toString()
         querySecondOrders(startTime = startTime, endTime = endTime, firmType = firmType)
     }

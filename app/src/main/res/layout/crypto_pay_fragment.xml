@@ -68,6 +68,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_account"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -76,7 +77,6 @@
             app:cardElevation="0dp">
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:gravity="center"

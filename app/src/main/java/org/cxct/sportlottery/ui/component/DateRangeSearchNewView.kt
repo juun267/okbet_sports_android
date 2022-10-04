@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT_2
 import java.util.*
 
 class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
@@ -32,7 +33,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     var timeZone: TimeZone = TimeZone.getDefault()
 
     val startTime: Long?
-        get() = TimeUtil.dateToTimeStamp2(
+        get() = TimeUtil.dateToTimeStamp(
             tv_start_date.text.toString(),
             TimeUtil.TimeType.START_OF_DAY,
             timeZone = timeZone
@@ -40,7 +41,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
 
 
     val endTime: Long?
-        get() = TimeUtil.dateToTimeStamp2(
+        get() = TimeUtil.dateToTimeStamp(
             tv_end_date.text.toString(),
             TimeUtil.TimeType.END_OF_DAY,
             timeZone = timeZone
@@ -72,8 +73,8 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     }
 
     private fun initDate(minusDays: Int) {
-        tv_start_date.text = TimeUtil.getDefaultDate2().startTime
-        tv_end_date.text = TimeUtil.getDefaultDate2().endTime
+        tv_start_date.text = TimeUtil.getDefaultDate().startTime
+        tv_end_date.text = TimeUtil.getDefaultDate().endTime
     }
 
     fun setOnClickSearchListener (search: () -> Unit) {
@@ -125,11 +126,11 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     }
 
     private fun setRecordStartTime(start: Calendar) {
-        tv_start_date.text = TimeUtil.timeFormat(start.timeInMillis, TimeUtil.YMD_FORMAT_2)
+        tv_start_date.text = TimeUtil.timeFormat(start.timeInMillis, YMD_FORMAT)
     }
 
     private fun setRecordEndTime(end: Calendar) {
-        tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, TimeUtil.YMD_FORMAT_2)
+        tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, YMD_FORMAT)
     }
 
 
