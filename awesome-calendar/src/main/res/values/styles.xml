@@ -49,7 +49,7 @@
 
     <style name="StripRange">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/strip_height</item>
+        <item name="android:layout_height">@dimen/dayOfMonthBoxSize</item>
         <item name="android:background">@color/range_bg_color</item>
         <item name="android:layout_gravity">center</item>
     </style>
