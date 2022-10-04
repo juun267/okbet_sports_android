@@ -12,8 +12,8 @@ import org.cxct.sportlottery.enum.PassVerifyEnum
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 
 /**
  * @app_destination 自我禁制-帳號登入限制
@@ -112,7 +112,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
 //                                if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                                    MainActivity.reStart(MultiLanguagesApplication.appContext)
 //                                else
-                                GamePublicityActivity.reStart(MultiLanguagesApplication.appContext)
+                                MainTabActivity.reStart(MultiLanguagesApplication.appContext)
                             }
                         }
                     }

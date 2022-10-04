@@ -668,6 +668,7 @@
                                 android:src="@drawable/icon_arrow07" />
 
                             <LinearLayout
+                                android:id="@+id/lin_help_sub"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
@@ -680,8 +681,9 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
+                                    android:layout_weight="0"
                                     android:ellipsize="end"
+                                    android:gravity="center"
                                     android:singleLine="true"
                                     android:text="@string/faqs"
                                     android:textColor="@color/color_A7B2C4"
@@ -696,8 +698,9 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
+                                    android:layout_weight="0"
                                     android:ellipsize="end"
+                                    android:gravity="center"
                                     android:singleLine="true"
                                     android:text="@string/game_rule"
                                     android:textColor="@color/color_A7B2C4"
@@ -712,9 +715,10 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:maxWidth="60dp"
-                                    android:layout_centerVertical="true"
+                                    android:layout_weight="0"
                                     android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxWidth="60dp"
                                     android:singleLine="true"
                                     android:text="@string/feedback"
                                     android:textColor="@color/color_A7B2C4"
@@ -852,59 +856,62 @@
                             android:layout_marginEnd="14dp"
                             android:layout_weight="1">
 
-                            <TextView
-                                android:id="@+id/tv_version"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_weight="1"
-                                android:text="@string/current_version"
-                                android:textColor="@color/color_6C7BA8"
-                                android:textSize="@dimen/textSize14sp" />
-
-                            <TextView
-                                android:id="@+id/tv_version_now"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="@dimen/margin_2"
-                                android:layout_toRightOf="@+id/tv_version"
-                                android:layout_toStartOf="@id/lin_version_new"
-                                android:textColor="@color/color_A5AABF"
-                                android:textSize="@dimen/textSize12sp" />
-
-                            <ImageView
-                                android:id="@+id/iv_line3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@null"
-                                android:src="@drawable/icon_arrow07" />
-
                             <LinearLayout
-                                android:id="@+id/lin_version_new"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_marginRight="@dimen/margin_6"
-                                android:layout_toRightOf="@+id/tv_version_now"
-                                android:layout_toStartOf="@+id/iv_line3">
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical">
 
                                 <TextView
-                                    android:id="@+id/tv_version_code"
+                                    android:id="@+id/tv_version"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/updatable"
-                                    android:textColor="@color/color_A7B2C4"
-                                    android:textSize="@dimen/textSize12sp" />
+                                    android:text="@string/current_version"
+                                    android:textColor="@color/color_6C7BA8"
+                                    android:textSize="@dimen/textSize14sp" />
+
+                                <LinearLayout
+                                    android:id="@+id/lin_version_new"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="right"
+                                    android:layout_centerVertical="true">
+
+                                    <TextView
+                                        android:id="@+id/tv_version_now"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/margin_2"
+                                        android:textColor="@color/color_A5AABF"
+                                        android:textSize="@dimen/textSize12sp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_version_code"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:singleLine="true"
+                                        android:ellipsize="end"
+                                        android:text="@string/updatable"
+                                        android:textColor="@color/color_A7B2C4"
+                                        android:textSize="@dimen/textSize12sp"
+                                        tools:text="@string/updatable" />
+
+                                    <ImageView
+                                        android:id="@+id/iv_version_new"
+                                        android:visibility="gone"
+                                        android:layout_width="31dp"
+                                        android:layout_height="16dp"
+                                        android:src="@drawable/icon_tag_new" />
+                                </LinearLayout>
 
                                 <ImageView
-                                    android:id="@+id/iv_version_new"
-                                    android:visibility="gone"
-                                    android:layout_width="31dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/icon_tag_new" />
+                                    android:id="@+id/iv_line3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/icon_arrow07" />
                             </LinearLayout>
 
                             <View

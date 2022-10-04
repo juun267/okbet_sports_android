@@ -330,11 +330,6 @@ class OddsButtonDetail @JvmOverloads constructor(
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
-            background = ContextCompat.getDrawable(
-                context,
-                R.drawable.bg_radius_4_button_odds_lock
-            )
-
             visibility =
                 if (betStatus == BetStatus.LOCKED.code) {
                     View.VISIBLE
@@ -344,11 +339,6 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         img_odd_unknown.apply {
-            background = ContextCompat.getDrawable(
-                context,
-                R.drawable.bg_radius_4_button_odds_lock
-            )
-
             visibility =
                 if (betStatus == BetStatus.DEACTIVATED.code) {
                     View.VISIBLE
@@ -358,6 +348,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
+        button_odd_detail.isVisible = isEnabled
     }
 
     private fun setupOddState(oddState: Int) {
@@ -368,7 +359,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_34CB8A_1D9F51
+                        R.color.color_1EB65B
                     )
                 )
                 iv_arrow.apply {
@@ -381,7 +372,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                 tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_F75452_E23434
+                        R.color.color_E23434
                     )
                 )
                 iv_arrow.apply {

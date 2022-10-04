@@ -655,9 +655,6 @@ class SportListFragment :
                                     oddsChangeEvent.betPlayCateNameMap?.let {
                                         MatchOdd.betPlayCateNameMap?.putAll(it)
                                     }
-                                    oddsChangeEvent.odds?.let {
-                                        MatchOdd.oddsMap?.putAll(it)
-                                    }
                                 }
                             }
                         }
