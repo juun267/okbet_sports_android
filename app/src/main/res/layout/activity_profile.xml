@@ -121,7 +121,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="ia***18" />
 
                     <ImageView
@@ -173,7 +173,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         android:text="@string/reset_password" />
                     <ImageView
                         android:layout_width="wrap_content"
@@ -215,7 +215,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="ianlee0518" />
 
                 </LinearLayout>
@@ -253,7 +253,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="235291" />
 
                 </LinearLayout>
@@ -293,7 +293,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="ianlee051**" />
 
                     <ImageView
@@ -341,7 +341,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="1022423383" />
 
                     <ImageView
@@ -393,7 +393,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="ianlee051＠gmail.com" />
 
                     <ImageView
@@ -445,7 +445,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="1022423383" />
 
                     <ImageView
@@ -498,7 +498,7 @@
                         android:gravity="end"
                         android:maxLines="1"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp"
+                        android:textSize="@dimen/textSize14sp"
                         tools:text="2443875459" />
 
                     <ImageView
@@ -545,7 +545,7 @@
                         android:text="@string/not_verify"
                         android:textAlignment="textEnd"
                         android:textColor="@color/color_6C7BA8_A7B2C4"
-                        android:textSize="@dimen/textSize12sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <ImageView
                         android:id="@+id/icon_identity"
