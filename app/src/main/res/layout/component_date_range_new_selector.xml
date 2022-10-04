@@ -58,7 +58,8 @@
             android:layout_marginStart="10dp"
             android:hint="@string/hint_birth_date"
             android:fontFamily="@font/din_font"
-            android:textColor="@color/color_FFFFFF_535D76"
+            android:textFontWeight="500"
+            android:textColor="@color/color_9FADC6_535D76"
             android:textSize="@dimen/textSize14sp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true" />
@@ -98,8 +99,9 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:fontFamily="@font/din_font"
+            android:textFontWeight="500"
             android:hint="@string/hint_birth_date"
-            android:textColor="@color/color_FFFFFF_535D76"
+            android:textColor="@color/color_9FADC6_535D76"
             android:textSize="@dimen/textSize14sp" />
 
         <ImageView
@@ -124,7 +126,7 @@
         android:text="@string/inquire"
         android:textAllCaps="true"
         android:textColor="@color/color_FFFFFF_FFFFFF"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_start_date_box" />
