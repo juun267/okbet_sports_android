@@ -103,7 +103,7 @@
     <string name="hint_register_identity">Please enter Valid ID</string>
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">YYYY/MM/DD</string>
-    <string name="hint_real_name">match the bank account name</string>
+    <string name="hint_real_name">Match the bank account name</string>
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code">Registration verification code incorrectly</string>
