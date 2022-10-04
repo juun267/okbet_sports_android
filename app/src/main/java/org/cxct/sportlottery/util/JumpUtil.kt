@@ -45,6 +45,7 @@ object JumpUtil {
     fun toExternalWeb(context: Context, dnbUrl: String?) {
         try {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(dnbUrl))
+            browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(browserIntent)
         } catch (e: Exception) {
             e.printStackTrace()

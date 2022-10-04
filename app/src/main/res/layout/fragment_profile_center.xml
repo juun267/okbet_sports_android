@@ -103,7 +103,6 @@
                             android:layout_width="55dp"
                             android:layout_height="55dp"
                             android:layout_centerVertical="true"
-                            android:elevation="3dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_person_avatar"
                             app:riv_border_color="@color/exo_white"

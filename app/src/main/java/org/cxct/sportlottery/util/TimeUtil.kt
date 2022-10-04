@@ -173,7 +173,7 @@ object TimeUtil {
     fun dateToTimeStamp(
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
-        dateFormatPattern: String = YMD_FORMAT,
+        dateFormatPattern: String = YMD_HMS_FORMAT,
         timeZone: TimeZone? = TimeZone.getDefault(),
         locale: Locale = Locale.getDefault()
     ): Long? {
@@ -184,20 +184,7 @@ object TimeUtil {
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
-    fun dateToTimeStamp2(
-        date: String?,
-        timeType: TimeType = TimeType.START_OF_DAY,
-        dateFormatPattern: String = YMD_FORMAT_2,
-        timeZone: TimeZone? = TimeZone.getDefault(),
-        locale: Locale = Locale.getDefault()
-    ): Long? {
-        if (date.isNullOrEmpty()) return null
-        val formatter = SimpleDateFormat("$dateFormatPattern", locale)
-        formatter.timeZone = timeZone
-        val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
-        val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
-        return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
-    }
+
 
     fun dateToDateFormat(
         date: String?,
@@ -349,17 +336,6 @@ object TimeUtil {
         val cPair = getCalendarForDates(minusDays)
         val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT)
         val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT)
-        return object : TimeRangeParams {
-            override val startTime: String
-                get() = minusDay
-            override val endTime: String
-                get() = today
-        }
-    }
-    fun getDefaultDate2(minusDays: Int? = 6): TimeRangeParams {
-        val cPair = getCalendarForDates(minusDays)
-        val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT_2)
-        val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT_2)
         return object : TimeRangeParams {
             override val startTime: String
                 get() = minusDay
@@ -588,7 +564,7 @@ object TimeUtil {
                 calendar.add(Calendar.DATE, 0)
             else
                 calendar.add(Calendar.DATE, 1)
-            
+
             weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))
         }
         return weekDateList

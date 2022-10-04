@@ -1239,7 +1239,7 @@
     <string name="half_second_short">Hiệp 2</string>
     <string name="unbound_bank_card">Bạn chưa mặc định %1$s</string>
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
-    <string name="customer_service">Nếu cần trợ giúp, vui lòng</string>
+    <string name="customer_service">Nếu cần trợ giúp, vui lòng&#160;</string>
     <string name="not_sign_up">Chưa có tài khoản</string>
     <string name="no_search_match">Không tìm thấy trận đấu</string>
 </resources>
