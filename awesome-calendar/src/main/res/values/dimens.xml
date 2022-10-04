@@ -9,14 +9,14 @@
     <dimen name="weekRowMinHeight">8dp</dimen>
     <dimen name="text_size_date">16dp</dimen>
     <dimen name="dayOfMonthBoxSize">44dp</dimen>
-    <dimen name="dayOfMonthMinWidth">50dp</dimen>
+    <dimen name="dayOfMonthMinWidth">44dp</dimen>
     <dimen name="dayOfMonthMinHeight">0dp</dimen>
     <dimen name="dayOfMonthPaddingBottom">0dp</dimen>
 
     <dimen name="strip_height">24dp</dimen>
 
     <dimen name="dayOfMonthCircleWidth">34dp</dimen>
-    <dimen name="dayOfMonthCircleHeight">24dp</dimen>
+    <dimen name="dayOfMonthCircleHeight">34dp</dimen>
 
     <dimen name="dayOfMonthBoxHeight">34dp</dimen>
     <dimen name="dayOfMonthBoxWidth">44dp</dimen>
