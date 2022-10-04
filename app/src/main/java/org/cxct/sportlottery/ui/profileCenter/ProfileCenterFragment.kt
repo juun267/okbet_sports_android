@@ -9,7 +9,10 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
@@ -380,16 +383,34 @@ class ProfileCenterFragment :
         }
 
         //建議反饋
-     /*   tv_feedback.setOnClickListener {
-            startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
-        }*/
+        /*   tv_feedback.setOnClickListener {
+               startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
+           }*/
 
 //        btn_time_zone.visibility = View.GONE
         //时区切换
         btn_time_zone.setOnClickListener {
             startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
         }
-
+        /**
+         * 中英文，区分其他语言布局
+         */
+        when (LanguageManager.getSelectLanguage(requireContext())) {
+            LanguageManager.Language.ZH, LanguageManager.Language.EN -> {
+                lin_help_sub.children.filter { it is TextView }.forEach {
+                    (it.layoutParams as LinearLayout.LayoutParams).apply {
+                        this.weight = 0f
+                    }
+                }
+            }
+            else -> {
+                lin_help_sub.children.filter { it is TextView }.forEach {
+                    (it.layoutParams as LinearLayout.LayoutParams).apply {
+                        this.weight = 1f
+                    }
+                }
+            }
+        }
         //幫助中心
         btn_help_center.setOnClickListener {
             startActivity(Intent(requireActivity(), HelpCenterActivity::class.java))

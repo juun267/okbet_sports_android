@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/selector_button_radius_4_odds"
     tools:ignore="SpUsage,ContentDescription">
 
 
     <LinearLayout
+        android:id="@+id/button_odd_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/selector_button_radius_4_odds"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="4dp"

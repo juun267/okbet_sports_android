@@ -20,7 +20,7 @@ android {
         applicationId "org.cxct.sportlottery"
         minSdkVersion 23
         targetSdkVersion 30
-        versionName "1.1.3"
+        versionName "1.1.4"
         versionCode 5
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
