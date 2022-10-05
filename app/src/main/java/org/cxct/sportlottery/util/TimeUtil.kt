@@ -14,6 +14,7 @@ import java.util.*
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_HMS_FORMAT_CHANGE_LINE = "yyyy/MM/dd\nHH:mm:ss"
+    const val YMD_HMS_FORMAT_CHANGE_LINE_2 = "yyyy/MM/dd HH:mm:ss"
     const val YMD_HM_FORMAT = "yyyy-MM-dd HH:mm"
     const val YMD_HM_FORMAT_2 = "yyyy/MM/dd HH:mm"
     const val YMD_FORMAT = "yyyy-MM-dd"
@@ -184,6 +185,20 @@ object TimeUtil {
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
+    fun dateToTimeStamp2(
+        date: String?,
+        timeType: TimeType = TimeType.START_OF_DAY,
+        dateFormatPattern: String = YMD_HMS_FORMAT_CHANGE_LINE_2,
+        timeZone: TimeZone? = TimeZone.getDefault(),
+        locale: Locale = Locale.getDefault()
+    ): Long? {
+        if (date.isNullOrEmpty()) return null
+        val formatter = SimpleDateFormat("$dateFormatPattern", locale)
+        formatter.timeZone = timeZone
+        val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
+        return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
+    }
 
 
     fun dateToDateFormat(
@@ -336,6 +351,17 @@ object TimeUtil {
         val cPair = getCalendarForDates(minusDays)
         val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT)
         val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT)
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = minusDay
+            override val endTime: String
+                get() = today
+        }
+    }
+    fun getDefaultDate2(minusDays: Int? = 6): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
+        val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT_2)
+        val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT_2)
         return object : TimeRangeParams {
             override val startTime: String
                 get() = minusDay
