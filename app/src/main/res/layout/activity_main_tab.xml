@@ -9,9 +9,9 @@
     android:background="@drawable/bg_home_menu_left">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="15dp"
         app:cardElevation="0dp">
 
         <LinearLayout

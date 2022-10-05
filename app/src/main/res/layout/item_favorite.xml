@@ -62,7 +62,6 @@
         android:layout_height="wrap_content"
         android:background="@color/color_FFFFFF"
         android:paddingHorizontal="@dimen/margin_14"
-        android:paddingBottom="@dimen/margin_10"
         tools:listitem="@layout/item_sport_favorite"
         tools:itemCount="1" />
 </LinearLayout>

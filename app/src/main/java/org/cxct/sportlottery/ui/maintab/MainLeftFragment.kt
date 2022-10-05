@@ -357,7 +357,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setLinkItem() {
         when (LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH, LanguageManager.Language.EN -> {
+            LanguageManager.Language.ZH -> {
                 lin_link_zh_en.isVisible = true
                 lin_link_other.isVisible = false
             }

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/bg_gray_stoke_radius_8">
 
     <LinearLayout
@@ -242,8 +243,9 @@
                                 android:id="@+id/league_odd_match_score_home"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/din_font"
+                                android:fontFamily="@font/din_regular"
                                 android:textColor="@color/color_414655"
+                                android:textFontWeight="700"
                                 android:textSize="14sp"
                                 tools:text="999" />
                         </LinearLayout>
@@ -382,8 +384,9 @@
                                 android:id="@+id/league_odd_match_score_away"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/din_font"
+                                android:fontFamily="@font/din_regular"
                                 android:textColor="@color/color_414655"
+                                android:textFontWeight="700"
                                 android:textSize="14sp"
                                 tools:text="999" />
 
@@ -513,7 +516,7 @@
                     android:layout_height="30dp"
                     android:background="@color/color_bbbbbb_ffffff"
                     android:orientation="horizontal"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     tools:visibility="gone">
 
                     <TextView

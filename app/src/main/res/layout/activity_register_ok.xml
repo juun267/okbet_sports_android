@@ -1016,7 +1016,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginTop="4dp"
-                            app:hintText="@string/dialog_security_title"
+                            app:hintText="@string/hint_security_code"
                             app:isResponsiveIconColor="false"
                             app:labelText="@string/verification_code"
                             app:labelTextStyle="normal"

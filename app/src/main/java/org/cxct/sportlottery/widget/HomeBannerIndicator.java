@@ -28,6 +28,7 @@ public class HomeBannerIndicator extends BaseIndicator {
         super(context, attrs, defStyleAttr);
         mNormalRadius = config.getNormalWidth() / 2;
         mSelectedRadius = config.getSelectedWidth() / 2;
+        mPaint.setAntiAlias(true);
     }
 
     @Override
@@ -62,8 +63,8 @@ public class HomeBannerIndicator extends BaseIndicator {
             if (isSelect) {
                 canvas.drawRoundRect(new RectF(left, 0, left + indicatorWidth, config.getHeight()), radius, radius, mPaint);
             } else {
-                mPaint.setStrokeWidth(3);
-                canvas.drawCircle(left + radius, radius, radius, mPaint);
+                mPaint.setStrokeWidth(2);
+                canvas.drawCircle(left + radius, radius, radius - 2, mPaint);
             }
 
             left += indicatorWidth + config.getIndicatorSpace();

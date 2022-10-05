@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -157,6 +158,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             override fun onDrawerOpened(drawerView: View) {
+                cv_content.radius = 15.dp.toFloat()
                 if (drawerView.tag == "LEFT") {
                     drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -172,11 +174,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                         Gravity.LEFT
                     )
+
                 }
             }
 
             override fun onDrawerClosed(drawerView: View) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                cv_content.radius = 0f
                 ImmersionBar.with(this@MainTabActivity)
                     .transparentStatusBar()
                     .statusBarDarkFont(true)

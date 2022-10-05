@@ -24,7 +24,6 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
-import org.cxct.sportlottery.widget.VerticalDecoration
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
@@ -380,14 +379,6 @@ class FavoriteAdapter(private val matchType: MatchType) :
                     }, oddsType)
 
                     this.leagueOddListener = leagueOddListener
-                }
-                try {
-                    if (itemDecorationCount == 0)
-                        addItemDecoration(VerticalDecoration(context,
-                            R.drawable.divider_vertical_10))
-                    // TODO IllegalStateException: Cannot add item decoration during a scroll  or layout
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
             }
         }
