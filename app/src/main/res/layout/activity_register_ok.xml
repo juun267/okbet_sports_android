@@ -1243,9 +1243,10 @@
                     android:alpha="0.5"
                     android:background="@drawable/ic_submit"
                     android:enabled="false"
+                    android:textFontWeight="400"
                     android:text="@string/next_step"
                     android:textColor="@color/color_FFFFFF"
-                    android:textSize="@dimen/textSize17sp" />
+                    android:textSize="@dimen/textSize16sp" />
             </RelativeLayout>
         </LinearLayout>
 
