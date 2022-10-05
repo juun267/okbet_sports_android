@@ -1198,5 +1198,6 @@
     <string name="customer_service">ถ้าต้องการความช่วยเหลือ,กรุณา</string>
     <string name="no_search_match">ไม่เจอการแข่งนี้</string>
     <string name="register_privacy_policy_promotions">ส่งการอัปเดตและโปรโมชันให้ฉันตาม %S</string>
+    <string name="error_full_name">ชื่อที่คุณป้อนไม่ถูกต้อง</string>
     <!--F005-->
 </resources>

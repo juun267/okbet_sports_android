@@ -1271,4 +1271,5 @@
     <string name="transfer_time">Time</string>
     <string name="please_enter_question">请描述您遇到的问题</string>
     <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
+    <string name="error_full_name">The name that you entered is not valid</string>
 </resources>

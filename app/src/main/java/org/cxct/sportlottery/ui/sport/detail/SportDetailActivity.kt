@@ -355,7 +355,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
-        TODO("Not yet implemented")
+
     }
 
     private fun initData() {
