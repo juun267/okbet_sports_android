@@ -294,7 +294,7 @@ class RegisterViewModel(
     fun checkFullName(fullName: String?) {
         val msg = when {
             fullName.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> LocalUtils.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyFullName(fullName) -> LocalUtils.getString(R.string.error_full_name)
             else -> null
         }
         _fullNameMsg.value = Pair(msg, msg == null)

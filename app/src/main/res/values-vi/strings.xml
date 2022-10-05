@@ -1242,4 +1242,5 @@
     <string name="customer_service">Nếu cần trợ giúp, vui lòng&#160;</string>
     <string name="not_sign_up">Chưa có tài khoản</string>
     <string name="no_search_match">Không tìm thấy trận đấu</string>
+    <string name="error_full_name">Họ tên bạn nhập không chính xác</string>
 </resources>
