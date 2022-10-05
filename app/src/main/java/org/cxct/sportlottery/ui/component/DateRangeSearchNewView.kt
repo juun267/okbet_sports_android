@@ -33,7 +33,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     var timeZone: TimeZone = TimeZone.getDefault()
 
     val startTime: Long?
-        get() = TimeUtil.dateToTimeStamp(
+        get() = TimeUtil.dateToTimeStamp2(
             tv_start_date.text.toString(),
             TimeUtil.TimeType.START_OF_DAY,
             timeZone = timeZone
@@ -41,7 +41,7 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
 
 
     val endTime: Long?
-        get() = TimeUtil.dateToTimeStamp(
+        get() = TimeUtil.dateToTimeStamp2(
             tv_end_date.text.toString(),
             TimeUtil.TimeType.END_OF_DAY,
             timeZone = timeZone
@@ -73,8 +73,8 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     }
 
     private fun initDate(minusDays: Int) {
-        tv_start_date.text = TimeUtil.getDefaultDate().startTime
-        tv_end_date.text = TimeUtil.getDefaultDate().endTime
+        tv_start_date.text = TimeUtil.getDefaultDate2().startTime
+        tv_end_date.text = TimeUtil.getDefaultDate2().endTime
     }
 
     fun setOnClickSearchListener (search: () -> Unit) {
@@ -126,11 +126,11 @@ class DateRangeSearchNewView @JvmOverloads constructor(context: Context, attrs: 
     }
 
     private fun setRecordStartTime(start: Calendar) {
-        tv_start_date.text = TimeUtil.timeFormat(start.timeInMillis, YMD_FORMAT)
+        tv_start_date.text = TimeUtil.timeFormat(start.timeInMillis, YMD_FORMAT_2)
     }
 
     private fun setRecordEndTime(end: Calendar) {
-        tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, YMD_FORMAT)
+        tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, YMD_FORMAT_2)
     }
 
 

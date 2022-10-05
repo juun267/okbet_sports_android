@@ -40,7 +40,7 @@
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
-                app:dateTime="@{row.addTime}"
+                app:dateChangeLineTime="@{row.addTime}"
                 tools:text="2020/12/12\n19:58:22" />
 
             <TextView

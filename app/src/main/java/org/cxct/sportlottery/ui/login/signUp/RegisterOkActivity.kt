@@ -47,6 +47,7 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -132,10 +133,14 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             getColor(R.color.color_1971FD),
             true)
         binding.apply {
+            eetLoginPassword.transformationMethod =
+                AsteriskPasswordTransformationMethod()
+            eetConfirmPassword.transformationMethod =
+                AsteriskPasswordTransformationMethod()
             etLoginPassword.endIconImageButton.setOnClickListener {
                 if (etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
                     eetLoginPassword.transformationMethod =
-                        PasswordTransformationMethod.getInstance()
+                        AsteriskPasswordTransformationMethod()
                     etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
                 } else {
                     etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
@@ -148,7 +153,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             etConfirmPassword.endIconImageButton.setOnClickListener {
                 if (etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
                     eetConfirmPassword.transformationMethod =
-                        PasswordTransformationMethod.getInstance()
+                        AsteriskPasswordTransformationMethod()
                     etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
                 } else {
                     etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
@@ -161,7 +166,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             etWithdrawalPwd.endIconImageButton.setOnClickListener {
                 if (etWithdrawalPwd.endIconResourceId == R.drawable.ic_eye_open) {
                     eetWithdrawalPwd.transformationMethod =
-                        PasswordTransformationMethod.getInstance()
+                        AsteriskPasswordTransformationMethod()
                     etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_close)
                 } else {
                     etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_open)
