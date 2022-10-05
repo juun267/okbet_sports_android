@@ -8,7 +8,7 @@
     tools:content="org.cxct.sportlottery.ui.finance.RechargeLogFragment">
     <View
         android:id="@+id/view"
-        android:background="@color/color_E3E8EE"
+        android:background="@color/color_181922_F0F5FA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
