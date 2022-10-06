@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:layout_width="wrap_content"
     tools:layout_height="wrap_content"
     tools:ignore="ContentDescription, SpUsage">
@@ -12,10 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_gravity="bottom"
-        android:elevation="2dp"
-        android:shadowRadius="10"
-        android:shadowColor="@color/color_0500181E"
-        android:shadowDy="5">
+        app:cardElevation="@dimen/margin_2"
+        app:cardCornerRadius="@dimen/margin_8">
 
         <ImageView
             android:id="@+id/iv_bg"
