@@ -60,7 +60,7 @@ object MoneyManager {
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
             MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//202 Peter說要隱藏掉
-            MoneyType.ONLINEBANK.code -> R.drawable.icon_bank_default//阿喵說照Ian回應用此圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_coin_bank_default//阿喵說照Ian回應用此圖
             MoneyType.GCASH.code -> R.drawable.ic_g_cash
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya

@@ -130,9 +130,9 @@ object VerifyConstUtil {
         return isVerifyEmailFormat(mail, "{0,50}")
     }
 
-    //手機號碼 //11個內全數字組合可以为10位数
+    //手機號碼 //以9开头加上后面9位数字组成的手机号码
     fun verifyPhone(phone: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER]{10,11}", phone)
+        return Pattern.matches("[9]\\d{9}", phone)
     }
 
     //微信 //英文第一位大小寫 後面可以數字或英文6~20
