@@ -106,7 +106,7 @@
     <string name="hint_real_name">Match the bank account name</string>
     <string name="verification_code">Verification code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
-    <string name="error_verification_code">Registration verification code incorrectly</string>
+    <string name="error_verification_code">CAPTCHA incorrectly</string>
     <string name="hint_verification_code_by_sms">SMS</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
@@ -1145,10 +1145,10 @@
     <string name="join_us_win_wealth">Join us, win-win wealth</string>
     <string name="cancel_account">Delete account</string>
     <string name="payment_method">Payment method</string>
-    <string name="kyc_type">ID Type</string>
+    <string name="kyc_type">ID Type [1]</string>
     <string name="kyc_num">ID Number</string>
     <string name="kyc_upload">Upload Photo</string>
-    <string name="kyc_type2">ID Type 2</string>
+    <string name="kyc_type2">ID Type [2]</string>
     <string name="kyc_num2">ID Number 2</string>
     <string name="kyc_upload2">Upload Photo 2</string>
     <string name="kyc_id_verification">Get Verified</string>

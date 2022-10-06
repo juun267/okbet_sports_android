@@ -104,7 +104,7 @@
     <string name="hint_real_name">Họ tên phải đồng nhất với tài khoản ngân hàng</string>
     <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
-    <string name="error_verification_code">Đăng ký mã xác nhận không đúng</string>
+    <string name="error_verification_code">Mã xác nhận không đúng</string>
     <string name="hint_verification_code_by_sms">SMS</string>
     <string name="error_verification_code_by_sms">SMS mã xác nhận không đúng</string>
     <string name="get_verification_code">Gửi</string>
@@ -113,7 +113,7 @@
     <string name="phone_verify_content">Chào mừng bạn trở lại trò chơi. Vui lòng hoàn tất xác minh để bảo mật tài khoản.</string>
     <string name="dialog_security_title">Đăng nhập.</string>
     <string name="dialog_security_error">Bạn đã nhập một mã xác minh sai.</string>
-    <string name="hint_security_code"><font size="12">Nhập mã</font></string>
+    <string name="hint_security_code">Nhập mã</string>
     <string name="dialog_security_need_phone">Thông tin cá nhân của bạn chưa hoàn chỉnh, vui lòng liên hệ với bộ phận chăm sóc khách hàng.</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">Bạn đã có tài khoản?</string>

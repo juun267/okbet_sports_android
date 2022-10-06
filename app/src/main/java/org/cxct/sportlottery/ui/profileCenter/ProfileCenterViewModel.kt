@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.AppVersionState
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.isThirdTransferOpen
 import java.io.File
 
 class ProfileCenterViewModel(
@@ -114,13 +115,24 @@ class ProfileCenterViewModel(
         }
     }
 
+    fun allTransferOut() {
+        if (isThirdTransferOpen()) {
+            //若自動轉換功能開啟，離開遊戲要全額轉出
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    OneBoSportApi.thirdGameService.allTransferOut()
+                }
+            }
+        }
+    }
+
     fun uploadVerifyPhoto(
         firstFile: File,
         identityType: Int?,
         identityNumber: String?,
         secndFile: File? = null,
         identityTypeBackup: Int? = null,
-        identityNumberBackup: String? = null
+        identityNumberBackup: String? = null,
     ) {
         viewModelScope.launch {
             val docResponse = doNetwork(androidContext) {

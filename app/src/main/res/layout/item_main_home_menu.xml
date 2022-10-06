@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:textColor="@color/color_025BE8"
-            android:fontFamily="@font/din_font"
+            android:fontFamily="@font/din_regular"
             android:textSize="32sp"
             android:textStyle="bold"
             tools:text="2290" />
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_4"
             android:textColor="@color/color_6C7BA8"
-            android:fontFamily="@font/din_font"
+            android:fontFamily="@font/din_regular"
             android:textSize="14sp"
             android:text="@string/sport_match" />
 

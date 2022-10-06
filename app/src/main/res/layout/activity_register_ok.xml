@@ -430,7 +430,7 @@
                         android:layout_marginTop="4dp"
                         app:hintText="@string/hint_select_document_number"
                         app:isResponsiveIconColor="false"
-                        app:labelText="@string/identity_number"
+                        app:labelText="@string/kyc_type"
                         app:labelTextStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etIdentityType"
@@ -499,7 +499,7 @@
                         app:endIcon="@drawable/ic_arrow_gray"
                         app:hintText="@string/hint_select_document_type"
                         app:isResponsiveIconColor="false"
-                        app:labelText="@string/identity_two_type"
+                        app:labelText="@string/kyc_type2"
                         app:labelTextStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/etIdentity"
@@ -994,7 +994,7 @@
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp"
-                            android:text="111111"
+                            android:text=""
                             android:textColorHint="@color/color_C9CFD7" />
 
                     </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
@@ -1033,7 +1033,7 @@
                                 android:maxLines="1"
                                 android:textColor="@color/color_FFFFFF_DE000000"
                                 android:textSize="@dimen/textSize14sp"
-                                android:text="111111"
+                                tools:text=""
                                 android:textColorHint="@color/color_C9CFD7" />
 
                         </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>

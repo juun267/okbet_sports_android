@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.login.signIn
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
@@ -191,6 +192,8 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupForgetPasswordButton() {
+        binding.btnForgetPassword.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        binding.btnForgetPassword.getPaint().setAntiAlias(true);//抗锯齿
         binding.btnForgetPassword.setOnClickListener {
             showPromptDialog(
                 getString(R.string.prompt),

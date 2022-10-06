@@ -316,7 +316,7 @@
                         android:paddingEnd="2dp"
                         android:textColor="@color/color_FFFFFF_FFFFFF"
                         android:textSize="@dimen/textSize10sp"
-                        android:fontFamily="@font/din_font"
+                        android:fontFamily="@font/din_regular"
                         app:drawableEndCompat="@drawable/ic_arrow_right_white"
                         tools:layout_editor_absoluteX="43dp"
                         tools:layout_editor_absoluteY="5dp"

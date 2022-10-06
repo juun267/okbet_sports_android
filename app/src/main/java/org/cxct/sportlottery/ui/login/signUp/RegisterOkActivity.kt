@@ -11,7 +11,6 @@ import android.provider.Settings
 import android.text.*
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.LinkMovementMethod
-import android.text.method.PasswordTransformationMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
 import android.util.Log
@@ -122,12 +121,17 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             .transparentStatusBar()
             .fitsSystemWindows(false)
             .init()
+        initView()
         setPage()
         setupBackButton()
         setupAgreement()
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
+
+    }
+
+    private fun initView() {
         binding.tvRegister.setTitleLetterSpacing2F()
         binding.tvRegister.setGradientSpan(getColor(R.color.color_71ADFF),
             getColor(R.color.color_1971FD),
@@ -236,7 +240,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
         binding.tvAgreeAll.text = getString(R.string.register_rule_agree_all)
         setLetterSpace()
     }
-
     private fun setLetterSpace() {
         if (LanguageManager.getSelectLanguage(this) == LanguageManager.Language.ZH) {
             binding.btnRegister.letterSpacing = 0.6f
@@ -1076,7 +1079,9 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
     private fun updateValidCode() {
         viewModel.getValidCode()
-        binding.eetVerificationCode.setText("");
+        if (binding.eetVerificationCode.text.toString().isNotEmpty()) {
+            binding.eetVerificationCode.setText("");
+        }
     }
 
     private fun setupGoToLoginButton() {

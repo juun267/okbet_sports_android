@@ -32,7 +32,7 @@
         android:maxLines="1"
         android:textColor="@color/color_select_white_gray"
         android:textSize="@dimen/textSize12sp"
-        android:fontFamily="@font/din_font"
+        android:fontFamily="@font/din_regular"
         app:autoSizeMaxTextSize="12dp"
         app:autoSizeMinTextSize="2dp"
         app:autoSizeTextType="uniform"

@@ -235,7 +235,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_3"
-                        android:fontFamily="@font/din_font"
+                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize16sp"
                         android:textStyle="bold"
@@ -250,7 +250,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_5"
-                        android:fontFamily="@font/din_font"
+                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_ECCD86"
                         android:textSize="@dimen/textSize20sp"
                         app:autoSizeMaxTextSize="20dp"
@@ -324,7 +324,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/deposits"
-                        android:fontFamily="@font/din_font"
+                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_A7B2C4"
                         android:textSize="@dimen/textSize10sp" />
 
@@ -371,7 +371,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/withdraw_down"
-                        android:fontFamily="@font/din_font"
+                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_A7B2C4"
                         android:textSize="@dimen/textSize10sp" />
 

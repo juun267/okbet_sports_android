@@ -9,6 +9,8 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -262,15 +264,23 @@ class ProfileCenterFragment :
 
     private fun getMoney() {
         refreshMoneyLoading()
+        viewModel.allTransferOut()
         viewModel.getMoney()
     }
 
     private fun refreshMoneyLoading() {
-        btn_refresh_money.visibility = View.GONE
+        btn_refresh_money.startAnimation(RotateAnimation(0f,
+            720f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f).apply {
+            duration = 1000
+        })
     }
 
     private fun refreshMoneyHideLoading() {
-        btn_refresh_money.visibility = View.VISIBLE
+
     }
 
     private fun setupLogout() {

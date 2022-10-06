@@ -18,7 +18,7 @@
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="@dimen/textSize12sp"
-        android:fontFamily="@font/din_font"
+        android:fontFamily="@font/din_regular"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="TUE" />
 
@@ -30,7 +30,7 @@
         android:textAllCaps="true"
         android:textColor="@color/selector_date_item_text_v4"
         android:textSize="@dimen/textSize16sp"
-        android:fontFamily="@font/din_font"
+        android:fontFamily="@font/din_regular"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_text_week"

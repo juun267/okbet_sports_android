@@ -28,7 +28,7 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_font"
+                    android:fontFamily="@font/din_regular"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
@@ -42,11 +42,11 @@
                     android:id="@+id/tv_spread"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/din_font"
+                    android:fontFamily="@font/din_regular"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
                     android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
+                    android:textFontWeight="700"
                     tools:text="-0.5/1"
                     tools:textColor="@color/color_A7B2C4" />
 
