@@ -18,7 +18,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 /**
- * @app_destination 外觀(日間/夜間)切換
+ * @app_destination 外觀(日間/夜間)切換-时区切换
  */
 class TimeZoneActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 

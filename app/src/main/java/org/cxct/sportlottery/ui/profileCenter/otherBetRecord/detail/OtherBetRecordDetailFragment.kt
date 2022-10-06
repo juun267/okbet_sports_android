@@ -17,7 +17,9 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
 import org.cxct.sportlottery.util.*
-
+/**
+ * @app_destination 其他投注详情
+ */
 class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>(OtherBetRecordViewModel::class) {
 
 
