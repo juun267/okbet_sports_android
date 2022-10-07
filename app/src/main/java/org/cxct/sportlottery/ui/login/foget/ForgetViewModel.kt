@@ -136,7 +136,6 @@ class ForgetViewModel(
      *  获取手机号码,先验证,验证通过发送验证码 开启倒计时,不通过提示异常倒计时不触发
      */
      fun getSendSms(phoneNum: String){
-        LogUtil.d("我不做大哥好多年")
         //先检测手机号 暂时做假数据处理
         if (getCheckPhone(phoneNum)){
             //发送验证码

@@ -42,6 +42,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         setPage()
         setupBackButton()
         initObserve()
+        viewModel.focusChangeCheckAllInputComplete(page)
+        viewModel.smsCheckComplete()
     }
 
     fun initView(){
@@ -51,7 +53,6 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         binding.eetConfirmPasswordForget.checkRegisterListener { viewModel.checkConfirmPassword(eet_login_password_forget.text.toString(),it) }
         binding.btnSendSms.setOnClickListener {
             //先校验手机号码
-            LogUtil.d("我不做大哥好多年1")
             viewModel.getSendSms(phoneNum = eet_phone_num.text.toString())
         }
         binding.btnPut.setOnClickListener{
@@ -81,7 +82,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                         HideReturnsTransformationMethod.getInstance()
                 }
                 etLoginPassword.hasFocus = true
-                eetLoginPasswordForget.setSelection(eetLoginPasswordForget.text.toString().length)
+               // eetLoginPasswordForget.setSelection(eetLoginPasswordForget.text.toString().length)
             }
 
             etConfirmPasswordForget.endIconImageButton.setOnClickListener {
@@ -95,7 +96,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                         HideReturnsTransformationMethod.getInstance()
                 }
                 etConfirmPasswordForget.hasFocus = true
-                eetConfirmPasswordForget.setSelection(eetConfirmPasswordForget.text.toString().length)
+             //   eetConfirmPasswordForget.setSelection(eetConfirmPasswordForget.text.toString().length)
             }
         }
     }
@@ -158,10 +159,12 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             1->{
                 binding.firstPager.visibility = View.VISIBLE
                 binding.clPassword.visibility = View.GONE
+                binding.labelRegister.text = getString(R.string.please_get_forget_password)
                 binding.btnPut.text = getString(R.string.next_step)
             }
             2 ->{binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.VISIBLE
+                binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.submit)
             }
         }
@@ -173,6 +176,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             showSmeTimer300()
         } else {
             //做异常处理
+            binding.etSmsValidCode.setError(smsResult?.msg,false)
         }
     }
     //发送验证码开始倒计时
