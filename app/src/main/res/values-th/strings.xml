@@ -1199,5 +1199,6 @@
     <string name="no_search_match">ไม่เจอการแข่งนี้</string>
     <string name="register_privacy_policy_promotions">ส่งการอัปเดตและโปรโมชันให้ฉันตาม %S</string>
     <string name="error_full_name">ชื่อที่คุณป้อนไม่ถูกต้อง</string>
+    <string name="hint_verification_code">กรุณากรอกรหัสยืนยัน</string>
     <!--F005-->
 </resources>

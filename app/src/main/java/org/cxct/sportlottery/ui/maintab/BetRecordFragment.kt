@@ -193,7 +193,7 @@ class BetRecordFragment :
         viewModel.apply {
             if (isSettledTab) {
                 tabPosition = 0
-                cl_content.setBackgroundResource(R.drawable.bg_bet_record_tab_1)
+                bet_tab.setBackgroundResource(R.drawable.bg_bet_record_tab_1)
                 tv_tab_settled.setTextColor(
                     ContextCompat.getColor(requireContext(), colorSettled)
                 )
@@ -202,7 +202,7 @@ class BetRecordFragment :
                 )
             } else {
                 tabPosition = 1
-                cl_content.setBackgroundResource(R.drawable.bg_bet_record_tab_2)
+                bet_tab.setBackgroundResource(R.drawable.bg_bet_record_tab_2)
                 tv_tab_not_settled.setTextColor(
                     ContextCompat.getColor(requireContext(), colorSettled)
                 )

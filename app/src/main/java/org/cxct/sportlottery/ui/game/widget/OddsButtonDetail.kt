@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
+import org.cxct.sportlottery.util.BetPlayCateFunction.isFS_LD_CS_Type
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
@@ -114,6 +115,11 @@ class OddsButtonDetail @JvmOverloads constructor(
                     "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
                 else
                     "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+
+            //篮球末尾比分，只显示最后空格后面的比分
+            if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {
+                text = text.toString().split(" ")?.last()
+            }
             requestLayout()
 
             visibility =
@@ -231,6 +237,14 @@ class OddsButtonDetail @JvmOverloads constructor(
                                 getOrdinalNumbers(odds?.nextScore.toString())
                             }
                         }
+                    }
+                    //篮球末尾比分，只显示最后空格后面的比分
+                    playCateCode.isFS_LD_CS_Type() -> {
+                        (odds?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds?.name)?.split(" ")?.last()
                     }
                     else -> ""
                 }

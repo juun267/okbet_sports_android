@@ -32,6 +32,10 @@ object BetPlayCateFunction {
         return (this.contains(PlayCate.NGOAL.value) || this.contains(PlayCate.NGOAL_OT.value)) && !this.isCombination()
     }
 
+    fun String.isFS_LD_CS_Type(): Boolean {
+        return (this.contains(PlayCate.FS_LD_CS.value))
+    }
+
     /**
      * 判斷是否為网球的特定第几局的玩法(1X2_SEG?_GAMES:#), 其中 ?=1~5, #=1~6
      */
