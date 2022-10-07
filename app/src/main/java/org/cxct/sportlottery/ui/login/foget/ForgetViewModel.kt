@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 
@@ -59,6 +60,7 @@ class ForgetViewModel(
         }
         _phoneMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(1)
+        smsCheckComplete()
         return msg
     }
     fun checkSecurityCode(securityCode: String?) {
@@ -70,7 +72,7 @@ class ForgetViewModel(
         _validateCodeMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(1)
     }
-    fun checkPassword(password: String): String? {
+    fun checkPassword(password: String, confirmPassword: String? = null): String? {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
@@ -78,6 +80,8 @@ class ForgetViewModel(
             !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
+        if(confirmPassword?.isNotEmpty() == true)
+            checkConfirmPassword(password, confirmPassword)
         _passwordMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(2)
         return msg
@@ -131,7 +135,8 @@ class ForgetViewModel(
      * @phoneNum 手机号码
      *  获取手机号码,先验证,验证通过发送验证码 开启倒计时,不通过提示异常倒计时不触发
      */
-    private fun getSendSms(phoneNum: String){
+     fun getSendSms(phoneNum: String){
+        LogUtil.d("我不做大哥好多年")
         //先检测手机号 暂时做假数据处理
         if (getCheckPhone(phoneNum)){
             //发送验证码
