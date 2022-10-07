@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -195,10 +196,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnForgetPassword.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         binding.btnForgetPassword.getPaint().setAntiAlias(true);//抗锯齿
         binding.btnForgetPassword.setOnClickListener {
-            showPromptDialog(
+           /* showPromptDialog(
                 getString(R.string.prompt),
                 getString(R.string.desc_forget_password)
-            ) {}
+            ) {}*/
+            startActivity(Intent(this@LoginActivity, ForgetPasswordActivity::class.java))
         }
     }
 

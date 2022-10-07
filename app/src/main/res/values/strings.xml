@@ -1272,4 +1272,7 @@
     <string name="please_enter_question">请描述您遇到的问题</string>
     <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
     <string name="error_full_name">The name that you entered is not valid</string>
+    <string name="please_get_forget_password">请找回您的OKBet密码！</string>
+    <string name="please_set_forget_password">请设置您的新账号密码！</string>
+    <string name="error_phone_not_have">手机号不存在</string>
 </resources>

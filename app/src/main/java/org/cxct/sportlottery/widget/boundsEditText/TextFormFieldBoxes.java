@@ -183,7 +183,10 @@ public class TextFormFieldBoxes extends FrameLayout {
      * 被點擊後要不要顯示Title
      */
     protected boolean hideSelectedTitle = false;
-
+    /**
+     * 要不要显示副标题后的横线
+     */
+    protected boolean hideSubView = false;
     /**
      * whether the field uses a rtl direction for 'Persian (Farsi)' and 'Arabic' languages
      * False by default.
@@ -221,7 +224,7 @@ public class TextFormFieldBoxes extends FrameLayout {
     protected AppCompatImageButton iconImageButton;
     protected AppCompatImageButton endIconImageButton;
     protected InputMethodManager inputMethodManager;
-
+    protected View viewSub;
     protected SimpleTextChangedWatcher textChangeListener;
     private ColorDrawable mPasswordToggleDummyDrawable;
     private Drawable mOriginalEditTextEndDrawable;
@@ -399,6 +402,10 @@ public class TextFormFieldBoxes extends FrameLayout {
                 }
             }
         }
+        if (this.hideSubView){
+            this.editTextLayout.setPadding(16,0,0,0);
+            this.floatingHintLabel.setPadding(16,0,0,0);
+        }
     }
 
     private void initViews() {
@@ -431,7 +438,7 @@ public class TextFormFieldBoxes extends FrameLayout {
         this.counterLabel = findViewById(R.id.text_field_boxes_counter);
         this.iconImageButton = findViewById(R.id.text_field_boxes_imageView);
         this.editTextLayout = findViewById(R.id.text_field_boxes_editTextLayout);
-
+        this.viewSub = findViewById(R.id.view_sub);
         this.inputLayout.addView(this.editText);
 //        this.editTextLayout.setAlpha(0f);
         this.floatingLabel.setPivotX(0f);
@@ -590,6 +597,7 @@ public class TextFormFieldBoxes extends FrameLayout {
 
             /* Others */
             this.isManualValidateError = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_manualValidateError, false);
+            this.hideSubView = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_hideSubView,false);
             this.enabled = styledAttrs.getBoolean(R.styleable.TextFieldBoxes_enabled, true);
             this.iconSignifierResourceId = styledAttrs.
                     getResourceId(R.styleable.TextFieldBoxes_iconSignifier, 0);
@@ -778,7 +786,6 @@ public class TextFormFieldBoxes extends FrameLayout {
     protected void setManualValidateError(boolean isManualValidateError) {
         this.isManualValidateError = isManualValidateError;
     }
-
     /**
      * Update the onError state of this component
      *
@@ -1048,6 +1055,7 @@ public class TextFormFieldBoxes extends FrameLayout {
         setLabelText(this.labelText);
         setLableTextStyle(this.labelTextStyle);
         setSubLabelText(this.subLabelText);
+        setHideSubView(this.hideSubView);
         setHelperText(this.helperText);
         setHintText(this.hintText);
         setSingleText(this.singleText);
@@ -1076,6 +1084,16 @@ public class TextFormFieldBoxes extends FrameLayout {
         setAlwaysShowHint(this.alwaysShowHint);
         updateCounterText(!isManualValidateError);
         updateBottomViewVisibility();
+    }
+
+    private void setHideSubView(boolean hideSubView) {
+        this.hideSubView = hideSubView;
+        if (this.hideSubView){
+            viewSub.setVisibility(View.VISIBLE);
+        }else {
+            viewSub.setVisibility(View.GONE);
+        }
+
     }
 
     /* Text Setters */

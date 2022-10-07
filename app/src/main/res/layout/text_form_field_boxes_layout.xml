@@ -63,9 +63,16 @@
                         android:gravity="center"
                         android:textColor="@color/color_414655"
                         android:textSize="@dimen/textSize12sp"
-                        android:textStyle="bold"
                         tools:text="SubLabel" />
-
+                    <View
+                        android:id="@+id/view_sub"
+                        android:layout_width="1dp"
+                        android:background="#E3E8EE"
+                        android:visibility="gone"
+                        android:layout_marginBottom="@dimen/margin_5"
+                        android:layout_height="@dimen/margin_18"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@+id/text_field_boxes_sub_label"/>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/text_field_boxes_hint_label"
                         android:layout_width="wrap_content"
@@ -73,7 +80,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="6dp"
-                        android:layout_toEndOf="@id/text_field_boxes_sub_label"
+                        android:layout_toEndOf="@id/view_sub"
                         android:gravity="center"
                         android:textColor="@color/color_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
@@ -106,7 +113,7 @@
                         android:layout_centerVertical="true"
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="0dp"
-                        android:layout_toEndOf="@id/text_field_boxes_sub_label">
+                        android:layout_toEndOf="@id/view_sub">
 
                         <RelativeLayout
                             android:id="@+id/text_field_boxes_input_layout"
