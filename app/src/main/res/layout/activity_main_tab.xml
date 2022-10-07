@@ -35,7 +35,7 @@
                     android:id="@+id/bottom_navigation_view"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:shadowDy="-5"
+                    app:elevation="3dp"
                     android:background="@drawable/bg_icon_bottom_bar"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:itemTextColor="@color/main_tab_text_selector"
@@ -52,7 +52,6 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:visibility="visible" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

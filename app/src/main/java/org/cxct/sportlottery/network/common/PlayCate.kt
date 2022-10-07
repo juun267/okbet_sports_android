@@ -345,6 +345,7 @@ enum class PlayCate(val value: String) {
     MOD_W_C("MOD_W_C"),
     OU_2_WAY_1ST_C("O/U-2-WAY-1ST-C"),
     OU_2_WAY_1ST_H("O/U-2-WAY-1ST-H"),
+    FS_LD_CS("FS-LD-CS"),
     BOTTOM_NAVIGATION("BOTTOM_NAVIGATION"),
     NO_DATA("NO_DATA");
 
@@ -747,6 +748,7 @@ enum class PlayCate(val value: String) {
                 MOD_W_C.value -> MOD_W_C
                 OU_2_WAY_1ST_C.value -> OU_2_WAY_1ST_C
                 OU_2_WAY_1ST_H.value -> OU_2_WAY_1ST_H
+                FS_LD_CS.value -> FS_LD_CS
                 BOTTOM_NAVIGATION.value -> BOTTOM_NAVIGATION
                 NO_DATA.value -> NO_DATA
                 else -> UNCHECK

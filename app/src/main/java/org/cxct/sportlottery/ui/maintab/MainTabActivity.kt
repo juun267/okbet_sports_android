@@ -300,7 +300,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 override fun onBetResult(
                     betResultData: Receipt?,
                     betParlayList: List<ParlayOdd>,
-                    isMultiBet: Boolean
+                    isMultiBet: Boolean,
                 ) {
                     showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
                 }

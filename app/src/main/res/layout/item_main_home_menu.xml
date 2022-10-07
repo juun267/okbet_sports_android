@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_gravity="bottom"
-        app:cardElevation="@dimen/margin_1"
+        app:cardElevation="@dimen/margin_2"
         app:cardCornerRadius="@dimen/margin_8">
 
         <ImageView

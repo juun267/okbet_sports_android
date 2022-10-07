@@ -20,7 +20,7 @@ android {
         applicationId "org.cxct.sportlottery"
         minSdkVersion 23
         targetSdkVersion 30
-        versionName "1.1.7"
+        versionName "1.1.8"
         versionCode 5
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -427,7 +427,6 @@ dependencies {
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
     implementation "com.miui.referrer:homereferrer:1.0.0.6"
-
 }
 
 repositories {

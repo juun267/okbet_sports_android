@@ -40,7 +40,7 @@
                     android:textColor="@color/selector_button_odd_top_text"
                     android:textSize="@dimen/textSize14sp"
                     android:paddingRight="5dp"
-                    android:text=""
+                    android:text="name"
                     tools:textColor="@color/color_6C7BA8" />
 
                 <TextView
