@@ -1222,7 +1222,6 @@
     <string name="select_file">Select file</string>
     <string name="error_recommend_agent">No matched</string>
     <string name="local_time">Local Time:</string>
-    <string name="pls_file_type">请选择文件的类型</string>
     <string name="click_upload_id_photo">Click upload ID photo</string>
     <string name="change_other_ID_photos">Change to other ID photos</string>
     <string name="customer_service_help">If you need help, please contact Us</string>
@@ -1231,7 +1230,7 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
+    <string name="hint_bet_limit_range">Limit %1$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">To Win(%s)：</string>

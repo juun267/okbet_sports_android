@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyboardView
@@ -497,16 +498,21 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
                     }
                 }
 
-                //更新bet single editText hint
-                val hint = context.getString(R.string.hint_bet_limit_range, minBet.toLong().toString(), maxBet.toLong().toString())
-                //限額用整數提示
-                tv_hint_single_default.text = hint
-                val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
+                if (LoginRepository.isLogin.value == true) {
+                    //更新bet single editText hint
+                    val hint =
+                        context.getString(R.string.hint_bet_limit_range, minBet.toLong().toString())
+                    //限額用整數提示
+                    tv_hint_single_default.text = hint
+                    val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
 //                if (etBetHasInput) {
                     tv_hint_single_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
 //                } else {
 //                    tv_hint_single_default.isVisible = !itemData.isInputBet
 //                }
+                } else {
+                    tv_hint_single_default.isVisible = false
+                }
             }
         }
     }

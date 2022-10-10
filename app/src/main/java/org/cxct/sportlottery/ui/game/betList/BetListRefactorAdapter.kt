@@ -1130,37 +1130,36 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     else R.drawable.bg_radius_2_edittext_unfocus
                 )
 
-                //更新bet editText hint
-                val betHint = context.getString(
-                    R.string.hint_bet_limit_range,
-                    inputMinMoney.toLong().toString(),
-                    inputMaxMoney.toLong().toString()
-                )
-                //限額用整數提示
-                tv_hint_default.text = betHint
-                val etBetHasInput = !et_bet.text.isNullOrEmpty()
+                if (LoginRepository.isLogin.value == true) {
+                    //更新bet editText hint
+                    val betHint = context.getString(
+                        R.string.hint_bet_limit_range,
+                        inputMinMoney.toLong().toString()
+                    )
+                    //限額用整數提示
+                    tv_hint_default.text = betHint
+                    val etBetHasInput = !et_bet.text.isNullOrEmpty()
 //                if (etBetHasInput) {
-                tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+                    tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
 //                } else {
 //                    tv_hint_default.isVisible = !itemData.isInputBet
 //                }
 
-                if (LoginRepository.isLogin.value == true) {
                     //更新win editText hint
                     val winHint = context.getString(
                         R.string.hint_bet_limit_range,
-                        inputWinMinMoney.toLong().toString(),
-                        inputWinMaxMoney.toLong().toString()
+                        inputWinMinMoney.toLong().toString()
                     )
                     //限額用整數提示
                     tv_win_hint_default.text = winHint
                     val etWinHasInput = !et_win.text.isNullOrEmpty()
 //                if (etWinHasInput) {
-                    tv_win_hint_default.isVisible = !etWinHasInput //僅輸入金額以後隱藏
+                    tv_win_hint_default.isVisible = false //僅輸入金額以後隱藏
 //                } else {
 //                    tv_win_hint_default.isVisible = !itemData.isInputWin
 //                }
                 } else {
+                    tv_hint_default.isVisible = false
                     tv_win_hint_default.isVisible = false
                 }
             }
@@ -1653,16 +1652,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
 
-                //更新bet single editText hint
-                val hint = context.getString(R.string.hint_bet_limit_range, minBet.toLong().toString(), maxBet.toLong().toString())
-                //限額用整數提示
-                tv_hint_single_default.text = hint
-                val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
+                if (LoginRepository.isLogin.value == true) {
+                    //更新bet single editText hint
+                    val hint =
+                        context.getString(R.string.hint_bet_limit_range, minBet.toLong().toString())
+                    //限額用整數提示
+                    tv_hint_single_default.text = hint
+                    val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
 //                if (etBetHasInput) {
                     tv_hint_single_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
 //                } else {
 //                    tv_hint_single_default.isVisible = !itemData.isInputBet
 //                }
+                } else {
+                    tv_hint_single_default.isVisible = false
+                }
             }
         }
     }
@@ -1883,17 +1887,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //更新bet parlay editText hint
                 val betHint = context.getString(
                     R.string.hint_bet_limit_range,
-                    inputMinMoney.toLong().toString(),
-                    inputMaxMoney.toLong().toString()
+                    inputMinMoney.toLong().toString()
                 )
-                //限額用整數提示
-                tv_hint_parlay_default.text = betHint
-                val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
+                if (LoginRepository.isLogin.value == true) {
+                    //限額用整數提示
+                    tv_hint_parlay_default.text = betHint
+                    val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
 //                if (etBetHasInput) {
                     tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
 //                } else {
 //                    tv_hint_parlay_default.isVisible = !itemData.isInputBet
 //                }
+                } else {
+                    tv_hint_parlay_default.isVisible = false
+                }
             }
         }
 
