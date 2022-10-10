@@ -200,7 +200,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 getString(R.string.prompt),
                 getString(R.string.desc_forget_password)
             ) {}
-          //  startActivity(Intent(this@LoginActivity, ForgetPasswordActivity::class.java))
         }
     }
 

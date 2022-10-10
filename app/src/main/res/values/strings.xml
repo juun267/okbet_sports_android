@@ -1164,7 +1164,7 @@
     <string name="kyc_reset">Reset</string>
     <string name="kyc_verify_first">Please get verified.</string>
     <string name="kyc_go_verify">Verify Now</string>
-    <string name="kyc_you_wait">The verification is processing. Just waiting for a while.</string>
+    <string name="kyc_you_wait">Please click the " Live Chat " button to process a video call for verification.</string>
     <string name="kyc_service_verify">Please contact us to get verified</string>
     <string name="kyc_verify_successful">Verify successful </string>
     <string name="kyc_unverified">Unverified</string>
@@ -1269,7 +1269,7 @@
     <string name="km">Km</string>
     <string name="outlet">Outlet</string>
     <string name="transfer_time">Time</string>
-    <string name="please_enter_question">请描述您遇到的问题</string>
+    <string name="please_enter_question">Please describe the problem</string>
     <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
     <string name="error_full_name">The name that you entered is not valid</string>
     <string name="hint_verification_code">Please enter the verification code.</string>

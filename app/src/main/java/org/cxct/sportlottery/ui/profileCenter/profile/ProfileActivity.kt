@@ -234,28 +234,28 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 VerifiedType.PASSED.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = getString(R.string.passed)
+                    tv_verified.text = getString(R.string.kyc_passed)
 
                     icon_identity.visibility = View.GONE
                 }
                 VerifiedType.NOT_YET.value -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.not_verify)
+                    tv_verified.text = getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.VISIBLE
                 }
                 VerifiedType.VERIFYING.value -> {
                     ll_verified.isEnabled = false
                     ll_verified.isClickable = false
-                    tv_verified.text = getString(R.string.verifying)
+                    tv_verified.text = getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.GONE
                 }
                 else -> {
                     ll_verified.isEnabled = true
                     ll_verified.isClickable = true
-                    tv_verified.text = getString(R.string.verify_failed)
+                    tv_verified.text = getString(R.string.kyc_unverified)
 
                     icon_identity.visibility = View.VISIBLE
                 }
