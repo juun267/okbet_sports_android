@@ -29,13 +29,13 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListRefactorAdapter.BetRvType.*
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
-import timber.log.Timber
 import kotlin.math.abs
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -1140,25 +1140,29 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 tv_hint_default.text = betHint
                 val etBetHasInput = !et_bet.text.isNullOrEmpty()
 //                if (etBetHasInput) {
-                    tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
+                tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
 //                } else {
 //                    tv_hint_default.isVisible = !itemData.isInputBet
 //                }
 
-                //更新win editText hint
-                val winHint = context.getString(
-                    R.string.hint_bet_limit_range,
-                    inputWinMinMoney.toLong().toString(),
-                    inputWinMaxMoney.toLong().toString()
-                )
-                //限額用整數提示
-                tv_win_hint_default.text = winHint
-                val etWinHasInput = !et_win.text.isNullOrEmpty()
+                if (LoginRepository.isLogin.value == true) {
+                    //更新win editText hint
+                    val winHint = context.getString(
+                        R.string.hint_bet_limit_range,
+                        inputWinMinMoney.toLong().toString(),
+                        inputWinMaxMoney.toLong().toString()
+                    )
+                    //限額用整數提示
+                    tv_win_hint_default.text = winHint
+                    val etWinHasInput = !et_win.text.isNullOrEmpty()
 //                if (etWinHasInput) {
                     tv_win_hint_default.isVisible = !etWinHasInput //僅輸入金額以後隱藏
 //                } else {
 //                    tv_win_hint_default.isVisible = !itemData.isInputWin
 //                }
+                } else {
+                    tv_win_hint_default.isVisible = false
+                }
             }
         }
 

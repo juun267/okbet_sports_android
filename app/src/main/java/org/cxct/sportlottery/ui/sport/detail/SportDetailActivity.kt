@@ -199,8 +199,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
+
         iv_refresh.setOnClickListener {
-            iv_refresh.animate().rotation(720f).setDuration(1000).start()
             initAllObserve()
         }
 
@@ -390,6 +390,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun initUI() {
         iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
+            ?: GameType.FT))
+        collaps_toolbar.iv_toolbar_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(
+            matchInfo?.gameType)
             ?: GameType.FT))
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->

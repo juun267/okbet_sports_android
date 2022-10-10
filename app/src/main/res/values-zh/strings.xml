@@ -1257,4 +1257,5 @@
     <string name="customer_service">如需帮助，请</string>
     <string name="error_full_name">您输入的姓名不正确</string>
     <string name="hint_verification_code">请输入验证码</string>
+    <string name="hint_game_maintenance">该游戏维护中，请稍后尝试</string>
 </resources>

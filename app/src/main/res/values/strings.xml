@@ -1278,4 +1278,5 @@
     <string name="error_phone_not_have">手机号不存在</string>
     <string name="new_login_password">新登录密码</string>
     <string name="error_confirm_password_forget">密码确认不匹配</string>
+    <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
 </resources>
