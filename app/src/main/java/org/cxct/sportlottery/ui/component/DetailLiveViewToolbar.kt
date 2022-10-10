@@ -7,13 +7,13 @@ import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.upstream.HttpDataSource
@@ -398,7 +398,8 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
-
+        if (isVisible)
+            setWebViewHeight()
     }
 
     fun release() {
@@ -415,24 +416,36 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         isFullScreen = fullScreen
         iv_fullscreen.isSelected = isFullScreen
     }
-
     /**
      * 設置WebView高度
      */
     private fun setWebViewHeight() {
         when (curType) {
             LiveType.LIVE, LiveType.VIDEO -> {
-                //视频播放器比例，56.25%，来自H5
-                val screenWidth = MetricsUtil.getScreenWidth()
-                web_view.layoutParams =
-                    RelativeLayout.LayoutParams(screenWidth, (screenWidth * 0.5625f).toInt())
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    val screenWidth = MetricsUtil.getScreenWidth()
+                    web_view.layoutParams.apply {
+                        //视频播放器比例，56.25%，来自H5
+                        height = (screenWidth * 0.5625f).toInt()
+                    }
+                } else {
+                    web_view.layoutParams.apply {
+                        height = ViewGroup.LayoutParams.MATCH_PARENT
+                    }
+                }
             }
             LiveType.ANIMATION -> {
-                val screenWidth = MetricsUtil.getScreenWidth()
-                web_view.layoutParams = RelativeLayout.LayoutParams(screenWidth,
-                    LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt())
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    val screenWidth = MetricsUtil.getScreenWidth()
+                    web_view.layoutParams.apply {
+                        height = LiveUtil.getAnimationHeightFromWidth(screenWidth).toInt()
+                    }
+                } else {
+                    web_view.layoutParams.apply {
+                        height = ViewGroup.LayoutParams.MATCH_PARENT
+                    }
+                }
             }
         }
-
     }
 }

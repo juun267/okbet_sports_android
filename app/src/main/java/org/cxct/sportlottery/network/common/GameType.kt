@@ -274,6 +274,29 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                     R.drawable.card_sport_football
             }
         }
+
+        fun getGameTypeDetailBg(gameType: GameType): Int {
+            return when (gameType) {
+                FT -> R.drawable.img_soccer_mobile01
+                BK -> R.drawable.img_basketball_mobile01
+                TN -> R.drawable.img_tennis_mobile01
+                VB -> R.drawable.img_volleyball_mobile01
+                BM -> R.drawable.img_badminton_mobile01
+                TT -> R.drawable.img_tabletennis_mobile01
+                IH -> R.drawable.img_icehockey_mobile01
+                BX -> R.drawable.img_boxing_mobile01
+                CB -> R.drawable.img_soccer_mobile01
+                CK -> R.drawable.img_cricket_mobile01
+                BB -> R.drawable.img_baseball_mobile01
+                RB -> R.drawable.img_rugby_mobile01
+                AFT -> R.drawable.img_americafootball_mobile01
+                MR -> R.drawable.img_rancing_mobile01
+                GF -> R.drawable.img_golf_mobile01
+                ES -> R.drawable.img_egame_mobile01
+                else ->
+                    R.drawable.img_soccer_mobile01
+            }
+        }
     }
 
 }
