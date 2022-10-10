@@ -1244,4 +1244,5 @@
     <string name="no_search_match">Không tìm thấy trận đấu</string>
     <string name="error_full_name">Họ tên bạn nhập không chính xác</string>
     <string name="hint_verification_code">Vui lòng nhập mã xác nhận.</string>
+    <string name="please_enter_question">Miêu tả vấn đề bạn gặp phải</string>
 </resources>

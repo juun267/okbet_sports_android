@@ -1151,12 +1151,12 @@
     <string name="kyc_reset">重置</string>
     <string name="kyc_verify_first">请先进行实名验证。</string>
     <string name="kyc_go_verify">立即前往认证</string>
-    <string name="kyc_you_wait">您的实名验证资料已提交，\n请等待审核认证。</string>
+    <string name="kyc_you_wait">请点击"在线客服"按钮, 进行视频通话完成实名认证。</string>
     <string name="kyc_service_verify">联系客服进行认证</string>
     <string name="kyc_verify_successful">您已完成实名验证！</string>
-    <string name="kyc_unverified">未认证</string>
+    <string name="kyc_unverified">未验证</string>
     <string name="kyc_verifying">待审核</string>
-    <string name="kyc_passed">已通过</string>
+    <string name="kyc_passed">已验证</string>
     <string name="kyc_status">KYC 状态</string>
     <string name="kyc_all_status">KYC全部状态</string>
     <string name="kyc_kyc_unverified">KYC未认证</string>

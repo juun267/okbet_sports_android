@@ -26,22 +26,27 @@ class ForgetViewModel(
     val phoneMsg: LiveData<Pair<String?, Boolean>>
         get() = _phoneMsg
     private val _phoneMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     //密码异常提示
     val passwordMsg: LiveData<Pair<String?, Boolean>>
         get() = _passwordMsg
     private val _passwordMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     //确认密码异常提示
     val confirmPasswordMsg: LiveData<Pair<String?, Boolean>>
         get() = _confirmPasswordMsg
     private val _confirmPasswordMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     //验证码异常提示
     val validateCodeMsg: LiveData<Pair<String?, Boolean>>
         get() = _validateCodeMsg
     private val _validateCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     //提交按钮状态
     val putEnable: LiveData<Boolean>
         get() = _putEnable
     private val _putEnable = MutableLiveData<Boolean>()
+
     //提交按钮状态
     val smsEnable: LiveData<Boolean>
         get() = _smsEnable
@@ -49,6 +54,7 @@ class ForgetViewModel(
     val smsResult: LiveData<SmsResult?>
         get() = _smsResult
     private val _smsResult = MutableLiveData<SmsResult?>()
+
     //手机号码输入验证
     fun checkPhone(phoneNum: String): String? {
         val msg = when {
@@ -63,6 +69,7 @@ class ForgetViewModel(
         smsCheckComplete()
         return msg
     }
+
     fun checkSecurityCode(securityCode: String?) {
         val msg = when {
             securityCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
@@ -72,6 +79,7 @@ class ForgetViewModel(
         _validateCodeMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(1)
     }
+
     fun checkPassword(password: String, confirmPassword: String? = null): String? {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
@@ -80,7 +88,7 @@ class ForgetViewModel(
             !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
-        if(confirmPassword?.isNotEmpty() == true)
+        if (confirmPassword?.isNotEmpty() == true)
             checkConfirmPassword(password, confirmPassword)
         _passwordMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(2)
@@ -97,12 +105,15 @@ class ForgetViewModel(
         _confirmPasswordMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete(2)
     }
-    fun smsCheckComplete(){
+
+    fun smsCheckComplete() {
         _smsEnable.value = !checkInputPair(phoneMsg)
     }
+
     fun focusChangeCheckAllInputComplete(page: Int) {
         _putEnable.value = checkAllInputComplete(page)
     }
+
     //手机验证码页面检测
     private fun checkAllInputComplete(page: Int): Boolean {
         when (page) {
@@ -110,15 +121,15 @@ class ForgetViewModel(
                 if (checkInputPair(phoneMsg)) {
                     return false
                 }
-                if ( checkInputPair(validateCodeMsg)) {
+                if (checkInputPair(validateCodeMsg)) {
                     return false
                 }
             }
             2 -> {
-                if (checkInputPair(passwordMsg)){
+                if (checkInputPair(passwordMsg)) {
                     return false
                 }
-                if (checkInputPair(_confirmPasswordMsg)){
+                if (checkInputPair(_confirmPasswordMsg)) {
                     return false
                 }
             }
@@ -135,9 +146,9 @@ class ForgetViewModel(
      * @phoneNum 手机号码
      *  获取手机号码,先验证,验证通过发送验证码 开启倒计时,不通过提示异常倒计时不触发
      */
-     fun getSendSms(phoneNum: String){
+    fun getSendSms(phoneNum: String) {
         //先检测手机号 暂时做假数据处理
-        if (getCheckPhone(phoneNum)){
+        if (getCheckPhone(phoneNum)) {
             //发送验证码
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
@@ -148,7 +159,7 @@ class ForgetViewModel(
                 _smsResult.postValue(result)
             }
             _phoneMsg.value = Pair(null, false)
-        }else{
+        } else {
             val msg = LocalUtils.getString(R.string.error_phone_not_have)
             _phoneMsg.value = Pair(msg, true)
         }
@@ -157,7 +168,7 @@ class ForgetViewModel(
     }
 
     //手机号校验
-    private fun getCheckPhone(phoneNum: String) : Boolean{
+    private fun getCheckPhone(phoneNum: String): Boolean {
         //假数据
         var bindPhone = false
         viewModelScope.launch {
@@ -168,7 +179,7 @@ class ForgetViewModel(
             }
             bindPhone = result?.success == true
         }
-       return bindPhone
+        return bindPhone
     }
 
 
