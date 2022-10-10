@@ -1273,4 +1273,9 @@
     <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
     <string name="error_full_name">The name that you entered is not valid</string>
     <string name="hint_verification_code">Please enter the verification code.</string>
+    <string name="please_get_forget_password">请找回您的OKBet密码！</string>
+    <string name="please_set_forget_password">请设置您的新账号密码！</string>
+    <string name="error_phone_not_have">手机号不存在</string>
+    <string name="new_login_password">新登录密码</string>
+    <string name="error_confirm_password_forget">密码确认不匹配</string>
 </resources>

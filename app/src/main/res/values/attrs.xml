@@ -209,6 +209,7 @@
             <enum name="bold_italic" value="3" />
         </attr>
         <attr name="subLabelText" format="string" />
+        <attr name="hideSubView" format="boolean" />
         <attr name="hintText" format="string" />
         <attr name="singleText" format="string" />
         <attr name="singleTextColor" format="color" />

@@ -58,7 +58,7 @@
     <string name="register_recharge_now">立即存款</string>
     <string name="confirm_password">确认密码</string>
     <string name="hint_confirm_password">请再次输入密码</string>
-    <string name="error_confirm_password">两次密码输入不一致</string>
+    <string name="error_confirm_password">两次密码输入不一致,请重新输入</string>
     <string name="withdrawal_pwd">提款密码</string>
     <string name="hint_withdrawal_pwd">密码为4个数字</string>
     <string name="phone_number">手机号码</string>
