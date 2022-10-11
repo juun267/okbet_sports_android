@@ -34,8 +34,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private lateinit var binding: ActivityForgetPasswordBinding
     private var mSmsTimer: Timer? = null
     private var page = 1
-    private var result : ForgetSmsResult? = null
-    private var resetResult : ResetPasswordResult? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
@@ -75,12 +75,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             if (page<3){
                 if (page ==1){
                    viewModel.getCheckPhone(
-                        phoneNum = eet_phone_num.text.toString(),
+                        phone = eet_phone_num.text.toString(),
                         validCode = eet_sms_code.text.toString()
                     )
-                    if (result?.success==false){
-                        return@setOnClickListener
-                    }
+                    return@setOnClickListener
+
                 }
                 if (page == 2){
                     viewModel.resetPassword(phone = eet_phone_num.text.toString(),
@@ -129,15 +128,19 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             updateUiWithResult(it)
         }
         viewModel.smsCodeResult.observe(this){
-            result = it
+            LogUtil.d(it.toString())
             it?.let { result->
                 if (!result.success){
                     binding.etSmsValidCode.setError(result.msg,false)
+                    LogUtil.d(it.toString())
+                }else{
+                    page++
+                    setPage()
                 }
             }
         }
         viewModel.resetPasswordResult.observe(this){
-            resetResult = it
+
         }
         viewModel.smsCheckComplete()
         viewModel.putEnable.observe(this){
@@ -220,9 +223,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         if (smsResult?.success == true) {
             binding.tvSmsSend.visibility = View.VISIBLE
             binding.tvSmsSend2.visibility = View.VISIBLE
-
             binding.tvSmsSend2.text = " +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}"
-            LogUtil.d(TextUtil.maskPhoneNum(eet_phone_num.text.toString()))
             showSmeTimer300()
         } else {
             binding.tvSmsSend.visibility = View.GONE

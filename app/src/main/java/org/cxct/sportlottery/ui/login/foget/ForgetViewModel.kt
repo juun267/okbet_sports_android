@@ -62,7 +62,7 @@ class ForgetViewModel(
     val smsCodeResult: LiveData<ForgetSmsResult?>
         get() = _smsCodeResult
     private val _smsCodeResult = MutableLiveData<ForgetSmsResult?>()
-    //短信验证码返回值
+    //重设密码数据
     val resetPasswordResult: LiveData<ResetPasswordResult?>
         get() = _resetPasswordResult
     private val _resetPasswordResult = MutableLiveData<ResetPasswordResult?>()
@@ -171,15 +171,17 @@ class ForgetViewModel(
     }
 
     //提交手机验证码
-     fun getCheckPhone(phoneNum: String,validCode: String) {
+     fun getCheckPhone(phone: String,validCode: String) {
 
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+             doNetwork(androidContext) {
                 OneBoSportApi.indexService.forgetPasswordSMS(
-                    ForgetPasswordSmsRequest(phoneNum,validCode)
+                    ForgetPasswordSmsRequest(phone,validCode)
                 )
-            }
-            _smsCodeResult.postValue(result)
+            }?.let {result->
+                 _smsCodeResult.postValue(result)
+                 LogUtil.d(result.toString())
+             }
 
         }
 
