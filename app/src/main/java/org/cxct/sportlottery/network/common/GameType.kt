@@ -285,7 +285,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 TT -> R.drawable.img_tabletennis_mobile01
                 IH -> R.drawable.img_icehockey_mobile01
                 BX -> R.drawable.img_boxing_mobile01
-                CB -> R.drawable.img_soccer_mobile01
+                CB -> R.drawable.img_snooker_mobile01
                 CK -> R.drawable.img_cricket_mobile01
                 BB -> R.drawable.img_baseball_mobile01
                 RB -> R.drawable.img_rugby_mobile01
