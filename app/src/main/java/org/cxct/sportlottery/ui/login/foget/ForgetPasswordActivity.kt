@@ -253,16 +253,19 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
                             binding.btnSendSms.isEnabled = false
+                            binding.btnSendSms.setBackgroundResource(R.drawable.bg_unennable_timer)
                             binding.btnSendSms.text = "${sec}s"
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@ForgetPasswordActivity,
-                                    R.color.color_C9CFD7
+                                    R.color.color_FFFFFF
                                 )
                             )
                         } else {
                             stopSmeTimer()
                             binding.btnSendSms.isEnabled = true
+                            binding.btnSendSms.setBackgroundResource(R.drawable.btn_send_sms)
+
                             if (state == 1){
                                 binding.btnSendSms.text = getString(R.string.get_phone_code)
                             }else{
