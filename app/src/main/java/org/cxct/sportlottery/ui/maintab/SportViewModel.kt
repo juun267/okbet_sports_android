@@ -2772,7 +2772,7 @@ class SportViewModel(
                     EnterThirdGameResult(
                         resultType = EnterThirdGameResult.ResultType.FAIL,
                         url = null,
-                        errorMsg = androidContext.getString(R.string.error_url_fail)
+                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
                     )
                 )
             }

@@ -1189,7 +1189,7 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Cược tỷ số</string>
-    <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
+    <string name="hint_bet_limit_range">Giới hạn %1$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">Ước tính thắng(%s)：</string>
@@ -1245,4 +1245,5 @@
     <string name="error_full_name">Họ tên bạn nhập không chính xác</string>
     <string name="hint_verification_code">Vui lòng nhập mã xác nhận.</string>
     <string name="please_enter_question">Miêu tả vấn đề bạn gặp phải</string>
+    <string name="hint_game_maintenance">Trò chơi này đang được bảo trì, vui lòng thử lại sau</string>
 </resources>

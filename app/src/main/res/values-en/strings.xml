@@ -1205,7 +1205,7 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
+    <string name="hint_bet_limit_range">Limit %1$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">To Win(%s)：</string>
@@ -1256,4 +1256,5 @@
     <string name="error_full_name">The name that you entered is not valid</string>
     <string name="hint_verification_code">Please enter the verification code.</string>
     <string name="please_enter_question">Please describe the problem</string>
+    <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
 </resources>

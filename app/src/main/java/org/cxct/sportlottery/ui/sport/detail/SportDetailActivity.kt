@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
-import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.*
@@ -54,7 +53,6 @@ import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.MyWebView
 import timber.log.Timber
 import java.util.*
@@ -201,23 +199,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
+
         iv_refresh.setOnClickListener {
-            iv_refresh.animate().rotation(720f).setDuration(1000).start()
             initAllObserve()
         }
+
         ImmersionBar.with(this)
+            .fitsSystemWindows(true)
             .statusBarDarkFont(false)
+            .statusBarColor(R.color.color_000000)
             .init()
-        ImmersionBar.getStatusBarHeight(this).let {
-            v_statusbar.minimumHeight = it
-            v_statusbar_1.minimumHeight = it
-            toolbar_layout.minimumHeight = it
-            iv_toolbar_bg.layoutParams.apply {
-                height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
-            }
-            collaps_toolbar.layoutParams.height =
-                it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
-        }
 
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
@@ -398,6 +389,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
+        iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
+            ?: GameType.FT))
+        collaps_toolbar.iv_toolbar_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(
+            matchInfo?.gameType)
+            ?: GameType.FT))
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail, scoPlayCateNameForBetInfo ->
                 if (mIsEnabled) {
@@ -947,7 +943,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         live_view_tool_bar.layoutParams.apply {
             if (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
-                height = if (enable) ViewGroup.LayoutParams.MATCH_PARENT else 250.dp
+                height =
+                    if (enable) ViewGroup.LayoutParams.MATCH_PARENT else ViewGroup.LayoutParams.WRAP_CONTENT
             } else {
                 width = ViewGroup.LayoutParams.MATCH_PARENT
                 height = ViewGroup.LayoutParams.MATCH_PARENT

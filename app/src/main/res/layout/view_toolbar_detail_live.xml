@@ -47,6 +47,7 @@
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_centerInParent="true"
                 android:background="@color/color_025BE8"
                 android:overScrollMode="never" />
             <!--根據需求，先隱藏賽事動畫-->

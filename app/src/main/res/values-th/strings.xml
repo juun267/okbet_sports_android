@@ -1201,5 +1201,6 @@
     <string name="error_full_name">ชื่อที่คุณป้อนไม่ถูกต้อง</string>
     <string name="hint_verification_code">กรุณากรอกรหัสยืนยัน</string>
     <string name="please_enter_question">กรุณาบอกรายละเอียดปัญหา</string>
+    <string name="hint_game_maintenance">เกมนี้อยู่ระหว่างการปรับปรุง โปรดลองใหม่ภายหลัง</string>
     <!--F005-->
 </resources>
