@@ -1202,6 +1202,9 @@
     <string name="hint_verification_code">กรุณากรอกรหัสยืนยัน</string>
     <string name="please_enter_question">กรุณาบอกรายละเอียดปัญหา</string>
     <string name="hint_game_maintenance">เกมนี้อยู่ระหว่างการปรับปรุง โปรดลองใหม่ภายหลัง</string>
+    <string name="to_back_login">ย้อนกลับหน้าหลัก</string>
+    <string name="new_login_password">รหัสผ่านใหม่เข้าสู่ระบบ</string>
+    <string name="new_login_password_confirm">ยืนยันรหัสผ่านใหม่</string>
     <string name="error_wechat">ข้อผิดพลาดรูปแบบ WeChat ID</string>
     <!--F005-->
 </resources>

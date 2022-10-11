@@ -62,7 +62,7 @@
     <string name="withdrawal_pwd">提款密码</string>
     <string name="hint_withdrawal_pwd">密码为4个数字</string>
     <string name="phone_number">手机号码</string>
-    <string name="hint_phone_number">请输入手机号码</string>
+    <string name="hint_phone_number">请输入正确的手机号码</string>
     <string name="error_phone_number">手机号码格式错误</string>
     <string name="qq_number">QQ号码</string>
     <string name="hint_qq_number">请输入QQ账号</string>
@@ -1258,5 +1258,15 @@
     <string name="error_full_name">您输入的姓名不正确</string>
     <string name="hint_verification_code">请输入验证码</string>
     <string name="hint_game_maintenance">该游戏维护中，请稍后尝试</string>
+    <string name="please_get_forget_password">请找回您的OKBet密码！</string>
+    <string name="please_set_forget_password">请设置您的新账号密码!</string>
+    <string name="has_send_message_to_phone">验证码已经发送到你的手机: </string>
+    <string name="to_back_login">返回登录页</string>
+    <string name="get_phone_code">获取</string>
+    <string name="reget_phone_code">重新获取</string>
+    <string name="new_login_password">新登录密码</string>
+    <string name="new_login_password_confirm">确认新登录密码</string>
+    <string name="error_confirm_password_forget">密码确认不匹配</string>
+    <string name="tips_password_success">密码已修改成功，请重新登录！</string>
     <string name="error_wechat">微信ID格式错误</string>
 </resources>

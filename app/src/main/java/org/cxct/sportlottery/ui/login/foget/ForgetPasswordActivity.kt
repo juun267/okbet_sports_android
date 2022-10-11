@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_forget_password.*
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.observe
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import java.util.*
@@ -34,7 +36,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private lateinit var binding: ActivityForgetPasswordBinding
     private var mSmsTimer: Timer? = null
     private var page = 1
-
+    private var state = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +87,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     viewModel.resetPassword(phone = eet_phone_num.text.toString(),
                     confirmPassword = eet_confirm_password_forget.text.toString(),
                         newPassword = eet_login_password_forget.text.toString())
+                    return@setOnClickListener
                 }
                 page++
                 setPage()
@@ -128,11 +131,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             updateUiWithResult(it)
         }
         viewModel.smsCodeResult.observe(this){
-            LogUtil.d(it.toString())
             it?.let { result->
                 if (!result.success){
                     binding.etSmsValidCode.setError(result.msg,false)
-                    LogUtil.d(it.toString())
                 }else{
                     page++
                     setPage()
@@ -140,6 +141,14 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             }
         }
         viewModel.resetPasswordResult.observe(this){
+            if (it?.success == true){
+                page++
+                setPage()
+                tv_user_name.text =  it.ResetPasswordData?.userName
+            }else{
+                ToastUtil.showToast(this,it?.msg,Toast.LENGTH_LONG)
+                return@observe
+            }
 
         }
         viewModel.smsCheckComplete()
@@ -221,6 +230,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private fun updateUiWithResult(smsResult: SmsResult?) {
         binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
+            state +=1
             binding.tvSmsSend.visibility = View.VISIBLE
             binding.tvSmsSend2.visibility = View.VISIBLE
             binding.tvSmsSend2.text = " +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}"
@@ -236,25 +246,31 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private fun showSmeTimer300() {
         try {
             stopSmeTimer()
-
-            var sec = 60
+            var sec = 120
             mSmsTimer = Timer()
             mSmsTimer?.schedule(object : TimerTask() {
                 override fun run() {
                     Handler(Looper.getMainLooper()).post {
                         if (sec-- > 0) {
                             binding.btnSendSms.isEnabled = false
+                            binding.btnSendSms.setBackgroundResource(R.drawable.bg_unennable_timer)
                             binding.btnSendSms.text = "${sec}s"
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@ForgetPasswordActivity,
-                                    R.color.color_AEAEAE_404040
+                                    R.color.color_FFFFFF
                                 )
                             )
                         } else {
                             stopSmeTimer()
                             binding.btnSendSms.isEnabled = true
-                            binding.btnSendSms.text = getString(R.string.get_verification_code)
+                            binding.btnSendSms.setBackgroundResource(R.drawable.btn_send_sms)
+
+                            if (state == 1){
+                                binding.btnSendSms.text = getString(R.string.get_phone_code)
+                            }else{
+                                binding.btnSendSms.text = getString(R.string.reget_phone_code)
+                            }
                             binding.btnSendSms.setTextColor(Color.WHITE)
                         }
                     }
@@ -262,10 +278,14 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             }, 0, 1000) //在 0 秒後，每隔 1000L 毫秒執行一次
         } catch (e: Exception) {
             e.printStackTrace()
-
             stopSmeTimer()
             binding.btnSendSms.isEnabled = true
-            binding.btnSendSms.text = getString(R.string.get_verification_code)
+            if (state == 1){
+                binding.btnSendSms.text = getString(R.string.get_phone_code)
+            }else{
+                binding.btnSendSms.text = getString(R.string.reget_phone_code)
+            }
+
         }
     }
 
