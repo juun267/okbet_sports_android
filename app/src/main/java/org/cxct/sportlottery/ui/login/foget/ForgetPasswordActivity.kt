@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.login.foget
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -15,10 +17,14 @@ import kotlinx.android.synthetic.main.activity_register.eet_confirm_password
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPasswordBinding
+import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import java.util.*
@@ -28,6 +34,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private lateinit var binding: ActivityForgetPasswordBinding
     private var mSmsTimer: Timer? = null
     private var page = 1
+    private var result : ForgetSmsResult? = null
+    private var resetResult : ResetPasswordResult? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
@@ -48,7 +56,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
     fun initView(){
         binding.eetPhoneNum.checkRegisterListener{viewModel.checkPhone(it)}
-        binding.eetSmsValidCode.checkRegisterListener { viewModel.checkSecurityCode(it) }
+        binding.eetSmsCode.checkRegisterListener { viewModel.checkSecurityCode(it) }
+        binding.eetLoginPasswordForget.transformationMethod =
+            AsteriskPasswordTransformationMethod()
+        binding.eetConfirmPasswordForget.transformationMethod =
+            AsteriskPasswordTransformationMethod()
         binding.eetLoginPasswordForget.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetConfirmPasswordForget.checkRegisterListener { viewModel.checkConfirmPassword(eet_login_password_forget.text.toString(),it) }
         binding.btnSendSms.setOnClickListener {
@@ -56,21 +68,32 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             viewModel.getSendSms(phoneNum = eet_phone_num.text.toString())
         }
         binding.btnPut.setOnClickListener{
-            if (page ==2){
+            if (page ==3){
                 //提交修改密码的逻辑
-
+                startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
             }
-            if (page<2){
+            if (page<3){
+                if (page ==1){
+                   viewModel.getCheckPhone(
+                        phoneNum = eet_phone_num.text.toString(),
+                        validCode = eet_sms_code.text.toString()
+                    )
+                    if (result?.success==false){
+                        return@setOnClickListener
+                    }
+                }
+                if (page == 2){
+                    viewModel.resetPassword(phone = eet_phone_num.text.toString(),
+                    confirmPassword = eet_confirm_password_forget.text.toString(),
+                        newPassword = eet_login_password_forget.text.toString())
+                }
                 page++
                 setPage()
                 viewModel.focusChangeCheckAllInputComplete(page)
             }
         }
+
         binding.apply {
-            eetLoginPasswordForget.transformationMethod =
-                AsteriskPasswordTransformationMethod()
-            eetConfirmPasswordForget.transformationMethod =
-                AsteriskPasswordTransformationMethod()
             etLoginPassword.endIconImageButton.setOnClickListener {
                 if (etLoginPassword.endIconResourceId == R.drawable.ic_eye_open){
                     eetLoginPasswordForget.transformationMethod =
@@ -82,7 +105,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                         HideReturnsTransformationMethod.getInstance()
                 }
                 etLoginPassword.hasFocus = true
-               // eetLoginPasswordForget.setSelection(eetLoginPasswordForget.text.toString().length)
+                eetLoginPasswordForget.setSelection(eetLoginPasswordForget.text.toString().length)
             }
 
             etConfirmPasswordForget.endIconImageButton.setOnClickListener {
@@ -96,7 +119,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                         HideReturnsTransformationMethod.getInstance()
                 }
                 etConfirmPasswordForget.hasFocus = true
-             //   eetConfirmPasswordForget.setSelection(eetConfirmPasswordForget.text.toString().length)
+                eetConfirmPasswordForget.setSelection(eetConfirmPasswordForget.text.toString().length)
             }
         }
     }
@@ -104,6 +127,17 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private fun initObserve() {
         viewModel.smsResult.observe(this) {
             updateUiWithResult(it)
+        }
+        viewModel.smsCodeResult.observe(this){
+            result = it
+            it?.let { result->
+                if (!result.success){
+                    binding.etSmsValidCode.setError(result.msg,false)
+                }
+            }
+        }
+        viewModel.resetPasswordResult.observe(this){
+            resetResult = it
         }
         viewModel.smsCheckComplete()
         viewModel.putEnable.observe(this){
@@ -159,22 +193,40 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             1->{
                 binding.firstPager.visibility = View.VISIBLE
                 binding.clPassword.visibility = View.GONE
+                binding.clSuccess.visibility = View.GONE
                 binding.labelRegister.text = getString(R.string.please_get_forget_password)
                 binding.btnPut.text = getString(R.string.next_step)
             }
-            2 ->{binding.firstPager.visibility = View.GONE
+            2 ->{
+                binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.VISIBLE
+                binding.clSuccess.visibility = View.GONE
                 binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.submit)
+            }
+            3->{
+                binding.firstPager.visibility = View.GONE
+                binding.clPassword.visibility = View.GONE
+                binding.clSuccess.visibility = View.VISIBLE
+                binding.labelRegister.text = getString(R.string.please_set_forget_password)
+                binding.btnPut.text = getString(R.string.to_back_login)
             }
         }
     }
     //发送验证码
+    @SuppressLint("SetTextI18n")
     private fun updateUiWithResult(smsResult: SmsResult?) {
         binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
+            binding.tvSmsSend.visibility = View.VISIBLE
+            binding.tvSmsSend2.visibility = View.VISIBLE
+
+            binding.tvSmsSend2.text = " +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}"
+            LogUtil.d(TextUtil.maskPhoneNum(eet_phone_num.text.toString()))
             showSmeTimer300()
         } else {
+            binding.tvSmsSend.visibility = View.GONE
+            binding.tvSmsSend2.visibility = View.GONE
             //做异常处理
             binding.etSmsValidCode.setError(smsResult?.msg,false)
         }

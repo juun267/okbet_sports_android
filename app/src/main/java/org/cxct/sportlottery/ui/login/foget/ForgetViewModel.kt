@@ -7,6 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.forgetPassword.ForgetPasswordSmsRequest
+import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordRequest
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.repository.*
@@ -54,7 +58,14 @@ class ForgetViewModel(
     val smsResult: LiveData<SmsResult?>
         get() = _smsResult
     private val _smsResult = MutableLiveData<SmsResult?>()
-
+    //短信验证码返回值
+    val smsCodeResult: LiveData<ForgetSmsResult?>
+        get() = _smsCodeResult
+    private val _smsCodeResult = MutableLiveData<ForgetSmsResult?>()
+    //短信验证码返回值
+    val resetPasswordResult: LiveData<ResetPasswordResult?>
+        get() = _resetPasswordResult
+    private val _resetPasswordResult = MutableLiveData<ResetPasswordResult?>()
     //手机号码输入验证
     fun checkPhone(phoneNum: String): String? {
         val msg = when {
@@ -99,7 +110,7 @@ class ForgetViewModel(
     fun checkConfirmPassword(password: String?, confirmPassword: String?) {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            password != confirmPassword -> LocalUtils.getString(R.string.error_confirm_password)
+            password != confirmPassword -> LocalUtils.getString(R.string.error_confirm_password_forget)
             else -> null
         }
         _confirmPasswordMsg.value = Pair(msg, msg == null)
@@ -148,39 +159,42 @@ class ForgetViewModel(
      */
     fun getSendSms(phoneNum: String) {
         //先检测手机号 暂时做假数据处理
-        if (getCheckPhone(phoneNum)) {
-            //发送验证码
-            viewModelScope.launch {
-                val result = doNetwork(androidContext) {
-                    OneBoSportApi.indexService.sendSms(
-                        SmsRequest(phoneNum)
-                    )
-                }
-                _smsResult.postValue(result)
-            }
-            _phoneMsg.value = Pair(null, false)
-        } else {
-            val msg = LocalUtils.getString(R.string.error_phone_not_have)
-            _phoneMsg.value = Pair(msg, true)
-        }
-
-
-    }
-
-    //手机号校验
-    private fun getCheckPhone(phoneNum: String): Boolean {
-        //假数据
-        var bindPhone = false
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.sendSms(
                     SmsRequest(phoneNum)
                 )
             }
-            bindPhone = result?.success == true
+            _smsResult.postValue(result)
         }
-        return bindPhone
+        _phoneMsg.value = Pair(null, true)
     }
 
+    //提交手机验证码
+     fun getCheckPhone(phoneNum: String,validCode: String) {
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.forgetPasswordSMS(
+                    ForgetPasswordSmsRequest(phoneNum,validCode)
+                )
+            }
+            _smsCodeResult.postValue(result)
+
+        }
+
+    }
+    //提交密码
+    fun resetPassword(phone: String, confirmPassword :String,
+                      newPassword: String){
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.resetPassWord(
+                    ResetPasswordRequest(phone,confirmPassword,newPassword)
+                )
+            }
+            _resetPasswordResult.postValue(result)
+        }
+    }
 
 }

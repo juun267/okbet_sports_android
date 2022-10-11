@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.index
 
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CANCEL_ACCOUNT
+import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
@@ -12,9 +13,14 @@ import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
+import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
+import org.cxct.sportlottery.network.index.forgetPassword.ForgetPasswordSmsRequest
+import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordRequest
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
@@ -71,4 +77,10 @@ interface IndexService {
 
     @POST(CANCEL_ACCOUNT)
     suspend fun cancelAccount(@Path("password") password: String ):Response<CancelAccountResult>
+
+    @POST(FORGET_PASSWORD_SMS)
+    suspend fun forgetPasswordSMS(@Body smsRequest: ForgetPasswordSmsRequest): Response<ForgetSmsResult>
+    @POST(RESET_FORGET_PASSWORD)
+    suspend fun resetPassWord(@Body resetPasswordRequest: ResetPasswordRequest): Response<ResetPasswordResult>
+
 }

@@ -5,6 +5,7 @@ import org.cxct.sportlottery.R
 import timber.log.Timber
 import java.lang.Exception
 import java.math.RoundingMode
+import kotlin.text.StringBuilder
 
 /**
  * 需要使用DecimalFormat轉換格式時, 需配合doNumberFormat()
@@ -112,6 +113,13 @@ object TextUtil : DecimalFormatUtil() {
     fun maskUserName(userName: String): String {
         return StringBuffer().append(userName.substring(0, 2)).append("***")
             .append(userName.substring(userName.length - 2, userName.length)).toString()
+    }
+    /**
+     * 手机密文显示后4位
+     */
+    fun maskPhoneNum(phone: String): String {
+        return StringBuffer().append("******")
+            .append(phone.substring(phone.length-4,phone.length)).toString()
     }
 
     fun compareWithGameKey(type: String, value: String): Boolean {

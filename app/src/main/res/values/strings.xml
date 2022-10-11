@@ -1278,4 +1278,7 @@
     <string name="error_phone_not_have">手机号不存在</string>
     <string name="new_login_password">新登录密码</string>
     <string name="error_confirm_password_forget">密码确认不匹配</string>
+    <string name="tips_password_success">密码已修改成功，请重新登录！</string>
+    <string name="to_back_login">返回登录页</string>
+    <string name="has_send_message_to_phone">验证码已经发送到你的手机: </string>
    </resources>

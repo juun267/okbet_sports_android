@@ -378,4 +378,7 @@ object Constants {
 
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
+    //忘记密码 发送短信
+    const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
+    const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
 }

@@ -196,10 +196,11 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnForgetPassword.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         binding.btnForgetPassword.getPaint().setAntiAlias(true);//抗锯齿
         binding.btnForgetPassword.setOnClickListener {
-            showPromptDialog(
+           /* showPromptDialog(
                 getString(R.string.prompt),
                 getString(R.string.desc_forget_password)
-            ) {}
+            ) {}*/
+            startActivity(Intent(this@LoginActivity, ForgetPasswordActivity::class.java))
         }
     }
 
