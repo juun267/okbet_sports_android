@@ -27,6 +27,7 @@
 - ErrorUtils parseError會回傳Api Service相對應result (ex. login api -> LoginResult)
 - Error Result只會代 success,msg,code三個欄位，資料欄位皆為null
 - 如果回傳Error Result為空，表示發生無法預期的錯誤，之後可能會送出log紀錄
+- 如果新建一个接口一定要在ErrorUtils中参考之前的接口做处理，否则异常情况无法处理，返回的result会为null（忠告）
 
 ```
 viewModelScope.launch{

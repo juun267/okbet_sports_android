@@ -180,7 +180,6 @@ class ForgetViewModel(
                 )
             }?.let {result->
                  _smsCodeResult.postValue(result)
-                 LogUtil.d(result.toString())
              }
 
         }
@@ -195,6 +194,7 @@ class ForgetViewModel(
                     ResetPasswordRequest(phone,confirmPassword,newPassword)
                 )
             }
+            LogUtil.d(result.toString())
             _resetPasswordResult.postValue(result)
         }
     }

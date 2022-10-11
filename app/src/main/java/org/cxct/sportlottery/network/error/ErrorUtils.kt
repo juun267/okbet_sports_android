@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
+import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
 import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
@@ -47,6 +48,7 @@ import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
+import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.SEND_TWO_FACTOR
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
@@ -91,6 +93,8 @@ import org.cxct.sportlottery.network.index.chechBetting.CheckBettingResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
+import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -536,6 +540,14 @@ object ErrorUtils {
                     (url.contains(UPLOAD_VERIFY_PHOTO)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return UploadVerifyPhotoResult(it.code, it.msg, it.success,null) as T
+                    }
+                    (url.contains(FORGET_PASSWORD_SMS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ForgetSmsResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(RESET_FORGET_PASSWORD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return ResetPasswordResult(it.code, it.msg, it.success,null) as T
                     }
                 }
             }

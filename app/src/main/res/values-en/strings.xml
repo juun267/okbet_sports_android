@@ -1257,4 +1257,10 @@
     <string name="hint_verification_code">Please enter the verification code.</string>
     <string name="please_enter_question">Please describe the problem</string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
+    <string name="please_get_forget_password">Please retrieve your OKBet password!</string>
+    <string name="please_set_forget_password">Please set your new account password!</string>
+    <string name="to_back_login">Back to login page</string>
+    <string name="has_send_message_to_phone">A verification code has been sent to your phone: </string>
+    <string name="get_phone_code">Obtain</string>
+    <string name="reget_phone_code">Reacquire</string>
 </resources>
