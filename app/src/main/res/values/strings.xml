@@ -1281,4 +1281,5 @@
     <string name="to_back_login">返回登录页</string>
     <string name="has_send_message_to_phone">验证码已经发送到你的手机: </string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
+    <string name="error_wechat">Wechat ID formatted incorrectly</string>
 </resources>

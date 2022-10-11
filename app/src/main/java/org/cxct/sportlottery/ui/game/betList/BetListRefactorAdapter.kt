@@ -520,7 +520,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupInputLimit(itemData: BetInfoListData) {
             val maxBet = itemData.parlayOdds?.max ?: 0
-            inputMaxMoney = maxBet.toDouble()
+            //未登录的情况下，最大限额为7个9
+            inputMaxMoney = if (mUserLogin) maxBet.toDouble() else 9999999.toDouble()
             val minBet = itemData.parlayOdds?.min ?: 0
             inputMinMoney = minBet.toDouble()
         }
@@ -1152,6 +1153,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     )
                     //限額用整數提示
                     tv_win_hint_default.text = winHint
+                    et_win.isEnabled = true
                     val etWinHasInput = !et_win.text.isNullOrEmpty()
 //                if (etWinHasInput) {
                     tv_win_hint_default.isVisible = false //僅輸入金額以後隱藏
@@ -1160,6 +1162,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                }
                 } else {
                     tv_hint_default.isVisible = false
+                    et_win.isEnabled = false
                     tv_win_hint_default.isVisible = false
                 }
             }
@@ -1600,7 +1603,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             isGetMax: Boolean,
             betList: MutableList<BetInfoListData>
         ): Double {
-            val defaultMax = 999999999L
+            val defaultMax = 9999999L
             var min = betList.firstOrNull()?.parlayOdds?.min ?: 0
             var max = betList.firstOrNull()?.parlayOdds?.max ?: defaultMax
             betList.forEach {
@@ -1736,7 +1739,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupInputMoney(itemData: ParlayOdd?) {
             val parlayMaxBet = itemData?.max ?: 0
-            inputMaxMoney = parlayMaxBet.toDouble()
+            //未登录的情况下，最大限额为7个9
+            inputMaxMoney = if (mUserLogin) parlayMaxBet.toDouble() else 9999999.toDouble()
             val parlayMinBet = itemData?.min ?: 0
             inputMinMoney = parlayMinBet.toDouble()
         }

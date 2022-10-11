@@ -1257,4 +1257,5 @@
     <string name="hint_verification_code">Please enter the verification code.</string>
     <string name="please_enter_question">Please describe the problem</string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
+    <string name="error_wechat">Wechat ID formatted incorrectly</string>
 </resources>
