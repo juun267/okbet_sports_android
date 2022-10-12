@@ -1205,6 +1205,13 @@
     <string name="to_back_login">ย้อนกลับหน้าหลัก</string>
     <string name="new_login_password">รหัสผ่านใหม่เข้าสู่ระบบ</string>
     <string name="new_login_password_confirm">ยืนยันรหัสผ่านใหม่</string>
+    <string name="error_confirm_password_forget">รหัสไม่ถูก</string>
+    <string name="tips_password_success">รหัสผ่านแก้ไขเรียบร้อยแล้ว, กรุณาเข้าสู่ระบบใหม่</string>
+    <string name="please_get_forget_password">กรุณาหารหัสผ่าน OKBet ของคุณ!</string>
+    <string name="please_set_forget_password">กรุณาตั้งรหัสผ่านบัญชีใหม่ของคุณ!</string>
+    <string name="has_send_message_to_phone">รหัสยืนยันถูกส่งไปยังโทรศัพท์ของคุณแล้ว</string>
+    <string name="get_phone_code">รับรหัส</string>
+    <string name="reget_phone_code">รับใหม่อีกครั้ง</string>
     <string name="error_wechat">ข้อผิดพลาดรูปแบบ WeChat ID</string>
     <!--F005-->
 </resources>

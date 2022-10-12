@@ -63,7 +63,7 @@
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">4 digit password</string>
     <string name="phone_number">Phone No.</string>
-    <string name="hint_phone_number">Please enter phone number</string>
+    <string name="hint_phone_number">Please enter the correct phone number</string>
     <string name="error_phone_number">Phone number formatted incorrectly</string>
     <string name="qq_number">QQ Number</string>
     <string name="hint_qq_number">QQ Account</string>
@@ -1274,10 +1274,10 @@
     <string name="hint_verification_code">Please enter the verification code.</string>
     <string name="please_get_forget_password">Please retrieve your OKBet password!</string>
     <string name="please_set_forget_password">Please set your new account password!</string>
-    <string name="new_login_password">新登录密码</string>
-    <string name="new_login_password_confirm">确认新登录密码</string>
-    <string name="error_confirm_password_forget">密码确认不匹配</string>
-    <string name="tips_password_success">密码已修改成功，请重新登录！</string>
+    <string name="new_login_password">New Login Password</string>
+    <string name="new_login_password_confirm">Confirm new login password</string>
+    <string name="error_confirm_password_forget">Password confirmation does not match</string>
+    <string name="tips_password_success">Password has been changed successfully, please log in again!</string>
     <string name="to_back_login">Back to login page</string>
     <string name="has_send_message_to_phone">A verification code has been sent to your phone: </string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>

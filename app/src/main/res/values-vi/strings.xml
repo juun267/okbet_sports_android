@@ -1256,4 +1256,6 @@
     <string name="reget_phone_code">Nhận lại</string>
     <string name="error_wechat">Lỗi định dạng ID WeChat</string>
     <string name="min_bet_format">Tối thiểu: %s</string>
+    <string name="error_confirm_password_forget">Xác nhận mật khẩu không khớp</string>
+    <string name="tips_password_success">Mật khẩu sửa thành công, hãy đăng nhập lại</string>
 </resources>

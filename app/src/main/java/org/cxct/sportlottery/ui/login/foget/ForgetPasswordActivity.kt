@@ -12,22 +12,23 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_forget_password.*
+import kotlinx.android.synthetic.main.activity_forget_password.tv_customer_service
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.eet_confirm_password
+import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPasswordBinding
 import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.observe
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import java.util.*
 
@@ -122,6 +123,21 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 }
                 etConfirmPasswordForget.hasFocus = true
                 eetConfirmPasswordForget.setSelection(eetConfirmPasswordForget.text.toString().length)
+            }
+        }
+        binding.tvCustomerService.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(supportFragmentManager, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ForgetPasswordActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@ForgetPasswordActivity, serviceUrl)
+                }
             }
         }
     }
