@@ -250,7 +250,7 @@
                             android:layout_height="wrap_content"
                             android:imeOptions="actionNext"
                             android:inputType="phone"
-                            android:maxLength="11"
+                            android:maxLength="10"
                             android:maxLines="1"
                             android:textColor="@color/color_FFFFFF_DE000000"
                             android:textSize="@dimen/textSize14sp"

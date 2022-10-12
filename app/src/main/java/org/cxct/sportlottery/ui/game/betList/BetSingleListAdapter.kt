@@ -503,7 +503,7 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
                 if (LoginRepository.isLogin.value == true) {
                     //更新bet single editText hint
                     val hint =
-                        context.getString(R.string.hint_bet_limit_range, minBet.toLong().toString())
+                        context.getString(R.string.min_bet_format, minBet.toLong().toString())
                     //限額用整數提示
                     tv_hint_single_default.text = hint
                     val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
