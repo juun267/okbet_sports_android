@@ -148,7 +148,6 @@ import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
-import org.cxct.sportlottery.util.LogUtil
 import retrofit2.Converter
 import retrofit2.Response
 import timber.log.Timber
@@ -177,7 +176,6 @@ object ErrorUtils {
         error?.let {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
-                LogUtil.d(url.toString())
                 when {
                     (url.contains(Constants.SEND_SMS_FORGET)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -549,7 +547,6 @@ object ErrorUtils {
                         return UploadVerifyPhotoResult(it.code, it.msg, it.success,null) as T
                     }
                     (url.contains(FORGET_PASSWORD_SMS)) -> {
-                        LogUtil.d("ForgetSmsResult")
                         @Suppress("UNCHECKED_CAST")
                         return ForgetSmsResult(it.code, it.msg, it.success) as T
                     }
