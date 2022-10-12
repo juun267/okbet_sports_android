@@ -380,6 +380,7 @@ class RegisterViewModel(
     fun checkWeChat(weChat: String?) {
         val msg = when {
             weChat.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyWeChat(weChat) -> LocalUtils.getString(R.string.error_wechat)
             else -> null
         }
         _weChatMsg.value = Pair(msg, msg == null)

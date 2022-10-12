@@ -1230,7 +1230,7 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit %1$s</string>
+    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">To Win(%s)：</string>
@@ -1283,4 +1283,6 @@
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
     <string name="get_phone_code">Obtain</string>
     <string name="reget_phone_code">Reacquire</string>
+    <string name="error_wechat">Wechat ID formatted incorrectly</string>
+    <string name="min_bet_format">Min Bet: %s</string>
 </resources>

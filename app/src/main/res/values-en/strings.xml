@@ -1267,4 +1267,6 @@
     <string name="reget_phone_code">Reacquire</string>
     <string name="error_confirm_password_forget">Password confirmation does not match</string>
     <string name="tips_password_success">Password has been changed successfully, please log in again!</string>
+    <string name="error_wechat">Wechat ID formatted incorrectly</string>
+    <string name="min_bet_format">Min Bet: %s</string>
 </resources>

@@ -446,7 +446,7 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
             isGetMax: Boolean,
             betList: MutableList<BetInfoListData>
         ): Double {
-            val defaultMax = 999999999L
+            val defaultMax = 9999999L
             var min = betList.firstOrNull()?.parlayOdds?.min ?: 0
             var max = betList.firstOrNull()?.parlayOdds?.max ?: defaultMax
             betList.forEach {
@@ -470,7 +470,9 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
         ) {
             itemView.apply {
                 var amountError = false
-                val maxBet = (itemData.parlayOdds?.max ?: 0).toDouble()
+                //未登录的情况下，最大限额为7个9
+                val maxBet = if (mUserLogin) (itemData.parlayOdds?.max
+                    ?: 0).toDouble() else 9999999.toDouble()
                 val minBet = (itemData.parlayOdds?.min ?: 0).toDouble()
                 amountError = if (betAmount > maxBet) {
                     //最大限額

@@ -64,7 +64,7 @@
     <string name="phone_number">Số điện thoại</string>
     <string name="hint_phone_number">Vui lòng nhập số điện thoại</string>
     <string name="error_phone_number">Định dạng số điện thoại không đúng</string>
-    <string name="qq_number">QQsố</string>
+    <string name="qq_number">Số tài khoản QQ</string>
     <string name="hint_qq_number">Vui lòng nhập QQTài khoản</string>
     <string name="error_qq_number">Lỗi định dạng tài khoản QQ</string>
     <string name="e_mail">Email</string>
@@ -1189,7 +1189,7 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Cược tỷ số</string>
-    <string name="hint_bet_limit_range">Giới hạn %1$s</string>
+    <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">Ước tính thắng(%s)：</string>
@@ -1254,6 +1254,8 @@
      <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn: </string>
     <string name="get_phone_code">Nhận</string>
     <string name="reget_phone_code">Nhận lại</string>
+    <string name="error_wechat">Lỗi định dạng ID WeChat</string>
+    <string name="min_bet_format">Tối thiểu: %s</string>
     <string name="error_confirm_password_forget">Xác nhận mật khẩu không khớp</string>
     <string name="tips_password_success">Mật khẩu sửa thành công, hãy đăng nhập lại</string>
 </resources>

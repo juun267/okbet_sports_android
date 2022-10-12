@@ -1209,7 +1209,7 @@
     <string name="video">视频</string>
     <string name="anime">动画</string>
 
-    <string name="hint_bet_limit_range">限额%1$s</string>
+    <string name="hint_bet_limit_range">限额%1$s-%2$s</string>
     <string name="submitting">注单提交中</string>
     <string name="bet_receipt_bet_quota_with_sign">投注金额(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">最高可赢(%s)：</string>
@@ -1268,4 +1268,7 @@
     <string name="new_login_password_confirm">确认新登录密码</string>
     <string name="error_confirm_password_forget">密码确认不匹配</string>
     <string name="tips_password_success">密码已修改成功，请重新登录！</string>
+    <string name="error_wechat">微信ID格式错误</string>
+    <string name="min_bet_format">最低限额: %s</string>
+
 </resources>
