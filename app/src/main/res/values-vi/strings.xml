@@ -1189,7 +1189,7 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Cược tỷ số</string>
-    <string name="hint_bet_limit_range">Giới hạn %1$s</string>
+    <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">Ước tính thắng(%s)：</string>
@@ -1255,4 +1255,5 @@
     <string name="get_phone_code">Nhận</string>
     <string name="reget_phone_code">Nhận lại</string>
     <string name="error_wechat">Lỗi định dạng ID WeChat</string>
+    <string name="min_bet_format">Tối thiểu: %s</string>
 </resources>
