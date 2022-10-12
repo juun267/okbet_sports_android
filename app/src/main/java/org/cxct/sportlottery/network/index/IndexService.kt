@@ -14,13 +14,11 @@ import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
+import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
-import org.cxct.sportlottery.network.index.forgetPassword.ForgetPasswordSmsRequest
-import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
-import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordRequest
-import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
+import org.cxct.sportlottery.network.index.forgetPassword.*
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
@@ -82,5 +80,7 @@ interface IndexService {
     suspend fun forgetPasswordSMS(@Body smsRequest: ForgetPasswordSmsRequest): Response<ForgetSmsResult>
     @POST(RESET_FORGET_PASSWORD)
     suspend fun resetPassWord(@Body resetPasswordRequest: ResetPasswordRequest): Response<ResetPasswordResult>
+    @POST(SEND_SMS_FORGET)
+    suspend fun sendSmsForget(@Body sendSmsRequest: SendSmsRequest): Response<SendSmsResult>
 
 }
