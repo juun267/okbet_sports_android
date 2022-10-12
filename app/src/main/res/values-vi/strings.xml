@@ -1254,4 +1254,6 @@
      <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn: </string>
     <string name="get_phone_code">Nhận</string>
     <string name="reget_phone_code">Nhận lại</string>
+    <string name="error_confirm_password_forget">Xác nhận mật khẩu không khớp</string>
+    <string name="tips_password_success">Mật khẩu sửa thành công, hãy đăng nhập lại</string>
 </resources>
