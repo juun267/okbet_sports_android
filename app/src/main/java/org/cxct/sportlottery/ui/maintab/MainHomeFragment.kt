@@ -584,14 +584,13 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             }
         }
         lin_menu_game.apply {
+            LogUtil.toJson(publicityMenuData?.eGameMenuData)
             ivThirdGame.setImageResource(R.drawable.bg_egame)
             ivThirdGame.setOnClickListener {
-                publicityMenuData?.eGameMenuData?.let { thirdDictValues ->
-                    if (viewModel.isLogin.value != true) {
-                        (activity as MainTabActivity).showLoginNotify()
-                    } else {
-                        viewModel.requestEnterThirdGame(thirdDictValues)
-                    }
+                if (viewModel.isLogin.value != true) {
+                    (activity as MainTabActivity).showLoginNotify()
+                } else {
+                    viewModel.requestEnterThirdGame(publicityMenuData?.eGameMenuData)
                 }
             }
         }

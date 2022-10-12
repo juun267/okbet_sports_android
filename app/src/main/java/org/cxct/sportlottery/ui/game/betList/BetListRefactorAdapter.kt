@@ -1148,7 +1148,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     //更新win editText hint
                     val winHint = context.getString(
-                        R.string.hint_bet_limit_range,
+                        R.string.min_bet_format,
                         inputWinMinMoney.toLong().toString()
                     )
                     //限額用整數提示
