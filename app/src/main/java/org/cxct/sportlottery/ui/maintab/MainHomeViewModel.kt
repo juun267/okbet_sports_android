@@ -78,6 +78,11 @@ class MainHomeViewModel(
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     val token = loginRepository.token
 
+    val cardGameData: LiveData<List<ThirdDictValues?>>
+        get() = _cardGameData
+    private val _cardGameData = MutableLiveData<List<ThirdDictValues?>>()
+
+
     //region 宣傳頁用
     fun getRecommend() {
         viewModelScope.launch {
@@ -288,6 +293,22 @@ class MainHomeViewModel(
                     casinoMenuDataList = casinoList,
                     sabongMenuDataList = sabongList
                 )
+                var cardGameList = mutableListOf<ThirdDictValues?>(null, null, null)
+                gameCateDataList.forEach { gameCateData ->
+                    gameCateData.tabDataList.forEach { gameTabData ->
+                        gameTabData.gameList.forEach { gameItemData ->
+                            gameItemData.thirdGameData?.let {
+                                //PM 指定捞起这几个游戏，没有捞到或者open=0，就显示敬请期待
+                                when (it.firmCode) {
+                                    "TPG" -> cardGameList[0] = it
+                                    "FKG" -> cardGameList[1] = it
+                                    "CGQP" -> cardGameList[2] = it
+                                }
+                            }
+                        }
+                    }
+                }
+                _cardGameData.postValue(cardGameList.toList())
             }
         }
     }

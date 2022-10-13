@@ -62,7 +62,8 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportViewModel::class) {
+class MainHomeFragment() :
+    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -274,6 +275,8 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
             setupType(it)
+        }
+        viewModel.cardGameData.observe(viewLifecycleOwner) {
         }
 //
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
@@ -584,7 +587,6 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
             }
         }
         lin_menu_game.apply {
-            LogUtil.toJson(publicityMenuData?.eGameMenuData)
             ivThirdGame.setImageResource(R.drawable.bg_egame)
             ivThirdGame.setOnClickListener {
                 if (viewModel.isLogin.value != true) {
@@ -715,7 +717,7 @@ class MainHomeFragment() : BaseBottomNavigationFragment<SportViewModel>(SportVie
                 )
             }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(
-                getString(R.string.error),
+                getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
             EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
