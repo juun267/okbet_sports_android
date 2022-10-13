@@ -7,11 +7,10 @@
     android:gravity="center_vertical"
     android:paddingVertical="@dimen/margin_10"
     android:drawablePadding="8dp"
-    android:paddingRight="@dimen/margin_5"
     android:includeFontPadding="true"
     android:button="@null"
     android:checked="true"
     android:drawableLeft="@drawable/selector_radio_white"
-    android:textColor="@color/color_2b2b2b_ffffff"
+    android:textColor="@color/color_FFFFFF_414655"
     android:textSize="@dimen/textSize14sp"
     tools:text="@string/odd_type_eu" />

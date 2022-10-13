@@ -1285,4 +1285,7 @@
     <string name="reget_phone_code">Reacquire</string>
     <string name="error_wechat">Wechat ID formatted incorrectly</string>
     <string name="min_bet_format">Min Bet: %s</string>
+    <string name="match_live">赛事直播</string>
+    <string name="tiger_machine">老虎机</string>
+
 </resources>

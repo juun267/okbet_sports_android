@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,14 +13,13 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.news.NewsActivity
-import org.cxct.sportlottery.ui.profileCenter.timezone.TimeZoneActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
 
@@ -42,18 +39,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private val oddsTypeAdapter by lazy {
         OddsTypeAdapter(oddsTypeList)
     }
-    private val oddsPriceList = listOf(
-        "自动接受更好赔率",
-        "自动接受任何赔率",
-        "不接受任何赔率变动"
-    )
-
-    private lateinit var oddsPriceAdapter: OddsPriceAdapter
 
     private lateinit var languageAdapter: LanguageAdapter
 
     private var isExpendOddsType = false
-    private var isExpendOddsPrice = false
     private var isExpendLanguage = false
 
     override fun onCreateView(
@@ -68,11 +57,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initOddsTypeView()
-        initOddsPriceView()
         initLanguageView()
         initObserver()
         getOddsType()
-        setLinkItem()
+        viewModel.getInPlayCount()
     }
 
     override fun onResume() {
@@ -80,144 +68,59 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         cb_appearance.isChecked = MultiLanguagesApplication.isNightMode
         tv_language.text = LanguageManager.getLanguageStringResource(requireContext())
         iv_language.setImageResource(LanguageManager.getLanguageFlag(requireContext()))
-//        setMessageCount(viewModel.totalUnreadMsgCount.value)
-        setLogin()
-        viewModel.getMessageCount()
     }
 
     private fun initView() {
-        iv_menu_back.setOnClickListener {
+        lin_home.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).switchTabByPosition(0)
         }
-        lin_message.setOnClickListener {
-            startActivity(Intent(requireContext(), NewsActivity::class.java))
+        lin_sport.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
+        }
+        lin_inplay.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
+        }
+        lin_live.setOnClickListener {
+//            EventBus.getDefault().post(MenuEvent(false))
+        }
+        lin_poker.setOnClickListener {
+//            EventBus.getDefault().post(MenuEvent(false))
+        }
+        lin_slot.setOnClickListener {
+//            EventBus.getDefault().post(MenuEvent(false))
+        }
+        lin_promotion.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(false))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getPromotionUrl(
+                    viewModel.token,
+                    LanguageManager.getSelectLanguage(requireContext())
+                ),
+                getString(R.string.promotion))
         }
         lin_odds_type.setOnClickListener {
             isExpendOddsType = !isExpendOddsType
             rv_odds_type.isVisible = isExpendOddsType
             lin_odds_type.isSelected = isExpendOddsType
+            lin_odds_type.isSelected = isExpendOddsType
         }
-        lin_betting_setting.setOnClickListener {
-            isExpendOddsPrice = !isExpendOddsPrice
-            rv_odds_price.isVisible = isExpendOddsPrice
-            lin_betting_setting.isSelected = isExpendOddsPrice
-        }
-        lin_language.setOnClickListener {
-            isExpendLanguage = !isExpendLanguage
-            rv_language.isVisible = isExpendLanguage
-            lin_language.isSelected = isExpendLanguage
-        }
-        cb_appearance.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                MultiLanguagesApplication.saveNightMode(true)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                MultiLanguagesApplication.saveNightMode(false)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-        //在線客服 (取代原有的客服懸浮按鈕)
-        lin_customer.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.supportFragmentManager?.let { it1 ->
-                        ServiceDialog().show(
-                            it1,
-                            null
-                        )
-                    }
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl2) }
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    activity?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
-                }
-            }
-        }
-        //常見問題
-        lin_question.setOnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getFAQsUrl(requireContext()),
-                getString(R.string.faqs)
-            )
-        }
-        //时区切换
-        lin_timezone.setOnClickListener {
-            startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
-        }
-        //代理加盟
-        View.OnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getAffiliateUrl(requireContext()),
-                resources.getString(R.string.btm_navigation_affiliate)
-            )
-        }.apply {
-            tv_affiliate.setOnClickListener(this)
-            tv_affiliate1.setOnClickListener(this)
-        }
-        //聯繫我們
-        View.OnClickListener {
+        lin_contactus.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(false))
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getContactUrl(requireContext()),
                 getString(R.string.contact)
             )
-        }.apply {
-            tv_contact.setOnClickListener(this)
-            tv_contact1.setOnClickListener(this)
         }
-        //關於我們
-        View.OnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getAboutUsUrl(requireContext()),
-                getString(R.string.about_us)
-            )
-        }.apply {
-            tv_about_us.setOnClickListener(this)
-            tv_about_us1.setOnClickListener(this)
-        }
-
-        //博彩責任
-        View.OnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getDutyRuleUrl(requireContext()),
-                getString(R.string.responsible)
-            )
-        }.apply {
-            tv_responsible.setOnClickListener(this)
-            tv_responsible1.setOnClickListener(this)
-        }
-
-        //規則與條款
-        View.OnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getAgreementRuleUrl(requireContext()),
-                getString(R.string.terms_conditions)
-            )
-        }.apply {
-            tv_terms.setOnClickListener(this)
-            tv_terms1.setOnClickListener(this)
-        }
-        //隱私權條款
-        tv_privacy.setVisibilityByCreditSystem()
-        tv_privacy1.setVisibilityByCreditSystem()
-        View.OnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getPrivacyRuleUrl(requireContext()),
-                resources.getString(R.string.privacy_policy)
-            )
-        }.apply {
-            tv_privacy.setOnClickListener(this)
-            tv_privacy1.setOnClickListener(this)
+        lin_language.setOnClickListener {
+            isExpendLanguage = !isExpendLanguage
+            rv_language.isVisible = isExpendLanguage
+            lin_language.isSelected = isExpendLanguage
+            lin_language.isSelected = isExpendLanguage
         }
 
     }
@@ -243,14 +146,14 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserver() {
         viewModel.isLogin.observe(viewLifecycleOwner) {
-            setLogin()
+//            setLogin()
         }
         viewModel.oddsType.observe(viewLifecycleOwner) {
             setOddsType(it)
         }
-//        viewModel.totalUnreadMsgCount.observe(viewLifecycleOwner) {
-//            setMessageCount(it)
-//        }
+        viewModel.countByInPlay.observe(viewLifecycleOwner) {
+            tv_inplay_count.text = it.toString()
+        }
     }
 
 
@@ -294,17 +197,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.saveOddsType(oddsType)
     }
 
-    private fun initOddsPriceView() {
-        if (!oddsPriceList.isNullOrEmpty()) {
-            oddsPriceAdapter = OddsPriceAdapter(oddsPriceList)
-            oddsPriceAdapter.setOnItemClickListener { adapter, view, position ->
-                oddsPriceAdapter.setSelectPos(position)
-            }
-            rv_odds_price.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            rv_odds_price.adapter = oddsPriceAdapter
-
-        }
-    }
 
     private fun initLanguageView() {
         languageAdapter = LanguageAdapter(
@@ -319,7 +211,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             viewModel.betInfoRepository.clear()
             selectLanguage(languageAdapter.data[position])
         }
-        rv_language.layoutManager = GridLayoutManager(context, 2)
+        rv_language.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rv_language.adapter = languageAdapter
     }
 
@@ -332,41 +224,5 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun setMessageCount(num: Int?) {
-        if (num == null) {
-            tv_message_count.visibility = View.GONE
-        } else {
-            tv_message_count.visibility = if (num > 0) View.VISIBLE else View.GONE
-            tv_message_count.text = num.toString()
-        }
-    }
-
-    private fun setLogin() {
-        if (viewModel.isLogin.value == true) {
-            lin_message.visibility = View.VISIBLE
-            lin_odds_type.visibility = View.VISIBLE
-            lin_timezone.visibility = View.VISIBLE
-//            lin_betting_setting.visibility = View.VISIBLE
-        } else {
-            lin_message.visibility = View.GONE
-            lin_odds_type.visibility = View.GONE
-            lin_timezone.visibility = View.GONE
-//            lin_betting_setting.visibility = View.GONE
-        }
-    }
-
-    private fun setLinkItem() {
-        when (LanguageManager.getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> {
-                lin_link_zh_en.isVisible = true
-                lin_link_other.isVisible = false
-            }
-            else -> {
-                lin_link_zh_en.isVisible = false
-                lin_link_other.isVisible = true
-            }
-        }
-
-    }
 
 }

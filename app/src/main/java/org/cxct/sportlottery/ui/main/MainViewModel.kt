@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.isThirdTransferOpen
 
 
@@ -36,7 +37,8 @@ class MainViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    favoriteRepository: MyFavoriteRepository
+    favoriteRepository: MyFavoriteRepository,
+    private val sportMenuRepository: SportMenuRepository,
 ) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
@@ -72,6 +74,10 @@ class MainViewModel(
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
+
+    private val _countByInPlay = MutableLiveData<Int>()
+    val countByInPlay: LiveData<Int>
+        get() = _countByInPlay
 
     //未讀總數目
     val totalUnreadMsgCount = infoCenterRepository.totalUnreadMsgCount
@@ -270,6 +276,23 @@ class MainViewModel(
                 val infoCenterRequest =
                     InfoCenterRequest(1, 1, 0)
                 infoCenterRepository.getUserNoticeList(infoCenterRequest)
+            }
+        }
+    }
+
+    fun getInPlayCount() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                sportMenuRepository.getSportMenu(
+                    TimeUtil.getNowTimeStamp().toString(),
+                    TimeUtil.getTodayStartTimeStamp().toString()
+                )
+            }?.sportMenuData?.let { sportMenuList ->
+                var total = 0
+                sportMenuList.menu.inPlay.items.forEach { item ->
+                    total += item.num
+                }
+                _countByInPlay.postValue(total)
             }
         }
     }
