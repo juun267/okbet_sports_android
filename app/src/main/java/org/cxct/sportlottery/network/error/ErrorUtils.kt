@@ -95,6 +95,7 @@ import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
+import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -176,6 +177,10 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
+                    (url.contains(Constants.SEND_SMS_FORGET)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SendSmsResult(it.code, it.msg, it.success,null) as T
+                    }
                     (url.contains(INDEX_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
@@ -549,6 +554,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return ResetPasswordResult(it.code, it.msg, it.success,null) as T
                     }
+
                 }
             }
         }

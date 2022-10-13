@@ -7,12 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.index.forgetPassword.ForgetPasswordSmsRequest
-import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
-import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordRequest
-import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
+import org.cxct.sportlottery.network.index.forgetPassword.*
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
@@ -55,9 +51,9 @@ class ForgetViewModel(
     val smsEnable: LiveData<Boolean>
         get() = _smsEnable
     private val _smsEnable = MutableLiveData<Boolean>()
-    val smsResult: LiveData<SmsResult?>
+    val smsResult: LiveData<SendSmsResult?>
         get() = _smsResult
-    private val _smsResult = MutableLiveData<SmsResult?>()
+    private val _smsResult = MutableLiveData<SendSmsResult?>()
     //短信验证码返回值
     val smsCodeResult: LiveData<ForgetSmsResult?>
         get() = _smsCodeResult
@@ -155,14 +151,14 @@ class ForgetViewModel(
 
     /**
      * @phoneNum 手机号码
-     *  获取手机号码,先验证,验证通过发送验证码 开启倒计时,不通过提示异常倒计时不触发
+     *  获取短信你验证码
      */
     fun getSendSms(phoneNum: String) {
         //先检测手机号 暂时做假数据处理
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.indexService.sendSms(
-                    SmsRequest(phoneNum)
+                OneBoSportApi.indexService.sendSmsForget(
+                    SendSmsRequest(phoneNum)
                 )
             }
             _smsResult.postValue(result)
@@ -186,12 +182,12 @@ class ForgetViewModel(
 
     }
     //提交密码
-    fun resetPassword(phone: String, confirmPassword :String,
+    fun resetPassword(userName: String, confirmPassword :String,
                       newPassword: String){
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.resetPassWord(
-                    ResetPasswordRequest(phone,confirmPassword,newPassword)
+                    ResetPasswordRequest(userName,confirmPassword,newPassword)
                 )
             }
             LogUtil.d(result.toString())

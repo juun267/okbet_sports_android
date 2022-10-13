@@ -20,9 +20,8 @@ import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPasswordBinding
-import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
-import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
-import org.cxct.sportlottery.network.index.sendSms.SmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
+
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
@@ -38,7 +37,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private var mSmsTimer: Timer? = null
     private var page = 1
     private var state = 1
-
+    private var userName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
@@ -85,9 +84,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
                 }
                 if (page == 2){
-                    viewModel.resetPassword(phone = eet_phone_num.text.toString(),
-                    confirmPassword = eet_confirm_password_forget.text.toString(),
-                        newPassword = eet_login_password_forget.text.toString())
+                    userName?.let { userName ->
+                        viewModel.resetPassword(userName = userName,
+                            confirmPassword = eet_confirm_password_forget.text.toString(),
+                            newPassword = eet_login_password_forget.text.toString())
+                    }
                     return@setOnClickListener
                 }
                 page++
@@ -243,9 +244,10 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     }
     //发送验证码
     @SuppressLint("SetTextI18n")
-    private fun updateUiWithResult(smsResult: SmsResult?) {
+    private fun updateUiWithResult(smsResult: SendSmsResult?) {
         binding.btnSendSms.isEnabled = true
         if (smsResult?.success == true) {
+            userName = smsResult.ResetPasswordData?.userName
             state +=1
             binding.tvSmsSend.visibility = View.VISIBLE
             binding.tvSmsSend2.visibility = View.VISIBLE
