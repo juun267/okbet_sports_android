@@ -1213,5 +1213,6 @@
     <string name="get_phone_code">รับรหัส</string>
     <string name="reget_phone_code">รับใหม่อีกครั้ง</string>
     <string name="error_wechat">ข้อผิดพลาดรูปแบบ WeChat ID</string>
+    <string name="comingsoon">เร็วๆ นี้</string>
     <!--F005-->
 </resources>

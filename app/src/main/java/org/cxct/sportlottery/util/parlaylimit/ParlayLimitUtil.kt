@@ -2,7 +2,6 @@ package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
 import org.cxct.sportlottery.util.ArithUtil
-import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -52,7 +51,6 @@ object ParlayLimitUtil {
             //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
 
             val maxPayLimit = ArithUtil.div(max!!, hkOdds, 0, RoundingMode.DOWN)
-
             parlayBetLimit.odds = odds
             parlayBetLimit.hdOdds = hkOdds
             parlayBetLimit.max = maxPayLimit

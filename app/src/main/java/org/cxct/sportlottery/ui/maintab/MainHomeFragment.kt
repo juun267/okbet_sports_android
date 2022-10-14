@@ -20,7 +20,6 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
-import kotlinx.android.synthetic.main.view_home_menu_game.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -75,7 +74,10 @@ class MainHomeFragment() :
     }
 
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-    private lateinit var mainHomeMenuAdapter: MainHomeMenuAdapter
+
+    private val mainHomeMenuAdapter by lazy { MainHomeMenuAdapter(mutableListOf()) }
+    private val homeGameCardAdapter by lazy { HomeGameCardAdapter(mutableListOf()) }
+
     private val homeRecommendAdapter by lazy {
         HomeRecommendAdapter(
             HomeRecommendAdapter.HomeRecommendListener(
@@ -277,21 +279,22 @@ class MainHomeFragment() :
             setupType(it)
         }
         viewModel.cardGameData.observe(viewLifecycleOwner) {
+            homeGameCardAdapter.setNewData(it.toMutableList())
+            homeGameCardAdapter.setOnItemClickListener { adapter, view, position ->
+                viewModel.requestEnterThirdGame(homeGameCardAdapter.getItem(position))
+            }
+            homeGameCardAdapter.removeAllFooterView()
+            homeGameCardAdapter.addFooterView(LayoutInflater.from(requireContext())
+                .inflate(R.layout.item_home_game_empty, null))
+            homeGameCardAdapter.footerLayout.apply {
+                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT)
+            }
         }
-//
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it)
         }
-//
-//        viewModel.errorPromptMessage.observe(viewLifecycleOwner) {
-//            it.getContentIfNotHandled()
-//                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
-//        }
-//
-//        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
-//            viewModel.updateMenuVersionUpdatedStatus(it)
-//        }
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
@@ -545,29 +548,38 @@ class MainHomeFragment() :
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                 when (checkedId) {
                     R.id.rbtn_sport -> {
-                        lin_menu_game.isVisible = false
-                        rv_type_list.isVisible = true
+                        rv_type_list.adapter = mainHomeMenuAdapter
                     }
                     R.id.rbtn_egame -> {
-                        rv_type_list.isVisible = false
-                        lin_menu_game.isVisible = true
+                        rv_type_list.adapter = homeGameCardAdapter
                     }
                 }
             }
         })
-        mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
+        if (rv_type_list.adapter == null) {
+            rv_type_list.adapter = mainHomeMenuAdapter
+        }
         var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
         rvChiild.setPadding(0, 0, 40.dp, 0)
         rvChiild.clipToPadding = false
         rv_type_list.offscreenPageLimit = 3
         rv_type_list.setPageTransformer(DepthPageTransformer())
-        rv_type_list.adapter = mainHomeMenuAdapter
         rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if (position == mainHomeMenuAdapter.itemCount - 1) {
-                    rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
+                when (rv_type_list.adapter) {
+                    is MainHomeMenuAdapter -> {
+                        if (position == mainHomeMenuAdapter.itemCount - 1) {
+                            rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
+                        }
+                    }
+                    is HomeGameCardAdapter -> {
+                        if (position == homeGameCardAdapter.itemCount - 1) {
+                            rv_type_list.currentItem = homeGameCardAdapter.itemCount - 2
+                        }
+                    }
                 }
+
             }
         })
         mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
@@ -584,16 +596,6 @@ class MainHomeFragment() :
             mainHomeMenuAdapter.footerLayout.apply {
                 layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT)
-            }
-        }
-        lin_menu_game.apply {
-            ivThirdGame.setImageResource(R.drawable.bg_egame)
-            ivThirdGame.setOnClickListener {
-                if (viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                } else {
-                    viewModel.requestEnterThirdGame(publicityMenuData?.eGameMenuData)
-                }
             }
         }
 

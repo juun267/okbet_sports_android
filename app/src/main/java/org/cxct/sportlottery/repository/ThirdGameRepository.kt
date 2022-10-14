@@ -72,7 +72,7 @@ object ThirdGameRepository {
                 categories.gameFirmIds?.split(",")?.forEach { gameFirmId ->
                     thirdGameData.gameFirmMap?.forEach {
                         val gameFirm = it.value
-                        if (gameFirm.id.toString() == gameFirmId && gameFirm.open == 1) {
+                        if (gameFirm.id.toString() == gameFirmId) {
                             gameCatList.add(categories)
                             return@gameCatList
                         }
@@ -96,7 +96,7 @@ object ThirdGameRepository {
             category.gameFirmIds?.split(",")?.forEach { gameFirmId ->
                 thirdGameData?.gameFirmMap?.forEach gameFirmMap@{ data ->
                     val gameFirm = data.value
-                    if (gameFirm.id.toString() == gameFirmId && gameFirm.open == 1) {
+                    if (gameFirm.id.toString() == gameFirmId) {
                         gameFirmList.add(gameFirm)
                         return@gameFirmMap
                     }

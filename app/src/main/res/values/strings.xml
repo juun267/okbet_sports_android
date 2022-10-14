@@ -1285,4 +1285,5 @@
     <string name="reget_phone_code">Reacquire</string>
     <string name="error_wechat">Wechat ID formatted incorrectly</string>
     <string name="min_bet_format">Min Bet: %s</string>
+    <string name="comingsoon">Coming soon</string>
 </resources>

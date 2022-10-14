@@ -457,7 +457,6 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
                     max = it.parlayOdds?.max ?: defaultMax
                 }
             }
-
             return when (isGetMax) {
                 true -> if (mUserLogin) max.toDouble() else defaultMax.toDouble() //未登入最大值9位數
                 else -> min.toDouble()

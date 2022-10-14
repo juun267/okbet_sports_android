@@ -300,9 +300,9 @@ class MainHomeViewModel(
                             gameItemData.thirdGameData?.let {
                                 //PM 指定捞起这几个游戏，没有捞到或者open=0，就显示敬请期待
                                 when (it.firmCode) {
-                                    "TPG" -> cardGameList[0] = it
-                                    "FKG" -> cardGameList[1] = it
-                                    "CGQP" -> cardGameList[2] = it
+                                    "CGQP" -> cardGameList[0] = it
+                                    "TPG" -> cardGameList[1] = it
+                                    "FKG" -> cardGameList[2] = it
                                 }
                             }
                         }

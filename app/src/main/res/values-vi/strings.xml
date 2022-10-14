@@ -1258,4 +1258,5 @@
     <string name="min_bet_format">Tối thiểu: %s</string>
     <string name="error_confirm_password_forget">Xác nhận mật khẩu không khớp</string>
     <string name="tips_password_success">Mật khẩu sửa thành công, hãy đăng nhập lại</string>
+    <string name="comingsoon">Sắp ra mắt</string>
 </resources>

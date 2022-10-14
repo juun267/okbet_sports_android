@@ -447,7 +447,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             mUserMoney = userMoney
             mUserLogin = userLogin
-
             //設置投注限額
             setupInputLimit(itemData)
             //設置可贏限額

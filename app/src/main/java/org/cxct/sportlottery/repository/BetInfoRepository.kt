@@ -28,6 +28,7 @@ import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 import retrofit2.Response
 import timber.log.Timber
 import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.math.abs
 
 
@@ -366,7 +367,6 @@ object BetInfoRepository {
             val minBetMoney = betInfo?.minBetMoney ?: BigDecimal(0)
             val minCpBetMoney = betInfo?.minCpBetMoney ?: BigDecimal(0)
             val minParlayBetMoney = betInfo?.minParlayBetMoney ?: BigDecimal(0)
-
             if(it.value.num > 1){
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val parlayPayout =
@@ -410,8 +410,9 @@ object BetInfoRepository {
 
                 //賠付額上限計算投注限額
                 val oddsPayout =
-                    payout.div(if (it.value.isOnlyEUType) it.value.odds - BigDecimal(1) else it.value.hdOdds)
-
+                    payout.divide(if (it.value.isOnlyEUType) it.value.odds - BigDecimal(1) else it.value.hdOdds,
+                        0,
+                        RoundingMode.DOWN)
                 maxBet = if (matchTypeMaxBetMoney == BigDecimal(0)) {
                     //如果 matchTypeMaxBetMoney 為 0 使用最大賠付額
                     oddsPayout
@@ -419,7 +420,6 @@ object BetInfoRepository {
                     //用戶投注限額與賠付額計算投注限額取小
                     oddsPayout.min(matchTypeMaxBetMoney)
                 }
-
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
                     matchType == MatchType.OUTRIGHT -> minCpBetMoney

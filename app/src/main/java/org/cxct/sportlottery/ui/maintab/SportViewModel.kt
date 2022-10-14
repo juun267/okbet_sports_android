@@ -1613,7 +1613,6 @@ class SportViewModel(
                             value.rowSort,
                             matchInfo = result.oddsDetailData?.matchOdd.matchInfo
                         )
-                        LogUtil.toJson(oddsDetail)
                         //球員玩法邏輯
                         if (PlayCate.getPlayCate(key) == PlayCate.SCO) {
                             oddsDetail.setSCOTeamNameList(filteredOddList,
