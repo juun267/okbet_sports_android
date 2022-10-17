@@ -1288,5 +1288,7 @@
     <string name="match_live">赛事直播</string>
     <string name="tiger_machine">老虎机</string>
     <string name="worldcup">世界杯</string>
+    <string name="sport_classify">体育分类</string>
+    <string name="check_all_inplay">查看全部滚球</string>
 
 </resources>

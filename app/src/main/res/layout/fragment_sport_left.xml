@@ -68,7 +68,7 @@
                 android:text="@string/sport" />
 
             <RadioButton
-                android:id="@+id/rbtn_egame"
+                android:id="@+id/rbtn_inplay"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
                 android:minWidth="90dp"
@@ -84,10 +84,12 @@
         </RadioGroup>
 
         <LinearLayout
+            android:id="@+id/lin_sport"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/lin_game_result"
@@ -232,12 +234,12 @@
 
 
             <LinearLayout
-                android:id="@+id/lin_odds_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/lin_sport_classify"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -254,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_10"
                         android:layout_weight="1"
-                        android:text="@string/left_menu_odds_type_setting"
+                        android:text="@string/sport_classify"
                         android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 
@@ -271,20 +273,56 @@
                     android:background="@color/color_80C9CFD7" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_odds_type"
+                    android:id="@+id/rv_sport_classify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="@dimen/dp_10"
-                    android:background="@color/color_bbbbbb_ffffff"
-                    android:visibility="gone"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/item_odds_type"
+                    android:layout_marginLeft="@dimen/margin_40"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_sport_classify"
                     tools:visibility="visible" />
             </LinearLayout>
 
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/lin_inplay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_sport_inplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_sport_inplay"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/lin_all_inplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/margin_20">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_025BE8_025BE8"
+                    android:textSize="@dimen/sp_14"
+                    android:text="@string/check_all_inplay" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginLeft="@dimen/margin_4"
+                    android:src="@drawable/ic_arrow_blue_right" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

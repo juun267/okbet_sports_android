@@ -5,13 +5,17 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
@@ -25,10 +29,7 @@ import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.isThirdTransferOpen
+import org.cxct.sportlottery.util.*
 
 
 class MainViewModel(
@@ -78,6 +79,13 @@ class MainViewModel(
     private val _countByInPlay = MutableLiveData<Int>()
     val countByInPlay: LiveData<Int>
         get() = _countByInPlay
+    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
+
+    private val _inplayList = MutableLiveData<List<Item>>()
+    val inplayList: LiveData<List<Item>>
+        get() = _inplayList
 
     //未讀總數目
     val totalUnreadMsgCount = infoCenterRepository.totalUnreadMsgCount
@@ -293,6 +301,52 @@ class MainViewModel(
                     total += item.num
                 }
                 _countByInPlay.postValue(total)
+            }
+        }
+    }
+
+    /**
+     * 獲取當前可用球種清單
+     */
+    fun getSportList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.sportService.getSportList(type = 1)
+            }?.let { sportListResponse ->
+                if (sportListResponse.success) {
+                    val sportCodeList = mutableListOf<StatusSheetData>()
+                    //根據api回傳的球類添加進當前啟用球種篩選清單
+                    sportListResponse.rows.sortedBy { it.sortNum }.map {
+                        if (it.state == 1) { //僅添加狀態為啟用的資料
+                            sportCodeList.add(
+                                StatusSheetData(
+                                    it.code,
+                                    GameType.getGameTypeString(
+                                        LocalUtils.getLocalizedContext(),
+                                        it.code
+                                    )
+                                )
+                            )
+                        }
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _sportCodeSpinnerList.value = sportCodeList
+                    }
+                }
+            }
+        }
+    }
+
+    fun getInPlayList() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                sportMenuRepository.getSportMenu(
+                    TimeUtil.getNowTimeStamp().toString(),
+                    TimeUtil.getTodayStartTimeStamp().toString()
+                )
+            }?.sportMenuData?.let { sportMenuList ->
+                _inplayList.postValue(sportMenuList.menu.inPlay.items)
             }
         }
     }
