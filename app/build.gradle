@@ -40,7 +40,7 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled true
-
+            signingConfig signingConfigs.release
             versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
             buildConfigField "String", "STORE_NAME", "\"\""   //google huawei,默认空字符串
