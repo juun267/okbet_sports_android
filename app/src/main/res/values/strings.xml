@@ -1290,5 +1290,8 @@
     <string name="worldcup">世界杯</string>
     <string name="sport_classify">体育分类</string>
     <string name="check_all_inplay">查看全部滚球</string>
+    <string name="collse_live">收起直播</string>
+    <string name="expand_live">观看直播</string>
+    <string name="enter_live">进入直播间</string>
 
 </resources>

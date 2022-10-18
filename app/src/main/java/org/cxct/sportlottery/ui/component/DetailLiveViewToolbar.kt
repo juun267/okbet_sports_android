@@ -11,11 +11,13 @@ import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackException
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.upstream.HttpDataSource
 import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
@@ -52,7 +54,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     var isFullScreen = false
 
-    private var exoPlayer: SimpleExoPlayer? = null
+    private var exoPlayer: ExoPlayer? = null
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -142,6 +144,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         curType = LiveType.LIVE
         iv_fullscreen.isVisible = true
         showPlayView()
+        setWebViewHeight()
         switchPlayView(true)
         startPlayer(liveUrl, isLogin)
     }
@@ -220,15 +223,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         }
     }
 
-    /**
-     * 設置為直播高度
-     */
-    private fun setLiveViewHeight() {
-        web_view_layout.layoutParams = FrameLayout.LayoutParams(MetricsUtil.getScreenWidth(),
-            resources.getDimensionPixelSize(R.dimen.live_player_height))
-        iv_live_status.scaleType = ImageView.ScaleType.FIT_XY
-    }
-
     fun setupNotLogin() {
         player_view.visibility = View.GONE
         web_view.visibility = View.GONE
@@ -284,33 +278,47 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
 
-    fun getExoPlayer(): SimpleExoPlayer? {
+    fun getExoPlayer(): ExoPlayer? {
         return exoPlayer
     }
 
     private fun initializePlayer(streamUrl: String?) {
         streamUrl?.let {
             if (exoPlayer == null) {
-                exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
-                    player_view.player = exoPlayer
-                    val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).build()
-                    exoPlayer.setMediaItem(mediaItem)
-                    exoPlayer.playWhenReady = playWhenReady
-                    exoPlayer.seekTo(currentWindow, playbackPosition)
-                    exoPlayer.addListener(playbackStateListener)
-                    exoPlayer.prepare()
-                }
+                exoPlayer = ExoPlayer.Builder(context)
+                    .setMediaSourceFactory(
+                        DefaultMediaSourceFactory(context).setLiveTargetOffsetMs(5000))
+                    .build().also { exoPlayer ->
+                        player_view.player = exoPlayer
+                        val mediaItem: MediaItem = MediaItem.Builder()
+                            .setUri(streamUrl)
+                            .setLiveConfiguration(
+                                MediaItem.LiveConfiguration.Builder()
+                                    .setMaxPlaybackSpeed(1.02f)
+                                    .build())
+                            .build()
+                        exoPlayer.setMediaItem(mediaItem)
+                        exoPlayer.addListener(playbackStateListener)
+                        exoPlayer.playWhenReady = playWhenReady
+                        exoPlayer.seekTo(currentWindow, playbackPosition)
+                        exoPlayer.prepare()
+                    }
             } else {
                 exoPlayer?.let { player ->
-                    val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).build()
+                    val mediaItem: MediaItem = MediaItem.Builder()
+                        .setUri(streamUrl)
+                        .setLiveConfiguration(
+                            MediaItem.LiveConfiguration.Builder()
+                                .setMaxPlaybackSpeed(1.02f)
+                                .build())
+                        .build()
                     player.setMediaItem(mediaItem)
                     player.playWhenReady = playWhenReady
                     player.seekTo(currentWindow, playbackPosition)
                     player.prepare()
                 }
             }
+
         }
     }
 
@@ -421,7 +429,20 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
      */
     private fun setWebViewHeight() {
         when (curType) {
-            LiveType.LIVE, LiveType.VIDEO -> {
+            LiveType.LIVE -> {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    val screenWidth = MetricsUtil.getScreenWidth()
+                    player_view.layoutParams.apply {
+                        //视频播放器比例，56.25%，来自H5
+                        height = resources.getDimensionPixelSize(R.dimen.live_player_height)
+                    }
+                } else {
+                    player_view.layoutParams.apply {
+                        height = ViewGroup.LayoutParams.MATCH_PARENT
+                    }
+                }
+            }
+            LiveType.VIDEO -> {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     val screenWidth = MetricsUtil.getScreenWidth()
                     web_view.layoutParams.apply {

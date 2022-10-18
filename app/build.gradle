@@ -25,6 +25,13 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        //解决exoplayer编译版本报错
+        configurations.all {
+            resolutionStrategy {
+                force "androidx.core:core:1.6.0"
+                force "androidx.core:core-ktx:1.6.0"
+            }
+        }
     }
 
     signingConfigs {
@@ -380,11 +387,11 @@ dependencies {
     implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.9.16'
 
     //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.15.1'
-    implementation 'com.google.android.exoplayer:extension-okhttp:2.15.1'
-    implementation 'com.google.android.exoplayer:extension-rtmp:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.16.0'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.16.0'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.16.0'
+    implementation 'com.google.android.exoplayer:exoplayer-rtsp:2.16.0'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.16.0'
 
     //下拉刷新，上拉加載 元件 (豎屏、橫屏) https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'

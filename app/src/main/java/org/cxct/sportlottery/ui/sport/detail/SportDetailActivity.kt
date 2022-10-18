@@ -579,7 +579,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.matchLiveInfo.observe(this) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                live_view_tool_bar.videoUrl = liveStreamInfo.streamUrl
+                live_view_tool_bar.liveUrl = liveStreamInfo.streamUrl
                 lin_live.isVisible = liveStreamInfo.streamUrl.isNotEmpty()
             }
         }
@@ -889,6 +889,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             lin_anime.isVisible =
                 TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
+            lin_live.setOnClickListener {
+                live_view_tool_bar.liveUrl?.let {
+                    toolBar.isVisible = false
+                    live_view_tool_bar.isVisible = true
+                    collaps_toolbar.isVisible = true
+                    collaps_toolbar.iv_toolbar_bg.isVisible = false
+                    live_view_tool_bar.showLive()
+                    setScrollEnable(false)
+                    startDelayHideTitle()
+                }
+            }
             lin_video.setOnClickListener {
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false

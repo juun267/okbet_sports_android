@@ -4,17 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
+import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListener) :
-    RecyclerView.Adapter<ItemHomeRecommendHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeRecommendHolder {
-        return ItemHomeRecommendHolder(
-            ItemHomeRecommendBinding.inflate(
+class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) :
+    RecyclerView.Adapter<ItemHomeLiveHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeLiveHolder {
+        return ItemHomeLiveHolder(
+            ItemHomeLiveBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -62,13 +65,13 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
         notifyItemChanged(position, payload)
     }
 
-    override fun onBindViewHolder(holder: ItemHomeRecommendHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
         holder.bind(data = itemData, oddsType = oddsType)
     }
 
     override fun onBindViewHolder(
-        holder: ItemHomeRecommendHolder,
+        holder: ItemHomeLiveHolder,
         position: Int,
         payloads: MutableList<Any>,
     ) {
@@ -86,5 +89,36 @@ class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListe
     }
 
     override fun getItemCount(): Int = data.size
+
+    open class HomeLiveListener(
+        private val onItemClickListener: () -> Unit,
+        private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
+        private val onClickStatisticsListener: (matchId: String) -> Unit,
+    ) {
+        fun onItemClickListener() = onItemClickListener.invoke()
+        fun onClickBetListener(
+            gameType: String,
+            matchType: MatchType,
+            matchInfo: MatchInfo?,
+            odd: Odd,
+            playCateCode: String,
+            playCateName: String,
+            betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+            playCateMenuCode: String?,
+        ) {
+            onClickBetListener.invoke(
+                gameType,
+                matchType,
+                matchInfo,
+                odd,
+                playCateCode,
+                playCateName,
+                betPlayCateNameMap,
+                playCateMenuCode
+            )
+        }
+
+        fun onClickStatisticsListener(matchId: String) = onClickStatisticsListener.invoke(matchId)
+    }
 
 }

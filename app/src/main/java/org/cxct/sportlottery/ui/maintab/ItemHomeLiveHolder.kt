@@ -1,11 +1,10 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.annotation.SuppressLint
 import android.view.View
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
+import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -19,8 +18,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 //TODO 棒球比分狀態顯示
-class ItemHomeRecommendHolder(
-    val binding: ItemHomeRecommendBinding,
+class ItemHomeLiveHolder(
+    val binding: ItemHomeLiveBinding,
     private val homeRecommendListener: HomeRecommendListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
     override val oddStateChangeListener: OddStateChangeListener
@@ -149,8 +148,6 @@ class ItemHomeRecommendHolder(
             ivAwayIcon.setTeamLogo(data.matchInfo?.awayIcon)
             //endregion
 
-            //玩法數量
-            tvPlayCateCount.text = data.playCateNum.toString()
 
             //region 點擊進入賽事詳情
             val matchOddList = transferMatchOddList(data)
@@ -266,7 +263,6 @@ class ItemHomeRecommendHolder(
     private fun setVbScoreText(item: Recommend) {
         binding.apply {
             setAllScoreTextAtBottom(item)
-            setSptText(item)
         }
     }
 
@@ -276,7 +272,6 @@ class ItemHomeRecommendHolder(
     private fun setTnScoreText(item: Recommend) {
         binding.apply {
             setAllScoreTextAtBottom(item)
-            setSptText(item)
 
         }
     }
@@ -301,7 +296,6 @@ class ItemHomeRecommendHolder(
     private fun setBmScoreText(item: Recommend) {
         binding.apply {
             setAllScoreTextAtBottom(item)
-            setSptText(item)
         }
     }
 
@@ -311,14 +305,13 @@ class ItemHomeRecommendHolder(
     private fun setBbScoreText(item: Recommend) {
         with(binding) {
             setScoreText(item)
-            setBBSptText(item)
         }
     }
 
     /**
      * 設置盤類型比分
      */
-    private fun ItemHomeRecommendBinding.setAllScoreTextAtBottom(item: Recommend) {
+    private fun ItemHomeLiveBinding.setAllScoreTextAtBottom(item: Recommend) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -334,7 +327,7 @@ class ItemHomeRecommendHolder(
     /**
      * 設置局類型比分
      */
-    private fun ItemHomeRecommendBinding.setScoreText(item: Recommend) {
+    private fun ItemHomeLiveBinding.setScoreText(item: Recommend) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -346,73 +339,12 @@ class ItemHomeRecommendHolder(
         }
     }
 
-    //賽制(5盤3勝 or /int)
-    @SuppressLint("SetTextI18n")
-    private fun ItemHomeRecommendBinding.setSptText(item: Recommend) {
-        item.matchInfo?.spt?.let { spt ->
-            when {
-                TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> { //除0以外顯示
-                    tvGameSpt.visibility = View.GONE
-                }
-                else -> {
-                    if (spt == 3 || spt == 5) {//除3、5以外不顯示
-                        tvGameSpt.visibility = View.VISIBLE
-                        tvGameSpt.text = when (spt) {
-                            3 -> itemView.context.getString(R.string.spt_number_3_2)
-                            5 -> itemView.context.getString(R.string.spt_number_5_3)
-                            else -> ""
-                        }
-                    } else {
-                        tvGameSpt.visibility = View.GONE
-                    }
-                }
-            }
-        }
-    }
-
-    private fun ItemHomeRecommendBinding.setBBSptText(item: Recommend) {
-        with(contentBaseballStatus.leagueOddMatchBbStatus) {
-            text = item.matchInfo?.statusName18n
-            visibility = View.VISIBLE
-        }
-
-        with(contentBaseballStatus.txvOut) {
-            text = this.context.getString(R.string.game_out, item.matchInfo?.outNumber ?: "")
-            visibility = View.VISIBLE
-        }
-
-        with(contentBaseballStatus.leagueOddMatchHalfStatus) {
-            setImageResource(if (item.matchInfo?.halfStatus == 0) R.drawable.ic_bb_first_half else R.drawable.ic_bb_second_half)
-            visibility = View.VISIBLE
-        }
-
-        with(contentBaseballStatus.leagueOddMatchBasebag) {
-            item.matchInfo?.apply {
-                this@with.setImageResource(
-                    when {
-                        firstBaseBag == 0 && secBaseBag == 0 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_0_0
-                        firstBaseBag == 1 && secBaseBag == 0 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_0_0
-                        firstBaseBag == 0 && secBaseBag == 1 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_0_1_0
-                        firstBaseBag == 0 && secBaseBag == 0 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_0_1
-                        firstBaseBag == 1 && secBaseBag == 1 && thirdBaseBag == 0 -> R.drawable.ic_bb_base_bag_1_1_0
-                        firstBaseBag == 1 && secBaseBag == 0 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_0_1
-                        firstBaseBag == 0 && secBaseBag == 1 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_0_1_1
-                        firstBaseBag == 1 && secBaseBag == 1 && thirdBaseBag == 1 -> R.drawable.ic_bb_base_bag_1_1_1
-                        else -> R.drawable.ic_bb_base_bag_0_0_0
-                    }
-                )
-            }
-
-            visibility = View.VISIBLE
-        }
-    }
-    //endregion
 
     //region 賽事時間狀態Method
     private fun setupMatchTimeAndStatus(
         item: Recommend,
         isTimerEnable: Boolean,
-        isTimerPause: Boolean
+        isTimerPause: Boolean,
     ) {
         setupMatchTime(item, isTimerEnable, isTimerPause)
         setupGameStatusBlockVisibility(item)
@@ -426,11 +358,10 @@ class ItemHomeRecommendHolder(
     private fun setupMatchTime(
         item: Recommend,
         isTimerEnable: Boolean,
-        isTimerPause: Boolean
+        isTimerPause: Boolean,
     ) {
         when {
             TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
-                binding.ivLiveIcon.visibility = View.VISIBLE
                 val socketValue = item.matchInfo?.socketMatchStatus
 
                 if (needCountStatus(socketValue)) {
@@ -467,7 +398,6 @@ class ItemHomeRecommendHolder(
             }
 
             TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
-                binding.ivLiveIcon.visibility = View.VISIBLE
                 binding.tvGamePlayTime.text = item.runningTime
                 listener = object : TimerListener {
                     override fun onTimerUpdate(timeMillis: Long) {
@@ -485,7 +415,6 @@ class ItemHomeRecommendHolder(
                             )
                         }
                         item.matchInfo?.remainTime = timeMillis
-                        binding.ivLiveIcon.visibility = View.VISIBLE
 //                        TODO 記錄時間?
                         item.runningTime = binding.tvGamePlayTime.text.toString()
 //                        getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
@@ -504,7 +433,6 @@ class ItemHomeRecommendHolder(
             else -> {
                 binding.tvGamePlayTime.text =
                     TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
-                binding.ivLiveIcon.visibility = View.GONE
             }
         }
     }
@@ -535,7 +463,6 @@ class ItemHomeRecommendHolder(
     private fun setTextViewStatus(item: Recommend) {
         when {
             (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
-                binding.tvGameSpt.visibility = View.GONE
                 binding.tvGamePlayTime.visibility = View.GONE
             }
 
@@ -559,11 +486,9 @@ class ItemHomeRecommendHolder(
             when {
                 item.matchInfo?.gameType == GameType.BB.key && TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     blockNormalGame.visibility = View.GONE
-                    contentBaseballStatus.root.visibility = View.VISIBLE
                 }
                 else -> {
                     blockNormalGame.visibility = View.VISIBLE
-                    contentBaseballStatus.root.visibility = View.GONE
                 }
             }
         }
