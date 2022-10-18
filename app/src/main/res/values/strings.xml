@@ -1287,5 +1287,7 @@
     <string name="min_bet_format">Min Bet: %s</string>
     <string name="match_live">赛事直播</string>
     <string name="tiger_machine">老虎机</string>
+    <string name="hot_handicap">热门盘口</string>
+    <string name="find_all">查看全部</string>
 
 </resources>

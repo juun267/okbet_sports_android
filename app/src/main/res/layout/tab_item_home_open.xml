@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+    android:background="@drawable/selector_item_tab_home"
+    android:layout_width="@dimen/margin_54"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/iv_tab_icon"
+        android:layout_width="@dimen/margin_25"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/icon_recommend"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_tab_title"
+        android:textColor="@color/selector_white_grey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text = "存款"/>
+
+</LinearLayout>

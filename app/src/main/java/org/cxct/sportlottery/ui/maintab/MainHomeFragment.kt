@@ -1,13 +1,17 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +19,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -32,6 +39,8 @@ import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.money.config.Exchange
+import org.cxct.sportlottery.network.money.config.RechBank
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -64,6 +73,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainHomeFragment() :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
+    private  var tabSelectTitleList = mutableListOf<String>()
+    private  var tabSelectIconList = mutableListOf<Int>()
+    private  var tabUnSelectIconList = mutableListOf<Int>()
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -780,6 +792,56 @@ class MainHomeFragment() :
             btn_login.isVisible = !it
             lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
+    }
+    //tab选中状态后的切换方式
+    @SuppressLint("InflateParams")
+    private fun upDateTabItemView(tab: TabLayout.Tab, isSelect: Boolean){
+
+        tab.customView?.apply {
+
+            val textView =  findViewById<TextView>(R.id.tv_tab_title)
+            val iconView =  findViewById<ImageView>(R.id.iv_tab_icon)
+            if (isSelect){
+                textView.textSize = 12f
+                textView.isSelected = true
+                textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                iconView.setImageResource(tabSelectIconList[tab.position])
+            }else{
+                textView.textSize = 10f
+                iconView.setImageResource(tabUnSelectIconList[tab.position])
+                textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+            }
+
+
+        }
+    }
+
+
+    //获取tab数据
+    private fun getTabDate(){
+        //标题数据
+        tabSelectTitleList.add("推荐")
+        tabSelectTitleList.add("直播")
+        tabSelectTitleList.add("体育")
+        tabSelectTitleList.add("世界杯")
+        tabSelectTitleList.add("棋牌")
+        tabSelectTitleList.add("电子")
+        //选中图片
+        tabSelectIconList.add(R.drawable.icon_recommend)
+        tabSelectIconList.add(R.drawable.live1)
+        tabSelectIconList.add(R.drawable.sport1)
+        tabSelectIconList.add(R.drawable.word_cup1)
+        tabSelectIconList.add(R.drawable.live1)
+        tabSelectIconList.add(R.drawable.sport1)
+        //未选中图片
+        tabUnSelectIconList.add(R.drawable.icon_un_recommend)
+        tabUnSelectIconList.add(R.drawable.live0)
+        tabUnSelectIconList.add(R.drawable.sport0)
+        tabUnSelectIconList.add(R.drawable.word_cup0)
+        tabUnSelectIconList.add(R.drawable.live0)
+        tabUnSelectIconList.add(R.drawable.sport0)
+
+
     }
 
 }
