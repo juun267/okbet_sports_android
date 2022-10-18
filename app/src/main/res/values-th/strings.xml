@@ -1214,5 +1214,7 @@
     <string name="reget_phone_code">รับใหม่อีกครั้ง</string>
     <string name="error_wechat">ข้อผิดพลาดรูปแบบ WeChat ID</string>
     <string name="comingsoon">เร็วๆ นี้</string>
+    <string name="forget_password">ลืมรหัสผ่าน</string>
+    <string name="member_name">ผู้เล่น</string>
     <!--F005-->
 </resources>

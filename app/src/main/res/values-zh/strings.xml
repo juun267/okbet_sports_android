@@ -1271,5 +1271,7 @@
     <string name="error_wechat">微信ID格式错误</string>
     <string name="min_bet_format">最低限额: %s</string>
     <string name="comingsoon">敬请期待</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="member_name">会员</string>
 
 </resources>

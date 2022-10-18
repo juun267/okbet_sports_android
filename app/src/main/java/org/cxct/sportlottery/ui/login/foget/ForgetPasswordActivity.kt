@@ -3,10 +3,17 @@ package org.cxct.sportlottery.ui.login.foget
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.method.HideReturnsTransformationMethod
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -31,6 +38,9 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import java.util.*
 
+/**
+ * @app_destination 忘记密码
+ */
 class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
 
     private lateinit var binding: ActivityForgetPasswordBinding
@@ -57,6 +67,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     }
 
     fun initView(){
+        binding.tvTitleForgetPassword.text = getString(R.string.forget_password)
+        binding.tvTitleForgetPassword.setGradientSpan(getColor(R.color.color_71ADFF),
+            getColor(R.color.color_1971FD),
+            true)
+
         binding.eetPhoneNum.checkRegisterListener{viewModel.checkPhone(it)}
         binding.eetSmsCode.checkRegisterListener { viewModel.checkSecurityCode(it) }
         binding.eetLoginPasswordForget.transformationMethod =
@@ -143,6 +158,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         }
     }
     //数据回调
+    @SuppressLint("SetTextI18n")
     private fun initObserve() {
         viewModel.smsResult.observe(this) {
             updateUiWithResult(it)
@@ -161,7 +177,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             if (it?.success == true){
                 page++
                 setPage()
-                tv_user_name.text =  it.ResetPasswordData?.userName
+                tv_user_name.text =  getString(R.string.member_name)+": "+it.ResetPasswordData?.userName
             }else{
                 ToastUtil.showToast(this,it?.msg,Toast.LENGTH_LONG)
                 return@observe
@@ -250,12 +266,31 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             userName = smsResult.ResetPasswordData?.userName
             state +=1
             binding.tvSmsSend.visibility = View.VISIBLE
-            binding.tvSmsSend2.visibility = View.VISIBLE
-            binding.tvSmsSend2.text = " +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}"
+
+            val tipsContentBuilder = SpannableStringBuilder()
+            val stringSpan = SpannableString(getString(R.string.has_send_message_to_phone))
+            val phoneNum = SpannableString(" +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}")
+            phoneNum.length.let {
+                phoneNum.setSpan(
+                    StyleSpan(Typeface.NORMAL),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                phoneNum.setSpan(//字体颜色
+                    ForegroundColorSpan(resources.getColor(R.color.color_025BE8)),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                phoneNum.setSpan( //字体大小
+                    AbsoluteSizeSpan(14, true),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            binding.tvSmsSend.text = tipsContentBuilder.append(stringSpan).append(phoneNum)
             showSmeTimer300()
         } else {
             binding.tvSmsSend.visibility = View.GONE
-            binding.tvSmsSend2.visibility = View.GONE
             //做异常处理
             binding.etSmsValidCode.setError(smsResult?.msg,false)
         }
