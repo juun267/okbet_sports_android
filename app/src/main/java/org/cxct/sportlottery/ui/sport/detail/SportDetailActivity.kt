@@ -579,7 +579,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.matchLiveInfo.observe(this) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-//                live_view_tool_bar.videoUrl = liveStreamInfo.streamUrl
+                live_view_tool_bar.videoUrl = liveStreamInfo.streamUrl
+                lin_live.isVisible = liveStreamInfo.streamUrl.isNotEmpty()
             }
         }
         viewModel.videoUrl.observe(this) { event ->

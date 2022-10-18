@@ -7,21 +7,14 @@ import android.view.Gravity
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_account_history.*
 import kotlinx.android.synthetic.main.activity_bet_list.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.head_bet_list.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
-import kotlinx.android.synthetic.main.view_message.*
-import kotlinx.android.synthetic.main.view_nav_right.*
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -31,19 +24,9 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.maintab.MainLeftFragment
-import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
-import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
-import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.news.NewsActivity
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
 
 
 class BetListActivity :

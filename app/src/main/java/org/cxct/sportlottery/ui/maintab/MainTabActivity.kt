@@ -28,6 +28,8 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
+import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
@@ -47,6 +49,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         ProfileCenterFragment.newInstance()
     )
     private var betListFragment = BetListFragment()
+    private var homeLeftFragment = MainLeftFragment()
+    private var sportLeftFragment = SportLeftFragment()
 
     companion object {
         fun reStart(context: Context) {
@@ -133,9 +137,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initDrawerLayout() {
+        showLeftFrament(0)
 //        drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerStateChanged(newState: Int) {}
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
 //                val mContent: View = drawerLayout.getChildAt(0)
 //                //设置1.1，让主界面更缩小
@@ -156,6 +163,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             override fun onDrawerOpened(drawerView: View) {
+                showLeftFrament(bottom_navigation_view.currentItem)
                 if (drawerView.tag == "LEFT") {
                     drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -174,6 +182,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
         })
+    }
+
+    fun showLeftFrament(position: Int) {
+        when (position) {
+            0 -> supportFragmentManager.beginTransaction()
+                .replace(R.id.left_menu, homeLeftFragment)
+                .commit()
+            else ->
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.left_menu, sportLeftFragment)
+                    .commit()
+        }
 
     }
 
