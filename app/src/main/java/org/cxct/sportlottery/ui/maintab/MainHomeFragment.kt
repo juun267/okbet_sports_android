@@ -19,6 +19,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.flyco.tablayout.listener.OnTabSelectListener
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
 import com.squareup.moshi.Json
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.bet.settledList.PlayCateMatchResult
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -69,6 +71,7 @@ import org.cxct.sportlottery.widget.DepthPageTransformer
 import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 
 class MainHomeFragment :
@@ -160,6 +163,7 @@ class MainHomeFragment :
         initObservable()
         queryData()
         initSocketObservers()
+        getTabDate()
     }
 
     override fun onResume() {
@@ -186,6 +190,8 @@ class MainHomeFragment :
             clickCustomService(requireContext(), childFragmentManager)
         }
         initRecommendView()
+
+
     }
 
     fun initToolBar() {
@@ -794,11 +800,9 @@ class MainHomeFragment :
         }
     }
     //tab选中状态后的切换方式
-    @SuppressLint("InflateParams")
     private fun upDateTabItemView(tab: TabLayout.Tab, isSelect: Boolean){
 
         tab.customView?.apply {
-
             val textView =  findViewById<TextView>(R.id.tv_tab_title)
             val iconView =  findViewById<ImageView>(R.id.iv_tab_icon)
             if (isSelect){
@@ -812,13 +816,13 @@ class MainHomeFragment :
                 textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
             }
 
-
         }
     }
 
 
     //获取tab数据
     private fun getTabDate(){
+        LogUtil.d("getTabDate")
         //标题数据
         tabSelectTitleList.add("推荐")
         tabSelectTitleList.add("直播")
@@ -840,8 +844,65 @@ class MainHomeFragment :
         tabUnSelectIconList.add(R.drawable.word_cup0)
         tabUnSelectIconList.add(R.drawable.live0)
         tabUnSelectIconList.add(R.drawable.sport0)
+        initTable()
+
+    }
+
+    private fun initTable(){
+        //tab选中监听
+        tab_layout_home.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.apply {
+                    upDateTabItemView(tab,true)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.apply {
+                    upDateTabItemView(tab,false)
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+        })
+
+        tabSelectTitleList.forEachIndexed{index, data ->
+            val view = layoutInflater.inflate(R.layout.tab_item_home_open,null)
+            val textView =  view.findViewById<TextView>(R.id.tv_tab_title)
+            val iconView =  view.findViewById<ImageView>(R.id.iv_tab_icon)
+            val newTab = tab_layout_home.newTab()
+//            tab_layout_home.addTab(tab_layout_home.newTab())
+            newTab.apply {
+                textView.text = data
+                if (isSelected){
+                    iconView.setImageResource(tabSelectIconList[index])
+                    LogUtil.d("${tabSelectIconList[index]}")
+                }else{
+                    iconView.setImageResource(tabUnSelectIconList[index])
+                }
+
+            }
+            newTab.customView = view;
+            tab_layout_home.addTab(newTab);
+        }
+        tab_layout_home.getTabAt(0)?.select()
+
+    }
+
+    //动态均分tab宽度
+    fun TabLayout.setTabWidthBy(){
+        post{
+            try {
 
 
+            }catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+
+        }
     }
 
 }

@@ -96,7 +96,17 @@
                     android:src="@drawable/ic_customer_service" />
 
             </LinearLayout>
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout_home"
+                tl:tabMode="fixed"
+                tl:tabPaddingStart="0dp"
+                tl:tabPaddingEnd="0dp"
+                tl:tabIndicatorHeight="0dp"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+            </com.google.android.material.tabs.TabLayout>
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
