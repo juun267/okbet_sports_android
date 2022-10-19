@@ -225,6 +225,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 1 -> {
                     finish()
                 }
+                3-> {
+                    startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
+                }
                 else -> {
                     page--
                     setPage()
