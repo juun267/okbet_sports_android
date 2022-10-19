@@ -1295,5 +1295,12 @@
     <string name="collse_live">收起直播</string>
     <string name="expand_live">观看直播</string>
     <string name="enter_live">进入直播间</string>
+    <string name="home_recommend">推荐</string>
+    <string name="home_live">直播</string>
+    <string name="home_sports">体育</string>
+    <string name="home_word_cup">世界杯</string>
+    <string name="home_in_play">滚球</string>
+    <string name="home_slot">电子</string>
+    <string name="home_on_game">棋牌</string>
 
 </resources>
