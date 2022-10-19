@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
+import org.cxct.sportlottery.util.AFInAppEventUtil
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.VerifyConstUtil
 
@@ -87,6 +88,7 @@ class LoginViewModel(
                     userInfoRepository.getUserInfo()
 //                result.loginData?.discount = 0.4f //後台修復中 測試用
                 _loginResult.postValue(result)
+                AFInAppEventUtil.login(result.loginData?.uid.toString())
             }
         }
     }

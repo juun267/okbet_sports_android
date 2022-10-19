@@ -242,6 +242,8 @@ class MoneyRechViewModel(
                 }.let {
                     it?.result = moneyAddRequest.depositMoney.toString()//金額帶入result
                     _transferPayResult.value = it
+                    AFInAppEventUtil.deposit(moneyAddRequest?.depositMoney ?: "",
+                        sConfigData?.systemCurrency ?: "")
                 }
             }
         }
@@ -256,6 +258,8 @@ class MoneyRechViewModel(
                 }.let {
                     it?.result = rechargeMoney//金額帶入result
                     _cryptoPayResult.value = it
+                    AFInAppEventUtil.deposit(moneyAddRequest?.depositMoney ?: "",
+                        sConfigData?.systemCurrency ?: "")
                 }
             }
         }

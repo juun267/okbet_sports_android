@@ -68,6 +68,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
     private lateinit var mListPop: ListPopupWindow
+    private val sportTypeTextAdapter by lazy { SportTypeTextAdapter(dataSport) }
     private var gameType: GameType? = null
     private val favoriteAdapter by lazy {
         FavoriteAdapter(MatchType.MY_EVENT).apply {
@@ -183,14 +184,13 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         initObserver()
         initSocketObserver()
         favoriteAdapter.setPreloadItem()
-        viewModel.getSportList()
         viewModel.getFavoriteMatch()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden)
-            viewModel.getFavoriteMatch(gameType?.key)
+            viewModel.getFavoriteMatch()
     }
 
 
@@ -232,7 +232,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 R.drawable.bg_pop_up_arrow
             )
         )
-        mListPop.setAdapter(SportTypeTextAdapter(dataSport))
+        mListPop.setAdapter(sportTypeTextAdapter)
         mListPop.anchorView = cl_bet_all_sports //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.verticalOffset = 5
         mListPop.isModal = true //设置是否是模式
@@ -512,6 +512,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         }
         viewModel.sportCodeList.observe(viewLifecycleOwner) {
             updateSportList(it)
+            sportTypeTextAdapter.notifyDataSetChanged()
         }
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) {
             it.peekContent()?.toMutableList().let { leagueOddList ->
@@ -743,6 +744,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun updateSportList(list: List<StatusSheetData>) {
         if (dataSport.isNotEmpty()) return
+        dataSport.clear()
         list.forEach {
             dataSport.add(
                 Item(
@@ -755,12 +757,17 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             )
         }
         //如沒有選過的，預設選第一個
-        dataSport.find {
-            it.isSelected
-        }.let {
-            if (it == null) {
-                dataSport.firstOrNull()?.isSelected = true
-            }
+        dataSport.firstOrNull()?.let {
+            it.isSelected = true
+            tv_all_sports.text = it.name
         }
+
+//        dataSport.find {
+//            it.isSelected
+//        }.let {
+//            if (it == null) {
+//                dataSport.firstOrNull()?.isSelected = true
+//            }
+//        }
     }
 }

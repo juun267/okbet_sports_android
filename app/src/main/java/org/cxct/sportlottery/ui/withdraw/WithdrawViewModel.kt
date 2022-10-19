@@ -24,10 +24,6 @@ import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.ui.finance.df.UWType
 import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
@@ -252,6 +248,7 @@ class WithdrawViewModel(
                 }?.let { result ->
                     _withdrawAddResult.value = result
                     _withdrawAddResultData.value = result
+                    AFInAppEventUtil.withdrawal(applyMoney, sConfigData?.systemCurrency ?: "");
                     hideLoading()
                 }
             }

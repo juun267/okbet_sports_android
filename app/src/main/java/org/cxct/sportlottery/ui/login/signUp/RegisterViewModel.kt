@@ -1339,6 +1339,7 @@ class RegisterViewModel(
                                             _registerResult.postValue(result)
                                             _identityPhoto.postValue(null)
                                             _identityPhotoBackup.postValue(null)
+                                            AFInAppEventUtil.register("username")
                                         }
                                     }
                                     else -> {

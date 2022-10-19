@@ -189,7 +189,7 @@ public class IndexBar extends View {
             if (mListener != null) {
                 mListener.onTouched(false);
             }
-            mLastIndex = -1;
+//            mLastIndex = -1;
             invalidate();
         }
         return true;

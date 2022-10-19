@@ -66,9 +66,9 @@ class TransactionStatusViewModel(
         get() = _responseFailed
     private val _responseFailed = MutableLiveData<Boolean>()
 
-    val sportCodeList: LiveData<List<StatusSheetData>>
-        get() = _sportCodeSpinnerList
-    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+//    val sportCodeList: LiveData<List<StatusSheetData>>
+//        get() = _sportCodeSpinnerList
+//    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
 
     //獲取系統公告
     fun getAnnouncement() {

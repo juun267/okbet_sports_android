@@ -65,13 +65,17 @@ class SettlementViewModel(
     private var gameLeagueSet = mutableSetOf<String>()
     private var gameKeyWord = ""
 
-    val sportCodeList: LiveData<List<StatusSheetData>>
-        get() = _sportCodeSpinnerList
-    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+//    val sportCodeList: LiveData<List<StatusSheetData>>
+//        get() = _sportCodeSpinnerList
+//    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
 
     lateinit var requestListener: ResultsSettlementActivity.RequestListener
 
-    fun getMatchResultList(gameType: String, pagingParams: PagingParams?, timeRangeParams: TimeRangeParams) {
+    fun getMatchResultList(
+        gameType: String,
+        pagingParams: PagingParams?,
+        timeRangeParams: TimeRangeParams,
+    ) {
         dataType = SettleType.MATCH
         requestListener.requestIng(true)
         viewModelScope.launch {

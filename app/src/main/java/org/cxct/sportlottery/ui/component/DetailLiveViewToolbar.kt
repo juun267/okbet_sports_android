@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LiveUtil
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
@@ -377,9 +376,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 animationLoadFinish = true
                 view.post {
                     view.measure(0, 0)
-                    val measuredHeight = view.measuredHeight
-                    LogUtil.d("measuredHeight=" + measuredHeight)
-//                    web_view.minimumHeight=view.measuredHeight
                 }
             }
         }

@@ -67,8 +67,8 @@ class AccountHistoryViewModel(
     val betDetailResult: LiveData<BetSettledDetailListResult>
         get() = _betDetailResult
 
-    val sportCodeList: LiveData<List<StatusSheetData>>
-        get() = _sportCodeSpinnerList
+//    val sportCodeList: LiveData<List<StatusSheetData>>
+//        get() = _sportCodeSpinnerList
 
     private val _loading = MutableLiveData<Boolean>()
     private val _selectedSport = MutableLiveData<Event<String?>>()
@@ -78,7 +78,8 @@ class AccountHistoryViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
-    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+
+    //    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
     var tabPosition = 0 //當前tabPosition (for 新版UI)
 
     val emptyFilter = { item: String? ->

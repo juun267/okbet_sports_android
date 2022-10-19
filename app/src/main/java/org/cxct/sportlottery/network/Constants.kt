@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.network
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -37,6 +39,43 @@ object Constants {
 
     fun getSocketUrl(): String {
         return mSocketUrl
+    }
+
+    fun getStoreName(): String {
+        return getMetaDataDefValue(MultiLanguagesApplication.appContext, "JPUSH_CHANNEL", "default")
+    }
+
+    /**
+     * 获取MetaData信息
+     *
+     * @param name
+     * @param def
+     * @return
+     */
+    fun getMetaDataDefValue(context: Context, name: String, def: String): String {
+        val value = getMetaDataValue(context, name)
+        return value ?: def
+    }
+
+    fun getMetaDataValue(context: Context, name: String): String? {
+        var value: Any? = null
+        val packageManager: PackageManager = context.packageManager
+        val applicationInfo: ApplicationInfo
+        try {
+            applicationInfo = packageManager.getApplicationInfo(
+                context.packageName, PackageManager.GET_META_DATA)
+            if (applicationInfo.metaData != null) {
+                value = applicationInfo.metaData.get(name)
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            throw RuntimeException(
+                "Could not read the name in the manifest file.", e)
+        }
+        if (value == null) {
+            throw RuntimeException("The name '" + name
+                    + "' is not defined in the manifest file's meta data.")
+        }
+        return value.toString()
     }
 
     //20210401 記錄問題：retrofit.setBaseUrl() format http://[isNotEmpty]/ or https://[isNotEmpty]/，否則會直接 exception
@@ -193,7 +232,7 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (BuildConfig.STORE_NAME.isNullOrEmpty()) "" else "-${BuildConfig.STORE_NAME}") + ".json"
+        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (getStoreName() != "google") "" else "-${getStoreName()}") + ".json"
     }
 
     //.apk 下載 url

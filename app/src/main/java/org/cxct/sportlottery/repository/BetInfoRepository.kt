@@ -344,14 +344,37 @@ object BetInfoRepository {
         val oddsIndexList = oddsList.map {
             oddsList.indexOf(it)
         }
-
         val parlayComList = ParlayLimitUtil.getCom(oddsIndexList.toIntArray())
 
+        /** 2022/10/19
+         * 串關的限額判斷改為根據串關的所有賽事的限額去比對
+        maxBetMoney
+        maxPayout
+        minBetMoney
+        下注上限取最小的, 賠付額上限取最小的, 最低下注金額取最大的, 作為該張串關單的最高下注限額/最大賠付額/最低下注限額
+         */
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        var maxParlayBetMoney: BigDecimal? = null
+        var minParlayBetMoney: BigDecimal? = null
+        var maxParlayPayout: BigDecimal? = null
+        betList.map { it.betInfo }.forEach {
+            it?.let {
+                maxParlayBetMoney =
+                    if (maxParlayBetMoney == null) it.maxBetMoney else it.maxBetMoney?.min(
+                        maxParlayBetMoney)
+                minParlayBetMoney =
+                    if (minParlayBetMoney == null) it.minBetMoney else it.minBetMoney?.max(
+                        minParlayBetMoney)
+                maxParlayPayout =
+                    if (maxParlayPayout == null) it.maxPayout else it.maxPayout?.min(maxParlayPayout)
+            }
+        }
+        LogUtil.d(maxParlayBetMoney.toString() + "," + minParlayBetMoney.toString() + "," + maxParlayPayout.toString())
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
             parlayComList,
-            betInfo?.maxParlayBetMoney,
-            betInfo?.minParlayBetMoney
+            maxParlayBetMoney,
+            minParlayBetMoney
         )
 
         return parlayBetLimitMap.map {
@@ -360,7 +383,7 @@ object BetInfoRepository {
             val maxCpPayout = betInfo?.maxCpPayout ?: BigDecimal(9999999)
             val maxBetMoney = betInfo?.maxBetMoney ?: BigDecimal(9999999)
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: BigDecimal(9999999)
-            val maxParlayPayout = betInfo?.maxParlayPayout ?: BigDecimal(9999999)
+            val maxParlayPayout = maxParlayPayout ?: BigDecimal(9999999)
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: BigDecimal(9999999)
 
             val minBet: BigDecimal

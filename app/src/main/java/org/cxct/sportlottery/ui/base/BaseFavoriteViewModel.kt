@@ -4,7 +4,10 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
@@ -14,7 +17,9 @@ import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.PlayCateMenuFilterUtils
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -64,7 +69,10 @@ abstract class BaseFavoriteViewModel(
 
     val intoFavoritePage: LiveData<Event<Boolean>>
         get() = _intoFavoritePage
-    private val _intoFavoritePage = MutableLiveData<Event<Boolean>> ()
+    val _intoFavoritePage = MutableLiveData<Event<Boolean>>()
+    val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+    val sportCodeList: LiveData<List<StatusSheetData>>
+        get() = _sportCodeSpinnerList
 
     fun navFavoritePage(isFromLeftMenu: Boolean = false) {
         if (isLogin.value != true) {
@@ -192,8 +200,24 @@ abstract class BaseFavoriteViewModel(
                 )
             }
             var leagueOddList = mutableListOf<LeagueOdd>()
+            val sportCodeList = mutableListOf<StatusSheetData>()
+            //第一項為全部球種
+            sportCodeList.add(StatusSheetData("", LocalUtils.getString(R.string.all_sport)))
+            //根據api回傳的球類添加進當前啟用球種篩選清單
             result?.rows?.forEach {
                 leagueOddList.addAll(it.leagueOddsList)
+                sportCodeList.add(
+                    StatusSheetData(
+                        it.gameType,
+                        GameType.getGameTypeString(
+                            LocalUtils.getLocalizedContext(),
+                            it.gameType
+                        )
+                    )
+                )
+            }
+            withContext(Dispatchers.Main) {
+                _sportCodeSpinnerList.value = sportCodeList
             }
             leagueOddList.sortOdds()
             leagueOddList.let {

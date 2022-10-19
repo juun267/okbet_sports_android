@@ -251,6 +251,9 @@
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
+        <meta-data
+            android:name="AF_STORE"
+            android:value="${JPUSH_CHANNEL}" />
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.dialog_app_download.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.Constants.getStoreName
 import org.cxct.sportlottery.network.appUpdate.CheckAppVersionResult
 import org.cxct.sportlottery.util.AppUpdateManager
 import org.cxct.sportlottery.util.JumpUtil
@@ -50,7 +51,7 @@ class AppDownloadDialog(
         }
 
         btn_download.setOnClickListener {
-            if (BuildConfig.STORE_NAME.isNullOrEmpty()) {
+            if (getStoreName() != "google") {
                 if (btn_download.text == context.getString(R.string.update))
                     doInternalDownload()
                 else

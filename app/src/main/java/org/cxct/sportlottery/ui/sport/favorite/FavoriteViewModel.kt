@@ -49,9 +49,9 @@ class FavoriteViewModel(
     val sportQueryData: LiveData<Event<SportQueryData?>>
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
-    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
-    val sportCodeList: LiveData<List<StatusSheetData>>
-        get() = _sportCodeSpinnerList
+//    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
+//    val sportCodeList: LiveData<List<StatusSheetData>>
+//        get() = _sportCodeSpinnerList
 
     val favoriteRepository = myFavoriteRepository
     val lastSportType = myFavoriteRepository.lastSportType

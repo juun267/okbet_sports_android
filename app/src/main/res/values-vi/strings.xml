@@ -1261,4 +1261,5 @@
     <string name="comingsoon">Sắp ra mắt</string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="member_name">Người chơi</string>
+    <string name="login_welcome">Hi, Chào mừng OKbet~</string>
 </resources>
