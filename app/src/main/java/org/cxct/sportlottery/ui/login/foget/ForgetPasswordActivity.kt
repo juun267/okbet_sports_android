@@ -99,10 +99,12 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
                 }
                 if (page == 2){
+                    val confirmPassword = eet_confirm_password_forget.text.toString()
+                    val newPassword = eet_login_password_forget.text.toString()
                     userName?.let { userName ->
                         viewModel.resetPassword(userName = userName,
-                            confirmPassword = eet_confirm_password_forget.text.toString(),
-                            newPassword = eet_login_password_forget.text.toString())
+                            confirmPassword = MD5Util.MD5Encode(confirmPassword),
+                            newPassword = MD5Util.MD5Encode(newPassword))
                     }
                     return@setOnClickListener
                 }
@@ -222,6 +224,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             when (page) {
                 1 -> {
                     finish()
+                }
+                3-> {
+                    startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
                 }
                 else -> {
                     page--
