@@ -79,6 +79,10 @@ class MainViewModel(
     private val _countByInPlay = MutableLiveData<Int>()
     val countByInPlay: LiveData<Int>
         get() = _countByInPlay
+
+    private val _countByToday = MutableLiveData<Int>()
+    val countByToday: LiveData<Int>
+        get() = _countByToday
     private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
     val sportCodeList: LiveData<List<StatusSheetData>>
         get() = _sportCodeSpinnerList
@@ -288,7 +292,7 @@ class MainViewModel(
         }
     }
 
-    fun getInPlayCount() {
+    fun getSportList() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
@@ -296,47 +300,26 @@ class MainViewModel(
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )
             }?.sportMenuData?.let { sportMenuList ->
-                var total = 0
-                sportMenuList.menu.inPlay.items.forEach { item ->
-                    total += item.num
-                }
-                _countByInPlay.postValue(total)
-            }
-        }
-    }
-
-    /**
-     * 獲取當前可用球種清單
-     */
-    fun getSportList() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.sportService.getSportList(type = 1)
-            }?.let { sportListResponse ->
-                if (sportListResponse.success) {
-                    val sportCodeList = mutableListOf<StatusSheetData>()
-                    //根據api回傳的球類添加進當前啟用球種篩選清單
-                    sportListResponse.rows.sortedBy { it.sortNum }.map {
-                        if (it.state == 1) { //僅添加狀態為啟用的資料
-                            sportCodeList.add(
-                                StatusSheetData(
-                                    it.code,
-                                    GameType.getGameTypeString(
-                                        LocalUtils.getLocalizedContext(),
-                                        it.code
-                                    )
-                                )
+                _countByToday.postValue(sportMenuList.menu.today.num)
+                val sportCodeList = mutableListOf<StatusSheetData>()
+                sportMenuList.menu.early.items.forEach {
+                    sportCodeList.add(
+                        StatusSheetData(
+                            it.code,
+                            GameType.getGameTypeString(
+                                LocalUtils.getLocalizedContext(),
+                                it.code
                             )
-                        }
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        _sportCodeSpinnerList.value = sportCodeList
-                    }
+                        )
+                    )
+                }
+                withContext(Dispatchers.Main) {
+                    _sportCodeSpinnerList.value = sportCodeList
                 }
             }
         }
     }
+
 
     fun getInPlayList() {
         viewModelScope.launch {

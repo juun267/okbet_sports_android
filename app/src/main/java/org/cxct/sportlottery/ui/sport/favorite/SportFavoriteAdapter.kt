@@ -412,6 +412,8 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
             }
 //            滚球动画 直播 显示控制
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
+            itemView.iv_live.isVisible =
+                item.matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_play.isVisible =
                 item.matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(item.matchInfo?.startTime))
             itemView.iv_animation.isVisible =

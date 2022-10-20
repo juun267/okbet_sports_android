@@ -32,6 +32,7 @@
                 android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/iv_search"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginRight="@dimen/margin_25"
@@ -39,6 +40,7 @@
                 android:adjustViewBounds="true" />
 
             <ImageView
+                android:id="@+id/iv_setting"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_menu_setting"
@@ -208,9 +210,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_4"
-                        android:fontFamily="@font/din_regular"
+                        android:fontFamily="@font/din_bold"
                         tools:text="122"
-                        android:textFontWeight="400"
                         android:textColor="@color/color_025BE8_025BE8"
                         android:textSize="@dimen/textSize14sp" />
 

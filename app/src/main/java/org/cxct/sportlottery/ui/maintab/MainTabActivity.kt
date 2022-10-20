@@ -163,7 +163,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                showLeftFrament(bottom_navigation_view.currentItem)
                 if (drawerView.tag == "LEFT") {
                     drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,

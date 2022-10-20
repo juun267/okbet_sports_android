@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 
@@ -54,7 +55,6 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initSportInPlayView()
         initObserver()
         viewModel.getSportList()
-        viewModel.getInPlayList()
     }
 
     private fun initView() {
@@ -93,6 +93,12 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EventBus.getDefault().post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
+        iv_search.setOnClickListener {
+            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
+        }
+        iv_setting.setOnClickListener {
+            startActivity(Intent(requireActivity(), SettingCenterActivity::class.java))
+        }
     }
 
     private fun initSportClassifyView() {
@@ -124,6 +130,11 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.inplayList.observe(viewLifecycleOwner) {
             it?.let {
                 sportInPlayAdapter.setNewData(it)
+            }
+        }
+        viewModel.countByToday.observe(viewLifecycleOwner) {
+            it?.let {
+                tv_today_count.setText(it.toString())
             }
         }
     }

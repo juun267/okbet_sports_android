@@ -577,12 +577,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-        viewModel.matchLiveInfo.observe(this) {
-            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                live_view_tool_bar.liveUrl = liveStreamInfo.streamUrl
-                lin_live.isVisible = liveStreamInfo.streamUrl.isNotEmpty()
-            }
-        }
+//        viewModel.matchLiveInfo.observe(this) {
+//            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
+//                live_view_tool_bar.liveUrl = liveStreamInfo.streamUrl
+//                lin_live.isVisible = liveStreamInfo.streamUrl.isNotEmpty()
+//            }
+//        }
         viewModel.videoUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
                 if (lin_video.isVisible)
@@ -884,6 +884,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
+            lin_live.isVisible =
+                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+            live_view_tool_bar.liveUrl = matchInfo.pullRtmpUrl
             lin_video.isVisible =
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =

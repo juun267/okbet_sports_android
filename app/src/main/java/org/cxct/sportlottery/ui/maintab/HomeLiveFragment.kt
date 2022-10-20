@@ -42,6 +42,13 @@ class HomeLiveFragment :
         }
     }
 
+    private val homeTabAdapter by lazy {
+        HomeTabAdapter(HomeTabAdapter.getItems(), 1).apply {
+            setOnItemClickListener { adapter, view, position ->
+
+            }
+        }
+    }
     private val homeLiveAdapter by lazy {
         HomeLiveAdapter(
             HomeRecommendListener(
@@ -136,7 +143,9 @@ class HomeLiveFragment :
     }
 
     private fun initView() {
-        initRecommendView()
+        initTabView()
+        initListView()
+
     }
 
     private fun initObservable() {
@@ -349,12 +358,23 @@ class HomeLiveFragment :
         viewModel.getAnnouncement()
     }
 
-
-    private fun initRecommendView() {
+    private fun initTabView() {
         with(rv_live) {
             if (layoutManager == null) {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            }
+            if (adapter == null) {
+                adapter = homeTabAdapter
+            }
+        }
+    }
+
+    private fun initListView() {
+        with(rv_live) {
+            if (layoutManager == null) {
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             }
             if (adapter == null) {
                 adapter = homeLiveAdapter

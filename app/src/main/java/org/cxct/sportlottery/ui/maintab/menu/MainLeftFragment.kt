@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_main_left.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -62,7 +60,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initLanguageView()
         initObserver()
         getOddsType()
-        viewModel.getInPlayCount()
+        viewModel.getInPlayList()
     }
 
     override fun onResume() {
@@ -213,7 +211,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             viewModel.betInfoRepository.clear()
             selectLanguage(languageAdapter.data[position])
         }
-        rv_language.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rv_language.layoutManager = GridLayoutManager(context, 2)
         rv_language.adapter = languageAdapter
     }
 

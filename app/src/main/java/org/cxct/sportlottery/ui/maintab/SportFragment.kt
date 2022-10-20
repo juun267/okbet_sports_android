@@ -79,7 +79,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        iv_menu_left.setImageResource(R.drawable.ic_sport_menu)
         iv_menu_left.setOnClickListener {
+            (activity as MainTabActivity).showLeftFrament(1)
             EventBus.getDefault().post(MenuEvent(true))
         }
         btn_register.setOnClickListener {
