@@ -42,7 +42,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     lateinit var fragmentHelper: FragmentHelper
     var fragments = arrayOf<Fragment>(
-        MainHomeFragment.newInstance(),
+        HomeFragment.newInstance(),
         SportFragment.newInstance(),
         BetRecordFragment.newInstance(),
         FavoriteFragment.newInstance(),

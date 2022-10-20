@@ -9,12 +9,12 @@ class HomeTabAdapter(data: List<HomeTabItem>?, val selectPos: Int) :
     companion object {
         fun getItems(): List<HomeTabItem> {
             return mutableListOf<HomeTabItem>(
-                HomeTabItem(R.drawable.ic_home_football, R.string.home_tan_main),
-                HomeTabItem(R.drawable.ic_home_football, R.string.home_tan_main),
-                HomeTabItem(R.drawable.ic_home_football, R.string.home_tan_main),
-                HomeTabItem(R.drawable.ic_home_football, R.string.home_tan_main),
-                HomeTabItem(R.drawable.ic_home_football, R.string.home_tan_main),
-                HomeTabItem(R.drawable.ic_home_football, R.string.home_tan_main),
+                HomeTabItem(R.drawable.selector_home_tab_recommend, R.string.home_recommend),
+                HomeTabItem(R.drawable.selector_home_tab_live, R.string.home_live),
+                HomeTabItem(R.drawable.selector_home_tab_sport, R.string.home_sports),
+                HomeTabItem(R.drawable.selector_home_tab_worldcup, R.string.home_word_cup),
+                HomeTabItem(R.drawable.selector_home_tab_slot, R.string.home_slot),
+                HomeTabItem(R.drawable.selector_home_tab_okgame, R.string.home_on_game),
             ).toList()
         }
     }

@@ -1,17 +1,13 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,12 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.flyco.tablayout.listener.OnTabSelectListener
-import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.ScreenUtils
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -38,7 +29,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.bet.settledList.PlayCateMatchResult
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -64,14 +54,12 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.DepthPageTransformer
 import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.Exception
 
 
 class MainHomeFragment :
@@ -845,11 +833,11 @@ class MainHomeFragment :
         }*/
         //点击直播跳转
         include_layout1.setOnClickListener {
-
+            (parentFragment as HomeFragment).switchTabByPosition(1)
         }
         //点击体育跳转
         include_layout2.setOnClickListener {
-
+            (parentFragment as HomeFragment).switchTabByPosition(2)
         }
         //点击世界杯跳转
         include_layout3.setOnClickListener {
