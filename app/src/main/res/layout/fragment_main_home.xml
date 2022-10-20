@@ -98,148 +98,15 @@
             </LinearLayout>
            <include
                layout="@layout/tab_item_home_open"/>
-            <include layout="@layout/hot_live_match_include"/>
-
-            <FrameLayout
-                android:id="@+id/home_content_fragment"
+            <include
+                layout="@layout/hot_live_match_include"/>
+            <include
+                layout="@layout/hot_handicap_include"/>
+            <View
+                android:background="@color/color_E1EAF2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/rv_type_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="210dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:nestedScrollingEnabled="false"
-                    android:visibility="visible"
-                    tools:visibility="visible" />
-
-                <include
-                    android:id="@+id/lin_menu_game"
-                    layout="@layout/view_home_menu_game"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginBottom="10dp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <RadioGroup
-                    android:id="@+id/rg_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rbtn_sport"
-                        android:layout_width="wrap_content"
-                        android:layout_height="26dp"
-                        android:minWidth="80dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:button="@null"
-                        android:checked="true"
-                        android:elevation="2dp"
-                        android:background="@drawable/selector_bg_home_tab_menu"
-                        android:textColor="@color/selector_blue_white"
-                        android:textSize="@dimen/textSize14sp"
-                        android:text="@string/sport" />
-
-                    <RadioButton
-                        android:id="@+id/rbtn_egame"
-                        android:layout_width="wrap_content"
-                        android:layout_height="26dp"
-                        android:minWidth="80dp"
-                        android:layout_marginLeft="@dimen/margin_10"
-                        android:elevation="2dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:button="@null"
-                        android:background="@drawable/selector_bg_home_tab_menu"
-                        android:textColor="@color/selector_blue_white"
-                        android:textSize="@dimen/textSize14sp"
-                        android:text="@string/slot" />
-                </RadioGroup>
-            </FrameLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_15"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                tools:ignore="SpUsage, ContentDescription">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_hot_recommended" />
-
-                <TextView
-                    android:id="@+id/tv_hot_recommend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="@string/hot_recommend"
-                    android:textAllCaps="true"
-                    android:textColor="@color/color_6C7BA8"
-                    android:textSize="@dimen/textSize14sp"
-                    android:drawableEnd="@drawable/icon_arrow03" />
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_recommend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_15"
-                tools:ignore="SpUsage, ContentDescription"
-                tools:itemCount="1"
-                tools:listitem="@layout/item_home_recommend">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <LinearLayout
-                android:id="@+id/lin_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginHorizontal="@dimen/margin_10"
-                android:background="@drawable/img_bg_active"
-                android:orientation="horizontal"
-                android:paddingBottom="5dp"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="@dimen/margin_10"
-                    android:src="@drawable/icon_active" />
-
-
-                <com.youth.banner.Banner
-                    android:id="@+id/banner_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginRight="@dimen/margin_10"
-                    tl:banner_orientation="vertical"
-                    tl:banner_infinite_loop="true"
-                    tl:banner_auto_loop="true"
-                    tl:banner_loop_time="3000" />
-
-            </LinearLayout>
+                android:layout_height="@dimen/margin_12"/>
+            <include layout="@layout/hot_gaming_include"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
