@@ -19,12 +19,17 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.flyco.tablayout.listener.OnTabSelectListener
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.ScreenUtils
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_home_menu_game.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -33,6 +38,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.bet.settledList.PlayCateMatchResult
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -65,6 +71,7 @@ import org.cxct.sportlottery.widget.DepthPageTransformer
 import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.lang.Exception
 
 
 class MainHomeFragment :
@@ -156,6 +163,7 @@ class MainHomeFragment :
         initObservable()
         queryData()
         initSocketObservers()
+//        getTabDate()
     }
 
     override fun onResume() {
@@ -182,6 +190,8 @@ class MainHomeFragment :
             clickCustomService(requireContext(), childFragmentManager)
         }
         initRecommendView()
+        showChangeFragment()
+
     }
 
     fun initToolBar() {
@@ -196,9 +206,9 @@ class MainHomeFragment :
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
-        lin_search.setOnClickListener {
-            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-        }
+//        lin_search.setOnClickListener {
+//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
+//        }
         setupLogin()
     }
     private fun initObservable() {
@@ -787,35 +797,14 @@ class MainHomeFragment :
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
             btn_login.isVisible = !it
-            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+//            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            ll_user_money.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
-    //tab选中状态后的切换方式
-    @SuppressLint("InflateParams")
-    private fun upDateTabItemView(tab: TabLayout.Tab, isSelect: Boolean){
-
-        tab.customView?.apply {
-
-            val textView =  findViewById<TextView>(R.id.tv_tab_title)
-            val iconView =  findViewById<ImageView>(R.id.iv_tab_icon)
-            if (isSelect){
-                textView.textSize = 12f
-                textView.isSelected = true
-                textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-                iconView.setImageResource(tabSelectIconList[tab.position])
-            }else{
-                textView.textSize = 10f
-                iconView.setImageResource(tabUnSelectIconList[tab.position])
-                textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-            }
-
-
-        }
-    }
-
 
     //获取tab数据
     private fun getTabDate(){
+
         //标题数据
         tabSelectTitleList.add("推荐")
         tabSelectTitleList.add("直播")
@@ -838,6 +827,46 @@ class MainHomeFragment :
         tabUnSelectIconList.add(R.drawable.live0)
         tabUnSelectIconList.add(R.drawable.sport0)
 
+
+    }
+
+
+
+    //切换fragment
+    fun showChangeFragment() {
+        /*when (tabTag) {
+           "推荐" -> childFragmentManager.beginTransaction()
+                .replace(R.id.left_menu, MainHomeFragment.newInstance())
+                .commit()
+            "体育" ->
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.left_menu, MainHomeFragment.newInstance())
+                    .commit()
+        }*/
+        //点击直播跳转
+        include_layout1.setOnClickListener {
+
+        }
+        //点击体育跳转
+        include_layout2.setOnClickListener {
+
+        }
+        //点击世界杯跳转
+        include_layout3.setOnClickListener {
+
+        }
+        //点击滚球跳转
+        include_layout4.setOnClickListener {
+
+        }
+        //点击电子跳转
+        include_layout5.setOnClickListener {
+
+        }
+        //点击棋牌跳转
+        include_layout6.setOnClickListener {
+
+        }
 
     }
 
