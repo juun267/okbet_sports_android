@@ -96,8 +96,9 @@
                     android:src="@drawable/ic_customer_service" />
 
             </LinearLayout>
-
-            <include layout="@layout/tab_item_home_open" />
+           <include
+               layout="@layout/tab_item_home_open"/>
+            <include layout="@layout/hot_live_match_include"/>
 
             <FrameLayout
                 android:id="@+id/home_content_fragment"
