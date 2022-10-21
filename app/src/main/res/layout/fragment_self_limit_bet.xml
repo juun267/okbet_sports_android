@@ -191,7 +191,7 @@
         android:gravity="center"
         android:text="@string/btn_confirm"
         android:textAllCaps="true"
-        android:textColor="@color/exo_white"
+        android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold" />
 

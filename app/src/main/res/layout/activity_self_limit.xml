@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:firstTabText="@string/self_limit_account_login_limit"
-        android:background="@color/exo_white"
+        android:background="@color/color_FFFFFF"
         app:secondTabText="@string/self_limit_per_bet_limit"/>
 
     <androidx.viewpager.widget.ViewPager

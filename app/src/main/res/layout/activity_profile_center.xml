@@ -161,7 +161,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/margin_5"
-                                android:fontFamily="@font/roboto_medium_numbers"
+                                android:fontFamily="@font/din_bold"
                                 android:gravity="center_vertical"
                                 android:textColor="@color/color_643C00"
                                 android:textSize="@dimen/textSize20sp"

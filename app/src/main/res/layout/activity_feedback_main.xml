@@ -18,7 +18,7 @@
         android:id="@+id/custom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/exo_white"
+        android:background="@color/color_FFFFFF"
         android:layout_marginTop="1dp"
         app:firstTabText="@string/feedback_tabName_problem"
         app:layout_constraintEnd_toEndOf="parent"

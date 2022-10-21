@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_1"
-        android:background="@color/exo_white"
+        android:background="@color/color_FFFFFF"
         android:orientation="vertical"
         android:visibility="gone"
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
@@ -70,7 +70,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/exo_white"
+                android:background="@color/color_FFFFFF"
                 android:orientation="vertical">
                 <!-- 銀行卡 -->
                 <LinearLayout
