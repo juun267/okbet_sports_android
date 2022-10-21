@@ -50,11 +50,10 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingBottom="@dimen/margin_20"
         android:background="@drawable/bg_live_match"
         app:layout_constraintTop_toBottomOf="@+id/tv_hot_handicap"
         android:layout_width="match_parent"
-        android:layout_height="282dp">
+        android:layout_height="236dp">
         <RelativeLayout
             android:id="@+id/rv_match_title"
             android:layout_marginTop="@dimen/margin_20"
@@ -99,12 +98,22 @@
             android:layout_height="0.5dp"/>
         <ImageView
             android:id="@+id/iv_publicity"
+            android:background="@drawable/bg_hot_live_bg"
             android:layout_marginTop="@dimen/margin_10"
             android:layout_marginStart="@dimen/margin_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
             android:layout_width="185dp"
-            android:layout_height="140dp"/>
+            android:layout_height="104dp"/>
+        <ImageView
+            android:id="@+id/iv_live_type"
+            android:scaleType="fitXY"
+            android:layout_marginStart="65dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
+            android:layout_width="114dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_live_image"/>
         <TextView
             android:id="@+id/tv_first_half_game"
             android:textSize="@dimen/textSize10sp"
@@ -119,17 +128,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@string/first_half_game"/>
-        <!--<TextView
-            android:id="@+id/tv_match_time"
-            android:textColor="@color/color_F9F9F9"
-            android:textSize="@dimen/textSize12sp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="@dimen/margin_10"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
-            app:layout_constraintStart_toStartOf="@+id/iv_publicity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="10:22"/>-->
         <RelativeLayout
             android:background="@drawable/bg_live_time"
             app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
@@ -158,18 +156,24 @@
                 android:layout_width="14dp"
                 android:layout_height="@dimen/margin_16"/>
         </RelativeLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_match_list"
-            android:layout_marginEnd="@dimen/margin_18"
-            android:layout_marginStart="@dimen/margin_5"
-            android:layout_marginTop="@dimen/margin_10"
+        <LinearLayout
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
+            android:paddingBottom="60dp"
             app:layout_constraintStart_toEndOf="@+id/iv_publicity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_hot_live"
-            tools:itemCount="6"/>
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_match_list"
+                android:layout_marginEnd="@dimen/margin_18"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_hot_live"
+                tools:itemCount="4"/>
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/iv_avatar_live"
             android:layout_marginTop="@dimen/margin_12"
