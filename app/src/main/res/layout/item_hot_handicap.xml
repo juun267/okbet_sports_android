@@ -7,6 +7,7 @@
    <androidx.constraintlayout.widget.ConstraintLayout
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintStart_toStartOf="parent"
+       android:layout_marginTop="@dimen/margin_12"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
       <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +82,9 @@
       <androidx.recyclerview.widget.RecyclerView
          app:layout_constraintTop_toBottomOf="@+id/cl_title"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          tools:itemCount="1"
+          tools:listitem="@layout/itemview_odd_btn_2x2_v6">
       </androidx.recyclerview.widget.RecyclerView>
    </androidx.constraintlayout.widget.ConstraintLayout>
 

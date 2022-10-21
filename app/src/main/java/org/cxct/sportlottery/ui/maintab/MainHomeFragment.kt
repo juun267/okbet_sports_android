@@ -271,17 +271,17 @@ class MainHomeFragment :
 //
         viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
             //非信用盤才顯示優惠活動
-            if (!isCreditSystem())
-                if (it.isNotEmpty()) {
-                    lin_activity.visibility = View.VISIBLE
-                    setupActivity(it)
-                } else {
-                    lin_activity.visibility = View.GONE
-                }
+//            if (!isCreditSystem())
+//                if (it.isNotEmpty()) {
+//                    lin_activity.visibility = View.VISIBLE
+//                    setupActivity(it)
+//                } else {
+//                    lin_activity.visibility = View.GONE
+//                }
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
-            setupType(it)
+           // setupType(it)
         }
         viewModel.cardGameData.observe(viewLifecycleOwner) {
         }
@@ -532,90 +532,90 @@ class MainHomeFragment :
     }
 
     private fun setupActivity(list: List<PublicityPromotionItemData>) {
-        banner_activity.addBannerLifecycleObserver(this) //添加生命周期观察者
-            .setAdapter(HomeActivityAdapter(list))
-            .setOnBannerListener { data, position ->
-                data?.let {
-                    JumpUtil.toInternalWeb(
-                        requireContext(),
-                        Constants.getPromotionDetailUrl(
-                            viewModel.token,
-                            (data as PublicityPromotionItemData).id,
-                            LanguageManager.getSelectLanguage(requireContext())
-                        ),
-                        getString(R.string.promotion))
-                }
-            }
+//        banner_activity.addBannerLifecycleObserver(this) //添加生命周期观察者
+//            .setAdapter(HomeActivityAdapter(list))
+//            .setOnBannerListener { data, position ->
+//                data?.let {
+//                    JumpUtil.toInternalWeb(
+//                        requireContext(),
+//                        Constants.getPromotionDetailUrl(
+//                            viewModel.token,
+//                            (data as PublicityPromotionItemData).id,
+//                            LanguageManager.getSelectLanguage(requireContext())
+//                        ),
+//                        getString(R.string.promotion))
+//                }
+//            }
     }
     private fun setupType(publicityMenuData: PublicityMenuData) {
-        rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-                when (checkedId) {
-                    R.id.rbtn_sport -> {
-                        lin_menu_game.isVisible = false
-                        rv_type_list.isVisible = true
-                    }
-                    R.id.rbtn_egame -> {
-                        rv_type_list.isVisible = false
-                        lin_menu_game.isVisible = true
-                    }
-                }
-            }
-        })
-        mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
-        var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
-        rvChiild.setPadding(0, 0, 40.dp, 0)
-        rvChiild.clipToPadding = false
-        rv_type_list.offscreenPageLimit = 3
-        rv_type_list.setPageTransformer(DepthPageTransformer())
-        rv_type_list.adapter = mainHomeMenuAdapter
-        rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                if (position == mainHomeMenuAdapter.itemCount - 1) {
-                    rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
-                }
-            }
-        })
-        mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
-            publicityMenuData.sportMenuDataList?.let {
-                enterTheSport(it[position])
-            }
-        }
-
-        publicityMenuData?.sportMenuDataList?.let {
-            mainHomeMenuAdapter.setNewData(it.toMutableList())
-            mainHomeMenuAdapter.removeAllFooterView()
-            mainHomeMenuAdapter.addFooterView(LayoutInflater.from(requireContext())
-                .inflate(R.layout.item_main_home_empty, null))
-            mainHomeMenuAdapter.footerLayout.apply {
-                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
-            }
-        }
-        lin_menu_game.apply {
-            ivThirdGame.setImageResource(R.drawable.bg_egame)
-            ivThirdGame.setOnClickListener {
-                if (viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
-                } else {
-                    viewModel.requestEnterThirdGame(publicityMenuData?.eGameMenuData)
-                }
-            }
-        }
+//        rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+//            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+//                when (checkedId) {
+//                    R.id.rbtn_sport -> {
+//                        lin_menu_game.isVisible = false
+//                        rv_type_list.isVisible = true
+//                    }
+//                    R.id.rbtn_egame -> {
+//                        rv_type_list.isVisible = false
+//                        lin_menu_game.isVisible = true
+//                    }
+//                }
+//            }
+//        })
+//        mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
+//        var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
+//        rvChiild.setPadding(0, 0, 40.dp, 0)
+//        rvChiild.clipToPadding = false
+//        rv_type_list.offscreenPageLimit = 3
+//        rv_type_list.setPageTransformer(DepthPageTransformer())
+//        rv_type_list.adapter = mainHomeMenuAdapter
+//        rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                if (position == mainHomeMenuAdapter.itemCount - 1) {
+//                    rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
+//                }
+//            }
+//        })
+//        mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
+//            publicityMenuData.sportMenuDataList?.let {
+//                enterTheSport(it[position])
+//            }
+//        }
+//
+//        publicityMenuData?.sportMenuDataList?.let {
+//            mainHomeMenuAdapter.setNewData(it.toMutableList())
+//            mainHomeMenuAdapter.removeAllFooterView()
+//            mainHomeMenuAdapter.addFooterView(LayoutInflater.from(requireContext())
+//                .inflate(R.layout.item_main_home_empty, null))
+//            mainHomeMenuAdapter.footerLayout.apply {
+//                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT)
+//            }
+//        }
+//        lin_menu_game.apply {
+//            ivThirdGame.setImageResource(R.drawable.bg_egame)
+//            ivThirdGame.setOnClickListener {
+//                if (viewModel.isLogin.value != true) {
+//                    (activity as MainTabActivity).showLoginNotify()
+//                } else {
+//                    viewModel.requestEnterThirdGame(publicityMenuData?.eGameMenuData)
+//                }
+//            }
+//        }
 
     }
 
     private fun initRecommendView() {
-        with(rv_recommend) {
-            if (layoutManager == null) {
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            }
-            if (adapter == null) {
-                adapter = homeRecommendAdapter
-            }
-        }
+//        with(rv_recommend) {
+//            if (layoutManager == null) {
+//                layoutManager =
+//                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            }
+//            if (adapter == null) {
+//                adapter = homeRecommendAdapter
+//            }
+//        }
     }
 
     /**
@@ -845,6 +845,11 @@ class MainHomeFragment :
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
+//            ll_home_content.visibility = View.GONE
+//            home_main_fragment.visibility = View.VISIBLE
+//            childFragmentManager.beginTransaction()
+//                .replace(R.id.home_main_fragment, HomeLiveFragment.newInstance())
+//                .commit()
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
         //点击电子跳转

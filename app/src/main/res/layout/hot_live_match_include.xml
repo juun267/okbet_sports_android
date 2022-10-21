@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_14"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
@@ -16,7 +17,7 @@
         android:id="@+id/tv_hot_handicap"
         android:textStyle="bold"
         android:text="@string/hot_live_match"
-        android:layout_marginStart="@dimen/margin_6"
+        android:layout_marginStart="@dimen/margin_8"
         android:textColor="@color/color_D2E4FF_414655"
         app:layout_constraintTop_toTopOf="@+id/iv_logo_handicap"
         app:layout_constraintBottom_toBottomOf="@+id/iv_logo_handicap"
@@ -64,7 +65,7 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/iv_dio"
-                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginStart="@dimen/margin_24"
                 android:src="@drawable/dio_blue"
                 android:layout_width="wrap_content"
@@ -72,7 +73,7 @@
             <TextView
                 android:id="@+id/tv_match_name"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
-                android:layout_marginTop="@dimen/margin_7"
+
                 android:layout_marginStart="@dimen/margin_6"
                 android:layout_toRightOf="@+id/iv_dio"
                 android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
             <TextView
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_6"
+
                 android:layout_marginEnd="@dimen/margin_24"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
@@ -118,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@string/first_half_game"/>
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_match_time"
             android:textColor="@color/color_F9F9F9"
             android:textSize="@dimen/textSize12sp"
@@ -128,7 +129,35 @@
             app:layout_constraintStart_toStartOf="@+id/iv_publicity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="10:22"/>
+            tools:text="10:22"/>-->
+        <RelativeLayout
+            android:background="@drawable/bg_live_time"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
+            app:layout_constraintStart_toStartOf="@+id/iv_publicity"
+            app:layout_constraintEnd_toEndOf="@+id/iv_publicity"
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_match_time"
+                android:textColor="@color/color_F9F9F9"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_marginBottom="8dp"
+                android:paddingTop="8dp"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="10:22"/>
+            <ImageView
+                android:id="@+id/iv_time"
+                android:layout_marginEnd="@dimen/margin_14"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/icon_fill"
+                android:layout_width="14dp"
+                android:layout_height="@dimen/margin_16"/>
+        </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_match_list"
             android:layout_marginEnd="@dimen/margin_18"

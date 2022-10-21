@@ -2,21 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_14"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/iv_logo_handicap"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/icon_handicap"
+        android:src="@drawable/icon_soft"
         android:layout_marginStart="@dimen/margin_13"
         android:layout_width="@dimen/margin_24"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/tv_hot_handicap"
         android:textStyle="bold"
-        android:text="@string/hot_handicap"
-        android:layout_marginStart="@dimen/margin_6"
+        android:text="@string/hot_gaming_electronics"
+        android:layout_marginStart="@dimen/margin_8"
         android:textColor="@color/color_D2E4FF_414655"
         app:layout_constraintTop_toTopOf="@+id/iv_logo_handicap"
         app:layout_constraintBottom_toBottomOf="@+id/iv_logo_handicap"
@@ -24,31 +25,7 @@
         app:layout_constraintStart_toEndOf="@+id/iv_logo_handicap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <LinearLayout
-        android:id="@+id/ll_hot_arrow"
-        android:background="@drawable/shape_hot_handicap_bg"
-        app:layout_constraintStart_toEndOf="@+id/tv_hot_handicap"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
-        android:layout_marginStart="@dimen/margin_10"
-        android:paddingVertical="@dimen/margin_5"
-        android:paddingHorizontal="@dimen/margin_8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_025BE8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/ou_hdp_1x2_title"/>
-        <ImageView
-            android:id="@+id/iv_hot_arrow"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_2"
-            android:src="@drawable/icon_arrow_blue"
-            android:layout_width="@dimen/margin_12"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+
     <LinearLayout
         app:layout_constraintTop_toTopOf="@+id/iv_logo_handicap"
         app:layout_constraintBottom_toBottomOf="@+id/iv_logo_handicap"
@@ -57,12 +34,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/tv_find_more"
             android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize12sp"
             android:layout_marginEnd="@dimen/margin_5"
             android:text="@string/find_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
         <ImageView
             android:layout_marginEnd="@dimen/margin_14"
             android:layout_gravity="center_vertical"
@@ -70,22 +49,15 @@
             android:layout_width="@dimen/margin_14"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-    <androidx.cardview.widget.CardView
-        app:cardCornerRadius="@dimen/margin_10"
-        app:layout_constraintStart_toStartOf="parent"
-
-        android:layout_marginHorizontal="@dimen/margin_14"
-        android:layout_marginTop="@dimen/margin_10"
-        app:layout_constraintTop_toBottomOf="@+id/ll_hot_arrow"
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingHorizontal="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_20"
+        android:paddingBottom="@dimen/margin_30"
+        app:layout_constraintTop_toBottomOf="@+id/iv_logo_handicap"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-       <androidx.recyclerview.widget.RecyclerView
-           android:paddingBottom="@dimen/margin_20"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           tools:itemCount="2"
-           tools:listitem="@layout/item_hot_handicap"/>
-
-    </androidx.cardview.widget.CardView>
-
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_electronics_game"
+        tools:itemCount="5"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
