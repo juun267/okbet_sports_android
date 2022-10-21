@@ -9,18 +9,20 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.index.home.HomeLiveDataList
+import org.cxct.sportlottery.network.index.home.HomeLiveData
+import org.cxct.sportlottery.util.LogUtil
 
 import org.cxct.sportlottery.util.setTeamLogo
 
 class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.Adapter<HotLiveAdapter.ItemViewHolder>() {
     private var mSelectedPosition = 0
-    var data = listOf<HomeLiveDataList>()
+    var data: List<HomeLiveData> = mutableListOf()
         set(value) {
             mSelectedPosition = 0
             field = value
             notifyDataSetChanged()
         }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder.from(parent)
@@ -31,7 +33,7 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
         holder.bind(item)
         holder.apply {
             group.isSelected =  mSelectedPosition == position
-            arrow.visibility = if (mSelectedPosition == position) View.VISIBLE else View.GONE
+            arrow.visibility = if (mSelectedPosition == position) View.VISIBLE else View.INVISIBLE
             group.setOnClickListener {
                 mSelectedPosition = position
                 notifyDataSetChanged()
@@ -52,13 +54,14 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
         val awayTeamName: TextView = itemView.findViewById(R.id.tv_team_name2)
         private val homeTeamNum: TextView = itemView.findViewById(R.id.tv_team_score1)
         private val awayTeamNum: TextView = itemView.findViewById(R.id.tv_team_score2)
-        fun bind(item: HomeLiveDataList) {
+        fun bind(item: HomeLiveData) {
             homeTeamIcon.setTeamLogo(item.homeTeamIcon)
             awayTeamIcon.setTeamLogo(item.awayTeamIcon)
             homeTeamName.text = item.homeTeamName
             awayTeamName.text = item.awayTeamName
             homeTeamNum.text = item.homeTeamNum
             awayTeamNum.text = item.awayTeamNum
+            LogUtil.d(item.homeTeamName)
         }
         companion object {
             fun from(parent: ViewGroup):ItemViewHolder{
@@ -69,7 +72,7 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
         }
 
     }
-    class ItemClickListener(private var clickListener: (data: HomeLiveDataList)->Unit){
-        fun onClick(data: HomeLiveDataList) = clickListener(data)
+    class ItemClickListener(private var clickListener: (data: HomeLiveData)->Unit){
+        fun onClick(data: HomeLiveData) = clickListener(data)
     }
 }

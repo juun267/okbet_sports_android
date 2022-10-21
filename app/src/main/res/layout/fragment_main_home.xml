@@ -99,6 +99,7 @@
            <include
                layout="@layout/tab_item_home_open"/>
             <include
+                android:id="@+id/hot_live_match"
                 layout="@layout/hot_live_match_include"/>
             <include
                 layout="@layout/hot_handicap_include"/>

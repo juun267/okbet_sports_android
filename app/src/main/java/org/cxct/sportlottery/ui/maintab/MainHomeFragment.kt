@@ -6,12 +6,8 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RadioGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -20,6 +16,7 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_home_menu_game.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
@@ -27,12 +24,12 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.index.home.HomeLiveData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -55,8 +52,6 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.widget.DepthPageTransformer
 import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -67,7 +62,18 @@ class MainHomeFragment :
     private  var tabSelectTitleList = mutableListOf<String>()
     private  var tabSelectIconList = mutableListOf<Int>()
     private  var tabUnSelectIconList = mutableListOf<Int>()
-
+    private var hotDataList = mutableListOf<HomeLiveData>()
+    private val homeHotLiveAdapter by lazy {
+        HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
+           tv_match_name.text = data.matchName
+            tv_match_type_name.text = data.matchType
+            tv_first_half_game.text = data.half
+            tv_match_time.text = "12:00"
+            iv_live_type.setImageResource(data.imageType)
+            iv_avatar_live.setImageResource(data.starPlayer)
+            tv_introduction.text = data.starTitle
+        })
+    }
     companion object {
         fun newInstance(): MainHomeFragment {
             val args = Bundle()
@@ -179,7 +185,7 @@ class MainHomeFragment :
         }
         initRecommendView()
         showChangeFragment()
-
+        getTabDate()
     }
 
     fun initToolBar() {
@@ -814,11 +820,54 @@ class MainHomeFragment :
         tabUnSelectIconList.add(R.drawable.word_cup0)
         tabUnSelectIconList.add(R.drawable.live0)
         tabUnSelectIconList.add(R.drawable.sport0)
+        //https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731395343157889920.png
+        //https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/sports/tennis.png
+        // https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731388177098541952.png
+        //https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/basketball-team/730832746050368256.png
+        //https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/soccer-team/731603027876168704.png
+        //https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731390961195879296.png
 
-
+        //https://media.istockphoto.com/photos/european-shorthair-sitting-picture-id489118215?k=20&m=489118215&s=612x612&w=0&h=DKvQffbLJhslH3gnGmCv60bwpFhljdd15o_c-RNKJ0k=
+        var homeLiveDate1 = HomeLiveData("意大利甲级联赛","足球赛事","上半场",
+            R.drawable.card_sport_amfootball,
+            R.drawable.icon_avatar,"明星球员1号种子,最牛的直播", "https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731395343157889920.png",
+        "https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/sports/tennis.png",
+            "宇宙无敌队","银河旗舰队","3","3")
+        var homeLiveDate2 = HomeLiveData("BGC男蓝联赛","篮球赛事","第一节",
+            R.drawable.card_sport_baseball,
+            R.drawable.icon_recommend,"食堂阿姨解说赛事", "https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731388177098541952.png",
+            "https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/basketball-team/730832746050368256.png",
+            "前端组","后台组","3","0")
+        var homeLiveDate3 = HomeLiveData("技术中心联赛","吹牛赛事","决赛圈",
+            R.drawable.card_sport_football,
+            R.drawable.word_cup0,"没有什么介绍", "https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/soccer-team/731603027876168704.png",
+            "https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731390961195879296.png",
+            "缅因猫","边牧犬","1","1")
+        hotDataList.add(homeLiveDate1)
+        hotDataList.add(homeLiveDate2)
+        hotDataList.add(homeLiveDate3)
+        initListView()
     }
 
+    fun initListView(){
+        if (hotDataList.isNullOrEmpty()){
+            hot_live_match.visibility = View.GONE
+        }else{
+            hotDataList[0].apply {
+                tv_match_name.text = matchName?:""
+                tv_match_type_name.text = matchType
+                tv_first_half_game.text = half
+                tv_match_time.text = "12:00"
+                iv_live_type.setImageResource(imageType)
+                iv_avatar_live.setImageResource(starPlayer)
+                tv_introduction.text = starTitle
+            }
+            homeHotLiveAdapter.data = hotDataList
+            rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            rv_match_list.adapter = homeHotLiveAdapter
+        }
 
+    }
 
     //切换fragment
     fun showChangeFragment() {
