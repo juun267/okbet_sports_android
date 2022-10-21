@@ -68,7 +68,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
     private lateinit var mListPop: ListPopupWindow
-    private val sportTypeTextAdapter by lazy { SportTypeTextAdapter(dataSport) }
+    private var sportTypeTextAdapter = SportTypeTextAdapter(dataSport)
     private var gameType: GameType? = null
     private val favoriteAdapter by lazy {
         FavoriteAdapter(MatchType.MY_EVENT).apply {
@@ -512,7 +512,8 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
         }
         viewModel.sportCodeList.observe(viewLifecycleOwner) {
             updateSportList(it)
-            sportTypeTextAdapter.notifyDataSetChanged()
+            sportTypeTextAdapter = SportTypeTextAdapter(dataSport)
+            mListPop.setAdapter(sportTypeTextAdapter)
         }
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) {
             it.peekContent()?.toMutableList().let { leagueOddList ->
@@ -743,7 +744,6 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
     }
 
     private fun updateSportList(list: List<StatusSheetData>) {
-        if (dataSport.isNotEmpty()) return
         dataSport.clear()
         list.forEach {
             dataSport.add(
