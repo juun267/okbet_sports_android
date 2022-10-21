@@ -833,27 +833,27 @@ class MainHomeFragment :
         }*/
         //点击直播跳转
         include_layout1.setOnClickListener {
-            (parentFragment as HomeFragment).switchTabByPosition(1)
+            (parentFragment as HomeFragment).onTabClickByPosition(1)
         }
         //点击体育跳转
         include_layout2.setOnClickListener {
-            (parentFragment as HomeFragment).switchTabByPosition(2)
+            (parentFragment as HomeFragment).onTabClickByPosition(2)
         }
         //点击世界杯跳转
         include_layout3.setOnClickListener {
-
+            (parentFragment as HomeFragment).onTabClickByPosition(3)
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
-
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
         //点击电子跳转
         include_layout5.setOnClickListener {
-
+            (parentFragment as HomeFragment).onTabClickByPosition(4)
         }
         //点击棋牌跳转
         include_layout6.setOnClickListener {
-
+            (parentFragment as HomeFragment).onTabClickByPosition(5)
         }
 
     }

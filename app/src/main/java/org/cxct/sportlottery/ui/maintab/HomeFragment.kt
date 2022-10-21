@@ -16,9 +16,9 @@ class HomeFragment :
     var fragments = arrayOf<Fragment>(
         MainHomeFragment.newInstance(),
         HomeLiveFragment.newInstance(),
-        HomeLiveFragment.newInstance(),
-        HomeLiveFragment.newInstance(),
-        HomeLiveFragment.newInstance()
+        HomeWorldCupFragment.newInstance(),
+        HomeSlotFragment.newInstance(),
+        HomeElecFragment.newInstance()
     )
 
     companion object {
@@ -48,4 +48,14 @@ class HomeFragment :
         fragmentHelper.showFragment(position)
     }
 
+    fun onTabClickByPosition(position: Int) {
+        when (position) {
+            0 -> switchTabByPosition(0)
+            1 -> switchTabByPosition(1)
+            2 -> (activity as MainTabActivity).switchTabByPosition(1)
+            3 -> switchTabByPosition(2)
+            4 -> switchTabByPosition(3)
+            5 -> switchTabByPosition(4)
+        }
+    }
 }

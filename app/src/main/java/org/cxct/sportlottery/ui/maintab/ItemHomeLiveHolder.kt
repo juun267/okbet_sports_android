@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
@@ -22,6 +23,8 @@ class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
     private val homeRecommendListener: HomeRecommendListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
+    lateinit var data: Recommend
+
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {}
@@ -34,9 +37,22 @@ class ItemHomeLiveHolder(
     fun bind(data: Recommend, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         update(data, oddsType)
+        updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id)
+    }
+
+    fun updateLive(isExpandLive: Boolean) {
+        binding.flLive.isVisible = isExpandLive
+        binding.tvCollse.setOnClickListener {
+            updateLive(false)
+        }
+        binding.tvExpandLive.isVisible = !isExpandLive
+        binding.tvExpandLive.setOnClickListener {
+            (bindingAdapter as HomeLiveAdapter).expandMatchId = data.matchInfo?.id
+        }
     }
 
     fun update(data: Recommend, oddsType: OddsType) {
+        this.data = data
         //設置賽事資訊是否顯示
         setupGameInfoVisibility(data)
 
@@ -533,24 +549,10 @@ class ItemHomeLiveHolder(
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String): Map<String, List<Odd?>?> {
         return this.mapValues { map ->
             val playCateNum =
-                when { //根據IOS給的規則判斷顯示數量
-                    map.value?.size ?: 0 < 3 -> 2
-
-                    (gameType == GameType.TT.key || gameType == GameType.BM.key) && map.key.contains(
-                        PlayCate.SINGLE.value
-                    ) -> 2 //乒乓球獨贏特殊判斷 羽球獨贏特殊判斷
-
-                    map.key.contains(PlayCate.HDP.value) || (map.key.contains(PlayCate.OU.value) && !map.key.contains(
-                        PlayCate.SINGLE_OU.value
-                    )) || map.key.contains(
-                        PlayCate.CORNER_OU.value
-                    ) -> 2
-
-                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) || map.key.contains(
-                        PlayCate.NGOAL_OT.value
-                    ) -> 3
-
-                    else -> 3
+                when {
+                    //只有足球才有主客和的独赢盘才有三个赔率
+                    gameType == GameType.FT.key && map.key.contains(PlayCate.SINGLE.value) -> 3
+                    else -> 2
                 }
             map.value?.filterIndexed { index, _ ->
                 index < playCateNum

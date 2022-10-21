@@ -6,10 +6,14 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_live.*
+import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
@@ -29,6 +33,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.greenrobot.eventbus.EventBus
 
 class HomeLiveFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -45,7 +50,7 @@ class HomeLiveFragment :
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(), 1).apply {
             setOnItemClickListener { adapter, view, position ->
-
+                (parentFragment as HomeFragment).onTabClickByPosition(position)
             }
         }
     }
@@ -121,7 +126,6 @@ class HomeLiveFragment :
         viewModel.getConfigData()
         initView()
         initObservable()
-        queryData()
         initSocketObservers()
         viewModel.getRecommend()
     }
@@ -143,9 +147,28 @@ class HomeLiveFragment :
     }
 
     private fun initView() {
+        initToolBar()
         initTabView()
         initListView()
 
+    }
+
+    fun initToolBar() {
+        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        iv_menu_left.setOnClickListener {
+            EventBus.getDefault().post(MenuEvent(true))
+            (activity as MainTabActivity).showLeftFrament(0)
+        }
+        btn_register.setOnClickListener {
+            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+        }
+        btn_login.setOnClickListener {
+            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+        }
+//        lin_search.setOnClickListener {
+//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
+//        }
+        setupLogin()
     }
 
     private fun initObservable() {
@@ -159,7 +182,7 @@ class HomeLiveFragment :
             }
         }
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let { recommendList ->
+            event?.peekContent()?.let { recommendList ->
                 hideLoading()
                 if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
                 recommendList.forEach { recommend ->
@@ -353,13 +376,9 @@ class HomeLiveFragment :
     }
 
 
-    private fun queryData() {
-        viewModel.getPublicitySportMenu()
-        viewModel.getAnnouncement()
-    }
 
     private fun initTabView() {
-        with(rv_live) {
+        with(rv_tab_home) {
             if (layoutManager == null) {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -521,4 +540,12 @@ class HomeLiveFragment :
         }
     }
 
+    private fun setupLogin() {
+        viewModel.isLogin.value?.let {
+            btn_register.isVisible = !it
+            btn_login.isVisible = !it
+//            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            ll_user_money.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
 }

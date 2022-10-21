@@ -33,11 +33,21 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
                 notifyDataSetChanged()
             }
         }
+    var expandMatchId: String? = null
+        set(value) {
+            if (value != field) {
+                field = value
+                data.forEachIndexed { index, recommend ->
+                    notifyItemChanged(index, expandMatchId)
+                }
+            }
+        }
 
     var data: List<Recommend> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
+            expandMatchId = value.firstOrNull()?.matchInfo?.id
         }
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
@@ -82,6 +92,9 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
                 when (payload) {
                     is Recommend -> {
                         holder.update(payload, oddsType = oddsType)
+                    }
+                    is String -> {
+                        holder.updateLive(payload == data[position].matchInfo?.id)
                     }
                 }
             }

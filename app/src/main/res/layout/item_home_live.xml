@@ -5,10 +5,10 @@
     android:id="@+id/cvBlock"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="1dp"
-    app:cardBackgroundColor="@color/color_202020_FCFCFC"
-    app:cardCornerRadius="@dimen/margin_10"
-    app:cardElevation="1dp">
+    android:layout_marginBottom="12dp"
+    android:padding="0.5dp"
+    android:background="@drawable/bg_white_stroke_blue_radius_10"
+    app:cardCornerRadius="@dimen/margin_10">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,7 +104,7 @@
                 android:drawablePadding="@dimen/margin_2"
                 android:textSize="12sp"
                 android:textColor="@color/color_EC4139"
-                android:text="@string/collse_live" />
+                android:text="@string/expand_live" />
         </LinearLayout>
 
         <View
