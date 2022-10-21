@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -16,6 +17,8 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.hot_card_game_include.*
+import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_home_menu_game.*
@@ -63,17 +66,9 @@ class MainHomeFragment :
     private  var tabSelectIconList = mutableListOf<Int>()
     private  var tabUnSelectIconList = mutableListOf<Int>()
     private var hotDataList = mutableListOf<HomeLiveData>()
-    private val homeHotLiveAdapter by lazy {
-        HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
-           tv_match_name.text = data.matchName
-            tv_match_type_name.text = data.matchType
-            tv_first_half_game.text = data.half
-            tv_match_time.text = "12:00"
-            iv_live_type.setImageResource(data.imageType)
-            iv_avatar_live.setImageResource(data.starPlayer)
-            tv_introduction.text = data.starTitle
-        })
-    }
+    private var hotelecList = mutableListOf<HomeTabItem1>()
+    private var homeChessList = mutableListOf<HomeChessItem>()
+
     companion object {
         fun newInstance(): MainHomeFragment {
             val args = Bundle()
@@ -82,7 +77,24 @@ class MainHomeFragment :
             return fragment
         }
     }
+    private val homeHotLiveAdapter by lazy {//热门直播
+        HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
+            tv_match_name.text = data.matchName
+            tv_match_type_name.text = data.matchType
+            tv_first_half_game.text = data.half
+            tv_match_time.text = "12:00"
+            iv_live_type.setImageResource(data.imageType)
+            iv_avatar_live.setImageResource(data.starPlayer)
+            tv_introduction.text = data.starTitle
+        })
+    }
 
+    private val hotElectronicAdapter by lazy{//电子
+        HomeElectronicAdapter(mutableListOf())
+    }
+    private val homeChessAdapter by lazy{//棋牌
+        HomeChessAdapter(mutableListOf())
+    }
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private lateinit var mainHomeMenuAdapter: MainHomeMenuAdapter
     private val homeRecommendAdapter by lazy {
@@ -820,12 +832,6 @@ class MainHomeFragment :
         tabUnSelectIconList.add(R.drawable.word_cup0)
         tabUnSelectIconList.add(R.drawable.live0)
         tabUnSelectIconList.add(R.drawable.sport0)
-        //https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731395343157889920.png
-        //https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/sports/tennis.png
-        // https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731388177098541952.png
-        //https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/basketball-team/730832746050368256.png
-        //https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/soccer-team/731603027876168704.png
-        //https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731390961195879296.png
 
         //https://media.istockphoto.com/photos/european-shorthair-sitting-picture-id489118215?k=20&m=489118215&s=612x612&w=0&h=DKvQffbLJhslH3gnGmCv60bwpFhljdd15o_c-RNKJ0k=
         var homeLiveDate1 = HomeLiveData("意大利甲级联赛","足球赛事","上半场",
@@ -846,10 +852,20 @@ class MainHomeFragment :
         hotDataList.add(homeLiveDate1)
         hotDataList.add(homeLiveDate2)
         hotDataList.add(homeLiveDate3)
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"牌九","PAIJIU"))
+        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"王者荣耀","WANGZHE"))
+        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"英雄联盟","KINGMAN"))
         initListView()
     }
 
     fun initListView(){
+        //热门直播
         if (hotDataList.isNullOrEmpty()){
             hot_live_match.visibility = View.GONE
         }else{
@@ -866,20 +882,38 @@ class MainHomeFragment :
             rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
             rv_match_list.adapter = homeHotLiveAdapter
         }
+            //热门电子游戏
+        with(rv_egame){
+            if (layoutManager == null) {
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            }
+            if (adapter == null) {
+                adapter = hotElectronicAdapter
+            }
+            hotElectronicAdapter.setNewData(hotelecList)
+            hotElectronicAdapter.setOnItemClickListener{adapter, view, position ->
+                //点击跳转到哪里
+                ToastUtil.showToast(activity,"电子$position")
+            }
+        }
+        with(rv_chess){
+            if (layoutManager == null) {
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            }
+            if (adapter == null) {
+                adapter = homeChessAdapter
+            }
+            homeChessAdapter.setNewData(homeChessList)
+            homeChessAdapter.setOnItemClickListener { adapter, view, position ->
+                //点击跳转到哪里
+                ToastUtil.showToast(activity,"棋牌$position")
+            }
+        }
 
     }
 
     //切换fragment
     fun showChangeFragment() {
-        /*when (tabTag) {
-           "推荐" -> childFragmentManager.beginTransaction()
-                .replace(R.id.left_menu, MainHomeFragment.newInstance())
-                .commit()
-            "体育" ->
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.left_menu, MainHomeFragment.newInstance())
-                    .commit()
-        }*/
         //点击直播跳转
         include_layout1.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(1)

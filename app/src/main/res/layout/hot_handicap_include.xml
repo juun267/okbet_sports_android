@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin_30"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
@@ -73,9 +74,9 @@
     <androidx.cardview.widget.CardView
         app:cardCornerRadius="@dimen/margin_10"
         app:layout_constraintStart_toStartOf="parent"
-
         android:layout_marginHorizontal="@dimen/margin_14"
         android:layout_marginTop="@dimen/margin_10"
+
         app:layout_constraintTop_toBottomOf="@+id/ll_hot_arrow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
