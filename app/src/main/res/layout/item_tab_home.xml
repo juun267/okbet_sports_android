@@ -6,7 +6,7 @@
     android:paddingHorizontal="10dp"
     android:layout_marginRight="@dimen/margin_12"
     android:paddingBottom="3dp"
-    android:background="@drawable/selector_tab_home">
+    android:background="@drawable/selector_tab_home_tabitem">
 
     <ImageView
         android:id="@+id/iv_logo"
