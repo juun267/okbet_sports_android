@@ -6,29 +6,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
-        android:id="@+id/iv_logo_handicap"
+        android:id="@+id/iv_poker_game"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/icon_soft"
+        android:src="@drawable/icon_poker"
         android:layout_marginStart="@dimen/margin_13"
         android:layout_width="@dimen/margin_24"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/tv_hot_handicap"
         android:textStyle="bold"
-        android:text="@string/hot_gaming_electronics"
+        android:text="@string/hot_poker_game"
         android:layout_marginStart="@dimen/margin_8"
         android:textColor="@color/color_D2E4FF_414655"
-        app:layout_constraintTop_toTopOf="@+id/iv_logo_handicap"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_logo_handicap"
+        app:layout_constraintTop_toTopOf="@+id/iv_poker_game"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_poker_game"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintStart_toEndOf="@+id/iv_logo_handicap"
+        app:layout_constraintStart_toEndOf="@+id/iv_poker_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        app:layout_constraintTop_toTopOf="@+id/iv_logo_handicap"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_logo_handicap"
+        app:layout_constraintTop_toTopOf="@+id/iv_poker_game"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_poker_game"
         app:layout_constraintEnd_toEndOf="parent"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -50,15 +50,15 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_egame"
+        android:id="@+id/rv_chess"
         android:paddingHorizontal="@dimen/margin_10"
-        android:layout_marginTop="@dimen/margin_20"
+        android:layout_marginTop="@dimen/margin_8"
         android:paddingBottom="@dimen/margin_30"
-        app:layout_constraintTop_toBottomOf="@+id/iv_logo_handicap"
+        app:layout_constraintTop_toBottomOf="@+id/iv_poker_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_electronics_game"
+        tools:listitem="@layout/item_poker_game"
         tools:itemCount="5"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

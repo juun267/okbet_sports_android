@@ -99,6 +99,7 @@
            <include
                layout="@layout/tab_item_home_open"/>
             <include
+                android:id="@+id/hot_live_match"
                 layout="@layout/hot_live_match_include"/>
             <include
                 layout="@layout/hot_handicap_include"/>
@@ -107,6 +108,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_12"/>
             <include layout="@layout/hot_gaming_include"/>
+            <View
+                android:background="@color/color_E1EAF2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_12"/>
+            <include layout="@layout/hot_card_game_include"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
