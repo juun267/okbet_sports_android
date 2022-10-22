@@ -4,6 +4,10 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.pili.pldroid.player.AVOptions
+import com.pili.pldroid.player.PLOnErrorListener
+import com.pili.pldroid.player.PLOnVideoSizeChangedListener
+import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.common.GameStatus
@@ -18,11 +22,12 @@ import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
-//TODO 棒球比分狀態顯示
 class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
     private val homeRecommendListener: HomeRecommendListener,
-) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
+) : ViewHolderUtils.TimerViewHolderTimer(binding.root),
+    PLOnVideoSizeChangedListener,
+    PLOnErrorListener {
     lateinit var data: Recommend
 
     override val oddStateChangeListener: OddStateChangeListener
@@ -41,13 +46,51 @@ class ItemHomeLiveHolder(
     }
 
     fun updateLive(isExpandLive: Boolean) {
+        initPlayView()
+        if (isExpandLive) {
+            binding.videoView.start()
+        } else {
+            binding.videoView.stopPlayback()
+        }
         binding.flLive.isVisible = isExpandLive
+        setVolumeState()
+        binding.ivLiveSound.setOnClickListener {
+            it.isSelected = !it.isSelected
+            setVolumeState()
+        }
         binding.tvCollse.setOnClickListener {
             updateLive(false)
         }
         binding.tvExpandLive.isVisible = !isExpandLive
         binding.tvExpandLive.setOnClickListener {
             (bindingAdapter as HomeLiveAdapter).expandMatchId = data.matchInfo?.id
+        }
+    }
+
+    fun initPlayView() {
+        data.matchInfo?.let {
+            val options = AVOptions()
+            options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+            options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
+            options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
+            options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
+            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+
+            binding.videoView.setAVOptions(options)
+            binding.videoView.setOnVideoSizeChangedListener(this)
+            binding.videoView.setOnErrorListener(this)
+            binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+            binding.videoView.setVolume(0f, 0f)
+            binding.videoView.setVideoPath("rtmp://sport-live-pull.cgcxs.net/live/20221017-200002?txSecret=034c81ccfa9c38e8e342ffa002fc7fe6&txTime=635C6D00")
+        }
+    }
+
+    fun setVolumeState() {
+        if (binding.ivLiveSound.isSelected) {
+            binding.videoView.setVolume(1f, 1f)
+        } else {
+            binding.videoView.setVolume(0f, 0f)
         }
     }
 
@@ -60,7 +103,7 @@ class ItemHomeLiveHolder(
         setupGameInfo(data)
 
         //玩法Code
-        var oddPlayCateCode = ""
+        var oddPlayCateCode = PlayCate.SINGLE.value
 
         var oddList = listOf<Odd?>()
 
@@ -71,11 +114,18 @@ class ItemHomeLiveHolder(
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
             .filterPlayCateSpanned(data.gameType)
         if (sortOddsMap.isNotEmpty()) {
-            sortOddsMap.iterator().next().key.let {
-                oddPlayCateCode = it
+            if (oddPlayCateCode.isEmpty()) {
+                sortOddsMap.iterator().next().key.let {
+                    oddPlayCateCode = it
+                }
             }
-            sortOddsMap.iterator().next().value?.let { it ->
-                oddList = it
+            //是否包含选择的玩法
+            if (sortOddsMap.keys.contains(oddPlayCateCode)) {
+                oddList = sortOddsMap[oddPlayCateCode]!!
+            } else {
+                sortOddsMap.iterator().next().value?.let { it ->
+                    oddList = it
+                }
             }
         } else
             return
@@ -559,4 +609,16 @@ class ItemHomeLiveHolder(
             }
         }
     }
+
+    override fun onVideoSizeChanged(p0: Int, p1: Int) {
+        binding.videoView.layoutParams.apply {
+            height = binding.videoView.width * p1 / p0
+        }
+    }
+
+    override fun onError(p0: Int, p1: Any?): Boolean {
+        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
+        return false
+    }
+
 }

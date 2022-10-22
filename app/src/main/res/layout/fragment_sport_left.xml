@@ -103,7 +103,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp">
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/selector_tran_blue">
 
                     <ImageView
                         android:layout_width="@dimen/margin_20"
@@ -147,7 +148,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp">
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/selector_tran_blue">
 
                     <ImageView
                         android:layout_width="@dimen/margin_20"
@@ -184,7 +186,8 @@
                 android:id="@+id/lin_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
