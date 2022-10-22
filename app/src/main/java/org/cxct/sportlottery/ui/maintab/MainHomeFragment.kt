@@ -896,6 +896,7 @@ class MainHomeFragment :
                 ToastUtil.showToast(activity,"电子$position")
             }
         }
+        //棋牌
         with(rv_chess){
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)

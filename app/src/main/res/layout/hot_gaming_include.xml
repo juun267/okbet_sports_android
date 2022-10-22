@@ -27,6 +27,7 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/ll_hot_elect"
         app:layout_constraintTop_toTopOf="@+id/iv_logo_handicap"
         app:layout_constraintBottom_toBottomOf="@+id/iv_logo_handicap"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/tv_find_more"
+            android:id="@+id/tv_elect_find_more"
             android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize12sp"
             android:layout_marginEnd="@dimen/margin_5"
