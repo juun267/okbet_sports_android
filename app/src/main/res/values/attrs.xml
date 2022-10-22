@@ -179,6 +179,7 @@
         <attr name="ob_fillet" format="boolean" />
         <attr name="ob_background" format="reference" />
         <attr name="ob_hide_item_flag" format="boolean" />
+        <attr name="ob_orientation" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="BottomNavigationItem">

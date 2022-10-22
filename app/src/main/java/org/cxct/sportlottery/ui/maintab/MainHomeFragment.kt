@@ -6,7 +6,9 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -197,6 +199,16 @@ class MainHomeFragment :
         initRecommendView()
         showChangeFragment()
         getTabDate()
+        nsv_home.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener {
+                _, _, scrollY, _, oldScrollY ->
+            ll_come_back.visibility = if (scrollY > 800) View.VISIBLE else View.GONE
+        })
+        ll_come_back.setOnClickListener {
+            nsv_home.post{
+                nsv_home.fullScroll(ScrollView.FOCUS_UP)
+            }
+        }
     }
 
     fun initToolBar() {

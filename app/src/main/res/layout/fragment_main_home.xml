@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
-    android:background="@color/background"
-    android:orientation="vertical">
+    android:background="@color/background">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <include
         android:id="@+id/lin_toolbar"
         layout="@layout/view_toolbar_home" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -115,4 +119,28 @@
             <include layout="@layout/hot_card_game_include"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_come_back"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/btn_comeback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/icon_top_arrow_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_come_back"
+            android:drawablePadding="-6dp"
+            android:textColor="@color/color_181922_FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="返回顶部"/>
+    </LinearLayout>
+
+</RelativeLayout>

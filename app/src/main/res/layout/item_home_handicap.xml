@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             tools:src="@drawable/icon_team_sign"/>
         <TextView
-            android:id="@+id/tv_home_team"
+            android:id="@+id/tv_home_name"
             android:layout_toRightOf="@+id/iv_home_icon"
             android:layout_marginStart="@dimen/margin_8"
             android:textStyle="bold"
@@ -36,14 +36,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="波特兰发"/>
+
         <TextView
-            android:layout_marginEnd="@dimen/margin_20"
-            android:textSize="@dimen/textSize16sp"
-            android:textColor="@color/color_FFFFFF_535D76"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/tvHomeScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="0"/>
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_20"
+            android:textColor="@color/color_FFFFFF_535D76"
+            android:textSize="@dimen/textSize16sp"
+            tools:text="0" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rlv_away_team"
@@ -61,7 +63,7 @@
             android:layout_height="wrap_content"
             tools:src="@drawable/icon_team_sign"/>
         <TextView
-            android:id="@+id/tv_away_team"
+            android:id="@+id/tv_away_name"
             android:layout_toRightOf="@+id/iv_away_icon"
             android:layout_marginStart="@dimen/margin_8"
             android:textStyle="bold"
@@ -71,6 +73,7 @@
             android:layout_height="wrap_content"
             tools:text="波特兰发"/>
         <TextView
+            android:id="@+id/tvAwayScore"
             android:layout_marginEnd="@dimen/margin_20"
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/color_FFFFFF_535D76"
@@ -89,82 +92,24 @@
         app:layout_constraintBottom_toBottomOf="@+id/rlv_away_team"
         android:layout_width="0dp"
         android:layout_height="0dp">
-        <LinearLayout
-
-            android:id="@+id/adds_group1"
-            android:background="@drawable/bg_item_odds"
-            android:gravity="center"
-            android:layout_marginEnd="@dimen/margin_10"
-            android:orientation="vertical"
-            android:layout_weight="1"
+        <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
+            android:id="@+id/oddBtn1"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/tv_odds_top1"
-                android:textColor="@color/color_6C7BA8_6C7BA8"
-               android:textSize="@dimen/textSize12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="123"/>
-            <TextView
-                android:id="@+id/tv_odds_bottom1"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize16sp"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="123"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/adds_group2"
-            android:background="@drawable/bg_item_odds"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/margin_10"
-            android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="1" />
+        <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
+            android:id="@+id/oddBtn2"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/tv_odds_top2"
-                android:textColor="@color/color_6C7BA8_6C7BA8"
-               android:textSize="@dimen/textSize12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="123"/>
-            <TextView
-                android:id="@+id/tv_odds_bottom2"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize16sp"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="123"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/adds_group3"
-            android:background="@drawable/bg_item_odds"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/margin_10"
-            android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="1" />
+        <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
+            android:id="@+id/oddBtn3"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/tv_odds_top3"
-                android:textColor="@color/color_6C7BA8_6C7BA8"
-              android:textSize="@dimen/textSize12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="123"/>
-            <TextView
-                android:id="@+id/tv_odds_bottom3"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize16sp"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="123"/>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/margin_10"
+            android:layout_weight="1" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_time"
@@ -177,17 +122,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/tvGameStatus"
             android:paddingVertical="@dimen/margin_4"
             android:layout_marginStart="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="上半场"/>
         <TextView
+            android:id="@+id/tv_game_play_time"
             android:layout_marginStart="@dimen/margin_6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="80：02"/>
         <TextView
+            android:id="@+id/tvPlayCateCount"
             android:layout_marginEnd="@dimen/margin_10"
            android:gravity="end"
             android:layout_width="match_parent"
