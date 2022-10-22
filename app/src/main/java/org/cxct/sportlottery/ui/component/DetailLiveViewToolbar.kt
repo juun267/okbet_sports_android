@@ -251,7 +251,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         if (player_view.isVisible) {
             player_view.stopPlayback()
         }
-        release()
     }
 
     fun startPlayer(isLogin: Boolean) {
@@ -394,7 +393,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     override fun onInfo(p0: Int, p1: Int, p2: Any?) {
-//        LogUtil.d("onInfo"+p0)
+
     }
 
     override fun onCompletion() {

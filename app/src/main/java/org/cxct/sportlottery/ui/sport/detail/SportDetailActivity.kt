@@ -878,9 +878,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-            lin_live.isVisible = true
+            lin_live.isVisible =
+                true
 //                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             live_view_tool_bar.liveUrl =
+//                  matchInfo.pullRtmpUrl
                 "rtmp://sport-live-pull.cgcxs.net/live/20221017-200002?txSecret=034c81ccfa9c38e8e342ffa002fc7fe6&txTime=635C6D00"
             lin_video.isVisible =
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
@@ -922,8 +924,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {
                 lin_menu.isVisible = true
-                v_menu_1.isVisible = lin_live.isVisible
-                v_menu_2.isVisible = lin_video.isVisible && lin_anime.isVisible
+                v_menu_1.isVisible = lin_video.isVisible
+                v_menu_2.isVisible = lin_anime.isVisible
             } else {
                 lin_menu.isVisible = false
             }

@@ -30,7 +30,8 @@
                 android:id="@+id/lin_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,7 +75,8 @@
                 android:id="@+id/lin_sport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -117,7 +119,8 @@
                 android:id="@+id/lin_inplay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -166,11 +169,13 @@
                     android:layout_marginHorizontal="@dimen/margin_20"
                     android:background="@color/color_80C9CFD7" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lin_live"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -224,7 +229,8 @@
                 android:id="@+id/lin_poker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -263,11 +269,13 @@
                     android:layout_marginHorizontal="@dimen/margin_20"
                     android:background="@color/color_80C9CFD7" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lin_slot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -306,11 +314,13 @@
                     android:layout_marginHorizontal="@dimen/margin_20"
                     android:background="@color/color_80C9CFD7" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lin_promotion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -457,7 +467,8 @@
                 android:id="@+id/lin_contactus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/selector_tran_blue">
 
                 <LinearLayout
                     android:layout_width="match_parent"
