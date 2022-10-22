@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
-import kotlinx.android.synthetic.main.view_home_menu_game.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -804,7 +803,7 @@ class MainHomeFragment :
             btn_register.isVisible = !it
             btn_login.isVisible = !it
 //            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
-            ll_user_money.visibility = if (it) View.VISIBLE else View.GONE
+            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 

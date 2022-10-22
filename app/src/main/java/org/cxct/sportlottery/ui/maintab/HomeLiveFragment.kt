@@ -544,8 +544,8 @@ class HomeLiveFragment :
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
             btn_login.isVisible = !it
-//            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
-            ll_user_money.visibility = if (it) View.VISIBLE else View.GONE
+//            lin_search.visibility = if (it) View.VISIBLE else View.GONE
+            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 }

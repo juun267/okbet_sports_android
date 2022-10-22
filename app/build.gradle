@@ -1,6 +1,7 @@
-import java.text.SimpleDateFormat
 import groovy.json.JsonOutput
 import groovy.json.StringEscapeUtils
+
+import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -25,13 +26,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-        //解决exoplayer编译版本报错
-        configurations.all {
-            resolutionStrategy {
-                force "androidx.core:core:1.6.0"
-                force "androidx.core:core-ktx:1.6.0"
-            }
-        }
     }
 
     signingConfigs {
@@ -290,6 +284,7 @@ dependencies {
     implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
     implementation 'androidx.webkit:webkit:1.4.0'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+    implementation files('src/main/libs/pldroid-player-2.4.1.jar')
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -390,8 +385,6 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-core:2.16.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.16.0'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.16.0'
-    implementation 'com.google.android.exoplayer:exoplayer-rtsp:2.16.0'
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.16.0'
 
     //下拉刷新，上拉加載 元件 (豎屏、橫屏) https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'

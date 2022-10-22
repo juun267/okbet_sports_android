@@ -35,3 +35,5 @@
 
 -keep class com.appsflyer.** { *; }
 -keep public class com.miui.referrer.** {*;}
+-keep class com.qiniu.qmedia.** {*;}
+-keep class com.qiniu.qplayer2ext.** {*;}

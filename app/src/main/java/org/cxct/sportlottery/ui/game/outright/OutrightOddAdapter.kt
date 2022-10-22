@@ -8,10 +8,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
-import kotlinx.android.synthetic.main.itemview_outright_odd_more_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
-import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd

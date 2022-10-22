@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableString
@@ -18,7 +19,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.exoplayer2.util.Util
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -176,8 +176,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     override fun onStart() {
         super.onStart()
 
-        if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
+        if (Build.VERSION.SDK_INT >= 24) {
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
         }
     }
 
@@ -187,8 +187,8 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
         isLogin = viewModel.loginRepository.isLogin.value == true
         live_view_tool_bar.initLoginStatus(isLogin)
 
-        if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null,isLogin)
+        if ((Build.VERSION.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null, isLogin)
         }
 
 //        if(args.liveVideo == 0) live_view_tool_bar.setUnLiveState()
@@ -205,7 +205,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     override fun onPause() {
-        if (Util.SDK_INT < 24) {
+        if (Build.VERSION.SDK_INT < 24) {
             live_view_tool_bar.stopPlayer()
         }
         super.onPause()
@@ -214,7 +214,7 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
     }
 
     override fun onStop() {
-        if (Util.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24) {
             live_view_tool_bar.stopPlayer()
         }
         super.onStop()

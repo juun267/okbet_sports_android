@@ -69,7 +69,7 @@
                             android:layout_centerVertical="true"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_person_avatar"
-                            app:riv_border_color="@color/exo_white"
+                            app:riv_border_color="@color/color_FFFFFF"
                             app:riv_border_width="@dimen/margin_1"
                             app:riv_oval="true" />
 
@@ -606,7 +606,7 @@
                 android:layout_marginBottom="@dimen/margin_30"
                 android:background="@drawable/ic_sign_out"
                 android:text="@string/sign_out"
-                android:textColor="@color/exo_white" />
+                android:textColor="@color/color_FFFFFF" />
         </LinearLayout>
 
 

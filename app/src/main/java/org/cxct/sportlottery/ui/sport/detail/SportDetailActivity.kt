@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -53,7 +52,6 @@ import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.MyWebView
 import timber.log.Timber
 import java.util.*
 
@@ -224,13 +222,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         })
-        live_view_tool_bar.web_view.setOnTouchScreenListener(object :
-            MyWebView.OnTouchScreenListener {
+        live_view_tool_bar.setOnTouchScreenListener(object :
+            DetailLiveViewToolbar.OnTouchScreenListener {
             override fun onTouchScreen() {
                 isFlowing = true;
-                if (collaps_toolbar.getVisibility() == View.GONE) {
+                if (collaps_toolbar.visibility == View.GONE) {
                     collaps_toolbar.startAnimation(enterAnim);
-                    collaps_toolbar.setVisibility(View.VISIBLE);
+                    collaps_toolbar.visibility = View.VISIBLE;
                 }
             }
 
@@ -364,27 +362,23 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         startTimer()
         isLogin = viewModel.loginRepository.isLogin.value == true
         live_view_tool_bar.initLoginStatus(isLogin)
-
+        live_view_tool_bar.startPlayer(isLogin)
     }
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT < 24) {
-            live_view_tool_bar.stopPlayer()
-        }
+        live_view_tool_bar.stopPlayer()
         cancelTimer()
     }
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.stopPlayer()
-        }
         unSubscribeChannelEventAll()
     }
 
     override fun onDestroy() {
         viewModel.clearLiveInfo()
+        live_view_tool_bar.release()
         super.onDestroy()
     }
 
@@ -884,9 +878,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
-            lin_live.isVisible =
-                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
-            live_view_tool_bar.liveUrl = matchInfo.pullRtmpUrl
+            lin_live.isVisible = true
+//                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+            live_view_tool_bar.liveUrl =
+                "rtmp://sport-live-pull.cgcxs.net/live/20221017-200002?txSecret=034c81ccfa9c38e8e342ffa002fc7fe6&txTime=635C6D00"
             lin_video.isVisible =
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =
