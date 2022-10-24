@@ -95,6 +95,7 @@
          </LinearLayout>
       </androidx.constraintlayout.widget.ConstraintLayout>
       <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/rv_handicap_item"
          app:layout_constraintTop_toBottomOf="@+id/cl_title"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

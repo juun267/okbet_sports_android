@@ -382,4 +382,7 @@ object Constants {
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //获取短信验证码
+
+    //首页二次改版接口
+    const val QUERY_GAME_ENTRY_CONFIG = "/api/front/gameEntryConfig/queryGameEntryConfig" //电子，棋牌接口（首页和二级页面使用同一个接口）
 }

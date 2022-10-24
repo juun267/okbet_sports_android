@@ -91,25 +91,19 @@ class HomeLiveFragment :
                             navOddsDetailFragment(matchType!!, it)
                         }
                     }
-                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
-                    }
                 },
-                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
+                onClickLiveIconListener = {
+                        gameType, matchType, matchId, matchInfoList ->
+                }
+            ) { gameType, matchType, matchId, matchInfoList ->
+                if (viewModel.checkLoginStatus()) {
+                    matchInfoList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let {
+                        navOddsDetailFragment(matchType!!, it)
                     }
                 }
-            )
+            }
         )
     }
 

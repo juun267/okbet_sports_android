@@ -1310,4 +1310,5 @@
     <string name="setting_center">设置中心</string>
     <string name="total_reward_amount">累计头奖金额</string>
     <string name="hot_elec_game">热门大奖游戏</string>
+    <string name="go_back_top">返回顶部</string>
 </resources>

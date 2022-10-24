@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.third_game
 
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_GAME_ENTRY_CONFIG
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_AUTO_TRANSFER
@@ -15,6 +16,8 @@ import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRe
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryRequest
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import retrofit2.Response
 import retrofit2.http.*
@@ -66,4 +69,8 @@ interface ThirdGameService {
         @Body querySecondOrdersRequest: OtherBetHistoryRequest?
     ): Response<OtherBetHistoryDetailResult>
 
+    @POST(QUERY_GAME_ENTRY_CONFIG)
+    suspend fun queryGameEntryConfig(
+        @Body queryGameEntryConfigRequest: QueryGameEntryConfigRequest?
+    ): Response<QueryGameEntryConfigResult>
 }

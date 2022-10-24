@@ -135,25 +135,18 @@ class MainHomeFragment :
                             navOddsDetailFragment(matchType!!, it)
                         }
                     }
-                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
-                    }
-                },
-                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
+                },onClickLiveIconListener = {gameType, matchType, matchId, matchInfoList ->
+
+                }
+            ) { gameType, matchType, matchId, matchInfoList ->
+                if (viewModel.checkLoginStatus()) {
+                    matchInfoList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let {
+                        navOddsDetailFragment(matchType!!, it)
                     }
                 }
-            )
+            }
         )
     }
     override fun onCreateView(
@@ -328,6 +321,8 @@ class MainHomeFragment :
 //        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
 //            viewModel.updateMenuVersionUpdatedStatus(it)
 //        }
+
+        viewModel.getGameEntryConfig(1)
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
