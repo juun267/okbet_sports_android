@@ -6,7 +6,9 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -133,25 +135,18 @@ class MainHomeFragment :
                             navOddsDetailFragment(matchType!!, it)
                         }
                     }
-                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
-                    }
-                },
-                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
+                },onClickLiveIconListener = {gameType, matchType, matchId, matchInfoList ->
+
+                }
+            ) { gameType, matchType, matchId, matchInfoList ->
+                if (viewModel.checkLoginStatus()) {
+                    matchInfoList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let {
+                        navOddsDetailFragment(matchType!!, it)
                     }
                 }
-            )
+            }
         )
     }
     override fun onCreateView(
@@ -197,6 +192,16 @@ class MainHomeFragment :
         initRecommendView()
         showChangeFragment()
         getTabDate()
+        nsv_home.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener {
+                _, _, scrollY, _, oldScrollY ->
+            ll_come_back.visibility = if (scrollY > 800) View.VISIBLE else View.GONE
+        })
+        ll_come_back.setOnClickListener {
+            nsv_home.post{
+                nsv_home.fullScroll(ScrollView.FOCUS_UP)
+            }
+        }
     }
 
     fun initToolBar() {
@@ -316,6 +321,8 @@ class MainHomeFragment :
 //        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
 //            viewModel.updateMenuVersionUpdatedStatus(it)
 //        }
+
+        viewModel.getGameEntryConfig(1)
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
@@ -895,6 +902,7 @@ class MainHomeFragment :
                 ToastUtil.showToast(activity,"电子$position")
             }
         }
+        //棋牌
         with(rv_chess){
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)

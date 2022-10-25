@@ -190,7 +190,7 @@ class ForgetViewModel(
                     ResetPasswordRequest(userName,confirmPassword,newPassword)
                 )
             }
-            LogUtil.d(result.toString())
+
             _resetPasswordResult.postValue(result)
         }
     }

@@ -61,7 +61,7 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
             awayTeamName.text = item.awayTeamName
             homeTeamNum.text = item.homeTeamNum
             awayTeamNum.text = item.awayTeamNum
-            LogUtil.d(item.homeTeamName)
+
         }
         companion object {
             fun from(parent: ViewGroup):ItemViewHolder{

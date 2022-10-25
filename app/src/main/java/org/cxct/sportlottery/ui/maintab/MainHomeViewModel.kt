@@ -19,7 +19,9 @@ import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
@@ -81,7 +83,9 @@ class MainHomeViewModel(
     val cardGameData: LiveData<List<ThirdDictValues?>>
         get() = _cardGameData
     private val _cardGameData = MutableLiveData<List<ThirdDictValues?>>()
-
+    val homeGameData: LiveData<List<ThirdDictValues?>>
+        get() = _homeGameData
+    private val _homeGameData = MutableLiveData<List<ThirdDictValues?>>()
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -641,5 +645,23 @@ class MainHomeViewModel(
             matchInfo?.socketMatchStatus = status
         }
     }
+    //二次改版region
+    /**
+     * 电子和棋牌
+     * @position position 1: 首页； 2: 主页
+     */
+    fun getGameEntryConfig(position: Int){
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+               OneBoSportApi.thirdGameService.queryGameEntryConfig(
+                   QueryGameEntryConfigRequest(position,null)
+               )
+            }
+            result?.let { result->
+                LogUtil.toJson(result)
+            }
+        }
+    }
 
+    //endregion
 }

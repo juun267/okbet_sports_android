@@ -6,9 +6,11 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.button_odd_home.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -82,6 +84,11 @@ class OddsButtonHome @JvmOverloads constructor(
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+        when(typedArray.getInt(R.styleable.OddsButton_ob_orientation,0)){
+            0 -> lin_odd.orientation = LinearLayout.HORIZONTAL
+            1->lin_odd.orientation = LinearLayout.VERTICAL
+            else ->lin_odd.orientation = LinearLayout.HORIZONTAL
+        }
         try {
             inflate(context, R.layout.button_odd_home, this).apply {
                 button_odd_detail.background = mBackground
