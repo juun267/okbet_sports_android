@@ -90,6 +90,9 @@ class MainViewModel(
     private val _inplayList = MutableLiveData<List<Item>>()
     val inplayList: LiveData<List<Item>>
         get() = _inplayList
+    private val _liveRoundCount = MutableLiveData<String>()
+    val liveRoundCount: LiveData<String>
+        get() = _liveRoundCount
 
     //未讀總數目
     val totalUnreadMsgCount = infoCenterRepository.totalUnreadMsgCount
@@ -330,7 +333,22 @@ class MainViewModel(
                 )
             }?.sportMenuData?.let { sportMenuList ->
                 _inplayList.postValue(sportMenuList.menu.inPlay.items)
+                _countByInPlay.postValue(sportMenuList.menu.inPlay.num)
             }
         }
     }
+
+    fun getLiveRoundCount() {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getLiveRoundCount()
+            }?.let {
+                if (it.success) {
+                    _liveRoundCount.postValue(it.t.toString())
+                }
+            }
+        }
+    }
+
+
 }

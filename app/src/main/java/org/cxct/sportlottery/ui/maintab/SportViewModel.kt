@@ -28,10 +28,9 @@ import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
-import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
-import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -62,7 +61,6 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.game.LiveStreamInfo
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
@@ -296,8 +294,8 @@ class SportViewModel(
         get() = _checkInListFromSocket
 
     //賽事直播網址
-    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>?>()
-    val matchLiveInfo: LiveData<Event<LiveStreamInfo>?>
+    private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
+    val matchLiveInfo: LiveData<Event<MatchRound>?>
         get() = _matchLiveInfo
 
     //賽事動畫網址
@@ -1656,23 +1654,26 @@ class SportViewModel(
                             }
                         }
                     }*/
+                    result.oddsDetailData?.matchOdd?.matchInfo?.let {
+                        //賽事動畫網址
+                        val eventId = it.trackerId
+                        val screenWidth = MetricsUtil.getScreenWidth()
+                        val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
+                        val languageParams =
+                            LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
 
-                    //賽事動畫網址
-                    val eventId = result.oddsDetailData?.matchOdd?.matchInfo?.trackerId
-                    val screenWidth = MetricsUtil.getScreenWidth()
-                    val animationHeight = (LiveUtil.getAnimationHeightFromWidth(screenWidth)).px
-                    val languageParams =
-                        LanguageManager.getLanguageString(MultiLanguagesApplication.appContext)
-
-                    val videoUrl =
-                        "${sConfigData?.sportStream}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
-                    val animeUrl =
-                        "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
-                    LogUtil.d(videoUrl)
-                    _videoUrl.postValue(Event(videoUrl))
-                    _animeUrl.postValue(Event(animeUrl))
-                    notifyFavorite(FavoriteType.PLAY_CATE)
-                    getLiveInfo(matchId, true)
+                        val videoUrl =
+                            "${sConfigData?.sportStream}/animation/?matchId=${matchId}&lang=${languageParams}&mode=video"
+                        val animeUrl =
+                            "${sConfigData?.sportAnimation}/animation/?eventId=${eventId}&width=${screenWidth.pxToDp}&height=${animationHeight}&lang=${languageParams}&mode=widget"
+                        LogUtil.d(videoUrl)
+                        _videoUrl.postValue(Event(videoUrl))
+                        _animeUrl.postValue(Event(animeUrl))
+                        notifyFavorite(FavoriteType.PLAY_CATE)
+                        it.roundNo?.let {
+                            getLiveInfo(it)
+                        }
+                    }
                 }
             }
         }
@@ -2219,95 +2220,18 @@ class SportViewModel(
      * @param matchId 獲取直播的賽事id
      * @param getNewest 是否要獲取最新 true: api請求獲取最新的直播地址 false: 讀取暫存直播地址
      */
-    fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
-        //同樣賽事已經請求過最新地址則不再請求
-        val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
-        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest && getNewest) return
-
-        val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
-        // Todo 暫停使用，每次都請求最新的，確保沒問題
-        //沒有暫存網址時請求最新網址
-        if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
-            viewModelScope.launch {
-                val result = doNetwork(androidContext) {
-                    OneBoSportApi.matchService.getMatchLiveUrl(MatchLiveUrlRequest(1, matchId))
-                }
-
-                result?.t?.let {
-                    val matchLiveInfo = OneBoSportApi.matchService.getMatchLiveInfo(it)
-
-                    if (matchLiveInfo.isSuccessful && matchLiveInfo.body()?.isSuccess == true) {
-                        matchLiveInfo.body()?.response?.let { response ->
-                            val streamUrl = getStreamUrl(response)?.let { streamRealUrl ->
-                                val editor = gameLiveSharedPreferences.edit()
-                                editor.putString(matchId, streamRealUrl).apply()
-                                streamRealUrl
-                            } ?: ""
-
-                            _matchLiveInfo.postValue(
-                                Event(
-                                    LiveStreamInfo(
-                                        matchId,
-                                        streamUrl,
-                                        true
-                                    )
-                                )
-                            )
-                        }
-                    }
-                }
+    fun getLiveInfo(roundNo: String) {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getMatchLiveRound(roundNo)
             }
-        } else {
-            _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, tempLiveStreamUrl, false)))
-        }
-    }
-
-    private val p2StreamSourceList = mutableListOf("hlsmed", "hlslo", "iphonewabsec")
-
-    /**
-     * resource type
-     * p2: 需要将返回的accessToken作为请求头，请求streamURL
-     * i: 直接请求streamURL, 它的请求url不包含协议部分，需要加上https
-     * s: 以xml形式请求streamURL
-     * 其他: 直接使用streamURL
-     *
-     * 20210831 s型態還未有相關賽事，等相关比赛出现后，再解析
-     */
-    private suspend fun getStreamUrl(response: Response): String? {
-        return when (response.videoProvider) {
-            VideoProvider.Own.code -> {
-                // Todo: 需改成用 StreamURLs，格式依序採用 RTMP, FLV, M3U8，依次使用。
-//                if (response.StreamURLs?.isNotEmpty() == true) {
-//                    response.StreamURLs?.first { it.format == "rtmp" }.url ?: response.streamURL
-//                } else {
-                response.streamURL
-//                }
-            }
-            VideoProvider.P2.code -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
-                    response.accessToken,
-                    sConfigData?.referUrl,
-                    response.streamURL
-                )
-                val streamSource = p2StreamSourceList.firstOrNull { p2Source ->
-                    liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { launcher ->
-                        launcher.playerAlias == p2Source
-                    } != null
-                } ?: liveUrlResponse.body()?.launchInfo?.streamLauncher?.firstOrNull()?.playerAlias
-                streamSource?.let {
-                    return liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.playerAlias == streamSource }?.launcherURL
-                }
-            }
-            VideoProvider.I.code, VideoProvider.S.code -> {
-                val liveUrlResponse =
-                    OneBoSportApi.matchService.getLiveIUrl("https://${response.streamURL}")
-                liveUrlResponse.body()?.hlsUrl
-            }
-            else -> {
-                response.streamURL
+            result?.matchRound?.let {
+                _matchLiveInfo.postValue(Event(it))
             }
         }
+
     }
+
 
     fun clearLiveInfo() {
         _matchLiveInfo.postValue(null)

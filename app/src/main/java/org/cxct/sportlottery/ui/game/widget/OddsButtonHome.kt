@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.activity_recharge_log.view.*
 import kotlinx.android.synthetic.main.button_odd_home.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -68,6 +67,7 @@ class OddsButtonHome @JvmOverloads constructor(
     private var hideItem = false
 
     private var mBackground: Drawable? = null
+    private var oddOrientation = LinearLayout.HORIZONTAL
 
     init {
         init(attrs)
@@ -84,10 +84,10 @@ class OddsButtonHome @JvmOverloads constructor(
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
-        when(typedArray.getInt(R.styleable.OddsButton_ob_orientation,0)){
-            0 -> lin_odd.orientation = LinearLayout.HORIZONTAL
-            1->lin_odd.orientation = LinearLayout.VERTICAL
-            else ->lin_odd.orientation = LinearLayout.HORIZONTAL
+        oddOrientation = when (typedArray.getInt(R.styleable.OddsButton_ob_orientation, 0)) {
+            0 -> LinearLayout.HORIZONTAL
+            1 -> LinearLayout.VERTICAL
+            else -> LinearLayout.HORIZONTAL
         }
         try {
             inflate(context, R.layout.button_odd_home, this).apply {
@@ -105,6 +105,7 @@ class OddsButtonHome @JvmOverloads constructor(
         isOddPercentage: Boolean? = false,
         matchInfo: MatchInfo?,
     ) {
+        lin_odd.orientation = oddOrientation
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
@@ -151,6 +152,7 @@ class OddsButtonHome @JvmOverloads constructor(
         isDrawBtn: Boolean? = false,
         isOtherBtn: Boolean? = false,
     ) {
+        lin_odd.orientation = oddOrientation
         mOdd = odds
         mOddsType = oddsType
 

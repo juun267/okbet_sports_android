@@ -423,7 +423,17 @@ class SportListFragment :
         viewModel.sportMenuResult.distinctUntilChanged().observe(this.viewLifecycleOwner) {
             when (matchType) {
                 MatchType.IN_PLAY -> {
-                    updateSportType(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    mutableListOf<Item>(
+                        Item(GameType.ALL.key,
+                            GameType.FT.name,
+                            num = it?.sportMenuData?.menu?.inPlay?.num ?: 0,
+                            play = listOf(),
+                            sortNum = 0),
+                    ).apply {
+                        addAll(it?.sportMenuData?.menu?.inPlay?.items ?: listOf())
+                    }.let {
+                        updateSportType(it)
+                    }
                 }
 
                 MatchType.TODAY -> {
@@ -487,7 +497,7 @@ class SportListFragment :
                             ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
                     )
 
-                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
+//                    val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
                     if (mLeagueOddList.isNotEmpty()) {
                         sportLeagueAdapter.data = mLeagueOddList.onEach { leagueOdd ->
                             // 將儲存的賠率表指定的賽事列表裡面
@@ -498,7 +508,8 @@ class SportListFragment :
                                         leagueOddFromMap.matchOdds.find { matchOdd -> mMatchOdd.matchInfo?.id == matchOdd.matchInfo?.id }?.oddsMap
                                 }
                             }
-                            leagueOdd.gameType = gameType
+                            leagueOdd.gameType =
+                                GameType.getGameType(leagueOdd.matchOdds.firstOrNull()?.matchInfo?.gameType)
                         }.toMutableList()
                     } else {
                         sportLeagueAdapter.data = mLeagueOddList
@@ -813,23 +824,21 @@ class SportListFragment :
         }
         //处理默认不选中的情况
         if (gameType.isNullOrEmpty()) {
-            gameTypeList.find {
-                it.num > 0
-            }?.let {
+            (gameTypeList.find { it.num > 0 } ?: gameTypeList.first()).let {
                 it.isSelected = true
                 gameType = it.code
                 viewModel.switchGameType(it)
             }
         } else {
-            gameTypeList.find {
-                it.code == gameType
-            }?.let {
+            (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
                 if (!it.isSelected) {
                     it.isSelected = true
                     viewModel.switchGameType(it)
                 }
             }
         }
+        //全部球类tab不支持联赛筛选
+        lin_filter.isVisible = gameType != GameType.ALL.key
         gameTypeAdapter.apply {
             dataSport = gameTypeList
         }

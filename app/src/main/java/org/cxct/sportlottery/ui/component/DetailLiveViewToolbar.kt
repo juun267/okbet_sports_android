@@ -46,7 +46,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private var animationLoadFinish = false
 
     interface LiveToolBarListener {
-        fun getLiveInfo(newestUrl: Boolean = false)
         fun onFullScreen(fullScreen: Boolean)
     }
 

@@ -198,7 +198,7 @@
                         android:textSize="@dimen/textSize14sp" />
 
                     <TextView
-                        android:id="@+id/iv_live_count"
+                        android:id="@+id/tv_live_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_4"

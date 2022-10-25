@@ -61,6 +61,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initObserver()
         getOddsType()
         viewModel.getInPlayList()
+        viewModel.getLiveRoundCount()
     }
 
     override fun onResume() {
@@ -153,6 +154,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         viewModel.countByInPlay.observe(viewLifecycleOwner) {
             tv_inplay_count.text = it.toString()
+        }
+        viewModel.liveRoundCount.observe(viewLifecycleOwner) {
+            tv_live_count.text = it
         }
     }
 

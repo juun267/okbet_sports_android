@@ -1,19 +1,15 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) :
+class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
     RecyclerView.Adapter<ItemHomeLiveHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeLiveHolder {
         return ItemHomeLiveHolder(
@@ -21,7 +17,7 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), homeRecommendListener
+            ), homeLiveListener
         )
     }
 
@@ -37,13 +33,15 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
         set(value) {
             if (value != field) {
                 field = value
-                data.forEachIndexed { index, recommend ->
-                    notifyItemChanged(index, expandMatchId)
-                }
+            } else {
+                field = null
+            }
+            data.forEachIndexed { index, recommend ->
+                notifyItemChanged(index, expandMatchId)
             }
         }
 
-    var data: List<Recommend> = mutableListOf()
+    var data: List<MatchLiveData> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -71,7 +69,7 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
             }
         }
 
-    fun updateLeague(position: Int, payload: LeagueOdd) {
+    fun updateLeague(position: Int, payload: MatchLiveData) {
         notifyItemChanged(position, payload)
     }
 
@@ -90,7 +88,7 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
         } else {
             payloads.forEach { payload ->
                 when (payload) {
-                    is Recommend -> {
+                    is MatchLiveData -> {
                         holder.update(payload, oddsType = oddsType)
                     }
                     is String -> {
@@ -103,35 +101,5 @@ class HomeLiveAdapter(private val homeRecommendListener: HomeRecommendListener) 
 
     override fun getItemCount(): Int = data.size
 
-    open class HomeLiveListener(
-        private val onItemClickListener: () -> Unit,
-        private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
-        private val onClickStatisticsListener: (matchId: String) -> Unit,
-    ) {
-        fun onItemClickListener() = onItemClickListener.invoke()
-        fun onClickBetListener(
-            gameType: String,
-            matchType: MatchType,
-            matchInfo: MatchInfo?,
-            odd: Odd,
-            playCateCode: String,
-            playCateName: String,
-            betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-            playCateMenuCode: String?,
-        ) {
-            onClickBetListener.invoke(
-                gameType,
-                matchType,
-                matchInfo,
-                odd,
-                playCateCode,
-                playCateName,
-                betPlayCateNameMap,
-                playCateMenuCode
-            )
-        }
-
-        fun onClickStatisticsListener(matchId: String) = onClickStatisticsListener.invoke(matchId)
-    }
 
 }

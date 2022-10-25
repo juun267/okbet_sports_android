@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.util.FragmentHelper
 
 class HomeFragment :

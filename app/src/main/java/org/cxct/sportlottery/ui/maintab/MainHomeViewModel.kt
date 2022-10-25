@@ -12,14 +12,15 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
@@ -86,6 +87,14 @@ class MainHomeViewModel(
     val homeGameData: LiveData<List<ThirdDictValues?>>
         get() = _homeGameData
     private val _homeGameData = MutableLiveData<List<ThirdDictValues?>>()
+    private val _liveRoundHall = MutableLiveData<List<MatchLiveData>>()
+    val liveRoundHall: LiveData<List<MatchLiveData>>
+        get() = _liveRoundHall
+
+    //賽事直播網址
+    private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
+    val matchLiveInfo: LiveData<Event<MatchRound>?>
+        get() = _matchLiveInfo
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -653,15 +662,39 @@ class MainHomeViewModel(
     fun getGameEntryConfig(position: Int){
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-               OneBoSportApi.thirdGameService.queryGameEntryConfig(
-                   QueryGameEntryConfigRequest(position,null)
-               )
+                OneBoSportApi.thirdGameService.queryGameEntryConfig(
+                    QueryGameEntryConfigRequest(position, null)
+                )
             }
-            result?.let { result->
+            result?.let { result ->
                 LogUtil.toJson(result)
             }
         }
     }
 
+    fun getLiveRoundHall() {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getLiveRoundHall()
+            }?.let {
+                if (it.success) {
+                    _liveRoundHall.postValue(it.MatchLiveList)
+                }
+            }
+        }
+    }
+
+    fun getLiveInfo(roundNo: String) {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getMatchLiveRound(roundNo)
+            }
+            result?.matchRound?.let {
+                it.roundNo = roundNo
+                _matchLiveInfo.postValue(Event(it))
+            }
+        }
+
+    }
     //endregion
 }

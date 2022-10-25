@@ -1,7 +1,8 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.View
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.pili.pldroid.player.AVOptions
@@ -12,23 +13,23 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
-    private val homeRecommendListener: HomeRecommendListener,
+    private val homeLiveListener: HomeLiveListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root),
     PLOnVideoSizeChangedListener,
     PLOnErrorListener {
-    lateinit var data: Recommend
+    lateinit var data: MatchLiveData
 
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
@@ -39,7 +40,7 @@ class ItemHomeLiveHolder(
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    fun bind(data: Recommend, oddsType: OddsType) {
+    fun bind(data: MatchLiveData, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         update(data, oddsType)
         updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id)
@@ -48,7 +49,9 @@ class ItemHomeLiveHolder(
     fun updateLive(isExpandLive: Boolean) {
         initPlayView()
         if (isExpandLive) {
-            binding.videoView.start()
+            if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                binding.videoView.start()
+            }
         } else {
             binding.videoView.stopPlayback()
         }
@@ -59,11 +62,14 @@ class ItemHomeLiveHolder(
             setVolumeState()
         }
         binding.tvCollse.setOnClickListener {
-            updateLive(false)
+            (bindingAdapter as HomeLiveAdapter).expandMatchId = null
         }
         binding.tvExpandLive.isVisible = !isExpandLive
         binding.tvExpandLive.setOnClickListener {
             (bindingAdapter as HomeLiveAdapter).expandMatchId = data.matchInfo?.id
+            data.matchInfo.roundNo?.let {
+                homeLiveListener.onClickLiveListener(data.matchInfo.id, it)
+            }
         }
     }
 
@@ -82,7 +88,16 @@ class ItemHomeLiveHolder(
             binding.videoView.setOnErrorListener(this)
             binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
             binding.videoView.setVolume(0f, 0f)
-            binding.videoView.setVideoPath("rtmp://sport-live-pull.cgcxs.net/live/20221017-200002?txSecret=034c81ccfa9c38e8e342ffa002fc7fe6&txTime=635C6D00")
+            binding.videoView.setCoverView(binding.ivCover)
+            Glide.with(binding.root.context)
+                .load(data.matchInfo.frontCoverUrl)
+                .apply(mRequestOptions)
+                .into(binding.ivCover)
+            if (!it.pullRtmpUrl.isNullOrEmpty()) {
+                binding.videoView.setVideoPath(it.pullRtmpUrl)
+            } else if (!it.pullFlvUrl.isNullOrEmpty()) {
+                binding.videoView.setVideoPath(it.pullFlvUrl)
+            }
         }
     }
 
@@ -94,13 +109,13 @@ class ItemHomeLiveHolder(
         }
     }
 
-    fun update(data: Recommend, oddsType: OddsType) {
+    fun update(data: MatchLiveData, oddsType: OddsType) {
         this.data = data
         //設置賽事資訊是否顯示
         setupGameInfoVisibility(data)
 
         //設置背景、隊伍名稱、點擊事件
-        setupGameInfo(data)
+        setupGameInfo()
 
         //玩法Code
         var oddPlayCateCode = PlayCate.SINGLE.value
@@ -112,7 +127,7 @@ class ItemHomeLiveHolder(
             oddsMap[it.key] = it.value
         }
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
-            .filterPlayCateSpanned(data.gameType)
+            .filterPlayCateSpanned(data.matchInfo.gameType!!)
         if (sortOddsMap.isNotEmpty()) {
             if (oddPlayCateCode.isEmpty()) {
                 sortOddsMap.iterator().next().key.let {
@@ -135,9 +150,7 @@ class ItemHomeLiveHolder(
         binding.tvGamePlayCateCodeName.text = playCateName
         with(binding) {
             //配置賽事比分及機制
-            data.matchType?.let { matchType ->
-                setupMatchScore(data, matchType)
-            }
+            setupMatchScore()
             //region 第1個按鈕
             if (oddList.isNotEmpty()) {
                 val odd1 = oddList[0]
@@ -150,7 +163,7 @@ class ItemHomeLiveHolder(
                         odd = odd1,
                         playCateCode = oddPlayCateCode,
                         playCateName = playCateName,
-                        homeRecommendListener = homeRecommendListener
+                        homeLiveListener = homeLiveListener
                     )
                 }
             } else {
@@ -177,7 +190,7 @@ class ItemHomeLiveHolder(
                         odd = odd2,
                         playCateCode = oddPlayCateCode,
                         playCateName = playCateName,
-                        homeRecommendListener = homeRecommendListener
+                        homeLiveListener = homeLiveListener
                     )
                 }
             } else {
@@ -186,11 +199,10 @@ class ItemHomeLiveHolder(
             //endregion
 
             //region 比賽狀態(狀態、時間)
-            val gameType = data.gameType
-            val matchType = data.matchType
+            val gameType = data.matchInfo?.gameType
             setupMatchTimeAndStatus(
                 item = data,
-                isTimerEnable = (gameType == GameType.FT.key || gameType == GameType.BK.key || gameType == GameType.RB.key || gameType == GameType.AFT.key || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT),
+                isTimerEnable = true,
                 isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
             )
             //endregion
@@ -200,14 +212,20 @@ class ItemHomeLiveHolder(
     /**
      * 設置背景、隊伍名稱、點擊事件、玩法數量、聯賽名稱
      */
-    private fun setupGameInfo(data: Recommend) {
+    private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            tvLeagueName.text = data.leagueName
+            tvAnchorName.text = data.matchInfo.streamerName
             //region 隊伍名稱
-            tvHomeName.text = data.homeName
-            tvAwayName.text = data.awayName
+            tvHomeName.text = data.matchInfo.homeName
+            tvAwayName.text = data.matchInfo.awayName
             //endregion
+            Glide.with(binding.root.context)
+                .load(data.matchInfo.streamerIcon)
+                .apply(mRequestOptions)
+                .fallback(R.drawable.ic_person_avatar)
+                .error(R.drawable.ic_person_avatar)
+                .into(ivAnchorAvatar)
 
             //region 隊伍圖示
             ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
@@ -221,12 +239,7 @@ class ItemHomeLiveHolder(
                 it.matchInfo
             }
             root.setOnClickListener {
-                homeRecommendListener.onClickPlayTypeListener(
-                    gameType = data.gameType,
-                    matchType = data.matchType,
-                    matchId = data.matchInfo?.id,
-                    matchInfoList = matchInfoList
-                )
+                homeLiveListener.onItemClickListener(absoluteAdapterPosition)
             }
             //endregion
         }
@@ -236,24 +249,24 @@ class ItemHomeLiveHolder(
      * 配置投注按鈕Callback
      */
     private fun OddsButtonHome.setButtonBetClick(
-        data: Recommend,
+        data: MatchLiveData,
         odd: Odd?,
         playCateCode: String,
         playCateName: String,
-        homeRecommendListener: HomeRecommendListener,
+        homeLiveListener: HomeLiveListener,
     ) {
         setOnClickListener {
             data.matchType?.let { matchType ->
                 odd?.let { odd ->
-                    homeRecommendListener.onClickBetListener(
-                        gameType = data.gameType,
+                    homeLiveListener.onClickBetListener(
+                        gameType = data.matchInfo.gameType!!,
                         matchType = matchType,
                         matchInfo = data.matchInfo,
                         odd = odd,
                         playCateCode = playCateCode,
                         playCateName = playCateName,
                         betPlayCateNameMap = data.betPlayCateNameMap,
-                        playCateMenuCode = data.menuList.firstOrNull()?.code
+                        playCateMenuCode = MenuCode.MAIN.code,
                     )
                 }
             }
@@ -261,7 +274,7 @@ class ItemHomeLiveHolder(
     }
 
     //region 賽事比分Method
-    private val isScoreTextVisible = { item: Recommend ->
+    private val isScoreTextVisible = { item: MatchLiveData ->
         when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
             true -> View.VISIBLE
             else -> View.GONE
@@ -271,7 +284,7 @@ class ItemHomeLiveHolder(
     /**
      * 設置賽事顯示VS或比分
      */
-    private fun setupGameInfoVisibility(item: Recommend) {
+    private fun setupGameInfoVisibility(item: MatchLiveData) {
         if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
             with(binding) {
                 blockScore.visibility = View.VISIBLE
@@ -288,56 +301,34 @@ class ItemHomeLiveHolder(
     /**
      * 配置比分及比賽制度
      */
-    private fun setupMatchScore(item: Recommend, matchType: MatchType) {
-        //TODO review 棒球賽事狀態版型
-        /*itemView.apply {
-            when {
-                matchType != MatchType.IN_PLAY -> {
-                    linear_layout.isVisible = true
-                    content_baseball_status.isVisible = false
-                }
-                else -> {
-                    when (item.matchInfo?.gameType) {
-                        GameType.BB.key -> {
-                            linear_layout.isVisible = false
-                            content_baseball_status.isVisible = true
-                        }
-                        else -> {
-                            linear_layout.isVisible = true
-                            content_baseball_status.isVisible = false
-                        }
-                    }
-
-                }
-            }
-        }*/
-        when (item.matchInfo?.gameType) {
-            GameType.VB.key -> setVbScoreText(item)
-            GameType.TN.key -> setTnScoreText(item)
-            GameType.FT.key -> setFtScoreText(item)
-            GameType.BK.key -> setBkScoreText(item)
-            GameType.TT.key -> setVbScoreText(item)
-            GameType.BM.key -> setBmScoreText(item)
-            GameType.BB.key -> setBbScoreText(item)
-            else -> setBkScoreText(item)
+    private fun setupMatchScore() {
+        when (data.matchInfo.gameType) {
+            GameType.VB.key -> setVbScoreText()
+            GameType.TN.key -> setTnScoreText()
+            GameType.FT.key -> setFtScoreText()
+            GameType.BK.key -> setBkScoreText()
+            GameType.TT.key -> setVbScoreText()
+            GameType.BM.key -> setBmScoreText()
+            GameType.BB.key -> setBbScoreText()
+            else -> setBkScoreText()
         }
     }
 
     /**
      * 設置排球類型比分及比賽制度
      */
-    private fun setVbScoreText(item: Recommend) {
+    private fun setVbScoreText() {
         binding.apply {
-            setAllScoreTextAtBottom(item)
+            setAllScoreTextAtBottom(data)
         }
     }
 
     /**
      * 設置網球類型比分及比賽制度
      */
-    private fun setTnScoreText(item: Recommend) {
+    private fun setTnScoreText() {
         binding.apply {
-            setAllScoreTextAtBottom(item)
+            setAllScoreTextAtBottom(data)
 
         }
     }
@@ -345,39 +336,39 @@ class ItemHomeLiveHolder(
     /**
      * 設置足球類型比分及比賽制度
      */
-    private fun setFtScoreText(item: Recommend) {
-        binding.setScoreText(item)
+    private fun setFtScoreText() {
+        binding.setScoreText(data)
     }
 
     /**
      * 設置籃球類型比分及比賽制度
      */
-    private fun setBkScoreText(item: Recommend) {
-        binding.setScoreText(item)
+    private fun setBkScoreText() {
+        binding.setScoreText(data)
     }
 
     /**
      * 設置羽球類型比分及比賽制度
      */
-    private fun setBmScoreText(item: Recommend) {
+    private fun setBmScoreText() {
         binding.apply {
-            setAllScoreTextAtBottom(item)
+            setAllScoreTextAtBottom(data)
         }
     }
 
     /**
      * 設置羽球類型比分及比賽制度
      */
-    private fun setBbScoreText(item: Recommend) {
+    private fun setBbScoreText() {
         with(binding) {
-            setScoreText(item)
+            setScoreText(data)
         }
     }
 
     /**
      * 設置盤類型比分
      */
-    private fun ItemHomeLiveBinding.setAllScoreTextAtBottom(item: Recommend) {
+    private fun ItemHomeLiveBinding.setAllScoreTextAtBottom(item: MatchLiveData) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -393,7 +384,7 @@ class ItemHomeLiveHolder(
     /**
      * 設置局類型比分
      */
-    private fun ItemHomeLiveBinding.setScoreText(item: Recommend) {
+    private fun ItemHomeLiveBinding.setScoreText(item: MatchLiveData) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -408,7 +399,7 @@ class ItemHomeLiveHolder(
 
     //region 賽事時間狀態Method
     private fun setupMatchTimeAndStatus(
-        item: Recommend,
+        item: MatchLiveData,
         isTimerEnable: Boolean,
         isTimerPause: Boolean,
     ) {
@@ -422,7 +413,7 @@ class ItemHomeLiveHolder(
      * 賽事時間
      */
     private fun setupMatchTime(
-        item: Recommend,
+        item: MatchLiveData,
         isTimerEnable: Boolean,
         isTimerPause: Boolean,
     ) {
@@ -503,7 +494,7 @@ class ItemHomeLiveHolder(
         }
     }
 
-    private fun setStatusText(item: Recommend) {
+    private fun setStatusText(item: MatchLiveData) {
         binding.tvGameStatus.text = when {
             (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
                     && item.matchInfo?.status == GameStatus.POSTPONED.code
@@ -526,7 +517,7 @@ class ItemHomeLiveHolder(
         }
     }
 
-    private fun setTextViewStatus(item: Recommend) {
+    private fun setTextViewStatus(item: MatchLiveData) {
         when {
             (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
                 binding.tvGamePlayTime.visibility = View.GONE
@@ -547,7 +538,7 @@ class ItemHomeLiveHolder(
      * 設置當前球種使用的賽事狀態區塊
      * 棒球獨立使用不同區塊
      */
-    private fun setupGameStatusBlockVisibility(item: Recommend) {
+    private fun setupGameStatusBlockVisibility(item: MatchLiveData) {
         with(binding) {
             when {
                 item.matchInfo?.gameType == GameType.BB.key && TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
@@ -571,8 +562,8 @@ class ItemHomeLiveHolder(
         }
     }
 
-    private fun transferMatchOddList(recommend: Recommend): MutableList<MatchOdd> {
-        with(recommend) {
+    private fun transferMatchOddList(item: MatchLiveData): MutableList<MatchOdd> {
+        with(item) {
             return mutableListOf(
                 MatchOdd(
                     matchInfo = matchInfo,

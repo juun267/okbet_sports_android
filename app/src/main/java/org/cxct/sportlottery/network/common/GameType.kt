@@ -8,6 +8,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import java.util.*
 
 enum class GameType(val key: String, @StringRes val string: Int) {
+    ALL("ALL", R.string.label_all),
     FT("FT", R.string.soccer),
     BK("BK", R.string.basketball),
     TN("TN", R.string.tennis),
@@ -33,6 +34,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     companion object {
         fun getGameType(code: String?): GameType? {
             return when (code) {
+                ALL.key -> ALL
                 FT.key -> FT
                 BK.key -> BK
                 TN.key -> TN
@@ -58,6 +60,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
 
         private fun getGameTypeStringRes(gameType: String?): Int {
             return when (gameType) {
+                ALL.key -> ALL.string
                 FT.key -> FT.string
                 BK.key -> BK.string
                 TN.key -> TN.string
@@ -102,6 +105,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
 
         fun getGameTypeMenuIcon(gameType: GameType): Int{
             return when (gameType) {
+                ALL -> R.drawable.selector_sport_all
                 FT -> R.drawable.selector_sport_football
                 BK -> R.drawable.selector_sport_basketball
                 TN -> R.drawable.selector_sport_tennis
@@ -128,6 +132,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
 
         fun getGameTypeMenuIcon(gameType: String): Int{
             return when (gameType) {
+                ALL.key -> R.drawable.selector_sport_all
                 FT.key -> R.drawable.selector_sport_football
                 BK.key -> R.drawable.selector_sport_basketball
                 TN.key -> R.drawable.selector_sport_tennis
@@ -177,32 +182,6 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 else -> R.drawable.ic_game_champ
             }
         }
-
-        fun getGameTypeIcon(gameType: GameType): Int {
-            return when (gameType) {
-                FT -> R.drawable.selector_sport_type_item_img_ft_v5
-                BK -> R.drawable.selector_sport_type_item_img_bk_v5
-                TN -> R.drawable.selector_sport_type_item_img_tn_v5
-                VB -> R.drawable.selector_sport_type_item_img_vb_v5
-                BM -> R.drawable.selector_sport_type_item_img_bm_v5
-                TT -> R.drawable.selector_sport_type_item_img_tt_v5
-                IH -> R.drawable.selector_sport_type_item_img_ih_v5
-                BX -> R.drawable.selector_sport_type_item_img_bx_v5
-                CB -> R.drawable.selector_sport_type_item_img_cb_v5
-                CK -> R.drawable.selector_sport_type_item_img_ck_v5
-                BB -> R.drawable.selector_sport_type_item_img_bb_v5
-                RB -> R.drawable.selector_sport_type_item_img_rb_v5
-                AFT -> R.drawable.selector_sport_type_item_img_aft_v5
-                MR -> R.drawable.selector_sport_type_item_img_mr_v5
-                GF -> R.drawable.selector_sport_type_item_img_gf_v5
-                FB -> R.drawable.selector_sport_type_item_img_fb_v5
-                ES -> R.drawable.selector_sport_type_item_img_es_v5
-                OTHER -> R.drawable.ic_game_champ
-                BB_COMING_SOON -> R.drawable.selector_sport_type_item_img_bb_v5
-                ES_COMING_SOON -> R.drawable.selector_sport_type_item_img_es_v5
-            }
-        }
-
         fun getBetListGameTypeIcon(gameType: GameType): Int {
             return when (gameType) {
                 FT -> R.drawable.img_soccer

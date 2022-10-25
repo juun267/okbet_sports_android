@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
@@ -147,12 +148,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
     private val liveToolBarListener by lazy {
         object : DetailLiveViewToolbar.LiveToolBarListener {
-            override fun getLiveInfo(newestUrl: Boolean) {
-                matchInfo?.let {
-                    viewModel.getLiveInfo(it.id, newestUrl)
-                }
-            }
-
             override fun onFullScreen(enable: Boolean) {
                 if (enable) {
                     showFullScreen(enable)
@@ -571,12 +566,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
         }
 
-//        viewModel.matchLiveInfo.observe(this) {
-//            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-//                live_view_tool_bar.liveUrl = liveStreamInfo.streamUrl
-//                lin_live.isVisible = liveStreamInfo.streamUrl.isNotEmpty()
-//            }
-//        }
+        viewModel.matchLiveInfo.observe(this) {
+            it?.getContentIfNotHandled()?.let { matchRound ->
+                live_view_tool_bar.liveUrl =
+                    if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                lin_live.isVisible = !TextUtils.isEmpty(live_view_tool_bar.liveUrl)
+            }
+        }
         viewModel.videoUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
                 if (lin_video.isVisible)
@@ -879,11 +875,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
             lin_live.isVisible =
-                true
-//                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
-            live_view_tool_bar.liveUrl =
-//                  matchInfo.pullRtmpUrl
-                "rtmp://sport-live-pull.cgcxs.net/live/20221017-200002?txSecret=034c81ccfa9c38e8e342ffa002fc7fe6&txTime=635C6D00"
+                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_video.isVisible =
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =
