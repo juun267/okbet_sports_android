@@ -13,7 +13,7 @@ data class ParlayOdd(
     @Json(name = "num")
     val num: Int,
     @Json(name = "odds")
-    val odds: Double,
+    var odds: Double,
     @Json(name = "hkOdds")
     var hkOdds: Double?,
     @Json(name = "malayOdds")
@@ -21,7 +21,7 @@ data class ParlayOdd(
     @Json(name = "indoOdds")
     var indoOdds: Double,
     @Json(name = "parlayType")
-    val parlayType: String
+    val parlayType: String,
 ) {
     //以下新增參數時, 需至BaseOddButtonViewModel.updateBetOrderParlay將舊物件的參數賦予新物件, 否則數值會遺失
     var sendOutStatus: Boolean = true
