@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
@@ -85,6 +84,11 @@ class MainHomeViewModel(
     val homeGameData: LiveData<List<QueryGameEntryData>?>
         get() = _homeGameData
     private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
+
+    private val _totalRewardAmount = MutableLiveData<List<String>>()
+    val totalRewardAmount: LiveData<List<String>>
+        get() = _totalRewardAmount
+
     private val _liveRoundHall = MutableLiveData<List<MatchLiveData>>()
     val liveRoundHall: LiveData<List<MatchLiveData>>
         get() = _liveRoundHall
@@ -448,7 +452,7 @@ class MainHomeViewModel(
 
     //避免多次请求游戏
     var jumpingGame = false
-    fun requestEnterThirdGame(gameData: ThirdDictValues?) {
+    fun requestEnterThirdGame(gameData: QueryGameEntryData?) {
 //        Timber.e("gameData: $gameData")
         when {
             gameData == null -> {
@@ -475,13 +479,13 @@ class MainHomeViewModel(
                 }
                 jumpingGame = true
                 viewModelScope.launch {
-                    val thirdLoginResult = thirdGameLogin(gameData)
+                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!, gameData.gameCode!!)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
                         if (it.success) {
                             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
-                            autoTransfer(gameData) //第三方自動轉換
+                            autoTransfer(gameData.firmType) //第三方自動轉換
 
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
@@ -519,17 +523,17 @@ class MainHomeViewModel(
         )
     }
 
-    private suspend fun thirdGameLogin(gameData: ThirdDictValues): ThirdLoginResult? {
+    private suspend fun thirdGameLogin(firmType: String, gameCode: String): ThirdLoginResult? {
         return doNetwork(androidContext) {
-            OneBoSportApi.thirdGameService.thirdLogin(gameData.firmType, gameData.gameCode)
+            OneBoSportApi.thirdGameService.thirdLogin(firmType, gameCode)
         }
     }
 
-    private suspend fun autoTransfer(gameData: ThirdDictValues) {
+    private suspend fun autoTransfer(firmType: String) {
         if (isThirdTransferOpen()) {
             //若自動轉換功能開啟，要先把錢都轉過去再進入遊戲
             val result = doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.autoTransfer(gameData.firmType)
+                OneBoSportApi.thirdGameService.autoTransfer(firmType)
             }
             if (result?.success == true) getMoney() //金額有變動，通知刷新
         }
@@ -625,7 +629,7 @@ class MainHomeViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.queryGameEntryConfig(
-                    QueryGameEntryConfigRequest(position, gameType)
+                    QueryGameEntryConfigRequest(position, gameType, status = 1)
                 )
             }
             result?.let { result ->
@@ -634,12 +638,27 @@ class MainHomeViewModel(
             }
         }
     }
+
+    /**
+     * 电子金额排名
+     */
+    fun getTotalRewardAmount() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.queryTotalRewardAmount()
+            }
+            result?.rows?.let {
+                _totalRewardAmount.postValue(it)
+            }
+        }
+    }
+
     /**
      * 热门盘口
      * @handicapType 盘口类型, 1:独赢 2：让球 3:大小
      */
 
-    fun getHandicapConfig(handicapType: Int){
+    fun getHandicapConfig(handicapType: Int) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getHotHandicapList(handicapType)

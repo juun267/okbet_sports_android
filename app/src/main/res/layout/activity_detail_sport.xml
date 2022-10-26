@@ -181,15 +181,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
-        tools:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/linearLayout3"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_F0F5FA"
-            android:orientation="vertical">
+            android:background="@color/color_F0F5FA">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_detail"
@@ -206,7 +203,14 @@
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone" />
 
-        </LinearLayout>
+            <WebView
+                android:id="@+id/wv_chat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:visibility="gone" />
+        </FrameLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 
@@ -219,6 +223,7 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+
     <include
         android:id="@+id/cl_bet_list_bar"
         layout="@layout/bet_bar_layout"
@@ -228,6 +233,7 @@
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible" />
+
 
     <FrameLayout
         android:id="@+id/fl_bet_list"

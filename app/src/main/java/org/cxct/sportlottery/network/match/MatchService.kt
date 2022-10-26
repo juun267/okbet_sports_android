@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.match
 
+import org.cxct.sportlottery.network.Constants.LIVE_LOGIN
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND_COUNT
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND_HALL
@@ -52,4 +53,9 @@ interface MatchService {
     @GET(MATCH_LIVE_ROUND_HALL)
     suspend fun getLiveRoundHall(): Response<MatchLiveResult>
 
+
+    @POST(LIVE_LOGIN)
+    suspend fun liveLogin(
+        @Body chatLiveLoginRequest: ChatLiveLoginRequest,
+    ): Response<ChatLiveLoginResult>
 }

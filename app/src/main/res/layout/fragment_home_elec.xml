@@ -7,27 +7,38 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/lin_toolbar"
-        layout="@layout/view_toolbar_home" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_tab_home"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginHorizontal="@dimen/margin_15"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_tab_home" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginVertical="5dp"
-        android:src="@drawable/ic_elec_title" />
-
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_egame">
+
+        <include
+            android:id="@+id/lin_toolbar"
+            layout="@layout/view_toolbar_home" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tab_home"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            tools:itemCount="6"
+            tools:listitem="@layout/item_tab_home" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="5dp"
+            android:src="@drawable/ic_elec_title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="bottom">
 
@@ -48,14 +59,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="60dp"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_second_logo"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="12sp"
                     android:text="@string/total_reward_amount" />
@@ -63,14 +79,15 @@
                 <TextView
                     android:id="@+id/tv_second_amount"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
+                    android:minWidth="60dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/bg_white_radius_10"
                     android:fontFamily="@font/din_bold"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:paddingHorizontal="10dp"
-                    android:text="P123.343"
+                    tools:text="P123.343"
                     android:textColor="@color/color_F73C6C"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -94,14 +111,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="80dp"
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_first_logo"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="12sp"
                     android:text="@string/total_reward_amount" />
@@ -110,12 +132,13 @@
                     android:id="@+id/tv_first_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
+                    android:minWidth="60dp"
                     android:paddingHorizontal="10dp"
                     android:layout_marginTop="5dp"
                     android:includeFontPadding="false"
                     android:gravity="center"
                     android:background="@drawable/bg_white_radius_10"
-                    android:text="P123.343"
+                    tools:text="P123.343"
                     android:textSize="13sp"
                     android:textColor="@color/color_F1A932"
                     android:fontFamily="@font/din_bold" />
@@ -144,10 +167,15 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal">
 
+                <ImageView
+                    android:id="@+id/iv_third_logo"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="12sp"
                     android:text="@string/total_reward_amount" />
@@ -156,19 +184,20 @@
                     android:id="@+id/tv_third_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
+                    android:minWidth="60dp"
                     android:paddingHorizontal="10dp"
                     android:layout_marginTop="5dp"
                     android:includeFontPadding="false"
                     android:gravity="center"
                     android:background="@drawable/bg_white_radius_10"
-                    android:text="P123.343"
+                    tools:text="P123.343"
                     android:textSize="13sp"
                     android:textColor="@color/color_0789F5"
                     android:fontFamily="@font/din_bold" />
             </LinearLayout>
         </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_12"
@@ -210,6 +239,8 @@
             android:id="@+id/rv_elec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp" />
+            android:layout_marginHorizontal="15dp"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_home_elec" />
     </LinearLayout>
 </LinearLayout>

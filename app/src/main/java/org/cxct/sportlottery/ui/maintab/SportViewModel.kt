@@ -27,10 +27,14 @@ import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
+import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.match.MatchRound
+import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
+import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginRequest
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -328,6 +332,11 @@ class SportViewModel(
     private val _enterThirdGameResult = MutableLiveData<EnterThirdGameResult>()
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
+
+    //優惠活動文字跑馬燈
+    private val _liveLoginInfo = MutableLiveData<Event<ChatLiveLoginData>>()
+    val liveLoginInfo: LiveData<Event<ChatLiveLoginData>>
+        get() = _liveLoginInfo
 
     //優惠活動文字跑馬燈
     private val _publicityPromotionAnnouncementList = MutableLiveData<List<String>>()
@@ -2226,6 +2235,7 @@ class SportViewModel(
                 OneBoSportApi.matchService.getMatchLiveRound(roundNo)
             }
             result?.matchRound?.let {
+                LogUtil.toJson(it)
                 _matchLiveInfo.postValue(Event(it))
             }
         }
@@ -3103,4 +3113,33 @@ class SportViewModel(
         }
     }
 
+    fun loginLive() {
+        val userInfo = userInfo.value ?: return
+        if (sConfigData?.liveChatOpen == 0) {
+            return
+        }
+        val hostUrl = sConfigData?.liveChatHost
+        viewModelScope.launch {
+            hostUrl?.let {
+                val retrofit = RequestManager.instance.createRetrofit(hostUrl)
+                val result = doNetwork(androidContext) {
+                    retrofit.create(MatchService::class.java).liveLogin(
+                        ChatLiveLoginRequest(
+                            userName = userInfo.userName,
+                            platUserId = userInfo.platformId,
+                            iconUrl = userInfo.iconUrl,
+                            birthday = null,
+                            nickName = userInfo.nickName,
+                            loginSrc = 2,
+                            sign = userInfo.currencySign,
+                            timestamp = System.currentTimeMillis(),
+                        )
+                    )
+                }
+                result?.chatLiveLoginData?.let {
+                    _liveLoginInfo.postValue(Event(it))
+                }
+            }
+        }
+    }
 }

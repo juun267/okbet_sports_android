@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +17,13 @@ import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 
 class HomeWorldCupFragment :
@@ -94,9 +99,17 @@ class HomeWorldCupFragment :
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
-//        lin_search.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-//        }
+        iv_money_refresh.setOnClickListener {
+            iv_money_refresh.startAnimation(RotateAnimation(0f,
+                720f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f).apply {
+                duration = 1000
+            })
+            viewModel.getMoney()
+        }
         setupLogin()
     }
 
@@ -104,7 +117,14 @@ class HomeWorldCupFragment :
         if (viewModel == null) {
             return
         }
-
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            it?.let {
+                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
+            }
+        }
+        viewModel.isLogin.observe(viewLifecycleOwner) {
+            setupLogin()
+        }
     }
 
     private fun initTabView() {
@@ -138,8 +158,7 @@ class HomeWorldCupFragment :
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
             btn_login.isVisible = !it
-//            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
-            ll_user_money.visibility = if (it) View.VISIBLE else View.GONE
+            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
 }

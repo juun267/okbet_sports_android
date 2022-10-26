@@ -279,6 +279,7 @@ object Constants {
     const val MATCH_LIVE_ROUND = "/api/front/liveRound"
     const val MATCH_LIVE_ROUND_COUNT = "/api/front/liveRound/count"
     const val MATCH_LIVE_ROUND_HALL = "/api/front/liveRound/mobile/hall"
+    const val LIVE_LOGIN = "/api/live/front/login"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
@@ -421,14 +422,21 @@ object Constants {
 
     //注销账户
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
+
     //忘记密码 发送短信
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //获取短信验证码
 
     //首页二次改版接口
-    const val QUERY_GAME_ENTRY_CONFIG = "/api/front/gameEntryConfig/queryGameEntryConfig" //电子，棋牌接口（首页和二级页面使用同一个接口）
+    const val QUERY_GAME_ENTRY_CONFIG =
+        "/api/front/gameEntryConfig/queryGameEntryConfig" //电子，棋牌接口（首页和二级页面使用同一个接口）
+
     //首页热门盘口推荐
     const val HOT_HANDICAP_LIST = "/api/front/match/odds/mobile/hot/handicap/{handicapType}/list"
-    //
+
+    //获取累计头奖金额
+    const val QUERY_TOTAL_REWARD_AMOUNT =
+        "/api/front/gameEntryConfig/queryTotalRewardAmount" //电子，棋牌接口（首页和二级页面使用同一个接口）
+
 }

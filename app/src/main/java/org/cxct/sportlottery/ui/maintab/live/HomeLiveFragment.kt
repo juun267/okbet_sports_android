@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gyf.immersionbar.ImmersionBar
@@ -22,6 +24,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -135,6 +138,17 @@ class HomeLiveFragment :
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
+        iv_money_refresh.setOnClickListener {
+            iv_money_refresh.startAnimation(RotateAnimation(0f,
+                720f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f).apply {
+                duration = 1000
+            })
+            viewModel.getMoney()
+        }
 //        lin_search.setOnClickListener {
 //            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
 //        }
@@ -144,7 +158,14 @@ class HomeLiveFragment :
         if (viewModel == null) {
             return
         }
-
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            it?.let {
+                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
+            }
+        }
+        viewModel.isLogin.observe(viewLifecycleOwner) {
+            setupLogin()
+        }
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 homeLiveAdapter.oddsType = oddsType

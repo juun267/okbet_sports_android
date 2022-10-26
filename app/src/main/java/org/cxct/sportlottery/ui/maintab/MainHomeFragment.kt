@@ -6,6 +6,8 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -215,17 +217,33 @@ class MainHomeFragment :
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
+        iv_money_refresh.setOnClickListener {
+            iv_money_refresh.startAnimation(RotateAnimation(0f,
+                720f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f).apply {
+                duration = 1000
+            })
+            viewModel.getMoney()
+        }
 //        lin_search.setOnClickListener {
 //            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
 //        }
         setupLogin()
     }
     private fun initObservable() {
-        if(viewModel == null){
+        if (viewModel == null) {
             return
         }
         viewModel.isLogin.observe(viewLifecycleOwner) {
             setupLogin()
+        }
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            it?.let {
+                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
+            }
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
 //            val newDiscount = userInfo?.discount ?: 1.0F

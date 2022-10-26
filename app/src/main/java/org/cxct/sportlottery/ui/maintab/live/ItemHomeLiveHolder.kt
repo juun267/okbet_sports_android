@@ -153,6 +153,7 @@ class ItemHomeLiveHolder(
             setupMatchScore()
             //region 第1個按鈕
             if (oddList.isNotEmpty()) {
+                LogUtil.toJson(oddList)
                 val odd1 = oddList[0]
                 with(oddBtn1) {
                     visibility = View.VISIBLE
@@ -195,6 +196,32 @@ class ItemHomeLiveHolder(
                 }
             } else {
                 oddBtn2.visibility = View.GONE
+            }
+
+            //region 第3個按鈕
+            if (oddList.size > 2) {
+                val odd3 = oddList[2]
+                with(oddBtn3) {
+                    visibility = View.VISIBLE
+                    setupOddsButton(this, odd3)
+                    setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
+                    if (oddList.size > 3) setupOdd4hall(
+                        oddPlayCateCode,
+                        odd3,
+                        oddList,
+                        oddsType,
+                        true
+                    )
+                    setButtonBetClick(
+                        data = data,
+                        odd = odd3,
+                        playCateCode = oddPlayCateCode,
+                        playCateName = playCateName,
+                        homeLiveListener = homeLiveListener
+                    )
+                }
+            } else {
+                oddBtn3.visibility = View.GONE
             }
             //endregion
 
