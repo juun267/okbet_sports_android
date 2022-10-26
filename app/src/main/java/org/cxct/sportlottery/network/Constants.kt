@@ -389,4 +389,7 @@ object Constants {
 
     //首页二次改版接口
     const val QUERY_GAME_ENTRY_CONFIG = "/api/front/gameEntryConfig/queryGameEntryConfig" //电子，棋牌接口（首页和二级页面使用同一个接口）
+    //首页热门盘口推荐
+    const val HOT_HANDICAP_LIST = "/api/front/match/odds/mobile/hot/handicap/{handicapType}/list"
+    //
 }

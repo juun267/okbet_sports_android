@@ -323,6 +323,7 @@ class MainHomeFragment :
 //        }
 
         viewModel.getGameEntryConfig(1)
+        viewModel.getHandicapConfig(1)
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事

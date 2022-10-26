@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
@@ -662,11 +663,26 @@ class MainHomeViewModel(
     fun getGameEntryConfig(position: Int){
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.thirdGameService.queryGameEntryConfig(
-                    QueryGameEntryConfigRequest(position, null)
-                )
+               OneBoSportApi.thirdGameService.queryGameEntryConfig(
+                   QueryGameEntryConfigRequest(position,null)
+               )
             }
-            result?.let { result ->
+            result?.let { result->
+
+            }
+        }
+    }
+    /**
+     * 热门盘口
+     * @handicapType 盘口类型, 1:独赢 2：让球 3:大小
+     */
+
+    fun getHandicapConfig(handicapType: Int){
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getHotHandicapList(handicapType)
+            }
+            result?.let { result->
                 LogUtil.toJson(result)
             }
         }

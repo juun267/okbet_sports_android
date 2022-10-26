@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.third_game
 
+import org.cxct.sportlottery.network.Constants.HOT_HANDICAP_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_GAME_ENTRY_CONFIG
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Ot
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigResult
+import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
 import retrofit2.Response
 import retrofit2.http.*
@@ -73,4 +75,9 @@ interface ThirdGameService {
     suspend fun queryGameEntryConfig(
         @Body queryGameEntryConfigRequest: QueryGameEntryConfigRequest?
     ): Response<QueryGameEntryConfigResult>
+
+    @GET(HOT_HANDICAP_LIST)
+    suspend fun getHotHandicapList(
+        @Path("handicapType") handicapType:Int?
+    ):Response<HandicapResult>
 }
