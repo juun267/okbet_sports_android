@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.match
 
+import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND_COUNT
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND_HALL
@@ -9,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_TRACKER_URL
 import org.cxct.sportlottery.network.matchLiveInfo.*
 import org.cxct.sportlottery.network.matchTracker.MatchTrackerUrlResult
 import org.cxct.sportlottery.network.odds.list.MatchLiveResult
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveResult
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -51,5 +53,6 @@ interface MatchService {
 
     @GET(MATCH_LIVE_ROUND_HALL)
     suspend fun getLiveRoundHall(): Response<MatchLiveResult>
-
+    @GET(HOT_LIVE_LIST)
+    suspend fun getLiveList():Response<HotMatchLiveResult>
 }

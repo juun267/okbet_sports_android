@@ -53,6 +53,26 @@
                     tl:layout_constraintEnd_toEndOf="parent"
                     tl:layout_constraintStart_toStartOf="parent"
                     tl:layout_constraintTop_toTopOf="parent" />
+                <RelativeLayout
+                    android:id="@+id/rll_left_right"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/iv_left"
+                        android:layout_marginStart="@dimen/margin_8"
+                        android:src="@drawable/icon_arrow_b"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:id="@+id/iv_right"
+                        android:layout_marginEnd="@dimen/margin_8"
+                       android:layout_alignParentEnd="true"
+                        android:src="@drawable/icon_arrow_a"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <View
@@ -123,7 +143,8 @@
     <LinearLayout
         android:id="@+id/ll_come_back"
         android:visibility="gone"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:layout_alignParentEnd="true"
         android:orientation="horizontal"
         android:gravity="center"
@@ -141,7 +162,7 @@
             android:textColor="@color/color_181922_FFFFFF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="返回顶部"/>
+            />
     </LinearLayout>
 
 </RelativeLayout>

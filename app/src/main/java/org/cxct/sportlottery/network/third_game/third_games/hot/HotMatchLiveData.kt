@@ -1,15 +1,18 @@
 package org.cxct.sportlottery.network.third_game.third_games.hot
 
+
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.util.*
+
+import org.cxct.sportlottery.network.odds.League
+
 
 @JsonClass(generateAdapter = true)
-data class HandicapData (
+data class HotMatchLiveData(
     @Json(name = "league")
-    val league:League,
+    val league: League,
     @Json(name = "matchInfo")
-    val matchInfo:MatchInfo,
+    val matchInfo: MatchInfo,
     @Json(name = "sportName")
-    val sportName:String
+    val sportName: String
 )

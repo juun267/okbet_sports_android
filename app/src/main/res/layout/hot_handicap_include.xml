@@ -31,23 +31,19 @@
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
         android:layout_marginStart="@dimen/margin_10"
-        android:paddingVertical="@dimen/margin_5"
-        android:paddingHorizontal="@dimen/margin_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <TextView
-            android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_025BE8"
+        <org.cxct.sportlottery.ui.component.StatusSpinnerNewView
+            android:id="@+id/selector_order_status"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="@string/ou_hdp_1x2_title"/>
-        <ImageView
-            android:id="@+id/iv_hot_arrow"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_2"
-            android:src="@drawable/icon_arrow_blue"
-            android:layout_width="@dimen/margin_12"
-            android:layout_height="wrap_content"/>
+            android:layout_height="24dp"
+            android:paddingEnd="@dimen/margin_8"
+            android:background="@drawable/shape_hot_handicap_bg"
+            app:defaultStatusText="@string/ou_hdp_1x2_title"
+            app:listWidth="65dp"
+            app:textColor="@color/color_FFFFFF_414655"
+            app:arrowSrc = "@drawable/icon_arrow_blue"
+            app:listBackground="@drawable/bg_play_category_pop" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_hot_handicap_more"
@@ -73,6 +69,7 @@
     </LinearLayout>
 
        <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/rv_hot_handicap"
            android:layout_marginHorizontal="@dimen/margin_14"
            app:layout_constraintTop_toBottomOf="@+id/ll_hot_arrow"
            android:paddingBottom="@dimen/margin_30"

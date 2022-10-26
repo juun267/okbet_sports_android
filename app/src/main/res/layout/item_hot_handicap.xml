@@ -99,7 +99,7 @@
          app:layout_constraintTop_toBottomOf="@+id/cl_title"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          tools:itemCount="3"
+          tools:itemCount="2"
           tools:listitem="@layout/item_home_handicap">
       </androidx.recyclerview.widget.RecyclerView>
    </androidx.constraintlayout.widget.ConstraintLayout>

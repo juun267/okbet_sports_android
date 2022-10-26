@@ -20,7 +20,10 @@ import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
+import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
+import kotlinx.android.synthetic.main.item_hot_handicap.*
+import kotlinx.android.synthetic.main.item_hot_handicap.rv_handicap_item
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -30,6 +33,7 @@ import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.index.home.HomeLiveData
@@ -39,6 +43,8 @@ import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
+import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -66,8 +72,9 @@ class MainHomeFragment :
     private  var tabSelectIconList = mutableListOf<Int>()
     private  var tabUnSelectIconList = mutableListOf<Int>()
     private var hotDataList = mutableListOf<HomeLiveData>()
-    private var hotelecList = mutableListOf<HomeTabItem1>()
-    private var homeChessList = mutableListOf<HomeChessItem>()
+
+
+    private var hotHandicapList = mutableListOf<HandicapData>()
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -89,6 +96,9 @@ class MainHomeFragment :
         })
     }
 
+    private val hotHandicapAdapter by lazy {
+        HotHandicapAdapter(mutableListOf())
+    }
     private val hotElectronicAdapter by lazy{//电子
         HomeElectronicAdapter(mutableListOf())
     }
@@ -158,6 +168,8 @@ class MainHomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getConfigData()
+        viewModel.getGameEntryConfig(1, null)
+        viewModel.getHandicapConfig(1)
         initView()
         initObservable()
         queryData()
@@ -252,6 +264,7 @@ class MainHomeFragment :
                     }
                 }
                 homeRecommendAdapter.data = recommendList
+
                 //先解除全部賽事訂
                 unSubscribeChannelHallAll()
                 subscribeQueryData(recommendList)
@@ -305,6 +318,7 @@ class MainHomeFragment :
             // setupType(it)
         }
         viewModel.homeGameData.observe(viewLifecycleOwner) {
+
         }
 //
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
@@ -320,9 +334,21 @@ class MainHomeFragment :
 //        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
 //            viewModel.updateMenuVersionUpdatedStatus(it)
 //        }
+        viewModel.homeGameData.observe(viewLifecycleOwner) {
+            it?.let { gameList->
+                val mHotChessList = gameList.filter {//棋牌
+                     it.gameType?.equals("1") == true
+                }
+                homeChessAdapter.setNewData(mHotChessList)
 
-        viewModel.getGameEntryConfig(1, null)
-        viewModel.getHandicapConfig(1)
+                //电子
+                val mHotelList = gameList.filter {
+                    it.gameType?.equals("2") == true
+                }
+                hotElectronicAdapter.setNewData(mHotelList)
+            }
+        }
+
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
@@ -346,7 +372,7 @@ class MainHomeFragment :
                     val matchList = listOf(recommend).toMutableList()
                     if (SocketUpdateUtil.updateMatchStatus(
                             recommend.gameType,
-                            matchList as MutableList<org.cxct.sportlottery.network.common.MatchOdd>,
+                            matchList as MutableList<MatchOdd>,
                             matchStatusChangeEvent,
                             context
                         )
@@ -520,6 +546,18 @@ class MainHomeFragment :
                     position: Int,
                     size: Int,
                 ) {
+
+                    iv_right.setOnClickListener {
+                        if (position<size-1){
+                            position+1
+                            LogUtil.d("$size")
+                            LogUtil.d("$position")
+                        }else{
+                            position-(size-1)
+                            LogUtil.d("$position")
+                        }
+                    }
+
                     val url = sConfigData?.resServerHost + data?.imageName1
                     Glide.with(holder.itemView)
                         .load(url)
@@ -532,7 +570,7 @@ class MainHomeFragment :
                     }
                 }
             })
-            .setIndicator(HomeBannerIndicator(requireContext()));
+        //    .setIndicator(HomeBannerIndicator(requireContext()));
     }
 
     private fun setupAnnouncement(titleList: List<String>) {
@@ -857,15 +895,8 @@ class MainHomeFragment :
         hotDataList.add(homeLiveDate1)
         hotDataList.add(homeLiveDate2)
         hotDataList.add(homeLiveDate3)
-        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
-        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
-        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
-        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
-        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
-        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
-        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"牌九","PAIJIU"))
-        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"王者荣耀","WANGZHE"))
-        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"英雄联盟","KINGMAN"))
+
+
         initListView()
     }
 
@@ -895,7 +926,7 @@ class MainHomeFragment :
             if (adapter == null) {
                 adapter = hotElectronicAdapter
             }
-            hotElectronicAdapter.setNewData(hotelecList)
+
             hotElectronicAdapter.setOnItemClickListener{adapter, view, position ->
                 //点击跳转到哪里
                 ToastUtil.showToast(activity,"电子$position")
@@ -909,13 +940,21 @@ class MainHomeFragment :
             if (adapter == null) {
                 adapter = homeChessAdapter
             }
-            homeChessAdapter.setNewData(homeChessList)
+
             homeChessAdapter.setOnItemClickListener { adapter, view, position ->
                 //点击跳转到哪里
                 ToastUtil.showToast(activity,"棋牌$position")
             }
         }
-
+        with(rv_hot_handicap){
+            if (layoutManager == null) {
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            }
+            if (adapter == null) {
+                adapter = hotHandicapAdapter
+            }
+            hotHandicapAdapter.setNewData(hotHandicapList)
+        }
     }
 
     //切换fragment
