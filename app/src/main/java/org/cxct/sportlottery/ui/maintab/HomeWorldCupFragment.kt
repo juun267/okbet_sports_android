@@ -41,7 +41,7 @@ class HomeWorldCupFragment :
         }
     }
     private val homeElecAdapter by lazy {
-        HomeElecAdapter(HomeElecAdapter.getItems())
+        HomeElecAdapter(mutableListOf())
     }
 
     override fun onCreateView(

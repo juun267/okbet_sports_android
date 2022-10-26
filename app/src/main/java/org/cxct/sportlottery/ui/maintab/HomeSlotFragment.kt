@@ -10,8 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.fragment_home_elec.*
-import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
+import kotlinx.android.synthetic.main.fragment_home_slot.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -20,8 +19,12 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 
+/**
+ * 首页棋牌
+ */
 class HomeSlotFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
@@ -35,22 +38,20 @@ class HomeSlotFragment :
     }
 
     private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(), 5).apply {
+        HomeTabAdapter(HomeTabAdapter.getItems(), 4).apply {
             setOnItemClickListener { adapter, view, position ->
                 (parentFragment as HomeFragment).onTabClickByPosition(position)
             }
         }
     }
-    private val homeElecAdapter by lazy {
-        HomeElecAdapter(HomeElecAdapter.getItems())
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_home_elec, container, false)
+        return inflater.inflate(R.layout.fragment_home_slot, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +59,7 @@ class HomeSlotFragment :
         viewModel.getConfigData()
         initView()
         initObservable()
+        viewModel.getGameEntryConfig(2, 1)
     }
 
     override fun onResume() {
@@ -68,7 +70,7 @@ class HomeSlotFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            viewModel.getRecommend()
+            viewModel.getGameEntryConfig(2, 1)
         }
     }
 
@@ -80,7 +82,6 @@ class HomeSlotFragment :
         initToolBar()
         initTabView()
         initListView()
-
     }
 
     fun initToolBar() {
@@ -105,7 +106,24 @@ class HomeSlotFragment :
         if (viewModel == null) {
             return
         }
-
+        viewModel.homeGameData.observe(viewLifecycleOwner) {
+            it?.let {
+//                homeElecAdapter.setNewData(it)
+            }
+        }
+//        viewModel.cardGameData.observe(viewLifecycleOwner) {
+//            homeGameCardAdapter.setNewData(it.toMutableList())
+//            homeGameCardAdapter.setOnItemClickListener { adapter, view, position ->
+//                viewModel.requestEnterThirdGame(homeGameCardAdapter.getItem(position))
+//            }
+//            homeGameCardAdapter.removeAllFooterView()
+//            homeGameCardAdapter.addFooterView(LayoutInflater.from(requireContext())
+//                .inflate(R.layout.item_home_game_empty, null))
+//            homeGameCardAdapter.footerLayout.apply {
+//                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT)
+//            }
+//        }
     }
 
     private fun initTabView() {
@@ -117,19 +135,21 @@ class HomeSlotFragment :
             if (adapter == null) {
                 adapter = homeTabAdapter
             }
-            smoothScrollToPosition(homeTabAdapter.itemCount - 2)
+            post {
+                smoothScrollToPosition(homeTabAdapter.selectPos)
+            }
         }
     }
 
     private fun initListView() {
-        with(rv_elec) {
+        with(rv_slot) {
             if (layoutManager == null) {
                 layoutManager =
                     GridLayoutManager(requireContext(), 3)
             }
-            if (adapter == null) {
-                adapter = homeElecAdapter
-            }
+//            if (adapter == null) {
+//                adapter = homeElecAdapter
+//            }
             if (itemDecorationCount == 0) {
                 addItemDecoration(GridItemDecoration(12.dp, 12.dp, Color.TRANSPARENT, false))
             }

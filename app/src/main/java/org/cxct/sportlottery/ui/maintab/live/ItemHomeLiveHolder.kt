@@ -239,7 +239,7 @@ class ItemHomeLiveHolder(
                 it.matchInfo
             }
             root.setOnClickListener {
-                homeLiveListener.onItemClickListener(absoluteAdapterPosition)
+                homeLiveListener.onItemClickListener(data)
             }
             //endregion
         }

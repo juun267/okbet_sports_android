@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommend
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
@@ -30,7 +31,6 @@ import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
 import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -81,12 +81,9 @@ class MainHomeViewModel(
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     val token = loginRepository.token
 
-    val cardGameData: LiveData<List<ThirdDictValues?>>
-        get() = _cardGameData
-    private val _cardGameData = MutableLiveData<List<ThirdDictValues?>>()
-    val homeGameData: LiveData<List<ThirdDictValues?>>
+    val homeGameData: LiveData<List<QueryGameEntryData>?>
         get() = _homeGameData
-    private val _homeGameData = MutableLiveData<List<ThirdDictValues?>>()
+    private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
     private val _liveRoundHall = MutableLiveData<List<MatchLiveData>>()
     val liveRoundHall: LiveData<List<MatchLiveData>>
         get() = _liveRoundHall
@@ -288,43 +285,6 @@ class MainHomeViewModel(
         }
     }
 
-    fun getMenuThirdGame() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getThirdGameList()?.let { gameCateDataList ->
-                //棋牌
-                val eGameList =
-                    gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
-                //真人
-                val casinoList =
-                    gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
-                //TODO 鬥雞 當前還沒有接入這個分類
-                val sabongList = null
-
-                updatePublicityMenuLiveData(
-                    sportMenuDataList = null,
-                    eGameMenuDataList = eGameList,
-                    casinoMenuDataList = casinoList,
-                    sabongMenuDataList = sabongList
-                )
-                var cardGameList = mutableListOf<ThirdDictValues?>(null, null, null)
-                gameCateDataList.forEach { gameCateData ->
-                    gameCateData.tabDataList.forEach { gameTabData ->
-                        gameTabData.gameList.forEach { gameItemData ->
-                            gameItemData.thirdGameData?.let {
-                                //PM 指定捞起这几个游戏，没有捞到或者open=0，就显示敬请期待
-                                when (it.firmCode) {
-                                    "TPG" -> cardGameList[0] = it
-                                    "FKG" -> cardGameList[1] = it
-                                    "CGQP" -> cardGameList[2] = it
-                                }
-                            }
-                        }
-                    }
-                }
-                _cardGameData.postValue(cardGameList.toList())
-            }
-        }
-    }
 
     //滾球、今日、早盤、冠軍、串關、(即將跟menu同一層)
     private suspend fun getSportMenuAll(): SportMenuResult? {
@@ -658,15 +618,17 @@ class MainHomeViewModel(
     /**
      * 电子和棋牌
      * @position position 1: 首页； 2: 主页
+     * @gameType gameType 1: 棋牌； 2: 电子
      */
-    fun getGameEntryConfig(position: Int){
+    fun getGameEntryConfig(position: Int, gameType: Int?) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.queryGameEntryConfig(
-                    QueryGameEntryConfigRequest(position, null)
+                    QueryGameEntryConfigRequest(position, gameType)
                 )
             }
             result?.let { result ->
+                _homeGameData.postValue(result.rows)
                 LogUtil.toJson(result)
             }
         }

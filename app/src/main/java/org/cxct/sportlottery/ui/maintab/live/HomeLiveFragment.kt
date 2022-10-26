@@ -59,7 +59,7 @@ class HomeLiveFragment :
         HomeLiveAdapter(
             HomeLiveListener(
                 onItemClickListener = {
-                    goLoginPage()
+                    navOddsDetailFragment(MatchType.IN_PLAY, it.matchInfo)
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
                     if (mIsEnabled) {
@@ -242,12 +242,8 @@ class HomeLiveFragment :
                 }
             }
         }
-        receiver.matchOddsChange.observe(viewLifecycleOwner) {
-            LogUtil.d("matchOddsChange")
-        }
         receiver.oddsChangeListener =
             ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-                LogUtil.d("oddsChangeListener")
                 val targetList = homeLiveAdapter.data
                 targetList.forEachIndexed { index, matchLiveData ->
                     if (matchLiveData.matchInfo.id == oddsChangeEvent.eventId) {

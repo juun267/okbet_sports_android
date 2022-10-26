@@ -45,7 +45,9 @@ class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
         set(value) {
             field = value
             notifyDataSetChanged()
-            expandMatchId = value.firstOrNull()?.matchInfo?.id
+            if (expandMatchId.isNullOrEmpty()) {
+                expandMatchId = value.firstOrNull()?.matchInfo?.id
+            }
         }
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -303,9 +302,9 @@ class MainHomeFragment :
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
-           // setupType(it)
+            // setupType(it)
         }
-        viewModel.cardGameData.observe(viewLifecycleOwner) {
+        viewModel.homeGameData.observe(viewLifecycleOwner) {
         }
 //
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
@@ -322,7 +321,7 @@ class MainHomeFragment :
 //            viewModel.updateMenuVersionUpdatedStatus(it)
 //        }
 
-        viewModel.getGameEntryConfig(1)
+        viewModel.getGameEntryConfig(1, null)
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
@@ -499,7 +498,6 @@ class MainHomeFragment :
         viewModel.getPublicitySportMenu()
         viewModel.getAnnouncement()
         viewModel.getConfigData()
-        viewModel.getMenuThirdGame()
         viewModel.getMoney()
     }
 

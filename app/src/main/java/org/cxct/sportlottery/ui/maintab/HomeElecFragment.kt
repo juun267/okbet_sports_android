@@ -20,8 +20,12 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 
+/**
+ * 首页电子
+ */
 class HomeElecFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
@@ -42,7 +46,7 @@ class HomeElecFragment :
         }
     }
     private val homeElecAdapter by lazy {
-        HomeElecAdapter(HomeElecAdapter.getItems())
+        HomeElecAdapter(mutableListOf())
     }
 
     override fun onCreateView(
@@ -58,6 +62,7 @@ class HomeElecFragment :
         viewModel.getConfigData()
         initView()
         initObservable()
+        viewModel.getGameEntryConfig(2, 2)
     }
 
     override fun onResume() {
@@ -105,6 +110,11 @@ class HomeElecFragment :
         if (viewModel == null) {
             return
         }
+        viewModel.homeGameData.observe(viewLifecycleOwner) {
+            it?.let {
+                homeElecAdapter.setNewData(it)
+            }
+        }
 
     }
 
@@ -118,7 +128,7 @@ class HomeElecFragment :
                 adapter = homeTabAdapter
             }
             post {
-                smoothScrollToPosition(5)
+                smoothScrollToPosition(homeTabAdapter.selectPos)
             }
         }
     }
