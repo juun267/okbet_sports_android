@@ -7,15 +7,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.android.material.internal.ContextUtils
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 
 
-
-class ItemHomeHandicapAdapter(data:List<HomeHandicapItem>):
-    BaseQuickAdapter<HomeHandicapItem,BaseViewHolder>(R.layout.item_hot_handicap) {
-    override fun convert(helper: BaseViewHolder, item: HomeHandicapItem) {
-      when(item.playType){
-
-      }
+class HotHandicapAdapter(data:List<HandicapData>):
+    BaseQuickAdapter<HandicapData,BaseViewHolder>(R.layout.item_hot_handicap) {
+    override fun convert(helper: BaseViewHolder, item: HandicapData) {
+    
     val recycleView:RecyclerView = helper.getView(R.id.rv_handicap_item)
        val itemAdapter: ItemHandicapAdapter = ItemHandicapAdapter(
            HomeRecommendListener(
@@ -47,4 +45,3 @@ class ItemHomeHandicapAdapter(data:List<HomeHandicapItem>):
     }
 
 }
-data class HomeHandicapItem(val icon: Int, val name: Int,val playType:String)

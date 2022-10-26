@@ -434,6 +434,8 @@ object Constants {
 
     //首页热门盘口推荐
     const val HOT_HANDICAP_LIST = "/api/front/match/odds/mobile/hot/handicap/{handicapType}/list"
+    //首页热门直播
+    const val HOT_LIVE_LIST = "/api/front/liveRound/mobile/hotMatch/list"
 
     //获取累计头奖金额
     const val QUERY_TOTAL_REWARD_AMOUNT =
