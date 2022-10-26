@@ -37,37 +37,81 @@
         android:layout_height="@dimen/margin_26"
         android:layout_weight="1"
         android:layout_marginLeft="@dimen/margin_16"
+        android:visibility="gone"
         layout="@layout/view_search" />
-
-    <TextView
-        android:id="@+id/btn_register"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:paddingHorizontal="@dimen/dp_10"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:layout_marginLeft="@dimen/margin_10"
-        android:background="@drawable/bg_yellow_radius_15"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="14sp"
-        android:text="@string/btn_register"
+    <LinearLayout
+        android:id="@+id/ll_user_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:orientation="horizontal"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone">
 
-    <TextView
-        android:id="@+id/btn_login"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:paddingHorizontal="@dimen/dp_10"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:layout_marginLeft="@dimen/margin_16"
-        android:background="@drawable/bg_green_radius_15"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="14sp"
-        android:text="@string/btn_login"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        <TextView
+            android:id="@+id/tv_currency_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_2"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            tools:text="₱" />
+
+        <TextView
+
+            android:id="@+id/tv_home_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_FFFFFF_414655"
+            android:textSize="@dimen/textSize18sp"
+            tools:text="1213,2334243,52346" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:src="@drawable/ic_refresh_green" />
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="visible"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/btn_register"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:paddingHorizontal="@dimen/dp_10"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:background="@drawable/button_bg_login_normal"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="14sp"
+            android:text="@string/btn_register"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/btn_login"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:paddingHorizontal="@dimen/dp_10"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:background="@drawable/button_bg_login_blue_normal"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="14sp"
+            android:text="@string/btn_login"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
 </LinearLayout>

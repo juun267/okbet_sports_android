@@ -21,7 +21,7 @@ import org.cxct.sportlottery.util.*
 //TODO 棒球比分狀態顯示
 class ItemHomeRecommendHolder(
     val binding: ItemHomeRecommendBinding,
-    private val homeRecommendListener: HomeRecommendAdapter.HomeRecommendListener
+    private val homeRecommendListener: HomeRecommendListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
@@ -177,7 +177,7 @@ class ItemHomeRecommendHolder(
         odd: Odd?,
         playCateCode: String,
         playCateName: String,
-        homeRecommendListener: HomeRecommendAdapter.HomeRecommendListener,
+        homeRecommendListener: HomeRecommendListener,
     ) {
         setOnClickListener {
             data.matchType?.let { matchType ->

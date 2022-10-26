@@ -6,17 +6,16 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.upstream.HttpDataSource
+import com.pili.pldroid.player.*
+import com.pili.pldroid.player.widget.PLVideoView
 import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.R
@@ -24,6 +23,7 @@ import org.cxct.sportlottery.util.LiveUtil
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
+import org.cxct.sportlottery.util.*
 
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -32,18 +32,14 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
 ) :
-    LinearLayout(context, attrs, defStyle) {
+    LinearLayout(context, attrs, defStyle), PLOnPreparedListener, PLOnInfoListener,
+    PLOnCompletionListener, PLOnVideoSizeChangedListener, PLOnErrorListener {
 
     enum class LiveType {
         LIVE, VIDEO, ANIMATION
     }
 
     open var curType: LiveType? = null
-    private var mStreamUrl: String? = null
-        set(value) {
-            if (value.isNullOrEmpty()) return
-            field = value
-        }
     private var isLogin: Boolean = false
     var liveUrl: String? = null
     var videoUrl: String? = null
@@ -51,69 +47,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     var isFullScreen = false
 
-    private var exoPlayer: SimpleExoPlayer? = null
-
-    private var playWhenReady = true
-    private var currentWindow = 0
-    private var playbackPosition = 0L
-
-    private val playbackStateListener by lazy {
-        object : Player.Listener {
-            /**
-             * 會有以下四種playback狀態
-             * STATE_IDLE: 初始狀態, 播放器停止, playback failed
-             * STATE_BUFFERING: 媒體讀取中
-             * STATE_READY: 準備好可播放
-             * STATE_ENDED: 播放結束
-             */
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                when (playbackState) {
-                    ExoPlayer.STATE_IDLE -> {
-                        Timber.i("ExoPlayer.STATE_IDLE      -")
-                        //獲取過最新的直播地址後仍然無法播放進入暫停狀態
-                        showPlayView()
-                    }
-                    Player.STATE_BUFFERING -> {
-                        // TODO 載入中的圈圈狀態
-                        if (!player_view.isVisible) liveLoading()
-                        Timber.i("ExoPlayer.STATE_BUFFERING     -")
-                    }
-                    ExoPlayer.STATE_READY -> {
-                        Timber.i("ExoPlayer.STATE_READY -")
-                        showPlayView()
-                    }
-                    Player.STATE_ENDED -> {
-                        Timber.i("ExoPlayer.STATE_ENDED     -")
-                        showPlayView()
-                    }
-                    else -> Timber.e("UNKNOWN_STATE             -")
-                }
-            }
-
-            @SuppressLint("SwitchIntDef")
-            override fun onPlayerError(error: PlaybackException) {
-                if (error.cause is HttpDataSource.HttpDataSourceException) {
-                    when (val httpError = error.cause) {
-                        //直播地址播放連線失敗
-                        is HttpDataSource.InvalidResponseCodeException -> {
-//                            Timber.e("PlayerError = $httpError")
-//                            newestUrl = true
-//                            //重新獲取最新的直播地址
-//                            liveToolBarListener?.getLiveInfo(true)
-                        }
-                    }
-                }
-                Timber.e("PlayerError = $error")
-                //重新獲取最新的直播地址
-                liveToolBarListener?.getLiveInfo(true)
-            }
-        }
-    }
-
     private var animationLoadFinish = false
 
     interface LiveToolBarListener {
-        fun getLiveInfo(newestUrl: Boolean = false)
         fun onFullScreen(fullScreen: Boolean)
     }
 
@@ -141,34 +77,27 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         curType = LiveType.LIVE
         iv_fullscreen.isVisible = true
         showPlayView()
+        setWebViewHeight()
         switchPlayView(true)
-        startPlayer(liveUrl, isLogin)
+        startPlayer(isLogin)
     }
 
     fun showVideo() {
         curType = LiveType.VIDEO
         showPlayView()
         setWebViewHeight()
-//        if (isLogin) {
         iv_fullscreen.isVisible = true
         openWebView()
         switchPlayView(false)
-//        } else {
-//            setupNotLogin()
-//        }
     }
 
     fun showAnime() {
         curType = LiveType.ANIMATION
         showPlayView()
         setWebViewHeight()
-//        if (isLogin) {
-        iv_fullscreen.isVisible = false
+        iv_fullscreen.isVisible = true
         openWebView()
         switchPlayView(false)
-//        } else {
-//            setupNotLogin()
-//        }
     }
 
     private fun initOnclick() {
@@ -196,6 +125,26 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 liveToolBarListener?.onFullScreen(false)
             }
         }
+        web_view.setOnTouchListener { v, event ->
+            onTouchScreenListener?.let {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> it.onTouchScreen()
+                    MotionEvent.ACTION_UP -> it.onReleaseScreen()
+                }
+            }
+            super.onTouchEvent(event)
+        }
+        player_view.setOnTouchListener { v, event ->
+            onTouchScreenListener?.let {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        it.onTouchScreen()
+                        it.onReleaseScreen()
+                    }
+                }
+            }
+            super.onTouchEvent(event)
+        }
     }
 
     fun onBackPressed() {
@@ -209,23 +158,12 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private fun switchPlayView(open: Boolean) {
         when (open) {
             true -> {
-                if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer(mStreamUrl, isLogin)
-                }
+                startPlayer(isLogin)
             }
             false -> {
                 stopPlayer()
             }
         }
-    }
-
-    /**
-     * 設置為直播高度
-     */
-    private fun setLiveViewHeight() {
-        web_view_layout.layoutParams = FrameLayout.LayoutParams(MetricsUtil.getScreenWidth(),
-            resources.getDimensionPixelSize(R.dimen.live_player_height))
-        iv_live_status.scaleType = ImageView.ScaleType.FIT_XY
     }
 
     fun setupNotLogin() {
@@ -248,6 +186,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         when (curType) {
             LiveType.LIVE -> {
                 player_view.isVisible = true
+                web_view.isVisible = false
                 iv_live_status.isVisible = false
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
@@ -257,20 +196,20 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }
             LiveType.VIDEO -> {
                 player_view.isVisible = false
+                web_view.isVisible = true
                 iv_live_status.isVisible = false
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
-                web_view.isVisible = true
                 iv_live.isVisible = !liveUrl.isNullOrEmpty()
                 iv_video.isVisible = false
                 iv_animation.isVisible = !animeUrl.isNullOrEmpty()
             }
             LiveType.ANIMATION -> {
                 player_view.isVisible = false
+                web_view.isVisible = true
                 iv_live_status.isVisible = false
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
-                web_view.isVisible = true
                 iv_live.isVisible = !liveUrl.isNullOrEmpty()
                 iv_video.isVisible = !videoUrl.isNullOrEmpty()
                 iv_animation.isVisible = false
@@ -283,60 +222,51 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
 
-    fun getExoPlayer(): SimpleExoPlayer? {
-        return exoPlayer
-    }
-
     private fun initializePlayer(streamUrl: String?) {
         streamUrl?.let {
-            if (exoPlayer == null) {
-                exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
-                    player_view.player = exoPlayer
-                    val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).build()
-                    exoPlayer.setMediaItem(mediaItem)
-                    exoPlayer.playWhenReady = playWhenReady
-                    exoPlayer.seekTo(currentWindow, playbackPosition)
-                    exoPlayer.addListener(playbackStateListener)
-                    exoPlayer.prepare()
-                }
-            } else {
-                exoPlayer?.let { player ->
-                    val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).build()
-                    player.setMediaItem(mediaItem)
-                    player.playWhenReady = playWhenReady
-                    player.seekTo(currentWindow, playbackPosition)
-                    player.prepare()
-                }
-            }
+            LogUtil.d("streamUrl=" + it)
+            // 1 -> hw codec enable, 0 -> disable [recommended]
+            val options = AVOptions()
+            options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+            options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
+            options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
+            options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
+            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+
+            player_view.setAVOptions(options)
+            player_view.setOnPreparedListener(this);
+            player_view.setOnInfoListener(this);
+            player_view.setOnCompletionListener(this);
+            player_view.setOnVideoSizeChangedListener(this);
+            player_view.setOnErrorListener(this);
+            player_view.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+            player_view.setVideoPath(it)
+//            mMediaController = MediaController(this, false, true)
+//            mMediaController.setOnClickSpeedAdjustListener(mOnClickSpeedAdjustListener)
+//            player_view.setMediaController(mMediaController)
+
+            player_view.start();
         }
     }
 
     private fun releasePlayer() {
-        exoPlayer?.run {
-            playbackPosition = this.currentPosition
-            currentWindow = this.currentWindowIndex
-            this@DetailLiveViewToolbar.playWhenReady = this.playWhenReady
-            removeListener(playbackStateListener)
-            release()
+        if (player_view.isVisible) {
+            player_view.stopPlayback()
         }
-        exoPlayer = null
     }
 
-    fun startPlayer(streamUrl: String?, isLogin: Boolean) {
-        mStreamUrl = streamUrl
-        if (isLogin) {
-            initializePlayer(streamUrl)
-        } else {
-            setupNotLogin()
+    fun startPlayer(isLogin: Boolean) {
+        if (player_view.isVisible) {
+            initializePlayer(liveUrl)
         }
     }
 
     fun stopPlayer() {
-        releasePlayer()
+        if (player_view.isVisible) {
+            player_view.stop()
+        }
     }
-
 
     //region 賽事動畫
     private fun openWebView() {
@@ -399,7 +329,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     fun release() {
-        if (exoPlayer != null) {
+        if (player_view.isVisible) {
             releasePlayer()
         }
         if (web_view.isVisible) {
@@ -417,7 +347,20 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
      */
     private fun setWebViewHeight() {
         when (curType) {
-            LiveType.LIVE, LiveType.VIDEO -> {
+            LiveType.LIVE -> {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    val screenWidth = MetricsUtil.getScreenWidth()
+                    player_view.layoutParams.apply {
+                        //视频播放器比例，56.25%，来自H5
+                        height = resources.getDimensionPixelSize(R.dimen.live_player_height)
+                    }
+                } else {
+                    player_view.layoutParams.apply {
+                        height = ViewGroup.LayoutParams.MATCH_PARENT
+                    }
+                }
+            }
+            LiveType.VIDEO -> {
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     val screenWidth = MetricsUtil.getScreenWidth()
                     web_view.layoutParams.apply {
@@ -443,5 +386,39 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    override fun onPrepared(p0: Int) {
+        LogUtil.d("onPrepared" + p0)
+    }
+
+    override fun onInfo(p0: Int, p1: Int, p2: Any?) {
+
+    }
+
+    override fun onCompletion() {
+        LogUtil.d("onCompletion")
+    }
+
+    override fun onVideoSizeChanged(p0: Int, p1: Int) {
+        LogUtil.d("onVideoSizeChanged=" + p0 + "," + p1)
+        player_view.layoutParams.apply {
+            this.height = player_view.width * p1 / p0
+        }
+    }
+
+    override fun onError(p0: Int, p1: Any?): Boolean {
+        ToastUtil.showToast(context, p0.toString() + "," + p1.toString())
+        return false
+    }
+
+    private var onTouchScreenListener: OnTouchScreenListener? = null
+    fun setOnTouchScreenListener(onTouchScreenListener: OnTouchScreenListener) {
+        this.onTouchScreenListener = onTouchScreenListener
+    }
+
+    interface OnTouchScreenListener {
+        fun onTouchScreen()
+        fun onReleaseScreen()
     }
 }

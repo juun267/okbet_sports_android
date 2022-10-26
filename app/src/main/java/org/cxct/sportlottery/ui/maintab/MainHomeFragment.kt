@@ -6,12 +6,10 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RadioGroup
+import android.widget.ScrollView
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -20,17 +18,21 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.hot_card_game_include.*
+import kotlinx.android.synthetic.main.hot_gaming_include.*
+import kotlinx.android.synthetic.main.hot_live_match_include.*
+import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
+import org.cxct.sportlottery.network.index.home.HomeLiveData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
@@ -52,17 +54,20 @@ import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
-import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.widget.DepthPageTransformer
 import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainHomeFragment() :
+class MainHomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
+    private  var tabSelectTitleList = mutableListOf<String>()
+    private  var tabSelectIconList = mutableListOf<Int>()
+    private  var tabUnSelectIconList = mutableListOf<Int>()
+    private var hotDataList = mutableListOf<HomeLiveData>()
+    private var hotelecList = mutableListOf<HomeTabItem1>()
+    private var homeChessList = mutableListOf<HomeChessItem>()
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -72,15 +77,29 @@ class MainHomeFragment() :
             return fragment
         }
     }
+    private val homeHotLiveAdapter by lazy {//热门直播
+        HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
+            tv_match_name.text = data.matchName
+            tv_match_type_name.text = data.matchType
+            tv_first_half_game.text = data.half
+            tv_match_time.text = "12:00"
+            iv_live_type.setImageResource(data.imageType)
+            iv_avatar_live.setImageResource(data.starPlayer)
+            tv_introduction.text = data.starTitle
+        })
+    }
 
+    private val hotElectronicAdapter by lazy{//电子
+        HomeElectronicAdapter(mutableListOf())
+    }
+    private val homeChessAdapter by lazy{//棋牌
+        HomeChessAdapter(mutableListOf())
+    }
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-
-    private val mainHomeMenuAdapter by lazy { MainHomeMenuAdapter(mutableListOf()) }
-    private val homeGameCardAdapter by lazy { HomeGameCardAdapter(mutableListOf()) }
-
+    private lateinit var mainHomeMenuAdapter: MainHomeMenuAdapter
     private val homeRecommendAdapter by lazy {
         HomeRecommendAdapter(
-            HomeRecommendAdapter.HomeRecommendListener(
+            HomeRecommendListener(
                 onItemClickListener = {
                     goLoginPage()
                 },
@@ -115,25 +134,18 @@ class MainHomeFragment() :
                             navOddsDetailFragment(matchType!!, it)
                         }
                     }
-                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
-                    }
-                },
-                onClickAnimationIconListener = { gameType, matchType, matchId, matchInfoList ->
-                    if (viewModel.checkLoginStatus()) {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
+                },onClickLiveIconListener = {gameType, matchType, matchId, matchInfoList ->
+
+                }
+            ) { gameType, matchType, matchId, matchInfoList ->
+                if (viewModel.checkLoginStatus()) {
+                    matchInfoList.find {
+                        TextUtils.equals(matchId, it.id)
+                    }?.let {
+                        navOddsDetailFragment(matchType!!, it)
                     }
                 }
-            )
+            }
         )
     }
     override fun onCreateView(
@@ -150,6 +162,7 @@ class MainHomeFragment() :
         initObservable()
         queryData()
         initSocketObservers()
+//        getTabDate()
     }
 
     override fun onResume() {
@@ -176,12 +189,25 @@ class MainHomeFragment() :
             clickCustomService(requireContext(), childFragmentManager)
         }
         initRecommendView()
+        showChangeFragment()
+        getTabDate()
+        nsv_home.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener {
+                _, _, scrollY, _, oldScrollY ->
+            ll_come_back.visibility = if (scrollY > 800) View.VISIBLE else View.GONE
+        })
+        ll_come_back.setOnClickListener {
+            nsv_home.post{
+                nsv_home.fullScroll(ScrollView.FOCUS_UP)
+            }
+        }
     }
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
+            (activity as MainTabActivity).showLeftFrament(0)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
@@ -189,9 +215,9 @@ class MainHomeFragment() :
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
-        lin_search.setOnClickListener {
-            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-        }
+//        lin_search.setOnClickListener {
+//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
+//        }
         setupLogin()
     }
     private fun initObservable() {
@@ -266,35 +292,37 @@ class MainHomeFragment() :
 //
         viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
             //非信用盤才顯示優惠活動
-            if (!isCreditSystem())
-                if (it.isNotEmpty()) {
-                    lin_activity.visibility = View.VISIBLE
-                    setupActivity(it)
-                } else {
-                    lin_activity.visibility = View.GONE
-                }
+//            if (!isCreditSystem())
+//                if (it.isNotEmpty()) {
+//                    lin_activity.visibility = View.VISIBLE
+//                    setupActivity(it)
+//                } else {
+//                    lin_activity.visibility = View.GONE
+//                }
         }
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
-            setupType(it)
+            // setupType(it)
         }
-        viewModel.cardGameData.observe(viewLifecycleOwner) {
-            homeGameCardAdapter.setNewData(it.toMutableList())
-            homeGameCardAdapter.setOnItemClickListener { adapter, view, position ->
-                viewModel.requestEnterThirdGame(homeGameCardAdapter.getItem(position))
-            }
-            homeGameCardAdapter.removeAllFooterView()
-            homeGameCardAdapter.addFooterView(LayoutInflater.from(requireContext())
-                .inflate(R.layout.item_home_game_empty, null))
-            homeGameCardAdapter.footerLayout.apply {
-                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
-            }
+        viewModel.homeGameData.observe(viewLifecycleOwner) {
         }
+//
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it)
         }
+//
+//        viewModel.errorPromptMessage.observe(viewLifecycleOwner) {
+//            it.getContentIfNotHandled()
+//                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+//        }
+//
+//        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
+//            viewModel.updateMenuVersionUpdatedStatus(it)
+//        }
+
+        viewModel.getGameEntryConfig(1, null)
+        viewModel.getHandicapConfig(1)
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
@@ -471,7 +499,6 @@ class MainHomeFragment() :
         viewModel.getPublicitySportMenu()
         viewModel.getAnnouncement()
         viewModel.getConfigData()
-        viewModel.getMenuThirdGame()
         viewModel.getMoney()
     }
 
@@ -528,89 +555,90 @@ class MainHomeFragment() :
     }
 
     private fun setupActivity(list: List<PublicityPromotionItemData>) {
-        banner_activity.addBannerLifecycleObserver(this) //添加生命周期观察者
-            .setAdapter(HomeActivityAdapter(list))
-            .setOnBannerListener { data, position ->
-                data?.let {
-                    JumpUtil.toInternalWeb(
-                        requireContext(),
-                        Constants.getPromotionDetailUrl(
-                            viewModel.token,
-                            (data as PublicityPromotionItemData).id,
-                            LanguageManager.getSelectLanguage(requireContext())
-                        ),
-                        getString(R.string.promotion))
-                }
-            }
+//        banner_activity.addBannerLifecycleObserver(this) //添加生命周期观察者
+//            .setAdapter(HomeActivityAdapter(list))
+//            .setOnBannerListener { data, position ->
+//                data?.let {
+//                    JumpUtil.toInternalWeb(
+//                        requireContext(),
+//                        Constants.getPromotionDetailUrl(
+//                            viewModel.token,
+//                            (data as PublicityPromotionItemData).id,
+//                            LanguageManager.getSelectLanguage(requireContext())
+//                        ),
+//                        getString(R.string.promotion))
+//                }
+//            }
     }
     private fun setupType(publicityMenuData: PublicityMenuData) {
-        rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-                when (checkedId) {
-                    R.id.rbtn_sport -> {
-                        rv_type_list.adapter = mainHomeMenuAdapter
-                    }
-                    R.id.rbtn_egame -> {
-                        rv_type_list.adapter = homeGameCardAdapter
-                    }
-                }
-            }
-        })
-        if (rv_type_list.adapter == null) {
-            rv_type_list.adapter = mainHomeMenuAdapter
-        }
-        var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
-        rvChiild.setPadding(0, 0, 40.dp, 0)
-        rvChiild.clipToPadding = false
-        rv_type_list.offscreenPageLimit = 3
-        rv_type_list.setPageTransformer(DepthPageTransformer())
-        rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when (rv_type_list.adapter) {
-                    is MainHomeMenuAdapter -> {
-                        if (position == mainHomeMenuAdapter.itemCount - 1) {
-                            rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
-                        }
-                    }
-                    is HomeGameCardAdapter -> {
-                        if (position == homeGameCardAdapter.itemCount - 1) {
-                            rv_type_list.currentItem = homeGameCardAdapter.itemCount - 2
-                        }
-                    }
-                }
-
-            }
-        })
-        mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
-            publicityMenuData.sportMenuDataList?.let {
-                enterTheSport(it[position])
-            }
-        }
-
-        publicityMenuData?.sportMenuDataList?.let {
-            mainHomeMenuAdapter.setNewData(it.toMutableList())
-            mainHomeMenuAdapter.removeAllFooterView()
-            mainHomeMenuAdapter.addFooterView(LayoutInflater.from(requireContext())
-                .inflate(R.layout.item_main_home_empty, null))
-            mainHomeMenuAdapter.footerLayout.apply {
-                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT)
-            }
-        }
+//        rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+//            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+//                when (checkedId) {
+//                    R.id.rbtn_sport -> {
+//                        lin_menu_game.isVisible = false
+//                        rv_type_list.isVisible = true
+//                    }
+//                    R.id.rbtn_egame -> {
+//                        rv_type_list.isVisible = false
+//                        lin_menu_game.isVisible = true
+//                    }
+//                }
+//            }
+//        })
+//        mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
+//        var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
+//        rvChiild.setPadding(0, 0, 40.dp, 0)
+//        rvChiild.clipToPadding = false
+//        rv_type_list.offscreenPageLimit = 3
+//        rv_type_list.setPageTransformer(DepthPageTransformer())
+//        rv_type_list.adapter = mainHomeMenuAdapter
+//        rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                if (position == mainHomeMenuAdapter.itemCount - 1) {
+//                    rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
+//                }
+//            }
+//        })
+//        mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
+//            publicityMenuData.sportMenuDataList?.let {
+//                enterTheSport(it[position])
+//            }
+//        }
+//
+//        publicityMenuData?.sportMenuDataList?.let {
+//            mainHomeMenuAdapter.setNewData(it.toMutableList())
+//            mainHomeMenuAdapter.removeAllFooterView()
+//            mainHomeMenuAdapter.addFooterView(LayoutInflater.from(requireContext())
+//                .inflate(R.layout.item_main_home_empty, null))
+//            mainHomeMenuAdapter.footerLayout.apply {
+//                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                    LinearLayout.LayoutParams.MATCH_PARENT)
+//            }
+//        }
+//        lin_menu_game.apply {
+//            ivThirdGame.setImageResource(R.drawable.bg_egame)
+//            ivThirdGame.setOnClickListener {
+//                if (viewModel.isLogin.value != true) {
+//                    (activity as MainTabActivity).showLoginNotify()
+//                } else {
+//                    viewModel.requestEnterThirdGame(publicityMenuData?.eGameMenuData)
+//                }
+//            }
+//        }
 
     }
 
     private fun initRecommendView() {
-        with(rv_recommend) {
-            if (layoutManager == null) {
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            }
-            if (adapter == null) {
-                adapter = homeRecommendAdapter
-            }
-        }
+//        with(rv_recommend) {
+//            if (layoutManager == null) {
+//                layoutManager =
+//                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//            }
+//            if (adapter == null) {
+//                adapter = homeRecommendAdapter
+//            }
+//        }
     }
 
     /**
@@ -780,8 +808,148 @@ class MainHomeFragment() :
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
             btn_login.isVisible = !it
-            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+//            lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
+    }
+
+    //获取tab数据
+    private fun getTabDate(){
+
+        //标题数据
+        tabSelectTitleList.add("推荐")
+        tabSelectTitleList.add("直播")
+        tabSelectTitleList.add("体育")
+        tabSelectTitleList.add("世界杯")
+        tabSelectTitleList.add("棋牌")
+        tabSelectTitleList.add("电子")
+        //选中图片
+        tabSelectIconList.add(R.drawable.icon_recommend)
+        tabSelectIconList.add(R.drawable.live1)
+        tabSelectIconList.add(R.drawable.sport1)
+        tabSelectIconList.add(R.drawable.word_cup1)
+        tabSelectIconList.add(R.drawable.live1)
+        tabSelectIconList.add(R.drawable.sport1)
+        //未选中图片
+        tabUnSelectIconList.add(R.drawable.icon_un_recommend)
+        tabUnSelectIconList.add(R.drawable.live0)
+        tabUnSelectIconList.add(R.drawable.sport0)
+        tabUnSelectIconList.add(R.drawable.word_cup0)
+        tabUnSelectIconList.add(R.drawable.live0)
+        tabUnSelectIconList.add(R.drawable.sport0)
+
+        //https://media.istockphoto.com/photos/european-shorthair-sitting-picture-id489118215?k=20&m=489118215&s=612x612&w=0&h=DKvQffbLJhslH3gnGmCv60bwpFhljdd15o_c-RNKJ0k=
+        var homeLiveDate1 = HomeLiveData("意大利甲级联赛","足球赛事","上半场",
+            R.drawable.card_sport_amfootball,
+            R.drawable.icon_avatar,"明星球员1号种子,最牛的直播", "https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731395343157889920.png",
+        "https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/sports/tennis.png",
+            "宇宙无敌队","银河旗舰队","3","3")
+        var homeLiveDate2 = HomeLiveData("BGC男蓝联赛","篮球赛事","第一节",
+            R.drawable.card_sport_baseball,
+            R.drawable.icon_recommend,"食堂阿姨解说赛事", "https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731388177098541952.png",
+            "https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/basketball-team/730832746050368256.png",
+            "前端组","后台组","3","0")
+        var homeLiveDate3 = HomeLiveData("技术中心联赛","吹牛赛事","决赛圈",
+            R.drawable.card_sport_football,
+            R.drawable.word_cup0,"没有什么介绍", "https://dawnbyte-pic.oss-cn-hongkong.aliyuncs.com/soccer-team/731603027876168704.png",
+            "https://winter-hub.oss-cn-hangzhou.aliyuncs.com/soccer-team/731390961195879296.png",
+            "缅因猫","边牧犬","1","1")
+        hotDataList.add(homeLiveDate1)
+        hotDataList.add(homeLiveDate2)
+        hotDataList.add(homeLiveDate3)
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        hotelecList.add(HomeTabItem1(R.drawable.ic_lectronics_game,1))
+        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"牌九","PAIJIU"))
+        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"王者荣耀","WANGZHE"))
+        homeChessList.add(HomeChessItem(R.drawable.ic_poker_item,"英雄联盟","KINGMAN"))
+        initListView()
+    }
+
+    fun initListView(){
+        //热门直播
+        if (hotDataList.isNullOrEmpty()){
+            hot_live_match.visibility = View.GONE
+        }else{
+            hotDataList[0].apply {
+                tv_match_name.text = matchName?:""
+                tv_match_type_name.text = matchType
+                tv_first_half_game.text = half
+                tv_match_time.text = "12:00"
+                iv_live_type.setImageResource(imageType)
+                iv_avatar_live.setImageResource(starPlayer)
+                tv_introduction.text = starTitle
+            }
+            homeHotLiveAdapter.data = hotDataList
+            rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            rv_match_list.adapter = homeHotLiveAdapter
+        }
+            //热门电子游戏
+        with(rv_egame){
+            if (layoutManager == null) {
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            }
+            if (adapter == null) {
+                adapter = hotElectronicAdapter
+            }
+            hotElectronicAdapter.setNewData(hotelecList)
+            hotElectronicAdapter.setOnItemClickListener{adapter, view, position ->
+                //点击跳转到哪里
+                ToastUtil.showToast(activity,"电子$position")
+            }
+        }
+        //棋牌
+        with(rv_chess){
+            if (layoutManager == null) {
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            }
+            if (adapter == null) {
+                adapter = homeChessAdapter
+            }
+            homeChessAdapter.setNewData(homeChessList)
+            homeChessAdapter.setOnItemClickListener { adapter, view, position ->
+                //点击跳转到哪里
+                ToastUtil.showToast(activity,"棋牌$position")
+            }
+        }
+
+    }
+
+    //切换fragment
+    fun showChangeFragment() {
+        //点击直播跳转
+        include_layout1.setOnClickListener {
+            (parentFragment as HomeFragment).onTabClickByPosition(1)
+        }
+        //点击体育跳转
+        include_layout2.setOnClickListener {
+            (parentFragment as HomeFragment).onTabClickByPosition(2)
+        }
+        //点击世界杯跳转
+        include_layout3.setOnClickListener {
+            (parentFragment as HomeFragment).onTabClickByPosition(3)
+        }
+        //点击滚球跳转
+        include_layout4.setOnClickListener {
+//            ll_home_content.visibility = View.GONE
+//            home_main_fragment.visibility = View.VISIBLE
+//            childFragmentManager.beginTransaction()
+//                .replace(R.id.home_main_fragment, HomeLiveFragment.newInstance())
+//                .commit()
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
+        }
+        //点击电子跳转
+        include_layout5.setOnClickListener {
+            (parentFragment as HomeFragment).onTabClickByPosition(4)
+        }
+        //点击棋牌跳转
+        include_layout6.setOnClickListener {
+            (parentFragment as HomeFragment).onTabClickByPosition(5)
+        }
+
     }
 
 }

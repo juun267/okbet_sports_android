@@ -12,11 +12,11 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.MatchOdd
+import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.OddsListData
-import org.cxct.sportlottery.network.odds.list.OddsListRequest
-import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -292,20 +292,47 @@ class SportListViewModel(
 //        Timber.e("playCateMenuCode: $playCateMenuCode")
 
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.oddsService.getOddsList(
-                    OddsListRequest(
-                        gameType,
-                        matchTypeFilter(matchType),
-                        leagueIdList = emptyFilter(leagueIdList),
-                        matchIdList = emptyFilter(matchIdList),
-                        startTime = startTime,
-                        endTime = endTime,
-                        playCateMenuCode = playCateMenuCode
+            var result: OddsListResult? = null
+            if (matchType == MatchType.IN_PLAY.postValue && gameType == GameType.ALL.key) {
+                doNetwork(androidContext) {
+                    OneBoSportApi.oddsService.getInPlayAllList(
+                        OddsListRequest(
+                            gameType,
+                            matchTypeFilter(matchType),
+                            leagueIdList = emptyFilter(leagueIdList),
+                            matchIdList = emptyFilter(matchIdList),
+                            startTime = startTime,
+                            endTime = endTime,
+                            playCateMenuCode = playCateMenuCode
+                        )
                     )
-                )
-            }?.updateMatchType()
-
+                }?.let {
+                    var leagueOdds = mutableListOf<LeagueOdd>().apply {
+                        it.OddsListDataList.forEach {
+                            it?.leagueOdds?.let {
+                                addAll(it)
+                            }
+                        }
+                    }
+                    result = OddsListResult(it.code, it.msg, it.success,
+                        OddsListData(leagueOdds, Sport(GameType.ALL.key, GameType.ALL.name)))
+                }
+            } else {
+                result = doNetwork(androidContext) {
+                    OneBoSportApi.oddsService.getOddsList(
+                        OddsListRequest(
+                            gameType,
+                            matchTypeFilter(matchType),
+                            leagueIdList = emptyFilter(leagueIdList),
+                            matchIdList = emptyFilter(matchIdList),
+                            startTime = startTime,
+                            endTime = endTime,
+                            playCateMenuCode = playCateMenuCode
+                        )
+                    )
+                }
+            }
+            result?.updateMatchType()
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.sortOddsMap()

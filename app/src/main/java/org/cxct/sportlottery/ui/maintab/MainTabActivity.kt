@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -29,11 +28,12 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
+import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -42,13 +42,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     lateinit var fragmentHelper: FragmentHelper
     var fragments = arrayOf<Fragment>(
-        MainHomeFragment.newInstance(),
+        HomeFragment.newInstance(),
         SportFragment.newInstance(),
         BetRecordFragment.newInstance(),
         FavoriteFragment.newInstance(),
         ProfileCenterFragment.newInstance()
     )
     private var betListFragment = BetListFragment()
+    private var homeLeftFragment = MainLeftFragment()
+    private var sportLeftFragment = SportLeftFragment()
 
     companion object {
         fun reStart(context: Context) {
@@ -135,40 +137,37 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initDrawerLayout() {
-        drawerLayout.setScrimColor(Color.TRANSPARENT)
+        showLeftFrament(0)
+//        drawerLayout.setScrimColor(Color.TRANSPARENT)
         drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerStateChanged(newState: Int) {}
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-                val mContent: View = drawerLayout.getChildAt(0)
-                //设置1.1，让主界面更缩小
-                val scale = 1 - slideOffset
-                val rightScale = 0.55f + scale * 0.45f
-                if (drawerView.tag == "LEFT") {
-                    val leftScale = 1 - scale
-                    drawerView.scaleX = leftScale
-                    drawerView.scaleY = leftScale
-                    drawerView.alpha = 1f
-                    mContent.translationX = drawerView.measuredWidth * (1 - scale) * 0.94f
-                    mContent.pivotX = 0f
-                    mContent.pivotY = (mContent.measuredHeight / 2).toFloat()
-                    mContent.invalidate()
-                    mContent.scaleX = rightScale
-                    mContent.scaleY = rightScale
-                }
+//                val mContent: View = drawerLayout.getChildAt(0)
+//                //设置1.1，让主界面更缩小
+//                val scale = 1 - slideOffset
+//                val rightScale = 0.55f + scale * 0.45f
+//                if (drawerView.tag == "LEFT") {
+//                    val leftScale = 1 - scale
+//                    drawerView.scaleX = leftScale
+//                    drawerView.scaleY = leftScale
+//                    drawerView.alpha = 1f
+//                    mContent.translationX = drawerView.measuredWidth * (1 - scale) * 0.94f
+//                    mContent.pivotX = 0f
+//                    mContent.pivotY = (mContent.measuredHeight / 2).toFloat()
+//                    mContent.invalidate()
+//                    mContent.scaleX = rightScale
+//                    mContent.scaleY = rightScale
+//                }
             }
 
             override fun onDrawerOpened(drawerView: View) {
-                cv_content.radius = 15.dp.toFloat()
                 if (drawerView.tag == "LEFT") {
                     drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                         Gravity.RIGHT
                     )
-                    ImmersionBar.with(this@MainTabActivity)
-                        .transparentStatusBar()
-                        .statusBarDarkFont(false)
-                        .fitsSystemWindows(false)
-                        .init()
                 } else {
                     drawerLayout.setDrawerLockMode(
                         DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
@@ -180,14 +179,20 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
             override fun onDrawerClosed(drawerView: View) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                cv_content.radius = 0f
-                ImmersionBar.with(this@MainTabActivity)
-                    .transparentStatusBar()
-                    .statusBarDarkFont(true)
-                    .fitsSystemWindows(false)
-                    .init()
             }
         })
+    }
+
+    fun showLeftFrament(position: Int) {
+        when (position) {
+            0 -> supportFragmentManager.beginTransaction()
+                .replace(R.id.left_menu, homeLeftFragment)
+                .commit()
+            else ->
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.left_menu, sportLeftFragment)
+                    .commit()
+        }
 
     }
 
@@ -196,7 +201,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             //選單選擇結束要收起選單
-            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.85).toInt() //動態調整側邊欄寬
+            left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75).toInt() //動態調整側邊欄寬
 
         } catch (e: Exception) {
             e.printStackTrace()

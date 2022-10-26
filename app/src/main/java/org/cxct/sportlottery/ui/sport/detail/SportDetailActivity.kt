@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.exoplayer2.util.Util
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -53,7 +53,6 @@ import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.MyWebView
 import timber.log.Timber
 import java.util.*
 
@@ -149,12 +148,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
     private val liveToolBarListener by lazy {
         object : DetailLiveViewToolbar.LiveToolBarListener {
-            override fun getLiveInfo(newestUrl: Boolean) {
-                matchInfo?.let {
-                    viewModel.getLiveInfo(it.id, newestUrl)
-                }
-            }
-
             override fun onFullScreen(enable: Boolean) {
                 if (enable) {
                     showFullScreen(enable)
@@ -224,13 +217,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         })
-        live_view_tool_bar.web_view.setOnTouchScreenListener(object :
-            MyWebView.OnTouchScreenListener {
+        live_view_tool_bar.setOnTouchScreenListener(object :
+            DetailLiveViewToolbar.OnTouchScreenListener {
             override fun onTouchScreen() {
                 isFlowing = true;
-                if (collaps_toolbar.getVisibility() == View.GONE) {
+                if (collaps_toolbar.visibility == View.GONE) {
                     collaps_toolbar.startAnimation(enterAnim);
-                    collaps_toolbar.setVisibility(View.VISIBLE);
+                    collaps_toolbar.visibility = View.VISIBLE;
                 }
             }
 
@@ -364,27 +357,23 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         startTimer()
         isLogin = viewModel.loginRepository.isLogin.value == true
         live_view_tool_bar.initLoginStatus(isLogin)
-
+        live_view_tool_bar.startPlayer(isLogin)
     }
 
     override fun onPause() {
         super.onPause()
-        if (Util.SDK_INT < 24) {
-            live_view_tool_bar.stopPlayer()
-        }
+        live_view_tool_bar.stopPlayer()
         cancelTimer()
     }
 
     override fun onStop() {
         super.onStop()
-        if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.stopPlayer()
-        }
         unSubscribeChannelEventAll()
     }
 
     override fun onDestroy() {
         viewModel.clearLiveInfo()
+        live_view_tool_bar.release()
         super.onDestroy()
     }
 
@@ -578,8 +567,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.matchLiveInfo.observe(this) {
-            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-//                live_view_tool_bar.videoUrl = liveStreamInfo.streamUrl
+            it?.getContentIfNotHandled()?.let { matchRound ->
+                live_view_tool_bar.liveUrl =
+                    if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                lin_live.isVisible = !TextUtils.isEmpty(live_view_tool_bar.liveUrl)
             }
         }
         viewModel.videoUrl.observe(this) { event ->
@@ -883,11 +874,24 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
+            lin_live.isVisible =
+                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_video.isVisible =
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =
                 TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
+            lin_live.setOnClickListener {
+                live_view_tool_bar.liveUrl?.let {
+                    toolBar.isVisible = false
+                    live_view_tool_bar.isVisible = true
+                    collaps_toolbar.isVisible = true
+                    collaps_toolbar.iv_toolbar_bg.isVisible = false
+                    live_view_tool_bar.showLive()
+                    setScrollEnable(false)
+                    startDelayHideTitle()
+                }
+            }
             lin_video.setOnClickListener {
                 live_view_tool_bar.videoUrl?.let {
                     toolBar.isVisible = false
@@ -912,8 +916,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {
                 lin_menu.isVisible = true
-                v_menu_1.isVisible = lin_live.isVisible
-                v_menu_2.isVisible = lin_video.isVisible && lin_anime.isVisible
+                v_menu_1.isVisible = lin_video.isVisible
+                v_menu_2.isVisible = lin_anime.isVisible
             } else {
                 lin_menu.isVisible = false
             }

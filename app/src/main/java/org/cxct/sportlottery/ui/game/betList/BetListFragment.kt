@@ -93,7 +93,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             when (msg.what) {
                 BET_CONFIRM_TIPS -> {
                     val spannableStringBuilder = SpannableStringBuilder()
-                    val text1 = SpannableString(getString(R.string.text_bet_not_success))
+                    val text1 = SpannableString(LocalUtils.getString(R.string.text_bet_not_success))
                     val text2 = SpannableString(getString(R.string.waiting))
                     val foregroundSpan =
                         ForegroundColorSpan(ContextCompat.getColor(requireContext(),

@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -66,6 +67,7 @@ class OddsButtonHome @JvmOverloads constructor(
     private var hideItem = false
 
     private var mBackground: Drawable? = null
+    private var oddOrientation = LinearLayout.HORIZONTAL
 
     init {
         init(attrs)
@@ -82,6 +84,11 @@ class OddsButtonHome @JvmOverloads constructor(
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+        oddOrientation = when (typedArray.getInt(R.styleable.OddsButton_ob_orientation, 0)) {
+            0 -> LinearLayout.HORIZONTAL
+            1 -> LinearLayout.VERTICAL
+            else -> LinearLayout.HORIZONTAL
+        }
         try {
             inflate(context, R.layout.button_odd_home, this).apply {
                 button_odd_detail.background = mBackground
@@ -98,6 +105,7 @@ class OddsButtonHome @JvmOverloads constructor(
         isOddPercentage: Boolean? = false,
         matchInfo: MatchInfo?,
     ) {
+        lin_odd.orientation = oddOrientation
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
@@ -144,6 +152,7 @@ class OddsButtonHome @JvmOverloads constructor(
         isDrawBtn: Boolean? = false,
         isOtherBtn: Boolean? = false,
     ) {
+        lin_odd.orientation = oddOrientation
         mOdd = odds
         mOddsType = oddsType
 

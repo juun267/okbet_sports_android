@@ -46,6 +46,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
+import org.cxct.sportlottery.network.Constants.QUERY_GAME_ENTRY_CONFIG
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
@@ -130,6 +131,7 @@ import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResult
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
@@ -553,6 +555,10 @@ object ErrorUtils {
                     (url.contains(RESET_FORGET_PASSWORD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ResetPasswordResult(it.code, it.msg, it.success,null) as T
+                    }
+                    (url.contains(QUERY_GAME_ENTRY_CONFIG)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return QueryGameEntryConfigResult(it.code, it.msg, it.success,null) as T
                     }
 
                 }

@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("cscdawww.com", "mcziulal.com", "toomzqyq.com", "oiobnbss.com")
+    val SERVER_URL_LIST = listOf("24w2pjn3.com", "gdcwqdq5.com", "rjxs4mds.com", "dde2x4hh.com")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
     private var mBaseUrl = ""
@@ -276,6 +276,9 @@ object Constants {
     const val MATCH_PRELOAD = "/api/front/match/preload"
     const val MATCH_LIVE_URL = "/api/front/match/live/url"
     const val MATCH_TRACKER_URL = "/api/front/match/tracker/url/{mappingId}"
+    const val MATCH_LIVE_ROUND = "/api/front/liveRound"
+    const val MATCH_LIVE_ROUND_COUNT = "/api/front/liveRound/count"
+    const val MATCH_LIVE_ROUND_HALL = "/api/front/liveRound/mobile/hall"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
@@ -286,6 +289,7 @@ object Constants {
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
     const val MATCH_ODDS_EPS_LIST = "/api/front/match/odds/eps/list"
     const val MATCH_ODDS_QUICK_LIST = "/api/front/match/odds/quick/list"
+    const val MATCH_INPLAY_ALL = "/api/front/match/odds/mobile/inplay/all"
 
     //sport
     const val SPORT_LIST = "/api/front/sport/list"
@@ -421,4 +425,10 @@ object Constants {
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //获取短信验证码
+
+    //首页二次改版接口
+    const val QUERY_GAME_ENTRY_CONFIG = "/api/front/gameEntryConfig/queryGameEntryConfig" //电子，棋牌接口（首页和二级页面使用同一个接口）
+    //首页热门盘口推荐
+    const val HOT_HANDICAP_LIST = "/api/front/match/odds/mobile/hot/handicap/{handicapType}/list"
+    //
 }

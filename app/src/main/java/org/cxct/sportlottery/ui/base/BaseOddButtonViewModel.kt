@@ -73,12 +73,15 @@ abstract class BaseOddButtonViewModel(
 
     protected val mUserMoney = MutableLiveData<Double?>()
     protected val mLockMoney = MutableLiveData<Double?>()
+    protected val _oddChange = MutableLiveData<Boolean>()
 
     val userMoney: LiveData<Double?> //使用者餘額
         get() = mUserMoney
 
     val lockMoney: LiveData<Double?>
         get() = mLockMoney
+    val oddChange: LiveData<Boolean>
+        get() = _oddChange
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
 
@@ -411,7 +414,25 @@ abstract class BaseOddButtonViewModel(
             Event(result).getContentIfNotHandled()?.let {
                 _betAddResult.postValue(Event(result))
                 if (it.success) {
-                    betInfoRepository.clear()
+                    //检查是否有item注单下载失败
+                    var haveSingleItemFaild = false
+                    var haveParlayItemFaild = false
+                    it.receipt?.singleBets?.let {
+                        haveSingleItemFaild = it.any { it.status == 7 }
+                    }
+                    it.receipt?.parlayBets?.let {
+                        haveParlayItemFaild = it.any { it.status == 7 }
+                    }
+                    if (!haveSingleItemFaild && !haveParlayItemFaild) {
+                        betInfoRepository.clear()
+                        _oddChange.postValue(false)
+                        LogUtil.e("下注成功")
+                    } else {
+                        LogUtil.e("更新赔率，更新UI")
+                        //处理赔率更新
+                        _oddChange.postValue(true)
+                    }
+
                 }
             }
 

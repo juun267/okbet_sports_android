@@ -12,7 +12,7 @@
         android:id="@+id/ll_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/exo_white"
+        android:background="@color/color_FFFFFF"
         android:orientation="vertical"
         tools:context="org.cxct.sportlottery.ui.common.CustomTabLayout">
 
@@ -101,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/now_balance"
-                            android:textColor="@color/exo_white"
+                            android:textColor="@color/color_FFFFFF"
                             android:textSize="@dimen/textSize14sp"
                             android:textStyle="bold" />
                     </RelativeLayout>
@@ -117,7 +117,7 @@
                             android:id="@+id/tv_currency_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/exo_white"
+                            android:textColor="@color/color_FFFFFF"
                             android:textSize="@dimen/textSize20sp"
                             tools:text="₱" />
 
@@ -128,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="0"
-                            android:textColor="@color/exo_white"
+                            android:textColor="@color/color_FFFFFF"
                             android:textSize="@dimen/textSize20sp"
                             tools:text="19940.000" />
                     </LinearLayout>
@@ -156,7 +156,7 @@
                             android:id="@+id/tv_channel_select"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/exo_white"
+                            android:background="@color/color_FFFFFF"
                             android:paddingStart="@dimen/margin_14"
                             android:paddingTop="@dimen/margin_10"
                             android:paddingBottom="@dimen/margin_9"
@@ -169,7 +169,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_1"
-                            android:background="@color/exo_white"
+                            android:background="@color/color_FFFFFF"
                             android:orientation="horizontal">
 
 
@@ -187,7 +187,7 @@
                             android:id="@+id/add_bank_group"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/margin_50"
-                            android:background="@color/exo_white">
+                            android:background="@color/color_FFFFFF">
 
                             <TextView
                                 android:id="@+id/tv_add_bank"

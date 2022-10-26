@@ -8,12 +8,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_home_menu_left">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardElevation="0dp">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,7 +48,6 @@
                     tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
     <!-- 投注單列表 & 快捷投注單 -->
     <FrameLayout
         android:id="@+id/fl_bet_list"
@@ -64,7 +57,6 @@
         tools:visibility="gone" />
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/left_menu"
-        android:name="org.cxct.sportlottery.ui.maintab.MainLeftFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:outlineAmbientShadowColor="@color/transparent"

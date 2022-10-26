@@ -12,14 +12,19 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.match.MatchRound
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuFilter
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.publicityRecommend.PublicityRecommendRequest
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
@@ -27,7 +32,6 @@ import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
 import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -78,10 +82,17 @@ class MainHomeViewModel(
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     val token = loginRepository.token
 
-    val cardGameData: LiveData<List<ThirdDictValues?>>
-        get() = _cardGameData
-    private val _cardGameData = MutableLiveData<List<ThirdDictValues?>>()
+    val homeGameData: LiveData<List<QueryGameEntryData>?>
+        get() = _homeGameData
+    private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
+    private val _liveRoundHall = MutableLiveData<List<MatchLiveData>>()
+    val liveRoundHall: LiveData<List<MatchLiveData>>
+        get() = _liveRoundHall
 
+    //賽事直播網址
+    private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
+    val matchLiveInfo: LiveData<Event<MatchRound>?>
+        get() = _matchLiveInfo
 
     //region 宣傳頁用
     fun getRecommend() {
@@ -275,43 +286,6 @@ class MainHomeViewModel(
         }
     }
 
-    fun getMenuThirdGame() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getThirdGameList()?.let { gameCateDataList ->
-                //棋牌
-                val eGameList =
-                    gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
-                //真人
-                val casinoList =
-                    gameCateDataList.firstOrNull { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.firstOrNull()?.gameList?.firstOrNull()?.thirdGameData
-                //TODO 鬥雞 當前還沒有接入這個分類
-                val sabongList = null
-
-                updatePublicityMenuLiveData(
-                    sportMenuDataList = null,
-                    eGameMenuDataList = eGameList,
-                    casinoMenuDataList = casinoList,
-                    sabongMenuDataList = sabongList
-                )
-                var cardGameList = mutableListOf<ThirdDictValues?>(null, null, null)
-                gameCateDataList.forEach { gameCateData ->
-                    gameCateData.tabDataList.forEach { gameTabData ->
-                        gameTabData.gameList.forEach { gameItemData ->
-                            gameItemData.thirdGameData?.let {
-                                //PM 指定捞起这几个游戏，没有捞到或者open=0，就显示敬请期待
-                                when (it.firmCode) {
-                                    "CGQP" -> cardGameList[0] = it
-                                    "TPG" -> cardGameList[1] = it
-                                    "FKG" -> cardGameList[2] = it
-                                }
-                            }
-                        }
-                    }
-                }
-                _cardGameData.postValue(cardGameList.toList())
-            }
-        }
-    }
 
     //滾球、今日、早盤、冠軍、串關、(即將跟menu同一層)
     private suspend fun getSportMenuAll(): SportMenuResult? {
@@ -641,5 +615,63 @@ class MainHomeViewModel(
             matchInfo?.socketMatchStatus = status
         }
     }
+    //二次改版region
+    /**
+     * 电子和棋牌
+     * @position position 1: 首页； 2: 主页
+     * @gameType gameType 1: 棋牌； 2: 电子
+     */
+    fun getGameEntryConfig(position: Int, gameType: Int?) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.queryGameEntryConfig(
+                    QueryGameEntryConfigRequest(position, gameType)
+                )
+            }
+            result?.let { result ->
+                _homeGameData.postValue(result.rows)
+                LogUtil.toJson(result)
+            }
+        }
+    }
+    /**
+     * 热门盘口
+     * @handicapType 盘口类型, 1:独赢 2：让球 3:大小
+     */
 
+    fun getHandicapConfig(handicapType: Int){
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getHotHandicapList(handicapType)
+            }
+            result?.let { result->
+                LogUtil.toJson(result)
+            }
+        }
+    }
+    fun getLiveRoundHall() {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getLiveRoundHall()
+            }?.let {
+                if (it.success) {
+                    _liveRoundHall.postValue(it.MatchLiveList)
+                }
+            }
+        }
+    }
+
+    fun getLiveInfo(roundNo: String) {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getMatchLiveRound(roundNo)
+            }
+            result?.matchRound?.let {
+                it.roundNo = roundNo
+                _matchLiveInfo.postValue(Event(it))
+            }
+        }
+
+    }
+    //endregion
 }

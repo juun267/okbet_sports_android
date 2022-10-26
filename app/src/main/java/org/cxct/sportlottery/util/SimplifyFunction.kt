@@ -39,6 +39,7 @@ import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
@@ -53,6 +54,8 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
+import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
+import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
@@ -144,6 +147,11 @@ fun RecyclerView.addScrollWithItemVisibility(
                         }
                         //新版冠軍
                         is SportOutrightAdapter -> {
+                            getVisibleRangePosition().forEach { leaguePosition ->
+                                visibleRangePair.add(Pair(leaguePosition, -1))
+                            }
+                        }
+                        is HomeLiveAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 visibleRangePair.add(Pair(leaguePosition, -1))
                             }
@@ -248,116 +256,96 @@ fun RecyclerView.getVisibleRangePosition(): List<Int> {
  * 初次獲取資料訂閱可視範圍內賽事(GameV3Fragment、GameLeagueFragment、MyFavoriteFragment)
  */
 @SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(leagueAdapter: LeagueAdapter, activity: Activity) {
-    post {
-        getVisibleRangePosition().forEach { leaguePosition ->
-            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            viewByPosition?.let { view ->
-                if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                    val viewHolder = getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
-                    viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                        if (leagueAdapter.data.isNotEmpty()) {
-                            Log.d(
-                                "[subscribe]",
-                                "訂閱 ${leagueAdapter.data[leaguePosition].league.name} -> " +
-                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                        "${leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
-                            )
-                            (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                leagueAdapter.data[leaguePosition].gameType?.key,
-                                leagueAdapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(adapter: SportLeagueAdapter, activity: Activity) {
-    post {
-        getVisibleRangePosition().forEach { leaguePosition ->
-            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            viewByPosition?.let { view ->
-                if (getChildViewHolder(view) is SportLeagueAdapter.ItemViewHolder) {
-                    val viewHolder = getChildViewHolder(view) as SportLeagueAdapter.ItemViewHolder
-                    viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                        .forEach { matchPosition ->
-                            if (adapter.data.isNotEmpty() && leaguePosition < adapter.data.size) {
-                                Log.d(
-                                    "[subscribe]",
-                                    "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
-                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.homeName} vs " +
-                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.awayName}"
-                                )
-                                (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    adapter.data.getOrNull(leaguePosition)?.gameType?.key,
-                                    adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.id
-                                )
-                            }
-                        }
-                }
-            }
-        }
-    }
-}
-
-/**
- * 初次獲取冠軍資料訂閱可視範圍內賽事(GameV3Fragment(OutrightLeagueOddAdapter))
- *
- * @see org.cxct.sportlottery.ui.game.hall.GameV3Fragment.setOutrightLeagueAdapter
- * @see OutrightLeagueOddAdapter
- */
 fun RecyclerView.firstVisibleRange(
-    gameType: String?,
-    outrightLeagueOddAdapter: OutrightLeagueOddAdapter,
+    adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
     activity: Activity,
 ) {
     post {
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            viewByPosition?.let { view ->
-                when (getChildViewHolder(view)) {
-                    is OutrightLeagueOddAdapter.OutrightTitleViewHolder -> {
-                        when (val outrightLeagueData =
-                            outrightLeagueOddAdapter.data[leaguePosition]) {
-                            is MatchOdd -> {
-                                Log.d(
-                                    "[subscribe]",
-                                    "訂閱 ${outrightLeagueData.matchInfo?.name} -> " +
-                                            "${outrightLeagueData.matchInfo?.homeName} vs " +
-                                            "${outrightLeagueData.matchInfo?.awayName}"
-                                )
-                                (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    gameType,
-                                    outrightLeagueData.matchInfo?.id
-                                )
-                            }
+            when (adapter) {
+                is LeagueAdapter -> {
+                    viewByPosition?.let { view ->
+                        if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
+                            val viewHolder =
+                                getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
+                            viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                .forEach { matchPosition ->
+                                    if (adapter.data.isNotEmpty()) {
+                                        Log.d(
+                                            "[subscribe]",
+                                            "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
+                                                    "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
+                                                    "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
+                                        )
+                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                            adapter.data[leaguePosition].gameType?.key,
+                                            adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
+                                        )
+                                    }
+                                }
                         }
-
                     }
                 }
-            }
-        }
-    }
-}
+                is SportLeagueAdapter -> {
+                    viewByPosition?.let { view ->
+                        if (getChildViewHolder(view) is SportLeagueAdapter.ItemViewHolder) {
+                            val viewHolder =
+                                getChildViewHolder(view) as SportLeagueAdapter.ItemViewHolder
+                            viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                                .forEach { matchPosition ->
+                                    if (adapter.data.isNotEmpty() && leaguePosition < adapter.data.size) {
+                                        Log.d(
+                                            "[subscribe]",
+                                            "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
+                                                    "${
+                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                            matchPosition)?.matchInfo?.homeName
+                                                    } vs " +
+                                                    "${
+                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                            matchPosition)?.matchInfo?.awayName
+                                                    }"
+                                        )
+                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                            adapter.data.getOrNull(leaguePosition)?.gameType?.key,
+                                            adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                matchPosition)?.matchInfo?.id
+                                        )
+                                    }
+                                }
+                        }
+                    }
+                }
+                is OutrightLeagueOddAdapter -> {
+                    viewByPosition?.let { view ->
+                        when (getChildViewHolder(view)) {
+                            is OutrightLeagueOddAdapter.OutrightTitleViewHolder -> {
+                                when (val outrightLeagueData =
+                                    adapter.data[leaguePosition]) {
+                                    is MatchOdd -> {
+                                        Log.d(
+                                            "[subscribe]",
+                                            "訂閱 ${outrightLeagueData.matchInfo?.name} -> " +
+                                                    "${outrightLeagueData.matchInfo?.homeName} vs " +
+                                                    "${outrightLeagueData.matchInfo?.awayName}"
+                                        )
+                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                            outrightLeagueData.matchInfo?.gameType,
+                                            outrightLeagueData.matchInfo?.id
+                                        )
+                                    }
+                                }
 
-fun RecyclerView.firstVisibleRange(
-    gameType: String?,
-    sportOutrightAdapter: SportOutrightAdapter,
-    activity: Activity,
-) {
-    post {
-        getVisibleRangePosition().forEach { leaguePosition ->
-            val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            viewByPosition?.let { view ->
-                when (getChildViewHolder(view)) {
-                    is SportOutrightAdapter.OutrightLeagueViewHolder -> {
-                        when (val outrightLeagueData =
-                            sportOutrightAdapter.data[leaguePosition]) {
-                            is OutrightItem -> {
+                            }
+                        }
+                    }
+                }
+                is SportOutrightAdapter -> {
+                    viewByPosition?.let { view ->
+                        if (getChildViewHolder(view) is SportOutrightAdapter.OutrightLeagueViewHolder) {
+                            val outrightLeagueData = adapter.data[leaguePosition]
+                            if (outrightLeagueData is OutrightItem) {
                                 outrightLeagueData.matchOdd.apply {
                                     Log.d(
                                         "[subscribe]",
@@ -366,7 +354,7 @@ fun RecyclerView.firstVisibleRange(
                                                 "${matchInfo?.awayName}"
                                     )
                                     (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                        gameType,
+                                        matchInfo?.gameType,
                                         matchInfo?.id
                                     )
                                 }
@@ -375,37 +363,70 @@ fun RecyclerView.firstVisibleRange(
                         }
                     }
                 }
+                is FavoriteAdapter -> {
+                    viewByPosition?.let { view ->
+                        if (getChildViewHolder(view) is FavoriteAdapter.ItemViewHolder) {
+                            val viewHolder =
+                                getChildViewHolder(view) as FavoriteAdapter.ItemViewHolder
+                            viewHolder.itemView.rv_league.getVisibleRangePosition()
+                                .forEach { matchPosition ->
+                                    if (adapter.data.isNotEmpty()) {
+                                        Log.d(
+                                            "[subscribe]",
+                                            "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
+                                                    "${
+                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                            matchPosition)?.matchInfo?.homeName
+                                                    } vs " +
+                                                    "${
+                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                            matchPosition)?.matchInfo?.awayName
+                                                    }"
+                                        )
+                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
+                                            adapter.data.getOrNull(leaguePosition)?.gameType?.key,
+                                            adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
+                                                matchPosition)?.matchInfo?.id
+                                        )
+                                    }
+                                }
+                        }
+                    }
+                }
             }
         }
+
     }
 }
 
 @SuppressLint("LogNotTimber")
-fun RecyclerView.firstVisibleRange(adapter: FavoriteAdapter, activity: Activity) {
+fun RecyclerView.firstVisibleRange(adapter: HomeLiveAdapter, activity: Activity) {
     post {
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
-            viewByPosition?.let { view ->
-                if (getChildViewHolder(view) is FavoriteAdapter.ItemViewHolder) {
-                    val viewHolder = getChildViewHolder(view) as FavoriteAdapter.ItemViewHolder
-                    viewHolder.itemView.rv_league.getVisibleRangePosition()
-                        .forEach { matchPosition ->
-                            if (adapter.data.isNotEmpty()) {
+            when (adapter) {
+                is HomeLiveAdapter -> {
+                    viewByPosition?.let { view ->
+                        if (getChildViewHolder(view) is ItemHomeLiveHolder) {
+                            val itemdata = adapter.data[leaguePosition]
+                            if (itemdata is MatchLiveData) {
                                 Log.d(
                                     "[subscribe]",
-                                    "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
-                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.homeName} vs " +
-                                            "${adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.awayName}"
+                                    "訂閱 ${itemdata.matchInfo?.name} -> " +
+                                            "${itemdata.matchInfo?.homeName} vs " +
+                                            "${itemdata.matchInfo?.awayName}"
                                 )
                                 (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                    adapter.data.getOrNull(leaguePosition)?.gameType?.key,
-                                    adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(matchPosition)?.matchInfo?.id
+                                    itemdata.matchInfo?.gameType,
+                                    itemdata.matchInfo?.id
                                 )
                             }
                         }
+                    }
                 }
             }
         }
+
     }
 }
 

@@ -55,9 +55,17 @@ data class MatchInfo(
     val homeIcon: String? = null,
     @Json(name = "awayIcon")
     val awayIcon: String? = null,
-
-    ) : Parcelable, MatchInfo {
-
+    @Json(name = "isLive")
+    val isLive: Int? = 0,//是否有主播直播 0：否，1：是
+    @Json(name = "roundNo")
+    val roundNo: String? = null,//主播房间号
+    @Json(name = "streamerIcon")
+    val streamerIcon: String? = null,//主播头像
+    @Json(name = "streamerName")
+    val streamerName: String? = null,//主播名字
+    @Json(name = "frontCoverUrl")
+    val frontCoverUrl: String? = null,//封面路径
+) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
     override var awayScore: String? = null //客队分数
@@ -115,4 +123,7 @@ data class MatchInfo(
 
     //联赛图标
     var categoryIcon: String? = null
+
+    var pullRtmpUrl: String? = null
+    var pullFlvUrl: String? = null
 }

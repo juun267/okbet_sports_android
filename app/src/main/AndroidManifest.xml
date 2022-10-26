@@ -40,6 +40,7 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -201,8 +202,13 @@
         <activity
             android:name=".ui.profileCenter.money_transfer.MoneyTransferActivity"
             android:screenOrientation="portrait" /> <!-- 後臺服務-長連線 -->
-        <activity android:name=".ui.profileCenter.cancelaccount.CancelAccountActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.profileCenter.cancelaccount.CancelAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.maintab.menu.SettingCenterActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".service.BackService" /> <!-- broadCast -->
         <receiver
             android:name=".service.ServiceBroadcastReceiver"

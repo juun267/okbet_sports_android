@@ -355,7 +355,6 @@ class SportOutrightFragment :
             Handler().postDelayed(
                 {
                     game_list?.firstVisibleRange(
-                        GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key,
                         sportOutrightAdapter,
                         activity ?: requireActivity()
                     )

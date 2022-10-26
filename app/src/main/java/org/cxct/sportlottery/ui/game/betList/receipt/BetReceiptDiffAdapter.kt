@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
-import kotlinx.android.synthetic.main.item_match_receipt.view.top_space
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -231,7 +230,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
                     //"status": 7 顯示賠率已改變
                     if (status == 7)
-                        interfaceStatusChangeListener?.onChange()
+                        interfaceStatusChangeListener?.onChange("")
 
                     tv_bet_status_single.setReceiptStatusColor(status)
 
@@ -342,7 +341,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
                     //"status": 7 顯示賠率已改變
                     if (status == 7)
-                        interfaceStatusChangeListener?.onChange()
+                        interfaceStatusChangeListener?.onChange("")
 
                     tv_bet_status.setReceiptStatusColor(status)
                 }
@@ -351,7 +350,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
     }
 
     interface InterfaceStatusChangeListener {
-        fun onChange()
+        //取消触发来源 0: 自动, 1: 手动
+        fun onChange(cancelBy: String)
     }
 }
 

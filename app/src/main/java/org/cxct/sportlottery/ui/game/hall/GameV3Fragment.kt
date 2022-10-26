@@ -824,7 +824,6 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
             Handler().postDelayed(
                 {
                     game_list?.firstVisibleRange(
-                        viewModel.getSportSelectedCode(),
                         outrightLeagueOddAdapter,
                         activity ?: requireActivity()
                     )

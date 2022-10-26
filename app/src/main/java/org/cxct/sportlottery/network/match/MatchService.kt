@@ -1,10 +1,14 @@
 package org.cxct.sportlottery.network.match
 
+import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND
+import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND_COUNT
+import org.cxct.sportlottery.network.Constants.MATCH_LIVE_ROUND_HALL
 import org.cxct.sportlottery.network.Constants.MATCH_LIVE_URL
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_TRACKER_URL
 import org.cxct.sportlottery.network.matchLiveInfo.*
 import org.cxct.sportlottery.network.matchTracker.MatchTrackerUrlResult
+import org.cxct.sportlottery.network.odds.list.MatchLiveResult
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -34,7 +38,18 @@ interface MatchService {
     suspend fun getLiveP2Url(
         @Header("Authorization") accessToken: String?,
         @Header("Referer") referer: String?,
-        @Url url: String?
+        @Url url: String?,
     ): Response<P2UrlResponse>
+
+    @GET(MATCH_LIVE_ROUND + "/{roundNo}")
+    suspend fun getMatchLiveRound(
+        @Path("roundNo") roundNo: String,
+    ): Response<MatchRoundResult>
+
+    @GET(MATCH_LIVE_ROUND_COUNT)
+    suspend fun getLiveRoundCount(): Response<MatchLiveUrlResponse>
+
+    @GET(MATCH_LIVE_ROUND_HALL)
+    suspend fun getLiveRoundHall(): Response<MatchLiveResult>
 
 }
