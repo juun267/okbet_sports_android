@@ -83,9 +83,6 @@ class MainViewModel(
     private val _countByToday = MutableLiveData<Int>()
     val countByToday: LiveData<Int>
         get() = _countByToday
-    private val _sportCodeSpinnerList = MutableLiveData<List<StatusSheetData>>() //當前啟用球種篩選清單
-    val sportCodeList: LiveData<List<StatusSheetData>>
-        get() = _sportCodeSpinnerList
 
     private val _inplayList = MutableLiveData<List<Item>>()
     val inplayList: LiveData<List<Item>>

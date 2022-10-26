@@ -17,7 +17,7 @@ object AFInAppEventUtil {
         val eventValues = HashMap<String, Any>()
         eventValues.put(AFInAppEventParameterName.REGSITRATION_METHOD, method)
         AppsFlyerLib.getInstance().logEvent(MultiLanguagesApplication.getInstance(),
-            AFInAppEventType.LOGIN, eventValues)
+            AFInAppEventType.COMPLETE_REGISTRATION, eventValues)
     }
 
     fun deposit(revenue: String, currency: String) {
