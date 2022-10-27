@@ -347,7 +347,9 @@ enum class PlayCate(val value: String) {
     OU_2_WAY_1ST_H("O/U-2-WAY-1ST-H"),
     FS_LD_CS("FS-LD-CS"),
     BOTTOM_NAVIGATION("BOTTOM_NAVIGATION"),
+    FINISH("FINISH"),
     NO_DATA("NO_DATA");
+
 
     companion object {
         /**
