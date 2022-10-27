@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.util.AesCryptoUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.toJson
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
@@ -36,6 +37,7 @@ const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
 const val KEY_USER_LEVEL_ID = "user_Level_Id"
+const val KEY_LIVE_USER_INFO = "live_user_info"
 
 
 object LoginRepository {
@@ -260,6 +262,9 @@ object LoginRepository {
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
             putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
+            loginData?.liveSyncUserInfoVO?.let {
+                putString(KEY_LIVE_USER_INFO, it.toJson())
+            }
             apply()
         }
     }
@@ -309,6 +314,6 @@ object LoginRepository {
             userType = loginData.userType,
             userRebateList = loginData.userRebateList,
             discount = loginData.discount,
-            verified = loginData.verified
+            verified = loginData.verified,
         )
 }

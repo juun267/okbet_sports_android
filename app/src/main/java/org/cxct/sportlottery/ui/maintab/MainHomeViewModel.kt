@@ -479,7 +479,8 @@ class MainHomeViewModel(
                 }
                 jumpingGame = true
                 viewModelScope.launch {
-                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!, gameData.gameCode!!)
+                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!,
+                        if (gameData.gameCode.isNullOrEmpty()) gameData.firmCode!! else gameData.gameCode!!)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
@@ -632,9 +633,8 @@ class MainHomeViewModel(
                     QueryGameEntryConfigRequest(position, gameType, status = 1)
                 )
             }
-            result?.let { result ->
-                _homeGameData.postValue(result.rows)
-                LogUtil.toJson(result)
+            result?.rows.let {
+                _homeGameData.postValue(it)
             }
         }
     }

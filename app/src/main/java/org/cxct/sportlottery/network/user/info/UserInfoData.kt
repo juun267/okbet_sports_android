@@ -97,4 +97,6 @@ data class UserInfoData(
     val currency: String?,
     @Json(name = "nationCode")
     val nationCode: String?,
+    @Json(name = "liveSyncUserInfoVO")
+    val liveSyncUserInfoVO: LiveSyncUserInfoVO?,
 )

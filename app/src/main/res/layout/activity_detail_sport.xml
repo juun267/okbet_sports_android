@@ -203,12 +203,6 @@
                 android:nestedScrollingEnabled="false"
                 android:visibility="gone" />
 
-            <WebView
-                android:id="@+id/wv_chat"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:visibility="gone" />
         </FrameLayout>
 
 
@@ -231,7 +225,9 @@
         android:layout_height="@dimen/bet_list_bar_height"
         android:visibility="gone"
         android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wv_chat"
         tools:visibility="visible" />
 
 
@@ -239,7 +235,18 @@
         android:id="@+id/fl_bet_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/wv_chat"
         tools:visibility="gone" />
+
+    <WebView
+        android:id="@+id/wv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

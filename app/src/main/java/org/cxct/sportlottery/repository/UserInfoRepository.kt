@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.toJson
 import retrofit2.Response
 
 object UserInfoRepository {
@@ -51,6 +52,9 @@ object UserInfoRepository {
 
                 with(sharedPref.edit()){
                     putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
+                    userInfoData?.liveSyncUserInfoVO?.let {
+                        putString(KEY_LIVE_USER_INFO, it.toJson())
+                    }
                     apply()
                 }
             
@@ -198,7 +202,7 @@ object UserInfoRepository {
             perBetLimit = userInfoData.perBetLimit,
             uwEnableTime = userInfoData.uwEnableTime,
             maxPayout = userInfoData.maxPayout,
-            firstRechTime = userInfoData.firstRechTime
+            firstRechTime = userInfoData.firstRechTime,
         )
 
 }

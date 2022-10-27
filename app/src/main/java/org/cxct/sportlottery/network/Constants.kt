@@ -279,7 +279,7 @@ object Constants {
     const val MATCH_LIVE_ROUND = "/api/front/liveRound"
     const val MATCH_LIVE_ROUND_COUNT = "/api/front/liveRound/count"
     const val MATCH_LIVE_ROUND_HALL = "/api/front/liveRound/mobile/hall"
-    const val LIVE_LOGIN = "/api/live/front/login"
+    const val LIVE_LOGIN = "/api/live/front/login/"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"

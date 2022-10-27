@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -34,7 +35,6 @@ import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
-import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginRequest
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -63,6 +63,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
+import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
@@ -3114,26 +3115,21 @@ class SportViewModel(
     }
 
     fun loginLive() {
-        val userInfo = userInfo.value ?: return
-        if (sConfigData?.liveChatOpen == 0) {
-            return
-        }
+        if (sConfigData?.liveChatOpen == 0) return
+        var spf = MultiLanguagesApplication.mInstance.getSharedPreferences(NAME_LOGIN,
+            Context.MODE_PRIVATE)
+        var spValue = spf.getString(KEY_LIVE_USER_INFO, "")
+        if (spValue.isNullOrEmpty()) return
+        var liveSyncUserInfoVO = Gson().fromJson(spValue, LiveSyncUserInfoVO::class.java)
+        if (liveSyncUserInfoVO == null) return
         val hostUrl = sConfigData?.liveChatHost
+        if (hostUrl.isNullOrEmpty()) return
         viewModelScope.launch {
             hostUrl?.let {
                 val retrofit = RequestManager.instance.createRetrofit(hostUrl)
                 val result = doNetwork(androidContext) {
                     retrofit.create(MatchService::class.java).liveLogin(
-                        ChatLiveLoginRequest(
-                            userName = userInfo.userName,
-                            platUserId = userInfo.platformId,
-                            iconUrl = userInfo.iconUrl,
-                            birthday = null,
-                            nickName = userInfo.nickName,
-                            loginSrc = 2,
-                            sign = userInfo.currencySign,
-                            timestamp = System.currentTimeMillis(),
-                        )
+                        liveSyncUserInfoVO
                     )
                 }
                 result?.chatLiveLoginData?.let {

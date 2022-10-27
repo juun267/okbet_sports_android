@@ -11,11 +11,7 @@ data class ChatLiveLoginData(
     @Json(name = "money")
     val money: String?,
     @Json(name = "platformId")
-    val platformId: Response?,
-    @Json(name = "ReturnCode")
-    val returnCode: String?,
-    @Json(name = "SysDateTime")
-    val sysDateTime: String?,
+    val platformId: Int?,
     @Json(name = "userData")
     val userData: ChatLiveUserInfo?,
 )
