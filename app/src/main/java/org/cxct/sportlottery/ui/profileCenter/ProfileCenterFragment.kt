@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
@@ -450,11 +451,7 @@ class ProfileCenterFragment :
 
         //关于我们
         btn_about_us.setOnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getAboutUsUrl(requireContext()),
-                getString(R.string.about_us)
-            )
+            startActivity(Intent(requireActivity(), AboutMeActivity::class.java))
         }
 
         //资产检测

@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
@@ -96,6 +97,10 @@ class MainHomeViewModel(
     val hotLiveData: LiveData<List<HotMatchLiveData>?>
         get() = _hotLiveData
     private val _hotLiveData = MutableLiveData<List<HotMatchLiveData>?>()
+
+    val hotHandicap: LiveData<List<HandicapData>?>
+        get() = _hotHandicap
+    private val _hotHandicap = MutableLiveData<List<HandicapData>?>()
     //賽事直播網址
     private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
     val matchLiveInfo: LiveData<Event<MatchRound>?>
@@ -482,8 +487,7 @@ class MainHomeViewModel(
                 }
                 jumpingGame = true
                 viewModelScope.launch {
-                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!,
-                        if (gameData.gameCode.isNullOrEmpty()) gameData.firmCode!! else gameData.gameCode!!)
+                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!, gameData.gameCode!!)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
@@ -666,8 +670,8 @@ class MainHomeViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getHotHandicapList(handicapType)
             }
-            result?.let { result->
-                LogUtil.toJson(result)
+            result?.rows.let { handicapList->
+                _hotHandicap.postValue(handicapList)
             }
         }
     }
@@ -680,7 +684,6 @@ class MainHomeViewModel(
           doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getLiveList()
             }?.let { result->
-              LogUtil.toJson(result)
                 _hotLiveData.postValue(result.MatchLiveList)
             }
         }
