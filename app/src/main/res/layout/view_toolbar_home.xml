@@ -50,25 +50,16 @@
         tools:visibility="gone">
 
         <TextView
-            android:id="@+id/tv_currency_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_2"
-            android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            tools:text="₱" />
-
-        <TextView
-
             android:id="@+id/tv_home_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/din_bold"
             android:textColor="@color/color_FFFFFF_414655"
             android:textSize="@dimen/textSize18sp"
             tools:text="1213,2334243,52346" />
 
         <ImageView
+            android:id="@+id/iv_money_refresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

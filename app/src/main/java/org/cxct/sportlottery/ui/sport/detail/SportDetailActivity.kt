@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
-import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.webkit.JavascriptInterface
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -35,6 +38,7 @@ import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.matchLiveInfo.ChatLiveLoginData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -439,10 +443,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         matchInfo?.id?.let {
             setupAnalyze(it)
+            setupInput()
         }
         isShowOdd(true)
         initAnim()
     }
+
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initObserve() {
@@ -567,10 +573,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         viewModel.matchLiveInfo.observe(this) {
-            it?.getContentIfNotHandled()?.let { matchRound ->
+            it?.peekContent()?.let { matchRound ->
                 live_view_tool_bar.liveUrl =
                     if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
-                lin_live.isVisible = !TextUtils.isEmpty(live_view_tool_bar.liveUrl)
             }
         }
         viewModel.videoUrl.observe(this) { event ->
@@ -592,6 +597,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     setAnchorView(R.id.cl_bet_list_bar)
                     show()
                 }
+        }
+        viewModel.liveLoginInfo.observe(this) {
+            it.getContentIfNotHandled()?.let {
+                loginChat(it)
+            }
         }
     }
 
@@ -647,13 +657,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             return
         }
         //endregion
-
+        updateMenu(matchInfo)
         //赛事进行中，就显示比分状态，否则就不显示左下角，并且显示开赛时间
         var isInPlay = TimeUtil.isTimeInPlay(matchInfo.startTime)
         if (isInPlay) {
             lin_bottom.isVisible = true
             setStatusText(matchInfo)
-            updateMenu(matchInfo)
             setupMatchScore(matchInfo)
         } else {
             var startDate = TimeUtil.timeFormat(matchInfo.startTime, TimeUtil.DM_HM_FORMAT)
@@ -875,7 +884,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
             lin_live.isVisible =
-                matchInfo?.isLive == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+                matchInfo?.isLive == 1
             lin_video.isVisible =
                 matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
             lin_anime.isVisible =
@@ -1353,10 +1362,67 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             sConfigData?.analysisUrl?.replace("{lang}",
                 LanguageManager.getSelectLanguage(this@SportDetailActivity).key)
                 ?.replace("{eventId}", matchId)?.let {
-                loadUrl(it)
-            }
+                    loadUrl(it)
+                }
             setWebViewCommonBackgroundColor()
         }
     }
 
+    fun loginChat(chatLiveLoginData: ChatLiveLoginData) {
+        var builder = StringBuilder(sConfigData?.liveChatHost + "?")
+        builder.append("room=" + matchInfo?.roundNo)
+        builder.append("&uid=" + chatLiveLoginData.userData?.userId)
+        builder.append("&token=" + chatLiveLoginData.liveToken)
+        builder.append("&role=" + 1)
+        builder.append("&device=android")
+        builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
+            LanguageManager.Language.ZH -> "zh"
+            else -> "en"
+        })
+        LogUtil.d("builder=" + builder.toString())
+        wv_chat.loadUrl(builder.toString())
+    }
+
+    fun setupInput() {
+        wv_chat.apply {
+            settings.apply {
+                javaScriptEnabled = true
+                useWideViewPort = true
+                displayZoomControls = false
+                textZoom = 100
+                loadWithOverviewMode = true
+            }
+            setWebViewCommonBackgroundColor()
+            webViewClient = WebViewClient()
+            addJavascriptInterface(ChatLiveMessage(), "message")
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?,
+                ): Boolean {
+                    return true
+                }
+
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                }
+
+                override fun onPageFinished(view: WebView, url: String?) {
+                    super.onPageFinished(view, url)
+                    view.post {
+                        view.measure(0, 0)
+                    }
+                }
+            }
+        }
+        viewModel.loginLive()
+    }
+
+    //注入JavaScript的Java类
+    internal class ChatLiveMessage {
+        @JavascriptInterface
+        fun notify(action: String, data: String) {
+            LogUtil.d("notify")
+        }
+    }
 }

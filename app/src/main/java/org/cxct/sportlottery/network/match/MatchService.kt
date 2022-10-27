@@ -53,5 +53,12 @@ interface MatchService {
 
     @GET(MATCH_LIVE_ROUND_HALL)
     suspend fun getLiveRoundHall(): Response<MatchLiveResult>
+    @GET(HOT_LIVE_LIST)
+    suspend fun getLiveList():Response<HotMatchLiveResult>
 
+
+    @POST(LIVE_LOGIN)
+    suspend fun liveLogin(
+        @Body chatLiveLoginRequest: ChatLiveLoginRequest,
+    ): Response<ChatLiveLoginResult>
 }
