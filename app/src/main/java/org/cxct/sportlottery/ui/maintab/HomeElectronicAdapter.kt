@@ -9,10 +9,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 
 class HomeElectronicAdapter(data: MutableList<QueryGameEntryData>):
-    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_electronics_game) {
+    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_electronics_game,data) {
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
-        //    helper.setImageResource(R.id.iv_electronics,item.imageName)
+
         Glide.with(mContext)
             .load(item.entryImage)
             .apply(

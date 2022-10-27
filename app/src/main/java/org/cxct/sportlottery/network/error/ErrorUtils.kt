@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
 import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
 import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
+import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -133,6 +134,7 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResu
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
@@ -150,6 +152,7 @@ import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
+import org.cxct.sportlottery.util.LogUtil
 import retrofit2.Converter
 import retrofit2.Response
 import timber.log.Timber
@@ -169,6 +172,7 @@ object ErrorUtils {
             try {
                 error =
                     converter.convert(it) // TODO com.squareup.moshi.JsonEncodingException: Use JsonReader.setLenient(true) to accept malformed JSON at path $
+                LogUtil.d(error?.msg)
             } catch (e: IOException) {
                 Timber.e("parseError: $e")
                 throw e
@@ -178,7 +182,13 @@ object ErrorUtils {
         error?.let {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
+                LogUtil.d(url)
                 when {
+
+                    (url.contains(HOT_LIVE_LIST))-> {
+                        @Suppress("UNCHECKED_CAST")
+                        return HotMatchLiveResult(it.code, it.msg, it.success,null) as T
+                    }
                     (url.contains(Constants.SEND_SMS_FORGET)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SendSmsResult(it.code, it.msg, it.success,null) as T

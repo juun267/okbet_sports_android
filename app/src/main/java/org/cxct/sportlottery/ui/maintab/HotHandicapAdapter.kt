@@ -11,8 +11,9 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 
 
 class HotHandicapAdapter(data:List<HandicapData>):
-    BaseQuickAdapter<HandicapData,BaseViewHolder>(R.layout.item_hot_handicap) {
+    BaseQuickAdapter<HandicapData,BaseViewHolder>(R.layout.item_hot_handicap,data) {
     override fun convert(helper: BaseViewHolder, item: HandicapData) {
+
     
     val recycleView:RecyclerView = helper.getView(R.id.rv_handicap_item)
        val itemAdapter: ItemHandicapAdapter = ItemHandicapAdapter(

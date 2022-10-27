@@ -14,6 +14,6 @@ data class HotMatchLiveResult(
     override val msg: String,
     @Json(name = "success")
     override val success: Boolean,
-    @Json(name = "rows")
-    val MatchLiveList: List<HotMatchLiveData>,
+    @Json(name = "t")
+    val MatchLiveList: List<HotMatchLiveData>?,
 ) : BaseResult()

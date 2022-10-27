@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
@@ -88,7 +89,9 @@ class MainHomeViewModel(
     private val _liveRoundHall = MutableLiveData<List<MatchLiveData>>()
     val liveRoundHall: LiveData<List<MatchLiveData>>
         get() = _liveRoundHall
-
+    val hotLiveData: LiveData<List<HotMatchLiveData>?>
+        get() = _hotLiveData
+    private val _hotLiveData = MutableLiveData<List<HotMatchLiveData>?>()
     //賽事直播網址
     private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
     val matchLiveInfo: LiveData<Event<MatchRound>?>
@@ -630,7 +633,6 @@ class MainHomeViewModel(
             }
             result?.let { result ->
                 _homeGameData.postValue(result.rows)
-                LogUtil.toJson(result)
             }
         }
     }
@@ -646,6 +648,21 @@ class MainHomeViewModel(
             }
             result?.let { result->
                 LogUtil.toJson(result)
+            }
+        }
+    }
+    /**
+     * 热门直播
+     */
+
+    fun getHotLiveList(){
+        viewModelScope.launch {
+          doNetwork(androidContext) {
+                OneBoSportApi.thirdGameService.getLiveList()
+
+            }?.let { result->
+              LogUtil.toJson(result)
+                _hotLiveData.postValue(result.MatchLiveList)
             }
         }
     }

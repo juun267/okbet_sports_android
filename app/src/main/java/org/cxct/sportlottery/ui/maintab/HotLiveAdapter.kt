@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,16 +8,20 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.home.HomeLiveData
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.util.LogUtil
 
 import org.cxct.sportlottery.util.setTeamLogo
 
 class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.Adapter<HotLiveAdapter.ItemViewHolder>() {
     private var mSelectedPosition = 0
-    var data: List<HomeLiveData> = mutableListOf()
+    var data: List<HotMatchLiveData> = mutableListOf()
         set(value) {
             mSelectedPosition = 0
             field = value
@@ -54,13 +59,18 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
         val awayTeamName: TextView = itemView.findViewById(R.id.tv_team_name2)
         private val homeTeamNum: TextView = itemView.findViewById(R.id.tv_team_score1)
         private val awayTeamNum: TextView = itemView.findViewById(R.id.tv_team_score2)
-        fun bind(item: HomeLiveData) {
-            homeTeamIcon.setTeamLogo(item.homeTeamIcon)
-            awayTeamIcon.setTeamLogo(item.awayTeamIcon)
-            homeTeamName.text = item.homeTeamName
-            awayTeamName.text = item.awayTeamName
-            homeTeamNum.text = item.homeTeamNum
-            awayTeamNum.text = item.awayTeamNum
+        fun bind(item: HotMatchLiveData) {
+            homeTeamIcon.setTeamLogo(item.matchInfo.homeIcon)
+            awayTeamIcon.setTeamLogo(item.matchInfo.awayIcon)
+            homeTeamName.text = item.matchInfo.homeName
+            awayTeamName.text = item.matchInfo.awayName
+
+//            homeTeamIcon.setTeamLogo(item.homeTeamIcon)
+//            awayTeamIcon.setTeamLogo(item.awayTeamIcon)
+//            homeTeamName.text = item.homeTeamName
+//            awayTeamName.text = item.awayTeamName
+//            homeTeamNum.text = item.homeTeamNum
+//            awayTeamNum.text = item.awayTeamNum
 
         }
         companion object {
@@ -72,7 +82,7 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
         }
 
     }
-    class ItemClickListener(private var clickListener: (data: HomeLiveData)->Unit){
-        fun onClick(data: HomeLiveData) = clickListener(data)
+    class ItemClickListener(private var clickListener: (data: HotMatchLiveData)->Unit){
+        fun onClick(data: HotMatchLiveData) = clickListener(data)
     }
 }
