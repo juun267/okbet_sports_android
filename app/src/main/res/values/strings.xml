@@ -908,9 +908,9 @@
     <!--登入手機驗證-->
     <string name="other_link">OTHER USEFUL LINKS</string>
     <string name="about_us">About Us</string>
-    <string name="responsible">Responsible Gaming</string>
-    <string name="terms_conditions">Terms &amp; Conditions</string>
-    <string name="privacy_policy">Privacy Policy</string>
+    <string name="responsible">Responsible</string>
+    <string name="terms_conditions">T&amp;C</string>
+    <string name="privacy_policy">Privacy</string>
     <string name="help">NEED HELP NOW?</string>
     <string name="official_partner">Official Partner</string>
     <string name="faqs">FAQs</string>

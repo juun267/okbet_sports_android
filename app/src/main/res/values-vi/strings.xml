@@ -951,8 +951,8 @@
     <!--登入手機驗證-->
     <string name="other_link">LIÊN KẾT HỮU DỤNG KHÁC</string>
     <string name="about_us">Về Chúng Tôi</string>
-    <string name="responsible">Chơi Có Trách Nhiệm</string>
-    <string name="terms_conditions">Điều Khoản &amp; Điều Kiện</string>
+    <string name="responsible">Trách nhiệm</string>
+    <string name="terms_conditions">Thoả thuận</string>
     <string name="privacy_policy">Chính Sách Bảo Mật</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
     <string name="official_partner">Đối tác chính thức</string>

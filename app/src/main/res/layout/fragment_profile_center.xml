@@ -942,7 +942,7 @@
                                     android:layout_marginStart="12dp"
                                     android:layout_marginEnd="10dp"
                                     android:contentDescription="@null"
-                                    android:src="@drawable/ic_affiliate" />
+                                    android:src="@drawable/icon_affiliate" />
 
                                 <RelativeLayout
                                     android:layout_width="0dp"
@@ -990,7 +990,7 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="10dp"
                             android:contentDescription="@null"
-                            android:src="@drawable/ic_icon_our_01" />
+                            android:src="@drawable/icon_menu_about_us" />
 
                         <RelativeLayout
                             android:layout_width="0dp"
@@ -1017,19 +1017,63 @@
                                 android:contentDescription="@null"
                                 android:src="@drawable/icon_arrow07" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:id="@+id/linear_about_us"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/margin_6"
+                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:layout_toStartOf="@+id/iv_line4"
-                                android:layout_toEndOf="@+id/tv_aboutus"
-                                android:ellipsize="end"
-                                android:singleLine="true"
-                                android:gravity="right"
-                                android:text="@string/join_us_win_wealth"
-                                android:textColor="@color/color_A7B2C4"
-                                android:textSize="@dimen/textSize12sp" />
+                                android:layout_marginRight="20dp"
+                                android:layout_toRightOf="@+id/tv_aboutus"
+                                android:gravity="center_vertical|end"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:singleLine="true"
+                                    android:text="@string/responsible"
+                                    android:textColor="@color/color_A7B2C4"
+                                    android:textSize="@dimen/textSize12sp" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="@dimen/margin_12"
+                                    android:layout_marginHorizontal="6dp"
+                                    android:background="@color/color_A7B2C4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:singleLine="true"
+                                    android:text="@string/terms_conditions"
+                                    android:textColor="@color/color_A7B2C4"
+                                    android:textSize="@dimen/textSize12sp" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="@dimen/margin_12"
+                                    android:layout_marginHorizontal="6dp"
+                                    android:background="@color/color_A7B2C4" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxWidth="60dp"
+                                    android:singleLine="true"
+                                    android:text="@string/privacy_policy"
+                                    android:textColor="@color/color_A7B2C4"
+                                    android:textSize="@dimen/textSize12sp" />
+                            </LinearLayout>
 
                         </RelativeLayout>
                     </LinearLayout>

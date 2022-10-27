@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_about_us.*
 import kotlinx.android.synthetic.main.fragment_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -28,14 +29,17 @@ class AboutUsFragment : BaseFragment<HelpCenterViewModel>(HelpCenterViewModel::c
     }
 
     private fun setupEvent() {
-//        linear_game_rule.setOnClickListener {
-//            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
-//        }
-//        linear_common_problem.setOnClickListener{
-//            JumpUtil.toInternalWeb(requireContext(),Constants.getFAQsUrl(requireContext()),getString(R.string.faqs))
-//        }
-//        linear_feedback.setOnClickListener {
-//            startActivity(Intent(activity, FeedbackMainActivity::class.java))
-//        }
+        linear_about_us.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),Constants.getAboutUsUrl(requireContext()),getString(R.string.about_us))
+        }
+        linear_responsible.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(), Constants.getDutyRuleUrl(requireContext()), getString(R.string.responsible))
+        }
+        linear_terms.setOnClickListener{
+            JumpUtil.toInternalWeb(requireContext(),Constants.getAgreementRuleUrl(requireContext()),getString(R.string.terms_conditions))
+        }
+        linear_privacy.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),Constants.getPrivacyRuleUrl(requireContext()),getString(R.string.privacy_policy))
+        }
     }
 }
