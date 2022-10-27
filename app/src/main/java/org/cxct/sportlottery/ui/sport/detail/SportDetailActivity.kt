@@ -18,7 +18,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
+import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
@@ -54,6 +56,7 @@ import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import timber.log.Timber
 import java.net.URLEncoder
 import java.util.*
@@ -92,6 +95,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
     private var isFlowing = false
+    private var chatViewHeight = 0
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
     val handler = Handler()
@@ -164,6 +168,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(R.layout.activity_detail_sport)
+        AndroidBug5497Workaround.assistActivity(this)
         initToolBar()
         initData()
         initAllObserve()
@@ -200,11 +205,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
 
         ImmersionBar.with(this)
-            .fitsSystemWindows(true)
+            .fitsSystemWindows(false)
             .statusBarDarkFont(false)
-            .statusBarColor(R.color.color_000000)
+            .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)
             .init()
-
+        ImmersionBar.getStatusBarHeight(this).let {
+            v_statusbar.minimumHeight = it
+            v_statusbar_live.minimumHeight = it
+            toolbar_layout.minimumHeight = it
+            collaps_toolbar.layoutParams.height =
+                it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+        }
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 if (state === State.COLLAPSED) {
@@ -1378,8 +1389,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             else -> "en"
         })
         LogUtil.d("builder=" + builder.toString())
-
         wv_chat.loadUrl(builder.toString())
+//        wv_chat.loadUrl("file:android_asset/test.html")
     }
 
     fun setupInput() {
@@ -1393,6 +1404,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             setWebViewCommonBackgroundColor()
             webViewClient = WebViewClient()
+            addJavascriptInterface(JavaScriptObject(this@SportDetailActivity), "__oi")
+//            addJavascriptInterface(JavaScriptObject(), "android")
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -1407,34 +1420,47 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
                 override fun onPageFinished(view: WebView, url: String?) {
                     super.onPageFinished(view, url)
-                    postDelayed({
-                        addJavascriptInterface(ChatLiveMessage(), "__oi")
-                    }, 2000)
-                    view.evaluateJavascript("javascript:alert('This is alert dialog !')",
-                        ValueCallback {
-                            LogUtil.d("alert")
-                        })
-                    view.evaluateJavascript("javascript:__oi.notify('hello world')",
-                        ValueCallback {
-                            LogUtil.d("notify")
-                        })
-//                    view.post {
-//                        view.measure(0, 0)
-//                    }
                 }
             }
         }
+        lin_categroy.post(Runnable {
+            chatViewHeight =
+                ScreenUtils.getScreenHeight(this@SportDetailActivity) - (toolBar.height + lin_center.height)
+//            lin_chat.layoutParams.apply {
+//                height=chatViewHeight
+//            }
+        })
         viewModel.loginLive()
     }
 
     //注入JavaScript的Java类
-    internal class ChatLiveMessage {
+    class JavaScriptObject(val activity: SportDetailActivity) {
         @JavascriptInterface
-        fun notify(message: Object) {
-            LogUtil.d("notify")
+        fun notify2arg(action: String, data: Boolean) {
+            LogUtil.d("notify2arg=" + action + "," + data)
+            when (action) {
+                "onMini" -> {
+                    activity.runOnUiThread {
+                        activity.updateWebHeight(data)
+                    }
+                }
+            }
         }
-//        fun notify(action: String, value: Boolean) {
-//            LogUtil.e("notify")
-//        }
+    }
+
+    fun updateWebHeight(onMini: Boolean) {
+        wv_chat.post {
+            wv_chat.layoutParams.apply {
+                if (onMini)
+                    this.height = 56.dp
+                else
+                    this.height = 500.dp
+            }
+        }
+        wv_chat.postDelayed({
+            LogUtil.d("height=" + wv_chat.height)
+
+        }, 1000)
+
     }
 }

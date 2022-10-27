@@ -99,6 +99,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.sport.detail.SportDetailActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name=".ui.maintenance.MaintenanceActivity"

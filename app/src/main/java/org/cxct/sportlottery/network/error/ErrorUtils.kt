@@ -152,7 +152,6 @@ import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
-import org.cxct.sportlottery.util.LogUtil
 import retrofit2.Converter
 import retrofit2.Response
 import timber.log.Timber
@@ -172,7 +171,6 @@ object ErrorUtils {
             try {
                 error =
                     converter.convert(it) // TODO com.squareup.moshi.JsonEncodingException: Use JsonReader.setLenient(true) to accept malformed JSON at path $
-                LogUtil.d(error?.msg)
             } catch (e: IOException) {
                 Timber.e("parseError: $e")
                 throw e
@@ -182,7 +180,6 @@ object ErrorUtils {
         error?.let {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
-                LogUtil.d(url)
                 when {
 
                     (url.contains(HOT_LIVE_LIST))-> {
