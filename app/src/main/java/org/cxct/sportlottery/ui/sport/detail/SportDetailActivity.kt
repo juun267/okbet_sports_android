@@ -58,6 +58,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.*
 import org.cxct.sportlottery.util.*
 import timber.log.Timber
+import java.net.URLEncoder
 import java.util.*
 
 
@@ -1372,7 +1373,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         var builder = StringBuilder(sConfigData?.liveChatHost + "?")
         builder.append("room=" + matchInfo?.roundNo)
         builder.append("&uid=" + chatLiveLoginData.userData?.userId)
-        builder.append("&token=" + chatLiveLoginData.liveToken)
+        builder.append("&token=" + URLEncoder.encode(chatLiveLoginData.liveToken))
         builder.append("&role=" + 1)
         builder.append("&device=android")
         builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
@@ -1380,6 +1381,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             else -> "en"
         })
         LogUtil.d("builder=" + builder.toString())
+
         wv_chat.loadUrl(builder.toString())
     }
 
@@ -1394,7 +1396,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             setWebViewCommonBackgroundColor()
             webViewClient = WebViewClient()
-            addJavascriptInterface(ChatLiveMessage(), "message")
+            addJavascriptInterface(ChatLiveMessage(), "__oi")
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -1421,8 +1423,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     //注入JavaScript的Java类
     internal class ChatLiveMessage {
         @JavascriptInterface
-        fun notify(action: String, data: String) {
-            LogUtil.d("notify")
+//        fun notify(message: Object) {
+//            LogUtil.d("notify")
+//        }
+        fun notify(action: String, value: Boolean) {
+            LogUtil.e("notify")
         }
     }
 }

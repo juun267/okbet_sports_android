@@ -153,7 +153,6 @@ class ItemHomeLiveHolder(
             setupMatchScore()
             //region 第1個按鈕
             if (oddList.isNotEmpty()) {
-                LogUtil.toJson(oddList)
                 val odd1 = oddList[0]
                 with(oddBtn1) {
                     visibility = View.VISIBLE

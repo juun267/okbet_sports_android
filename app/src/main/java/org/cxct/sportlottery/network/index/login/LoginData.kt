@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.index.login
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.UserRebate
+import org.cxct.sportlottery.network.user.info.LiveSyncUserInfoVO
 
 @JsonClass(generateAdapter = true)
 data class LoginData(
@@ -52,4 +53,6 @@ data class LoginData(
     var deviceValidateStatus: Int?, //0: 未验证(需要驗證), 1: 已验证(不需要驗證)
     @Json(name = "verified")
     var verified: Int?,
+    @Json(name = "liveSyncUserInfoVO")
+    var liveSyncUserInfoVO: LiveSyncUserInfoVO?,
 )

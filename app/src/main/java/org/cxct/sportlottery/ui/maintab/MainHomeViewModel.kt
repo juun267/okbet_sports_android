@@ -25,7 +25,6 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
-import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
@@ -482,7 +481,8 @@ class MainHomeViewModel(
                 }
                 jumpingGame = true
                 viewModelScope.launch {
-                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!, gameData.gameCode!!)
+                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!,
+                        if (gameData.gameCode.isNullOrEmpty()) gameData.firmCode!! else gameData.gameCode!!)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
@@ -635,8 +635,8 @@ class MainHomeViewModel(
                     QueryGameEntryConfigRequest(position, gameType, status = 1)
                 )
             }
-            result?.let { result ->
-                _homeGameData.postValue(result.rows)
+            result?.rows.let {
+                _homeGameData.postValue(it)
             }
         }
     }
