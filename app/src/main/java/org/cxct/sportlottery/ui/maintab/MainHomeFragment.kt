@@ -84,7 +84,6 @@ class MainHomeFragment :
     }
     private val homeHotLiveAdapter by lazy {//热门直播
         HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
-
             tv_first_half_game.text = "data.half"
             tv_match_time.text = "12:00"
             tv_match_name.text = data.league.name
@@ -194,6 +193,7 @@ class MainHomeFragment :
         super.onHiddenChanged(hidden)
         if (!hidden) {
             viewModel.getHotLiveList()
+            viewModel.getHandicapConfig(1)
         }
     }
 
@@ -390,8 +390,8 @@ class MainHomeFragment :
                 hot_live_match.visibility = View.GONE
             }else{
                 list[0].apply {
-                    tv_match_name.text = matchInfo.leagueName?:""
                         tv_match_type_name.text = sportName
+                        tv_match_name.text = league.name
                         tv_first_half_game.text = "half"
                         tv_match_time.text = "12:00"
 
@@ -413,6 +413,11 @@ class MainHomeFragment :
                     rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                     rv_match_list.adapter = homeHotLiveAdapter
             }
+        }
+        viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
+            hotHandicapAdapter.setNewData(list)
+            rv_hot_handicap.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            rv_hot_handicap.adapter = hotHandicapAdapter
         }
     }
 

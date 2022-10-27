@@ -9,8 +9,8 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 data class HandicapData(
     @Json(name = "league")
     val league: League,
-    @Json(name = "matchInfo")
-    val matchInfo: MatchInfo,
+    @Json(name = "matchInfos")
+    val matchInfos: List<MatchInfo>,
     @Json(name = "sportName")
     val sportName: String,
 )

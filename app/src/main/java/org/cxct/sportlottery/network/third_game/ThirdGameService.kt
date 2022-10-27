@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.third_game
 
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.HOT_HANDICAP_LIST
+import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_GAME_ENTRY_CONFIG
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
@@ -85,7 +86,7 @@ interface ThirdGameService {
         @Path("handicapType") handicapType:Int?
     ):Response<HandicapResult>
 
-    @GET(Constants.HOT_LIVE_LIST)
+    @GET(HOT_LIVE_LIST)
     suspend fun getLiveList():Response<HotMatchLiveResult>
 
 
