@@ -12,10 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.webkit.JavascriptInterface
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -1396,7 +1393,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             }
             setWebViewCommonBackgroundColor()
             webViewClient = WebViewClient()
-            addJavascriptInterface(ChatLiveMessage(), "__oi")
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -1411,9 +1407,20 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
                 override fun onPageFinished(view: WebView, url: String?) {
                     super.onPageFinished(view, url)
-                    view.post {
-                        view.measure(0, 0)
-                    }
+                    postDelayed({
+                        addJavascriptInterface(ChatLiveMessage(), "__oi")
+                    }, 2000)
+                    view.evaluateJavascript("javascript:alert('This is alert dialog !')",
+                        ValueCallback {
+                            LogUtil.d("alert")
+                        })
+                    view.evaluateJavascript("javascript:__oi.notify('hello world')",
+                        ValueCallback {
+                            LogUtil.d("notify")
+                        })
+//                    view.post {
+//                        view.measure(0, 0)
+//                    }
                 }
             }
         }
@@ -1423,11 +1430,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     //注入JavaScript的Java类
     internal class ChatLiveMessage {
         @JavascriptInterface
-//        fun notify(message: Object) {
-//            LogUtil.d("notify")
-//        }
-        fun notify(action: String, value: Boolean) {
-            LogUtil.e("notify")
+        fun notify(message: Object) {
+            LogUtil.d("notify")
         }
+//        fun notify(action: String, value: Boolean) {
+//            LogUtil.e("notify")
+//        }
     }
 }

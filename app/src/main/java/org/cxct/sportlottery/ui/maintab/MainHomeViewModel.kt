@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
@@ -678,7 +679,6 @@ class MainHomeViewModel(
         viewModelScope.launch {
           doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getLiveList()
-
             }?.let { result->
               LogUtil.toJson(result)
                 _hotLiveData.postValue(result.MatchLiveList)

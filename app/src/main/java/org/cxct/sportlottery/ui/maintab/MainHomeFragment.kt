@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -25,13 +24,8 @@ import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
-import kotlinx.android.synthetic.main.item_hot_handicap.*
-import kotlinx.android.synthetic.main.item_hot_handicap.rv_handicap_item
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
-import kotlinx.android.synthetic.main.view_toolbar_home.btn_login
-import kotlinx.android.synthetic.main.view_toolbar_home.btn_register
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -42,14 +36,12 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.config.ImageData
-import org.cxct.sportlottery.network.index.home.HomeLiveData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
-import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.sConfigData
@@ -68,7 +60,6 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.HomeBannerIndicator
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -108,7 +99,7 @@ class MainHomeFragment :
                     .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
                     .into(iv_avatar_live)
             }
-            tv_introduction.text = data.matchInfo.StreamerName
+            tv_introduction.text = data.matchInfo.streamerName
         })
     }
 
@@ -197,13 +188,12 @@ class MainHomeFragment :
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
-        viewModel.getRecommend()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            viewModel.getRecommend()
+            viewModel.getHotLiveList()
         }
     }
 
@@ -417,7 +407,7 @@ class MainHomeFragment :
 
                         }
 
-                        tv_introduction.text = matchInfo.StreamerName
+                    tv_introduction.text = matchInfo.streamerName
                 }
                     homeHotLiveAdapter.data = list
                     rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -433,7 +423,6 @@ class MainHomeFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-                    viewModel.getRecommend()
                 }
             }
         }
