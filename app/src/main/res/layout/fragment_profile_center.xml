@@ -1031,8 +1031,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="0"
-                                    android:ellipsize="end"
                                     android:gravity="center"
                                     android:singleLine="true"
                                     android:text="@string/responsible"
@@ -1048,8 +1046,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="0"
-                                    android:ellipsize="end"
                                     android:gravity="center"
                                     android:singleLine="true"
                                     android:text="@string/terms_conditions"
@@ -1065,8 +1061,6 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="0"
-                                    android:ellipsize="end"
                                     android:gravity="center"
                                     android:maxWidth="60dp"
                                     android:singleLine="true"

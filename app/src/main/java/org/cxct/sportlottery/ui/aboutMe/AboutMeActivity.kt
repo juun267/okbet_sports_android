@@ -6,7 +6,9 @@ import kotlinx.android.synthetic.main.activity_help_center.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
-
+/**
+ * @app_destination 关于我们
+ */
 class AboutMeActivity : BaseSocketActivity<HelpCenterViewModel>(HelpCenterViewModel::class) {
 
     private val mNavController by lazy {
