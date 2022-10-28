@@ -1315,5 +1315,7 @@
     <string name="hot_elec_game">热门大奖游戏</string>
     <string name="go_back_top">返回顶部</string>
     <string name="accept_current_odd_to_bet">接受当前赔率下注</string>
+    <string name="ou_hdp_hdp">让分盘</string>
+    <string name="big_or_small">大小盘</string>
 
 </resources>

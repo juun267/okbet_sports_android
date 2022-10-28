@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -43,11 +41,14 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.component.StatusSpinnerNewView
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
@@ -112,58 +113,11 @@ class MainHomeFragment :
         HomeChessAdapter(mutableListOf())
     }
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-    private lateinit var mainHomeMenuAdapter: MainHomeMenuAdapter
-    private val homeRecommendAdapter by lazy {
-        HomeRecommendAdapter(
-            HomeRecommendListener(
-                onItemClickListener = {
-                    goLoginPage()
-                },
-                onGoHomePageListener = {
-                    checkCreditSystemLogin { goGamePage() }
-                },
-                onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    if (mIsEnabled) {
-                        avoidFastDoubleClick()
-                        addOddsDialog(
-                            gameType,
-                            matchType,
-                            matchInfo,
-                            odd,
-                            playCateCode,
-                            playCateName,
-                            betPlayCateNameMap,
-                            playCateMenuCode
-                        )
-                    }
-                },
-                onClickFavoriteListener = {
-                    viewModel.pinFavorite(FavoriteType.MATCH, it)
-                },
-                onClickStatisticsListener = { matchId ->
+    private val mHandicapCodeList by lazy {resources.getStringArray(R.array.handicap_type_list)
+        .mapIndexed{ index,data->
+            StatusSheetData((index+1).toString(),data)
+        }}
 
-                }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
-                    checkCreditSystemLogin {
-                        matchInfoList.find {
-                            TextUtils.equals(matchId, it.id)
-                        }?.let {
-                            navOddsDetailFragment(matchType!!, it)
-                        }
-                    }
-                },onClickLiveIconListener = {gameType, matchType, matchId, matchInfoList ->
-
-                }
-            ) { gameType, matchType, matchId, matchInfoList ->
-                if (viewModel.checkLoginStatus()) {
-                    matchInfoList.find {
-                        TextUtils.equals(matchId, it.id)
-                    }?.let {
-                        navOddsDetailFragment(matchType!!, it)
-                    }
-                }
-            }
-        )
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -181,7 +135,12 @@ class MainHomeFragment :
         initObservable()
         queryData()
         initSocketObservers()
-//        getTabDate()
+        selector_order_status.setOnItemSelectedListener {
+            it.code?.let {
+                viewModel.getHandicapConfig(it.toInt())
+            }
+        }
+        selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
     }
 
     override fun onResume() {
@@ -284,31 +243,31 @@ class MainHomeFragment :
         }
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
-                homeRecommendAdapter.oddsType = oddsType
+                hotHandicapAdapter.oddsType = oddsType
             }
         }
         viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
-            event?.getContentIfNotHandled()?.let { recommendList ->
-                hideLoading()
-                if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-                recommendList.forEach { recommend ->
-                    // 將儲存的賠率表指定的賽事列表裡面
-                    val leagueOddFromMap = leagueOddMap[recommend.leagueId]
-                    leagueOddFromMap?.let {
-                        recommend.oddsMap = leagueOddFromMap.oddsMap
-                    }
-                }
-                homeRecommendAdapter.data = recommendList
-
-                //先解除全部賽事訂
-                unSubscribeChannelHallAll()
-                subscribeQueryData(recommendList)
-            }
+//            event?.getContentIfNotHandled()?.let { recommendList ->
+//                hideLoading()
+//                if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
+//                recommendList.forEach { recommend ->
+//                    // 將儲存的賠率表指定的賽事列表裡面
+//                    val leagueOddFromMap = leagueOddMap[recommend.leagueId]
+//                    leagueOddFromMap?.let {
+//                        recommend.oddsMap = leagueOddFromMap.oddsMap
+//                    }
+//                }
+//                homeRecommendAdapter.data = recommendList
+//
+//                //先解除全部賽事訂
+//                unSubscribeChannelHallAll()
+//                subscribeQueryData(recommendList)
+//            }
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
             event.peekContent().let { betInfoList ->
-                homeRecommendAdapter.betInfoList = betInfoList
+                hotHandicapAdapter.betInfoList = betInfoList
             }
         }
         viewModel.gotConfig.observe(viewLifecycleOwner) { event ->
@@ -415,14 +374,27 @@ class MainHomeFragment :
             }
         }
         viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
-            hotHandicapAdapter.setNewData(list)
-            rv_hot_handicap.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            rv_hot_handicap.adapter = hotHandicapAdapter
+            list?.let {
+                hideLoading()
+                it.forEach { handi ->
+                    handi.matchInfos.forEach { hotdata ->
+                        // 將儲存的賠率表指定的賽事列表裡面
+                        val leagueOddFromMap = leagueOddMap[hotdata.id]
+                        leagueOddFromMap?.let {
+                            hotdata.oddsMap = leagueOddFromMap.oddsMap
+                        }
+                    }
+                }
+                hotHandicapAdapter.setNewData(list)
+                //先解除全部賽事訂
+                unSubscribeChannelHallAll()
+                subscribeQueryData(list)
+            }
         }
     }
 
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
-    private val leagueOddMap = HashMap<String, Recommend>()
+    private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
@@ -434,47 +406,52 @@ class MainHomeFragment :
 
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
-                val targetList = homeRecommendAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
-                targetList.forEachIndexed { index, recommend ->
-                    val matchList = listOf(recommend).toMutableList()
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            recommend.gameType,
-                            matchList as MutableList<MatchOdd>,
+                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+                var targetList= hotHandicapAdapter.data
+                targetList.forEachIndexed { index, handicapData ->
+                    handicapData.matchInfos.forEach {  hotMatchInfo->
+                        if (SocketUpdateUtil.updateMatchStatus(
+                                hotMatchInfo.gameType,
+                                handicapData.matchInfos as MutableList<MatchOdd>,
                             matchStatusChangeEvent,
                             context
-                        )
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                            )
+                        ) {
+                            needUpdate = true
+                            //TODO 更新邏輯待補，跟進GameV3Fragment
+                        }
                     }
                 }
+
                 if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
+                    hotHandicapAdapter.setNewData(targetList)
                 }
             }
         }
 
         receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
-                val targetList = homeRecommendAdapter.data
+                val targetList = hotHandicapAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
-                targetList.forEachIndexed { index, recommend ->
-                    if (
-                        SocketUpdateUtil.updateMatchClock(
-                            recommend,
-                            matchClockEvent
-                        )
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                targetList.forEachIndexed { index, handicapData ->
+                    handicapData.matchInfos.forEach{ hotMatchInfo->
+                        if (
+                            SocketUpdateUtil.updateMatchClock(
+                                hotMatchInfo,
+                                matchClockEvent
+                            )
+                        ) {
+                            needUpdate = true
+                            //TODO 更新邏輯待補，跟進GameV3Fragment
+                        }
                     }
+
                 }
 
                 if (needUpdate) {
-                    homeRecommendAdapter.data = targetList
+                    hotHandicapAdapter.setNewData(targetList)
                 }
             }
         }
@@ -482,43 +459,50 @@ class MainHomeFragment :
 
         }
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            val targetList = homeRecommendAdapter.data
-                targetList.forEachIndexed { index, recommend ->
-                    if (recommend.id == oddsChangeEvent.eventId) {
-                        recommend.sortOddsMap()
-                        //region 翻譯更新
-                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                            recommend.playCateNameMap?.putAll(playCateNameMap)
-                        }
-                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                            recommend.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                        }
-                        //endregion
-                        if (SocketUpdateUtil.updateMatchOdds(context, recommend, oddsChangeEvent)) {
-                            updateBetInfo(recommend, oddsChangeEvent)
-                            leagueOddMap[recommend.leagueId] = recommend
-                            homeRecommendAdapter.notifyItemChanged(index, recommend)
-                        }
-                    }
-                }
+             hotHandicapAdapter.data.forEachIndexed { index, handicap ->
+                 LogUtil.d("第一次循环")
+                 handicap.matchInfos.forEach { hotMatchInfo->
+                     LogUtil.d("第二次循环")
+                     if (hotMatchInfo.id == oddsChangeEvent.eventId) {
+                         hotMatchInfo.sortOddsMap()
+                         //region 翻譯更新
+                         oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                             hotMatchInfo.playCateNameMap?.putAll(playCateNameMap)
+                             LogUtil.toJson(playCateNameMap)
+                         }
+                         oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                             hotMatchInfo.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                         }
+                         //endregion
+                         if (SocketUpdateUtil.updateMatchOdds(context, hotMatchInfo, oddsChangeEvent)) {
+                             updateBetInfo(hotMatchInfo, oddsChangeEvent)
+                             leagueOddMap[hotMatchInfo.leagueId] = hotMatchInfo
+                             hotHandicapAdapter.notifyItemChanged(index, handicap)
+                         }
+                     }
+                 }
+             }
+
         }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
-                val targetList = homeRecommendAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                var targetList= hotHandicapAdapter.data
+                targetList.forEachIndexed { index, handicapData ->
+                    handicapData.matchInfos.forEach {  hotMatchInfo->
+                        if (SocketUpdateUtil.updateOddStatus(
+                                hotMatchInfo,matchOddsLockEvent
+                            )
+                        ) {
+                            needUpdate = true
+                            //TODO 更新邏輯待補，跟進GameV3Fragment
+                        }
                     }
                 }
-
-//                if (needUpdate) {
-//                    homeRecommendAdapter.data = targetList
-//                }
+                if (needUpdate) {
+                    hotHandicapAdapter.setNewData(targetList)
+               }
             }
         }
 
@@ -530,19 +514,36 @@ class MainHomeFragment :
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
-                val targetList = homeRecommendAdapter.data
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
-                    if (SocketUpdateUtil.updateOddStatus(
-                            recommend,
-                            globalStopEvent
-                        )
-                    ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                var targetList= hotHandicapAdapter.data
+                targetList.forEach {
+                    it.matchInfos.forEach {
+                        if (SocketUpdateUtil.updateOddStatus(
+                                it,
+                                globalStopEvent
+                            )
+                        ) {
+                            needUpdate = true
+                            //TODO 更新邏輯待補，跟進GameV3Fragment
+                        }
                     }
                 }
+                if (needUpdate) {
+                    hotHandicapAdapter.setNewData(targetList)
+                }
+//                val targetList = homeRecommendAdapter.data
+//                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
+//
+//                targetList.forEachIndexed { index, recommend ->
+//                    if (SocketUpdateUtil.updateOddStatus(
+//                            recommend,
+//                            globalStopEvent
+//                        )
+//                    ) {
+//                        needUpdate = true
+//                        //TODO 更新邏輯待補，跟進GameV3Fragment
+//                    }
+//                }
 
 //                if (needUpdate) {
 //                    homeRecommendAdapter.data = targetList
@@ -554,29 +555,42 @@ class MainHomeFragment :
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                subscribeQueryData(homeRecommendAdapter.data)
+                subscribeQueryData(hotHandicapAdapter.data)
             }
         }
 
         receiver.closePlayCate.observe(viewLifecycleOwner) { event ->
             event?.getContentIfNotHandled()?.let {
-                homeRecommendAdapter.data.forEach { recommend ->
-                    if (recommend.gameType == it.gameType) {
-                        recommend.oddsMap?.forEach { map ->
-                            if (map.key == it.playCateCode) {
-                                map.value?.forEach { odd ->
+                hotHandicapAdapter.data.forEach { handicapData ->
+                    handicapData.matchInfos.forEach { hotMatchInfo ->
+                        if (hotMatchInfo.gameType == it.gameType) {
+                            hotMatchInfo.oddsMap?.forEach{map->
+                                if (map.key == it.playCateCode) {
+                                    map.value?.forEach { odd ->
                                     odd?.status = BetStatus.DEACTIVATED.code
+                                    }
                                 }
                             }
                         }
+
                     }
                 }
-                homeRecommendAdapter.notifyDataSetChanged()
+                hotHandicapAdapter.notifyDataSetChanged()
             }
         }
 
     }
-
+    private fun HotMatchInfo.sortOddsMap() {
+        this.oddsMap?.forEach { (_, value) ->
+            if ((value?.size
+                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
+            ) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
     private fun Recommend.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
             if ((value?.size
@@ -752,7 +766,7 @@ class MainHomeFragment :
     /**
      * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
      */
-    private fun updateBetInfo(recommend: Recommend, oddsChangeEvent: OddsChangeEvent) {
+    private fun updateBetInfo(recommend: HotMatchInfo, oddsChangeEvent: OddsChangeEvent) {
         if (!getBetListPageVisible()) {
             //尋找是否有加入注單的賠率項
             if (recommend.matchInfo?.id == oddsChangeEvent.eventId && recommend.oddsMap?.values?.any { oddList ->
@@ -836,12 +850,14 @@ class MainHomeFragment :
         }
     }
 
-    private fun subscribeQueryData(recommendList: List<Recommend>) {
+    private fun subscribeQueryData(recommendList: List<HandicapData>) {
         recommendList.forEach { subscribeChannelHall(it) }
     }
 
-    private fun subscribeChannelHall(recommend: Recommend) {
-        subscribeChannelHall(recommend.gameType, recommend.id)
+    private fun subscribeChannelHall(recommend: HandicapData) {
+        recommend.matchInfos.forEach {
+            subscribeChannelHall(it.gameType, it.id)
+        }
     }
 
     private fun enterThirdGame(result: EnterThirdGameResult) {

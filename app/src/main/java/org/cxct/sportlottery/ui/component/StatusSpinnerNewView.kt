@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.util.LogUtil
 
 class StatusSpinnerNewView @JvmOverloads constructor(
     context: Context,
@@ -52,7 +53,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         get() = selectItem.code
 
     init {
-        val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner, null)
+        val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner_new, null)
         addView(view)
         view.apply {
 
@@ -61,6 +62,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             tv_name.text =
                 typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             tv_name.gravity = textGravity
+            tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
             setOnClickListener {
                 this@StatusSpinnerNewView.callOnClick()
                 if (mListPop.isShowing) {
@@ -77,6 +79,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             setSelectCode(first.code)
         }
         spinnerAdapter = StatusSpinnerAdapter(dataList)
+        spinnerAdapter!!.setItmeColor(typedArray.getColor(R.styleable.StatusBottomSheetStyle_listTextColor,resources.getColor(R.color.color_FFFFFF_414655)))
         mListPop = ListPopupWindow(context)
         mListPop.width = ScreenUtils.getScreenWidth(context) / 2
         mListPop.height = LayoutParams.WRAP_CONTENT
@@ -114,7 +117,6 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         } else {
             mListPop.height = ViewGroup.LayoutParams.WRAP_CONTENT
         }
-
         dataList.firstOrNull()?.let { defaultData ->
             setSelectCode(defaultData.code)
         }
