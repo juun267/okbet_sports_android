@@ -191,7 +191,7 @@
     <string name="daily_rebates">hoàn lợi nhuận tối đa trong một ngày</string>
     <string name="hint_recharge_growth">Gửi tiền vào %s %d nhận được %d tăng điểm</string>
     <string name="hint_bet_growth">Cá cược %s %d dân tệ để nhận %d điểm</string>
-    <string name="game_rule">Luật trò chơi</string>
+    <string name="game_rule">Quy tắc trò chơi</string>
     <string name="news">Tin tức</string>
     <string name="select_all_league">Chọn tất cả giải đấu</string>
     <string name="select_cancel">Hủy lựa chọn</string>
@@ -263,7 +263,7 @@
     <string name="news_center">Trung tâm tin nhắn</string>
     <string name="help_center">Trung tâm hỗ trợ</string>
     <string name="fund_detail">Chi tiết quỹ</string>
-    <string name="feedback">Ý kiến phản hồi</string>
+    <string name="feedback">Phản hồi</string>
     <string name="promotion">Khuyến mại</string>
     <string name="need_improve">Cần được hoàn thiện</string>
     <string name="profile_info">Thông tin cá nhân</string>
@@ -956,7 +956,7 @@
     <string name="privacy_policy">Chính Sách Bảo Mật</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
     <string name="official_partner">Đối tác chính thức</string>
-    <string name="faqs">Câu Hỏi Thường Gặp</string>
+    <string name="faqs">Q&amp;A</string>
     <string name="live_chat">Trò Chuyện Trực Tuyến</string>
     <string name="contact">Liên Hệ</string>
     <string name="btm_navigation_hint">%s is a Registered Trade Mark, brand and registered business name.</string>

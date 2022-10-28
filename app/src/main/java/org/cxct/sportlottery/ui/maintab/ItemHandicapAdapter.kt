@@ -8,6 +8,7 @@ import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
 import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
@@ -32,7 +33,7 @@ class ItemHandicapAdapter(private val homeRecommendListener: HomeRecommendListen
             }
         }
 
-    var data: List<Recommend> = mutableListOf()
+    var data: List<HotMatchInfo> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -78,7 +79,7 @@ class ItemHandicapAdapter(private val homeRecommendListener: HomeRecommendListen
         } else {
             payloads.forEach { payload ->
                 when (payload) {
-                    is Recommend -> {
+                    is HotMatchInfo -> {
                         holder.update(payload, oddsType = oddsType)
                     }
                 }

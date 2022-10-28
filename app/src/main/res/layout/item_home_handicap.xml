@@ -26,16 +26,20 @@
             android:layout_width="@dimen/margin_20"
             android:layout_height="wrap_content"
             tools:src="@drawable/icon_team_sign"/>
+
         <TextView
             android:id="@+id/tv_home_name"
-            android:layout_toRightOf="@+id/iv_home_icon"
-            android:layout_marginStart="@dimen/margin_8"
-            android:textStyle="bold"
-            android:textColor="@color/color_FFFFFF_535D76"
-            android:textSize="@dimen/textSize14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="波特兰发"/>
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_toRightOf="@+id/iv_home_icon"
+            android:ellipsize="end"
+            android:maxWidth="80dp"
+            android:maxLines="1"
+            android:textColor="@color/color_FFFFFF_535D76"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            tools:text="波特兰发" />
 
         <TextView
             android:id="@+id/tvHomeScore"
@@ -64,6 +68,9 @@
             tools:src="@drawable/icon_team_sign"/>
         <TextView
             android:id="@+id/tv_away_name"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:maxWidth="80dp"
             android:layout_toRightOf="@+id/iv_away_icon"
             android:layout_marginStart="@dimen/margin_8"
             android:textStyle="bold"
@@ -122,6 +129,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvGameStatus"
             android:paddingVertical="@dimen/margin_4"
             android:layout_marginStart="@dimen/margin_10"
@@ -138,6 +146,8 @@
             android:id="@+id/tvPlayCateCount"
             android:layout_marginEnd="@dimen/margin_10"
            android:gravity="end"
+            android:textSize="@dimen/textSize12sp"
+            android:textColor="@color/color_1D9F51"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="20>"/>

@@ -7,14 +7,13 @@ import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
 import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
-import org.cxct.sportlottery.network.common.GameStatus
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.PlayCateType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
@@ -33,12 +32,12 @@ class ItemHandicapHolder(
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    fun bind(data: Recommend, oddsType: OddsType) {
+    fun bind(data: HotMatchInfo, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         update(data, oddsType)
     }
 
-    fun update(data: Recommend, oddsType: OddsType) {
+    fun update(data: HotMatchInfo, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         setupGameInfoVisibility(data)
 
@@ -160,7 +159,7 @@ class ItemHandicapHolder(
     /**
      * 設置背景、隊伍名稱、點擊事件、玩法數量、聯賽名稱
      */
-    private fun setupGameInfo(data: Recommend) {
+    private fun setupGameInfo(data: HotMatchInfo) {
         with(binding) {
             //聯賽名稱
            // tvLeagueName.text = data.leagueName
@@ -170,12 +169,12 @@ class ItemHandicapHolder(
             //endregion
 
             //region 隊伍圖示
-            ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
-            ivAwayIcon.setTeamLogo(data.matchInfo?.awayIcon)
+            ivHomeIcon.setTeamLogo(data.homeIcon)
+            ivAwayIcon.setTeamLogo(data.awayIcon)
             //endregion
 
             //玩法數量
-          //  tvPlayCateCount.text = data.playCateNum.toString()
+            tvPlayCateCount.text = data.playCateNum.toString()+"+ >"
 
             //region 點擊進入賽事詳情
             val matchOddList = transferMatchOddList(data)
@@ -198,7 +197,7 @@ class ItemHandicapHolder(
      * 配置投注按鈕Callback
      */
     private fun OddsButtonHome.setButtonBetClick(
-        data: Recommend,
+        data: HotMatchInfo,
         odd: Odd?,
         playCateCode: String,
         playCateName: String,
@@ -215,7 +214,7 @@ class ItemHandicapHolder(
                         playCateCode = playCateCode,
                         playCateName = playCateName,
                         betPlayCateNameMap = data.betPlayCateNameMap,
-                        playCateMenuCode = data.menuList.firstOrNull()?.code
+                        playCateMenuCode = null
                     )
                 }
             }
@@ -223,7 +222,7 @@ class ItemHandicapHolder(
     }
 
     //region 賽事比分Method
-    private val isScoreTextVisible = { item: Recommend ->
+    private val isScoreTextVisible = { item: HotMatchInfo ->
         when (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
             true -> View.VISIBLE
             else -> View.GONE
@@ -233,7 +232,7 @@ class ItemHandicapHolder(
     /**
      * 設置賽事顯示VS或比分
      */
-    private fun setupGameInfoVisibility(item: Recommend) {
+    private fun setupGameInfoVisibility(item: HotMatchInfo) {
         if (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)) {
             with(binding) {
               //  blockScore.visibility = View.VISIBLE
@@ -250,7 +249,7 @@ class ItemHandicapHolder(
     /**
      * 配置比分及比賽制度
      */
-    private fun setupMatchScore(item: Recommend, matchType: MatchType) {
+    private fun setupMatchScore(item: HotMatchInfo, matchType: MatchType) {
         //TODO review 棒球賽事狀態版型
         /*itemView.apply {
             when {
@@ -288,7 +287,7 @@ class ItemHandicapHolder(
     /**
      * 設置排球類型比分及比賽制度
      */
-    private fun setVbScoreText(item: Recommend) {
+    private fun setVbScoreText(item: HotMatchInfo) {
         binding.apply {
             setAllScoreTextAtBottom(item)
 
@@ -298,7 +297,7 @@ class ItemHandicapHolder(
     /**
      * 設置網球類型比分及比賽制度
      */
-    private fun setTnScoreText(item: Recommend) {
+    private fun setTnScoreText(item: HotMatchInfo) {
         binding.apply {
             setAllScoreTextAtBottom(item)
 
@@ -309,21 +308,21 @@ class ItemHandicapHolder(
     /**
      * 設置足球類型比分及比賽制度
      */
-    private fun setFtScoreText(item: Recommend) {
+    private fun setFtScoreText(item: HotMatchInfo) {
         binding.setScoreText(item)
     }
 
     /**
      * 設置籃球類型比分及比賽制度
      */
-    private fun setBkScoreText(item: Recommend) {
+    private fun setBkScoreText(item: HotMatchInfo) {
         binding.setScoreText(item)
     }
 
     /**
      * 設置羽球類型比分及比賽制度
      */
-    private fun setBmScoreText(item: Recommend) {
+    private fun setBmScoreText(item: HotMatchInfo) {
         binding.apply {
             setAllScoreTextAtBottom(item)
 
@@ -333,7 +332,7 @@ class ItemHandicapHolder(
     /**
      * 設置羽球類型比分及比賽制度
      */
-    private fun setBbScoreText(item: Recommend) {
+    private fun setBbScoreText(item: HotMatchInfo) {
         with(binding) {
             setScoreText(item)
 
@@ -343,7 +342,7 @@ class ItemHandicapHolder(
     /**
      * 設置盤類型比分
      */
-    private fun ItemHomeHandicapBinding.setAllScoreTextAtBottom(item: Recommend) {
+    private fun ItemHomeHandicapBinding.setAllScoreTextAtBottom(item: HotMatchInfo) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -359,7 +358,7 @@ class ItemHandicapHolder(
     /**
      * 設置局類型比分
      */
-    private fun ItemHomeHandicapBinding.setScoreText(item: Recommend) {
+    private fun ItemHomeHandicapBinding.setScoreText(item: HotMatchInfo) {
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
@@ -378,7 +377,7 @@ class ItemHandicapHolder(
 
     //region 賽事時間狀態Method
     private fun setupMatchTimeAndStatus(
-        item: Recommend,
+        item: HotMatchInfo,
         isTimerEnable: Boolean,
         isTimerPause: Boolean
     ) {
@@ -391,7 +390,7 @@ class ItemHandicapHolder(
      * 賽事時間
      */
     private fun setupMatchTime(
-        item: Recommend,
+        item: HotMatchInfo,
         isTimerEnable: Boolean,
         isTimerPause: Boolean
     ) {
@@ -476,7 +475,7 @@ class ItemHandicapHolder(
         }
     }
 
-    private fun setStatusText(item: Recommend) {
+    private fun setStatusText(item: HotMatchInfo) {
         binding.tvGameStatus.text = when {
             (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
                     && item.matchInfo?.status == GameStatus.POSTPONED.code
@@ -499,7 +498,7 @@ class ItemHandicapHolder(
         }
     }
 
-    private fun setTextViewStatus(item: Recommend) {
+    private fun setTextViewStatus(item: HotMatchInfo) {
         when {
             (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
 
@@ -529,7 +528,7 @@ class ItemHandicapHolder(
         }
     }
 
-    private fun transferMatchOddList(recommend: Recommend): MutableList<MatchOdd> {
+    private fun transferMatchOddList(recommend: HotMatchInfo): MutableList<MatchOdd> {
         with(recommend) {
             return mutableListOf(
                 MatchOdd(
