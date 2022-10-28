@@ -152,8 +152,10 @@ fun RecyclerView.addScrollWithItemVisibility(
                             }
                         }
                         is HomeLiveAdapter -> {
-                            LogUtil.d("HomeLiveAdapter=")
-                            getVisibleRangePosition().forEach { leaguePosition ->
+
+                            getVisibleRangePosition().apply {
+                                LogUtil.d("HomeLiveAdapter=" + this.toJson())
+                            }.forEach { leaguePosition ->
                                 visibleRangePair.add(Pair(leaguePosition, -1))
                             }
                         }

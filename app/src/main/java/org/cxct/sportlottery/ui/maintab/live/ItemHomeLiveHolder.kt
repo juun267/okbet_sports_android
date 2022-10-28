@@ -11,10 +11,7 @@ import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
-import org.cxct.sportlottery.network.common.GameStatus
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MenuCode
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -282,19 +279,17 @@ class ItemHomeLiveHolder(
         homeLiveListener: HomeLiveListener,
     ) {
         setOnClickListener {
-            data.matchType?.let { matchType ->
-                odd?.let { odd ->
-                    homeLiveListener.onClickBetListener(
-                        gameType = data.matchInfo.gameType!!,
-                        matchType = matchType,
-                        matchInfo = data.matchInfo,
-                        odd = odd,
-                        playCateCode = playCateCode,
-                        playCateName = playCateName,
-                        betPlayCateNameMap = data.betPlayCateNameMap,
-                        playCateMenuCode = MenuCode.MAIN.code,
-                    )
-                }
+            odd?.let { odd ->
+                homeLiveListener.onClickBetListener(
+                    gameType = data.matchInfo.gameType!!,
+                    matchType = MatchType.IN_PLAY,
+                    matchInfo = data.matchInfo,
+                    odd = odd,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName,
+                    betPlayCateNameMap = data.betPlayCateNameMap,
+                    playCateMenuCode = MenuCode.MAIN.code,
+                )
             }
         }
     }

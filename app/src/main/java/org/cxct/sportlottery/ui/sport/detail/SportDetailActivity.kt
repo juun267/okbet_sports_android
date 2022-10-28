@@ -18,7 +18,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
-import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -207,7 +206,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         ImmersionBar.with(this)
             .fitsSystemWindows(false)
             .statusBarDarkFont(false)
-            .hideBar(BarHide.FLAG_HIDE_STATUS_BAR)
+            .transparentStatusBar()
             .init()
         ImmersionBar.getStatusBarHeight(this).let {
             v_statusbar.minimumHeight = it
@@ -391,6 +390,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
+        lin_center.post {
+            val location = IntArray(2)
+            sv_content.getLocationInWindow(location)
+            chatViewHeight =
+                ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1] + resources.getDimensionPixelOffset(
+                    R.dimen.tool_bar_height) + 10.dp
+        }
         iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
             ?: GameType.FT))
         collaps_toolbar.iv_toolbar_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(
@@ -589,13 +595,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         viewModel.videoUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
-                if (lin_video.isVisible)
                     live_view_tool_bar.videoUrl = url
             }
         }
         viewModel.animeUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
-                if (lin_anime.isVisible)
                     live_view_tool_bar.animeUrl = url
             }
         }
@@ -895,9 +899,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             lin_live.isVisible =
                 matchInfo?.isLive == 1
             lin_video.isVisible =
-                matchInfo?.liveVideo == 1 && (TimeUtil.isTimeInPlay(matchInfo.startTime))
+                matchInfo?.liveVideo == 1
             lin_anime.isVisible =
-                TimeUtil.isTimeInPlay(matchInfo?.startTime) && !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
+                !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             lin_live.setOnClickListener {
                 live_view_tool_bar.liveUrl?.let {
@@ -932,13 +936,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     startDelayHideTitle()
                 }
             }
-            if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {
-                lin_menu.isVisible = true
-                v_menu_1.isVisible = lin_video.isVisible
-                v_menu_2.isVisible = lin_anime.isVisible
-            } else {
-                lin_menu.isVisible = false
-            }
+        }
+        if (lin_live.isVisible || lin_video.isVisible || lin_anime.isVisible) {
+            lin_menu.isVisible = true
+            v_menu_1.isVisible = lin_live.isVisible && lin_video.isVisible
+            v_menu_2.isVisible = lin_video.isVisible && lin_anime.isVisible
+        } else {
+            lin_menu.isVisible = false
         }
     }
 
@@ -1390,10 +1394,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         })
         LogUtil.d("builder=" + builder.toString())
         wv_chat.loadUrl(builder.toString())
-//        wv_chat.loadUrl("file:android_asset/test.html")
     }
 
     fun setupInput() {
+        if (matchInfo?.roundNo.isNullOrEmpty()) {
+            wv_chat.isVisible = false
+            return
+        }
+        wv_chat.isVisible = true
         wv_chat.apply {
             settings.apply {
                 javaScriptEnabled = true
@@ -1405,7 +1413,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setWebViewCommonBackgroundColor()
             webViewClient = WebViewClient()
             addJavascriptInterface(JavaScriptObject(this@SportDetailActivity), "__oi")
-//            addJavascriptInterface(JavaScriptObject(), "android")
             webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(
                     view: WebView?,
@@ -1423,13 +1430,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
-        lin_categroy.post(Runnable {
-            chatViewHeight =
-                ScreenUtils.getScreenHeight(this@SportDetailActivity) - (toolBar.height + lin_center.height)
-//            lin_chat.layoutParams.apply {
-//                height=chatViewHeight
-//            }
-        })
         viewModel.loginLive()
     }
 
@@ -1449,18 +1449,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     fun updateWebHeight(onMini: Boolean) {
-        wv_chat.post {
-            wv_chat.layoutParams.apply {
-                if (onMini)
-                    this.height = 56.dp
-                else
-                    this.height = 500.dp
-            }
-        }
         wv_chat.postDelayed({
-            LogUtil.d("height=" + wv_chat.height)
-
-        }, 1000)
-
+            var lp = wv_chat.layoutParams
+            lp.height = if (onMini) 56.dp else chatViewHeight
+            wv_chat.layoutParams = lp
+            LogUtil.e("height=" + wv_chat.height)
+        }, 200)
     }
 }

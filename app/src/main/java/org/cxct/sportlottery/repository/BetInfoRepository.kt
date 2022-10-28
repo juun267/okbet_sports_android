@@ -369,7 +369,6 @@ object BetInfoRepository {
                     if (maxParlayPayout == null) it.maxPayout else it.maxPayout?.min(maxParlayPayout)
             }
         }
-        LogUtil.d(maxParlayBetMoney.toString() + "," + minParlayBetMoney.toString() + "," + maxParlayPayout.toString())
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
             parlayComList,

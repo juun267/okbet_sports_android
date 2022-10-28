@@ -32,6 +32,7 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/iv_elec_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,7 +68,8 @@
                 <ImageView
                     android:id="@+id/iv_second_logo"
                     android:layout_width="75dp"
-                    android:layout_height="75dp" />
+                    android:layout_height="75dp"
+                    android:src="@drawable/ic_elec_pirate" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,12 +121,13 @@
                 <ImageView
                     android:id="@+id/iv_first_logo"
                     android:layout_width="75dp"
-                    android:layout_height="75dp" />
+                    android:layout_height="75dp"
+                    android:src="@drawable/ic_elec_wizard" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="12sp"
                     android:text="@string/total_reward_amount" />
@@ -171,12 +174,13 @@
                 <ImageView
                     android:id="@+id/iv_third_logo"
                     android:layout_width="75dp"
-                    android:layout_height="75dp" />
+                    android:layout_height="75dp"
+                    android:src="@drawable/ic_elec_king" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:textColor="@color/color_2b2b2b_ffffff"
                     android:textSize="12sp"
                     android:text="@string/total_reward_amount" />
