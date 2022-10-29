@@ -166,7 +166,6 @@ class MainHomeFragment :
         iv_customer_service.setOnClickListener {
             clickCustomService(requireContext(), childFragmentManager)
         }
-        initRecommendView()
         showChangeFragment()
         getTabDate()
         nsv_home.setOnScrollChangeListener(
@@ -410,6 +409,7 @@ class MainHomeFragment :
                 var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
                 var targetList= hotHandicapAdapter.data
                 targetList.forEachIndexed { index, handicapData ->
+
                     handicapData.matchInfos.forEach {  hotMatchInfo->
                         if (SocketUpdateUtil.updateMatchStatus(
                                 hotMatchInfo.gameType,
@@ -459,22 +459,20 @@ class MainHomeFragment :
 
         }
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-             hotHandicapAdapter.data.forEachIndexed { index, handicap ->
-                 LogUtil.d("第一次循环")
+            hotHandicapAdapter.data.forEachIndexed { index, handicap ->
+
                  handicap.matchInfos.forEach { hotMatchInfo->
-                     LogUtil.d("第二次循环")
                      if (hotMatchInfo.id == oddsChangeEvent.eventId) {
                          hotMatchInfo.sortOddsMap()
                          //region 翻譯更新
                          oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
                              hotMatchInfo.playCateNameMap?.putAll(playCateNameMap)
-                             LogUtil.toJson(playCateNameMap)
                          }
                          oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
                              hotMatchInfo.betPlayCateNameMap?.putAll(betPlayCateNameMap)
                          }
                          //endregion
-                         if (SocketUpdateUtil.updateMatchOdds(context, hotMatchInfo, oddsChangeEvent)) {
+                         if (SocketUpdateUtil.updateMatchOddsNew(context, hotMatchInfo, oddsChangeEvent)) {
                              updateBetInfo(hotMatchInfo, oddsChangeEvent)
                              leagueOddMap[hotMatchInfo.leagueId] = hotMatchInfo
                              hotHandicapAdapter.notifyItemChanged(index, handicap)
@@ -634,11 +632,10 @@ class MainHomeFragment :
                     iv_right.setOnClickListener {
                         if (position<size-1){
                             position+1
-                            LogUtil.d("$size")
-                            LogUtil.d("$position")
+
                         }else{
                             position-(size-1)
-                            LogUtil.d("$position")
+
                         }
                     }
 
@@ -692,76 +689,8 @@ class MainHomeFragment :
 //                }
 //            }
     }
-    private fun setupType(publicityMenuData: PublicityMenuData) {
-//        rg_type.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-//            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-//                when (checkedId) {
-//                    R.id.rbtn_sport -> {
-//                        lin_menu_game.isVisible = false
-//                        rv_type_list.isVisible = true
-//                    }
-//                    R.id.rbtn_egame -> {
-//                        rv_type_list.isVisible = false
-//                        lin_menu_game.isVisible = true
-//                    }
-//                }
-//            }
-//        })
-//        mainHomeMenuAdapter = MainHomeMenuAdapter(mutableListOf())
-//        var rvChiild = rv_type_list.getChildAt(0) as RecyclerView
-//        rvChiild.setPadding(0, 0, 40.dp, 0)
-//        rvChiild.clipToPadding = false
-//        rv_type_list.offscreenPageLimit = 3
-//        rv_type_list.setPageTransformer(DepthPageTransformer())
-//        rv_type_list.adapter = mainHomeMenuAdapter
-//        rv_type_list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-//            override fun onPageSelected(position: Int) {
-//                super.onPageSelected(position)
-//                if (position == mainHomeMenuAdapter.itemCount - 1) {
-//                    rv_type_list.currentItem = mainHomeMenuAdapter.itemCount - 2
-//                }
-//            }
-//        })
-//        mainHomeMenuAdapter.setOnItemClickListener { adapter, view, position ->
-//            publicityMenuData.sportMenuDataList?.let {
-//                enterTheSport(it[position])
-//            }
-//        }
-//
-//        publicityMenuData?.sportMenuDataList?.let {
-//            mainHomeMenuAdapter.setNewData(it.toMutableList())
-//            mainHomeMenuAdapter.removeAllFooterView()
-//            mainHomeMenuAdapter.addFooterView(LayoutInflater.from(requireContext())
-//                .inflate(R.layout.item_main_home_empty, null))
-//            mainHomeMenuAdapter.footerLayout.apply {
-//                layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                    LinearLayout.LayoutParams.MATCH_PARENT)
-//            }
-//        }
-//        lin_menu_game.apply {
-//            ivThirdGame.setImageResource(R.drawable.bg_egame)
-//            ivThirdGame.setOnClickListener {
-//                if (viewModel.isLogin.value != true) {
-//                    (activity as MainTabActivity).showLoginNotify()
-//                } else {
-//                    viewModel.requestEnterThirdGame(publicityMenuData?.eGameMenuData)
-//                }
-//            }
-//        }
 
-    }
 
-    private fun initRecommendView() {
-//        with(rv_recommend) {
-//            if (layoutManager == null) {
-//                layoutManager =
-//                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            }
-//            if (adapter == null) {
-//                adapter = homeRecommendAdapter
-//            }
-//        }
-    }
 
     /**
      * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊

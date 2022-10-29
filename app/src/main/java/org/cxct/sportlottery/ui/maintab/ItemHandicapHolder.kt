@@ -46,16 +46,21 @@ class ItemHandicapHolder(
 
         //玩法Code
         var oddPlayCateCode = ""
-
+        data.oddsSort = PlayCate.SINGLE.value
         var oddList = listOf<Odd?>()
 
         val oddsMap = mutableMapOf<String, List<Odd?>?>()
         data.oddsMap?.forEach {
             oddsMap[it.key] = it.value
+
         }
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
             .filterPlayCateSpanned(data.gameType)
+        LogUtil.toJson(sortOddsMap)
+        LogUtil.d(oddsMap.size.toString())
+        LogUtil.d(data.oddsSort)
         if (sortOddsMap.isNotEmpty()) {
+            LogUtil.d("有值")
             sortOddsMap.iterator().next().key.let {
                 oddPlayCateCode = it
             }

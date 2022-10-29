@@ -8,7 +8,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.FastBetDataBean
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.setLeagueLogo
@@ -66,6 +72,17 @@ class HotHandicapAdapter(data:List<HandicapData>):
                },
                onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
 
+                       addOddsDialog(
+                           gameType,
+                           matchType,
+                           matchInfo,
+                           odd,
+                           playCateCode,
+                           playCateName,
+                           betPlayCateNameMap,
+                           playCateMenuCode
+                       )
+
                },
                onClickFavoriteListener = {
 
@@ -95,5 +112,35 @@ class HotHandicapAdapter(data:List<HandicapData>):
         itemAdapter.data = item.matchInfos
         itemAdapter.oddsType = oddsType
     }
-
+    private fun addOddsDialog(
+        gameTypeCode: String,
+        matchType: MatchType,
+        matchInfo: MatchInfo?,
+        odd: Odd,
+        playCateCode: String,
+        playCateName: String,
+        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
+        playCateMenuCode: String?,
+    ) {
+        val gameType = GameType.getGameType(gameTypeCode)
+        gameType?.let {
+            matchInfo?.let { matchInfo ->
+                val fastBetDataBean = FastBetDataBean(
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateCode = playCateCode,
+                    playCateName = playCateName,
+                    matchInfo = matchInfo,
+                    matchOdd = null,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    betPlayCateNameMap = betPlayCateNameMap,
+                    playCateMenuCode
+                )
+                when (val fragmentActivity = mContext) {
+                    is MainTabActivity -> fragmentActivity.setupBetData(fastBetDataBean)
+                }
+            }
+        }
+    }
 }
