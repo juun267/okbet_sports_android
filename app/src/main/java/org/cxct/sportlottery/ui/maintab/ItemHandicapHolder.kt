@@ -1,18 +1,17 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.annotation.SuppressLint
 import android.view.View
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
-import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.GameStatus
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.detail.PlayCateType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -46,21 +45,14 @@ class ItemHandicapHolder(
 
         //玩法Code
         var oddPlayCateCode = ""
-        data.oddsSort = PlayCate.SINGLE.value
         var oddList = listOf<Odd?>()
-
         val oddsMap = mutableMapOf<String, List<Odd?>?>()
         data.oddsMap?.forEach {
             oddsMap[it.key] = it.value
-
         }
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
             .filterPlayCateSpanned(data.gameType)
-        LogUtil.toJson(sortOddsMap)
-        LogUtil.d(oddsMap.size.toString())
-        LogUtil.d(data.oddsSort)
         if (sortOddsMap.isNotEmpty()) {
-            LogUtil.d("有值")
             sortOddsMap.iterator().next().key.let {
                 oddPlayCateCode = it
             }
@@ -69,22 +61,23 @@ class ItemHandicapHolder(
             }
         } else
             return
+
+
         //玩法名稱
         val playCateName = data.playCateNameMap?.get(oddPlayCateCode)
             ?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
         //  binding.tvGamePlayCateCodeName.text = playCateName
         with(binding) {
             //配置賽事比分及機制
-            data.matchType?.let { matchType ->
-                setupMatchScore(data, matchType)
-            }
+            setupMatchScore(data)
+//            org.cxct.sportlottery.util.LogUtil.d("oddList="+oddList.size)
             //region 第1個按鈕
             if (oddList.isNotEmpty()) {
                 val odd1 = oddList[0]
                 with(oddBtn1) {
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd1)
-                    setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType)
+                    setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType, hideName = true)
                     setButtonBetClick(
                         data = data,
                         odd = odd1,
@@ -104,14 +97,7 @@ class ItemHandicapHolder(
                 with(oddBtn2) {
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd2)
-                    setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
-                    if (oddList.size > 2) setupOdd4hall(
-                        oddPlayCateCode,
-                        odd2,
-                        oddList,
-                        oddsType,
-                        true
-                    )
+                    setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType, hideName = true)
                     setButtonBetClick(
                         data = data,
                         odd = odd2,
@@ -130,14 +116,7 @@ class ItemHandicapHolder(
                 with(oddBtn3) {
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd3)
-                    setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
-                    if (oddList.size > 2) setupOdd4hall(
-                        oddPlayCateCode,
-                        odd3,
-                        oddList,
-                        oddsType,
-                        true
-                    )
+                    setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType, hideName = true)
                     setButtonBetClick(
                         data = data,
                         odd = odd3,
@@ -254,30 +233,9 @@ class ItemHandicapHolder(
     /**
      * 配置比分及比賽制度
      */
-    private fun setupMatchScore(item: HotMatchInfo, matchType: MatchType) {
+    private fun setupMatchScore(item: HotMatchInfo) {
         //TODO review 棒球賽事狀態版型
-        /*itemView.apply {
-            when {
-                matchType != MatchType.IN_PLAY -> {
-                    linear_layout.isVisible = true
-                    content_baseball_status.isVisible = false
-                }
-                else -> {
-                    when (item.matchInfo?.gameType) {
-                        GameType.BB.key -> {
-                            linear_layout.isVisible = false
-                            content_baseball_status.isVisible = true
-                        }
-                        else -> {
-                            linear_layout.isVisible = true
-                            content_baseball_status.isVisible = false
-                        }
-                    }
-
-                }
-            }
-        }*/
-        when (item.matchInfo?.gameType) {
+        when (item.gameType) {
             GameType.VB.key -> setVbScoreText(item)
             GameType.TN.key -> setTnScoreText(item)
             GameType.FT.key -> setFtScoreText(item)

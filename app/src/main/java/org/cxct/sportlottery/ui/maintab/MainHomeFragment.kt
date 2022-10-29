@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -48,11 +49,8 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.component.StatusSpinnerNewView
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
-import org.cxct.sportlottery.ui.game.publicity.PublicityMenuData
-import org.cxct.sportlottery.ui.game.publicity.PublicityPromotionItemData
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -104,7 +102,43 @@ class MainHomeFragment :
     }
 
     private val hotHandicapAdapter by lazy {
-        HotHandicapAdapter(mutableListOf())
+        HotHandicapAdapter(mutableListOf()).apply {
+            homeRecommendListener = HomeRecommendListener(
+                onItemClickListener = {
+
+                },
+                onGoHomePageListener = {
+
+                },
+                onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            gameType,
+                            matchType,
+                            matchInfo,
+                            odd,
+                            playCateCode,
+                            playCateName,
+                            betPlayCateNameMap,
+                            playCateMenuCode
+                        )
+                    }
+                },
+                onClickFavoriteListener = {
+
+                },
+                onClickStatisticsListener = { matchId ->
+
+                }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
+
+                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
+
+                }
+            ) { gameType, matchType, matchId, matchInfoList ->
+
+            }
+        }
     }
     private val hotElectronicAdapter by lazy{//电子
         HomeElectronicAdapter(mutableListOf())
@@ -113,10 +147,17 @@ class MainHomeFragment :
         HomeChessAdapter(mutableListOf())
     }
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
-    private val mHandicapCodeList by lazy {resources.getStringArray(R.array.handicap_type_list)
-        .mapIndexed{ index,data->
-            StatusSheetData((index+1).toString(),data)
-        }}
+    private val mHandicapCodeList by lazy {
+        resources.getStringArray(R.array.handicap_type_list)
+            .mapIndexed { index, data ->
+                StatusSheetData((index + 1).toString(), data)
+            }
+    }
+    private val mHandicapCodeValue by lazy {
+        mutableListOf(PlayCate.SINGLE.value,
+            PlayCate.PK_HDP.value,
+            PlayCate.OU.value)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -135,12 +176,7 @@ class MainHomeFragment :
         initObservable()
         queryData()
         initSocketObservers()
-        selector_order_status.setOnItemSelectedListener {
-            it.code?.let {
-                viewModel.getHandicapConfig(it.toInt())
-            }
-        }
-        selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
+
     }
 
     override fun onResume() {
@@ -168,6 +204,7 @@ class MainHomeFragment :
         }
         showChangeFragment()
         getTabDate()
+        initHotHandicap()
         nsv_home.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener {
                 _, _, scrollY, _, oldScrollY ->
@@ -405,37 +442,34 @@ class MainHomeFragment :
 
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
-
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-                var targetList= hotHandicapAdapter.data
-                targetList.forEachIndexed { index, handicapData ->
-
-                    handicapData.matchInfos.forEach {  hotMatchInfo->
+                hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
+                    var needUpdate = false
+                    handicapData.matchInfos.forEach { hotMatchInfo ->
                         if (SocketUpdateUtil.updateMatchStatus(
                                 hotMatchInfo.gameType,
                                 handicapData.matchInfos as MutableList<MatchOdd>,
-                            matchStatusChangeEvent,
-                            context
+                                matchStatusChangeEvent,
+                                context
                             )
                         ) {
                             needUpdate = true
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
+                    if (needUpdate) {
+                        hotHandicapAdapter.notifyItemChanged(index)
+                    }
                 }
 
-                if (needUpdate) {
-                    hotHandicapAdapter.setNewData(targetList)
-                }
+
             }
         }
 
         receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 val targetList = hotHandicapAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
                 targetList.forEachIndexed { index, handicapData ->
+                    var needUpdate = false
                     handicapData.matchInfos.forEach{ hotMatchInfo->
                         if (
                             SocketUpdateUtil.updateMatchClock(
@@ -444,14 +478,11 @@ class MainHomeFragment :
                             )
                         ) {
                             needUpdate = true
-                            //TODO 更新邏輯待補，跟進GameV3Fragment
+
                         }
                     }
-
-                }
-
-                if (needUpdate) {
-                    hotHandicapAdapter.setNewData(targetList)
+                    if (needUpdate)
+                        hotHandicapAdapter.notifyItemChanged(index)
                 }
             }
         }
@@ -460,7 +491,7 @@ class MainHomeFragment :
         }
         receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
             hotHandicapAdapter.data.forEachIndexed { index, handicap ->
-
+                var needUpdate = false
                  handicap.matchInfos.forEach { hotMatchInfo->
                      if (hotMatchInfo.id == oddsChangeEvent.eventId) {
                          hotMatchInfo.sortOddsMap()
@@ -472,35 +503,41 @@ class MainHomeFragment :
                              hotMatchInfo.betPlayCateNameMap?.putAll(betPlayCateNameMap)
                          }
                          //endregion
-                         if (SocketUpdateUtil.updateMatchOddsNew(context, hotMatchInfo, oddsChangeEvent)) {
+                         if (SocketUpdateUtil.updateMatchOddsNew(context,
+                                 hotMatchInfo,
+                                 oddsChangeEvent)
+                         ) {
                              updateBetInfo(hotMatchInfo, oddsChangeEvent)
-                             leagueOddMap[hotMatchInfo.leagueId] = hotMatchInfo
-                             hotHandicapAdapter.notifyItemChanged(index, handicap)
+                             leagueOddMap[hotMatchInfo.id] = hotMatchInfo
+                             needUpdate = true
                          }
                      }
                  }
+                if (needUpdate) {
+                    hotHandicapAdapter.notifyItemChanged(index)
+                }
              }
 
         }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-                var targetList= hotHandicapAdapter.data
-                targetList.forEachIndexed { index, handicapData ->
-                    handicapData.matchInfos.forEach {  hotMatchInfo->
+                // 紀錄是否需要更新整個推薦賽事清單
+                hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
+                    var needUpdate = false
+                    handicapData.matchInfos.forEach { hotMatchInfo ->
                         if (SocketUpdateUtil.updateOddStatus(
-                                hotMatchInfo,matchOddsLockEvent
+                                hotMatchInfo, matchOddsLockEvent
                             )
                         ) {
                             needUpdate = true
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
+                    if (needUpdate) {
+                        hotHandicapAdapter.notifyItemChanged(index)
+                    }
                 }
-                if (needUpdate) {
-                    hotHandicapAdapter.setNewData(targetList)
-               }
             }
         }
 
@@ -512,10 +549,9 @@ class MainHomeFragment :
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-                var targetList= hotHandicapAdapter.data
-                targetList.forEach {
-                    it.matchInfos.forEach {
+                hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
+                    var needUpdate = false
+                    handicapData.matchInfos.forEach {
                         if (SocketUpdateUtil.updateOddStatus(
                                 it,
                                 globalStopEvent
@@ -525,27 +561,10 @@ class MainHomeFragment :
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
+                    if (needUpdate) {
+                        hotHandicapAdapter.notifyItemChanged(index)
+                    }
                 }
-                if (needUpdate) {
-                    hotHandicapAdapter.setNewData(targetList)
-                }
-//                val targetList = homeRecommendAdapter.data
-//                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-//
-//                targetList.forEachIndexed { index, recommend ->
-//                    if (SocketUpdateUtil.updateOddStatus(
-//                            recommend,
-//                            globalStopEvent
-//                        )
-//                    ) {
-//                        needUpdate = true
-//                        //TODO 更新邏輯待補，跟進GameV3Fragment
-//                    }
-//                }
-
-//                if (needUpdate) {
-//                    homeRecommendAdapter.data = targetList
-//                }
             }
         }
 
@@ -579,17 +598,6 @@ class MainHomeFragment :
 
     }
     private fun HotMatchInfo.sortOddsMap() {
-        this.oddsMap?.forEach { (_, value) ->
-            if ((value?.size
-                    ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
-            ) {
-                value?.sortBy {
-                    it?.marketSort
-                }
-            }
-        }
-    }
-    private fun Recommend.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
             if ((value?.size
                     ?: 0) > 3 && value?.first()?.marketSort != 0 && (value?.first()?.odds != value?.first()?.malayOdds)
@@ -671,23 +679,6 @@ class MainHomeFragment :
         } else {
             rv_marquee.stopAuto(true) //停止跑馬燈
         }
-    }
-
-    private fun setupActivity(list: List<PublicityPromotionItemData>) {
-//        banner_activity.addBannerLifecycleObserver(this) //添加生命周期观察者
-//            .setAdapter(HomeActivityAdapter(list))
-//            .setOnBannerListener { data, position ->
-//                data?.let {
-//                    JumpUtil.toInternalWeb(
-//                        requireContext(),
-//                        Constants.getPromotionDetailUrl(
-//                            viewModel.token,
-//                            (data as PublicityPromotionItemData).id,
-//                            LanguageManager.getSelectLanguage(requireContext())
-//                        ),
-//                        getString(R.string.promotion))
-//                }
-//            }
     }
 
 
@@ -866,8 +857,23 @@ class MainHomeFragment :
         }
     }
 
+    private fun initHotHandicap() {
+        selector_order_status.setOnItemSelectedListener { statusSheetData ->
+            statusSheetData.code?.let {
+                viewModel.getHandicapConfig(it.toInt())
+                hotHandicapAdapter.data.forEach {
+                    it.matchInfos.forEach {
+                        it.oddsSort = mHandicapCodeValue[mHandicapCodeList.indexOf(statusSheetData)]
+                    }
+                }
+                hotHandicapAdapter.notifyDataSetChanged()
+            }
+        }
+        selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
+    }
+
     //获取tab数据
-    private fun getTabDate(){
+    private fun getTabDate() {
 
         //标题数据
         tabSelectTitleList.add("推荐")

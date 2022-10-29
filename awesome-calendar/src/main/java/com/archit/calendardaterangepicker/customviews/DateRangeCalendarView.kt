@@ -1,6 +1,7 @@
 package com.archit.calendardaterangepicker.customviews
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -171,15 +172,15 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
 //        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
         val yearTitle: String = when (selectedLocale) {
             Language.ZH, Language.ZHT -> {
-                "${currentCalendarMonth[Calendar.YEAR]}${context.getString(R.string.year)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
-                    context.getString(
+                "${currentCalendarMonth[Calendar.YEAR]}${context.getLocalString(R.string.year)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
+                    context.getLocalString(
                         R.string.month
                     )
                 }"
             }
             Language.VI -> {
-                "${context.getString(R.string.month)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
-                    context.getString(
+                "${context.getLocalString(R.string.month)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
+                    context.getLocalString(
                         R.string.year
                     )
                 } ${currentCalendarMonth[Calendar.YEAR]}"
@@ -190,6 +191,19 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         }
         tvYearTitle.text = yearTitle
         tvYearTitle.setTextColor(calendarStyleAttr.titleColor)
+    }
+
+    fun Context.getLocalString(resId: Int): String {
+        val localizedContext = getLocalizedContext(context)
+        return localizedContext.resources.getString(resId)
+    }
+
+    fun getLocalizedContext(context: Context): Context {
+        val locale = LanguageManager.getSetLanguageLocale(context)
+        var conf = context.resources.configuration
+        conf = Configuration(conf)
+        conf.setLocale(locale)
+        return context.createConfigurationContext(conf)
     }
 
     /**

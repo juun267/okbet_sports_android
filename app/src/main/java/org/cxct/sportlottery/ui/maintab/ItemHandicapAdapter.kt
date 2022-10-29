@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
-import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -33,7 +31,7 @@ class ItemHandicapAdapter(private val homeRecommendListener: HomeRecommendListen
             }
         }
 
-    var data: List<HotMatchInfo> = mutableListOf()
+    var data: MutableList<HotMatchInfo> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()

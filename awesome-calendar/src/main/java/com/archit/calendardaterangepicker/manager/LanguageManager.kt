@@ -2,14 +2,24 @@ package com.archit.calendardaterangepicker.manager
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.*
 
 object LanguageManager {
 
     enum class Language(val key: String) { ZH("zh"), ZHT("zht"), EN("en"), VI("vi") }
 
     fun getSelectLanguage(context: Context?): Language {
-        return Language.values().firstOrNull { it.key == SPUtil.getInstance(context).getSelectLanguage() }
+        return Language.values()
+            .firstOrNull { it.key == SPUtil.getInstance(context).getSelectLanguage() }
             ?: Language.EN
+    }
+
+    fun getSetLanguageLocale(context: Context?): Locale {
+        return when (getSelectLanguage(context)) {
+            Language.ZH, Language.ZHT -> Locale.SIMPLIFIED_CHINESE
+            Language.EN -> Locale.ENGLISH
+            Language.VI -> Locale("vi")
+        }
     }
 }
 

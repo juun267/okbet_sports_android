@@ -23,7 +23,6 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -152,8 +151,10 @@ class OddsButtonHome @JvmOverloads constructor(
         oddsType: OddsType,
         isDrawBtn: Boolean? = false,
         isOtherBtn: Boolean? = false,
+        hideName: Boolean = false,
     ) {
         lin_odd.orientation = oddOrientation
+        lin_name.isVisible = !hideName
         mOdd = odds
         mOddsType = oddsType
         if (isDrawBtn == true) {
@@ -183,7 +184,6 @@ class OddsButtonHome @JvmOverloads constructor(
 
         tv_name.apply {
 
-
             if (isDrawBtn == true) {
                 visibility = View.VISIBLE
 
@@ -210,7 +210,6 @@ class OddsButtonHome @JvmOverloads constructor(
                     playCateCode.isSingleType() -> {
                         //独赢可能出现没有和的情况
                         var index = oddList.indexOf(odds)
-                        LogUtil.d("index=" + index + "," + odds?.name)
                         when (index) {
                             0 -> "1"
                             1 -> if (oddList.size > 2) "X" else "2"

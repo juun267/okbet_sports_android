@@ -27,15 +27,17 @@ class HotHandicapAdapter(data:List<HandicapData>):
         set(value) {
             if (value != field) {
                 field = value
-                 notifyDataSetChanged()
+                notifyDataSetChanged()
             }
         }
+
+    var homeRecommendListener: HomeRecommendListener? = null
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
             var needUpdate = false
-            data.forEach {handicapData ->
+            data.forEach { handicapData ->
                 handicapData.matchInfos.forEach {
 
                     it.oddsMap?.values?.forEach { oddList ->
@@ -56,62 +58,46 @@ class HotHandicapAdapter(data:List<HandicapData>):
                 notifyDataSetChanged()
             }
         }
+
+//    override fun onBindViewHolder(
+//        holder: BaseViewHolder,
+//        position: Int,
+//        payloads: MutableList<Any>
+//    ) {
+//        super.onBindViewHolder(holder, position, payloads)
+//        when(payloads){
+//            is HotMatchInfo->{
+//                data[position].matchInfos.firstOrNull {
+//                    (payloads as HotMatchInfo).id==it.id
+//                }
+//            }
+//        }
+//    }
+
     override fun convert(helper: BaseViewHolder, item: HandicapData) {
-         helper.setText(R.id.tv_league_name,item.league.name)
-         helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(item.league.categoryIcon)
+        helper.setText(R.id.tv_league_name, item.league.name)
+        helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(item.league.categoryIcon)
 
-
-    val recycleView:RecyclerView = helper.getView(R.id.rv_handicap_item)
-       val itemAdapter = ItemHandicapAdapter(
-           HomeRecommendListener(
-               onItemClickListener = {
-
-               },
-               onGoHomePageListener = {
-
-               },
-               onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-
-                       addOddsDialog(
-                           gameType,
-                           matchType,
-                           matchInfo,
-                           odd,
-                           playCateCode,
-                           playCateName,
-                           betPlayCateNameMap,
-                           playCateMenuCode
-                       )
-
-               },
-               onClickFavoriteListener = {
-
-               },
-               onClickStatisticsListener = { matchId ->
-
-               }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
-
-               },onClickLiveIconListener = {gameType, matchType, matchId, matchInfoList ->
-
-               }
-       ){ gameType, matchType, matchId, matchInfoList ->
-
-           })
-
-         data.forEach {  handicapData ->
-            handicapData.matchInfos
-         }
+        var recycleView = helper.getView<RecyclerView>(R.id.rv_handicap_item)
         recycleView.apply {
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
             }
             if (adapter == null) {
-                adapter = itemAdapter
+                homeRecommendListener?.let {
+                    var itemAdapter = ItemHandicapAdapter(it)
+                    itemAdapter.oddsType = oddsType
+                    itemAdapter.data = item.matchInfos
+                    adapter = itemAdapter
+                }
+
+            } else {
+                (adapter as ItemHandicapAdapter).data = item.matchInfos
             }
         }
-        itemAdapter.data = item.matchInfos
-        itemAdapter.oddsType = oddsType
+
     }
+
     private fun addOddsDialog(
         gameTypeCode: String,
         matchType: MatchType,

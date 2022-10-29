@@ -56,7 +56,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun setupVersion() {
-        val version = BuildConfig.VERSION_CODE.toString() + "_" + BuildConfig.VERSION_NAME
+        val version = BuildConfig.VERSION_NAME
         tv_version_info.text = version
     }
 
