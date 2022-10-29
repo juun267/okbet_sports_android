@@ -52,6 +52,7 @@ class ItemHandicapHolder(
         }
         val sortOddsMap = oddsMap.filterValues { it?.size ?: 0 > 0 }.sortOdds(data.oddsSort)
             .filterPlayCateSpanned(data.gameType)
+
         if (sortOddsMap.isNotEmpty()) {
             sortOddsMap.iterator().next().key.let {
                 oddPlayCateCode = it
@@ -62,7 +63,7 @@ class ItemHandicapHolder(
         } else
             return
 
-
+ //   LogUtil.d(data.oddsSort+"=====viewHolder"+oddList.size)
         //玩法名稱
         val playCateName = data.playCateNameMap?.get(oddPlayCateCode)
             ?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""

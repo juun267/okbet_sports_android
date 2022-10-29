@@ -126,17 +126,24 @@
                 android:id="@+id/hot_live_match"
                 layout="@layout/hot_live_match_include"/>
             <include
+                android:id="@+id/hot_handicap_include"
                 layout="@layout/hot_handicap_include"/>
             <View
+                android:id="@+id/view1"
                 android:background="@color/color_E1EAF2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_12"/>
-            <include layout="@layout/hot_gaming_include"/>
+            <include
+                android:id="@+id/hot_gaming_include"
+                layout="@layout/hot_gaming_include"/>
             <View
+                android:id="@+id/view2"
                 android:background="@color/color_E1EAF2"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_12"/>
-            <include layout="@layout/hot_card_game_include"/>
+            <include
+                android:id="@+id/hot_card_game_include"
+                layout="@layout/hot_card_game_include"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     </LinearLayout>

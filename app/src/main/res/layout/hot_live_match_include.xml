@@ -125,7 +125,7 @@
 
         <ImageView
             android:id="@+id/iv_live_type"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="96dp"
             android:layout_marginStart="65dp"
             android:scaleType="fitXY"

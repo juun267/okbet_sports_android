@@ -90,11 +90,11 @@ class MainHomeFragment :
             context?.let {
                 Glide.with(it)
                     .load(data.matchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+                    .apply(RequestOptions().placeholder(R.drawable.ic_live_image))
                     .into(iv_live_type)
                 Glide.with(it)
                     .load(data.matchInfo.streamerIcon)
-                    .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+                    .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
                     .into(iv_avatar_live)
             }
             tv_introduction.text = data.matchInfo.streamerName
@@ -203,8 +203,8 @@ class MainHomeFragment :
             clickCustomService(requireContext(), childFragmentManager)
         }
         showChangeFragment()
-        getTabDate()
         initHotHandicap()
+        initListView()
         nsv_home.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener {
                 _, _, scrollY, _, oldScrollY ->
@@ -371,13 +371,25 @@ class MainHomeFragment :
                 val mHotChessList = gameList.filter { data->
                     data.gameType?.equals("1") == true
                 }
-                homeChessAdapter.setNewData(mHotChessList)
+                if (mHotChessList.isNullOrEmpty()){
+                    hot_gaming_include.visibility = View.GONE
+                    view1.visibility = View.GONE
+                }else{
+                    homeChessAdapter.setNewData(mHotChessList)
+                }
+
 
                 //电子
                 val mHotelList = gameList.filter {data->
                     data.gameType?.equals("2") == true
                 }
-                hotElectronicAdapter.setNewData(mHotelList)
+                if (mHotelList.isNullOrEmpty()){
+                    hot_card_game_include.visibility = View.GONE
+                    view2.visibility = View.GONE
+                }else{
+                    hotElectronicAdapter.setNewData(mHotelList)
+                }
+
             }
         }
         viewModel.hotLiveData.observe(viewLifecycleOwner){ list->
@@ -409,23 +421,29 @@ class MainHomeFragment :
                     rv_match_list.adapter = homeHotLiveAdapter
             }
         }
+        //热门盘口
         viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
-            list?.let {
-                hideLoading()
-                it.forEach { handi ->
-                    handi.matchInfos.forEach { hotdata ->
-                        // 將儲存的賠率表指定的賽事列表裡面
-                        val leagueOddFromMap = leagueOddMap[hotdata.id]
-                        leagueOddFromMap?.let {
-                            hotdata.oddsMap = leagueOddFromMap.oddsMap
-                        }
-                    }
-                }
-                hotHandicapAdapter.setNewData(list)
-                //先解除全部賽事訂
-                unSubscribeChannelHallAll()
-                subscribeQueryData(list)
-            }
+           if ( list.isNullOrEmpty()){
+               hot_handicap_include.visibility = View.GONE
+           }else{
+               list.let {
+                   hideLoading()
+                   it.forEach { handi ->
+                       handi.matchInfos.forEach { hotdata ->
+                           // 將儲存的賠率表指定的賽事列表裡面
+                           val leagueOddFromMap = leagueOddMap[hotdata.id]
+                           leagueOddFromMap?.let {
+                               hotdata.oddsMap = leagueOddFromMap.oddsMap
+                           }
+                       }
+                   }
+                   hotHandicapAdapter.setNewData(list)
+                   //先解除全部賽事訂
+                   unSubscribeChannelHallAll()
+                   subscribeQueryData(list)
+               }
+           }
+
         }
     }
 
@@ -493,6 +511,10 @@ class MainHomeFragment :
             hotHandicapAdapter.data.forEachIndexed { index, handicap ->
                 var needUpdate = false
                  handicap.matchInfos.forEach { hotMatchInfo->
+                     selector_order_status.selectedCode?.let {
+                         hotMatchInfo.oddsSort = mHandicapCodeValue[it.toInt()-1]
+                     }
+
                      if (hotMatchInfo.id == oddsChangeEvent.eventId) {
                          hotMatchInfo.sortOddsMap()
                          //region 翻譯更新
@@ -510,6 +532,7 @@ class MainHomeFragment :
                              updateBetInfo(hotMatchInfo, oddsChangeEvent)
                              leagueOddMap[hotMatchInfo.id] = hotMatchInfo
                              needUpdate = true
+                    //       LogUtil.d(hotMatchInfo.oddsSort)
                          }
                      }
                  }
@@ -637,15 +660,7 @@ class MainHomeFragment :
                     size: Int,
                 ) {
 
-                    iv_right.setOnClickListener {
-                        if (position<size-1){
-                            position+1
 
-                        }else{
-                            position-(size-1)
-
-                        }
-                    }
 
                     val url = sConfigData?.resServerHost + data?.imageName1
                     Glide.with(holder.itemView)
@@ -660,6 +675,24 @@ class MainHomeFragment :
                 }
             })
         //    .setIndicator(HomeBannerIndicator(requireContext()));
+        banner.adapter.setOnBannerListener { data, position ->
+            iv_right.setOnClickListener {
+                if (position<banner.realCount -1){
+                    var count = banner.currentItem
+
+                    banner.currentItem = count+1
+                }else{
+                    banner.currentItem = 0
+                }
+            }
+            iv_left.setOnClickListener {
+                if (position == 0){
+                    banner.currentItem = banner.realCount -1
+                }else {
+                    banner.currentItem = banner.currentItem-1
+                }
+            }
+        }
     }
 
     private fun setupAnnouncement(titleList: List<String>) {
@@ -872,36 +905,6 @@ class MainHomeFragment :
         selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
     }
 
-    //获取tab数据
-    private fun getTabDate() {
-
-        //标题数据
-        tabSelectTitleList.add("推荐")
-        tabSelectTitleList.add("直播")
-        tabSelectTitleList.add("体育")
-        tabSelectTitleList.add("世界杯")
-        tabSelectTitleList.add("棋牌")
-        tabSelectTitleList.add("电子")
-        //选中图片
-        tabSelectIconList.add(R.drawable.icon_recommend)
-        tabSelectIconList.add(R.drawable.live1)
-        tabSelectIconList.add(R.drawable.sport1)
-        tabSelectIconList.add(R.drawable.word_cup1)
-        tabSelectIconList.add(R.drawable.live1)
-        tabSelectIconList.add(R.drawable.sport1)
-        //未选中图片
-        tabUnSelectIconList.add(R.drawable.icon_un_recommend)
-        tabUnSelectIconList.add(R.drawable.live0)
-        tabUnSelectIconList.add(R.drawable.sport0)
-        tabUnSelectIconList.add(R.drawable.word_cup0)
-        tabUnSelectIconList.add(R.drawable.live0)
-        tabUnSelectIconList.add(R.drawable.sport0)
-
-
-
-
-        initListView()
-    }
 
     fun initListView(){
 
@@ -916,7 +919,11 @@ class MainHomeFragment :
 
             hotElectronicAdapter.setOnItemClickListener{adapter, view, position ->
                 //点击跳转到哪里
-                ToastUtil.showToast(activity,"电子$position")
+                if (viewModel.isLogin.value != true) {
+                    (activity as MainTabActivity).showLoginNotify()
+                } else {
+                    viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position])
+                }
             }
         }
         //棋牌
@@ -930,7 +937,11 @@ class MainHomeFragment :
 
             homeChessAdapter.setOnItemClickListener { adapter, view, position ->
                 //点击跳转到哪里
-                ToastUtil.showToast(activity,"棋牌$position")
+                if (viewModel.isLogin.value != true) {
+                    (activity as MainTabActivity).showLoginNotify()
+                } else {
+                    viewModel.requestEnterThirdGame(homeChessAdapter.data[position])
+                }
             }
         }
         with(rv_hot_handicap){

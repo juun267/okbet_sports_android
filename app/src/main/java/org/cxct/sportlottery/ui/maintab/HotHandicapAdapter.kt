@@ -32,7 +32,7 @@ class HotHandicapAdapter(data:List<HandicapData>):
         }
 
     var homeRecommendListener: HomeRecommendListener? = null
-
+    var clickOdd: Odd? = null
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
@@ -59,21 +59,6 @@ class HotHandicapAdapter(data:List<HandicapData>):
             }
         }
 
-//    override fun onBindViewHolder(
-//        holder: BaseViewHolder,
-//        position: Int,
-//        payloads: MutableList<Any>
-//    ) {
-//        super.onBindViewHolder(holder, position, payloads)
-//        when(payloads){
-//            is HotMatchInfo->{
-//                data[position].matchInfos.firstOrNull {
-//                    (payloads as HotMatchInfo).id==it.id
-//                }
-//            }
-//        }
-//    }
-
     override fun convert(helper: BaseViewHolder, item: HandicapData) {
         helper.setText(R.id.tv_league_name, item.league.name)
         helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(item.league.categoryIcon)
@@ -98,35 +83,4 @@ class HotHandicapAdapter(data:List<HandicapData>):
 
     }
 
-    private fun addOddsDialog(
-        gameTypeCode: String,
-        matchType: MatchType,
-        matchInfo: MatchInfo?,
-        odd: Odd,
-        playCateCode: String,
-        playCateName: String,
-        betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        playCateMenuCode: String?,
-    ) {
-        val gameType = GameType.getGameType(gameTypeCode)
-        gameType?.let {
-            matchInfo?.let { matchInfo ->
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-                when (val fragmentActivity = mContext) {
-                    is MainTabActivity -> fragmentActivity.setupBetData(fastBetDataBean)
-                }
-            }
-        }
-    }
 }

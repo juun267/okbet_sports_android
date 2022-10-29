@@ -103,20 +103,24 @@
             android:id="@+id/oddBtn1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_10"
+            android:layout_marginEnd="@dimen/margin_8"
+            app:ob_orientation="1"
             android:layout_weight="1" />
         <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
             android:id="@+id/oddBtn2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_10"
-            android:layout_weight="1" />
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_weight="1"
+            app:ob_orientation="1"/>
         <org.cxct.sportlottery.ui.game.widget.OddsButtonHome
+            android:visibility="gone"
             android:id="@+id/oddBtn3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_10"
-            android:layout_weight="1" />
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_weight="1"
+            app:ob_orientation="1"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_time"
