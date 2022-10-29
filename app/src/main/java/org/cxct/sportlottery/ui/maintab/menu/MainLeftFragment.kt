@@ -44,11 +44,18 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private var isExpendOddsType = false
     private var isExpendLanguage = false
+    var fromPage = 0
+        set(value) {
+            field = value
+            if (isAdded) {
+                lin_home.isSelected = value == 0
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_main_left, container, false)
     }
@@ -72,6 +79,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initView() {
+        lin_home.isSelected = fromPage == 0
         lin_home.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
             (activity as MainTabActivity).switchTabByPosition(0)
