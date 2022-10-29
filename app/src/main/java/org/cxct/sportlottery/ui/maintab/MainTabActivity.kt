@@ -183,11 +183,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
     }
 
-    fun showLeftFrament(position: Int) {
+    fun showLeftFrament(position: Int, fromPage: Int = -1) {
         when (position) {
-            0 -> supportFragmentManager.beginTransaction()
-                .replace(R.id.left_menu, homeLeftFragment)
-                .commit()
+            0 -> {
+                homeLeftFragment.fromPage = fromPage
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.left_menu, homeLeftFragment)
+                    .commit()
+            }
             else ->
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, sportLeftFragment)

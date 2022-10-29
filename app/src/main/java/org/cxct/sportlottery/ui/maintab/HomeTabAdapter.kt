@@ -13,8 +13,8 @@ class HomeTabAdapter(data: List<HomeTabItem>?, val selectPos: Int) :
                 HomeTabItem(R.drawable.selector_home_tab_live, R.string.home_live),
                 HomeTabItem(R.drawable.selector_home_tab_sport, R.string.home_sports),
                 HomeTabItem(R.drawable.selector_home_tab_worldcup, R.string.home_word_cup),
-                HomeTabItem(R.drawable.selector_home_tab_okgame, R.string.home_on_game),
                 HomeTabItem(R.drawable.selector_home_tab_slot, R.string.home_slot),
+                HomeTabItem(R.drawable.selector_home_tab_okgame, R.string.home_on_game),
             ).toList()
         }
     }
