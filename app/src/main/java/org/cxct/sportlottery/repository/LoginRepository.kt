@@ -273,6 +273,7 @@ object LoginRepository {
         with(sharedPref.edit()) {
             remove(KEY_TOKEN)
             remove(KEY_ODDS_TYPE)
+            remove(KEY_LIVE_USER_INFO)
             apply()
         }
         clearUserInfo()

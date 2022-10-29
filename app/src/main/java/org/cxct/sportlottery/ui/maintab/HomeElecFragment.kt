@@ -91,6 +91,14 @@ class HomeElecFragment :
         initToolBar()
         initTabView()
         initListView()
+        iv_elec_title.setImageResource(
+            when (LanguageManager.getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> R.drawable.ic_elec_title
+                LanguageManager.Language.VI -> R.drawable.ic_elec_title_vn
+                LanguageManager.Language.EN -> R.drawable.ic_elec_title_en
+                else -> R.drawable.ic_elec_title_en
+            }
+        )
     }
 
     fun initToolBar() {
@@ -145,7 +153,10 @@ class HomeElecFragment :
                 homeElecAdapter.setNewData(it)
             }
         }
-
+        viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
+            if (isVisible)
+                enterThirdGame(it)
+        }
     }
 
     private fun initTabView() {

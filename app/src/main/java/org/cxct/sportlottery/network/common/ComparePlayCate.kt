@@ -8,12 +8,6 @@ enum class ComparePlayCate(val compareCode: String, val mainPlayCate: PlayCate) 
     //O/U 大小
     PENALTY_OU_SEG("PENALTY-O/U-SEG", PlayCate.PENALTY_OU_SEG1),
     CORNER_OU_SEG("CORNER-O/U-SEG", PlayCate.CORNER_OU_SEG1),
-    OU("O/U", PlayCate.OU),
-
-    //让球
-    HDP("HDP", PlayCate.HDP),
-    FINISH("FINISH", PlayCate.FINISH),
-    ROUND("ROUND", PlayCate.ROUND),
 
     //HDP 讓球
     PENALTY_HDP_SEG("PENALTY-HDP-SEG", PlayCate.PENALTY_HDP_SEG1),
@@ -22,8 +16,6 @@ enum class ComparePlayCate(val compareCode: String, val mainPlayCate: PlayCate) 
     //1X2 獨贏
     PENALTY_SINGLE_SEG("PENALTY-1X2-SEG", PlayCate.PENALTY_SINGLE_SEG1),
     CORNER_SINGLE_SEG("CORNER-1X2-SEG", PlayCate.CORNER_SINGLE_SEG1),
-    SINGLE("1X2", PlayCate.SINGLE),
-    PK("PK", PlayCate.PK),
 
     //CORNER 角球
     N_CORNER_GOAL("N-CORNER-GOAL", PlayCate.N_CORNER_GOAL),
@@ -58,13 +50,6 @@ enum class ComparePlayCate(val compareCode: String, val mainPlayCate: PlayCate) 
             playCateCode.contains(PENALTY_SINGLE_SEG.compareCode) -> PENALTY_SINGLE_SEG.mainPlayCate
             playCateCode.contains(CORNER_SINGLE_SEG.compareCode) -> CORNER_SINGLE_SEG.mainPlayCate
             playCateCode.contains(N_CORNER_GOAL.compareCode) -> N_CORNER_GOAL.mainPlayCate
-            playCateCode.contains(HDP_SEG.compareCode) -> N_CORNER_GOAL.mainPlayCate
-            playCateCode.contains(HDP.compareCode) -> HDP.mainPlayCate
-            playCateCode.contains(FINISH.compareCode) -> FINISH.mainPlayCate
-            playCateCode.contains(ROUND.compareCode) -> ROUND.mainPlayCate
-            playCateCode.contains(SINGLE.compareCode) -> SINGLE.mainPlayCate
-            playCateCode.contains(OU.compareCode) -> OU.mainPlayCate
-            playCateCode.contains(PK.compareCode) -> PK.mainPlayCate//顺序很重要，默认点球大战玩法显示两列
             else -> compareCommonCateCode(playCateCode)
         }
 

@@ -176,6 +176,25 @@ enum class PlayCate(val value: String) {
     PENALTY_SINGLE_SEG5("PENALTY-1X2-SEG5"),
     PENALTY_SINGLE_SEG6("PENALTY-1X2-SEG6"),
     PK("PK"),
+    PK_1ST_C("PK-1ST-C"),// 点球大战-第一个点球大战是否得分-{C}
+    PK_1ST_H("PK-1ST-H"),//    PK-1ST-H,点球大战-第一个点球大战是否得分-{H}
+    PK_2ND_C("PK-2ND-C"),//    PK-2ND-C,点球大战-第二个点球大战是否得分-{C}
+    PK_2ND_H("PK-2ND-H"),
+    PK_3RD_C("PK-3RD-C"),
+    PK_3RD_H("PK-3RD-H"),
+    PK_4TH_C("PK-4TH-C"),
+    PK_4TH_H("PK-4TH-H"),
+    PK_5TH_C("PK-5TH-C"),
+    PK_5TH_H("PK-5TH-H"),
+    PK_FINISH("PK-FINISH"),  //    PK-FINISH,点球大战-最后结束回合
+    PK_HDP("PK-HDP"),//    PK-HDP,点球大战- 让球
+    OU_PK("O/U-PK"),//    PK-HDP,点球大战- 让球
+    SINGLE_PK("1X2-PK"),//
+    PK_ROUND1("PK-ROUND1"),//    PK-ROUND1,点球大战-第一回合获胜队伍
+    PK_ROUND2("PK-ROUND2"),
+    PK_ROUND3("PK-ROUND3"),
+    PK_ROUND4("PK-ROUND4"),
+    PK_ROUND5("PK-ROUND5"),
     QUALIFYING_METHOD("QUALIFYING_METHOD"),
     RED_CARD_PLAYER("RED-CARD-PLAYER"),
     RTG2("RTG2"),
@@ -347,7 +366,6 @@ enum class PlayCate(val value: String) {
     OU_2_WAY_1ST_H("O/U-2-WAY-1ST-H"),
     FS_LD_CS("FS-LD-CS"),
     BOTTOM_NAVIGATION("BOTTOM_NAVIGATION"),
-    FINISH("FINISH"),
     NO_DATA("NO_DATA");
 
 

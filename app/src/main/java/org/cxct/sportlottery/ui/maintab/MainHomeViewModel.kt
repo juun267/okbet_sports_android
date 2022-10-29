@@ -487,6 +487,7 @@ class MainHomeViewModel(
                 }
                 jumpingGame = true
                 viewModelScope.launch {
+                    LogUtil.toJson(gameData)
                     val thirdLoginResult = thirdGameLogin(gameData.firmType!!, gameData.gameCode!!)
 
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
@@ -637,7 +638,7 @@ class MainHomeViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.queryGameEntryConfig(
-                    QueryGameEntryConfigRequest(position, gameType, status = 1)
+                    QueryGameEntryConfigRequest(position, gameType)
                 )
             }
             result?.rows.let {
