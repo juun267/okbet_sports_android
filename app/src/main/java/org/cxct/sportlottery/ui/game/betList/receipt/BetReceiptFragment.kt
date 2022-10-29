@@ -12,7 +12,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.BetInfoRepository.oddsType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -71,7 +70,6 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddChange.observe(viewLifecycleOwner) {
             if (it) {
                 showOddChange("")
-                updateOdd(betResultData)
             }
         }
 
@@ -326,31 +324,5 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         )
     }
 
-    fun updateOdd(betResultData: Receipt?) {
-        betResultData?.singleBets?.forEach {
-            it.matchOdds?.firstOrNull()?.let { matchOdd ->
-                BetInfoRepository?.betInfoList.value?.peekContent()?.forEach { betInfoListData ->
-                    if (matchOdd.oddsId == betInfoListData.matchOdd.oddsId) {
-                        matchOdd.odds?.let { betInfoListData.matchOdd.odds = it }
-                        matchOdd.hkOdds?.let { betInfoListData.matchOdd.hkOdds = it }
-                        matchOdd.indoOdds?.let { betInfoListData.matchOdd.indoOdds = it }
-                        matchOdd.malayOdds?.let { betInfoListData.matchOdd.malayOdds = it }
-                    }
-                }
-            }
-        }
-        betResultData?.parlayBets?.forEach {
-            it.matchOdds?.forEach { matchOdd ->
-                BetInfoRepository?.betInfoList.value?.peekContent()?.forEach { betInfoListData ->
-                    if (matchOdd.oddsId == betInfoListData.matchOdd.oddsId) {
-                        matchOdd.odds?.let { betInfoListData.matchOdd.odds = it }
-                        matchOdd.hkOdds?.let { betInfoListData.matchOdd.hkOdds = it }
-                        matchOdd.indoOdds?.let { betInfoListData.matchOdd.indoOdds = it }
-                        matchOdd.malayOdds?.let { betInfoListData.matchOdd.malayOdds = it }
-                    }
-                }
-            }
-        }
-        BetInfoRepository.notifyBetInfoChanged()
-    }
+
 }

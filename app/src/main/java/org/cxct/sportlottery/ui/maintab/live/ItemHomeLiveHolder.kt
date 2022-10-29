@@ -175,13 +175,6 @@ class ItemHomeLiveHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd2)
                     setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
-                    if (oddList.size > 2) setupOdd4hall(
-                        oddPlayCateCode,
-                        odd2,
-                        oddList,
-                        oddsType,
-                        true
-                    )
                     setButtonBetClick(
                         data = data,
                         odd = odd2,
@@ -201,13 +194,6 @@ class ItemHomeLiveHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd3)
                     setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
-                    if (oddList.size > 3) setupOdd4hall(
-                        oddPlayCateCode,
-                        odd3,
-                        oddList,
-                        oddsType,
-                        true
-                    )
                     setButtonBetClick(
                         data = data,
                         odd = odd3,

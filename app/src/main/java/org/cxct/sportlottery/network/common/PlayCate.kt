@@ -189,7 +189,7 @@ enum class PlayCate(val value: String) {
     PK_FINISH("PK-FINISH"),  //    PK-FINISH,点球大战-最后结束回合
     PK_HDP("PK-HDP"),//    PK-HDP,点球大战- 让球
     OU_PK("O/U-PK"),//    PK-HDP,点球大战- 让球
-    SINGLE_PK("1X2-PK"),//
+    SINGLE_PK("1X2-PK"),//独赢
     PK_ROUND1("PK-ROUND1"),//    PK-ROUND1,点球大战-第一回合获胜队伍
     PK_ROUND2("PK-ROUND2"),
     PK_ROUND3("PK-ROUND3"),

@@ -941,6 +941,8 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 }
                 else -> {
                     itemView.league_odd_match_time.visibility = View.GONE
+                    TimeUtil.timeFormat(matchInfo?.startTime,
+                        if (TimeUtil.isTimeToday(matchInfo?.startTime)) TimeUtil.HM_FORMAT else TimeUtil.DM_HM_FORMAT)
 //                    itemView.league_odd_match_remain_time_icon.visibility = if (TimeUtil.isTimeToday(matchInfo.startTime)) View.VISIBLE else View.GONE
                 }
             }

@@ -1220,5 +1220,6 @@
     <string name="not_settled">เดิมพันไม่มั่นคง</string>
     <string name="login_welcome">Hi, ยินดีต้อนรับสู่ OKbet~</string>
     <string name="not_sign_up">ยังไม่มีบัญชี</string>
+    <string name="new_games_beta">เกมใหม่เบต้า</string>
     <!--F005-->
 </resources>

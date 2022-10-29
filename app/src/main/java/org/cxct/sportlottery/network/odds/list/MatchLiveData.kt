@@ -28,8 +28,6 @@ data class MatchLiveData(
     var matchType: MatchType? = null
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null
     override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(
-        PlayCate.HDP.value to mutableListOf(),
-        PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
     )
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null

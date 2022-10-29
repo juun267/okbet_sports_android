@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="26dp"
+    android:layout_height="match_parent"
+    android:minHeight="26dp"
     android:layout_gravity="center_vertical">
 
 
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/selector_button_radius_4_odds"
-        android:paddingHorizontal="6dp"
+        android:paddingHorizontal="10dp"
         android:gravity="center"
         android:orientation="horizontal"
             tools:ignore="SpUsage">
@@ -32,7 +33,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:paddingRight="5dp"
                     android:textStyle="bold"
                     android:text=""
@@ -45,7 +46,7 @@
                     android:fontFamily="@font/din_regular"
                     android:maxLines="1"
                     android:textColor="@color/selector_button_odd_top_text"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textFontWeight="700"
                     tools:text="-0.5/1"
                     tools:textColor="@color/color_A7B2C4" />
@@ -100,7 +101,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_radius_4_button_odds_lock"
             android:gravity="center"
-            android:textSize="@dimen/textSize12sp"
+            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_7F7F7F_999999"
             android:text="@string/unknown_data"
             android:visibility="gone" />

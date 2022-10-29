@@ -23,6 +23,7 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -155,7 +156,6 @@ class OddsButtonHome @JvmOverloads constructor(
         lin_odd.orientation = oddOrientation
         mOdd = odds
         mOddsType = oddsType
-
         if (isDrawBtn == true) {
             when {
                 (oddList?.size ?: 0 > 2) -> {
@@ -182,6 +182,8 @@ class OddsButtonHome @JvmOverloads constructor(
         }
 
         tv_name.apply {
+
+
             if (isDrawBtn == true) {
                 visibility = View.VISIBLE
 
@@ -201,11 +203,21 @@ class OddsButtonHome @JvmOverloads constructor(
                 }
             } else {
                 visibility = when {
-                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() -> View.VISIBLE
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType() || playCateCode.isSingleType() -> View.VISIBLE
                     else -> View.GONE
                 }
-
                 text = when {
+                    playCateCode.isSingleType() -> {
+                        //独赢可能出现没有和的情况
+                        var index = oddList.indexOf(odds)
+                        LogUtil.d("index=" + index + "," + odds?.name)
+                        when (index) {
+                            0 -> "1"
+                            1 -> if (oddList.size > 2) "X" else "2"
+                            2 -> "2"
+                            else -> ""
+                        }
+                    }
                     playCateCode.isCSType() -> {
                         odds?.nameMap?.get(
                             LanguageManager.getSelectLanguage(context).key
@@ -455,6 +467,10 @@ class OddsButtonHome @JvmOverloads constructor(
 
     private fun String.isOUType(): Boolean {
         return this.contains(PlayCate.OU.value) && !this.isCombination()
+    }
+
+    private fun String.isSingleType(): Boolean {
+        return this.contains(PlayCate.SINGLE.value) && !this.isCombination()
     }
 
     private fun String.isOEType(): Boolean {

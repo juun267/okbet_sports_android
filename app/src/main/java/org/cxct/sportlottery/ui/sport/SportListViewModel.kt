@@ -501,7 +501,7 @@ class SportListViewModel(
                 LocalUtils.getString(R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
-                androidContext.getString(R.string.other),
+                LocalUtils.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams()
             )
         )
@@ -533,7 +533,7 @@ class SportListViewModel(
                 TimeUtil.getParlayTodayTimeRangeParams(),
                 MatchType.TODAY.postValue
             ), Date(
-                androidContext.getString(R.string.other),
+                LocalUtils.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams(),
                 MatchType.EARLY.postValue
             )
