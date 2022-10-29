@@ -409,7 +409,7 @@ class MainHomeFragment :
                                 .into(iv_live_type)
                             Glide.with(mContext)
                                 .load(matchInfo.streamerIcon)
-                                .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
+                                .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
                                 .into(iv_avatar_live)
 
                         }
