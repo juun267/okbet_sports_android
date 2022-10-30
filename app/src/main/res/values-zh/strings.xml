@@ -1275,5 +1275,30 @@
     <string name="member_name">会员</string>
     <string name="home_recommend">推荐</string>
     <string name="no_search_match">没有搜索到赛事</string>
+    <string name="match_live">赛事直播</string>
+    <string name="tiger_machine">老虎机</string>
+    <string name="hot_handicap">热门盘口</string>
+    <string name="hot_live_match">热门赛事直播</string>
+    <string name="hot_gaming_electronics">热门电子游戏</string>
+    <string name="hot_poker_game">棋牌游戏</string>
+    <string name="find_all">查看全部</string>
+    <string name="check_all">查看全部</string>
+    <string name="worldcup">世界杯</string>
+    <string name="sport_classify">体育分类</string>
+    <string name="check_all_inplay">查看全部滚球</string>
+    <string name="expand_live">观看直播</string>
+    <string name="home_live">Live</string>
+    <string name="home_sports">体育</string>
+    <string name="home_word_cup">世界杯</string>
+    <string name="home_slot">老虎机</string>
+    <string name="home_on_game">棋牌</string>
+    <string name="langugae_setting">语言设置</string>
+    <string name="setting_center">设置中心</string>
+    <string name="ou_odd">欧赔率</string>
+    <string name="home_in_play">滚球</string>
+    <string name="total_reward_amount">累计头奖金额</string>
+    <string name="hot_elec_game">热门大奖游戏</string>
+    <string name="go_back_top">返回顶部</string>
+    <string name="win_line">独赢盘</string>
 
 </resources>

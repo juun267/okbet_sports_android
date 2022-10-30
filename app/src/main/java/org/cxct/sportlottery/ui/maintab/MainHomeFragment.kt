@@ -651,6 +651,15 @@ class MainHomeFragment :
         var imageList = sConfigData?.imageList?.filter {
             it.imageType == 2
         }
+        imageList?.let { list->
+            if (list.size<=1){
+                rll_left_right.visibility = View.GONE
+                banner.isAutoLoop(false)
+            }else{
+                rll_left_right.visibility = View.VISIBLE
+                banner.isAutoLoop(true)
+            }
+        }
         (banner as Banner<ImageData, BannerImageAdapter<ImageData>>)
             .setAdapter(object : BannerImageAdapter<ImageData>(imageList) {
                 override fun onBindView(
@@ -675,24 +684,28 @@ class MainHomeFragment :
                 }
             })
         //    .setIndicator(HomeBannerIndicator(requireContext()));
-        banner.adapter.setOnBannerListener { data, position ->
-            iv_right.setOnClickListener {
-                if (position<banner.realCount -1){
-                    var count = banner.currentItem
 
-                    banner.currentItem = count+1
-                }else{
-                    banner.currentItem = 0
-                }
-            }
-            iv_left.setOnClickListener {
-                if (position == 0){
-                    banner.currentItem = banner.realCount -1
-                }else {
-                    banner.currentItem = banner.currentItem-1
-                }
-            }
-        }
+        //可能是我想复杂了 左右按钮只是为了区分是否只要一个图片 所以点击方法先注释掉
+
+
+//        banner.adapter.setOnBannerListener { data, position ->
+//            iv_right.setOnClickListener {
+//                if (position<banner.realCount -1){
+//                    var count = banner.currentItem
+//
+//                    banner.currentItem = count+1
+//                }else{
+//                    banner.currentItem = 0
+//                }
+//            }
+//            iv_left.setOnClickListener {
+//                if (position == 0){
+//                    banner.currentItem = banner.realCount -1
+//                }else {
+//                    banner.currentItem = banner.currentItem-1
+//                }
+//            }
+//        }
     }
 
     private fun setupAnnouncement(titleList: List<String>) {
