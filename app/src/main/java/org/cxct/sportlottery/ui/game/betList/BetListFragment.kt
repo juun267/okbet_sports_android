@@ -602,8 +602,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val winnableString = TextUtil.formatForOdd(winnableAmount)
             //region 依照語系or長度自動換行
             val needChangeLineLength = 7
-            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.VI ||
-                totalBetString.length > needChangeLineLength || winnableString.length > needChangeLineLength
+            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.VI
             ) {
                 llTotalStake.orientation = LinearLayout.VERTICAL
                 llEstWinning.orientation = LinearLayout.VERTICAL

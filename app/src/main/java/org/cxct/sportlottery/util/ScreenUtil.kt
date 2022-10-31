@@ -12,4 +12,12 @@ object ScreenUtil {
         display.getMetrics(dm)
         return dm.widthPixels
     }
+
+    fun getScreenHeight(context: Context): Int {
+        val dm = DisplayMetrics()
+        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = wm.defaultDisplay
+        display.getMetrics(dm)
+        return dm.heightPixels
+    }
 }

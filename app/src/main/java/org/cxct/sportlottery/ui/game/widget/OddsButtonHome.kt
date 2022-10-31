@@ -23,6 +23,7 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -84,14 +85,12 @@ class OddsButtonHome @JvmOverloads constructor(
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
-        oddOrientation = when (typedArray.getInt(R.styleable.OddsButton_ob_orientation, 0)) {
-            0 -> LinearLayout.HORIZONTAL
-            1 -> LinearLayout.VERTICAL
-            else -> LinearLayout.HORIZONTAL
-        }
+        oddOrientation =
+            typedArray.getInt(R.styleable.OddsButton_ob_orientation, LinearLayout.HORIZONTAL)
         try {
             inflate(context, R.layout.button_odd_home, this).apply {
                 button_odd_detail.background = mBackground
+                button_odd_detail.orientation = oddOrientation
             }
         } catch (e: Exception) {
             typedArray.recycle()
@@ -105,7 +104,7 @@ class OddsButtonHome @JvmOverloads constructor(
         isOddPercentage: Boolean? = false,
         matchInfo: MatchInfo?,
     ) {
-        lin_odd.orientation = oddOrientation
+        LogUtil.d("oddOrientation=" + oddOrientation)
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
@@ -152,9 +151,9 @@ class OddsButtonHome @JvmOverloads constructor(
         isDrawBtn: Boolean? = false,
         isOtherBtn: Boolean? = false,
         hideName: Boolean = false,
+        orientation: Int = LinearLayout.HORIZONTAL,
     ) {
         lin_odd.orientation = oddOrientation
-        lin_name.isVisible = !hideName
         mOdd = odds
         mOddsType = oddsType
         if (isDrawBtn == true) {
@@ -251,6 +250,9 @@ class OddsButtonHome @JvmOverloads constructor(
                     }
                     else -> ""
                 }
+            }
+            if (hideName) {
+                tv_name.isVisible = false
             }
             requestLayout()
         }

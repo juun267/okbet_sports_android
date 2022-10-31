@@ -1,6 +1,4 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,7 +12,6 @@
         >
 
         <include layout="@layout/content_odds_detail_list_one_include" />
-        <include layout="@layout/space_content_odds_detail_list"/>
 
     </LinearLayout>
 </FrameLayout>

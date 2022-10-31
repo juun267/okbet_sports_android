@@ -1695,7 +1695,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             mUserMoney = userMoney
             mUserLogin = userLogin
             mHasBetClosed = hasBetClosed
-
             //設置投注輸入上限額
             setupInputMoney(itemData)
 
@@ -1880,17 +1879,22 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     if (itemData.amountError) {
                         et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
                     } else
-                    if (itemData.isInputBet) {
-                        et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                    } else {
-                        et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                    }
+                        if (itemData.isInputBet) {
+                            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
+                        } else {
+                            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
+                        }
                 }
 
                 //更新bet parlay editText hint
+//                val betHint = context.getString(
+//                    R.string.min_bet_format,
+//                    inputMinMoney.toLong().toString()
+//                )
                 val betHint = context.getString(
-                    R.string.min_bet_format,
-                    inputMinMoney.toLong().toString()
+                    R.string.hint_bet_limit_range,
+                    inputMinMoney.toLong().toString(),
+                    inputMaxMoney.toLong().toString()
                 )
                 if (LoginRepository.isLogin.value == true) {
                     //限額用整數提示

@@ -112,6 +112,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 getString(R.string.promotion))
         }
         lin_odds_type.setOnClickListener {
+            if (isExpendLanguage) {
+                lin_language.performClick()
+            }
             isExpendOddsType = !isExpendOddsType
             rv_odds_type.isVisible = isExpendOddsType
             lin_odds_type.isSelected = isExpendOddsType
@@ -126,6 +129,9 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             )
         }
         lin_language.setOnClickListener {
+            if (isExpendOddsType) {
+                lin_odds_type.performClick()
+            }
             isExpendLanguage = !isExpendLanguage
             rv_language.isVisible = isExpendLanguage
             lin_language.isSelected = isExpendLanguage

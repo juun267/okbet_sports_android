@@ -366,7 +366,8 @@ object BetInfoRepository {
                     if (minParlayBetMoney == null) it.minBetMoney else it.minBetMoney?.max(
                         minParlayBetMoney)
                 maxParlayPayout =
-                    if (maxParlayPayout == null) it.maxPayout else it.maxPayout?.min(maxParlayPayout)
+                    if (maxParlayPayout == null) it.maxParlayPayout else it.maxParlayPayout?.min(
+                        maxParlayPayout)
             }
         }
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
@@ -375,7 +376,6 @@ object BetInfoRepository {
             maxParlayBetMoney,
             minParlayBetMoney
         )
-
         return parlayBetLimitMap.map {
             var maxBet: BigDecimal
             val maxPayout = betInfo?.maxPayout ?: BigDecimal(9999999)
@@ -384,7 +384,6 @@ object BetInfoRepository {
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: BigDecimal(9999999)
             val maxParlayPayout = maxParlayPayout ?: BigDecimal(9999999)
             val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: BigDecimal(9999999)
-
             val minBet: BigDecimal
             val minBetMoney = betInfo?.minBetMoney ?: BigDecimal(0)
             val minCpBetMoney = betInfo?.minCpBetMoney ?: BigDecimal(0)

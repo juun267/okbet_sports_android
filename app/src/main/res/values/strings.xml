@@ -1321,4 +1321,5 @@
     <string name="big_or_small">大小盘</string>
     <string name="please_input_you_account">请输入用户名</string>
     <string name="error_input_account">用户不存在</string>
+    <string name="draw_name">Draw</string>
 </resources>

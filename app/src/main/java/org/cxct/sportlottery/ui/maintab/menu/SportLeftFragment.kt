@@ -91,7 +91,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         lin_all_inplay.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
         iv_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
@@ -129,7 +129,12 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         viewModel.inplayList.observe(viewLifecycleOwner) {
             it?.let {
-                sportInPlayAdapter.setNewData(it)
+                if (it.size > 8) {
+                    sportInPlayAdapter.setNewData(it.subList(0, 7))
+                } else {
+                    sportInPlayAdapter.setNewData(it)
+                }
+
             }
         }
         viewModel.countByToday.observe(viewLifecycleOwner) {

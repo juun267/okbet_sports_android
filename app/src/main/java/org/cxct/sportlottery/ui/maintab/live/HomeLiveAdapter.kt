@@ -71,34 +71,9 @@ class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
             }
         }
 
-    fun updateLeague(position: Int, payload: MatchLiveData) {
-        notifyItemChanged(position, payload)
-    }
-
     override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
         holder.bind(data = itemData, oddsType = oddsType)
-    }
-
-    override fun onBindViewHolder(
-        holder: ItemHomeLiveHolder,
-        position: Int,
-        payloads: MutableList<Any>,
-    ) {
-        if (payloads.isEmpty()) {
-            onBindViewHolder(holder, position)
-        } else {
-            payloads.forEach { payload ->
-                when (payload) {
-                    is MatchLiveData -> {
-                        holder.update(payload, oddsType = oddsType)
-                    }
-                    is String -> {
-                        holder.updateLive(payload == data[position].matchInfo?.id)
-                    }
-                }
-            }
-        }
     }
 
     override fun getItemCount(): Int = data.size

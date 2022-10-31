@@ -59,7 +59,7 @@ class SportListFragment :
     companion object {
         fun newInstance(
             matchType: MatchType? = MatchType.IN_PLAY,
-            gameType: String? = GameType.FT.key,
+            gameType: String? = GameType.ALL.key,
             outrightLeagueId: String? = null,
         ): SportListFragment {
             val args = Bundle()

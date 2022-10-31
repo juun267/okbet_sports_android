@@ -7,16 +7,17 @@
     android:paddingVertical="@dimen/margin_10"
     android:gravity="center_vertical">
 
-    <CheckBox
-        android:id="@+id/cb"
+    <ImageView
+        android:id="@+id/iv_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:gravity="center_vertical"
         android:layout_marginRight="10dp"
         android:includeFontPadding="true"
         android:button="@null"
         android:checked="true"
-        android:drawableLeft="@drawable/selector_radio_white" />
+        android:src="@drawable/selector_radio_white" />
 
     <ImageView
         android:id="@+id/iv_logo"

@@ -159,12 +159,12 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
                 tv_number?.text = countEarly.toString()
             }
             tabLayout.getTabAt(4)?.customView?.apply {
-                tv_title?.text = getString(R.string.home_tab_outright)
-                tv_number?.text = countOutright.toString()
-            }
-            tabLayout.getTabAt(5)?.customView?.apply {
                 tv_title?.text = getString(R.string.home_tab_cs)
                 tv_number?.text = countCS.toString()
+            }
+            tabLayout.getTabAt(5)?.customView?.apply {
+                tv_title?.text = getString(R.string.home_tab_outright)
+                tv_number?.text = countOutright.toString()
             }
             tabLayout.getTabAt(6)?.customView?.apply {
                 tv_title?.text = getString(R.string.home_tab_parlay)
@@ -181,8 +181,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
-        MatchType.OUTRIGHT to 4,
-        MatchType.CS to 5,
+        MatchType.CS to 4,
+        MatchType.OUTRIGHT to 5,
         MatchType.PARLAY to 6,
         MatchType.MAIN to 99
     )

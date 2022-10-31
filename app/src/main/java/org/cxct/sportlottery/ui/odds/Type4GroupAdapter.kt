@@ -4,14 +4,14 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.GridItemDecoration
+import org.cxct.sportlottery.util.setTeamLogo
 
 
 /**
@@ -62,21 +62,18 @@ class Type4GroupAdapter(
 
         fun bindModel(oddsList: List<Odd?>, key: String) {
 
-            itemView.findViewById<TextView>(R.id.tv_left_name).text = leftName?.plus(if (isShowSpreadWithName) key else "")
-            itemView.findViewById<TextView>(R.id.tv_right_name).text = rightName?.plus(if (isShowSpreadWithName) key else "")
-
+            itemView.findViewById<TextView>(R.id.tv_left_name).text =
+                leftName?.plus(if (isShowSpreadWithName) key else "")
+            itemView.findViewById<TextView>(R.id.tv_right_name).text =
+                rightName?.plus(if (isShowSpreadWithName) key else "")
+            itemView.findViewById<ImageView>(R.id.iv_home_logo)
+                .setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+            itemView.findViewById<ImageView>(R.id.iv_away_logo)
+                .setTeamLogo(oddsDetail.matchInfo?.awayIcon)
             itemView.findViewById<RecyclerView>(R.id.rv_bet)?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
-                addItemDecoration(
-                    GridItemDecoration(
-                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                        context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-                        ContextCompat.getColor(context, R.color.color_191919_FCFCFC),
-                        false
-                    )
-                )
             }
 
         }

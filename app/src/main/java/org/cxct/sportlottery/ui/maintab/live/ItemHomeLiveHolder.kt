@@ -45,6 +45,7 @@ class ItemHomeLiveHolder(
 
     fun updateLive(isExpandLive: Boolean) {
         initPlayView()
+        LogUtil.d("initPlayView=" + isExpandLive + "," + data.matchInfo.pullRtmpUrl)
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.start()
@@ -85,7 +86,7 @@ class ItemHomeLiveHolder(
             binding.videoView.setOnErrorListener(this)
             binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
             binding.videoView.setVolume(0f, 0f)
-            binding.videoView.setCoverView(binding.ivCover)
+//            binding.videoView.setCoverView(binding.ivCover)
             Glide.with(binding.root.context)
                 .load(data.matchInfo.frontCoverUrl)
                 .apply(mRequestOptions)

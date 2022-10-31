@@ -734,7 +734,6 @@ class SportListViewModel(
 
     fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
         val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
-
         return when (matchType) {
             MatchType.IN_PLAY -> {
                 sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
@@ -788,7 +787,7 @@ class SportListViewModel(
                 if (it.success) {
                     _sportMenuResult.postValue(it)     // 更新大廳上方球種數量、各MatchType下球種和數量
                     if (_sportMenuResult.value == null) {
-                        updateSportInfo(matchType)     // 初次頁面進入
+                        setCurMatchType(matchType)    // 初次頁面進入
                     }
                 } else {
                     return@launch

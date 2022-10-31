@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -19,10 +20,6 @@ import com.pili.pldroid.player.widget.PLVideoView
 import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.util.LiveUtil
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
-import timber.log.Timber
 import org.cxct.sportlottery.util.*
 
 
@@ -191,8 +188,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
                 iv_live.isVisible = false
-                iv_video.isVisible = !videoUrl.isNullOrEmpty()
-                iv_animation.isVisible = !animeUrl.isNullOrEmpty()
+                LogUtil.d(videoUrl)
+                iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
+                iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
             }
             LiveType.VIDEO -> {
                 player_view.isVisible = false
@@ -408,7 +406,8 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
-        ToastUtil.showToast(context, p0.toString() + "," + p1.toString())
+        LogUtil.e(p0.toString() + "," + p1.toString())
+//        ToastUtil.showToast(context, p0.toString() + "," + p1.toString())
         return false
     }
 

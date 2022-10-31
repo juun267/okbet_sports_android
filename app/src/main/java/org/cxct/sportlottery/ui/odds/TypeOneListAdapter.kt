@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.detail.recycle.OddStateViewHolderDetail
+import org.cxct.sportlottery.util.TextUtil
 
 @SuppressLint("NotifyDataSetChanged")
 class TypeOneListAdapter(
@@ -71,8 +75,12 @@ class TypeOneListAdapter(
     inner class ViewHolder(view: View) : OddStateViewHolderDetail(view) {
 
         private val btnOdds = itemView.findViewById<OddsButtonDetail>(R.id.button_odds)
+        private fun checkKey(key: String): Boolean {
+            return TextUtil.compareWithGameKey(oddsDetail.gameType, key)
+        }
 
         fun bindModel(odd: Odd?) {
+
             btnOdds?.apply {
                 setupOdd(odd,
                     oddsType,
@@ -81,6 +89,44 @@ class TypeOneListAdapter(
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                }
+                when {
+                    checkKey(PlayCate.HT_FT.value) -> {
+                        tv_name.text = when (odd?.playCode) {
+                            PlayCode.HT_FT_H_H.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
+                                R.string.odds_button_name_home)
+                            PlayCode.HT_FT_H_D.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
+                                R.string.draw_name)
+                            PlayCode.HT_FT_H_C.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
+                                R.string.odds_button_name_away)
+                            PlayCode.HT_FT_D_H.value -> this.context.getString(R.string.draw_name) + "/" + this.context.getString(
+                                R.string.odds_button_name_home)
+                            PlayCode.HT_FT_D_D.value -> this.context.getString(R.string.draw_name) + "/" + this.context.getString(
+                                R.string.draw_name)
+                            PlayCode.HT_FT_D_C.value -> this.context.getString(R.string.draw_name) + "/" + this.context.getString(
+                                R.string.odds_button_name_away)
+                            PlayCode.HT_FT_C_H.value -> this.context.getString(R.string.odds_button_name_away) + "/" + this.context.getString(
+                                R.string.odds_button_name_home)
+                            PlayCode.HT_FT_C_D.value -> this.context.getString(R.string.odds_button_name_away) + "/" + this.context.getString(
+                                R.string.draw_name)
+                            PlayCode.HT_FT_C_C.value -> this.context.getString(R.string.odds_button_name_away) + "/" + this.context.getString(
+                                R.string.odds_button_name_away)
+                            else -> ""
+                        }
+                        tv_spread.text = ""
+                    }
+                    checkKey(PlayCate.DC.value) -> {
+                        tv_name.text = when (odd?.playCode) {
+                            PlayCode.DC_H_D.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
+                                R.string.draw_name)
+                            PlayCode.DC_C_D.value -> this.context.getString(R.string.odds_button_name_away) + "/" + this.context.getString(
+                                R.string.draw_name)
+                            PlayCode.DC_H_C.value -> this.context.getString(R.string.odds_button_name_home) + "/" + this.context.getString(
+                                R.string.odds_button_name_away)
+                            else -> ""
+                        }
+                        tv_spread.text = ""
+                    }
                 }
             }
         }

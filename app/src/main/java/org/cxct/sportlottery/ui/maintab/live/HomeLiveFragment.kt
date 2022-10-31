@@ -171,7 +171,7 @@ class HomeLiveFragment :
                 homeLiveAdapter.oddsType = oddsType
             }
         }
-        viewModel.liveRoundHall.observe(viewLifecycleOwner) {
+        viewModel.liveRoundHall.observe(viewLifecycleOwner) { it ->
             if (it.isEmpty()) return@observe //推薦賽事為empty不顯示
             it.forEach { matchLiveData ->
                 // 將儲存的賠率表指定的賽事列表裡面
@@ -180,11 +180,18 @@ class HomeLiveFragment :
                     matchLiveData.oddsMap = leagueOddFromMap.oddsMap
                 }
             }
+            var needGetLive = homeLiveAdapter.data.isEmpty()
             homeLiveAdapter.data = it
             rv_live?.firstVisibleRange(homeLiveAdapter, activity ?: requireActivity())
             //先解除全部賽事訂
             unSubscribeChannelHallAll()
             subscribeQueryData(it)
+            if (needGetLive) {
+                it.first()?.matchInfo.roundNo?.let {
+                    viewModel.getLiveInfo(it)
+                }
+            }
+
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
@@ -198,7 +205,7 @@ class HomeLiveFragment :
                     if (matchLiveData.matchInfo.roundNo == matchRound.roundNo) {
                         matchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                         matchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
-                        homeLiveAdapter.updateLeague(index, matchLiveData)
+                        homeLiveAdapter.notifyItemChanged(index, matchLiveData)
                     }
                 }
             }

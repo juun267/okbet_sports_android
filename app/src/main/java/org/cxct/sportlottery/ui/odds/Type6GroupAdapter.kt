@@ -4,13 +4,14 @@ package org.cxct.sportlottery.ui.odds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.CustomForOddDetailVerticalDivider
+import org.cxct.sportlottery.util.setTeamLogo
 
 
 /**
@@ -54,7 +55,10 @@ class Type6GroupAdapter(
             itemView.findViewById<TextView>(R.id.tv_left_name).text = leftName
             itemView.findViewById<TextView>(R.id.tv_center_name).text = centerName
             itemView.findViewById<TextView>(R.id.tv_right_name).text = rightName
-
+            itemView.findViewById<ImageView>(R.id.iv_home_logo)
+                .setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+            itemView.findViewById<ImageView>(R.id.iv_away_logo)
+                .setTeamLogo(oddsDetail.matchInfo?.awayIcon)
             //順序 前兩項左列 中間兩項中列 後兩項右列
             val homeList: MutableList<Odd?> = mutableListOf()
             val drawList: MutableList<Odd?> = mutableListOf()
@@ -85,12 +89,6 @@ class Type6GroupAdapter(
             rv?.apply {
                 adapter = TypeCSAdapter(oddsDetail, list, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
-                addItemDecoration(
-                    CustomForOddDetailVerticalDivider(
-                        context,
-                        R.dimen.recyclerview_item_dec_spec_odds_detail_odds
-                    )
-                )
             }
         }
 

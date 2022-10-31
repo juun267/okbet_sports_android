@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
+import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.activity_detail_sport.*
@@ -207,10 +208,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .fitsSystemWindows(false)
             .statusBarDarkFont(false)
             .transparentStatusBar()
+            .hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
             .init()
         ImmersionBar.getStatusBarHeight(this).let {
             v_statusbar.minimumHeight = it
-            v_statusbar_live.minimumHeight = it
+            live_view_tool_bar.v_statusbar_live.minimumHeight = it
             toolbar_layout.minimumHeight = it
             collaps_toolbar.layoutParams.height =
                 it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
@@ -395,7 +397,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             sv_content.getLocationInWindow(location)
             chatViewHeight =
                 ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1] + resources.getDimensionPixelOffset(
-                    R.dimen.tool_bar_height) + 10.dp
+                    R.dimen.tool_bar_height) + ImmersionBar.getNavigationBarHeight(this)
         }
         iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
             ?: GameType.FT))
@@ -589,18 +591,24 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         viewModel.matchLiveInfo.observe(this) {
             it?.peekContent()?.let { matchRound ->
-                live_view_tool_bar.liveUrl =
-                    if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                if (lin_live.isVisible) {
+                    live_view_tool_bar.liveUrl =
+                        if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                }
             }
         }
         viewModel.videoUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
+                if (lin_video.isVisible) {
                     live_view_tool_bar.videoUrl = url
+                }
             }
         }
         viewModel.animeUrl.observe(this) { event ->
             event?.getContentIfNotHandled()?.let { url ->
+                if (lin_anime.isVisible) {
                     live_view_tool_bar.animeUrl = url
+                }
             }
         }
 

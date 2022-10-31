@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
-import android.widget.CheckBox
+import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import org.cxct.sportlottery.R
@@ -9,7 +9,7 @@ import org.cxct.sportlottery.util.LanguageManager
 class LanguageAdapter(data: List<LanguageManager.Language>?) :
     BaseQuickAdapter<LanguageManager.Language, BaseViewHolder>(R.layout.item_language, data) {
     override fun convert(helper: BaseViewHolder, item: LanguageManager.Language) {
-        helper.getView<CheckBox>(R.id.cb).isChecked =
+        helper.getView<ImageView>(R.id.iv_select).isSelected =
             LanguageManager.getSelectLanguage(mContext) == item
         when (item) {
             LanguageManager.Language.ZH -> {
