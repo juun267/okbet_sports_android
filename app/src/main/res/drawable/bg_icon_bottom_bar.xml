@@ -19,7 +19,7 @@
         </aapt:attr>
     </path>
     <path
-        android:strokeWidth="1"
+        android:strokeWidth="0"
         android:pathData="M0.5,8.5H389.5V91.5H0.5V8.5Z"
         android:fillColor="#00000000">
         <aapt:attr name="android:strokeColor">

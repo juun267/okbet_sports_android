@@ -1300,5 +1300,6 @@
     <string name="hot_elec_game">热门大奖游戏</string>
     <string name="go_back_top">返回顶部</string>
     <string name="win_line">独赢盘</string>
+    <string name="home_all_game">全部游戏</string>
 
 </resources>

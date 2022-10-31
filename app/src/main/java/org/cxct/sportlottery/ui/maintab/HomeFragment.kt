@@ -47,6 +47,11 @@ class HomeFragment :
 
     fun switchTabByPosition(position: Int) {
         fragmentHelper.showFragment(position)
+        if (position>0){
+            (activity as MainTabActivity).homeBackView(true)
+        }else{
+            (activity as MainTabActivity).homeBackView(false)
+        }
     }
 
     fun onTabClickByPosition(position: Int) {

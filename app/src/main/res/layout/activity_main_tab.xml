@@ -29,7 +29,7 @@
                     android:id="@+id/bottom_navigation_view"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    app:elevation="3dp"
+                    app:elevation="1dp"
                     android:background="@drawable/bg_icon_bottom_bar"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:itemTextColor="@color/main_tab_text_selector"
@@ -46,6 +46,32 @@
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:visibility="visible" />
+                <LinearLayout
+                    android:id="@+id/ll_home_back"
+                    android:orientation="vertical"
+                    android:elevation="2dp"
+
+                    android:paddingTop="@dimen/margin_4"
+                    app:layout_constraintTop_toTopOf="@+id/bottom_navigation_view"
+                    app:layout_constraintStart_toStartOf="@+id/bottom_navigation_view"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent">
+                    <ImageView
+                       android:layout_gravity="center"
+                        android:id="@+id/iv_home_back"
+                        android:layout_marginTop="@dimen/margin_6"
+                        android:src="@drawable/icon01_arrow_back"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_home_back"
+                        android:text="@string/home_back"
+                        android:gravity="center"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize10sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     <!-- 投注單列表 & 快捷投注單 -->

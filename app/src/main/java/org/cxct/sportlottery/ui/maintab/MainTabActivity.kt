@@ -356,4 +356,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         (fragments[1] as SportFragment).setJumpSport(matchType, gameType)
         bottom_navigation_view.currentItem = 1
     }
+
+    fun homeBackView(boolean: Boolean) {
+        if (boolean){
+            ll_home_back.visibility = View.VISIBLE
+            bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.INVISIBLE
+        }else{
+            bottom_navigation_view.getBottomNavigationItemView(0).visibility= View.VISIBLE
+            ll_home_back.visibility = View.GONE
+        }
+        ll_home_back.setOnClickListener {
+            (fragments[0] as HomeFragment).switchTabByPosition(0)
+        }
+
+    }
 }
