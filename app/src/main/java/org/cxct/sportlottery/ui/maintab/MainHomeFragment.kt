@@ -87,7 +87,7 @@ class MainHomeFragment :
             context?.let {
                 Glide.with(it)
                     .load(data.matchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.ic_live_image))
+                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
                     .into(iv_live_type)
                 Glide.with(it)
                     .load(data.matchInfo.streamerIcon)
@@ -653,6 +653,9 @@ class MainHomeFragment :
 
         var imageList = sConfigData?.imageList?.filter {
             it.imageType == 2
+        }
+        if (imageList.isNullOrEmpty()){
+            banner.setBackgroundResource(R.drawable.img_banner01)
         }
         imageList?.let { list->
             if (list.size<=1){
