@@ -18,8 +18,8 @@ class HomeFragment :
         MainHomeFragment.newInstance(),
         HomeLiveFragment.newInstance(),
         HomeWorldCupFragment.newInstance(),
-        HomeSlotFragment.newInstance(),
-        HomeElecFragment.newInstance()
+        HomeElecFragment.newInstance(),
+        HomeSlotFragment.newInstance()
     )
 
     companion object {

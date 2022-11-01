@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setLeagueLogo
 
 

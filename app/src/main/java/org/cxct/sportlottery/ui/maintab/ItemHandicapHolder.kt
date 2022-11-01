@@ -189,11 +189,10 @@ class ItemHandicapHolder(
         homeRecommendListener: HomeRecommendListener,
     ) {
         setOnClickListener {
-            data.matchType?.let { matchType ->
                 odd?.let { odd ->
                     homeRecommendListener.onClickBetListener(
                         gameType = data.gameType,
-                        matchType = matchType,
+                        matchType = MatchType.IN_PLAY,
                         matchInfo = data.matchInfo,
                         odd = odd,
                         playCateCode = playCateCode,
@@ -201,7 +200,7 @@ class ItemHandicapHolder(
                         betPlayCateNameMap = data.betPlayCateNameMap,
                         playCateMenuCode = null
                     )
-                }
+
             }
         }
     }
@@ -310,12 +309,12 @@ class ItemHandicapHolder(
         val itemVisibility = isScoreTextVisible(item)
         with(tvHomeScore) {
             visibility = itemVisibility
-            text = (item.matchInfo?.homeTotalScore ?: 0).toString()
+            text = (item.matchInfo?.homeScore ?: 0).toString()
         }
 
         with(tvAwayScore) {
             visibility = itemVisibility
-            text = (item.matchInfo?.awayTotalScore ?: 0).toString()
+            text = (item.matchInfo?.awayScore ?: 0).toString()
         }
     }
 
