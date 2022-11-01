@@ -122,6 +122,7 @@ class MainHomeFragment :
                         )
 
                     }
+
                 },
                 onClickFavoriteListener = {
 
@@ -384,7 +385,6 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.VISIBLE
 
                 }
-                LogUtil.toJson(mHotChessList)
                 homeChessAdapter.setNewData(mHotChessList)
 
                 //电子
@@ -398,7 +398,6 @@ class MainHomeFragment :
                     hot_gaming_include.visibility = View.VISIBLE
                     view2.visibility = View.VISIBLE
                 }
-                LogUtil.toJson(mHotChessList)
                 hotElectronicAdapter.setNewData(mHotelList)
             }
         }

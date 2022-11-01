@@ -50,10 +50,12 @@ class StatusSpinnerNewAdapter(dataItems: MutableList<StatusSheetData> = mutableL
     }
 
     inner class PlayItemViewHolder(private val binding: ItemPlaySpinnerNewBinding) {
-        @SuppressLint("ResourceAsColor")
         fun bind(data: StatusSheetData, position: Int) {
             with(binding) {
                 tvPlay.text = data.showName
+                if (data.isChecked) {
+                    tvPlay.setTextColor(tvPlay.context.getColor(R.color.color_025BE8))
+                }
               //  ivTick.visibility = if (data.isChecked) View.VISIBLE else View.INVISIBLE
                 viewDivider.visibility = if (position >= count - 1) View.GONE else View.VISIBLE
             }
