@@ -43,7 +43,7 @@ class HomeSlotFragment :
     }
 
     private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(), 4).apply {
+        HomeTabAdapter(HomeTabAdapter.getItems(), 5).apply {
             setOnItemClickListener { adapter, view, position ->
                 (parentFragment as HomeFragment).onTabClickByPosition(position)
             }

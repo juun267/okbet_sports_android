@@ -50,8 +50,8 @@
                     android:id="@+id/ll_home_back"
                     android:orientation="vertical"
                     android:elevation="2dp"
-
                     android:paddingTop="@dimen/margin_4"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@+id/bottom_navigation_view"
                     app:layout_constraintStart_toStartOf="@+id/bottom_navigation_view"
                     android:layout_width="80dp"

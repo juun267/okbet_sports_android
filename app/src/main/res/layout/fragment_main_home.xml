@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:padding="0.5dp"
                     android:minHeight="135dp"
+                    android:background="@drawable/img_banner01"
                     tl:banner_indicator_height="6dp"
                     tl:banner_indicator_marginBottom="6dp"
                     tl:banner_indicator_normal_color="@color/color_bbbbbb_ffffff"

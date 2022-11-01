@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 
 class HomeRecommendListener(
     private val onItemClickListener: () -> Unit,

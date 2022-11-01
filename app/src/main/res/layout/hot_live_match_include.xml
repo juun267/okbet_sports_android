@@ -129,7 +129,7 @@
             android:layout_height="96dp"
             android:layout_marginStart="65dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_live_image"
+            android:src="@drawable/icon_novideodata"
             app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
             app:layout_constraintStart_toStartOf="parent" />
 

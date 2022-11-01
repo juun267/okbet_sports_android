@@ -65,10 +65,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainHomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
-    private  var tabSelectTitleList = mutableListOf<String>()
-    private  var tabSelectIconList = mutableListOf<Int>()
-    private  var tabUnSelectIconList = mutableListOf<Int>()
-    private var hotDataList = mutableListOf<HotMatchLiveData>()
+
 
 
     private var hotHandicapList = mutableListOf<HandicapData>()
@@ -83,14 +80,14 @@ class MainHomeFragment :
     }
     private val homeHotLiveAdapter by lazy {//热门直播
         HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
-            tv_first_half_game.text = "data.half"
+            tv_first_half_game.text = data.matchInfo.statusName18n
             tv_match_time.text = "12:00"
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
                 Glide.with(it)
                     .load(data.matchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.ic_live_image))
+                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
                     .into(iv_live_type)
                 Glide.with(it)
                     .load(data.matchInfo.streamerIcon)
@@ -123,6 +120,7 @@ class MainHomeFragment :
                             betPlayCateNameMap,
                             playCateMenuCode
                         )
+
                     }
                 },
                 onClickFavoriteListener = {
@@ -223,10 +221,10 @@ class MainHomeFragment :
             (parentFragment as HomeFragment).onTabClickByPosition(2)
         }
         ll_hot_elect.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(5)
+            (parentFragment as HomeFragment).onTabClickByPosition(4)
         }
         ll_poker_more.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(4)
+            (parentFragment as HomeFragment).onTabClickByPosition(5)
         }
     }
 
@@ -348,9 +346,6 @@ class MainHomeFragment :
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
             // setupType(it)
         }
-        viewModel.homeGameData.observe(viewLifecycleOwner) {
-
-        }
 //
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
@@ -373,14 +368,15 @@ class MainHomeFragment :
                     data.gameType?.equals("1") == true
                 }
                 if (mHotChessList.isNullOrEmpty()){
-                    hot_gaming_include.visibility = View.GONE
+                    hot_card_game_include.visibility = View.GONE
+
                     view1.visibility = View.GONE
                 }else{
                     view1.visibility = View.VISIBLE
-                    hot_gaming_include.visibility = View.VISIBLE
+                    hot_card_game_include.visibility = View.VISIBLE
 
                 }
-
+                LogUtil.toJson(mHotChessList)
                 homeChessAdapter.setNewData(mHotChessList)
 
                 //电子
@@ -388,13 +384,13 @@ class MainHomeFragment :
                     data.gameType?.equals("2") == true
                 }
                 if (mHotelList.isNullOrEmpty()){
-                    hot_card_game_include.visibility = View.GONE
+                    hot_gaming_include.visibility = View.GONE
                     view2.visibility = View.GONE
                 }else{
-                    hot_card_game_include.visibility = View.VISIBLE
+                    hot_gaming_include.visibility = View.VISIBLE
                     view2.visibility = View.VISIBLE
                 }
-
+                LogUtil.toJson(mHotChessList)
                 hotElectronicAdapter.setNewData(mHotelList)
             }
         }
@@ -426,6 +422,7 @@ class MainHomeFragment :
                     rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                     rv_match_list.adapter = homeHotLiveAdapter
             }
+
         }
         //热门盘口
         viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
@@ -656,6 +653,9 @@ class MainHomeFragment :
 
         var imageList = sConfigData?.imageList?.filter {
             it.imageType == 2
+        }
+        if (imageList.isNullOrEmpty()){
+            banner.setBackgroundResource(R.drawable.img_banner01)
         }
         imageList?.let { list->
             if (list.size<=1){
