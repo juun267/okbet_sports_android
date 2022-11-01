@@ -299,9 +299,9 @@
   },
   {
     "titleNameMap": {
-      "zh": "GCash / 其他",
-      "en": "GCash / Others",
-      "vi": "GCash / Khác"
+      "zh": "其他",
+      "en": "Others",
+      "vi": "Khác"
     },
     "subtitle": "菲律賓在線網銀",
     "image": "ic_internet_bank",

@@ -189,6 +189,7 @@ class MainHomeFragment :
         if (!hidden) {
             viewModel.getHotLiveList()
             viewModel.getHandicapConfig(1)
+            viewModel.getGameEntryConfig(1, null)
         }
     }
 
@@ -375,9 +376,12 @@ class MainHomeFragment :
                     hot_gaming_include.visibility = View.GONE
                     view1.visibility = View.GONE
                 }else{
-                    homeChessAdapter.setNewData(mHotChessList)
+                    view1.visibility = View.VISIBLE
+                    hot_gaming_include.visibility = View.VISIBLE
+
                 }
 
+                homeChessAdapter.setNewData(mHotChessList)
 
                 //电子
                 val mHotelList = gameList.filter {data->
@@ -387,9 +391,11 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.GONE
                     view2.visibility = View.GONE
                 }else{
-                    hotElectronicAdapter.setNewData(mHotelList)
+                    hot_card_game_include.visibility = View.VISIBLE
+                    view2.visibility = View.VISIBLE
                 }
 
+                hotElectronicAdapter.setNewData(mHotelList)
             }
         }
         viewModel.hotLiveData.observe(viewLifecycleOwner){ list->
