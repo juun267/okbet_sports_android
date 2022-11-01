@@ -106,6 +106,10 @@ class MainHomeViewModel(
     val matchLiveInfo: LiveData<Event<MatchRound>?>
         get() = _matchLiveInfo
 
+    private val _liveRoundCount = MutableLiveData<String>()
+    val liveRoundCount: LiveData<String>
+        get() = _liveRoundCount
+
     //region 宣傳頁用
     fun getRecommend() {
         viewModelScope.launch {
@@ -712,6 +716,18 @@ class MainHomeViewModel(
             }
         }
 
+    }
+    //直播数量
+    fun getLiveRoundCount() {
+        viewModelScope.launch {
+            var result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getLiveRoundCount()
+            }?.let {
+                if (it.success) {
+                    _liveRoundCount.postValue(it.t.toString())
+                }
+            }
+        }
     }
     //endregion
 }
