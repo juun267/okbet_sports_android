@@ -1300,4 +1300,7 @@
     <string name="win_line">1X2</string>
     <string name="draw_name">Draw</string>
     <string name="home_all_game">All</string>
+    <string name="collse_live">Save live</string>
+    <string name="accept_current_odd_to_bet">Bet at current odds</string>
+    <string name="home_back">Back</string>
 </resources>

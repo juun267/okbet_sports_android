@@ -81,7 +81,26 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
         MultiLanguagesApplication.mInstance.getOddsType()
     }
 
+    private fun showOddsType(oddsType: OddsType) {
+        when (oddsType) {
+            OddsType.EU -> {
+                tv_odds_type.text = getString(R.string.odd_type_eu)
+            }
+            OddsType.HK -> {
+                tv_odds_type.text = getString(R.string.odd_type_hk)
+            }
+            OddsType.MYS -> {
+                tv_odds_type.text = getString(R.string.odd_type_mys)
+            }
+            OddsType.IDN -> {
+                tv_odds_type.text = getString(R.string.odd_type_idn)
+            }
+        }
+
+    }
+
     private fun setOddsType(oddsType: OddsType) {
+        showOddsType(oddsType)
         when (isHandicapShowSetup()) {
             //有配置盤口參數
             true -> {

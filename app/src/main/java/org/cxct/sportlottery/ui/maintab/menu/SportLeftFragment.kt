@@ -13,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -41,11 +42,25 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private var expandSportClassify = true
     var currentTab = 0
         set(value) {
-            field = value
-            if (isAdded) {
-                when (value) {
-                    0 -> rg_type.check(R.id.rbtn_sport)
-                    else -> rg_type.check(R.id.rbtn_inplay)
+            if (field != value) {
+                field = value
+                if (isAdded) {
+                    when (value) {
+                        0 -> {
+                            if (rbtn_sport.isChecked) {
+                                viewModel.getSportList()
+                            } else {
+                                rbtn_sport.isChecked = true
+                            }
+                        }
+                        else -> {
+                            if (rbtn_inplay.isChecked) {
+                                viewModel.getInPlayList()
+                            } else {
+                                rbtn_inplay.isChecked = true
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -73,11 +88,15 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     lin_sport.isVisible = true
                     lin_inplay.isVisible = false
                     viewModel.getSportList()
+                    currentTab = 0
+                    (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
                 }
                 R.id.rbtn_inplay -> {
                     lin_sport.isVisible = false
                     lin_inplay.isVisible = true
                     viewModel.getInPlayList()
+                    currentTab = 1
+                    (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
                 }
             }
         }
@@ -89,8 +108,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EventBus.getDefault().post(MenuEvent(false))
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
         }
+        lin_worldcup.isVisible = sConfigData?.worldCupOpen == 1
         lin_worldcup.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).jumpToHome(3)
         }
         lin_today.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
@@ -129,7 +150,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         sportInPlayAdapter.setOnItemClickListener { adapter, view, position ->
             EventBus.getDefault().post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY,
-                GameType.getGameType(sportInPlayAdapter.getItem(position)?.code) ?: GameType.FT)
+                GameType.getGameType(sportInPlayAdapter.getItem(position)?.code) ?: GameType.ALL)
         }
         rv_sport_inplay.adapter = sportInPlayAdapter
     }

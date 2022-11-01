@@ -1290,4 +1290,7 @@
     <string name="win_line">1X2</string>
     <string name="home_all_game">Tất cả</string>
     <string name="draw_name">hòa</string>
+    <string name="collse_live">Lưu livestream</string>
+    <string name="accept_current_odd_to_bet">Cược với tỷ lệ cược hiện tại</string>
+    <string name="home_back">Trở về</string>
 </resources>

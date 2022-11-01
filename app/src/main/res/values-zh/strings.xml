@@ -1303,4 +1303,7 @@
     <string name="home_all_game">全部游戏</string>
 
     <string name="draw_name">和局</string>
+    <string name="collse_live">收起直播</string>
+    <string name="accept_current_odd_to_bet">接受当前赔率下注</string>
+    <string name="home_back">返回</string>
 </resources>

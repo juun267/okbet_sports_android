@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.slot
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -7,7 +7,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
-import org.cxct.sportlottery.util.LanguageManager
 
 class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
     BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(
@@ -27,14 +26,20 @@ class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
 //            else -> R.drawable.ic_game_01
 //        })
         helper.setText(R.id.tv_firm_name, item.firmName)
-        helper.setText(R.id.tv_game_name, when (LanguageManager.getSelectLanguage(mContext)) {
-            LanguageManager.Language.ZH -> item.chineseName
-            else -> item.englishName
-        })
-        helper.setGone(R.id.tv_game_name, true)
-        helper.setGone(R.id.iv_repair, false)
-        helper.setText(R.id.tv_status,
-            if (item.status == 1) R.string.new_games_beta else R.string.comingsoon)
+        helper.setText(R.id.tv_game_name, item.firmCode)
+//        helper.setText(R.id.tv_game_name, when (LanguageManager.getSelectLanguage(mContext)) {
+//            LanguageManager.Language.ZH -> item.chineseName
+//            else -> item.englishName
+//        })
+        if (item.status == 1) {
+            helper.setText(R.id.tv_status, R.string.new_games_beta)
+            helper.setGone(R.id.tv_game_name, true)
+            helper.setGone(R.id.iv_repair, false)
+        } else {
+            helper.setText(R.id.tv_status, R.string.comingsoon)
+            helper.setGone(R.id.tv_game_name, false)
+            helper.setGone(R.id.iv_repair, true)
+        }
     }
 
     fun getFirmCode(position: Int): String {

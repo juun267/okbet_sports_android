@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
                 android:layout_marginBottom="15dp"
-                android:textColor="@color/color_414655"
+                android:textColor="@color/color_6C7BA8"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="E-GAME"

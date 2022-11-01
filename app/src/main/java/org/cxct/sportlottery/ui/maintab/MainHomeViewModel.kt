@@ -25,6 +25,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryConfigRequest
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.third_game.third_games.TotalRewardAmountData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.*
@@ -87,8 +88,8 @@ class MainHomeViewModel(
         get() = _homeGameData
     private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
 
-    private val _totalRewardAmount = MutableLiveData<List<String>>()
-    val totalRewardAmount: LiveData<List<String>>
+    private val _totalRewardAmount = MutableLiveData<List<TotalRewardAmountData>>()
+    val totalRewardAmount: LiveData<List<TotalRewardAmountData>>
         get() = _totalRewardAmount
 
     private val _liveRoundHall = MutableLiveData<List<MatchLiveData>>()

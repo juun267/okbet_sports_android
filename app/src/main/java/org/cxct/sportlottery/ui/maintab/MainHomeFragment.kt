@@ -45,7 +45,6 @@ import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
-import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -536,7 +535,7 @@ class MainHomeFragment :
                 var needUpdate = false
                  handicap.matchInfos.forEach { hotMatchInfo->
                      selector_order_status.selectedCode?.let {
-                         hotMatchInfo.oddsSort = mHandicapCodeValue[it.toInt()-1]
+                         hotMatchInfo.oddsSort = mHandicapCodeValue[it.toInt() - 1]
                      }
 
                      if (hotMatchInfo.id == oddsChangeEvent.eventId) {

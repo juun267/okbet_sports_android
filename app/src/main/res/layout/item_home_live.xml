@@ -38,7 +38,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/ic_sound_off" />
+                android:src="@drawable/selector_live_sound" />
 
             <TextView
                 android:id="@+id/tv_live_time"

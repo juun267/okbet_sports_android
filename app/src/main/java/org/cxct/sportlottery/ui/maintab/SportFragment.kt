@@ -100,6 +100,13 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         setupLogin()
     }
 
+    fun getTabPosition(): Int {
+        return if (isAdded)
+            tabLayout.selectedTabPosition
+        else
+            0
+    }
+
     fun showLoginNotify() {
         (activity as MainTabActivity).showLoginNotify()
     }
@@ -299,14 +306,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         super.onDestroy()
     }
 
-    private fun setupDataSourceChange() {
-        setDataSourceChangeEvent {
-            viewModel.setCurMatchType(
-                matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
-            )
-        }
-    }
-
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
@@ -336,6 +335,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         jumpGameType = gameType
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
+
             if (viewModel.curMatchType.value == matchType) {
                 navGameFragment(matchType)
             } else {

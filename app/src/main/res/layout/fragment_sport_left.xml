@@ -154,7 +154,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/ic_menu_saiguo" />
+                        android:src="@drawable/ic_menu_worldcup" />
 
                     <TextView
                         android:layout_width="wrap_content"

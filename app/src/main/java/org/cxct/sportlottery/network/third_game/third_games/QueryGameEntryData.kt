@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.third_game.third_games
 
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.service.match_status_change.StatusNameI18n
 
 @JsonClass(generateAdapter = true)
 data class QueryGameEntryData(
@@ -16,11 +17,12 @@ data class QueryGameEntryData(
     val isH5: Int?, //支持手机端（0：支持，1：不支持）
     val isFlash: Int?, //支持电脑端（0:支持，1：不支持）
     val h5ImageName: String?, //手机端图片名称
-    val sort: Double? ,//游戏排序
+    val sort: Double?,//游戏排序
     val entryImage: String,
     val bannerImage: String,
     val position: Int?,
-    val status: Int?
+    val status: Int?,
+    val gameNamemap: StatusNameI18n?,
 ) {
     //APP端新增 從第二層資料傳遞
     //20200213 review API 已經沒有回傳ban 改成open

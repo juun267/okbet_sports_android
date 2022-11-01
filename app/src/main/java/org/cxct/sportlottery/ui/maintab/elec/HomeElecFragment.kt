@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.elec
 
 import android.content.Intent
 import android.graphics.Color
@@ -11,6 +11,7 @@ import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_elec.*
 import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
@@ -19,10 +20,15 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.HomeFragment
+import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
+import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.EventBus
@@ -105,7 +111,7 @@ class HomeElecFragment :
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0)
+            (activity as MainTabActivity).showLeftFrament(0, 4)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
@@ -140,12 +146,18 @@ class HomeElecFragment :
             setupLogin()
         }
         viewModel.totalRewardAmount.observe(viewLifecycleOwner) {
-            tv_first_amount.text =
-                if (it.size > 0) "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it[0])}" else null
-            tv_second_amount.text =
-                if (it.size > 1) "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it[1])}" else null
-            tv_third_amount.text =
-                if (it.size > 2) "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it[2])}" else null
+            it.getOrNull(0)?.let {
+                tv_first_game_name.text = it.name
+                tv_first_amount.text = "${it.currency} ${TextUtil.formatMoney(it.amount)}"
+            }
+            it.getOrNull(1)?.let {
+                tv_second_game_name.text = it.name
+                tv_second_amount.text = "${it.currency} ${TextUtil.formatMoney(it.amount)}"
+            }
+            it.getOrNull(2)?.let {
+                tv_third_game_name.text = it.name
+                tv_third_amount.text = "${it.currency} ${TextUtil.formatMoney(it.amount)}"
+            }
         }
 
         viewModel.homeGameData.observe(viewLifecycleOwner) {
@@ -163,13 +175,15 @@ class HomeElecFragment :
         with(rv_tab_home) {
             if (layoutManager == null) {
                 layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
             if (adapter == null) {
                 adapter = homeTabAdapter
             }
             post {
-                smoothScrollToPosition(homeTabAdapter.selectPos)
+                (layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(this,
+                    RecyclerView.State(),
+                    homeTabAdapter.selectPos)
             }
         }
     }
