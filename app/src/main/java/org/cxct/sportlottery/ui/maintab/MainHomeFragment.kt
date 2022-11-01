@@ -221,10 +221,10 @@ class MainHomeFragment :
             (parentFragment as HomeFragment).onTabClickByPosition(2)
         }
         ll_hot_elect.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(5)
+            (parentFragment as HomeFragment).onTabClickByPosition(4)
         }
         ll_poker_more.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(4)
+            (parentFragment as HomeFragment).onTabClickByPosition(5)
         }
     }
 
