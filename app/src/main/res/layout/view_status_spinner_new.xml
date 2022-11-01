@@ -10,8 +10,9 @@
     tools:background="@drawable/frame_color_silver_light_stroke">
 
     <TextView
-       android:paddingStart="@dimen/margin_6"
         android:id="@+id/tv_name"
+        android:paddingStart="@dimen/margin_6"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:singleLine="true"

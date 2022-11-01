@@ -26,7 +26,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyle) {
 
     private var dataList = mutableListOf<StatusSheetData>()
-    private var spinnerAdapter: StatusSpinnerAdapter? = null
+    private var spinnerAdapter: StatusSpinnerNewAdapter? = null
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
             attrs,
@@ -81,7 +81,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             selectItem = first
             setSelectCode(first.code)
         }
-        spinnerAdapter = StatusSpinnerAdapter(dataList)
+        spinnerAdapter = StatusSpinnerNewAdapter(dataList)
         spinnerAdapter!!.setItmeColor(typedArray.getColor(R.styleable.StatusBottomSheetStyle_listTextColor,resources.getColor(R.color.color_FFFFFF_414655)))
         mListPop = ListPopupWindow(context)
         mListPop.width = ScreenUtils.getScreenWidth(context) / 2
@@ -159,4 +159,6 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         tv_name.text = data.showName
         tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_025BE8))
     }
+
+
 }

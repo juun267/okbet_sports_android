@@ -170,6 +170,7 @@ class MainHomeFragment :
         viewModel.getGameEntryConfig(1, null)
         viewModel.getHandicapConfig(1)
         viewModel.getHotLiveList()
+
         initView()
         initObservable()
         queryData()
@@ -198,6 +199,13 @@ class MainHomeFragment :
 
     private fun initView() {
         initToolBar()
+        if (sConfigData?.worldCupOpen ==1){
+            include_layout3.visibility = View.VISIBLE
+            include_layout4.visibility = View.GONE
+        }else{
+            include_layout3.visibility = View.GONE
+            include_layout4.visibility = View.VISIBLE
+        }
         iv_customer_service.setOnClickListener {
             clickCustomService(requireContext(), childFragmentManager)
         }
