@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main_tab.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
@@ -58,7 +60,11 @@ class HomeFragment :
         when (position) {
             0 -> switchTabByPosition(0)
             1 -> switchTabByPosition(1)
-            2 -> (activity as MainTabActivity).switchTabByPosition(1)
+            2 ->{
+                (activity as MainTabActivity).switchTabByPosition(1)
+                (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)
+                    .visibility = View.GONE
+            }
             3 -> switchTabByPosition(2)
             4 -> switchTabByPosition(3)
             5 -> switchTabByPosition(4)
