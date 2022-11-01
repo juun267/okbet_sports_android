@@ -117,6 +117,8 @@ data class ConfigData(
     val nationCurrencyList: List<NationCurrency>?, //国家币种列表
     val liveChatHost: String?,
     var liveChatOpen: Int?,
+    var worldCupOpen: Int?,//是否开启世界杯入口
+    var liveCount: Int?,//直播总数
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)

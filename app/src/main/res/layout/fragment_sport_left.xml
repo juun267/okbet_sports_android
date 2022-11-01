@@ -62,7 +62,7 @@
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:button="@null"
-                android:checked="true"
+                android:checked="false"
                 android:elevation="2dp"
                 android:background="@drawable/selector_bg_home_tab_menu"
                 android:textColor="@color/selector_blue_white"

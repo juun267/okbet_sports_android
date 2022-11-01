@@ -39,6 +39,16 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private var expandSportClassify = true
+    var currentTab = 0
+        set(value) {
+            field = value
+            if (isAdded) {
+                when (value) {
+                    0 -> rg_type.check(R.id.rbtn_sport)
+                    else -> rg_type.check(R.id.rbtn_inplay)
+                }
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +64,6 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initSportClassifyView()
         initSportInPlayView()
         initObserver()
-        viewModel.getSportList()
     }
 
     private fun initView() {
@@ -72,6 +81,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 }
             }
         }
+        rg_type.check(when (currentTab) {
+            0 -> R.id.rbtn_sport
+            else -> R.id.rbtn_inplay
+        })
         lin_game_result.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))

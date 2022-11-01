@@ -77,4 +77,39 @@ data class HotMatchInfo(
     var unfold: Int = FoldState.UNFOLD.code
 
     var runningTime: String = ""
+
+    fun getBuildMatchInfo(): MatchInfo {
+        if (matchInfo == null) {
+            matchInfo = MatchInfo(
+                gameType = gameType,
+                awayName = awayName,
+                endTime = null,
+                homeName = homeName,
+                id = id,
+                playCateNum = playCateNum,
+                startTime = startTime,
+                status = status,
+                leagueId = leagueId,
+                leagueName = leagueName,
+                name = null,
+                img = null,
+                msg = null,
+                liveVideo = liveVideo,
+                neutral = neutral,
+                eps = null,
+                spt = spt,
+                trackerId = trackerId,
+                source = null,
+                parlay = null,
+                homeIcon = homeIcon,
+                awayIcon = awayIcon,
+                isLive = isLive,
+                roundNo = roundNo,
+                streamerIcon = streamerIcon,
+                streamerName = streamerName,
+                frontCoverUrl = frontCoverUrl
+            )
+        }
+        return matchInfo!!
+    }
 }

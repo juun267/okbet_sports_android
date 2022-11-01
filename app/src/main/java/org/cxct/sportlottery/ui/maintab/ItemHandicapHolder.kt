@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.maintab
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.button_odd_home.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
 import org.cxct.sportlottery.network.common.GameStatus
@@ -79,6 +81,10 @@ class ItemHandicapHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd1)
                     setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType, hideName = true)
+                    when (data.oddsSort) {
+                        PlayCate.SINGLE.value -> lin_name.isVisible = false
+                        else -> lin_name.isVisible = isVisible
+                    }
                     setButtonBetClick(
                         data = data,
                         odd = odd1,
@@ -99,6 +105,10 @@ class ItemHandicapHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd2)
                     setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType, hideName = true)
+                    when (data.oddsSort) {
+                        PlayCate.SINGLE.value -> lin_name.isVisible = false
+                        else -> lin_name.isVisible = isVisible
+                    }
                     setButtonBetClick(
                         data = data,
                         odd = odd2,
@@ -118,6 +128,10 @@ class ItemHandicapHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd3)
                     setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType, hideName = true)
+                    when (data.oddsSort) {
+                        PlayCate.SINGLE.value -> lin_name.isVisible = false
+                        else -> lin_name.isVisible = isVisible
+                    }
                     setButtonBetClick(
                         data = data,
                         odd = odd3,
@@ -189,12 +203,11 @@ class ItemHandicapHolder(
         homeRecommendListener: HomeRecommendListener,
     ) {
         setOnClickListener {
-            data.matchType?.let { matchType ->
                 odd?.let { odd ->
                     homeRecommendListener.onClickBetListener(
                         gameType = data.gameType,
-                        matchType = matchType,
-                        matchInfo = data.matchInfo,
+                        matchType = if (TimeUtil.isTimeInPlay(data.startTime)) MatchType.IN_PLAY else MatchType.EARLY,
+                        matchInfo = data.getBuildMatchInfo(),
                         odd = odd,
                         playCateCode = playCateCode,
                         playCateName = playCateName,
@@ -202,7 +215,6 @@ class ItemHandicapHolder(
                         playCateMenuCode = null
                     )
                 }
-            }
         }
     }
 

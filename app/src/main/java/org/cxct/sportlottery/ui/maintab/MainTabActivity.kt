@@ -179,6 +179,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
             override fun onDrawerClosed(drawerView: View) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                if (sportLeftFragment.isAdded) {
+                    when (sportLeftFragment.currentTab) {
+//                        0->sport.currentTab
+                    }
+                }
             }
         })
     }
@@ -191,12 +196,13 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     .replace(R.id.left_menu, homeLeftFragment)
                     .commit()
             }
-            else ->
+            else -> {
+                sportLeftFragment.currentTab = fromPage
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, sportLeftFragment)
                     .commit()
+            }
         }
-
     }
 
     override fun initMenu() {

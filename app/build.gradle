@@ -1,4 +1,3 @@
-import java.text.SimpleDateFormat
 import groovy.json.JsonOutput
 import groovy.json.StringEscapeUtils
 
@@ -22,7 +21,7 @@ android {
         applicationId "org.cxct.sportlottery"
         minSdkVersion 23
         targetSdkVersion 30
-        versionName "1.1.15"
+        versionName "1.1.16"
         versionCode 42
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

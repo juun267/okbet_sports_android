@@ -37,31 +37,40 @@
                         android:layout_height="@dimen/tool_bar_height"
                         android:paddingHorizontal="18dp">
 
-                    <ImageView
-                        android:id="@+id/iv_menu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_icon_menu" />
-
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_toLeftOf="@+id/iv_customer_service">
-
+                        <ImageView
+                            android:id="@+id/iv_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_icon_menu"
+                            android:visibility="gone" />
 
                         <ImageView
-                            android:id="@+id/iv_user_notice"
+                            android:id="@+id/iv_customer_service"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="-8dp"
-                            android:src="@drawable/ic_icon_massage02" />
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_icon_customer02" />
+
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="10dp"
+                            android:layout_alignParentRight="true">
+
+
+                            <ImageView
+                                android:id="@+id/iv_user_notice"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="-8dp"
+                                android:src="@drawable/ic_icon_massage02" />
 
                         <ImageView
                             android:id="@+id/iv_circle"
@@ -74,13 +83,6 @@
                     </RelativeLayout>
 
 
-                        <ImageView
-                            android:id="@+id/iv_customer_service"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_icon_customer02" />
 
                     </RelativeLayout>
 

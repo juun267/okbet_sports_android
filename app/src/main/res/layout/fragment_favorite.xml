@@ -39,13 +39,14 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:scaleType="fitStart"
+                android:visibility="gone"
                 android:src="@drawable/icon_menu" />
 
             <ImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_18"
                 android:layout_marginBottom="3dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"

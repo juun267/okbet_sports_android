@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -21,9 +22,9 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -91,6 +92,13 @@ class OddsButtonHome @JvmOverloads constructor(
             inflate(context, R.layout.button_odd_home, this).apply {
                 button_odd_detail.background = mBackground
                 button_odd_detail.orientation = oddOrientation
+                if (oddOrientation == LinearLayout.HORIZONTAL) {
+                    button_odd_detail.setPadding(8.dp, 0, 8.dp, 0)
+                    lin_name.gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                } else {
+                    button_odd_detail.setPadding(0, 8.dp, 0, 8.dp)
+                    lin_name.gravity = Gravity.CENTER
+                }
             }
         } catch (e: Exception) {
             typedArray.recycle()
@@ -104,7 +112,6 @@ class OddsButtonHome @JvmOverloads constructor(
         isOddPercentage: Boolean? = false,
         matchInfo: MatchInfo?,
     ) {
-        LogUtil.d("oddOrientation=" + oddOrientation)
         mOdd = odd
         mOddsType = oddsType
         this.matchInfo = matchInfo
@@ -151,9 +158,7 @@ class OddsButtonHome @JvmOverloads constructor(
         isDrawBtn: Boolean? = false,
         isOtherBtn: Boolean? = false,
         hideName: Boolean = false,
-        orientation: Int = LinearLayout.HORIZONTAL,
     ) {
-        lin_odd.orientation = oddOrientation
         mOdd = odds
         mOddsType = oddsType
         if (isDrawBtn == true) {

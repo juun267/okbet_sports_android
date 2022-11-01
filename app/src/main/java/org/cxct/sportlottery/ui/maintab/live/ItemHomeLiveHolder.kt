@@ -45,7 +45,6 @@ class ItemHomeLiveHolder(
 
     fun updateLive(isExpandLive: Boolean) {
         initPlayView()
-        LogUtil.d("initPlayView=" + isExpandLive + "," + data.matchInfo.pullRtmpUrl)
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.start()
@@ -241,6 +240,7 @@ class ItemHomeLiveHolder(
             ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
             ivAwayIcon.setTeamLogo(data.matchInfo?.awayIcon)
             //endregion
+            tvLeagueName.text = data.league.name
 
 
             //region 點擊進入賽事詳情
@@ -616,7 +616,8 @@ class ItemHomeLiveHolder(
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
-        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
+//        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
+        LogUtil.e(p0.toString() + "," + p1)
         return false
     }
 
