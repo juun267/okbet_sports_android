@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
+import kotlinx.android.synthetic.main.fragment_main_left.*
 import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
@@ -68,7 +70,7 @@ class MainHomeFragment :
 
 
     private var hotHandicapList = mutableListOf<HandicapData>()
-
+    private lateinit var mMatchInfo: MatchInfo
     companion object {
         fun newInstance(): MainHomeFragment {
             val args = Bundle()
@@ -94,7 +96,9 @@ class MainHomeFragment :
                     .into(iv_avatar_live)
             }
             tv_introduction.text = data.matchInfo.streamerName
+            mMatchInfo = data.matchInfo
         })
+
     }
 
     private val hotHandicapAdapter by lazy {
@@ -121,6 +125,7 @@ class MainHomeFragment :
                         )
 
                     }
+
                 },
                 onClickFavoriteListener = {
 
@@ -169,6 +174,7 @@ class MainHomeFragment :
         viewModel.getGameEntryConfig(1, null)
         viewModel.getHandicapConfig(1)
         viewModel.getHotLiveList()
+        viewModel.getLiveRoundCount()
         initView()
         initObservable()
         queryData()
@@ -184,6 +190,7 @@ class MainHomeFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
+            viewModel.getLiveRoundCount()
             viewModel.getHotLiveList()
             viewModel.getHandicapConfig(1)
             viewModel.getGameEntryConfig(1, null)
@@ -197,6 +204,13 @@ class MainHomeFragment :
 
     private fun initView() {
         initToolBar()
+        if (sConfigData?.worldCupOpen ==1){
+            include_layout3.visibility = View.VISIBLE
+            include_layout4.visibility = View.GONE
+        }else{
+            include_layout3.visibility = View.GONE
+            include_layout4.visibility = View.VISIBLE
+        }
         iv_customer_service.setOnClickListener {
             clickCustomService(requireContext(), childFragmentManager)
         }
@@ -212,6 +226,9 @@ class MainHomeFragment :
             nsv_home.post{
                 nsv_home.fullScroll(ScrollView.FOCUS_UP)
             }
+        }
+        iv_publicity.setOnClickListener {
+            navOddsDetailFragment(MatchType.IN_PLAY, mMatchInfo)
         }
         ll_hot_live_more.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(1)
@@ -255,6 +272,7 @@ class MainHomeFragment :
 //        }
         setupLogin()
     }
+    @SuppressLint("SetTextI18n")
     private fun initObservable() {
         if (viewModel == null) {
             return
@@ -266,6 +284,10 @@ class MainHomeFragment :
             it?.let {
                 tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
             }
+        }
+        viewModel.liveRoundCount.observe(viewLifecycleOwner) {
+           // tv_live_count.text = it
+            tv_hot_live_find_more.text = getString(R.string.find_all)+it
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
 //            val newDiscount = userInfo?.discount ?: 1.0F
@@ -375,7 +397,6 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.VISIBLE
 
                 }
-                LogUtil.toJson(mHotChessList)
                 homeChessAdapter.setNewData(mHotChessList)
 
                 //电子
@@ -389,7 +410,6 @@ class MainHomeFragment :
                     hot_gaming_include.visibility = View.VISIBLE
                     view2.visibility = View.VISIBLE
                 }
-                LogUtil.toJson(mHotChessList)
                 hotElectronicAdapter.setNewData(mHotelList)
             }
         }
@@ -414,8 +434,9 @@ class MainHomeFragment :
                                 .into(iv_avatar_live)
 
                         }
-
+                    mMatchInfo = matchInfo
                     tv_introduction.text = matchInfo.streamerName
+
                 }
                     homeHotLiveAdapter.data = list
                     rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
