@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_12"
             android:text="@string/soccer"
-            android:textColor="@color/color_FFFFFF_414655"
+            android:textColor="@color/color_black_white"
             android:textSize="@dimen/textSize14sp" />
 
         <TextView

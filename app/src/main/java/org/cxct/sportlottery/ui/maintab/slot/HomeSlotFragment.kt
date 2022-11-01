@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.slot
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,10 +17,15 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
+import org.cxct.sportlottery.ui.maintab.HomeFragment
+import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
+import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.isOKPlat
@@ -96,7 +101,7 @@ class HomeSlotFragment :
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0)
+            (activity as MainTabActivity).showLeftFrament(0, 5)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
@@ -148,13 +153,15 @@ class HomeSlotFragment :
         with(rv_tab_home) {
             if (layoutManager == null) {
                 layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
             if (adapter == null) {
                 adapter = homeTabAdapter
             }
             post {
-                smoothScrollToPosition(homeTabAdapter.selectPos)
+                (layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(this,
+                    RecyclerView.State(),
+                    homeTabAdapter.selectPos)
             }
         }
     }

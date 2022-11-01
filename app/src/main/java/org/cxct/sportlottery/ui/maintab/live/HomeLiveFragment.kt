@@ -130,7 +130,7 @@ class HomeLiveFragment :
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0)
+            (activity as MainTabActivity).showLeftFrament(0, 1)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))

@@ -14,5 +14,5 @@ data class QueryTotalRewardAmountResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "rows")
-    val rows: List<String>?,
+    val rows: List<TotalRewardAmountData>?,
 ) : BaseResult()

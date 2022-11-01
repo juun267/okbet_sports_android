@@ -49,6 +49,11 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             field = value
             if (isAdded) {
                 lin_home.isSelected = value == 0
+                lin_live.isSelected = value == 1
+                lin_slot.isSelected = value == 4
+                lin_poker.isSelected = value == 5
+                viewModel.getInPlayList()
+                viewModel.getLiveRoundCount()
             }
         }
 
@@ -75,14 +80,13 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         super.onResume()
         cb_appearance.isChecked = MultiLanguagesApplication.isNightMode
         tv_language.text = LanguageManager.getLanguageStringResource(requireContext())
-        iv_language.setImageResource(LanguageManager.getLanguageFlag(requireContext()))
     }
 
     private fun initView() {
         lin_home.isSelected = fromPage == 0
         lin_home.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
-            (activity as MainTabActivity).switchTabByPosition(0)
+            (activity as MainTabActivity).jumpToHome(0)
         }
         lin_sport.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
@@ -90,16 +94,19 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         lin_inplay.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
         lin_live.setOnClickListener {
-//            EventBus.getDefault().post(MenuEvent(false))
+            EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).jumpToHome(1)
         }
         lin_poker.setOnClickListener {
-//            EventBus.getDefault().post(MenuEvent(false))
+            EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).jumpToHome(4)
         }
         lin_slot.setOnClickListener {
-//            EventBus.getDefault().post(MenuEvent(false))
+            EventBus.getDefault().post(MenuEvent(false))
+            (activity as MainTabActivity).jumpToHome(3)
         }
         lin_promotion.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
@@ -118,7 +125,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             isExpendOddsType = !isExpendOddsType
             rv_odds_type.isVisible = isExpendOddsType
             lin_odds_type.isSelected = isExpendOddsType
-            lin_odds_type.isSelected = isExpendOddsType
         }
         lin_contactus.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
@@ -134,7 +140,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
             isExpendLanguage = !isExpendLanguage
             rv_language.isVisible = isExpendLanguage
-            lin_language.isSelected = isExpendLanguage
             lin_language.isSelected = isExpendLanguage
         }
 
@@ -179,8 +184,26 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         MultiLanguagesApplication.mInstance.getOddsType()
     }
 
+    private fun showOddsType(oddsType: OddsType) {
+        when (oddsType) {
+            OddsType.EU -> {
+                tv_odds_type.text = getString(R.string.odd_type_eu)
+            }
+            OddsType.HK -> {
+                tv_odds_type.text = getString(R.string.odd_type_hk)
+            }
+            OddsType.MYS -> {
+                tv_odds_type.text = getString(R.string.odd_type_mys)
+            }
+            OddsType.IDN -> {
+                tv_odds_type.text = getString(R.string.odd_type_idn)
+            }
+        }
+
+    }
 
     private fun setOddsType(oddsType: OddsType) {
+        showOddsType(oddsType)
         when (isHandicapShowSetup()) {
             //有配置盤口參數
             true -> {

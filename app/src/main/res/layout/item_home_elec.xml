@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/bg_white_stroke_blue_radius_8">
 
@@ -40,7 +41,7 @@
                 android:background="@drawable/bg_gadient_blue_white"
                 android:textSize="14sp"
                 android:textColor="@color/color_414655"
-                android:text="淘金者" />
+                tools:text="淘金者" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

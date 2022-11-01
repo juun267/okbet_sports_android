@@ -179,16 +179,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
             override fun onDrawerClosed(drawerView: View) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                if (sportLeftFragment.isAdded) {
-                    when (sportLeftFragment.currentTab) {
-//                        0->sport.currentTab
-                    }
-                }
             }
         })
     }
 
     fun showLeftFrament(position: Int, fromPage: Int = -1) {
+        LogUtil.d("position=" + position + ",fromPage=" + fromPage)
         when (position) {
             0 -> {
                 homeLeftFragment.fromPage = fromPage
@@ -363,12 +359,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         bottom_navigation_view.currentItem = 1
     }
 
+    fun jumpToHome(tabPosition: Int) {
+        (fragments[0] as HomeFragment).switchTabByPosition(tabPosition)
+        bottom_navigation_view.currentItem = 0
+    }
+
     fun homeBackView(boolean: Boolean) {
-        if (boolean){
+        if (boolean) {
             ll_home_back.visibility = View.VISIBLE
             bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.INVISIBLE
-        }else{
-            bottom_navigation_view.getBottomNavigationItemView(0).visibility= View.VISIBLE
+        } else {
+            bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.VISIBLE
             ll_home_back.visibility = View.GONE
         }
         ll_home_back.setOnClickListener {
