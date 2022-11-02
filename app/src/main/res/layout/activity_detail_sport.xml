@@ -224,22 +224,24 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <WebView
-            android:id="@+id/wv_chat"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="visible" />
-
         <include
             android:id="@+id/cl_bet_list_bar"
             layout="@layout/bet_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bet_list_bar_height"
-            android:layout_marginBottom="58dp"
+            android:elevation="1dp"
+            android:layout_marginBottom="56dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:visibility="visible" />
+
+        <WebView
+            android:id="@+id/wv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout
         android:id="@+id/fl_bet_list"

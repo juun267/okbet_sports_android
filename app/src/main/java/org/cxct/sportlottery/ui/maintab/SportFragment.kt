@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
@@ -53,9 +54,21 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             fragment.arguments = args
             return fragment
         }
+
+        val matchTypeTabPositionMap = mapOf<MatchType, Int>(
+            MatchType.IN_PLAY to 0,
+            MatchType.AT_START to 1,
+            MatchType.TODAY to 2,
+            MatchType.EARLY to 3,
+            MatchType.CS to 4,
+            MatchType.OUTRIGHT to 5,
+            MatchType.PARLAY to 6,
+            MatchType.MAIN to 99
+        )
     }
 
     private var betListFragment = BetListFragment()
+    private lateinit var sportListFragment: Fragment
 
     var jumpMatchType: MatchType? = null
     var jumpGameType: GameType? = null
@@ -81,11 +94,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setImageResource(R.drawable.ic_sport_menu)
         iv_menu_left.setOnClickListener {
-            if (tabLayout.selectedTabPosition == 0) {
-                (activity as MainTabActivity).showLeftFrament(1, 1)
-            } else {
-                (activity as MainTabActivity).showLeftFrament(1, 0)
-            }
+            (activity as MainTabActivity).showLeftFrament(1, tabLayout.selectedTabPosition)
             EventBus.getDefault().post(MenuEvent(true))
         }
         btn_register.setOnClickListener {
@@ -98,13 +107,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
         }
         setupLogin()
-    }
-
-    fun getTabPosition(): Int {
-        return if (isAdded)
-            tabLayout.selectedTabPosition
-        else
-            0
     }
 
     fun showLoginNotify() {
@@ -187,16 +189,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    private val matchTypeTabPositionMap = mapOf<MatchType, Int>(
-        MatchType.IN_PLAY to 0,
-        MatchType.AT_START to 1,
-        MatchType.TODAY to 2,
-        MatchType.EARLY to 3,
-        MatchType.CS to 4,
-        MatchType.OUTRIGHT to 5,
-        MatchType.PARLAY to 6,
-        MatchType.MAIN to 99
-    )
 
 
 
@@ -316,14 +308,14 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
-        val fragment = when (matchType) {
+        sportListFragment = when (matchType) {
             MatchType.OUTRIGHT ->
                 SportOutrightFragment.newInstance(gameType = gameType)
             else ->
                 SportListFragment.newInstance(matchType = matchType, gameType = gameType)
         }
         childFragmentManager.beginTransaction()
-            .replace(R.id.fl_content, fragment)
+            .replace(R.id.fl_content, sportListFragment)
             .commit()
         jumpMatchType = null
         jumpGameType = null
@@ -346,5 +338,23 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     fun updateSportMenuResult(sportMenuResult: SportMenuResult) {
         viewModel.setSportMenuResult(sportMenuResult)
+    }
+
+    fun getCurMatchType(): MatchType {
+        return matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+    }
+
+    fun getCurGameType(): GameType? {
+        return when {
+            sportListFragment is SportListFragment -> {
+                (sportListFragment as SportListFragment).getCurGameType()
+            }
+            sportListFragment is SportOutrightFragment -> {
+                (sportListFragment as SportOutrightFragment).getCurGameType()
+            }
+            else -> {
+                null
+            }
+        }
     }
 }

@@ -198,14 +198,14 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/ic_menu_today" />
+                        android:src="@drawable/selector_menu_today" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
                         android:text="@string/date_row_today"
-                        android:textColor="@color/color_FFFFFF_414655"
+                        android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 
                     <TextView
@@ -253,7 +253,7 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/selector_menu_odds" />
+                        android:src="@drawable/selector_menu_classify" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -280,7 +280,6 @@
                     android:id="@+id/rv_sport_classify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_40"
                     tools:itemCount="3"
                     tools:listitem="@layout/item_sport_classify"
                     tools:visibility="visible" />

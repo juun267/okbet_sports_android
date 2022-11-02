@@ -1023,4 +1023,7 @@ class SportListFragment :
         )
     }
 
+    open fun getCurGameType(): GameType {
+        return GameType.getGameType(gameType) ?: GameType.ALL
+    }
 }

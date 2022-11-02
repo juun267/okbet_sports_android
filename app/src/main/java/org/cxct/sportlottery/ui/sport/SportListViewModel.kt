@@ -128,11 +128,11 @@ class SportListViewModel(
         if (isReloadDate) {
             reloadedDateRow = getDateRow(matchType)
         }
-
         //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間
         val reloadedTimeRange = reloadedDateRow?.find {
             it.isSelected
         }?.timeRangeParams
+
         //20220422 若重新讀取日期列(isReloadDate == true)時，會因postValue 比getCurrentTimeRangeParams取當前日期慢導致取到錯誤的時間\
         val requestTimeRangeParams = reloadedTimeRange ?: getCurrentTimeRangeParams()
             when (matchType) {
@@ -155,7 +155,7 @@ class SportListViewModel(
                     getOddsList(
                         gameType = gameType,
                         matchType.postValue,
-                        getCurrentTimeRangeParams(),
+                        requestTimeRangeParams,
                         leagueIdList = leagueIdList
                     )
                 }
@@ -220,10 +220,11 @@ class SportListViewModel(
             dateRow[tempDatePosition].let {
                 dateRow.updateDateSelectedState(it)
             }
-        } else
+        } else {
             dateRow.firstOrNull()?.let {
                 dateRow.updateDateSelectedState(it)
             }
+        }
     }
 
     fun switchGameType(item: Item) {
@@ -272,25 +273,12 @@ class SportListViewModel(
             if (matchIdList.isNullOrEmpty()) matchType
             else "PARLAY"
         }
-
-        val timeFilter = { timeString: String? ->
-            if (matchIdList.isNullOrEmpty()) timeString
-            else null
-        }
-
-        var startTime = ""
-        var endTime = ""
-        if (matchType != MatchType.OTHER.postValue) { // 特殊賽事則不帶時間 Ex: {gameType: "FT", matchType: "sc:QAtest", playCateMenuCode: "MAIN"}
-            startTime = timeFilter(currentTimeRangeParams?.startTime) ?: ""
-            endTime = timeFilter(currentTimeRangeParams?.endTime) ?: ""
-        }
+        var startTime = currentTimeRangeParams?.startTime ?: ""
+        var endTime = currentTimeRangeParams?.endTime ?: ""
         var playCateMenuCode = MenuCode.MAIN.code
-//        Timber.e("getPlayCateSelected: ${getPlayCateSelected()}")
         if (matchType == MatchType.CS.postValue) {
             playCateMenuCode = MenuCode.CS.code
         }
-//        Timber.e("playCateMenuCode: $playCateMenuCode")
-
         viewModelScope.launch {
             var result: OddsListResult? = null
             if (matchType == MatchType.IN_PLAY.postValue && gameType == GameType.ALL.key) {

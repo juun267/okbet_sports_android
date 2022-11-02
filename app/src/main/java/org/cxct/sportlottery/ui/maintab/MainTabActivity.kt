@@ -32,7 +32,10 @@ import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -192,7 +195,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun showLeftFrament(position: Int, fromPage: Int = -1) {
-        LogUtil.d("position=" + position + ",fromPage=" + fromPage)
         when (position) {
             0 -> {
                 homeLeftFragment.fromPage = fromPage
@@ -201,7 +203,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     .commit()
             }
             else -> {
-                sportLeftFragment.currentTab = fromPage
+                sportLeftFragment.matchType = (fragments[1] as SportFragment).getCurMatchType()
+                sportLeftFragment.gameType = (fragments[1] as SportFragment).getCurGameType()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, sportLeftFragment)
                     .commit()

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,6 +52,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.DetailLiveViewToolbar
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.SportViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -472,6 +474,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewModel.notifyLogin.observe(this) {
             showLoginNotify()
         }
+        viewModel.isLogin.observe(this) {
+            setupInput()
+        }
         viewModel.userInfo.observe(this) { userInfo ->
             oddsDetailListAdapter?.discount = userInfo?.discount ?: 1.0F
         }
@@ -621,7 +626,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
         viewModel.liveLoginInfo.observe(this) {
             it.getContentIfNotHandled()?.let {
-                loginChat(it)
+                sConfigData?.liveChatHost?.let { host ->
+                    loginChat(host, it)
+                }
             }
         }
     }
@@ -1389,27 +1396,42 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    fun loginChat(chatLiveLoginData: ChatLiveLoginData) {
-        var builder = StringBuilder(sConfigData?.liveChatHost + "?")
-        builder.append("room=" + matchInfo?.roundNo)
-        builder.append("&uid=" + chatLiveLoginData.userData?.userId)
-        builder.append("&token=" + URLEncoder.encode(chatLiveLoginData.liveToken))
-        builder.append("&role=" + 1)
-        builder.append("&device=android")
-        builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
-            LanguageManager.Language.ZH -> "zh"
-            else -> "en"
-        })
-        LogUtil.d("builder=" + builder.toString())
-        wv_chat.loadUrl(builder.toString())
+    fun loginChat(host: String, chatLiveLoginData: ChatLiveLoginData?) {
+        if (chatLiveLoginData == null) {
+            var builder = StringBuilder(host + "?")
+            builder.append("device=android")
+            builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
+                LanguageManager.Language.ZH -> "zh"
+                else -> "en"
+            })
+            LogUtil.d("builder=" + builder.toString())
+            wv_chat.loadUrl(builder.toString())
+        } else {
+            var builder = StringBuilder(host + "?")
+            builder.append("room=" + matchInfo?.roundNo)
+            builder.append("&uid=" + chatLiveLoginData.userData?.userId)
+            builder.append("&token=" + URLEncoder.encode(chatLiveLoginData.liveToken))
+            builder.append("&role=" + 1)
+            builder.append("&device=android")
+            builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
+                LanguageManager.Language.ZH -> "zh"
+                else -> "en"
+            })
+            LogUtil.d("builder=" + builder.toString())
+            wv_chat.loadUrl(builder.toString())
+        }
     }
 
     fun setupInput() {
         if (matchInfo?.roundNo.isNullOrEmpty()) {
-            wv_chat.isVisible = false
+            showChatWebView(false)
             return
         }
-        wv_chat.isVisible = true
+        if (sConfigData?.liveChatOpen == 0) {
+            showChatWebView(false)
+            return
+        }
+        showChatWebView(true)
         wv_chat.apply {
             settings.apply {
                 javaScriptEnabled = true
@@ -1438,7 +1460,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
         }
-        viewModel.loginLive()
+        if (viewModel.isLogin.value == true) {
+            viewModel.loginLive()
+        } else {
+            sConfigData?.liveChatHost?.let { host ->
+                loginChat(host, null)
+            }
+        }
     }
 
     //注入JavaScript的Java类
@@ -1452,6 +1480,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         activity.updateWebHeight(data)
                     }
                 }
+                "requireLogin" -> {
+                    activity.runOnUiThread {
+                        activity.startActivity(Intent(activity, LoginActivity::class.java))
+                    }
+                }
             }
         }
     }
@@ -1463,5 +1496,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             wv_chat.layoutParams = lp
             LogUtil.e("height=" + wv_chat.height)
         }, 200)
+    }
+
+    fun showChatWebView(visible: Boolean) {
+        wv_chat.isVisible = visible
+        (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
+            bottomMargin = if (visible) 56.dp else 0
+        }
     }
 }

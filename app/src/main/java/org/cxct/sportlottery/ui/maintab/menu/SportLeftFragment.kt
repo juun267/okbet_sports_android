@@ -40,28 +40,20 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private var expandSportClassify = true
-    var currentTab = 0
+    var matchType: MatchType = MatchType.MAIN
         set(value) {
             if (field != value) {
                 field = value
                 if (isAdded) {
-                    when (value) {
-                        0 -> {
-                            if (rbtn_sport.isChecked) {
-                                viewModel.getSportList()
-                            } else {
-                                rbtn_sport.isChecked = true
-                            }
-                        }
-                        else -> {
-                            if (rbtn_inplay.isChecked) {
-                                viewModel.getInPlayList()
-                            } else {
-                                rbtn_inplay.isChecked = true
-                            }
-                        }
-                    }
+                    updateMatchType()
                 }
+            }
+        }
+    var gameType: GameType? = null
+        set(value) {
+            field = value
+            if (isAdded) {
+                updateGameType()
             }
         }
 
@@ -79,6 +71,8 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initSportClassifyView()
         initSportInPlayView()
         initObserver()
+        updateMatchType()
+        updateGameType()
     }
 
     private fun initView() {
@@ -88,22 +82,16 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     lin_sport.isVisible = true
                     lin_inplay.isVisible = false
                     viewModel.getSportList()
-                    currentTab = 0
                     (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
                 }
                 R.id.rbtn_inplay -> {
                     lin_sport.isVisible = false
                     lin_inplay.isVisible = true
                     viewModel.getInPlayList()
-                    currentTab = 1
                     (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
                 }
             }
         }
-        rg_type.check(when (currentTab) {
-            0 -> R.id.rbtn_sport
-            else -> R.id.rbtn_inplay
-        })
         lin_game_result.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
@@ -138,6 +126,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initSportClassifyView() {
         rv_sport_classify.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         sportClassifyAdapter.setOnItemClickListener { adapter, view, position ->
+            gameType = GameType.getGameType(sportClassifyAdapter.getItem(position)?.code)
             EventBus.getDefault().post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY,
                 GameType.getGameType(sportClassifyAdapter.getItem(position)?.code) ?: GameType.FT)
@@ -148,6 +137,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initSportInPlayView() {
         rv_sport_inplay.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         sportInPlayAdapter.setOnItemClickListener { adapter, view, position ->
+            gameType = GameType.getGameType(sportClassifyAdapter.getItem(position)?.code)
             EventBus.getDefault().post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY,
                 GameType.getGameType(sportInPlayAdapter.getItem(position)?.code) ?: GameType.ALL)
@@ -174,6 +164,51 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.countByToday.observe(viewLifecycleOwner) {
             it?.let {
                 tv_today_count.setText(it.toString())
+            }
+        }
+    }
+
+    private fun updateMatchType() {
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                if (rbtn_inplay.isChecked) {
+                    viewModel.getInPlayList()
+                } else {
+                    rbtn_inplay.isChecked = true
+                }
+            }
+            else -> {
+
+                if (rbtn_sport.isChecked) {
+                    viewModel.getSportList()
+                } else {
+                    rbtn_sport.isChecked = true
+                }
+            }
+        }
+    }
+
+    private fun updateGameType() {
+        when (matchType) {
+            MatchType.IN_PLAY -> {
+                sportInPlayAdapter.gameType = gameType
+                sportClassifyAdapter.gameType = null
+                lin_today.isSelected = false
+            }
+            MatchType.EARLY -> {
+                sportInPlayAdapter.gameType = null
+                sportClassifyAdapter.gameType = gameType
+                lin_today.isSelected = false
+            }
+            MatchType.TODAY -> {
+                sportInPlayAdapter.gameType = null
+                sportClassifyAdapter.gameType = null
+                lin_today.isSelected = true
+            }
+            else -> {
+                sportInPlayAdapter.gameType = null
+                sportClassifyAdapter.gameType = null
+                lin_today.isSelected = false
             }
         }
     }

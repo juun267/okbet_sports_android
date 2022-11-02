@@ -890,4 +890,8 @@ class SportOutrightFragment :
             leagueIdList = leagueIdList
         )
     }
+
+    open fun getCurGameType(): GameType {
+        return GameType.getGameType(gameType) ?: GameType.ALL
+    }
 }

@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.HandicapType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.LanguageAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -128,11 +129,19 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         lin_contactus.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getContactUrl(requireContext()),
-                getString(R.string.contact)
-            )
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(childFragmentManager, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(requireContext(), serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(requireContext(), serviceUrl)
+                }
+            }
         }
         lin_language.setOnClickListener {
             if (isExpendOddsType) {

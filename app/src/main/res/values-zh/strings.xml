@@ -1306,4 +1306,5 @@
     <string name="collse_live">收起直播</string>
     <string name="accept_current_odd_to_bet">接受当前赔率下注</string>
     <string name="home_back">返回</string>
+    <string name="enter_live">进入直播间</string>
 </resources>

@@ -437,10 +437,8 @@ object TimeUtil {
     fun getTodayTimeRangeParams(): TimeRangeParams {
         //match type 今日 00:00:00 ~ 23:59:59:59
         return object : TimeRangeParams {
-            override val startTime: String
-                get() = getTodayStartTimeStamp().toString()
-            override val endTime: String
-                get() = getTodayEndTimeStamp().toString()
+            override val startTime = getTodayStartTimeStamp().toString()
+            override val endTime = getTodayEndTimeStamp().toString()
         }
     }
 

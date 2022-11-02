@@ -39,6 +39,8 @@
                 android:layout_height="33dp"
                 android:gravity="center"
                 android:background="@drawable/bg_gadient_blue_white"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textSize="14sp"
                 android:textColor="@color/color_414655"
                 tools:text="淘金者" />
