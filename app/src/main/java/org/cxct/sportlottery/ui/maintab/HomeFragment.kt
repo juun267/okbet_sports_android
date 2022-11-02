@@ -81,4 +81,18 @@ class HomeFragment :
             5 -> switchTabByPosition(4)
         }
     }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+//        (fragments[0] as MainHomeFragment).let {
+//            if (it.isAdded&&it.isVisible){
+//                it.showChangeFragment()
+//            }
+//        }
+        fragments.find {
+            it.isAdded&&it.isVisible
+        }?.let {
+            it.onHiddenChanged(hidden)
+        }
+    }
 }

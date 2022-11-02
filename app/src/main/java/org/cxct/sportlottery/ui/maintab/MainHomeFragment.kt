@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
+import com.pili.pldroid.player.AVOptions
+import com.pili.pldroid.player.widget.PLVideoView
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -97,6 +99,7 @@ class MainHomeFragment :
             }
             tv_introduction.text = data.matchInfo.streamerName
             mMatchInfo = data.matchInfo
+           // viewModel.getLiveInfo(it)
         })
 
     }
@@ -194,8 +197,10 @@ class MainHomeFragment :
             viewModel.getHotLiveList()
             viewModel.getHandicapConfig(1)
             viewModel.getGameEntryConfig(1, null)
+
         }
     }
+
 
     override fun onPause() {
         super.onPause()
@@ -372,15 +377,7 @@ class MainHomeFragment :
             if (isVisible)
                 enterThirdGame(it)
         }
-//
-//        viewModel.errorPromptMessage.observe(viewLifecycleOwner) {
-//            it.getContentIfNotHandled()
-//                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
-//        }
-//
-//        mPublicityVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
-//            viewModel.updateMenuVersionUpdatedStatus(it)
-//        }
+
 
         viewModel.homeGameData.observe(viewLifecycleOwner) {
             it?.let { gameList->
@@ -397,7 +394,6 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.VISIBLE
 
                 }
-                LogUtil.toJson(mHotChessList)
                 homeChessAdapter.setNewData(mHotChessList)
 
                 //电子
@@ -503,7 +499,23 @@ class MainHomeFragment :
                     }
                 }
 
-
+                val targetList = homeHotLiveAdapter.data
+                var needUpdate = false // 记录是否要更新赛事清单
+                 targetList.forEachIndexed { index, hotMatchLiveData ->
+                     var matchList = listOf(hotMatchLiveData).toMutableList()
+                     if (SocketUpdateUtil.updateMatchStatus(
+                             hotMatchLiveData.matchInfo.gameType,
+                             matchList as MutableList<MatchOdd>,
+                             matchStatusChangeEvent,
+                             context
+                     )){
+                         needUpdate = true
+                     }
+                 }
+                if (needUpdate) {
+                    homeHotLiveAdapter.data = targetList
+                    LogUtil.toJson(targetList)
+                }
             }
         }
 
@@ -556,7 +568,6 @@ class MainHomeFragment :
                              updateBetInfo(hotMatchInfo, oddsChangeEvent)
                              leagueOddMap[hotMatchInfo.id] = hotMatchInfo
                              needUpdate = true
-                    //       LogUtil.d(hotMatchInfo.oddsSort)
                          }
                      }
                  }
@@ -1026,7 +1037,34 @@ class MainHomeFragment :
         include_layout6.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(5)
         }
+        fun initPlayView() {
+//            data.matchInfo?.let {
+//                val options = AVOptions()
+//                options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+//                options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
+//                options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
+//                options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+//                options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
+//                options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+//
+//                binding.videoView.setAVOptions(options)
+//                binding.videoView.setOnVideoSizeChangedListener(this)
+//                binding.videoView.setOnErrorListener(this)
+//                binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+//                binding.videoView.setVolume(0f, 0f)
+////            binding.videoView.setCoverView(binding.ivCover)
+////                Glide.with(binding.root.context)
+////                    .load(data.matchInfo.frontCoverUrl)
+////                    .apply(mRequestOptions)
+////                    .into(binding.ivCover)
+//                if (!it.pullRtmpUrl.isNullOrEmpty()) {
+//                    binding.videoView.setVideoPath(it.pullRtmpUrl)
+//                } else if (!it.pullFlvUrl.isNullOrEmpty()) {
+//                    binding.videoView.setVideoPath(it.pullFlvUrl)
+//                }
+//                binding.videoView.start()
+//            }
+        }
 
     }
-
 }
