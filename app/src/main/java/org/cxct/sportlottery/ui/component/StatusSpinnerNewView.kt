@@ -102,7 +102,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             if (listWidth > 0) {
                 mListPop.width = listWidth.toInt()
             } else {
-                mListPop.width = cl_root.width - 10.dp
+                mListPop.width = cl_root.width + 8.dp
             }
         }
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {

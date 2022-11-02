@@ -15,10 +15,10 @@ import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.LogUtil
 
 class HomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
-
     lateinit var fragmentHelper: FragmentHelper
     var fragments = arrayOf<Fragment>(
         MainHomeFragment.newInstance(),
@@ -52,12 +52,12 @@ class HomeFragment :
     }
 
     fun switchTabByPosition(position: Int) {
-        fragmentHelper.showFragment(position)
         if (position>0){
             (activity as MainTabActivity).homeBackView(true)
         }else{
             (activity as MainTabActivity).homeBackView(false)
         }
+        fragmentHelper.showFragment(position)
     }
 
     fun onTabClickByPosition(position: Int) {

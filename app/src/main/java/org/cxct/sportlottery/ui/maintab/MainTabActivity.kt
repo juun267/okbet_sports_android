@@ -134,6 +134,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
                     }
+                    if (this.getMenuItemPosition(menuItem)!=0){
+                        ll_home_back.visibility = View.GONE
+                    }
                     fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
                     return@OnNavigationItemSelectedListener true
                 }
