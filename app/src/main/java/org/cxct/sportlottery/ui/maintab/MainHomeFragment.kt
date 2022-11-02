@@ -417,7 +417,7 @@ class MainHomeFragment :
                 list[0].apply {
                         tv_match_type_name.text = sportName
                         tv_match_name.text = league.name
-                        tv_first_half_game.text = "half"
+                        tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = "12:00"
 
                         context?.let {mContext->

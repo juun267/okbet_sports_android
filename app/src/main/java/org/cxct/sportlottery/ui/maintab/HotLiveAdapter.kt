@@ -64,11 +64,8 @@ class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.
             awayTeamIcon.setTeamLogo(item.matchInfo.awayIcon)
             homeTeamName.text = item.matchInfo.homeName
             awayTeamName.text = item.matchInfo.awayName
-            homeTeamNum.text = item.matchInfo.homeScore
-            awayTeamNum.text = item.matchInfo.awayScore
-//            homeTeamNum.text = item.homeTeamNum
-//            awayTeamNum.text = item.awayTeamNum
-
+            homeTeamNum.text = item.matchInfo.homeScore?:"0"
+            awayTeamNum.text = item.matchInfo.awayScore?:"0"
         }
         companion object {
             fun from(parent: ViewGroup):ItemViewHolder{
