@@ -36,6 +36,7 @@ class BetRecordFragment :
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
     private val colorSettled = R.color.color_FFFFFF_414655
     private val colorNotSettled = R.color.color_6C7BA8_6C7BA8
+    private var startTabPosition: Int = 0
 
     private val rvAdapter by lazy {
         AccountHistoryAdapter(ItemClickListener {
@@ -186,7 +187,7 @@ class BetRecordFragment :
             setupTabUI(false)
         }
         //預設為已結算tab
-        setupTabUI(true)
+        setupTabUI(startTabPosition == 0)
     }
 
     private fun setupTabUI(isSettledTab: Boolean) {
@@ -292,6 +293,13 @@ class BetRecordFragment :
                     )
                 }
             }
+        }
+    }
+
+    fun selectTab(tabPosition: Int) {
+        this.startTabPosition = tabPosition
+        if (isAdded) {
+            setupTabUI(tabPosition == 0)
         }
     }
 }

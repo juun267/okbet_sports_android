@@ -12,7 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -51,16 +50,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private var betListFragment = BetListFragment()
     private var homeLeftFragment = MainLeftFragment()
     private var sportLeftFragment = SportLeftFragment()
-
     companion object {
         fun reStart(context: Context) {
-            if (MultiLanguagesApplication.mInstance.doNotReStartPublicity) {
-                MultiLanguagesApplication.mInstance.doNotReStartPublicity = false
-                AppManager.currentActivity().finish()
-                return
-            }
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+
+        fun start2Tab(context: Context, startTabPosition: Int) {
+            val intent = Intent(context, MainTabActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra("startTabPosition", startTabPosition)
             context.startActivity(intent)
         }
     }
@@ -80,10 +80,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initObserve()
     }
 
-
     override fun onNightModeChanged(mode: Int) {
         super.onNightModeChanged(mode)
         reStart(this)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.getIntExtra("startTabPosition", 0)?.let {
+            bottom_navigation_view.currentItem = it
+        }
     }
 
     private fun initObserve() {
@@ -129,7 +135,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     return@OnNavigationItemSelectedListener true
                 }
         }
-        bottom_navigation_view.currentItem = 0
+        intent?.getIntExtra("startTabPosition", 0)?.let {
+            bottom_navigation_view.currentItem = it
+        }
     }
 
     open fun openDrawerLayout() {
@@ -362,6 +370,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun jumpToHome(tabPosition: Int) {
         (fragments[0] as HomeFragment).switchTabByPosition(tabPosition)
         bottom_navigation_view.currentItem = 0
+    }
+
+    fun jumpToBetInfo(tabPosition: Int) {
+        (fragments[2] as BetRecordFragment).selectTab(tabPosition)
+        bottom_navigation_view.currentItem = 2
     }
 
     fun homeBackView(boolean: Boolean) {

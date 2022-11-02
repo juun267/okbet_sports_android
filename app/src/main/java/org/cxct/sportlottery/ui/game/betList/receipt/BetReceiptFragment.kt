@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
@@ -16,6 +15,8 @@ import org.cxct.sportlottery.repository.BetInfoRepository.oddsType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import timber.log.Timber
@@ -68,9 +69,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             betReceiptDiffAdapter?.oddsType = it
         }
         viewModel.oddChange.observe(viewLifecycleOwner) {
-            if (it) {
-                showOddChange("")
-            }
+            updateBetResultStatus(it)
         }
 
         viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
@@ -195,10 +194,14 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun initButton() {
         btn_complete.setOnClickListener {
-            if (btn_cancel.isVisible) {
+            if (viewModel.oddChange.value == true) {
                 addBet()
             } else {
                 activity?.onBackPressed()
+                when (activity) {
+                    is MainTabActivity -> (activity as MainTabActivity).jumpToBetInfo(2)
+                    else -> MainTabActivity.start2Tab(AppManager.currentActivity(), 2)
+                }
             }
         }
         btn_cancel.setOnClickListener {
@@ -224,7 +227,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 interfaceStatusChangeListener = object :
                     BetReceiptDiffAdapter.InterfaceStatusChangeListener {
                     override fun onChange(cancelBy: String) {
-                        showOddChange(cancelBy)
+                        updateBetResultStatus(cancelBy.isNullOrEmpty())
                     }
                 }
             }
@@ -263,19 +266,6 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 //        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
     }
 
-    /**
-     * 取消触发来源 0: 自动, 1: 手动,其他：赔率变化
-     */
-    private fun showOddChange(cancelBy: String) {
-        btn_cancel.isVisible = true
-        btn_complete.text = getString(R.string.accept_current_odd_to_bet)
-        btn_complete.setTextColor(
-            ContextCompat.getColor(
-                btn_complete.context,
-                R.color.white
-            )
-        )
-    }
 
     private fun addBet() {
         var tabPosition = if (betResultData?.parlayBets.isNullOrEmpty()) 0 else 1
@@ -320,9 +310,36 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             betList,
             parlayList,
             oddsType,
-            tabPosition
+            tabPosition,
+            oddsChangeOption = 0
         )
     }
 
-
+    fun updateBetResultStatus(oddChange: Boolean) {
+        if (!oddChange) {
+            lin_result_status.setBackgroundColor(R.color.color_31D089)
+            iv_result_status.setImageResource(R.drawable.ic_success_white)
+            tv_result_status.text = getString(R.string.your_bet_order_success)
+            btn_cancel.text = getString(R.string.bet_others)
+            btn_complete.text = getString(R.string.check_bet_detail)
+            btn_complete.setTextColor(
+                ContextCompat.getColor(
+                    btn_complete.context,
+                    R.color.color_E8EFFD
+                )
+            )
+        } else {
+            lin_result_status.setBackgroundColor(R.color.color_E23434)
+            iv_result_status.setImageResource(R.drawable.ic_fail_white)
+            tv_result_status.text = getString(R.string.your_bet_order_fail)
+            btn_cancel.text = getString(R.string.btn_cancel)
+            btn_complete.text = getString(R.string.accept_current_odd_to_bet)
+            btn_complete.setTextColor(
+                ContextCompat.getColor(
+                    btn_complete.context,
+                    R.color.white
+                )
+            )
+        }
+    }
 }

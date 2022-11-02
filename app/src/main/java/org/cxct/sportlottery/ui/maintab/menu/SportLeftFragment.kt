@@ -164,7 +164,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         viewModel.inplayList.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.size > 8) {
-                    sportInPlayAdapter.setNewData(it.subList(0, 7))
+                    sportInPlayAdapter.setNewData(it.subList(0, 8))
                 } else {
                     sportInPlayAdapter.setNewData(it)
                 }

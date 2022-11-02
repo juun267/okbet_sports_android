@@ -18,14 +18,18 @@ class HomeElecAdapter(data: List<QueryGameEntryData>) :
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontTransform())
             .into(helper.getView(R.id.iv_logo))
-
-        item.gameNamemap?.let {
-            helper.setText(R.id.tv_game_name, when (LanguageManager.getSelectLanguage(mContext)) {
-                LanguageManager.Language.ZH -> it.zh
-                LanguageManager.Language.VI -> it.vi
-                LanguageManager.Language.EN -> it.en
-                else -> it.en
-            })
+        if (item.gameNamemap == null) {
+            helper.setText(R.id.tv_game_name, item.firmName)
+        } else {
+            item.gameNamemap?.let {
+                helper.setText(R.id.tv_game_name,
+                    when (LanguageManager.getSelectLanguage(mContext)) {
+                        LanguageManager.Language.ZH -> it.zh
+                        LanguageManager.Language.VI -> it.vi
+                        LanguageManager.Language.EN -> it.en
+                        else -> it.en
+                    })
+            }
         }
 
     }

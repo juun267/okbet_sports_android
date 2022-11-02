@@ -352,7 +352,8 @@ abstract class BaseOddButtonViewModel(
         normalBetList: List<BetInfoListData>,
         parlayBetList: List<ParlayOdd>,
         oddsType: OddsType,
-        tabPosition: Int
+        tabPosition: Int,
+        oddsChangeOption: Int = 1,
     ) {
         //調整盤口
         var currentOddsTypes = oddsType
@@ -394,7 +395,7 @@ abstract class BaseOddButtonViewModel(
                     BetAddRequest(
                         matchList,
                         parlayList,
-                        1,
+                        oddsChangeOption,
                         2,
                         deviceId,
                         channelType = 0 //先寫死固定帶0
@@ -428,6 +429,20 @@ abstract class BaseOddButtonViewModel(
                         _oddChange.postValue(false)
                         LogUtil.e("下注成功")
                     } else {
+                        it.receipt?.singleBets?.forEach {
+                            if (it.status == 7) {
+                                it.matchOdds?.forEach {
+                                    betInfoRepository.removeItem(it.oddsId)
+                                }
+                            }
+                        }
+                        it.receipt?.parlayBets?.forEach {
+                            if (it.status == 7) {
+                                it.matchOdds?.forEach {
+                                    betInfoRepository.removeItem(it.oddsId)
+                                }
+                            }
+                        }
                         LogUtil.e("更新赔率，更新UI")
                         //处理赔率更新
                         _oddChange.postValue(true)
