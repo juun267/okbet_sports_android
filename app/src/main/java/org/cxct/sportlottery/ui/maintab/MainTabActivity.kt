@@ -131,6 +131,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
                     }
+                    if (this.getMenuItemPosition(menuItem)!=0){
+                        ll_home_back.visibility = View.GONE
+                    }
                     fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
                     return@OnNavigationItemSelectedListener true
                 }
@@ -192,7 +195,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun showLeftFrament(position: Int, fromPage: Int = -1) {
-        LogUtil.d("position=" + position + ",fromPage=" + fromPage)
+      //  LogUtil.d("position=" + position + ",fromPage=" + fromPage)
         when (position) {
             0 -> {
                 homeLeftFragment.fromPage = fromPage

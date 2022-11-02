@@ -397,6 +397,7 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.VISIBLE
 
                 }
+                LogUtil.toJson(mHotChessList)
                 homeChessAdapter.setNewData(mHotChessList)
 
                 //电子

@@ -13,6 +13,8 @@ class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
     BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_poker_game,data) {
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
+        helper.setText(R.id.tv_poker_name,item.firmName)
+        helper.setText(R.id.tv_sub_poker_name,item.firmCode)
         Glide.with(mContext)
             .load(item.entryImage)
             .apply(
@@ -21,8 +23,7 @@ class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
                 .dontTransform()
                 .placeholder(R.drawable.icon_chess_and_card))
             .into(helper.getView(R.id.iv_poker_bg))
-        helper.setText(R.id.tv_poker_name,item.chineseName)
-        helper.setText(R.id.tv_sub_poker_name,item.englishName)
+
     }
 
 }
