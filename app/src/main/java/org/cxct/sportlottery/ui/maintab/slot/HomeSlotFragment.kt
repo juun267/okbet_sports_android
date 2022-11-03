@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_home_slot.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.extened.fitsSystemStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
@@ -69,6 +70,7 @@ class HomeSlotFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.fitsSystemStatus()
         viewModel.getConfigData()
         initView()
         initObservable()
