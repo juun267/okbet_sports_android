@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.extened
+package org.cxct.sportlottery.extentions
 
 import android.view.View
 import org.cxct.sportlottery.util.ScreenUtil
