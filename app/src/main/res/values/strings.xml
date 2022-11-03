@@ -1318,7 +1318,6 @@
     <string name="collse_live">Save live</string>
     <string name="enter_live">Masuk ke ruang live</string>
     <string name="accept_current_odd_to_bet">Bet at current odds</string>
-    <string name="ou_hdp_hdp">让球盘</string>
     <string name="big_or_small">Over/under</string>
     <string name="home_all_game">All</string>
     <string name="home_back">Back</string>
@@ -1335,5 +1334,6 @@
     <string name="bet_others">Betting other</string>
     <string name="check_bet_detail">Bets Details</string>
     <string name="dont_have_game">暂无大奖游戏</string>
+    <string name="ou_hdp_hdp">Handicap</string>
 
 </resources>

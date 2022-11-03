@@ -1226,5 +1226,6 @@
     <string name="text_x">X</string>
     <string name="check_bet_detail">รายละเอียดการเดิมพัน</string>
     <string name="win_line">1X2</string>
+    <string name="ou_hdp_hdp">แฮนดิแคป</string>
     <!--F005-->
 </resources>
