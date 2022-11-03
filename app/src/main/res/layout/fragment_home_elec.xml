@@ -29,6 +29,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -279,4 +281,6 @@
                 android:text="@string/dont_have_game" />
         </LinearLayout>
     </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+</LinearLayout>
 </LinearLayout>
