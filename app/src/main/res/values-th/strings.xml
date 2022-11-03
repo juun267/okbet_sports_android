@@ -121,7 +121,6 @@
     <string name="bet_list_single_type">เดิมพันเดี่ยว</string>
     <string name="bet_list_empty">สลิปเดิมพันว่างเปล่า</string>
     <string name="bet_info_win_quota">จำนวนเงินที่ชนะ</string>
-    <string name="bet_list_win_quota">จำนวนเงินที่ชนะ</string>
     <string name="bet_info_input_quota">ใส่จำนวนเงิน</string>
     <string name="bet_info_all_bet">เดิมพันทั้งหมด</string>
     <string name="bet_receipt_all_bet">เดิมพันทั้งหมด</string>
@@ -1097,7 +1096,6 @@
     <string name="verify_failed_please_retry">การตรวจสอบสิทธิ์ล้มเหลว โปรดลองอีกครั้ง</string>
     <string name="dialog_security_error">รหัสยืนยันไม่ถูกต้อง</string>
     <string name="function">ฟังก์ชั่นทั่วไป</string>
-    <string name="bind_credit_card_not_yet">คุณยังไม่ได้ผูกกับบัตรธนาคาร/สกุลเงินเสมือน</string>
     <string name="current_versionIs_the_latest_version">ซอฟต์แวร์ของคุณเป็นเวอร์ชันล่าสุด</string>
     <string name="face_scan_result">ผลการสแกนใบหน้า</string>
     <string name="get_security_code">รับรหัสยืนยัน</string>
