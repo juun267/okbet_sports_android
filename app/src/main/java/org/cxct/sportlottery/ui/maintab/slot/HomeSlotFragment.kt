@@ -26,10 +26,7 @@ import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.isOKPlat
-import org.cxct.sportlottery.util.observe
+import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
 
 /**
