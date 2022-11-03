@@ -196,7 +196,7 @@ class MainHomeFragment :
         if (!hidden) {
             viewModel.getLiveRoundCount()
             viewModel.getHotLiveList()
-            viewModel.getHandicapConfig(1)
+            viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
 
         }
@@ -958,6 +958,7 @@ class MainHomeFragment :
             statusSheetData.code?.let {
                 viewModel.getHandicapConfig(it.toInt())
             }
+            hotHandicapAdapter.playType = statusSheetData.code!!
         }
         selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
     }
@@ -1008,7 +1009,7 @@ class MainHomeFragment :
             if (adapter == null) {
                 adapter = hotHandicapAdapter
             }
-            hotHandicapAdapter.setNewData(hotHandicapList)
+
         }
     }
 

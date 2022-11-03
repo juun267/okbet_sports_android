@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.maintab
 
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -17,6 +19,7 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setLeagueLogo
 
@@ -31,7 +34,13 @@ class HotHandicapAdapter(data:List<HandicapData>):
                 notifyDataSetChanged()
             }
         }
-
+    var playType: String = "1"
+    set(value) {
+        if (value != field) {
+            field = value
+            notifyDataSetChanged()
+        }
+    }
     var homeRecommendListener: HomeRecommendListener? = null
     var clickOdd: Odd? = null
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
@@ -63,7 +72,33 @@ class HotHandicapAdapter(data:List<HandicapData>):
     override fun convert(helper: BaseViewHolder, item: HandicapData) {
         helper.setText(R.id.tv_league_name, item.league.name)
         helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(item.league.categoryIcon)
+        when (playType){
+            "1"-> {
+                if (item.sportName == "足球"){
+                    helper.getView<TextView>(R.id.tv_title2).visibility = View.VISIBLE
+                    helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.text_1))
+                    helper.setText(R.id.tv_title2,LocalUtils.getString(R.string.text_x))
+                    helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.text_2))
+                }else{
+                    helper.getView<TextView>(R.id.tv_title2).visibility = View.GONE
+                    helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.text_1))
+                    helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.text_2))
+                }
+            }
+            "2"-> {
+                helper.getView<TextView>(R.id.tv_title2).visibility = View.GONE
+                helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.odds_button_name_home))
+                helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.odds_button_name_away))
+            }
+            "3"-> {
+                helper.getView<TextView>(R.id.tv_title2).visibility = View.GONE
+                helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.less_than_the))
+                helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.more_than_the))
+            }
+        }
+        if (playType == "1"&& item.sportName=="足球"){
 
+        }
         var recycleView = helper.getView<RecyclerView>(R.id.rv_handicap_item)
         recycleView.apply {
             if (layoutManager == null) {
