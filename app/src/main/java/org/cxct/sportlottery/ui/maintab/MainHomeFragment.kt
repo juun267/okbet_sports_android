@@ -39,12 +39,14 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
+import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
@@ -82,7 +84,7 @@ class MainHomeFragment :
     private val homeHotLiveAdapter by lazy {//热门直播
         HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
             tv_first_half_game.text = data.matchInfo.statusName18n
-            tv_match_time.text = "12:00"
+            tv_match_time.text = data.runningTime
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
@@ -95,8 +97,9 @@ class MainHomeFragment :
                     .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
                     .into(iv_avatar_live)
             }
-            tv_introduction.text = data.matchInfo.streamerName
+            tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
+
            // viewModel.getLiveInfo(it)
         })
 
@@ -416,7 +419,7 @@ class MainHomeFragment :
                         tv_match_type_name.text = sportName
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
-                        tv_match_time.text = "12:00"
+                        tv_match_time.text = runningTime
 
                         context?.let {mContext->
                             Glide.with(mContext)
@@ -434,6 +437,8 @@ class MainHomeFragment :
 
                 }
                     homeHotLiveAdapter.data = list
+                     //订阅直播
+                     subScribeLiveData(list)
                     rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                     rv_match_list.adapter = homeHotLiveAdapter
             }
@@ -476,7 +481,7 @@ class MainHomeFragment :
                 }
             }
         }
-
+        //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
                 hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
@@ -502,6 +507,9 @@ class MainHomeFragment :
                 var needUpdate = false // 记录是否要更新赛事清单
                  targetList.forEachIndexed { index, hotMatchLiveData ->
                      var matchList = listOf(hotMatchLiveData).toMutableList()
+                     if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
+//                         LogUtil.d("homeHotLivedata3333")
+                     }
                      if (SocketUpdateUtil.updateMatchStatus(
                              hotMatchLiveData.matchInfo.gameType,
                              matchList as MutableList<MatchOdd>,
@@ -509,11 +517,11 @@ class MainHomeFragment :
                              context
                      )){
                          needUpdate = true
+
                      }
                  }
                 if (needUpdate) {
                     homeHotLiveAdapter.data = targetList
-                    LogUtil.toJson(targetList)
                 }
             }
         }
@@ -591,6 +599,7 @@ class MainHomeFragment :
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
                 }
+
             }
         }
 
@@ -626,6 +635,7 @@ class MainHomeFragment :
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
                 subscribeQueryData(hotHandicapAdapter.data)
+                subScribeLiveData(homeHotLiveAdapter.data)
             }
         }
 
@@ -856,6 +866,13 @@ class MainHomeFragment :
     private fun subscribeChannelHall(recommend: HandicapData) {
         recommend.matchInfos.forEach {
             subscribeChannelHall(it.gameType, it.id)
+        }
+    }
+
+    //直播订阅
+    private fun  subScribeLiveData(liveDataList: List<HotMatchLiveData> ){
+        liveDataList.forEach { hotMatchLiveData ->
+            subscribeChannelHall(hotMatchLiveData.matchInfo.gameType, hotMatchLiveData.matchInfo.id)
         }
     }
 

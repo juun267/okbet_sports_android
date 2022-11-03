@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.room.util.StringUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -224,7 +225,7 @@ class ItemHomeLiveHolder(
     private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            tvAnchorName.text = data.matchInfo.streamerName
+            tvAnchorName.text = data.matchInfo.streamerName?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
             //region 隊伍名稱
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName
@@ -232,8 +233,8 @@ class ItemHomeLiveHolder(
             Glide.with(binding.root.context)
                 .load(data.matchInfo.streamerIcon)
                 .apply(mRequestOptions)
-                .fallback(R.drawable.ic_person_avatar)
-                .error(R.drawable.ic_person_avatar)
+                .fallback(R.drawable.icon_avatar)
+                .error(R.drawable.icon_avatar)
                 .into(ivAnchorAvatar)
 
             //region 隊伍圖示

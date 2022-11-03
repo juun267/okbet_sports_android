@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.NULLEvent
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -34,8 +33,6 @@ import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -64,9 +61,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     override fun onStart() {
         super.onStart()
         startCheckToken()
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this)
-        }
         RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
 
     }
@@ -433,11 +427,6 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             AutoSizeCompat.autoConvertDensityOfGlobal(super.getResources())
         }
         return super.getResources()
-    }
-
-    @Subscribe
-    open fun onMainEvent(event: NULLEvent?) {
-        //空方法，不能删除，适配EventBus
     }
 
     open fun setStatusbar(bgColor: Int, darkFont: Boolean) {

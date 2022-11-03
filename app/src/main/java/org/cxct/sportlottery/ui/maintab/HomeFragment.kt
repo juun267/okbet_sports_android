@@ -15,7 +15,6 @@ import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.LogUtil
 
 class HomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {

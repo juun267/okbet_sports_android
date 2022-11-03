@@ -172,6 +172,7 @@
     <string name="profile_center">Trung tâm cá nhân</string>
     <string name="member_level">Cấp bậc hội viên</string>
     <string name="game_settlement">Kết quả trận đấu</string>
+    <string name="app_download">Tải xuống ứng dụng</string>
     <string name="version_update">Tải xuống ứng dụng</string>
     <string name="sign_out">Đăng xuất</string>
     <string name="label_version">Phiên bản</string>
@@ -1296,4 +1297,7 @@
     <string name="enter_live">Vào live</string>
     <string name="check_bet_detail">Chi tiết đặt cược</string>
     <string name="big_or_small">Cược trên/ dưới</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
 </resources>

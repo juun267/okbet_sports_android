@@ -195,6 +195,7 @@
     <string name="profile_center">个人中心</string>
     <string name="member_level">会员层级</string>
     <string name="game_settlement">赛果结算</string>
+    <string name="app_download">APP下载</string>
     <string name="version_update">版本更新</string>
     <string name="sign_out">退出登录</string>
     <string name="label_version">版本号</string>
@@ -1307,6 +1308,9 @@
     <string name="accept_current_odd_to_bet">接受当前赔率下注</string>
     <string name="home_back">返回</string>
     <string name="enter_live">进入直播间</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
     <string name="your_bet_order_success">您的注单下注成功</string>
     <string name="your_bet_order_fail">投注失败,赔率己改变</string>
     <string name="bet_others">下注其他</string>

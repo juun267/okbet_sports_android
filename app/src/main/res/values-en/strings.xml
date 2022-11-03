@@ -195,6 +195,7 @@
     <string name="profile_center">Profile</string>
     <string name="member_level">Member level</string>
     <string name="game_settlement">Result</string>
+    <string name="app_download">App Download</string>
     <string name="version_update">Update Version</string>
     <string name="sign_out">Logout</string>
     <string name="label_version">Version</string>
@@ -1309,4 +1310,7 @@
     <string name="bet_others">Betting other</string>
     <string name="check_bet_detail">Bets Details</string>
     <string name="big_or_small">Over/under</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
 </resources>

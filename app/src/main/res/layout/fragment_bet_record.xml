@@ -147,7 +147,7 @@
             android:layout_marginBottom="@dimen/margin_14"
             android:layout_marginTop="-10dp"
             android:paddingTop="20dp"
-            app:cardElevation="3dp"
+            app:cardElevation="2dp"
             app:cardCornerRadius="10dp"
             app:cardBackgroundColor="@color/color_bbbbbb_ffffff"
             app:layout_constraintLeft_toLeftOf="parent"

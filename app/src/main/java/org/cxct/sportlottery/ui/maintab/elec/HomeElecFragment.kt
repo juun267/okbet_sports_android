@@ -84,6 +84,7 @@ class HomeElecFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
+            viewModel.getGameEntryConfig(2, 2)
             viewModel.getTotalRewardAmount()
             viewModel.getRecommend()
         }
