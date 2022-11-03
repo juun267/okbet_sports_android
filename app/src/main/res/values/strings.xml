@@ -1329,4 +1329,9 @@
     <string name="check_bet_detail">查看注单详情</string>
     <string name="okbet_live_name">OKBET主播</string>
     <string name="please_input_you_account">请输入你的账号</string>
+    <string name="more_than_the">大于</string>
+    <string name="less_than_the">小于</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
 </resources>

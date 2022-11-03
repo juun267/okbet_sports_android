@@ -1295,4 +1295,7 @@
     <string name="accept_current_odd_to_bet">Cược với tỷ lệ cược hiện tại</string>
     <string name="home_back">Trở về</string>
     <string name="enter_live">Vào live</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
 </resources>

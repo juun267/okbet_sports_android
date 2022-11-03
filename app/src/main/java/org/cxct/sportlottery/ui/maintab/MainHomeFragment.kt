@@ -873,8 +873,6 @@ class MainHomeFragment :
     private fun  subScribeLiveData(liveDataList: List<HotMatchLiveData> ){
         liveDataList.forEach { hotMatchLiveData ->
             subscribeChannelHall(hotMatchLiveData.matchInfo.gameType, hotMatchLiveData.matchInfo.id)
-            LogUtil.d(hotMatchLiveData.matchInfo.gameType)
-            LogUtil.d(hotMatchLiveData.matchInfo.id)
         }
     }
 
