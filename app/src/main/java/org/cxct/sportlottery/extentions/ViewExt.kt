@@ -1,6 +1,5 @@
-package org.cxct.sportlottery.extened
+package org.cxct.sportlottery.extentions
 
-import android.content.Context
 import android.view.View
 
 /**
