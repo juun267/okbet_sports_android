@@ -35,8 +35,8 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -103,6 +103,10 @@ class SportListFragment :
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
                 sportLeagueAdapter.removePreloadItem()
+                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                    sport_type_list,
+                    RecyclerView.State(),
+                    dataSport.indexOfFirst { it.isSelected })
                 //切換球種後要重置位置
                 loading()
                 unSubscribeChannelHallAll()
@@ -273,14 +277,14 @@ class SportListFragment :
 
     private fun setupSportTypeList() {
         sport_type_list.apply {
-            layoutManager = SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
             //波胆不需要显示球类
             isVisible = matchType != MatchType.CS
             adapter = gameTypeAdapter
             removeItemDecorations()
         }
-        OverScrollDecoratorHelper.setUpOverScroll(sport_type_list, RecyclerView.HORIZONTAL)
     }
 
     private fun setupToolbar() {
@@ -845,6 +849,10 @@ class SportListFragment :
         gameTypeAdapter.apply {
             dataSport = gameTypeList
         }
+        (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            sport_type_list,
+            RecyclerView.State(),
+            gameTypeAdapter.dataSport.indexOfFirst { it.isSelected })
         //post待view繪製完成
         sport_type_list?.post {
             if (gameTypeList.isEmpty()) {

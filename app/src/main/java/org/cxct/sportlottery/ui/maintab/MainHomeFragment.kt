@@ -16,8 +16,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.pili.pldroid.player.AVOptions
-import com.pili.pldroid.player.widget.PLVideoView
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -450,6 +448,7 @@ class MainHomeFragment :
                    hideLoading()
                    it.forEach { handi ->
                        handi.matchInfos.forEach { hotdata ->
+                           hotdata.oddsSort = handi.oddsSort
                            // 將儲存的賠率表指定的賽事列表裡面
                            val leagueOddFromMap = leagueOddMap[hotdata.id]
                            leagueOddFromMap?.let {
@@ -547,10 +546,6 @@ class MainHomeFragment :
             hotHandicapAdapter.data.forEachIndexed { index, handicap ->
                 var needUpdate = false
                  handicap.matchInfos.forEach { hotMatchInfo->
-                     selector_order_status.selectedCode?.let {
-                         hotMatchInfo.oddsSort = mHandicapCodeValue[it.toInt() - 1]
-                     }
-
                      if (hotMatchInfo.id == oddsChangeEvent.eventId) {
                          hotMatchInfo.sortOddsMap()
                          //region 翻譯更新
@@ -945,12 +940,6 @@ class MainHomeFragment :
         selector_order_status.setOnItemSelectedListener { statusSheetData ->
             statusSheetData.code?.let {
                 viewModel.getHandicapConfig(it.toInt())
-                hotHandicapAdapter.data.forEach {
-                    it.matchInfos.forEach {
-                        it.oddsSort = mHandicapCodeValue[mHandicapCodeList.indexOf(statusSheetData)]
-                    }
-                }
-                hotHandicapAdapter.notifyDataSetChanged()
             }
         }
         selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)

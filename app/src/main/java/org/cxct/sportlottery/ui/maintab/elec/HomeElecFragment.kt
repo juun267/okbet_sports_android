@@ -148,15 +148,18 @@ class HomeElecFragment :
         viewModel.totalRewardAmount.observe(viewLifecycleOwner) {
             it.getOrNull(0)?.let {
                 tv_first_game_name.text = it.name
-                tv_first_amount.text = "${it.currency} ${TextUtil.formatMoney(it.amount)}"
+                tv_first_amount.text =
+                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
             }
             it.getOrNull(1)?.let {
                 tv_second_game_name.text = it.name
-                tv_second_amount.text = "${it.currency} ${TextUtil.formatMoney(it.amount)}"
+                tv_second_amount.text =
+                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
             }
             it.getOrNull(2)?.let {
                 tv_third_game_name.text = it.name
-                tv_third_amount.text = "${it.currency} ${TextUtil.formatMoney(it.amount)}"
+                tv_third_amount.text =
+                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(it.amount, 2)}"
             }
         }
 

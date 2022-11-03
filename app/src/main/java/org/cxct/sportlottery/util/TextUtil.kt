@@ -3,9 +3,7 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import org.cxct.sportlottery.R
 import timber.log.Timber
-import java.lang.Exception
 import java.math.RoundingMode
-import kotlin.text.StringBuilder
 
 /**
  * 需要使用DecimalFormat轉換格式時, 需配合doNumberFormat()
@@ -18,6 +16,7 @@ object TextUtil : DecimalFormatUtil() {
         }
         return str.split(",").toMutableList()
     }
+
 
     fun format(any: Any): String? {
         try {
@@ -33,14 +32,23 @@ object TextUtil : DecimalFormatUtil() {
         return null
     }
 
-    fun formatMoney(any: Any): String? {
+    /**
+     * numberAfterDot 保留小数点后几位
+     */
+    fun formatMoney(any: Any, numAfterDot: Int = 0): String? {
         try {
             var target = any
 
             if (any !is Number)
                 target = target.toString().toDouble()
-
-            return doNumberFormat(target, "###,###,###,##0")
+            var numAfterDotBuilder = StringBuilder()
+            if (numAfterDot > 0) {
+                numAfterDotBuilder.append(".")
+                for (index in 1..numAfterDot) {
+                    numAfterDotBuilder.append("0")
+                }
+            }
+            return doNumberFormat(target, "###,###,###,##0$numAfterDotBuilder")
         } catch (e: Exception) {
             Timber.e("$e")
         }

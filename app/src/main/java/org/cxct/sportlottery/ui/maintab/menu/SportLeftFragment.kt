@@ -42,11 +42,9 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private var expandSportClassify = true
     var matchType: MatchType = MatchType.MAIN
         set(value) {
-            if (field != value) {
-                field = value
-                if (isAdded) {
-                    updateMatchType()
-                }
+            field = value
+            if (isAdded) {
+                updateMatchType()
             }
         }
     var gameType: GameType? = null
@@ -105,7 +103,6 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             EventBus.getDefault().post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.TODAY, GameType.FT)
         }
-        lin_sport_classify.isSelected = expandSportClassify
         lin_sport_classify.setOnClickListener {
             expandSportClassify = !expandSportClassify
             rv_sport_classify.isVisible = expandSportClassify
@@ -178,7 +175,6 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 }
             }
             else -> {
-
                 if (rbtn_sport.isChecked) {
                     viewModel.getSportList()
                 } else {
@@ -193,21 +189,25 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             MatchType.IN_PLAY -> {
                 sportInPlayAdapter.gameType = gameType
                 sportClassifyAdapter.gameType = null
+                lin_sport_classify.isSelected = false
                 lin_today.isSelected = false
             }
             MatchType.EARLY -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = gameType
+                lin_sport_classify.isSelected = expandSportClassify
                 lin_today.isSelected = false
             }
             MatchType.TODAY -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = null
+                lin_sport_classify.isSelected = false
                 lin_today.isSelected = true
             }
             else -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = null
+                lin_sport_classify.isSelected = false
                 lin_today.isSelected = false
             }
         }

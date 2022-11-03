@@ -81,9 +81,10 @@ class ItemHandicapHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd1)
                     setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType, hideName = true)
-                    when (data.oddsSort) {
-                        PlayCate.SINGLE.value -> lin_name.isVisible = false
-                        else -> lin_name.isVisible = isVisible
+                    if (data?.oddsSort?.contains(PlayCate.SINGLE.value) == true) {
+                        lin_name.isVisible = false
+                    } else {
+                        lin_name.isVisible = isVisible
                     }
                     setButtonBetClick(
                         data = data,
@@ -105,9 +106,10 @@ class ItemHandicapHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd2)
                     setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType, hideName = true)
-                    when (data.oddsSort) {
-                        PlayCate.SINGLE.value -> lin_name.isVisible = false
-                        else -> lin_name.isVisible = isVisible
+                    if (data?.oddsSort?.contains(PlayCate.SINGLE.value) == true) {
+                        lin_name.isVisible = false
+                    } else {
+                        lin_name.isVisible = isVisible
                     }
                     setButtonBetClick(
                         data = data,
@@ -128,9 +130,10 @@ class ItemHandicapHolder(
                     visibility = View.VISIBLE
                     setupOddsButton(this, odd3)
                     setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType, hideName = true)
-                    when (data.oddsSort) {
-                        PlayCate.SINGLE.value -> lin_name.isVisible = false
-                        else -> lin_name.isVisible = isVisible
+                    if (data?.oddsSort?.contains(PlayCate.SINGLE.value) == true) {
+                        lin_name.isVisible = false
+                    } else {
+                        lin_name.isVisible = isVisible
                     }
                     setButtonBetClick(
                         data = data,

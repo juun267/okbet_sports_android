@@ -14,6 +14,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -97,7 +98,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var matchOdd: MatchOdd? = null
     private var matchInfo: MatchInfo? = null
     private var isFlowing = false
-    private var chatViewHeight = 0
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
     val handler = Handler()
@@ -394,13 +394,21 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun initUI() {
-        lin_center.post {
+        lin_center.viewTreeObserver.addOnGlobalLayoutListener {
             val location = IntArray(2)
-            sv_content.getLocationInWindow(location)
-            chatViewHeight =
-                ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1] + resources.getDimensionPixelOffset(
-                    R.dimen.tool_bar_height) + ImmersionBar.getNavigationBarHeight(this)
+            lin_center.getLocationInWindow(location)
+//            cl_bottom.layoutParams.height=ScreenUtils.getScreenHeight(this@SportDetailActivity) - lin_center.height-location[1]
+            cl_bottom.layoutParams.let {
+                it.height = ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1]
+                cl_bottom.layoutParams = it
+            }
         }
+//        app_bar_layout.post {
+//            val location = IntArray(2)
+//            sv_content.getLocationInWindow(location)
+//            chatViewHeight = ScreenUtils.getScreenHeight(this@SportDetailActivity) - app_bar_layout.height
+//            cl_bottom.layoutParams.height=chatViewHeight
+//        }
         iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
             ?: GameType.FT))
         collaps_toolbar.iv_toolbar_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(
@@ -1492,7 +1500,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun updateWebHeight(onMini: Boolean) {
         wv_chat.postDelayed({
             var lp = wv_chat.layoutParams
-            lp.height = if (onMini) 56.dp else chatViewHeight
+            lp.height = if (onMini) 56.dp else LayoutParams.MATCH_PARENT
             wv_chat.layoutParams = lp
             LogUtil.e("height=" + wv_chat.height)
         }, 200)

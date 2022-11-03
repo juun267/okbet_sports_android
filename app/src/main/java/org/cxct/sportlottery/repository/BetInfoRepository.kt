@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -98,6 +99,15 @@ object BetInfoRepository {
     val hasBetPlatClose: LiveData<Boolean>
         get() = _hasBetPlatClose
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
+
+    //注单结算通知
+    val settlementNotificationMsg: LiveData<Event<SportBet>>
+        get() = _settlementNotificationMsg
+    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
+
+    fun postSettlementNotificationMsg(sportBet: SportBet) {
+        _settlementNotificationMsg.postValue(Event(sportBet))
+    }
 
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
@@ -344,51 +354,49 @@ object BetInfoRepository {
         val oddsIndexList = oddsList.map {
             oddsList.indexOf(it)
         }
+
         val parlayComList = ParlayLimitUtil.getCom(oddsIndexList.toIntArray())
 
-        /** 2022/10/19
+        val maxDefaultBigDecimal = BigDecimal(9999999)
+        val minDefaultBigDecimal = BigDecimal(0)
+
+        /** 不使用maxParlayBetMoney, maxParlayPayout, minParlayBetMoney (By Mark)
          * 串關的限額判斷改為根據串關的所有賽事的限額去比對
-        maxBetMoney
-        maxPayout
-        minBetMoney
-        下注上限取最小的, 賠付額上限取最小的, 最低下注金額取最大的, 作為該張串關單的最高下注限額/最大賠付額/最低下注限額
+        maxBetMoney 下注上限取最小的,
+        maxPayout 賠付額上限取最小的,
+        minBetMoney 最低下注金額取最大的,
+        作為該張串關單的最高下注限額/最大賠付額/最低下注限額
          */
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        var maxParlayBetMoney: BigDecimal? = null
-        var minParlayBetMoney: BigDecimal? = null
-        var maxParlayPayout: BigDecimal? = null
-        betList.map { it.betInfo }.forEach {
-            it?.let {
-                maxParlayBetMoney =
-                    if (maxParlayBetMoney == null) it.maxBetMoney else it.maxBetMoney?.min(
-                        maxParlayBetMoney)
-                minParlayBetMoney =
-                    if (minParlayBetMoney == null) it.minBetMoney else it.minBetMoney?.max(
-                        minParlayBetMoney)
-                maxParlayPayout =
-                    if (maxParlayPayout == null) it.maxParlayPayout else it.maxParlayPayout?.min(
-                        maxParlayPayout)
-            }
-        }
+        val betInfoList = betList.map { it.betInfo }
+        val startTime = System.nanoTime()
+        val maxBetMoneyTakeMin = betInfoList.minOfOrNull { it?.maxBetMoney ?: maxDefaultBigDecimal }
+        val maxPayoutTakeMin = betInfoList.minOfOrNull { it?.maxPayout ?: maxDefaultBigDecimal }
+        val minBetMoneyTakeMax = betInfoList.maxOfOrNull { it?.minBetMoney ?: minDefaultBigDecimal }
+//        Timber.e("costTime: ${System.nanoTime() - startTime}")
+
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
             parlayComList,
-            maxParlayBetMoney,
-            minParlayBetMoney
+            maxBetMoneyTakeMin,
+            minBetMoneyTakeMax
         )
+
         return parlayBetLimitMap.map {
             var maxBet: BigDecimal
-            val maxPayout = betInfo?.maxPayout ?: BigDecimal(9999999)
-            val maxCpPayout = betInfo?.maxCpPayout ?: BigDecimal(9999999)
-            val maxBetMoney = betInfo?.maxBetMoney ?: BigDecimal(9999999)
-            val maxCpBetMoney = betInfo?.maxCpBetMoney ?: BigDecimal(9999999)
-            val maxParlayPayout = maxParlayPayout ?: BigDecimal(9999999)
-            val maxParlayBetMoney = betInfo?.maxParlayBetMoney ?: BigDecimal(9999999)
+            val maxPayout = betInfo?.maxPayout ?: maxDefaultBigDecimal
+            val maxCpPayout = betInfo?.maxCpPayout ?: maxDefaultBigDecimal
+            val maxBetMoney = betInfo?.maxBetMoney ?: maxDefaultBigDecimal
+            val maxCpBetMoney = betInfo?.maxCpBetMoney ?: maxDefaultBigDecimal
+            val maxParlayPayout = maxPayoutTakeMin ?: maxDefaultBigDecimal
+            val maxParlayBetMoney = maxBetMoneyTakeMin ?: maxDefaultBigDecimal
+
             val minBet: BigDecimal
-            val minBetMoney = betInfo?.minBetMoney ?: BigDecimal(0)
-            val minCpBetMoney = betInfo?.minCpBetMoney ?: BigDecimal(0)
-            val minParlayBetMoney = betInfo?.minParlayBetMoney ?: BigDecimal(0)
-            if(it.value.num > 1){
+            val minBetMoney = betInfo?.minBetMoney ?: minDefaultBigDecimal
+            val minCpBetMoney = betInfo?.minCpBetMoney ?: minDefaultBigDecimal
+            val minParlayBetMoney = minBetMoneyTakeMax ?: minDefaultBigDecimal
+
+            if (it.value.num > 1) {
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val parlayPayout =
                     maxParlayPayout.div(
@@ -431,9 +439,14 @@ object BetInfoRepository {
 
                 //賠付額上限計算投注限額
                 val oddsPayout =
-                    payout.divide(if (it.value.isOnlyEUType) it.value.odds - BigDecimal(1) else it.value.hdOdds,
+                    payout.divide(
+                        if (it.value.isOnlyEUType)
+                            it.value.odds - BigDecimal(1)
+                        else
+                            it.value.hdOdds,
                         0,
-                        RoundingMode.DOWN)
+                        RoundingMode.DOWN
+                    )
                 maxBet = if (matchTypeMaxBetMoney == BigDecimal(0)) {
                     //如果 matchTypeMaxBetMoney 為 0 使用最大賠付額
                     oddsPayout
@@ -441,6 +454,7 @@ object BetInfoRepository {
                     //用戶投注限額與賠付額計算投注限額取小
                     oddsPayout.min(matchTypeMaxBetMoney)
                 }
+
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
                     matchType == MatchType.OUTRIGHT -> minCpBetMoney

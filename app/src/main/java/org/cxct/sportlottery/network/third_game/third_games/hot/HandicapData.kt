@@ -12,4 +12,6 @@ data class HandicapData(
     val matchInfos: MutableList<HotMatchInfo>,
     @Json(name = "sportName")
     val sportName: String,
+    @Json(name = "oddsSort")
+    val oddsSort: String,
 )
