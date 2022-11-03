@@ -32,10 +32,7 @@ import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
-import org.cxct.sportlottery.util.FragmentHelper
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.observe
+import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -81,6 +78,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initBottomFragment()
         initBottomNavigation()
         initObserve()
+        EventBusUtil.targetLifecycle(this)
     }
 
     override fun onNightModeChanged(mode: Int) {

@@ -22,6 +22,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
+import kotlinx.android.synthetic.main.fragment_profile_center.tv_version
 import kotlinx.android.synthetic.main.view_toolbar_main.iv_menu
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -131,7 +132,6 @@ class ProfileCenterFragment :
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun initView() {
         tv_currency_type.text = sConfigData?.systemCurrencySign
         //信用盤打開，隱藏提款設置
@@ -145,20 +145,20 @@ class ProfileCenterFragment :
                 //下载更新要做判断 当前有没有新版本
                 update_version.setOnClickListener{
                     //外部下載
-                    btn_external_download.setOnClickListener {
-                        JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
-                    }
+                    JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
                     // startActivity(Intent(requireActivity(), VersionUpdateActivity::class.java))
                 }
                 iv_version_new.visibility = View.VISIBLE
+                return@observe
             }
-            else{
-                iv_version_new.visibility = View.GONE
-            }
+
+            update_version.setOnClickListener {  }
+            iv_version_new.visibility = View.GONE
         }
+
         val version = "V${BuildConfig.VERSION_NAME}"
         tv_current_version.text = version
-        tv_version_code.text = getString(R.string.current_version)+version
+        tv_version_code.text = getString(R.string.current_version) + version
         tv_withdraw_title.setTitleLetterSpacing2F()
         tv_deposit_title.setTitleLetterSpacing2F()
     }
