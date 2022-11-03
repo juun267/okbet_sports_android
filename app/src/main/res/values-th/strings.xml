@@ -346,7 +346,6 @@
     <string name="bottom_nav_chat">ที่จะสนทนากับ</string>
     <string name="bottom_nav_my_account">ของฉัน</string>
     <string name="game_settlement">ผลลัพธ์</string>
-    <string name="app_download">ดาวน์โหลดแอป</string>
     <string name="league">ลีก</string>
     <string name="score">นาที</string>
     <string name="section">ระยะเวลา</string>
@@ -1225,5 +1224,7 @@
     <string name="text_1">1</string>
     <string name="text_2">2</string>
     <string name="text_x">X</string>
+    <string name="check_bet_detail">รายละเอียดการเดิมพัน</string>
+    <string name="win_line">1X2</string>
     <!--F005-->
 </resources>

@@ -498,7 +498,8 @@ class HomeLiveFragment :
     ) {
         SportDetailActivity.startActivity(requireContext(),
             matchInfo = matchInfo,
-            matchType = matchType)
+            matchType = matchType,
+            intoLive = true)
     }
 
 

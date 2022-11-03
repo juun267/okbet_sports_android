@@ -849,6 +849,7 @@ class SportListFragment :
         gameTypeAdapter.apply {
             dataSport = gameTypeList
         }
+        LogUtil.d(gameTypeAdapter.dataSport.first { it.isSelected }.name)
         (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             sport_type_list,
             RecyclerView.State(),

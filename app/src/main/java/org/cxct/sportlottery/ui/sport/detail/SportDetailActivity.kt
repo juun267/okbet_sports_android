@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
@@ -69,13 +68,19 @@ import java.util.*
 class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel::class),
     TimerManager {
     companion object {
-        fun startActivity(context: Context, matchInfo: MatchInfo, matchType: MatchType? = null) {
+        fun startActivity(
+            context: Context,
+            matchInfo: MatchInfo,
+            matchType: MatchType? = null,
+            intoLive: Boolean = false,
+        ) {
             matchInfo?.let {
                 val intent = Intent(context, SportDetailActivity::class.java)
                 intent.putExtra("matchInfo", matchInfo)
                 intent.putExtra("matchType",
                     matchType
                         ?: if (TimeUtil.isTimeInPlay(it.startTime)) MatchType.IN_PLAY else MatchType.DETAIL)
+                intent.putExtra("intoLive", intoLive)
                 context.startActivity(intent)
             }
         }
@@ -100,6 +105,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
+    private var chatViewHeight = 0
     val handler = Handler()
     private val delayHideRunnable = Runnable { collaps_toolbar.startAnimation(exitAnim) }
     private var isGamePause = false
@@ -198,6 +204,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     collaps_toolbar.isVisible = false
                     collaps_toolbar.iv_toolbar_bg.isVisible = true
                     live_view_tool_bar.release()
+                    showChatWebView(false)
                 }
             }
         }
@@ -397,18 +404,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         lin_center.viewTreeObserver.addOnGlobalLayoutListener {
             val location = IntArray(2)
             lin_center.getLocationInWindow(location)
-//            cl_bottom.layoutParams.height=ScreenUtils.getScreenHeight(this@SportDetailActivity) - lin_center.height-location[1]
-            cl_bottom.layoutParams.let {
-                it.height = ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1]
-                cl_bottom.layoutParams = it
-            }
+//            chatViewHeight=ScreenUtils.getScreenHeight(this@SportDetailActivity) - location[1]-10.dp
+//            cl_bottom.layoutParams.let {
+//                it.height = chatViewHeight
+//                cl_bottom.layoutParams = it
+//            }
         }
-//        app_bar_layout.post {
-//            val location = IntArray(2)
-//            sv_content.getLocationInWindow(location)
-//            chatViewHeight = ScreenUtils.getScreenHeight(this@SportDetailActivity) - app_bar_layout.height
-//            cl_bottom.layoutParams.height=chatViewHeight
-//        }
         iv_detail_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(matchInfo?.gameType)
             ?: GameType.FT))
         collaps_toolbar.iv_toolbar_bg.setImageResource(GameType.getGameTypeDetailBg(GameType.getGameType(
@@ -607,6 +608,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 if (lin_live.isVisible) {
                     live_view_tool_bar.liveUrl =
                         if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
+                    var intoLive = intent.getBooleanExtra("intoLive", false)
+                    if (intoLive) {
+                        lin_live.performClick()
+                    }
                 }
             }
         }
@@ -935,6 +940,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     live_view_tool_bar.showLive()
                     setScrollEnable(false)
                     startDelayHideTitle()
+                    showChatWebView(true)
                 }
             }
             lin_video.setOnClickListener {
@@ -1007,12 +1013,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      */
     private fun setScrollEnable(enable: Boolean) {
         (app_bar_layout.getChildAt(0).layoutParams as AppBarLayout.LayoutParams).apply {
-            scrollFlags = if (enable)
-                (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
-                        or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
-                        or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
-            else
-                AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+//            scrollFlags = if (enable)
+//                (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+//                        or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+//                        or AppBarLayout.LayoutParams.SCROLL_FLAG_SNAP)
+//            else
+            AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
         }
     }
 
@@ -1439,7 +1445,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             showChatWebView(false)
             return
         }
-        showChatWebView(true)
         wv_chat.apply {
             settings.apply {
                 javaScriptEnabled = true
@@ -1498,12 +1503,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     fun updateWebHeight(onMini: Boolean) {
-        wv_chat.postDelayed({
+        wv_chat.post {
             var lp = wv_chat.layoutParams
             lp.height = if (onMini) 56.dp else LayoutParams.MATCH_PARENT
             wv_chat.layoutParams = lp
-            LogUtil.e("height=" + wv_chat.height)
-        }, 200)
+        }
     }
 
     fun showChatWebView(visible: Boolean) {

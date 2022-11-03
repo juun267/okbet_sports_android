@@ -55,16 +55,16 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             return fragment
         }
 
-        val matchTypeTabPositionMap = mapOf<MatchType, Int>(
-            MatchType.IN_PLAY to 0,
-            MatchType.AT_START to 1,
-            MatchType.TODAY to 2,
-            MatchType.EARLY to 3,
-            MatchType.CS to 4,
-            MatchType.OUTRIGHT to 5,
-            MatchType.PARLAY to 6,
-            MatchType.MAIN to 99
-        )
+         val matchTypeTabPositionMap = mapOf<MatchType, Int>(
+             MatchType.IN_PLAY to 0,
+             MatchType.AT_START to 1,
+             MatchType.TODAY to 2,
+             MatchType.EARLY to 3,
+             MatchType.CS to 4,
+             MatchType.OUTRIGHT to 5,
+             MatchType.PARLAY to 6,
+             MatchType.MAIN to 99
+         )
     }
 
     private var betListFragment = BetListFragment()
@@ -215,7 +215,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         //distinctUntilChanged() -> 相同的matchType僅會執行一次，有變化才會observe
         viewModel.curMatchType.distinctUntilChanged().observe(viewLifecycleOwner) {
             it?.let {
-                matchTypeTabPositionMap[it]?.let { it1 -> goTab(it1) }
+                matchTypeTabPositionMap[it]?.let { it1 -> tabLayout.getTabAt(it1)?.select() }
             }
         }
 
@@ -224,20 +224,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             updateUiWithResult(it)
         }
     }
-
-    /**
-     * 前往指定的賽事種類
-     * @since 若已經在該賽事種類, 點擊Tab不會觸發OnTabSelectedListener
-     */
-    private fun goTab(tabPosition: Int) {
-        if (tabLayout.selectedTabPosition != tabPosition) {
-            //賽事類別Tab不在滾球時, 點擊滾球Tab
-            tabLayout.getTabAt(tabPosition)?.select()
-        } else {
-            selectTab(tabPosition)
-        }
-    }
-
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
     }
@@ -327,12 +313,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         jumpGameType = gameType
         if (isAdded) {
             //如果体育当前已经在指定的matchType页面时，跳过检查重复选中的机制，强制筛选sportListFragment
-
-            if (viewModel.curMatchType.value == matchType) {
-                navGameFragment(matchType)
-            } else {
-                viewModel.setCurMatchType(matchType)
-            }
+            viewModel.setCurMatchType(matchType)
+            navGameFragment(matchType)
         }
     }
 
