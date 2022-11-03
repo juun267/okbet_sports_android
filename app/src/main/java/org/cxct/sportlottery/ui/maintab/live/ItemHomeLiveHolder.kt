@@ -144,7 +144,7 @@ class ItemHomeLiveHolder(
         //玩法名稱
         val playCateName = data.playCateNameMap?.get(oddPlayCateCode)
             ?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
-        binding.tvGamePlayCateCodeName.text = playCateName
+        binding.tvGamePlayCateCodeName.text = LocalUtils.getString(R.string.win_line)
         with(binding) {
             //配置賽事比分及機制
             setupMatchScore()

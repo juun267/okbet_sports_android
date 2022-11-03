@@ -1304,4 +1304,9 @@
     <string name="accept_current_odd_to_bet">Bet at current odds</string>
     <string name="home_back">Back</string>
     <string name="enter_live">Masuk ke ruang live</string>
+    <string name="your_bet_order_success">Your betting succesful</string>
+    <string name="your_bet_order_fail">Betting failed, odds changed</string>
+    <string name="bet_others">Betting other</string>
+    <string name="check_bet_detail">Bets Details</string>
+    <string name="big_or_small">Over/under</string>
 </resources>
