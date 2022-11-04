@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.extened.fitsSystemStatus
+import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager

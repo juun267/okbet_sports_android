@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.extened.fitsSystemStatus
+import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
