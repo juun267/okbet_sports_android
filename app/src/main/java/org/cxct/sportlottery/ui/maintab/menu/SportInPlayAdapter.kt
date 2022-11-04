@@ -16,6 +16,7 @@ class SportInPlayAdapter(data: MutableList<Item>) :
         }
 
     override fun convert(helper: BaseViewHolder, item: Item) {
+        helper.setImageResource(R.id.iv_sport_logo, GameType.getInplayIcon(item.code))
         helper.setText(R.id.tv_name, item.name)
         helper.setText(R.id.tv_num, item.num.toString())
         helper.itemView.isSelected = (gameType?.key == item.code)

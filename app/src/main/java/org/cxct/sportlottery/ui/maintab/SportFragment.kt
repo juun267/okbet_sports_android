@@ -68,7 +68,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private var betListFragment = BetListFragment()
-    private lateinit var sportListFragment: Fragment
+    private var sportListFragment: Fragment? = null
 
     var jumpMatchType: MatchType? = null
     var jumpGameType: GameType? = null
@@ -88,6 +88,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         initObserve()
         viewModel.getMatchData()
         viewModel.firstSwitchMatch(jumpMatchType ?: MatchType.IN_PLAY)
+        navGameFragment(jumpMatchType ?: MatchType.IN_PLAY)
     }
 
     fun initToolBar() {
@@ -194,7 +195,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     private fun selectTab(position: Int?) {
         if (position == null) return
-        navGameFragment(matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key)
+        var matchType =
+            matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
+        viewModel.setCurMatchType(matchType)
+        navGameFragment(matchType)
     }
 
     private fun initObserve() {
@@ -301,11 +305,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
                 SportListFragment.newInstance(matchType = matchType, gameType = gameType)
         }
         childFragmentManager.beginTransaction()
-            .replace(R.id.fl_content, sportListFragment)
+            .replace(R.id.fl_content, sportListFragment!!)
             .commit()
         jumpMatchType = null
         jumpGameType = null
-
     }
 
     fun setJumpSport(matchType: MatchType, gameType: GameType) {
@@ -327,11 +330,11 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     fun getCurGameType(): GameType? {
-        return when {
-            sportListFragment is SportListFragment -> {
+        return when (sportListFragment) {
+            is SportListFragment -> {
                 (sportListFragment as SportListFragment).getCurGameType()
             }
-            sportListFragment is SportOutrightFragment -> {
+            is SportOutrightFragment -> {
                 (sportListFragment as SportOutrightFragment).getCurGameType()
             }
             else -> {
