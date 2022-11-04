@@ -2,17 +2,19 @@ package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.room.util.StringUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.pili.pldroid.player.AVOptions
 import com.pili.pldroid.player.PLOnErrorListener
 import com.pili.pldroid.player.PLOnInfoListener
-import com.pili.pldroid.player.PLOnInfoListener.MEDIA_INFO_VIDEO_FRAME_RENDERING
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import java.util.Objects
 
 class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
@@ -236,6 +239,16 @@ class ItemHomeLiveHolder(
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName
             //endregion
+
+//            if (!Objects.equals(ivAnchorAvatar.tag, data.matchInfo.streamerIcon)) {
+//                ivAnchorAvatar.tag = data.matchInfo.streamerIcon
+//                Glide.with(binding.root.context)
+//                    .load(data.matchInfo.streamerIcon)
+//                    .apply(mRequestOptions)
+//                    .fallback(R.drawable.icon_avatar)
+//                    .error(R.drawable.icon_avatar)
+//                    .into(ivAnchorAvatar)
+//            }
             if (rippleView.getmBtnImg() != null) {
                 Glide.with(binding.root.context)
                     .asBitmap()
@@ -631,20 +644,6 @@ class ItemHomeLiveHolder(
 //        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
         LogUtil.e(p0.toString() + "," + p1)
         return false
-    }
-
-    override fun onInfo(p0: Int, p1: Int, p2: Any?) {
-        when (p0) {
-            MEDIA_INFO_VIDEO_FRAME_RENDERING -> {
-                if (p1 > 60 * 60 * 1000) {
-                    binding.tvLiveTime.text =
-                        TimeUtil.timeFormat(p1.toLong(), TimeUtil.HM_FORMAT_SS_12)
-                } else {
-                    binding.tvLiveTime.text =
-                        TimeUtil.timeFormat(p1.toLong(), TimeUtil.HM_FORMAT_MS)
-                }
-            }
-        }
     }
 
 }
