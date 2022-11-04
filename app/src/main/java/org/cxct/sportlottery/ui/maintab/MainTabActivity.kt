@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -217,6 +218,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         try {
             //關閉側邊欄滑動行為
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            drawerLayout.setScrimColor(getColor(R.color.transparent_black_20))
             //選單選擇結束要收起選單
             left_menu.layoutParams.width = (MetricsUtil.getScreenWidth() * 0.75).toInt() //動態調整側邊欄寬
 
