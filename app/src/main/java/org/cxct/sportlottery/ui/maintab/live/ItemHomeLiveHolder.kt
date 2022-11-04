@@ -12,6 +12,8 @@ import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
@@ -20,6 +22,7 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import java.util.Objects
 
 class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
@@ -230,12 +233,16 @@ class ItemHomeLiveHolder(
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName
             //endregion
-            Glide.with(binding.root.context)
-                .load(data.matchInfo.streamerIcon)
-                .apply(mRequestOptions)
-                .fallback(R.drawable.icon_avatar)
-                .error(R.drawable.icon_avatar)
-                .into(ivAnchorAvatar)
+
+            if (!Objects.equals(ivAnchorAvatar.tag, data.matchInfo.streamerIcon)) {
+                ivAnchorAvatar.tag = data.matchInfo.streamerIcon
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo.streamerIcon)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.icon_avatar)
+                    .error(R.drawable.icon_avatar)
+                    .into(ivAnchorAvatar)
+            }
 
             //region 隊伍圖示
             ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)

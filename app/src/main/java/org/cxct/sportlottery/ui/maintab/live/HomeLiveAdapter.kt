@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
@@ -73,6 +74,7 @@ class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
 
     override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
+        holder.binding.vavatarBg.isVisible = position == 0
         holder.bind(data = itemData, oddsType = oddsType)
     }
 
