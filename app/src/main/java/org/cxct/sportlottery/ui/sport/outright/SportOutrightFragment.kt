@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
@@ -39,6 +40,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
+import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -105,6 +107,10 @@ class SportOutrightFragment :
                 viewModel.cleanGameHallResult()
                 sportOutrightAdapter.setPreloadItem()
                 //切換球種後要重置位置
+                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                    sport_type_list,
+                    RecyclerView.State(),
+                    dataSport.indexOfFirst { it.isSelected })
                 loading()
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
@@ -211,7 +217,7 @@ class SportOutrightFragment :
     private fun setupSportTypeList() {
         sport_type_list.apply {
             this.layoutManager =
-                SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+                ScrollCenterLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
 
             this.adapter = gameTypeAdapter
@@ -656,6 +662,10 @@ class SportOutrightFragment :
         gameTypeAdapter.apply {
             dataSport = gameTypeList
         }
+        (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+            sport_type_list,
+            RecyclerView.State(),
+            gameTypeAdapter.dataSport.indexOfFirst { it.isSelected })
         sport_type_list?.post {
             //球種如果選過，下次回來也需要滑動置中
             if (gameTypeList.isEmpty()) {

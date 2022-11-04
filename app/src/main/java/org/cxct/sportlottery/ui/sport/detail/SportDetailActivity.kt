@@ -25,6 +25,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
+import kotlinx.android.synthetic.main.edittext_form.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
@@ -221,7 +222,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             .init()
         ImmersionBar.getStatusBarHeight(this).let {
             v_statusbar.minimumHeight = it
-            live_view_tool_bar.v_statusbar_live.minimumHeight = it
+            live_view_tool_bar.v_statusbar_live.layoutParams.apply {
+                height = it
+                live_view_tool_bar.v_statusbar_live.layoutParams = this
+            }
             toolbar_layout.minimumHeight = it
             collaps_toolbar.layoutParams.height =
                 it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
