@@ -1302,4 +1302,7 @@
     <string name="text_x">X</string>
     <string name="ou_hdp_hdp">Cược chấp</string>
     <string name="see_more">Xem thêm&#160;</string>
+    <string name="dont_have_game">Hiện không có Games Jackpot</string>
+    <string name="please_input_you_account">Mời nhập tài khoản của bạn</string>
+    <string name="okbet_live_name">MC OKBET</string>
 </resources>

@@ -1315,4 +1315,7 @@
     <string name="text_x">X</string>
     <string name="ou_hdp_hdp">Handicap</string>
     <string name="see_more">See more&#160;</string>
+    <string name="dont_have_game">No Jackpot Games available</string>
+    <string name="please_input_you_account">Please enter your account</string>
+    <string name="okbet_live_name">OKBET MC</string>
 </resources>
