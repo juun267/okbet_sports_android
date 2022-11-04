@@ -39,7 +39,7 @@ object TextUtil : DecimalFormatUtil() {
         try {
             var target = any
 
-            if (any !is Number)
+            if (any !is Double)
                 target = target.toString().toDouble()
             var numAfterDotBuilder = StringBuilder()
             if (numAfterDot > 0) {
@@ -48,7 +48,9 @@ object TextUtil : DecimalFormatUtil() {
                     numAfterDotBuilder.append("0")
                 }
             }
-            return doNumberFormat(target, "###,###,###,##0$numAfterDotBuilder")
+            return doNumberFormatToDouble(target,
+                "###,###,###,##0$numAfterDotBuilder",
+                RoundingMode.DOWN)
         } catch (e: Exception) {
             Timber.e("$e")
         }

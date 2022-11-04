@@ -27,6 +27,7 @@ object TimeUtil {
     const val HM_FORMAT = "HH:mm"
     const val HM_FORMAT_12 = "hh:mm" //小写的hh表示12小时制HH表示为24小时制
     const val HM_FORMAT_SS = "HH:mm:ss"
+    const val HM_FORMAT_MS = "mm:ss"
     const val HM_FORMAT_SS_12 = "hh:mm:ss"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     const val DM_HM_FORMAT = "MM/dd HH:mm"

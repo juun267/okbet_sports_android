@@ -244,6 +244,7 @@ class SportListViewModel(
     }
 
     private var jobSwitchGameType: Job? = null
+    private var jobGetOddsList: Job? = null
     private fun getOddsList(
         gameType: String,
         matchType: String,
@@ -279,7 +280,10 @@ class SportListViewModel(
         if (matchType == MatchType.CS.postValue) {
             playCateMenuCode = MenuCode.CS.code
         }
-        viewModelScope.launch {
+        if (jobGetOddsList?.isActive == true) {
+            jobGetOddsList?.cancel()
+        }
+        jobGetOddsList = viewModelScope.launch {
             var result: OddsListResult? = null
             if (matchType == MatchType.IN_PLAY.postValue && gameType == GameType.ALL.key) {
                 doNetwork(androidContext) {

@@ -2,12 +2,13 @@ package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.room.util.StringUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.pili.pldroid.player.AVOptions
 import com.pili.pldroid.player.PLOnErrorListener
+import com.pili.pldroid.player.PLOnInfoListener
+import com.pili.pldroid.player.PLOnInfoListener.MEDIA_INFO_VIDEO_FRAME_RENDERING
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
@@ -25,6 +26,7 @@ class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
     private val homeLiveListener: HomeLiveListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(binding.root),
+    PLOnInfoListener,
     PLOnVideoSizeChangedListener,
     PLOnErrorListener {
     lateinit var data: MatchLiveData
@@ -84,6 +86,7 @@ class ItemHomeLiveHolder(
             binding.videoView.setAVOptions(options)
             binding.videoView.setOnVideoSizeChangedListener(this)
             binding.videoView.setOnErrorListener(this)
+            binding.videoView.setOnInfoListener(this)
             binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
             binding.videoView.setVolume(0f, 0f)
 //            binding.videoView.setCoverView(binding.ivCover)
@@ -233,6 +236,8 @@ class ItemHomeLiveHolder(
             Glide.with(binding.root.context)
                 .load(data.matchInfo.streamerIcon)
                 .apply(mRequestOptions)
+                .dontAnimate()
+                .placeholder(R.drawable.icon_avatar)
                 .fallback(R.drawable.icon_avatar)
                 .error(R.drawable.icon_avatar)
                 .into(ivAnchorAvatar)
@@ -620,6 +625,20 @@ class ItemHomeLiveHolder(
 //        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
         LogUtil.e(p0.toString() + "," + p1)
         return false
+    }
+
+    override fun onInfo(p0: Int, p1: Int, p2: Any?) {
+        when (p0) {
+            MEDIA_INFO_VIDEO_FRAME_RENDERING -> {
+                if (p1 > 60 * 60 * 1000) {
+                    binding.tvLiveTime.text =
+                        TimeUtil.timeFormat(p1.toLong(), TimeUtil.HM_FORMAT_SS_12)
+                } else {
+                    binding.tvLiveTime.text =
+                        TimeUtil.timeFormat(p1.toLong(), TimeUtil.HM_FORMAT_MS)
+                }
+            }
+        }
     }
 
 }

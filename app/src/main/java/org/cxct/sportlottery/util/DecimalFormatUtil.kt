@@ -19,10 +19,10 @@ open class DecimalFormatUtil {
         return df.format(number)
     }
 
-    fun doNumberFormatToDouble(number: Double, pattern: String, format: RoundingMode? = null): Double {
+    fun doNumberFormatToDouble(number: Any, pattern: String, format: RoundingMode? = null): String {
         Locale.setDefault(Locale.US)
         val df = DecimalFormat(pattern)
         format?.let { df.roundingMode = it }
-        return df.format(number).toDouble()
+        return df.format(number)
     }
 }
