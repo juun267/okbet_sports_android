@@ -1318,4 +1318,6 @@
     <string name="big_or_small">大小盘</string>
     <string name="ou_hdp_hdp">让球盘</string>
     <string name="see_more">查看更多</string>
+    <string name="less_than_the">小于</string>
+    <string name="more_than_the">大于</string>
 </resources>

@@ -678,7 +678,6 @@ class MainHomeViewModel(
             }
             result?.rows.let { handicapList->
                 _hotHandicap.postValue(handicapList)
-                LogUtil.toJson(handicapList)
             }
         }
     }
