@@ -52,7 +52,9 @@ class ItemHomeLiveHolder(
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.start()
             }
+            binding.rippleView.showWaveAnimation()
         } else {
+            binding.rippleView.cancelWaveAnimation()
             binding.videoView.stopPlayback()
         }
         binding.flLive.isVisible = isExpandLive
@@ -228,19 +230,23 @@ class ItemHomeLiveHolder(
     private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            tvAnchorName.text = data.matchInfo.streamerName?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            tvAnchorName.text = data.matchInfo.streamerName
+                ?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
             //region 隊伍名稱
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName
             //endregion
-            Glide.with(binding.root.context)
-                .load(data.matchInfo.streamerIcon)
-                .apply(mRequestOptions)
-                .dontAnimate()
-                .placeholder(R.drawable.icon_avatar)
-                .fallback(R.drawable.icon_avatar)
-                .error(R.drawable.icon_avatar)
-                .into(ivAnchorAvatar)
+            if (rippleView.getmBtnImg() != null) {
+                Glide.with(binding.root.context)
+                    .asBitmap()
+                    .load(data.matchInfo.streamerIcon)
+                    .apply(mRequestOptions)
+                    .dontAnimate()
+                    .placeholder(R.drawable.icon_avatar)
+                    .fallback(R.drawable.icon_avatar)
+                    .error(R.drawable.icon_avatar)
+                    .into(rippleView.getmBtnImg())
+            }
 
             //region 隊伍圖示
             ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
