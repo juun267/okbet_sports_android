@@ -293,7 +293,7 @@ class MainHomeFragment :
         }
         viewModel.liveRoundCount.observe(viewLifecycleOwner) {
            // tv_live_count.text = it
-            tv_hot_live_find_more.text = getString(R.string.find_all)+it
+            tv_hot_live_find_more.text = getString(R.string.see_more)+it
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
 //            val newDiscount = userInfo?.discount ?: 1.0F

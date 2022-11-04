@@ -19,7 +19,7 @@ repositories {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.github.dcendents.android-maven'
 //apply plugin: 'groovyx.android'
 
 group='com.github.NaikSoftware'
