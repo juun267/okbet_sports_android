@@ -1295,4 +1295,11 @@
     <string name="accept_current_odd_to_bet">Cược với tỷ lệ cược hiện tại</string>
     <string name="home_back">Trở về</string>
     <string name="enter_live">Vào live</string>
+    <string name="check_bet_detail">Chi tiết đặt cược</string>
+    <string name="big_or_small">Cược trên/ dưới</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
+    <string name="ou_hdp_hdp">Cược chấp</string>
+    <string name="see_more">Xem thêm&#160;</string>
 </resources>

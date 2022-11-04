@@ -350,7 +350,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                     val screenWidth = MetricsUtil.getScreenWidth()
                     player_view.layoutParams.apply {
                         //视频播放器比例，56.25%，来自H5
-                        height = resources.getDimensionPixelSize(R.dimen.live_player_height)
+                        height = screenWidth * 1280 / 720
                     }
                 } else {
                     player_view.layoutParams.apply {

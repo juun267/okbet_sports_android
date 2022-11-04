@@ -42,12 +42,4 @@ class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
         }
     }
 
-    fun getFirmCode(position: Int): String {
-        return when (position) {
-            0 -> "CGQP"
-            1 -> "TPG"
-            2 -> "FKG"
-            else -> ""
-        }
-    }
 }

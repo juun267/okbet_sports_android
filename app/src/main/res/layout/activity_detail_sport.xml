@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@+id/cl_bottom">
+    app:layout_constraintBottom_toBottomOf="parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            app:layout_scrollFlags="noScroll|exitUntilCollapsed|snap">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -176,37 +176,51 @@
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/sv_content"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_F0F5FA">
+            android:fillViewport="true">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_detail"
+            <FrameLayout
+                android:id="@+id/fl_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                tools:listitem="@layout/content_odds_detail_list_item" />
+                android:background="@color/color_F0F5FA"
+                android:visibility="visible">
 
-            <WebView
-                android:id="@+id/wv_analyze"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingTop="5dp"
+                    tools:listitem="@layout/content_odds_detail_list_item" />
 
-        </FrameLayout>
+                <WebView
+                    android:id="@+id/wv_analyze"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
 
+            </FrameLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.core.widget.NestedScrollView>
+        <WebView
+            android:id="@+id/wv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:visibility="visible" />
+    </FrameLayout>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/snackbar_holder"
@@ -217,32 +231,38 @@
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_bottom"
+    <include
+        android:id="@+id/cl_bet_list_bar"
+        layout="@layout/bet_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="@dimen/bet_list_bar_height"
+        android:layout_marginBottom="56dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible" />
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/cl_bottom"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="600dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent">-->
 
-        <include
-            android:id="@+id/cl_bet_list_bar"
-            layout="@layout/bet_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/bet_list_bar_height"
-            android:elevation="1dp"
-            android:layout_marginBottom="56dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="visible" />
-
-        <WebView
-            android:id="@+id/wv_chat"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:elevation="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="visible" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--        <include-->
+    <!--            android:id="@+id/cl_bet_list_bar"-->
+    <!--            layout="@layout/bet_bar_layout"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="@dimen/bet_list_bar_height"-->
+    <!--            android:layout_marginBottom="56dp"-->
+    <!--            android:visibility="gone"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            tools:visibility="visible" />-->
+    <!---->
+    <!--        <WebView-->
+    <!--            android:id="@+id/wv_chat"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="56dp"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            android:visibility="visible" />-->
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
     <FrameLayout
         android:id="@+id/fl_bet_list"
         android:layout_width="match_parent"

@@ -196,7 +196,7 @@ class MainHomeFragment :
         if (!hidden) {
             viewModel.getLiveRoundCount()
             viewModel.getHotLiveList()
-            viewModel.getHandicapConfig(1)
+            viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
 
         }
@@ -293,7 +293,7 @@ class MainHomeFragment :
         }
         viewModel.liveRoundCount.observe(viewLifecycleOwner) {
            // tv_live_count.text = it
-            tv_hot_live_find_more.text = getString(R.string.find_all)+it
+            tv_hot_live_find_more.text = getString(R.string.see_more)+it
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
 //            val newDiscount = userInfo?.discount ?: 1.0F
@@ -873,8 +873,6 @@ class MainHomeFragment :
     private fun  subScribeLiveData(liveDataList: List<HotMatchLiveData> ){
         liveDataList.forEach { hotMatchLiveData ->
             subscribeChannelHall(hotMatchLiveData.matchInfo.gameType, hotMatchLiveData.matchInfo.id)
-            LogUtil.d(hotMatchLiveData.matchInfo.gameType)
-            LogUtil.d(hotMatchLiveData.matchInfo.id)
         }
     }
 
@@ -960,6 +958,7 @@ class MainHomeFragment :
             statusSheetData.code?.let {
                 viewModel.getHandicapConfig(it.toInt())
             }
+            hotHandicapAdapter.playType = statusSheetData.code!!
         }
         selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
     }
@@ -1010,7 +1009,7 @@ class MainHomeFragment :
             if (adapter == null) {
                 adapter = hotHandicapAdapter
             }
-            hotHandicapAdapter.setNewData(hotHandicapList)
+
         }
     }
 

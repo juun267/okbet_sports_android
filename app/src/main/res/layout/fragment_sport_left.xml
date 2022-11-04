@@ -82,7 +82,7 @@
                 android:background="@drawable/selector_bg_home_tab_menu"
                 android:textColor="@color/selector_blue_white"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/home_tab_in_play" />
+                android:text="@string/home_in_play" />
         </RadioGroup>
 
         <LinearLayout

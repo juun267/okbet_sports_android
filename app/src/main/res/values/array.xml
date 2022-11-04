@@ -118,7 +118,7 @@
         <item>Z</item>
     </string-array>
     <string-array name="handicap_type_list">
-        <item>@string/ou_hdp_1x2_title</item>
+        <item>@string/win_line</item>
         <item>@string/ou_hdp_hdp</item>
         <item>@string/big_or_small</item>
     </string-array>

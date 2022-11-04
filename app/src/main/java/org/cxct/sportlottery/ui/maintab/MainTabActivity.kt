@@ -198,17 +198,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun showLeftFrament(position: Int, fromPage: Int = -1) {
         when (position) {
             0 -> {
-                homeLeftFragment.fromPage = fromPage
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, homeLeftFragment)
                     .commit()
+                homeLeftFragment.fromPage = fromPage
             }
             else -> {
-                sportLeftFragment.matchType = (fragments[1] as SportFragment).getCurMatchType()
-                sportLeftFragment.gameType = (fragments[1] as SportFragment).getCurGameType()
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, sportLeftFragment)
                     .commit()
+                sportLeftFragment.matchType = (fragments[1] as SportFragment).getCurMatchType()
+                sportLeftFragment.gameType = (fragments[1] as SportFragment).getCurGameType()
             }
         }
     }
@@ -367,18 +367,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
-        (fragments[1] as SportFragment).setJumpSport(matchType, gameType)
         bottom_navigation_view.currentItem = 1
+        (fragments[1] as SportFragment).setJumpSport(matchType, gameType)
     }
 
     fun jumpToHome(tabPosition: Int) {
-        (fragments[0] as HomeFragment).switchTabByPosition(tabPosition)
         bottom_navigation_view.currentItem = 0
+        (fragments[0] as HomeFragment).switchTabByPosition(tabPosition)
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
-        (fragments[2] as BetRecordFragment).selectTab(tabPosition)
         bottom_navigation_view.currentItem = 2
+        (fragments[2] as BetRecordFragment).selectTab(tabPosition)
     }
 
     fun homeBackView(boolean: Boolean) {

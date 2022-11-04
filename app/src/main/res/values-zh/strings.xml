@@ -1308,4 +1308,14 @@
     <string name="accept_current_odd_to_bet">接受当前赔率下注</string>
     <string name="home_back">返回</string>
     <string name="enter_live">进入直播间</string>
+    <string name="text_1">1</string>
+    <string name="text_2">2</string>
+    <string name="text_x">X</string>
+    <string name="your_bet_order_success">您的注单下注成功</string>
+    <string name="your_bet_order_fail">投注失败,赔率己改变</string>
+    <string name="bet_others">下注其他</string>
+    <string name="check_bet_detail">查看注单详情</string>
+    <string name="big_or_small">大小盘</string>
+    <string name="ou_hdp_hdp">让球盘</string>
+    <string name="see_more">查看更多</string>
 </resources>
