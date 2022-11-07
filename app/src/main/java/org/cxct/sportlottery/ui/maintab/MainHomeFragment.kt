@@ -75,7 +75,6 @@ class MainHomeFragment :
 
 
 
-    private var hotHandicapList = mutableListOf<HandicapData>()
     private lateinit var mMatchInfo: MatchInfo
     interface TimerListener {
         fun onTimerUpdate(timeMillis: Long)
@@ -147,7 +146,6 @@ class MainHomeFragment :
                 isTimerEnable = (data.matchInfo.gameType == GameType.FT.key || data.matchInfo.gameType == GameType.BK.key ),
                 isTimerPause = data.matchInfo.stopped == TimeCounting.STOP.value
             )
-           // viewModel.getLiveInfo(it)
         })
 
     }
@@ -474,7 +472,7 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-
+                        LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -573,6 +571,7 @@ class MainHomeFragment :
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
+         //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -1202,6 +1201,26 @@ class MainHomeFragment :
         isTimerPause: Boolean
     ) {
         setStatusText(item)
-
+        setTextViewStatus(item)
     }
+    //上下半场
+    private fun setTextViewStatus(item: MatchInfo) {
+        when {
+            (TimeUtil.isTimeInPlay(item.startTime) && item.status == GameStatus.POSTPONED.code && (item.gameType == GameType.FT.name || item.gameType == GameType.BK.name || item.gameType == GameType.TN.name)) -> {
+
+                tv_match_time.visibility = View.GONE
+            }
+
+            TimeUtil.isTimeInPlay(item.startTime) -> {
+                if (item.statusName18n != null) {
+                    tvGameStatus.visibility = View.VISIBLE
+                }
+            }
+            TimeUtil.isTimeAtStart(item.startTime) -> {
+                tvGameStatus.visibility = View.GONE
+            }
+        }
+    }
+
+
 }
