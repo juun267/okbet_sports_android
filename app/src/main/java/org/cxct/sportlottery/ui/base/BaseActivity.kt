@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -276,6 +277,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         buttonText: String?,
         positiveClickListener: () -> Unit?,
         isError: Boolean,
+        hasCancle: Boolean = true,
         isShowDivider: Boolean? = false,
         isOutsideCancelable: Boolean = false
     ) {
@@ -288,7 +290,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             errorMessageSpan = errorMessageSpan,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = getString(R.string.btn_cancel),
+            negativeText = if(hasCancle) getString(R.string.btn_cancel) else null,
             isOutsideCancelable = isOutsideCancelable
         )
     }

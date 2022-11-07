@@ -1364,6 +1364,7 @@ class RegisterViewModel(
                                     _registerResult.postValue(result)
                                     _identityPhoto.postValue(null)
                                     _identityPhotoBackup.postValue(null)
+                                    AFInAppEventUtil.register("username")
                                 }
                             }
                         }
@@ -1382,6 +1383,7 @@ class RegisterViewModel(
                     // TODO 20220108 更新UserInfo by Hewie
                     userInfoRepository.getUserInfo()
                     _registerResult.postValue(result)
+                    AFInAppEventUtil.register("username")
                 }
             }
         }

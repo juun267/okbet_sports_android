@@ -85,10 +85,6 @@
         <item>@string/betting_station_withdraw</item>
     </string-array>
 
-    <string-array name="register_title_color">
-        <item>@color/color_71ADFF</item>
-        <item>@color/color_1971FD</item>
-    </string-array>
     <string-array name="index_bar_array">
         <item>A</item>
         <item>B</item>

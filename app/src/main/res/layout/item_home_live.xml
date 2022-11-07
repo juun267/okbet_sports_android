@@ -64,6 +64,18 @@
                 android:textColor="@color/color_F1A027"
                 android:text="@string/collse_live" />
 
+            <org.cxct.sportlottery.widget.RippleDiffuse
+                android:id="@+id/ripple_enter"
+                android:layout_width="100dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                app:btn_img_res="@drawable/icon_avatar"
+                app:rd_scale="1.3"
+                app:ripple_img_res="@drawable/bg_ripple">
+
+            </org.cxct.sportlottery.widget.RippleDiffuse>
+
             <TextView
                 android:id="@+id/tv_enter_live"
                 android:layout_width="wrap_content"
@@ -71,10 +83,12 @@
                 android:layout_gravity="center"
                 android:paddingHorizontal="@dimen/dp_10"
                 android:gravity="center"
+                android:visibility="gone"
                 android:background="@drawable/bg_red_radius_15"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@string/enter_live" />
+
         </FrameLayout>
 
         <LinearLayout
@@ -85,16 +99,30 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/iv_anchor_avatar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_person_avatar"
-                app:riv_border_color="@color/color_FFFFFF"
-                app:riv_border_width="@dimen/margin_1"
-                app:riv_oval="true" />
+            <FrameLayout
+                android:layout_width="@dimen/margin_36"
+                android:layout_height="@dimen/margin_36"
+                android:layout_centerVertical="true">
+
+                <View
+                    android:id="@+id/vavatarBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_circle_red_alpha30"/>
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/iv_anchor_avatar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person_avatar"
+                    app:riv_border_color="@color/color_E23434"
+                    app:riv_border_width="@dimen/margin_2"
+                    app:riv_oval="true" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tv_anchor_name"
@@ -125,16 +153,15 @@
             android:layout_height="0.5dp"
             android:background="@color/color_E3E8EE" />
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockNormalGame"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/tvGameStatus"
@@ -164,10 +191,9 @@
 
             <TextView
                 android:id="@+id/tvLeagueName"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginHorizontal="7dp"
+                android:maxWidth="160dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:singleLine="true"
@@ -176,18 +202,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Mogolia,1st Leag Mogolia,1st Leag" />
+                tools:text="Mogolia,1st Leag Mogolia,1st Leag"/>
 
             <TextView
                 android:id="@+id/tv_game_play_cate_code_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="right"
                 android:gravity="right"
                 android:textColor="@color/color_6C7BA8"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="Handicap" />
-        </LinearLayout>
+                tools:text="Handicap"/>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

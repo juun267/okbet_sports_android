@@ -75,7 +75,6 @@ class OddsDetailLiveFragment : BaseBottomNavigationFragment<GameViewModel>(GameV
             }
         })
     }
-
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
 

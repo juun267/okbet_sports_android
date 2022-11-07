@@ -93,10 +93,12 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
-        iv_menu_left.setImageResource(R.drawable.ic_sport_menu)
         iv_menu_left.setOnClickListener {
             (activity as MainTabActivity).showLeftFrament(1, tabLayout.selectedTabPosition)
             EventBus.getDefault().post(MenuEvent(true))
+        }
+        iv_logo.setOnClickListener {
+            (activity as MainTabActivity).jumpToHome(1)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))

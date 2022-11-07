@@ -13,6 +13,8 @@ import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import java.util.*
 
 class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
@@ -52,8 +55,12 @@ class ItemHomeLiveHolder(
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.start()
             }
+            binding.vavatarBg.visible()
+//            binding.rippleView.showWaveAnimation()
         } else {
+//            binding.rippleView.cancelWaveAnimation()
             binding.videoView.stopPlayback()
+            binding.vavatarBg.gone()
         }
         binding.flLive.isVisible = isExpandLive
         setVolumeState()
@@ -228,19 +235,33 @@ class ItemHomeLiveHolder(
     private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            tvAnchorName.text = data.matchInfo.streamerName?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            tvAnchorName.text = data.matchInfo.streamerName
+                ?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
             //region 隊伍名稱
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName
             //endregion
-            Glide.with(binding.root.context)
-                .load(data.matchInfo.streamerIcon)
-                .apply(mRequestOptions)
-                .dontAnimate()
-                .placeholder(R.drawable.icon_avatar)
-                .fallback(R.drawable.icon_avatar)
-                .error(R.drawable.icon_avatar)
-                .into(ivAnchorAvatar)
+
+            if (!Objects.equals(ivAnchorAvatar.tag, data.matchInfo.streamerIcon)) {
+                ivAnchorAvatar.tag = data.matchInfo.streamerIcon
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo.streamerIcon)
+                    .apply(mRequestOptions)
+                    .fallback(R.drawable.icon_avatar)
+                    .error(R.drawable.icon_avatar)
+                    .into(ivAnchorAvatar)
+            }
+//            if (rippleView.getmBtnImg() != null) {
+//                Glide.with(binding.root.context)
+//                    .asBitmap()
+//                    .load(data.matchInfo.streamerIcon)
+//                    .apply(mRequestOptions)
+//                    .dontAnimate()
+//                    .placeholder(R.drawable.icon_avatar)
+//                    .fallback(R.drawable.icon_avatar)
+//                    .error(R.drawable.icon_avatar)
+//                    .into(rippleView.getmBtnImg())
+//            }
 
             //region 隊伍圖示
             ivHomeIcon.setTeamLogo(data.matchInfo?.homeIcon)
