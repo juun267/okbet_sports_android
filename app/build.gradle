@@ -365,9 +365,8 @@ ext {
 
 dependencies {
 
-//    debugImplementation 'com.letv.sarrsdesktop:BlockCanaryExJRT:0.9.9.4'
-//    releaseImplementation 'com.letv.sarrsdesktop:BlockCanaryExJRTNoOp:0.9.9.4'
-//    testImplementation 'com.letv.sarrsdesktop:BlockCanaryExJRTNoOp:0.9.9.4'
+//    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
+//    releaseImplementation 'com.github.markzhai:blockcanary-no-op:1.5.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
