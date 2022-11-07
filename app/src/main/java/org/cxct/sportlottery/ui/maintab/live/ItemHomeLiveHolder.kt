@@ -53,8 +53,10 @@ class ItemHomeLiveHolder(
                 binding.videoView.start()
             }
             binding.rippleView.showWaveAnimation()
+            binding.rippleEnter.showWaveAnimation()
         } else {
             binding.rippleView.cancelWaveAnimation()
+            binding.rippleEnter.cancelWaveAnimation()
             binding.videoView.stopPlayback()
         }
         binding.flLive.isVisible = isExpandLive

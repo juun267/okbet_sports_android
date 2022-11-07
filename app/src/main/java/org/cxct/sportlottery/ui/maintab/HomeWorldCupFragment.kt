@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gyf.immersionbar.ImmersionBar
-import com.luck.picture.lib.decoration.GridSpacingItemDecoration
-import kotlinx.android.synthetic.main.fragment_home_elec.*
-import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
+import kotlinx.android.synthetic.main.fragment_home_live.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -22,7 +19,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.elec.HomeElecAdapter
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
@@ -55,7 +51,7 @@ class HomeWorldCupFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return inflater.inflate(R.layout.fragment_home_elec, container, false)
+        return inflater.inflate(R.layout.fragment_home_worldcup, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,7 +80,6 @@ class HomeWorldCupFragment :
     private fun initView() {
         initToolBar()
         initTabView()
-        initListView()
 
     }
 
@@ -93,6 +88,9 @@ class HomeWorldCupFragment :
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0)
+        }
+        iv_logo.setOnClickListener {
+            (activity as MainTabActivity).jumpToHome(1)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
@@ -140,20 +138,6 @@ class HomeWorldCupFragment :
         }
     }
 
-    private fun initListView() {
-        with(rv_elec) {
-            if (layoutManager == null) {
-                layoutManager =
-                    GridLayoutManager(requireContext(), 3)
-            }
-            if (adapter == null) {
-                adapter = homeElecAdapter
-            }
-            if (itemDecorationCount == 0) {
-                addItemDecoration(GridSpacingItemDecoration(3, 15.dp, false))
-            }
-        }
-    }
 
     private fun setupLogin() {
         viewModel.isLogin.value?.let {

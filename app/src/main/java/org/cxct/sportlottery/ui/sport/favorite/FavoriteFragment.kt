@@ -19,8 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_favorite.*
+import kotlinx.android.synthetic.main.fragment_favorite.iv_logo
+import kotlinx.android.synthetic.main.fragment_favorite.iv_menu_left
+import kotlinx.android.synthetic.main.fragment_favorite.lin_search
 import kotlinx.android.synthetic.main.fragment_favorite.view.*
 import kotlinx.android.synthetic.main.view_status_bar.*
+import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -216,6 +220,9 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
+        }
+        iv_logo.setOnClickListener {
+            (activity as MainTabActivity).jumpToHome(1)
         }
         lin_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
