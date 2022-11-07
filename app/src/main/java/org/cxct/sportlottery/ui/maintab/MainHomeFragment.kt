@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -36,14 +37,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
+import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
@@ -78,6 +77,12 @@ class MainHomeFragment :
 
     private var hotHandicapList = mutableListOf<HandicapData>()
     private lateinit var mMatchInfo: MatchInfo
+    interface TimerListener {
+        fun onTimerUpdate(timeMillis: Long)
+    }
+    var listener: TimerListener? = null
+
+
     companion object {
         fun newInstance(): MainHomeFragment {
             val args = Bundle()
@@ -88,8 +93,33 @@ class MainHomeFragment :
     }
     private val homeHotLiveAdapter by lazy {//热门直播
         HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
+
+
+            val socketValue = data.matchInfo.socketMatchStatus
+            if (needCountStatus(socketValue)) {
+                tv_match_time.text = data.runningTime
+                listener = object : TimerListener {
+                    override fun onTimerUpdate(timeMillis: Long) {
+                        if (timeMillis > 1000) {
+                            val min = TimeUtil.longToMinute(timeMillis)
+                            tv_match_time.text = String.format(
+                                getString(R.string.at_start_remain_minute),
+                                min
+                            )
+                        } else {
+                            //等待Socket更新
+                            tv_match_time.text = String.format(
+                               getString(R.string.at_start_remain_minute),
+                                0
+                            )
+                        }
+                        data.matchInfo.remainTime = timeMillis
+                        data.runningTime = tv_match_time.text.toString()
+                    }
+
+                }
+            }
             tv_first_half_game.text = data.matchInfo.statusName18n
-            tv_match_time.text = data.runningTime
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
@@ -104,7 +134,13 @@ class MainHomeFragment :
             }
             tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
-            playMatchVideo(data.matchInfo)
+            data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+
+            setupMatchTimeAndStatus(
+                item = data.matchInfo,
+                isTimerEnable = (data.matchInfo.gameType == GameType.FT.key || data.matchInfo.gameType == GameType.BK.key ),
+                isTimerPause = data.matchInfo.stopped == TimeCounting.STOP.value
+            )
            // viewModel.getLiveInfo(it)
         })
 
@@ -113,8 +149,11 @@ class MainHomeFragment :
     private val hotHandicapAdapter by lazy {
         HotHandicapAdapter(mutableListOf()).apply {
             homeRecommendListener = HomeRecommendListener(
-                onItemClickListener = {
-
+                onItemClickListener = {matchInfo ->
+                    matchInfo?.let {
+                        LogUtil.d("点击")
+                        navOddsDetailFragment(MatchType.IN_PLAY, matchInfo)
+                    }
                 },
                 onGoHomePageListener = {
 
@@ -233,13 +272,18 @@ class MainHomeFragment :
             NestedScrollView.OnScrollChangeListener {
                 _, _, scrollY, _, oldScrollY ->
             ll_come_back.visibility = if (scrollY > 800) View.VISIBLE else View.GONE
+//                LogUtil.d(scrollY.toString())
+//                LogUtil.d(oldScrollY.toString())
         })
         ll_come_back.setOnClickListener {
             nsv_home.post{
                 nsv_home.fullScroll(ScrollView.FOCUS_UP)
             }
         }
-        iv_publicity.setOnClickListener {
+        iv_live_type.setOnClickListener {
+            navOddsDetailFragment(MatchType.IN_PLAY, mMatchInfo)
+        }
+        view_action.setOnClickListener {
             navOddsDetailFragment(MatchType.IN_PLAY, mMatchInfo)
         }
         ll_hot_live_more.setOnClickListener {
@@ -440,11 +484,16 @@ class MainHomeFragment :
                         }
                     mMatchInfo = matchInfo
                     tv_introduction.text = matchInfo.streamerName
-                    playMatchVideo(matchInfo)
+
                     matchInfo.roundNo?.let {
                         viewModel.getLiveInfo(it)
                     }
 
+                    setupMatchTimeAndStatus(
+                        item = matchInfo,
+                        isTimerEnable = (matchInfo.gameType == GameType.FT.key || matchInfo.gameType == GameType.BK.key ),
+                        isTimerPause = matchInfo.stopped == TimeCounting.STOP.value
+                    )
                 }
                     homeHotLiveAdapter.data = list
                      //订阅直播
@@ -486,6 +535,7 @@ class MainHomeFragment :
                        hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                        hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
                        homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
+                       playMatchVideo(hotMatchLiveData.matchInfo)
                    }
                }
             }
@@ -529,7 +579,7 @@ class MainHomeFragment :
                  targetList.forEachIndexed { index, hotMatchLiveData ->
                      var matchList = listOf(hotMatchLiveData).toMutableList()
                      if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
-//                         LogUtil.d("homeHotLivedata3333")
+
                      }
                      if (SocketUpdateUtil.updateMatchStatus(
                              hotMatchLiveData.matchInfo.gameType,
@@ -1076,7 +1126,7 @@ class MainHomeFragment :
             options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
             options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
             options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-
+            iv_publicity.setCoverView( view?.findViewById<ImageView>(R.id.iv_live_type))
             iv_publicity.setAVOptions(options)
             iv_publicity.setOnVideoSizeChangedListener(this)
             iv_publicity.setOnErrorListener(this)
@@ -1090,10 +1140,11 @@ class MainHomeFragment :
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setVideoPath(it.pullFlvUrl)
             }
+            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
+                iv_live_type.visibility = View.INVISIBLE
+            }
             iv_publicity.start()
-         //   iv_live_type.visibility = View.GONE
-//            LogUtil.d(it.pullFlvUrl)
-//            LogUtil.d(it.pullRtmpUrl)
+
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
@@ -1102,5 +1153,38 @@ class MainHomeFragment :
 
     override fun onError(p0: Int, p1: Any?): Boolean {
         return false
+    }
+
+    private fun setStatusText(matchInfo: MatchInfo) {
+        tv_first_half_game.text = when {
+            (TimeUtil.isTimeInPlay(matchInfo?.startTime)
+                    && matchInfo?.status == GameStatus.POSTPONED.code
+                    && (matchInfo?.gameType == GameType.FT.name || matchInfo?.gameType == GameType.BK.name )) -> {
+               getString(R.string.game_postponed)
+            }
+            TimeUtil.isTimeInPlay(matchInfo?.startTime) -> {
+                if (matchInfo?.statusName18n != null) {
+                   matchInfo?.statusName18n
+                } else {
+                    ""
+                }
+            }
+            else -> {
+                if (TimeUtil.isTimeToday(matchInfo?.startTime))
+                    getString((R.string.home_tab_today))
+                else
+                   matchInfo?.startDateDisplay
+            }
+        }
+    }
+
+    //赛事时间状态的方法
+    private fun setupMatchTimeAndStatus(
+        item: MatchInfo,
+        isTimerEnable: Boolean,
+        isTimerPause: Boolean
+    ) {
+        setStatusText(item)
+
     }
 }

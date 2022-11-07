@@ -110,28 +110,49 @@
             android:layout_marginTop="5dp"
             android:background="@color/color_E3E8EE"
             app:layout_constraintTop_toBottomOf="@+id/rv_match_title" />
-
-        <com.pili.pldroid.player.widget.PLVideoView
-            android:id="@+id/iv_publicity"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_account"
             android:layout_width="0dp"
             android:layout_height="104dp"
+            app:cardCornerRadius="@dimen/margin_8"
+            app:cardElevation="0dp"
+            android:elevation="0dp"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_10"
             android:layout_marginEnd="@dimen/margin_5"
-            android:background="@drawable/bg_hot_live_bg"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view">
+            <com.pili.pldroid.player.widget.PLVideoView
+                android:id="@+id/iv_publicity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:id="@+id/view_action"
+            android:layout_width="0dp"
+            android:layout_height="104dp"
+            android:scaleType="fitXY"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginEnd="@dimen/margin_5"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
-
         <ImageView
             android:id="@+id/iv_live_type"
-            android:layout_width="100dp"
-            android:layout_height="96dp"
-            android:layout_marginStart="65dp"
+            android:layout_width="0dp"
+            android:layout_height="104dp"
             android:scaleType="fitXY"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginEnd="@dimen/margin_5"
             android:src="@drawable/icon_novideodata"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
             android:id="@+id/tv_first_half_game"
@@ -144,8 +165,8 @@
             android:paddingVertical="@dimen/margin_2"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize10sp"
-            app:layout_constraintStart_toStartOf="@+id/iv_publicity"
-            app:layout_constraintTop_toTopOf="@+id/iv_publicity"
+            app:layout_constraintStart_toStartOf="@+id/iv_live_type"
+            app:layout_constraintTop_toTopOf="@+id/iv_live_type"
             tools:text="@string/first_half_game" />
 
         <RelativeLayout
@@ -153,9 +174,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_live_time"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_publicity"
-            app:layout_constraintEnd_toEndOf="@+id/iv_publicity"
-            app:layout_constraintStart_toStartOf="@+id/iv_publicity">
+            app:layout_constraintBottom_toBottomOf="@+id/iv_live_type"
+            app:layout_constraintEnd_toEndOf="@+id/iv_live_type"
+            app:layout_constraintStart_toStartOf="@+id/iv_live_type">
 
             <TextView
                 android:id="@+id/tv_match_time"
@@ -205,7 +226,7 @@
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_publicity"
+            app:layout_constraintTop_toBottomOf="@+id/cv_account"
             tools:src="@drawable/icon_avatar" />
 
         <TextView
@@ -217,7 +238,7 @@
             android:ellipsize="end"
             android:lines="1"
             app:layout_constraintStart_toEndOf="@+id/iv_avatar_live"
-            app:layout_constraintTop_toBottomOf="@+id/iv_publicity"
+            app:layout_constraintTop_toBottomOf="@+id/cv_account"
             tools:text="@string/bet_slip_id_is_copied" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

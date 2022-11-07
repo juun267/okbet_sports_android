@@ -374,7 +374,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         matchInfo = intent.getParcelableExtra<MatchInfo>("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
         matchInfo?.let {
-            LogUtil.toJson(it)
             setupMatchInfo(it)
         }
     }

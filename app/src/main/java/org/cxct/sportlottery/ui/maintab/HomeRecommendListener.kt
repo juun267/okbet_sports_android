@@ -6,7 +6,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 
 class HomeRecommendListener(
-    private val onItemClickListener: () -> Unit,
+    private val onItemClickListener: (matchInfo: MatchInfo?) -> Unit,
     private val onGoHomePageListener: () -> Unit,
     private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
     private val onClickFavoriteListener: (matchId: String?) -> Unit,
@@ -15,7 +15,7 @@ class HomeRecommendListener(
     private val onClickLiveIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
     private val onClickAnimationIconListener: (gameType: String, matchType: MatchType?, matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
 ) {
-    fun onItemClickListener() = onItemClickListener.invoke()
+    fun onItemClickListener(matchInfo: MatchInfo?,) = onItemClickListener.invoke(matchInfo)
     fun onClickBetListener(
         gameType: String,
         matchType: MatchType,

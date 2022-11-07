@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
@@ -183,12 +184,10 @@ class ItemHandicapHolder(
             val matchInfoList = matchOddList.mapNotNull {
                 it.matchInfo
             }
+
             root.setOnClickListener {
-                homeRecommendListener.onClickPlayTypeListener(
-                    gameType = data.gameType,
-                    matchType = data.matchType,
-                    matchId = data.matchInfo?.id,
-                    matchInfoList = matchInfoList
+                homeRecommendListener.onItemClickListener(
+                    matchInfo = data.matchInfo
                 )
             }
             //endregion
