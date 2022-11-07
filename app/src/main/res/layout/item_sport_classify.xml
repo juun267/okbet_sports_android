@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="@dimen/dp_40"
-    android:background="@drawable/selector_tran_blue">
+    android:background="@drawable/selector_sport_tab_left">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -186,10 +186,12 @@ class ItemHandicapHolder(
             }
 
             root.setOnClickListener {
+
                 homeRecommendListener.onItemClickListener(
-                    matchInfo = data.matchInfo
+                    matchInfo = data.getBuildMatchInfo()
                 )
             }
+
             //endregion
         }
     }

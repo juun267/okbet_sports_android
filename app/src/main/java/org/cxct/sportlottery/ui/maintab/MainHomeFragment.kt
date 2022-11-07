@@ -119,7 +119,13 @@ class MainHomeFragment :
 
                 }
             }
-            tv_first_half_game.text = data.matchInfo.statusName18n
+            if (!data.matchInfo.statusName18n.isNullOrEmpty()){
+                tv_first_half_game.text = data.matchInfo.statusName18n
+                tv_first_half_game.setBackgroundResource(R.drawable.bg_radius_100_text)
+            }else{
+                tv_first_half_game.setBackgroundResource(0)
+            }
+            LogUtil.d(data.matchInfo.statusName18n)
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
@@ -151,8 +157,7 @@ class MainHomeFragment :
             homeRecommendListener = HomeRecommendListener(
                 onItemClickListener = {matchInfo ->
                     matchInfo?.let {
-                        LogUtil.d("点击")
-                        navOddsDetailFragment(MatchType.IN_PLAY, matchInfo)
+                        navOddsDetailFragment(MatchType.IN_PLAY, it)
                     }
                 },
                 onGoHomePageListener = {
@@ -272,8 +277,7 @@ class MainHomeFragment :
             NestedScrollView.OnScrollChangeListener {
                 _, _, scrollY, _, oldScrollY ->
             ll_come_back.visibility = if (scrollY > 800) View.VISIBLE else View.GONE
-//                LogUtil.d(scrollY.toString())
-//                LogUtil.d(oldScrollY.toString())
+
         })
         ll_come_back.setOnClickListener {
             nsv_home.post{
@@ -1140,10 +1144,15 @@ class MainHomeFragment :
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setVideoPath(it.pullFlvUrl)
             }
-            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
-                iv_live_type.visibility = View.INVISIBLE
-            }
             iv_publicity.start()
+            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
+                iv_live_type.visibility = View.GONE
+            }else{
+                iv_live_type.visibility = View.VISIBLE
+                iv_publicity.pause()
+            }
+            LogUtil.d(it.pullRtmpUrl)
+
 
         }
     }
@@ -1152,6 +1161,14 @@ class MainHomeFragment :
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
+        LogUtil.e(p0.toString() + "," + p1)
+        context?.let {
+            Glide.with(it)
+                .load(mMatchInfo.frontCoverUrl)
+                .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
+                .into(iv_live_type)
+        }
+        iv_live_type.visibility = View.VISIBLE
         return false
     }
 

@@ -128,6 +128,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
+            <ImageView
+                android:id="@+id/iv_live_type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_novideodata" />
         </androidx.cardview.widget.CardView>
 
         <View
@@ -141,18 +147,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view" />
-        <ImageView
-            android:id="@+id/iv_live_type"
-            android:layout_width="0dp"
-            android:layout_height="104dp"
-            android:scaleType="fitXY"
-            android:layout_marginStart="@dimen/margin_24"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginEnd="@dimen/margin_5"
-            android:src="@drawable/icon_novideodata"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
+
 
         <TextView
             android:id="@+id/tv_first_half_game"
@@ -160,13 +155,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_8"
-            android:background="@drawable/icon_bg_rectangle"
             android:paddingHorizontal="@dimen/margin_7"
             android:paddingVertical="@dimen/margin_2"
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/textSize10sp"
-            app:layout_constraintStart_toStartOf="@+id/iv_live_type"
-            app:layout_constraintTop_toTopOf="@+id/iv_live_type"
+            app:layout_constraintStart_toStartOf="@+id/cv_account"
+            app:layout_constraintTop_toTopOf="@+id/cv_account"
             tools:text="@string/first_half_game" />
 
         <RelativeLayout
@@ -174,9 +168,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_live_time"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_live_type"
-            app:layout_constraintEnd_toEndOf="@+id/iv_live_type"
-            app:layout_constraintStart_toStartOf="@+id/iv_live_type">
+            app:layout_constraintBottom_toBottomOf="@+id/cv_account"
+            app:layout_constraintEnd_toEndOf="@+id/cv_account"
+            app:layout_constraintStart_toStartOf="@+id/cv_account">
 
             <TextView
                 android:id="@+id/tv_match_time"
