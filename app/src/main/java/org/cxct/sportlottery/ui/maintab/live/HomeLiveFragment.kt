@@ -134,6 +134,9 @@ class HomeLiveFragment :
             EventBus.getDefault().post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0, 1)
         }
+        iv_logo.setOnClickListener {
+            (activity as MainTabActivity).jumpToHome(1)
+        }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
         }

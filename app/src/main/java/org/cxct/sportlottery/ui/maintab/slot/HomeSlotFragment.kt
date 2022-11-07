@@ -27,7 +27,10 @@ import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.isOKPlat
+import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -101,6 +104,9 @@ class HomeSlotFragment :
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0, 5)
+        }
+        iv_logo.setOnClickListener {
+            (activity as MainTabActivity).jumpToHome(1)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
