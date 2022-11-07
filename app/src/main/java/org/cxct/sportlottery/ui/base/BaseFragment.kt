@@ -137,8 +137,10 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
                 (activity as BaseActivity<*>).showPromptDialog(
                     title,
                     message,
-                    positiveClickListener
-                )
+                    null,
+                    positiveClickListener,
+                    isError = false,
+                    hasCancle = false)
             } else {
                 (activity as BaseActivity<*>).showErrorPromptDialog(
                     title,
