@@ -26,7 +26,7 @@ class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
 //            else -> R.drawable.ic_game_01
 //        })
         helper.setText(R.id.tv_firm_name, item.firmName)
-        helper.setText(R.id.tv_game_name, item.firmCode)
+//        helper.setText(R.id.tv_game_name, item.firmCode)
 //        helper.setText(R.id.tv_game_name, when (LanguageManager.getSelectLanguage(mContext)) {
 //            LanguageManager.Language.ZH -> item.chineseName
 //            else -> item.englishName

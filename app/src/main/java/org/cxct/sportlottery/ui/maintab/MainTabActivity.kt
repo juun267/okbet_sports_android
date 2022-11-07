@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -133,10 +132,12 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
                     }
-                    if (this.getMenuItemPosition(menuItem)!=0){
+                    fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
+                    if (getMenuItemPosition(menuItem) == 0) {
+                        (fragments[0] as HomeFragment).switchTabByPosition(0)
+                    } else {
                         ll_home_back.visibility = View.GONE
                     }
-                    fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
                     return@OnNavigationItemSelectedListener true
                 }
         }

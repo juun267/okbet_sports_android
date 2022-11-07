@@ -50,7 +50,7 @@
                 android:textColor="@color/color_6C7BA8"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="E-GAME"
+                android:text="E-GAME"
                 android:visibility="gone" />
 
             <ImageView
