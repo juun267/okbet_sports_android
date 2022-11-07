@@ -126,8 +126,7 @@
             <com.pili.pldroid.player.widget.PLVideoView
                 android:id="@+id/iv_publicity"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
             <ImageView
                 android:id="@+id/iv_live_type"
                 android:layout_width="match_parent"
@@ -171,9 +170,19 @@
             app:layout_constraintBottom_toBottomOf="@+id/cv_account"
             app:layout_constraintEnd_toEndOf="@+id/cv_account"
             app:layout_constraintStart_toStartOf="@+id/cv_account">
-
+            <TextView
+                android:id="@+id/tvGameStatus"
+                android:visibility="gone"
+                android:textSize="@dimen/textSize12sp"
+                android:layout_marginBottom="8dp"
+                android:paddingTop="8dp"
+                android:textColor="@color/color_F9F9F9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="上半场"/>
             <TextView
                 android:id="@+id/tv_match_time"
+                android:layout_toRightOf="@+id/tvGameStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_10"
