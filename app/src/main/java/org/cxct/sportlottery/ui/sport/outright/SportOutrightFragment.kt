@@ -121,6 +121,19 @@ class SportOutrightFragment :
             }
         }
     }
+    private val mOddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            when (game_list?.adapter) {
+                is SportOutrightAdapter -> {
+                    viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
+                }
+            }
+        }
+    }
+
+    fun setupOddsChangeListener() {
+        receiver.oddsChangeListener = mOddsChangeListener
+    }
 
     private val dateAdapter by lazy {
         DateAdapter().apply {
@@ -556,14 +569,7 @@ class SportOutrightFragment :
                 }
             }
         }
-
-        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-                when (game_list?.adapter) {
-                    is SportOutrightAdapter -> {
-                        viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
-                    }
-                }
-        }
+        setupOddsChangeListener()
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import timber.log.Timber
@@ -125,6 +127,8 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             }
                         }
 
+//                       var oddsChange=betResultData?.singleBets?.any { it.status==7 } == true || betResultData?.parlayBets?.any { it.status==7 } == true
+//                        updateBetResultStatus(oddsChange)
 //                        setBetLoadingVisibility(false, keepShowingBetLoading = true)
                         //多筆和單筆投注單，下注成功後的行為不同
 //                        if (isMultiBet) {
@@ -316,8 +320,10 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     fun updateBetResultStatus(oddChange: Boolean) {
+        LogUtil.d("updateBetResultStatus=" + oddChange)
+        lin_result_status.isVisible = true
         if (!oddChange) {
-            lin_result_status.setBackgroundColor(R.color.color_31D089)
+            lin_result_status.setBackgroundResource(R.color.color_31D089)
             iv_result_status.setImageResource(R.drawable.ic_success_white)
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btn_cancel.text = getString(R.string.bet_others)
@@ -329,7 +335,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 )
             )
         } else {
-            lin_result_status.setBackgroundColor(R.color.color_E23434)
+            lin_result_status.setBackgroundResource(R.color.color_E23434)
             iv_result_status.setImageResource(R.drawable.ic_fail_white)
             tv_result_status.text = getString(R.string.your_bet_order_fail)
             btn_cancel.text = getString(R.string.btn_cancel)
