@@ -942,7 +942,6 @@ class MainHomeFragment :
     private fun subscribeChannelHall(recommend: HandicapData) {
         recommend.matchInfos.forEach {
             subscribeChannelHall(it.gameType, it.id)
-            LogUtil.d("subscribeChannelHall")
         }
     }
 
