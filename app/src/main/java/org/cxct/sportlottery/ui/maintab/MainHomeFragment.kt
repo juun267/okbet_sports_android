@@ -497,9 +497,12 @@ class MainHomeFragment :
                         isTimerPause = matchInfo.stopped == TimeCounting.STOP.value
                     )
                 }
+
                     homeHotLiveAdapter.data = list
+
                      //订阅直播
                      subScribeLiveData(list)
+
                     rv_match_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                     rv_match_list.adapter = homeHotLiveAdapter
             }
@@ -936,10 +939,11 @@ class MainHomeFragment :
     private fun subscribeQueryData(recommendList: List<HandicapData>) {
         recommendList.forEach { subscribeChannelHall(it) }
     }
-
+    //热门盘口订阅
     private fun subscribeChannelHall(recommend: HandicapData) {
         recommend.matchInfos.forEach {
             subscribeChannelHall(it.gameType, it.id)
+            LogUtil.d("subscribeChannelHall")
         }
     }
 
@@ -949,6 +953,7 @@ class MainHomeFragment :
             subscribeChannelHall(hotMatchLiveData.matchInfo.gameType, hotMatchLiveData.matchInfo.id)
         }
     }
+
 
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
