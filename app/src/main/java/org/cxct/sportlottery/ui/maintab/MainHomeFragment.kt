@@ -510,12 +510,14 @@ class MainHomeFragment :
         //热门盘口
         viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
            if ( list.isNullOrEmpty()){
-               hot_handicap_include.visibility = View.GONE
+               rv_hot_handicap.visibility = View.GONE
            }else{
+               rv_hot_handicap.visibility = View.VISIBLE
                list.let {
                    hideLoading()
                    it.forEach { handi ->
                        handi.matchInfos.forEach { hotdata ->
+                           hotdata.getBuildMatchInfo()
                            hotdata.oddsSort = handi.oddsSort
                            // 將儲存的賠率表指定的賽事列表裡面
                            val leagueOddFromMap = leagueOddMap[hotdata.id]
@@ -562,6 +564,7 @@ class MainHomeFragment :
                 hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
                     var needUpdate = false
                     handicapData.matchInfos.forEach { hotMatchInfo ->
+
                         if (SocketUpdateUtil.updateMatchStatus(
                                 hotMatchInfo.gameType,
                                 handicapData.matchInfos as MutableList<MatchOdd>,
