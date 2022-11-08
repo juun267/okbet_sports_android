@@ -72,7 +72,6 @@
                 android:layout_gravity="center"
                 android:paddingHorizontal="@dimen/dp_10"
                 android:gravity="center"
-                android:visibility="gone"
                 android:background="@drawable/bg_red_radius_15"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
