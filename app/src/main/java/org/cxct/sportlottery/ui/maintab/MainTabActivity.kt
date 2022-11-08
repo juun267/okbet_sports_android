@@ -47,9 +47,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         FavoriteFragment.newInstance(),
         ProfileCenterFragment.newInstance()
     )
-    private var betListFragment = BetListFragment()
-    private var homeLeftFragment = MainLeftFragment()
-    private var sportLeftFragment = SportLeftFragment()
+    private var betListFragment: BetListFragment? = null
+    private val homeLeftFragment by lazy { MainLeftFragment() }
+    private val sportLeftFragment by lazy { SportLeftFragment() }
     companion object {
         fun reStart(context: Context) {
             val intent = Intent(context, MainTabActivity::class.java)
@@ -253,7 +253,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun getBetListPageVisible(): Boolean {
-        return betListFragment.isVisible
+        return betListFragment?.isVisible ?: false
     }
 
     var betListCount = 0
@@ -320,28 +320,31 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun showBetListPage() {
-        betListFragment =
-            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-                override fun onBetResult(
-                    betResultData: Receipt?,
-                    betParlayList: List<ParlayOdd>,
-                    isMultiBet: Boolean,
-                ) {
-                    showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
-                }
 
-            })
+        val ft = supportFragmentManager.beginTransaction()
+        betListFragment?.let {
+            if (it.isAdded) {
+                ft.remove(it)
+            }
+        }
 
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
+        betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+            override fun onBetResult(
+                betResultData: Receipt?,
+                betParlayList: List<ParlayOdd>,
+                isMultiBet: Boolean) {
+                showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
+            }
+        })
+
+        ft.setCustomAnimations(R.anim.push_bottom_to_top_enter,
+            R.anim.pop_bottom_to_top_exit,
+            R.anim.push_bottom_to_top_enter,
+            R.anim.pop_bottom_to_top_exit
+        )
+        .add(R.id.fl_bet_list, betListFragment!!)
+        .addToBackStack(BetListFragment::class.java.simpleName)
+        .commit()
     }
 
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
