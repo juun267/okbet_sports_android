@@ -150,39 +150,41 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         } else {
             Log.d("Hewie", "更新：賽事($position)")
 
-            when (payloads.first()) {
-                is MatchOdd -> {
-                    val matchOdd = payloads.first() as MatchOdd
-                    (holder as ViewHolderHdpOu).update(
-                        matchType,
-                        matchOdd,
-                        leagueOddListener,
-                        isTimerEnable,
-                        oddsType,
-                        playSelectedCodeSelectionType,
-                        playSelectedCode
-                    )
-                }
+            payloads.forEach { payload ->
+                when (payload) {
+                    is MatchOdd -> {
+                        val matchOdd = payload as MatchOdd
+                        (holder as ViewHolderHdpOu).update(
+                            matchType,
+                            matchOdd,
+                            leagueOddListener,
+                            isTimerEnable,
+                            oddsType,
+                            playSelectedCodeSelectionType,
+                            playSelectedCode
+                        )
+                    }
 
-                is Pair<*, *> -> {
-                    (payloads.first() as Pair<*, *>).apply {
-                        when (first) {
-                            PayLoadEnum.PAYLOAD_BET_INFO -> {
-                                (holder as ViewHolderHdpOu).updateByBetInfo(
-                                    item = second as MatchOdd,
-                                    leagueOddListener = leagueOddListener,
-                                    oddsType = oddsType,
-                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
-                                    playSelectedCode = playSelectedCode
-                                )
-                            }
+                    is Pair<*, *> -> {
+                        (payload as Pair<*, *>).apply {
+                            when (first) {
+                                PayLoadEnum.PAYLOAD_BET_INFO -> {
+                                    (holder as ViewHolderHdpOu).updateByBetInfo(
+                                        item = second as MatchOdd,
+                                        leagueOddListener = leagueOddListener,
+                                        oddsType = oddsType,
+                                        playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                                        playSelectedCode = playSelectedCode
+                                    )
+                                }
 
-                            PayLoadEnum.PAYLOAD_PLAYCATE -> {
-                                (holder as ViewHolderHdpOu).updateByPlayCate(
-                                    item = second as MatchOdd,
-                                    oddsType = oddsType,
-                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
-                                )
+                                PayLoadEnum.PAYLOAD_PLAYCATE -> {
+                                    (holder as ViewHolderHdpOu).updateByPlayCate(
+                                        item = second as MatchOdd,
+                                        oddsType = oddsType,
+                                        playSelectedCodeSelectionType = playSelectedCodeSelectionType,
+                                    )
+                                }
                             }
                         }
                     }

@@ -275,6 +275,14 @@ class SportListFragment :
         sportLeagueAdapter.setPreloadItem()
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
+            receiver.oddsChangeListener = mOddsChangeListener
+        }
+    }
+
     private fun setupSportTypeList() {
         sport_type_list.apply {
             layoutManager =
@@ -657,43 +665,7 @@ class SportListFragment :
             }
         }
 
-        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-                when (game_list?.adapter) {
-                    is SportLeagueAdapter -> {
-
-                        val leagueOdds = sportLeagueAdapter.data
-
-                        leagueOdds.sortOddsMap()
-                        //翻譯更新
-
-                        leagueOdds.forEach { LeagueOdd ->
-                            LeagueOdd.matchOdds.forEach { MatchOdd ->
-                                if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                                    //馬克說betPlayCateNameMap還是由socket更新
-                                    oddsChangeEvent.betPlayCateNameMap?.let {
-                                        MatchOdd.betPlayCateNameMap?.putAll(it)
-                                    }
-                                }
-                            }
-                        }
-                        leagueOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateMatchOdds(
-                                        context, matchOdd, oddsChangeEvent
-                                    )
-                                } &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code
-                            ) {
-                                leagueOddMap[leagueOdd.league.id] = leagueOdd
-                                updateGameList(index, leagueOdd)
-                                updateBetInfo(leagueOdd, oddsChangeEvent)
-                            } else {
-                                updateGameList(index, leagueOdd)
-                            }
-                        }
-                    }
-                }
-        }
+        setupOddsChangeListener()
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
@@ -766,6 +738,50 @@ class SportListFragment :
                 if (gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code != it.gameType) return@observe
                 sportLeagueAdapter.data.closePlayCate(it)
                 sportLeagueAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun setupOddsChangeListener() {
+        receiver.oddsChangeListener = mOddsChangeListener
+    }
+
+    private val mOddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            when (game_list?.adapter) {
+                is SportLeagueAdapter -> {
+
+                    val leagueOdds = sportLeagueAdapter.data
+
+                    leagueOdds.sortOddsMap()
+                    //翻譯更新
+
+                    leagueOdds.forEach { LeagueOdd ->
+                        LeagueOdd.matchOdds.forEach { MatchOdd ->
+                            if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
+                                //馬克說betPlayCateNameMap還是由socket更新
+                                oddsChangeEvent.betPlayCateNameMap?.let {
+                                    MatchOdd.betPlayCateNameMap?.putAll(it)
+                                }
+                            }
+                        }
+                    }
+                    leagueOdds.forEachIndexed { index, leagueOdd ->
+                        if (leagueOdd.matchOdds.any { matchOdd ->
+                                SocketUpdateUtil.updateMatchOdds(
+                                    context, matchOdd, oddsChangeEvent
+                                )
+                            } &&
+                            leagueOdd.unfold == FoldState.UNFOLD.code
+                        ) {
+                            leagueOddMap[leagueOdd.league.id] = leagueOdd
+                            updateGameList(index, leagueOdd)
+                            updateBetInfo(leagueOdd, oddsChangeEvent)
+                        } else {
+                            updateGameList(index, leagueOdd)
+                        }
+                    }
+                }
             }
         }
     }

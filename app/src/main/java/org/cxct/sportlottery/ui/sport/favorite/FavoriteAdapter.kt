@@ -328,7 +328,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
         }
 
         fun updateByMatchIdForOdds(matchOdd: MatchOdd) {
-            if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
+            if (itemView.rv_league.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.rv_league.isComputingLayout) {
                 sportFavoriteAdapter.updateByMatchIdForOdds(matchOdd)
             }
         }
