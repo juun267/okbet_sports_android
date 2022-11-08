@@ -88,6 +88,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private var matchType: MatchType = MatchType.DETAIL
+    private var intoLive = false
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var isLogin: Boolean = false
     private val tabCateAdapter: TabCateAdapter by lazy {
@@ -106,7 +107,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private var isFlowing = false
     private lateinit var enterAnim: Animation
     private lateinit var exitAnim: Animation
-    private var chatViewHeight = 0
     val handler = Handler()
     private val delayHideRunnable = Runnable { collaps_toolbar.startAnimation(exitAnim) }
     private var isGamePause = false
@@ -373,6 +373,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         clickButton()
         matchInfo = intent.getParcelableExtra<MatchInfo>("matchInfo")
         matchType = intent.getSerializableExtra("matchType") as MatchType
+        intoLive = intent.getBooleanExtra("intoLive", false)
         matchInfo?.let {
             setupMatchInfo(it)
         }
@@ -611,9 +612,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 if (lin_live.isVisible) {
                     live_view_tool_bar.liveUrl =
                         if (matchRound.pullRtmpUrl.isNotEmpty()) matchRound.pullRtmpUrl else matchRound.pullFlvUrl
-                    var intoLive = intent.getBooleanExtra("intoLive", false)
                     if (intoLive) {
-                        lin_live.performClick()
+                        showLive()
                     }
                 }
             }
@@ -925,6 +925,19 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         initSocketObserver()
     }
 
+    fun showLive() {
+        live_view_tool_bar.liveUrl?.let {
+            toolBar.isVisible = false
+            live_view_tool_bar.isVisible = true
+            collaps_toolbar.isVisible = true
+            collaps_toolbar.iv_toolbar_bg.isVisible = false
+            live_view_tool_bar.showLive()
+            setScrollEnable(false)
+            startDelayHideTitle()
+            showChatWebView(true)
+        }
+    }
+
     fun updateMenu(matchInfo: MatchInfo) {
         toolBar.apply {
             lin_live.isVisible =
@@ -935,15 +948,19 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 !(matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true
             lin_live.setOnClickListener {
-                live_view_tool_bar.liveUrl?.let {
-                    toolBar.isVisible = false
-                    live_view_tool_bar.isVisible = true
-                    collaps_toolbar.isVisible = true
-                    collaps_toolbar.iv_toolbar_bg.isVisible = false
-                    live_view_tool_bar.showLive()
-                    setScrollEnable(false)
-                    startDelayHideTitle()
-                    showChatWebView(true)
+                showLive()
+            }
+
+            if (matchInfo.isLive == 1) {
+                if (matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                    matchInfo.roundNo?.let {
+                        viewModel.getLiveInfo(it)
+                    }
+                } else {
+                    live_view_tool_bar.liveUrl = matchInfo.pullRtmpUrl
+                    if (intoLive) {
+                        showLive()
+                    }
                 }
             }
             lin_video.setOnClickListener {

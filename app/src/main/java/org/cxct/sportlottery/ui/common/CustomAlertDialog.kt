@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.common
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Spanned
 import android.view.Gravity

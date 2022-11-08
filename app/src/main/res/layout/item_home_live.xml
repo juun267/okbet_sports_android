@@ -64,17 +64,6 @@
                 android:textColor="@color/color_F1A027"
                 android:text="@string/collse_live" />
 
-            <org.cxct.sportlottery.widget.RippleDiffuse
-                android:id="@+id/ripple_enter"
-                android:layout_width="100dp"
-                android:layout_height="26dp"
-                android:layout_gravity="center"
-                android:layout_centerVertical="true"
-                app:btn_img_res="@drawable/icon_avatar"
-                app:rd_scale="1.3"
-                app:ripple_img_res="@drawable/bg_ripple">
-
-            </org.cxct.sportlottery.widget.RippleDiffuse>
 
             <TextView
                 android:id="@+id/tv_enter_live"
@@ -83,7 +72,6 @@
                 android:layout_gravity="center"
                 android:paddingHorizontal="@dimen/dp_10"
                 android:gravity="center"
-                android:visibility="gone"
                 android:background="@drawable/bg_red_radius_15"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/textSize12sp"
@@ -99,30 +87,26 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="5dp">
 
-            <FrameLayout
-                android:layout_width="@dimen/margin_36"
-                android:layout_height="@dimen/margin_36"
-                android:layout_centerVertical="true">
+            <org.cxct.sportlottery.widget.RippleDiffuse
+                android:id="@+id/rippleView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                app:rd_scale="1.3"
+                app:btn_img_res="@drawable/icon_avatar"
+                app:ripple_img_res="@drawable/bg_ripple"/>
 
-                <View
-                    android:id="@+id/vavatarBg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_circle_red_alpha30"/>
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/iv_anchor_avatar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:layout_centerVertical="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_person_avatar"
-                    app:riv_border_color="@color/color_E23434"
-                    app:riv_border_width="@dimen/margin_2"
-                    app:riv_oval="true" />
-
-            </FrameLayout>
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/iv_anchor_avatar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_avatar"
+                app:riv_border_color="@color/color_FFFFFF"
+                app:riv_border_width="@dimen/margin_1"
+                app:riv_oval="true"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_anchor_name"
