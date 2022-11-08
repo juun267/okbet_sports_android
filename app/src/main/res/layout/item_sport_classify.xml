@@ -19,7 +19,7 @@
             android:layout_marginHorizontal="@dimen/margin_10"
             android:layout_weight="1"
             android:text="@string/soccer"
-            android:textColor="@color/color_black_white"
+            android:textColor="@color/color_black_blue"
             android:textSize="@dimen/textSize14sp" />
 
         <ImageView
