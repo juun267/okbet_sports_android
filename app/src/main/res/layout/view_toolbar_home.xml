@@ -29,7 +29,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:scaleType="fitStart"
-        android:src="@drawable/ic_okbet_logo" />
+        android:src="@drawable/logo_okbet_color" />
 
     <include
         android:id="@+id/lin_search"
