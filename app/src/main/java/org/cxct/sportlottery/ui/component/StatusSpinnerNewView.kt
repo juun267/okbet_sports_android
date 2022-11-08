@@ -14,7 +14,8 @@ import androidx.core.view.doOnLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
+
+import kotlinx.android.synthetic.main.view_status_spinner_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -94,10 +95,11 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             )
         )
         mListPop.setAdapter(spinnerAdapter)
-        mListPop.setAnchorView(cl_root) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.setAnchorView(cl_root_new) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
         spinnerAdapter
-        cl_root.doOnLayout {
+
+        cl_root_new.doOnLayout {
             var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
                 0F
             )
@@ -105,7 +107,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             if (listWidth > 0) {
                 mListPop.width = listWidth.toInt()
             } else {
-                mListPop.width = cl_root.width + 8.dp
+                mListPop.width = cl_root_new.width + 8.dp
             }
 
         }
