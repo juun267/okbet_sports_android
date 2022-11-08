@@ -41,7 +41,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -345,7 +344,7 @@ class MainHomeFragment :
         }
         viewModel.liveRoundCount.observe(viewLifecycleOwner) {
            // tv_live_count.text = it
-            tv_hot_live_find_more.text = getString(R.string.see_more)+it
+            tv_hot_live_find_more.text = getString(R.string.see_more) + (if (it == "0") "" else it)
         }
         viewModel.userInfo.observe(viewLifecycleOwner) {
 //            val newDiscount = userInfo?.discount ?: 1.0F

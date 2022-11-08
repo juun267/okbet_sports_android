@@ -184,7 +184,11 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             tv_inplay_count.text = it.toString()
         }
         viewModel.liveRoundCount.observe(viewLifecycleOwner) {
-            tv_live_count.text = it
+            if (it == "0") {
+                tv_live_count.text = null
+            } else {
+                tv_live_count.text = it
+            }
         }
     }
 
