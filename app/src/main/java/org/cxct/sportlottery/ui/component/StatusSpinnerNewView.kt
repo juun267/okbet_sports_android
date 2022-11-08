@@ -11,12 +11,15 @@ import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.tools.ScreenUtils
 import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
+
+import kotlinx.android.synthetic.main.view_status_spinner_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 
 class StatusSpinnerNewView @JvmOverloads constructor(
     context: Context,
@@ -103,9 +106,8 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             )
         )
         mListPop.setAdapter(spinnerAdapter)
-        mListPop.setAnchorView(cl_root) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+        mListPop.setAnchorView(cl_root_new) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
-
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             @SuppressLint("ResourceAsColor")
             override fun onItemClick(
