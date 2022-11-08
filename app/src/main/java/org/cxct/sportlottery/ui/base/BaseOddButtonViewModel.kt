@@ -430,14 +430,14 @@ abstract class BaseOddButtonViewModel(
                         LogUtil.e("下注成功")
                     } else {
                         it.receipt?.singleBets?.forEach {
-                            if (it.status == 7) {
+                            if (it.status != 7) {
                                 it.matchOdds?.forEach {
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
                             }
                         }
                         it.receipt?.parlayBets?.forEach {
-                            if (it.status == 7) {
+                            if (it.status != 7) {
                                 it.matchOdds?.forEach {
                                     betInfoRepository.removeItem(it.oddsId)
                                 }

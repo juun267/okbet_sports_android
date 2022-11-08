@@ -14,6 +14,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.webkit.WebView
 import android.widget.*
@@ -33,6 +34,7 @@ import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.extentions.screenHeight
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -60,6 +62,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
@@ -67,6 +71,7 @@ import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+
 
 /**
  * @author kevin
@@ -98,13 +103,18 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
                                         viewHolder.itemView.league_odd_list.getVisibleRangePosition()
                                             .forEach { matchPosition ->
-                                                visibleRangePair.add(Pair(leaguePosition,
-                                                    matchPosition))
+                                                visibleRangePair.add(
+                                                    Pair(
+                                                        leaguePosition,
+                                                        matchPosition
+                                                    )
+                                                )
                                             }
                                     }
                                 }
                             }
                         }
+
                         is SportLeagueAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 val viewByPosition =
@@ -115,13 +125,18 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             getChildViewHolder(it) as SportLeagueAdapter.ItemViewHolder
                                         viewHolder.itemView.league_odd_list.getVisibleRangePosition()
                                             .forEach { matchPosition ->
-                                                visibleRangePair.add(Pair(leaguePosition,
-                                                    matchPosition))
+                                                visibleRangePair.add(
+                                                    Pair(
+                                                        leaguePosition,
+                                                        matchPosition
+                                                    )
+                                                )
                                             }
                                     }
                                 }
                             }
                         }
+
                         is FavoriteAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 val viewByPosition =
@@ -132,8 +147,12 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             getChildViewHolder(it) as FavoriteAdapter.ItemViewHolder
                                         viewHolder.itemView.rv_league.getVisibleRangePosition()
                                             .forEach { matchPosition ->
-                                                visibleRangePair.add(Pair(leaguePosition,
-                                                    matchPosition))
+                                                visibleRangePair.add(
+                                                    Pair(
+                                                        leaguePosition,
+                                                        matchPosition
+                                                    )
+                                                )
                                             }
                                     }
                                 }
@@ -151,6 +170,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                                 visibleRangePair.add(Pair(leaguePosition, -1))
                             }
                         }
+
                         is HomeLiveAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
                                 visibleRangePair.add(Pair(leaguePosition, -1))
@@ -287,6 +307,7 @@ fun RecyclerView.firstVisibleRange(
                         }
                     }
                 }
+
                 is SportLeagueAdapter -> {
                     viewByPosition?.let { view ->
                         if (getChildViewHolder(view) is SportLeagueAdapter.ItemViewHolder) {
@@ -300,23 +321,27 @@ fun RecyclerView.firstVisibleRange(
                                             "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
                                                     "${
                                                         adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition)?.matchInfo?.homeName
+                                                            matchPosition
+                                                        )?.matchInfo?.homeName
                                                     } vs " +
                                                     "${
                                                         adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition)?.matchInfo?.awayName
+                                                            matchPosition
+                                                        )?.matchInfo?.awayName
                                                     }"
                                         )
                                         (activity as BaseSocketActivity<*>).subscribeChannelHall(
                                             adapter.data.getOrNull(leaguePosition)?.gameType?.key,
                                             adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                matchPosition)?.matchInfo?.id
+                                                matchPosition
+                                            )?.matchInfo?.id
                                         )
                                     }
                                 }
                         }
                     }
                 }
+
                 is OutrightLeagueOddAdapter -> {
                     viewByPosition?.let { view ->
                         when (getChildViewHolder(view)) {
@@ -341,6 +366,7 @@ fun RecyclerView.firstVisibleRange(
                         }
                     }
                 }
+
                 is SportOutrightAdapter -> {
                     viewByPosition?.let { view ->
                         if (getChildViewHolder(view) is SportOutrightAdapter.OutrightLeagueViewHolder) {
@@ -363,6 +389,7 @@ fun RecyclerView.firstVisibleRange(
                         }
                     }
                 }
+
                 is FavoriteAdapter -> {
                     viewByPosition?.let { view ->
                         if (getChildViewHolder(view) is FavoriteAdapter.ItemViewHolder) {
@@ -376,17 +403,20 @@ fun RecyclerView.firstVisibleRange(
                                             "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
                                                     "${
                                                         adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition)?.matchInfo?.homeName
+                                                            matchPosition
+                                                        )?.matchInfo?.homeName
                                                     } vs " +
                                                     "${
                                                         adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition)?.matchInfo?.awayName
+                                                            matchPosition
+                                                        )?.matchInfo?.awayName
                                                     }"
                                         )
                                         (activity as BaseSocketActivity<*>).subscribeChannelHall(
                                             adapter.data.getOrNull(leaguePosition)?.gameType?.key,
                                             adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                matchPosition)?.matchInfo?.id
+                                                matchPosition
+                                            )?.matchInfo?.id
                                         )
                                     }
                                 }
@@ -468,6 +498,7 @@ fun TextView.setTitleLetterSpacing() {
             else -> 0F
         }
 }
+
 /**
  * 调整中文文字间距
  * 中文之外無間距
@@ -486,10 +517,12 @@ fun TextView.setTitleLetterSpacing2F() {
 fun TextView.setGradientSpan(startColor: Int, endColor: Int, isLeftToRight: Boolean) {
     var spannableStringBuilder = SpannableStringBuilder(text)
     var span = LinearGradientFontSpan(startColor, endColor, isLeftToRight)
-    spannableStringBuilder.setSpan(span,
+    spannableStringBuilder.setSpan(
+        span,
         0,
         spannableStringBuilder.length,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
     setText(spannableStringBuilder, TextView.BufferType.SPANNABLE)
 }
 
@@ -589,9 +622,11 @@ fun MutableList<LeagueOdd>.updateOddsSort(
         SelectionType.SELECTABLE.code -> {
             playSelected.playCateList?.find { it.isSelected }?.code
         }
+
         SelectionType.UN_SELECTABLE.code -> {
             playSelected.code
         }
+
         else -> null
     }
 
@@ -619,8 +654,10 @@ fun MutableList<LeagueOdd>.updateOddsSort(
 }
 
 fun getLevelName(context: Context, level: Int): String {
-    val jsonString = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext,
-        "localJson/LevelName.json")
+    val jsonString = LocalJsonUtil.getLocalJson(
+        MultiLanguagesApplication.appContext,
+        "localJson/LevelName.json"
+    )
     val jsonArray = JSONArray(jsonString)
     val jsonObject = jsonArray.getJSONObject(level)
     return jsonObject.getString(LanguageManager.getSelectLanguage(context).key)
@@ -665,11 +702,28 @@ fun View.setSpinnerView(
 ) {
     val spinnerAdapter: StatusSpinnerAdapter?
 
-    var selectItem: StatusSheetData?
+    var selectItem: StatusSheetData
     var mListPop = ListPopupWindow(context)
 
+    var rawY = 0F
+    setOnTouchListener { _, event ->
+        rawY = event?.rawY ?: 0F
+        false
+    }
+
     setOnClickListener {
-        mListPop.width = textFieldBoxes.width
+        var totalHeight = 0F
+
+        for (i in 0..spinnerList.size) {
+            totalHeight += 40F.dpToPx
+        }
+        val currentHeight = context.screenHeight - rawY
+
+        if (totalHeight > currentHeight) {
+            mListPop.height = currentHeight.toInt() - 200
+        } else {
+            mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
+        }
         if (mListPop.isShowing) {
             mListPop.dismiss()
         } else {
@@ -695,6 +749,8 @@ fun View.setSpinnerView(
     spinnerAdapter.setItmeColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
     mListPop = ListPopupWindow(context)
     mListPop.width = textFieldBoxes.width
+    mListPop.setAdapter(spinnerAdapter)
+
     mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
     mListPop.setBackgroundDrawable(
         ContextCompat.getDrawable(
@@ -702,7 +758,7 @@ fun View.setSpinnerView(
             R.drawable.bg_play_category_pop
         )
     )
-    mListPop.setAdapter(spinnerAdapter)
+
     mListPop.anchorView = textFieldBoxes //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
     mListPop.isModal = true //设置是否是模式
     mListPop.setOnItemClickListener { _, _, position, _ ->
@@ -737,8 +793,25 @@ fun View.setSpinnerView(
     var selectItem: StatusSheetData?
     var mListPop = ListPopupWindow(context)
 
-    setOnClickListener {
+    var rawY = 0F
+    setOnTouchListener { _, event ->
+        rawY = event?.rawY ?: 0F
+        false
+    }
 
+    setOnClickListener {
+        var totalHeight = 0F
+
+        for (i in 0..spinnerList.size) {
+            totalHeight += 40F.dpToPx
+        }
+        val currentHeight = context.screenHeight - rawY
+
+        if (totalHeight > currentHeight) {
+            mListPop.height = currentHeight.toInt() - 200
+        } else {
+            mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
+        }
         if (mListPop.isShowing) {
             mListPop.dismiss()
         } else {
@@ -765,6 +838,7 @@ fun View.setSpinnerView(
     mListPop = ListPopupWindow(context)
     mListPop.width = textFieldBoxes.width
     mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
+
     mListPop.setBackgroundDrawable(
         ContextCompat.getDrawable(
             context,
@@ -790,6 +864,7 @@ fun View.setSpinnerView(
         popupWindowDismissListener()
     }
 }
+
 /**
  * 判斷盤口啟用參數是否有配置
  * @return true: 有配置, false: 沒有配置(為空或null)
@@ -941,6 +1016,7 @@ private fun resizeBitmap(bitmap: Bitmap, sizeLimit: Int): Bitmap? { //拍照的�
                     scaleWidth = newWidth.toFloat() / width
                     scaleHeight = sizeLimit.toFloat() / height
                 }
+
                 else -> {
                     //根據傳入的新圖片的寬度計算新圖片的高度
                     val newHeight = (sizeLimit * temp).toInt()
@@ -949,6 +1025,7 @@ private fun resizeBitmap(bitmap: Bitmap, sizeLimit: Int): Bitmap? { //拍照的�
                 }
             }
         }
+
         else -> {
             return bitmap
         }
@@ -1009,9 +1086,11 @@ fun clickCustomService(context: Context, fragmentManager: FragmentManager) {
         !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
             ServiceDialog().show(fragmentManager, null)
         }
+
         serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
             JumpUtil.toExternalWeb(context, serviceUrl2)
         }
+
         !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
             JumpUtil.toExternalWeb(context, serviceUrl)
         }
@@ -1026,7 +1105,9 @@ fun getCurrencySignByCurrency(nationCode: String?, currency: String?): String? =
  * 判斷當前是否為多站點平台
  */
 fun isMultipleSitePlat(): Boolean =
-    LocalUtils.getString(R.string.app_name) == "ONbet" || LocalUtils.getString(R.string.app_name) == "BET88" || LocalUtils.getString(R.string.app_name) == "OKbet9"
+    LocalUtils.getString(R.string.app_name) == "ONbet" || LocalUtils.getString(R.string.app_name) == "BET88" || LocalUtils.getString(
+        R.string.app_name
+    ) == "OKbet9"
 
 /**
  * 判斷當前是否為OKbet平台
@@ -1051,9 +1132,11 @@ fun ImageView.setTeamLogo(icon: String?) {
     } else {
         if (icon.startsWith("http")) {
             Glide.with(this).load(icon)
-                .apply(RequestOptions()
-                    .placeholder(R.drawable.ic_team_default)
-                    .error(R.drawable.ic_team_default))
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.ic_team_default)
+                        .error(R.drawable.ic_team_default)
+                )
                 .into(this)
         } else {
             setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
@@ -1064,14 +1147,16 @@ fun ImageView.setTeamLogo(icon: String?) {
 fun ImageView.setLeagueLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {
         setImageResource(R.drawable.ic_league_default)
-    } else if(icon.startsWith("<defs><path d")){ //經測試 <defs> 標籤下 起始 path d 套件無法解析
+    } else if (icon.startsWith("<defs><path d")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
         setImageResource(R.drawable.ic_league_default)
     } else {
         if (icon.startsWith("http")) {
             Glide.with(this).load(icon)
-                .apply(RequestOptions()
-                    .placeholder(R.drawable.ic_league_default)
-                    .error(R.drawable.ic_league_default))
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.ic_league_default)
+                        .error(R.drawable.ic_league_default)
+                )
                 .into(this)
         } else {
             setImageDrawable(SvgUtil.getSvgDrawable(context, icon))

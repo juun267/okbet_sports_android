@@ -13,8 +13,6 @@ import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
@@ -23,7 +21,6 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import java.util.*
 
 class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
@@ -46,7 +43,7 @@ class ItemHomeLiveHolder(
     fun bind(data: MatchLiveData, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         update(data, oddsType)
-        updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id)
+        updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id && data.matchInfo.isLive == 1)
     }
 
     fun updateLive(isExpandLive: Boolean) {
@@ -72,7 +69,7 @@ class ItemHomeLiveHolder(
         binding.tvCollse.setOnClickListener {
             (bindingAdapter as HomeLiveAdapter).expandMatchId = null
         }
-        binding.tvExpandLive.isVisible = !isExpandLive
+        binding.tvExpandLive.isVisible = !isExpandLive && data.matchInfo.isLive == 1
         binding.tvExpandLive.setOnClickListener {
             (bindingAdapter as HomeLiveAdapter).expandMatchId = data.matchInfo?.id
             data.matchInfo.roundNo?.let {
@@ -236,8 +233,12 @@ class ItemHomeLiveHolder(
     private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            tvAnchorName.text = data.matchInfo.streamerName
-                ?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            if (data.matchInfo.streamerName.toString().isNotBlank()){
+                tvAnchorName.text = data.matchInfo.streamerName
+            }else{
+                tvAnchorName.text =  binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            }
+
             //region 隊伍名稱
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName

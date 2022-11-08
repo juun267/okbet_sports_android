@@ -64,18 +64,26 @@
                 android:textColor="@color/color_F1A027"
                 android:text="@string/collse_live" />
 
-
-            <TextView
-                android:id="@+id/tv_enter_live"
+            <LinearLayout
+                android:id="@+id/lin_enter_live"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingHorizontal="@dimen/dp_10"
-                android:gravity="center"
-                android:background="@drawable/bg_red_radius_15"
-                android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/textSize12sp"
-                android:text="@string/enter_live" />
+                android:padding="5dp"
+                android:background="@drawable/bg_red_trans_radius_18">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="@dimen/dp_10"
+                    android:gravity="center"
+                    android:background="@drawable/bg_red_radius_15"
+                    android:textColor="@color/color_FFFFFF"
+                    android:textSize="@dimen/textSize12sp"
+                    android:text="@string/enter_live" />
+            </LinearLayout>
+
 
         </FrameLayout>
 

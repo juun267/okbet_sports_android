@@ -76,6 +76,7 @@
         <TextView
             android:id="@+id/btn_register"
             android:layout_width="80dp"
+            android:minWidth="60dp"
             android:layout_height="30dp"
             android:paddingHorizontal="@dimen/dp_10"
             android:singleLine="true"
@@ -91,6 +92,7 @@
         <TextView
             android:id="@+id/btn_login"
             android:layout_width="80dp"
+            android:minWidth="60dp"
             android:layout_height="30dp"
             android:paddingHorizontal="@dimen/dp_10"
             android:singleLine="true"

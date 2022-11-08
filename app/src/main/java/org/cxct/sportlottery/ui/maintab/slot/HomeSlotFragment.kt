@@ -106,7 +106,7 @@ class HomeSlotFragment :
             (activity as MainTabActivity).showLeftFrament(0, 5)
         }
         iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(1)
+            (activity as MainTabActivity).jumpToHome(0)
         }
         btn_register.setOnClickListener {
             startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))

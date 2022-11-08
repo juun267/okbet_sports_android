@@ -73,6 +73,17 @@ class StatusSpinnerNewView @JvmOverloads constructor(
                 if (mListPop.isShowing) {
                     mListPop.dismiss()
                 } else {
+                    cl_root.doOnLayout {
+                        var listWidth =
+                            typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
+                                0F)
+
+                        if (listWidth > 0) {
+                            mListPop.width = listWidth.toInt()
+                        } else {
+                            mListPop.width = cl_root.width + 8.dp
+                        }
+                    }
                     mListPop.show()
                 }
             }
@@ -97,20 +108,6 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         mListPop.setAdapter(spinnerAdapter)
         mListPop.setAnchorView(cl_root_new) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
-        spinnerAdapter
-
-        cl_root_new.doOnLayout {
-            var listWidth = typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
-                0F
-            )
-
-            if (listWidth > 0) {
-                mListPop.width = listWidth.toInt()
-            } else {
-                mListPop.width = cl_root_new.width + 8.dp
-            }
-
-        }
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             @SuppressLint("ResourceAsColor")
             override fun onItemClick(
