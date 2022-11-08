@@ -124,7 +124,6 @@ class MainHomeFragment :
             }else{
                 tv_first_half_game.setBackgroundResource(0)
             }
-            LogUtil.d(data.matchInfo.statusName18n)
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
@@ -472,7 +471,6 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-                        LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -511,18 +509,22 @@ class MainHomeFragment :
         //热门盘口
         viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
            if ( list.isNullOrEmpty()){
-               hot_handicap_include.visibility = View.GONE
+               rv_hot_handicap.visibility = View.GONE
            }else{
                list.let {
                    hideLoading()
                    it.forEach { handi ->
+
                        handi.matchInfos.forEach { hotdata ->
+                           hotdata.getBuildMatchInfo()
+                           LogUtil.toJson(hotdata.getBuildMatchInfo())
                            hotdata.oddsSort = handi.oddsSort
                            // 將儲存的賠率表指定的賽事列表裡面
                            val leagueOddFromMap = leagueOddMap[hotdata.id]
                            leagueOddFromMap?.let {
                                hotdata.oddsMap = leagueOddFromMap.oddsMap
                            }
+
                        }
                    }
                    hotHandicapAdapter.setNewData(list)
@@ -550,6 +552,7 @@ class MainHomeFragment :
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
+
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
@@ -557,7 +560,7 @@ class MainHomeFragment :
                 }
             }
         }
-        //观察比赛状态改变
+        //观察比赛状态比分改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
                 hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
@@ -573,8 +576,8 @@ class MainHomeFragment :
                             needUpdate = true
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
+
                     }
-         //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -631,6 +634,7 @@ class MainHomeFragment :
             hotHandicapAdapter.data.forEachIndexed { index, handicap ->
                 var needUpdate = false
                  handicap.matchInfos.forEach { hotMatchInfo->
+//                     LogUtil.d(hotMatchInfo.awayName+ hotMatchInfo.id)
                      if (hotMatchInfo.id == oddsChangeEvent.eventId) {
                          hotMatchInfo.sortOddsMap()
                          //region 翻譯更新
@@ -655,7 +659,6 @@ class MainHomeFragment :
                     hotHandicapAdapter.notifyItemChanged(index)
                 }
              }
-
         }
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
@@ -710,9 +713,9 @@ class MainHomeFragment :
         receiver.producerUp.observe(viewLifecycleOwner) {
             it?.let {
                 //先解除全部賽事訂閱
-                unSubscribeChannelHallAll()
-                subscribeQueryData(hotHandicapAdapter.data)
-                subScribeLiveData(homeHotLiveAdapter.data)
+//                unSubscribeChannelHallAll()
+//                subscribeQueryData(hotHandicapAdapter.data)
+//                subScribeLiveData(homeHotLiveAdapter.data)
             }
         }
 
@@ -918,23 +921,7 @@ class MainHomeFragment :
             matchType = matchType)
     }
 
-    /**
-     * 根據menuList的PlayCate排序賠率玩法
-     */
-    //TODO 20220323 等新版socket更新方式調整完畢後再確認一次此處是否需要移動至別處進行
-    private fun Recommend.sortOddsByMenu() {
-        val sortOrder = this.menuList.firstOrNull()?.playCateList?.map { it.code }
 
-        oddsMap?.let { map ->
-            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
-            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
-                sortOrder?.indexOf(it)
-            }.thenBy { it })
-
-            map.clear()
-            map.putAll(sortedMap)
-        }
-    }
 
     private fun subscribeQueryData(recommendList: List<HandicapData>) {
         recommendList.forEach { subscribeChannelHall(it) }
@@ -943,7 +930,6 @@ class MainHomeFragment :
     private fun subscribeChannelHall(recommend: HandicapData) {
         recommend.matchInfos.forEach {
             subscribeChannelHall(it.gameType, it.id)
-            LogUtil.d("subscribeChannelHall")
         }
     }
 
@@ -1139,7 +1125,7 @@ class MainHomeFragment :
             iv_publicity.setOnVideoSizeChangedListener(this)
             iv_publicity.setOnErrorListener(this)
             iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-            iv_publicity.setVolume(0f, 0f)
+            iv_publicity.setVolume(0.0f, 0.0f)//默认静音
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
         matchInfo?.let {
@@ -1155,23 +1141,28 @@ class MainHomeFragment :
                 iv_live_type.visibility = View.VISIBLE
                 iv_publicity.pause()
             }
-            LogUtil.d(it.pullRtmpUrl)
-
-
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        LogUtil.d("")
+
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
-        LogUtil.e(p0.toString() + "," + p1)
-        context?.let {
-            Glide.with(it)
-                .load(mMatchInfo.frontCoverUrl)
-                .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
-                .into(iv_live_type)
+        //ERROR_CODE_IO_ERROR=-3 网络异常
+        LogUtil.e(p0.toString() + "," + p1.toString())
+        mMatchInfo.pullRtmpUrl?.let {
+            iv_publicity.start()
         }
+        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()){
+            context?.let {
+                Glide.with(it)
+                    .load(mMatchInfo.frontCoverUrl)
+                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                        .error(R.drawable.icon_novideodata))
+                    .into(iv_live_type)
+            }
+        }
+
         iv_live_type.visibility = View.VISIBLE
         return false
     }

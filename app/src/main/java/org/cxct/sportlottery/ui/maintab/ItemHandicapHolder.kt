@@ -66,7 +66,7 @@ class ItemHandicapHolder(
         } else
             return
 
- //   LogUtil.d(data.oddsSort+"=====viewHolder"+oddList.size)
+    LogUtil.d(data.oddsSort+"=====viewHolder"+oddList.size)
         //玩法名稱
         val playCateName = data.playCateNameMap?.get(oddPlayCateCode)
             ?.get(LanguageManager.getSelectLanguage(binding.root.context).key) ?: ""
