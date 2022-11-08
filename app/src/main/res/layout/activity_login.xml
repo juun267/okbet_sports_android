@@ -44,7 +44,7 @@
         android:layout_width="151dp"
         android:layout_height="60dp"
         android:layout_marginTop="80dp"
-        android:src="@drawable/okbet_login_logo"
+        android:src="@drawable/logo_okbet_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
