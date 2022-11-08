@@ -122,7 +122,6 @@
     <string name="bet_list_empty">สลิปเดิมพันว่างเปล่า</string>
     <string name="bet_info_win_quota">จำนวนเงินที่ชนะ</string>
     <string name="bet_info_input_quota">ใส่จำนวนเงิน</string>
-    <string name="bet_info_all_bet">เดิมพันทั้งหมด</string>
     <string name="bet_receipt_all_bet">เดิมพันทั้งหมด</string>
     <string name="bet_info_list_win_quota">จำนวนที่ชนะได้：</string>
     <string name="keyboard_max">ใหญ่สุด</string>
@@ -1230,5 +1229,6 @@
     <string name="ou_hdp_hdp">แฮนดิแคป</string>
     <string name="less_than_the">U</string>
     <string name="more_than_the">O</string>
+    <string name="cs_center">ศูนย์ช่วยเหลือ</string>
     <!--F005-->
 </resources>
