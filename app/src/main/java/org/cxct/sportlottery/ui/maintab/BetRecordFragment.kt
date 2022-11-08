@@ -171,7 +171,7 @@ class BetRecordFragment :
             EventBus.getDefault().post(MenuEvent(true))
         }
         iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(1)
+            (activity as MainTabActivity).jumpToHome(0)
         }
         cl_bet_all_sports.setOnClickListener(View.OnClickListener {
             if (mListPop.isShowing) {

@@ -222,7 +222,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             EventBus.getDefault().post(MenuEvent(true))
         }
         iv_logo.setOnClickListener {
-            (activity as MainTabActivity).jumpToHome(1)
+            (activity as MainTabActivity).jumpToHome(0)
         }
         lin_search.setOnClickListener {
             startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
