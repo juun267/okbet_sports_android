@@ -1172,7 +1172,7 @@ class MainHomeFragment :
                 .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
                 .into(iv_live_type)
         }
-        iv_live_type.visibility = View.VISIBLE
+        iv_live_type?.visibility = View.VISIBLE
         return false
     }
 
