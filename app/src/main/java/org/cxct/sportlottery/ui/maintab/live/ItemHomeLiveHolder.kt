@@ -233,8 +233,12 @@ class ItemHomeLiveHolder(
     private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            tvAnchorName.text = data.matchInfo.streamerName
-                ?: binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            if (data.matchInfo.streamerName.toString().isNotBlank()){
+                tvAnchorName.text = data.matchInfo.streamerName
+            }else{
+                tvAnchorName.text =  binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            }
+
             //region 隊伍名稱
             tvHomeName.text = data.matchInfo.homeName
             tvAwayName.text = data.matchInfo.awayName
