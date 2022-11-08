@@ -73,7 +73,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
                 if (mListPop.isShowing) {
                     mListPop.dismiss()
                 } else {
-                    cl_root.doOnLayout {
+                    cl_root_new.doOnLayout {
                         var listWidth =
                             typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
                                 0F)
@@ -81,7 +81,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
                         if (listWidth > 0) {
                             mListPop.width = listWidth.toInt()
                         } else {
-                            mListPop.width = cl_root.width + 8.dp
+                            mListPop.width = cl_root_new.width + 8.dp
                         }
                     }
                     mListPop.show()

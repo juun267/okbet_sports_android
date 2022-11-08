@@ -1124,6 +1124,7 @@
     <string name="text_account_history_bet">เดิมพัน</string>
     <string name="error_amount_limit_exceeded">เกินขีดจำกัดจำนวนเงินฝาก</string>
     <string name="total_win_amount">จำนวนที่ชนะได้(%s)：</string> <!--F005-->
+    <string name="next_step">ขั้นตอนต่อไป</string>
 
     <string name="total_capital">เดิมพันทั้งหมด(%s)：</string> <!--F008-->
     <string name="delete_bet">ลบ</string>

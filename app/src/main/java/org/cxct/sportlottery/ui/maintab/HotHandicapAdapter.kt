@@ -72,6 +72,7 @@ class HotHandicapAdapter(data:List<HandicapData>):
     override fun convert(helper: BaseViewHolder, item: HandicapData) {
         helper.setText(R.id.tv_league_name, item.league.name)
         helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(item.league.categoryIcon)
+
         when (playType){
             "1"-> {
                 if (item.sportName == "足球"){
@@ -96,9 +97,7 @@ class HotHandicapAdapter(data:List<HandicapData>):
                 helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.more_than_the))
             }
         }
-        if (playType == "1"&& item.sportName=="足球"){
 
-        }
         var recycleView = helper.getView<RecyclerView>(R.id.rv_handicap_item)
         recycleView.apply {
             if (layoutManager == null) {

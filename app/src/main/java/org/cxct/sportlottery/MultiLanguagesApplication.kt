@@ -240,6 +240,10 @@ class MultiLanguagesApplication : Application() {
         setupDeviceCode()
         initAdjustSDK()
         initAppsFlyerSDK()
+
+        if (BuildConfig.DEBUG) {
+            CrashHandler.setup(this) //错误日志收集
+        }
     }
 
     private fun initAdjustSDK() {

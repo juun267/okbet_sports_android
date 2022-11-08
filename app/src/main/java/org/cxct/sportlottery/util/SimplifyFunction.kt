@@ -720,7 +720,7 @@ fun View.setSpinnerView(
         val currentHeight = context.screenHeight - rawY
 
         if (totalHeight > currentHeight) {
-            mListPop.height = currentHeight.toInt() - 150
+            mListPop.height = currentHeight.toInt() - 200
         } else {
             mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
         }
@@ -808,7 +808,7 @@ fun View.setSpinnerView(
         val currentHeight = context.screenHeight - rawY
 
         if (totalHeight > currentHeight) {
-            mListPop.height = currentHeight.toInt() - 150
+            mListPop.height = currentHeight.toInt() - 200
         } else {
             mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
         }
