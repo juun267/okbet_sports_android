@@ -581,6 +581,7 @@ class MainHomeFragment :
                             )
                         ) {
                             needUpdate = true
+                            return@forEach
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
