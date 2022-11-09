@@ -951,10 +951,10 @@
 
     <!--登入手機驗證-->
     <string name="other_link">LIÊN KẾT HỮU DỤNG KHÁC</string>
-    <string name="about_us">Về Chúng Tôi</string>
+    <string name="about_us">Chúng tôi</string>
     <string name="responsible">Trách nhiệm</string>
     <string name="terms_conditions">Thoả thuận</string>
-    <string name="privacy_policy">Chính Sách Bảo Mật</string>
+    <string name="privacy_policy">Bảo mật</string>
     <string name="help">CẦN TRỢ GIÚP?</string>
     <string name="official_partner">Đối tác chính thức</string>
     <string name="faqs">Q&amp;A</string>
@@ -1307,4 +1307,5 @@
     <string name="dont_have_game">Hiện không có Games Jackpot</string>
     <string name="please_input_you_account">Mời nhập tài khoản của bạn</string>
     <string name="okbet_live_name">MC OKBET</string>
+    <string name="cs_center">CSKH</string>
 </resources>

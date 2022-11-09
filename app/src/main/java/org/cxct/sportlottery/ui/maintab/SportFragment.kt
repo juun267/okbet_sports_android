@@ -120,6 +120,21 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         (activity as MainTabActivity).showMyFavoriteNotify(myFavoriteNotifyType)
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+
+        if (!hidden) {
+            when (val showFragment = sportListFragment) {
+                is SportListFragment -> {
+                    //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
+                    showFragment.setupOddsChangeListener()
+                }
+                is SportOutrightFragment -> {
+                    showFragment.setupOddsChangeListener()
+                }
+            }
+        }
+    }
 
     private fun initTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

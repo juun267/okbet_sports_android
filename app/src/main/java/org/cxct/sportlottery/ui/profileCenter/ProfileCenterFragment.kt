@@ -417,7 +417,7 @@ class ProfileCenterFragment :
             else -> {
                 lin_help_sub.children.filter { it is TextView }.forEach {
                     (it.layoutParams as LinearLayout.LayoutParams).apply {
-                        this.weight = 1f
+                        this.weight = 0f
                     }
                 }
             }
