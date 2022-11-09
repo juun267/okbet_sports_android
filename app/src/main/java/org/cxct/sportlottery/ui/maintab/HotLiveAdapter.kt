@@ -19,7 +19,8 @@ import org.cxct.sportlottery.util.LogUtil
 
 import org.cxct.sportlottery.util.setTeamLogo
 
-class HotLiveAdapter(private var clickListener:ItemClickListener): RecyclerView.Adapter<HotLiveAdapter.ItemViewHolder>() {
+class HotLiveAdapter(private var clickListener:ItemClickListener):
+    RecyclerView.Adapter<HotLiveAdapter.ItemViewHolder>() {
     private var mSelectedPosition = 0
     var data: List<HotMatchLiveData> = mutableListOf()
         set(value) {
