@@ -26,6 +26,7 @@ import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import kotlinx.android.synthetic.main.fragment_main_home.*
 import kotlinx.android.synthetic.main.fragment_main_left.*
+import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
@@ -72,14 +73,11 @@ class MainHomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class),
     PLOnVideoSizeChangedListener, PLOnErrorListener {
 
-
-
     private lateinit var mMatchInfo: MatchInfo
     interface TimerListener {
         fun onTimerUpdate(timeMillis: Long)
     }
     var listener: TimerListener? = null
-
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -244,7 +242,7 @@ class MainHomeFragment :
             viewModel.getHotLiveList()
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
-
+            setupOddsChangeListener()
         }
     }
 
@@ -282,10 +280,16 @@ class MainHomeFragment :
             }
         }
         iv_live_type.setOnClickListener {
-            navOddsDetailFragment(MatchType.IN_PLAY, mMatchInfo)
+            SportDetailActivity.startActivity(requireContext(),
+                matchInfo = mMatchInfo,
+                matchType = MatchType.IN_PLAY,
+                true)
         }
         view_action.setOnClickListener {
-            navOddsDetailFragment(MatchType.IN_PLAY, mMatchInfo)
+            SportDetailActivity.startActivity(requireContext(),
+                matchInfo = mMatchInfo,
+                matchType = MatchType.IN_PLAY,
+                true)
         }
         ll_hot_live_more.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(1)
@@ -526,9 +530,13 @@ class MainHomeFragment :
                            }
                        }
                    }
+                   hotHandicapAdapter.data.forEach {
+                       it.matchInfos.forEach {
+                           unSubscribeChannelHall(it.gameType, it.id)
+                       }
+                   }
                    hotHandicapAdapter.setNewData(list)
                    //先解除全部賽事訂
-                   unSubscribeChannelHallAll()
                    subscribeQueryData(list)
                }
            }
@@ -629,36 +637,7 @@ class MainHomeFragment :
         receiver.matchOddsChange.observe(viewLifecycleOwner) {
 
         }
-        receiver.oddsChangeListener = ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            hotHandicapAdapter.data.forEachIndexed { index, handicap ->
-                var needUpdate = false
-                 handicap.matchInfos.forEach { hotMatchInfo->
-                     if (hotMatchInfo.id == oddsChangeEvent.eventId) {
-                         hotMatchInfo.sortOddsMap()
-                         //region 翻譯更新
-                         oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                             hotMatchInfo.playCateNameMap?.putAll(playCateNameMap)
-                         }
-                         oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                             hotMatchInfo.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                         }
-                         //endregion
-                         if (SocketUpdateUtil.updateMatchOddsNew(context,
-                                 hotMatchInfo,
-                                 oddsChangeEvent)
-                         ) {
-                             updateBetInfo(hotMatchInfo, oddsChangeEvent)
-                             leagueOddMap[hotMatchInfo.id] = hotMatchInfo
-                             needUpdate = true
-                         }
-                     }
-                 }
-                if (needUpdate) {
-                    hotHandicapAdapter.notifyItemChanged(index)
-                }
-             }
-
-        }
+        setupOddsChangeListener()
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
@@ -739,6 +718,43 @@ class MainHomeFragment :
         }
 
     }
+
+    fun setupOddsChangeListener() {
+        receiver.oddsChangeListener = mOddsChangeListener
+    }
+
+    private val mOddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            hotHandicapAdapter.data.forEachIndexed { index, handicap ->
+                var needUpdate = false
+                handicap.matchInfos.forEach { hotMatchInfo ->
+                    if (hotMatchInfo.id == oddsChangeEvent.eventId) {
+                        hotMatchInfo.sortOddsMap()
+                        //region 翻譯更新
+                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                            hotMatchInfo.playCateNameMap?.putAll(playCateNameMap)
+                        }
+                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                            hotMatchInfo.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                        }
+                        //endregion
+                        if (SocketUpdateUtil.updateMatchOddsNew(context,
+                                hotMatchInfo,
+                                oddsChangeEvent)
+                        ) {
+                            updateBetInfo(hotMatchInfo, oddsChangeEvent)
+                            leagueOddMap[hotMatchInfo.id] = hotMatchInfo
+                            needUpdate = true
+                        }
+                    }
+                }
+                if (needUpdate) {
+                    hotHandicapAdapter.notifyItemChanged(index)
+                }
+            }
+        }
+    }
+
     private fun HotMatchInfo.sortOddsMap() {
         this.oddsMap?.forEach { (_, value) ->
             if ((value?.size
@@ -1168,10 +1184,13 @@ class MainHomeFragment :
     override fun onError(p0: Int, p1: Any?): Boolean {
         //ERROR_CODE_IO_ERROR=-3 网络异常
         LogUtil.e(p0.toString() + "," + p1.toString())
+        if (iv_publicity == null) {
+            return false
+        }
         mMatchInfo.pullRtmpUrl?.let {
             iv_publicity.start()
         }
-        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()){
+        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
             context?.let {
                 Glide.with(it)
                     .load(mMatchInfo.frontCoverUrl)

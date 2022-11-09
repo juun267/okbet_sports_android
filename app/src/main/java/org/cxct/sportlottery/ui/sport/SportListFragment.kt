@@ -743,7 +743,9 @@ class SportListFragment :
     }
 
     fun setupOddsChangeListener() {
-        receiver.oddsChangeListener = mOddsChangeListener
+        if (isAdded) {
+            receiver.oddsChangeListener = mOddsChangeListener
+        }
     }
 
     private val mOddsChangeListener by lazy {

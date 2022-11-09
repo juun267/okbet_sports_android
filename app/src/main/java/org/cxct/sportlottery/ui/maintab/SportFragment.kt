@@ -67,8 +67,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
          )
     }
 
-    private val betListFragment by lazy { BetListFragment() }
-    private var sportListFragment: Fragment? = null
+    private var betListFragment = BetListFragment()
+    private var showFragment: Fragment? = null
 
     var jumpMatchType: MatchType? = null
     var jumpGameType: GameType? = null
@@ -122,24 +122,16 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-
-        if (!hidden) {
-            when (val showFragment = sportListFragment) {
-                is SportListFragment -> {
-                    //receiver.oddsChangeListener為activity底下共用, 顯示當前畫面時需重新配置listener
-                    showFragment.setupOddsChangeListener()
-                }
-                is SportOutrightFragment -> {
-                    showFragment.setupOddsChangeListener()
-                }
-            }
+        showFragment?.let {
+            if (it.isAdded)
+                it.onHiddenChanged(hidden)
         }
     }
 
     private fun initTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                selectTab(tab.position)
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                selectTab(tab?.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -210,7 +202,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
 
 
-    private fun selectTab(position: Int) {
+    private fun selectTab(position: Int?) {
         if (position == null) return
         var matchType =
             matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
@@ -315,14 +307,14 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
-        sportListFragment = when (matchType) {
+        showFragment = when (matchType) {
             MatchType.OUTRIGHT ->
                 SportOutrightFragment.newInstance(gameType = gameType)
             else ->
                 SportListFragment.newInstance(matchType = matchType, gameType = gameType)
         }
         childFragmentManager.beginTransaction()
-            .replace(R.id.fl_content, sportListFragment!!)
+            .replace(R.id.fl_content, showFragment!!)
             .commit()
         jumpMatchType = null
         jumpGameType = null
@@ -347,12 +339,12 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     fun getCurGameType(): GameType? {
-        return when (sportListFragment) {
+        return when (showFragment) {
             is SportListFragment -> {
-                (sportListFragment as SportListFragment).getCurGameType()
+                (showFragment as SportListFragment).getCurGameType()
             }
             is SportOutrightFragment -> {
-                (sportListFragment as SportOutrightFragment).getCurGameType()
+                (showFragment as SportOutrightFragment).getCurGameType()
             }
             else -> {
                 null
