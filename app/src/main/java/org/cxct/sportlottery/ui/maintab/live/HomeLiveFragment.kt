@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_live.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
@@ -51,7 +52,7 @@ class HomeLiveFragment :
             return fragment
         }
     }
-
+    var mmRvScrollY = 0
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(), 1).apply {
             setOnItemClickListener { adapter, view, position ->
@@ -419,6 +420,7 @@ class HomeLiveFragment :
             }
             if (adapter == null) {
                 adapter = homeLiveAdapter
+                addOnScrollListener(recyclerViewOnScrollListener)
             }
             addScrollWithItemVisibility(
                 onScrolling = {
@@ -445,6 +447,10 @@ class HomeLiveFragment :
                     }
                 }
             )
+        }
+        ll_come_back.setOnClickListener {
+            rv_live.scrollToPosition(0)
+             mmRvScrollY = 0
         }
     }
 
@@ -547,6 +553,16 @@ class HomeLiveFragment :
             btn_login.isVisible = !it
 //            lin_search.visibility = if (it) View.VISIBLE else View.GONE
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
+    }
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+       //列表滑动距离
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            mmRvScrollY += dy
+//            LogUtil.d("onScrolled: mmRvScrollY===:$mmRvScrollY dy===$dy")
+            ll_come_back.isVisible = mmRvScrollY>1000
         }
     }
 }

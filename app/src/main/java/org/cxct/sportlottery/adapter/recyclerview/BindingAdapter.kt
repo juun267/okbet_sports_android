@@ -10,7 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.widget.EmptyView
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseBindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null) :
+abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null) :
     BaseQuickAdapter<T, VBViewHolder<VB>>(0, data) {
 
     constructor(mContext: Context): this() {
