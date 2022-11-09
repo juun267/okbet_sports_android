@@ -115,6 +115,9 @@ class HomeLiveFragment :
         super.onHiddenChanged(hidden)
         if (!hidden) {
             viewModel.getLiveRoundHall()
+            setupOddsChangeListener()
+        } else {
+            homeLiveAdapter.expandMatchId = null
         }
     }
 
@@ -276,31 +279,8 @@ class HomeLiveFragment :
                 }
             }
         }
-        receiver.oddsChangeListener =
-            ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-                val targetList = homeLiveAdapter.data
-                targetList.forEachIndexed { index, matchLiveData ->
-                    if (matchLiveData.matchInfo.id == oddsChangeEvent.eventId) {
-                        matchLiveData.sortOddsMap()
-                        //region 翻譯更新
-                        oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
-                            matchLiveData.playCateNameMap?.putAll(playCateNameMap)
-                        }
-                        oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
-                            matchLiveData.betPlayCateNameMap?.putAll(betPlayCateNameMap)
-                        }
-                        //endregion
-                        if (SocketUpdateUtil.updateMatchOdds(context,
-                                matchLiveData,
-                                oddsChangeEvent)
-                        ) {
-                            updateBetInfo(matchLiveData, oddsChangeEvent)
-                            matchOddMap[matchLiveData.league.id] = matchLiveData
-                            homeLiveAdapter.notifyItemChanged(index, matchLiveData)
-                        }
-                    }
-                }
-            }
+
+        setupOddsChangeListener()
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
@@ -371,6 +351,37 @@ class HomeLiveFragment :
                     }
                 }
                 homeLiveAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun setupOddsChangeListener() {
+        receiver.oddsChangeListener = mOddsChangeListener
+    }
+
+    private val mOddsChangeListener by lazy {
+        ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
+            val targetList = homeLiveAdapter.data
+            targetList.forEachIndexed { index, matchLiveData ->
+                if (matchLiveData.matchInfo.id == oddsChangeEvent.eventId) {
+                    matchLiveData.sortOddsMap()
+                    //region 翻譯更新
+                    oddsChangeEvent.playCateNameMap?.let { playCateNameMap ->
+                        matchLiveData.playCateNameMap?.putAll(playCateNameMap)
+                    }
+                    oddsChangeEvent.betPlayCateNameMap?.let { betPlayCateNameMap ->
+                        matchLiveData.betPlayCateNameMap?.putAll(betPlayCateNameMap)
+                    }
+                    //endregion
+                    if (SocketUpdateUtil.updateMatchOdds(context,
+                            matchLiveData,
+                            oddsChangeEvent)
+                    ) {
+                        updateBetInfo(matchLiveData, oddsChangeEvent)
+                        matchOddMap[matchLiveData.league.id] = matchLiveData
+                        homeLiveAdapter.notifyItemChanged(index, matchLiveData)
+                    }
+                }
             }
         }
     }

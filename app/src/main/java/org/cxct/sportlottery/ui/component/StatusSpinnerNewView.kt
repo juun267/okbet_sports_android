@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.component
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +12,14 @@ import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.luck.picture.lib.tools.ScreenUtils
-import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
 
 import kotlinx.android.synthetic.main.view_status_spinner_new.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
 
+
+@Deprecated("宽度自适应有问题(虽然已处理)，但建议使用")
 class StatusSpinnerNewView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -29,26 +28,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
 
     private var dataList = mutableListOf<StatusSheetData>()
     private var spinnerAdapter: StatusSpinnerNewAdapter? = null
-    private val typedArray by lazy {
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.StatusBottomSheetStyle,
-            0,
-            0
-        )
-    }
-    private val arrowImg by lazy {
-        typedArray.getResourceId(
-            R.styleable.StatusBottomSheetStyle_arrowSrc,
-            R.drawable.ic_arrow_gray
-        )
-    }
-    private val textGravity by lazy {
-        typedArray.getInt(
-            R.styleable.StatusBottomSheetStyle_textGravity,
-            0x11
-        )
-    }
+
     private lateinit var selectItem: StatusSheetData
     private lateinit var mListPop: ListPopupWindow
     var selectedTag: String? = ""
@@ -57,15 +37,22 @@ class StatusSpinnerNewView @JvmOverloads constructor(
     var selectedCode: String? = ""
         get() = selectItem.code
 
+    var itmeColor: Int = Color.BLACK
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner_new, null)
         addView(view)
         view.apply {
+            val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.StatusBottomSheetStyle,0,0)
+            val arrowImg = typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_arrowSrc, R.drawable.ic_arrow_gray)
+            val textGravity = typedArray.getInt(R.styleable.StatusBottomSheetStyle_textGravity,0x11)
+            itmeColor = typedArray.getColor(R.styleable.StatusBottomSheetStyle_listTextColor, resources.getColor(R.color.color_FFFFFF_414655))
+
+            tv_name.text = typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
+            typedArray.recycle()
 
             iv_arrow.setImageResource(arrowImg)
             tv_name.tag = ""
-            tv_name.text =
-                typedArray.getString(R.styleable.StatusBottomSheetStyle_defaultStatusText)
             tv_name.gravity = textGravity
             tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
             setOnClickListener {
@@ -73,18 +60,7 @@ class StatusSpinnerNewView @JvmOverloads constructor(
                 if (mListPop.isShowing) {
                     mListPop.dismiss()
                 } else {
-                    cl_root_new.doOnLayout {
-                        var listWidth =
-                            typedArray.getDimension(R.styleable.StatusBottomSheetStyle_listWidth,
-                                0F)
-
-                        if (listWidth > 0) {
-                            mListPop.width = listWidth.toInt()
-                        } else {
-                            mListPop.width = cl_root_new.width + 8.dp
-                        }
-                    }
-                    mListPop.show()
+                    cl_root_new.doOnLayout { mListPop.show() }
                 }
             }
         }
@@ -94,17 +70,12 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             selectItem = first
             setSelectCode(first.code)
         }
-        spinnerAdapter = StatusSpinnerNewAdapter(dataList)
-        spinnerAdapter!!.setItmeColor(typedArray.getColor(R.styleable.StatusBottomSheetStyle_listTextColor,resources.getColor(R.color.color_FFFFFF_414655)))
+
         mListPop = ListPopupWindow(context)
-        mListPop.width = ScreenUtils.getScreenWidth(context) / 2
+        spinnerAdapter = StatusSpinnerNewAdapter(dataList) { mListPop.width = Math.max(it, measuredWidth) }
+        spinnerAdapter!!.setItmeColor(itmeColor)
         mListPop.height = LayoutParams.WRAP_CONTENT
-        mListPop.setBackgroundDrawable(
-            ContextCompat.getDrawable(
-                context,
-                R.drawable.bg_play_category_pop
-            )
-        )
+        mListPop.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_play_category_pop))
         mListPop.setAdapter(spinnerAdapter)
         mListPop.setAnchorView(cl_root_new) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
