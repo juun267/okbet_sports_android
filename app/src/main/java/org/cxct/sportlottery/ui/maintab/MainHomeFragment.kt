@@ -496,27 +496,42 @@ class MainHomeFragment :
                 }
             }
         }
+
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
+
             event?.let { matchStatusChangeEvent ->
                 hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
-                    var needUpdate = false
-                    handicapData.matchInfos.forEach { hotMatchInfo ->
 
-                        if (SocketUpdateUtil.updateMatchStatus(
-                                hotMatchInfo.gameType,
-                                handicapData.matchInfos as MutableList<MatchOdd>,
-                                matchStatusChangeEvent,
-                                context
-                            )
-                        ) {
-                            needUpdate = true
-//                            Log.d("hjq","needUpdate==="+hotMatchInfo.homeName)
-                            return@forEach
-                            //TODO 更新邏輯待補，跟進GameV3Fragment
+                    var needUpdate = false
+                    handicapData.matchInfos?.iterator()?.let {
+
+                        while (!needUpdate && it.hasNext()) {
+
+                            val next = it.next()
+                            if (SocketUpdateUtil.updateMatchStatus(next.gameType,
+                                    handicapData.matchInfos as MutableList<MatchOdd>,
+                                    matchStatusChangeEvent,
+                                    context)) {
+
+                                needUpdate = true
+                            }
                         }
                     }
-
+//                    handicapData.matchInfos.forEach { hotMatchInfo ->
+//
+//                        if (SocketUpdateUtil.updateMatchStatus(
+//                                hotMatchInfo.gameType,
+//                                handicapData.matchInfos as MutableList<MatchOdd>,
+//                                matchStatusChangeEvent,
+//                                context
+//                            )
+//                        ) {
+//                            needUpdate = true
+//                            return@forEach
+//                        }
+//                    }
+         //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -525,6 +540,7 @@ class MainHomeFragment :
                 val targetList = homeHotLiveAdapter.data
                 var needUpdate = false // 记录是否要更新赛事清单
                  targetList.forEachIndexed { index, hotMatchLiveData ->
+
                      var matchList = listOf(hotMatchLiveData).toMutableList()
                      if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
 
@@ -535,7 +551,9 @@ class MainHomeFragment :
                              matchStatusChangeEvent,
                              context
                      )){
+
                          needUpdate = true
+                         return@forEachIndexed
                      }
                  }
                 if (needUpdate) {
@@ -673,7 +691,6 @@ class MainHomeFragment :
                                 hotMatchInfo,
                                 oddsChangeEvent)
                         ) {
-//                            Log.d("hjq", "oddsChangeListener=" + hotMatchInfo.homeName)
                             updateBetInfo(hotMatchInfo, oddsChangeEvent)
                             leagueOddMap[hotMatchInfo.id] = hotMatchInfo
                             needUpdate = true
@@ -1056,6 +1073,11 @@ class MainHomeFragment :
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
+//            ll_home_content.visibility = View.GONE
+//            home_main_fragment.visibility = View.VISIBLE
+//            childFragmentManager.beginTransaction()
+//                .replace(R.id.home_main_fragment, HomeLiveFragment.newInstance())
+//                .commit()
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
         //点击电子跳转
@@ -1099,18 +1121,18 @@ class MainHomeFragment :
                 iv_live_type.visibility = View.VISIBLE
                 iv_publicity.pause()
             }
-      //      LogUtil.d(it.pullRtmpUrl)
+            LogUtil.d(it.pullRtmpUrl)
 
 
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
-    //    LogUtil.d("")
+        LogUtil.d("")
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
         //ERROR_CODE_IO_ERROR=-3 网络异常
-//        LogUtil.e(p0.toString() + "," + p1.toString())
+        LogUtil.e(p0.toString() + "," + p1.toString())
         if (iv_publicity == null) {
             return false
         }
@@ -1130,6 +1152,56 @@ class MainHomeFragment :
         return false
     }
 
+    private fun setStatusText(matchInfo: MatchInfo) {
+        tv_first_half_game.text = when {
+            (TimeUtil.isTimeInPlay(matchInfo?.startTime)
+                    && matchInfo?.status == GameStatus.POSTPONED.code
+                    && (matchInfo?.gameType == GameType.FT.name || matchInfo?.gameType == GameType.BK.name )) -> {
+               getString(R.string.game_postponed)
+            }
+            TimeUtil.isTimeInPlay(matchInfo?.startTime) -> {
+                if (matchInfo?.statusName18n != null) {
+                   matchInfo?.statusName18n
+                } else {
+                    ""
+                }
+            }
+            else -> {
+                if (TimeUtil.isTimeToday(matchInfo?.startTime))
+                    getString((R.string.home_tab_today))
+                else
+                   matchInfo?.startDateDisplay
+            }
+        }
+    }
+
+    //赛事时间状态的方法
+    private fun setupMatchTimeAndStatus(
+        item: MatchInfo,
+        isTimerEnable: Boolean,
+        isTimerPause: Boolean
+    ) {
+        setStatusText(item)
+        setTextViewStatus(item)
+    }
+    //上下半场
+    private fun setTextViewStatus(item: MatchInfo) {
+        when {
+            (TimeUtil.isTimeInPlay(item.startTime) && item.status == GameStatus.POSTPONED.code && (item.gameType == GameType.FT.name || item.gameType == GameType.BK.name || item.gameType == GameType.TN.name)) -> {
+
+                tv_match_time.visibility = View.GONE
+            }
+
+            TimeUtil.isTimeInPlay(item.startTime) -> {
+                if (item.statusName18n != null) {
+                    tvGameStatus.visibility = View.VISIBLE
+                }
+            }
+            TimeUtil.isTimeAtStart(item.startTime) -> {
+                tvGameStatus.visibility = View.GONE
+            }
+        }
+    }
 
 
 }

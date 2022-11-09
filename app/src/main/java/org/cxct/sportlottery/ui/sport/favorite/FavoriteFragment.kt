@@ -374,7 +374,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (SocketUpdateUtil.updateMatchStatus(
                             gameType = gameType?.key,
-                            leagueOdd.matchOdds.toMutableList(),
+                            leagueOdd.matchOdds?.toMutableList(),
                             matchStatusChangeEvent,
                             context
                         ) &&
