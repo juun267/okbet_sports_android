@@ -1053,11 +1053,6 @@ class MainHomeFragment :
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
-//            ll_home_content.visibility = View.GONE
-//            home_main_fragment.visibility = View.VISIBLE
-//            childFragmentManager.beginTransaction()
-//                .replace(R.id.home_main_fragment, HomeLiveFragment.newInstance())
-//                .commit()
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
         //点击电子跳转
