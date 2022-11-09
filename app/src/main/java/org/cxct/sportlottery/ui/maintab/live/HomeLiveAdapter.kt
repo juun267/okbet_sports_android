@@ -11,14 +11,17 @@ import org.cxct.sportlottery.ui.menu.OddsType
 
 class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
     RecyclerView.Adapter<ItemHomeLiveHolder>() {
+
+    private lateinit var holder: ItemHomeLiveHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeLiveHolder {
-        return ItemHomeLiveHolder(
+        holder = ItemHomeLiveHolder(
             ItemHomeLiveBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             ), homeLiveListener
         )
+        return holder
     }
 
 
@@ -71,12 +74,17 @@ class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
             }
         }
 
+
     override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
         holder.bind(data = itemData, oddsType = oddsType)
+
     }
 
     override fun getItemCount(): Int = data.size
 
+    fun setVolumeMute(){
+        holder.setVolumeStateMute()
+    }
 
 }

@@ -40,6 +40,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 
 class HomeLiveFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -111,6 +112,10 @@ class HomeLiveFragment :
         if (!hidden) {
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
+        } else {
+            homeLiveAdapter.expandMatchId = null
+            //todo 待测试  Timber.d("视频播放静音")
+            homeLiveAdapter.setVolumeMute()
         }
     }
 
