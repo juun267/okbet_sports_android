@@ -111,6 +111,7 @@ class SportListFragment :
                 loading()
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
+                iv_arrow.isSelected = false
             }
 
             thirdGameListener = ThirdGameListener {
