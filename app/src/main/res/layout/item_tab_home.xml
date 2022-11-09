@@ -3,9 +3,10 @@
     android:layout_width="wrap_content"
     android:layout_height="37dp"
     android:gravity="center_vertical"
-    android:paddingHorizontal="10dp"
-    android:layout_marginRight="@dimen/margin_12"
-    android:paddingBottom="3dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="12dp"
+    android:layout_margin="@dimen/margin_5"
+    android:elevation="2dp"
     android:background="@drawable/selector_tab_home_tabitem">
 
     <ImageView
