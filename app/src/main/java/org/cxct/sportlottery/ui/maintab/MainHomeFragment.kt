@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -182,6 +183,8 @@ class MainHomeFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        LogUtil.d("onCreateView")
+        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -410,7 +413,7 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-                        LogUtil.d(matchInfo.statusName18n)
+                   //     LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -459,13 +462,14 @@ class MainHomeFragment :
                            }
                        }
                    }
+                   //循环遍历所有数据并解除订阅
                    hotHandicapAdapter.data.forEach {
                        it.matchInfos.forEach {
                            unSubscribeChannelHall(it.gameType, it.id)
                        }
                    }
                    hotHandicapAdapter.setNewData(list)
-                   //先解除全部賽事訂
+                   //订阅赛事
                    subscribeQueryData(list)
                }
            }
@@ -510,10 +514,11 @@ class MainHomeFragment :
                             )
                         ) {
                             needUpdate = true
+//                            Log.d("hjq","needUpdate==="+hotMatchInfo.homeName)
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
-         //           LogUtil.toJson(matchStatusChangeEvent)
+
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -533,7 +538,6 @@ class MainHomeFragment :
                              context
                      )){
                          needUpdate = true
-
                      }
                  }
                 if (needUpdate) {
@@ -671,6 +675,7 @@ class MainHomeFragment :
                                 hotMatchInfo,
                                 oddsChangeEvent)
                         ) {
+//                            Log.d("hjq", "oddsChangeListener=" + hotMatchInfo.homeName)
                             updateBetInfo(hotMatchInfo, oddsChangeEvent)
                             leagueOddMap[hotMatchInfo.id] = hotMatchInfo
                             needUpdate = true
@@ -890,6 +895,7 @@ class MainHomeFragment :
     private fun subscribeChannelHall(recommend: HandicapData) {
         recommend.matchInfos.forEach {
             subscribeChannelHall(it.gameType, it.id)
+//            LogUtil.d("homeName=="+"${it.homeName}"+","+"订阅")
         }
     }
 
@@ -1096,18 +1102,18 @@ class MainHomeFragment :
                 iv_live_type.visibility = View.VISIBLE
                 iv_publicity.pause()
             }
-            LogUtil.d(it.pullRtmpUrl)
+      //      LogUtil.d(it.pullRtmpUrl)
 
 
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        LogUtil.d("")
+    //    LogUtil.d("")
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
         //ERROR_CODE_IO_ERROR=-3 网络异常
-        LogUtil.e(p0.toString() + "," + p1.toString())
+//        LogUtil.e(p0.toString() + "," + p1.toString())
         if (iv_publicity == null) {
             return false
         }
