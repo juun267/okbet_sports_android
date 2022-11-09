@@ -276,11 +276,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_weight="1"
+                android:visibility="visible"
                 android:background="@drawable/button_radius_8_bet_button"
                 android:gravity="center"
                 android:text="@string/btn_sure"
                 android:textColor="@color/color_E8EFFD"
                 android:textSize="@dimen/textSize16sp" />
+
+            <LinearLayout
+                android:id="@+id/lin_loading"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:gravity="center"
+                android:background="@drawable/button_radius_8_bet_button">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/submitting"
+                    android:textColor="@color/color_FFFFFF_FFFFFF"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:indeterminateDrawable="@drawable/rotate_bet_loading_view" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

@@ -50,7 +50,9 @@ class ItemHomeLiveHolder(
         initPlayView()
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                binding.videoView.start()
+                if (!binding.videoView.isPlaying) {
+                    binding.videoView.start()
+                }
             }
             binding.rippleView.showWaveAnimation()
         } else {

@@ -106,18 +106,11 @@ class HomeLiveFragment :
         viewModel.getLiveRoundHall()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
-        } else {
-            homeLiveAdapter.expandMatchId = null
         }
     }
 

@@ -110,12 +110,14 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
         //投注結果
         viewModel.betAddResult.observe(this.viewLifecycleOwner) {
+            hideLoading()
             it.getContentIfNotHandled().let { result ->
 //                showReceipt = result != null
                 result?.let { resultNotNull ->
                     if (resultNotNull.success) {
                         //检查是否有item注单下载失败
                         betResultData = resultNotNull.receipt
+                        setupTotalValue()
                         betReceiptDiffAdapter?.apply {
                             betResultData?.apply {
                                 submit(
@@ -309,7 +311,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             ) {}
             return
         }
-
+        showLoading()
         viewModel.addBetList(
             betList,
             parlayList,
@@ -347,5 +349,15 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 )
             )
         }
+    }
+
+    fun showLoading() {
+        btn_complete.isVisible = false
+        lin_loading.isVisible = true
+    }
+
+    override fun hideLoading() {
+        btn_complete.isVisible = true
+        lin_loading.isVisible = false
     }
 }
