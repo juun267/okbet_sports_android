@@ -182,6 +182,7 @@ class MainHomeFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
