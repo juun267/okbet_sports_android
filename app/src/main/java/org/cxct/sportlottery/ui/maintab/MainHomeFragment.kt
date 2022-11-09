@@ -94,38 +94,12 @@ class MainHomeFragment :
     private val homeHotLiveAdapter by lazy {//热门直播
         HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
 
-
-            val socketValue = data.matchInfo.socketMatchStatus
-            if (needCountStatus(socketValue)) {
-                tv_match_time.text = data.runningTime
-                listener = object : TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        if (timeMillis > 1000) {
-                            val min = TimeUtil.longToMinute(timeMillis)
-                            tv_match_time.text = String.format(
-                                getString(R.string.at_start_remain_minute),
-                                min
-                            )
-                        } else {
-                            //等待Socket更新
-                            tv_match_time.text = String.format(
-                               getString(R.string.at_start_remain_minute),
-                                0
-                            )
-                        }
-                        data.matchInfo.remainTime = timeMillis
-                        data.runningTime = tv_match_time.text.toString()
-                    }
-
-                }
-            }
             if (!data.matchInfo.statusName18n.isNullOrEmpty()){
                 tv_first_half_game.text = data.matchInfo.statusName18n
                 tv_first_half_game.setBackgroundResource(R.drawable.bg_radius_100_text)
             }else{
                 tv_first_half_game.setBackgroundResource(0)
             }
-            LogUtil.d(data.matchInfo.statusName18n)
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
@@ -141,12 +115,6 @@ class MainHomeFragment :
             tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
             data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
-
-            setupMatchTimeAndStatus(
-                item = data.matchInfo,
-                isTimerEnable = (data.matchInfo.gameType == GameType.FT.key || data.matchInfo.gameType == GameType.BK.key ),
-                isTimerPause = data.matchInfo.stopped == TimeCounting.STOP.value
-            )
         })
 
     }
@@ -332,9 +300,7 @@ class MainHomeFragment :
             })
             viewModel.getMoney()
         }
-//        lin_search.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-//        }
+
         setupLogin()
     }
     @SuppressLint("SetTextI18n")
@@ -354,11 +320,7 @@ class MainHomeFragment :
            // tv_live_count.text = it
             tv_hot_live_find_more.text = getString(R.string.see_more) + (if (it == "0") "" else it)
         }
-        viewModel.userInfo.observe(viewLifecycleOwner) {
-//            val newDiscount = userInfo?.discount ?: 1.0F
-//            viewModel.publicityUpdateDiscount(mPublicityAdapter.discount, newDiscount)
-//            mPublicityAdapter.discount = newDiscount
-        }
+
         viewModel.userMoney.observe(viewLifecycleOwner) {
 
         }
@@ -366,24 +328,6 @@ class MainHomeFragment :
             it?.let { oddsType ->
                 hotHandicapAdapter.oddsType = oddsType
             }
-        }
-        viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
-//            event?.getContentIfNotHandled()?.let { recommendList ->
-//                hideLoading()
-//                if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-//                recommendList.forEach { recommend ->
-//                    // 將儲存的賠率表指定的賽事列表裡面
-//                    val leagueOddFromMap = leagueOddMap[recommend.leagueId]
-//                    leagueOddFromMap?.let {
-//                        recommend.oddsMap = leagueOddFromMap.oddsMap
-//                    }
-//                }
-//                homeRecommendAdapter.data = recommendList
-//
-//                //先解除全部賽事訂
-//                unSubscribeChannelHallAll()
-//                subscribeQueryData(recommendList)
-//            }
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
@@ -418,16 +362,7 @@ class MainHomeFragment :
 //                if (it.isNotEmpty()) mPublicityAdapter.addPromotionAnnouncementList(it)
 //        }
 //
-        viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
-            //非信用盤才顯示優惠活動
-//            if (!isCreditSystem())
-//                if (it.isNotEmpty()) {
-//                    lin_activity.visibility = View.VISIBLE
-//                    setupActivity(it)
-//                } else {
-//                    lin_activity.visibility = View.GONE
-//                }
-        }
+
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
             // setupType(it)
@@ -497,12 +432,6 @@ class MainHomeFragment :
                     matchInfo.roundNo?.let {
                         viewModel.getLiveInfo(it)
                     }
-
-                    setupMatchTimeAndStatus(
-                        item = matchInfo,
-                        isTimerEnable = (matchInfo.gameType == GameType.FT.key || matchInfo.gameType == GameType.BK.key ),
-                        isTimerPause = matchInfo.stopped == TimeCounting.STOP.value
-                    )
                 }
 
                     homeHotLiveAdapter.data = list
@@ -1204,56 +1133,6 @@ class MainHomeFragment :
         return false
     }
 
-    private fun setStatusText(matchInfo: MatchInfo) {
-        tv_first_half_game.text = when {
-            (TimeUtil.isTimeInPlay(matchInfo?.startTime)
-                    && matchInfo?.status == GameStatus.POSTPONED.code
-                    && (matchInfo?.gameType == GameType.FT.name || matchInfo?.gameType == GameType.BK.name )) -> {
-               getString(R.string.game_postponed)
-            }
-            TimeUtil.isTimeInPlay(matchInfo?.startTime) -> {
-                if (matchInfo?.statusName18n != null) {
-                   matchInfo?.statusName18n
-                } else {
-                    ""
-                }
-            }
-            else -> {
-                if (TimeUtil.isTimeToday(matchInfo?.startTime))
-                    getString((R.string.home_tab_today))
-                else
-                   matchInfo?.startDateDisplay
-            }
-        }
-    }
-
-    //赛事时间状态的方法
-    private fun setupMatchTimeAndStatus(
-        item: MatchInfo,
-        isTimerEnable: Boolean,
-        isTimerPause: Boolean
-    ) {
-        setStatusText(item)
-        setTextViewStatus(item)
-    }
-    //上下半场
-    private fun setTextViewStatus(item: MatchInfo) {
-        when {
-            (TimeUtil.isTimeInPlay(item.startTime) && item.status == GameStatus.POSTPONED.code && (item.gameType == GameType.FT.name || item.gameType == GameType.BK.name || item.gameType == GameType.TN.name)) -> {
-
-                tv_match_time.visibility = View.GONE
-            }
-
-            TimeUtil.isTimeInPlay(item.startTime) -> {
-                if (item.statusName18n != null) {
-                    tvGameStatus.visibility = View.VISIBLE
-                }
-            }
-            TimeUtil.isTimeAtStart(item.startTime) -> {
-                tvGameStatus.visibility = View.GONE
-            }
-        }
-    }
 
 
 }
