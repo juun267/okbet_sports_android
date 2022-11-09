@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
@@ -60,8 +59,6 @@ import java.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-@SuppressLint("NotifyDataSetChanged", "LogNotTimber")
-@RequiresApi(Build.VERSION_CODES.M)
 class SportOutrightFragment :
     BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
     companion object {

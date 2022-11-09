@@ -16,6 +16,7 @@ import com.luck.picture.lib.tools.ScreenUtils
 
 import kotlinx.android.synthetic.main.view_status_spinner_new.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ItemPlaySpinnerNewBinding
 import org.cxct.sportlottery.ui.common.StatusSheetData
 
 
@@ -38,10 +39,10 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         get() = selectItem.code
 
     var itmeColor: Int = Color.BLACK
+    var maxWidth: Int = 0
 
     init {
-        val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner_new, null)
-        addView(view)
+        val view = LayoutInflater.from(context).inflate(R.layout.view_status_spinner_new, this, true)
         view.apply {
             val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.StatusBottomSheetStyle,0,0)
             val arrowImg = typedArray.getResourceId(R.styleable.StatusBottomSheetStyle_arrowSrc, R.drawable.ic_arrow_gray)
@@ -56,11 +57,13 @@ class StatusSpinnerNewView @JvmOverloads constructor(
             tv_name.gravity = textGravity
             tv_name.setTextColor(ContextCompat.getColor(context, R.color.color_FFFFFF_414655))
             setOnClickListener {
-                this@StatusSpinnerNewView.callOnClick()
                 if (mListPop.isShowing) {
                     mListPop.dismiss()
                 } else {
-                    cl_root_new.doOnLayout { mListPop.show() }
+                    cl_root_new.doOnLayout {
+                        mListPop.setAnchorView(parent!! as View) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
+                        mListPop.show()
+                    }
                 }
             }
         }
@@ -72,21 +75,20 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         }
 
         mListPop = ListPopupWindow(context)
-        spinnerAdapter = StatusSpinnerNewAdapter(dataList) { mListPop.width = Math.max(it, measuredWidth) }
+        spinnerAdapter = StatusSpinnerNewAdapter(dataList)
+
         spinnerAdapter!!.setItmeColor(itmeColor)
         mListPop.height = LayoutParams.WRAP_CONTENT
         mListPop.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_play_category_pop))
         mListPop.setAdapter(spinnerAdapter)
-        mListPop.setAnchorView(cl_root_new) //设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点
         mListPop.setModal(true) //设置是否是模式
         mListPop.setOnItemClickListener(object : AdapterView.OnItemClickListener {
-            @SuppressLint("ResourceAsColor")
             override fun onItemClick(
                 parent: AdapterView<*>?,
                 view: View?,
                 position: Int,
-                id: Long
-            ) {
+                id: Long) {
+
                 mListPop.dismiss()
                 selectItem = dataList.get(position)
                 setSelectCode(selectItem.code)
@@ -96,9 +98,35 @@ class StatusSpinnerNewView @JvmOverloads constructor(
         })
     }
 
+    private fun resetWidth() {
+        calculateWidth()
+        val width = Math.max(maxWidth, measuredWidth)
+        mListPop.width = width
+        (parent as View?)?.let {
+            it.layoutParams.width = width
+            it.layoutParams = it.layoutParams
+        }
+    }
+
+    private fun calculateWidth() {
+        var text = ""
+        dataList.forEach {
+            it.showName?.let {
+                if (it.length > text.length) {
+                    text = it
+                }
+            }
+        }
+        val binding = ItemPlaySpinnerNewBinding.inflate(LayoutInflater.from(context), this, false)
+        binding.tvPlay.text = text
+        binding.root.measure(0, 0)
+        maxWidth = binding.root.measuredWidth
+    }
+
     fun setItemData(itemData: MutableList<StatusSheetData>) {
         dataList.clear()
         dataList.addAll(itemData)
+        resetWidth()
         spinnerAdapter?.notifyDataSetChanged()
         if (dataList.size > 8) {
             mListPop.height = ScreenUtils.getScreenHeight(context) / 2

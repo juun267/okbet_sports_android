@@ -67,7 +67,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
          )
     }
 
-    private var betListFragment = BetListFragment()
+    private val betListFragment by lazy { BetListFragment() }
     private var sportListFragment: Fragment? = null
 
     var jumpMatchType: MatchType? = null
@@ -138,8 +138,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     private fun initTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                selectTab(tab?.position)
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                selectTab(tab.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -210,7 +210,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
 
 
-    private fun selectTab(position: Int?) {
+    private fun selectTab(position: Int) {
         if (position == null) return
         var matchType =
             matchTypeTabPositionMap.filterValues { it == tabLayout.selectedTabPosition }.entries.first().key
