@@ -17,6 +17,7 @@ import android.text.style.StyleSpan
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_forget_password.*
 import kotlinx.android.synthetic.main.activity_forget_password.tv_customer_service
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPasswordBinding
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -71,7 +73,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         binding.tvTitleForgetPassword.setGradientSpan(getColor(R.color.color_71ADFF),
             getColor(R.color.color_1971FD),
             true)
-
+        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetPhoneNum.checkRegisterListener{viewModel.checkPhone(it)}
         binding.eetSmsCode.checkRegisterListener { viewModel.checkSecurityCode(it) }
         binding.eetLoginPasswordForget.transformationMethod =
@@ -80,6 +83,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             AsteriskPasswordTransformationMethod()
         binding.eetLoginPasswordForget.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetConfirmPasswordForget.checkRegisterListener { viewModel.checkConfirmPassword(eet_login_password_forget.text.toString(),it) }
+
+        binding.ivReturn.setOnClickListener { updateValidCode() }
         binding.btnSendSms.setOnClickListener {
             //先校验手机号码
             viewModel.getSendSms(phoneNum = eet_phone_num.text.toString())
@@ -90,6 +95,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
             }
             if (page<3){
+                if (page == 0){
+
+                }
                 if (page ==1){
                    viewModel.getCheckPhone(
                         phone = eet_phone_num.text.toString(),
@@ -162,7 +170,21 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     //数据回调
     @SuppressLint("SetTextI18n")
     private fun initObserve() {
+        viewModel.accountMsg.observe(this){
+            if (it.first == null) {
+                viewModel.checkAccountExist(binding.eetAccount.text.toString())
+                return@observe
+            }else{
+                binding.etAccount.setError(
+                    it.first,
+                    false
+                )
+            }
+        }
         viewModel.smsResult.observe(this) {
+            updateUiWithResult(it)
+        }
+        viewModel.validCodeResult.observe(this) {
             updateUiWithResult(it)
         }
         viewModel.smsCodeResult.observe(this){
@@ -175,6 +197,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 }
             }
         }
+
+
         viewModel.resetPasswordResult.observe(this){
             if (it?.success == true){
                 page++
@@ -215,6 +239,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         viewModel.validateCodeMsg.observe(this){
             binding.etSmsValidCode.setError(it.first,false)
         }
+
         viewModel.focusChangeCheckAllInputComplete(page)
     }
 
@@ -222,7 +247,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private fun setupBackButton() {
         binding.btnBack.setOnClickListener {
             when (page) {
-                1 -> {
+                0-> {
                     finish()
                 }
                 3-> {
@@ -240,25 +265,35 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     //页面显示隐藏
     private fun setPage() {
         when (page) {
-            1->{
-                binding.firstPager.visibility = View.VISIBLE
+            0-> {
+                binding.clAccount.visibility = View.VISIBLE
+                binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.GONE
                 binding.clSuccess.visibility = View.GONE
-                binding.labelRegister.text = getString(R.string.please_get_forget_password)
+                binding.btnPut.text = getString(R.string.next_step)
+            }
+            1->{
+                binding.firstPager.visibility = View.VISIBLE
+                binding.clAccount.visibility = View.GONE
+                binding.clPassword.visibility = View.GONE
+                binding.clSuccess.visibility = View.GONE
+               // binding.labelRegister.text = getString(R.string.please_get_forget_password)
                 binding.btnPut.text = getString(R.string.next_step)
             }
             2 ->{
+                binding.clAccount.visibility = View.GONE
                 binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.VISIBLE
                 binding.clSuccess.visibility = View.GONE
-                binding.labelRegister.text = getString(R.string.please_set_forget_password)
+              // binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.submit)
             }
             3->{
+                binding.clAccount.visibility = View.GONE
                 binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.GONE
                 binding.clSuccess.visibility = View.VISIBLE
-                binding.labelRegister.text = getString(R.string.please_set_forget_password)
+              //  binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.to_back_login)
             }
         }
@@ -300,6 +335,34 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             binding.etSmsValidCode.setError(smsResult?.msg,false)
         }
     }
+
+//获取随机验证码
+    private fun updateValidCode() {
+        val data = viewModel.validCodeResult.value?.validCodeData
+        viewModel.getValidCode(data?.identity)
+        binding.eetVerificationCode.apply {
+            if (text.isNotBlank()) {
+                text = null
+            }
+        }
+    }
+
+    private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
+        if (validCodeResult?.success == true) {
+            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
+            Glide.with(this)
+                .load(bitmap)
+                .into(binding.ivVerification)
+        } else {
+            updateValidCode()
+
+            ToastUtil.showToastInCenter(
+                this@ForgetPasswordActivity,
+                getString(R.string.get_valid_code_fail_point)
+            )
+        }
+    }
+
     //发送验证码开始倒计时
     private fun showSmeTimer300() {
         try {
@@ -356,5 +419,14 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     override fun onDestroy() {
         super.onDestroy()
         stopSmeTimer()
+    }
+
+    private fun adjustEnableLoginButton(isEnable: Boolean) {
+        if (isEnable) {
+            binding.btnPut.alpha = 1.0f
+        }else{
+            binding.btnPut.alpha = 0.5f
+        }
+        binding.btnPut.isEnabled = isEnable
     }
 }

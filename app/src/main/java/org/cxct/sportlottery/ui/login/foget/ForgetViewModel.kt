@@ -7,8 +7,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
 import org.cxct.sportlottery.network.index.sendSms.SmsRequest
+import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
+import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
@@ -22,10 +25,14 @@ class ForgetViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-    //账户异常提示
+    //手机号异常提示
     val phoneMsg: LiveData<Pair<String?, Boolean>>
         get() = _phoneMsg
     private val _phoneMsg = MutableLiveData<Pair<String?, Boolean>>()
+    //验证码异常提示
+    val accountCodeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _accountCodeMsg
+    private val _accountCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
 
     //密码异常提示
     val passwordMsg: LiveData<Pair<String?, Boolean>>
@@ -42,6 +49,9 @@ class ForgetViewModel(
         get() = _validateCodeMsg
     private val _validateCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
 
+    val validCodeResult: LiveData<ValidCodeResult?>
+        get() = _validCodeResult
+    private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     //提交按钮状态
     val putEnable: LiveData<Boolean>
         get() = _putEnable
@@ -62,6 +72,39 @@ class ForgetViewModel(
     val resetPasswordResult: LiveData<ResetPasswordResult?>
         get() = _resetPasswordResult
     private val _resetPasswordResult = MutableLiveData<ResetPasswordResult?>()
+    //用户
+    val accountMsg: LiveData<Pair<String?, Boolean>>
+        get() = _accountMsg
+    private val _accountMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val checkAccountMsg: LiveData<CheckAccountResult>
+        get() = _checkAccountMsg
+    private val _checkAccountMsg = MutableLiveData<CheckAccountResult>()
+
+    //用户输入框校验
+    fun checkAccount(username: String): String? {
+        val msg = when {
+            username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyCombinationAccount(username) -> {
+                LocalUtils.getString(R.string.error_member_account)
+            }
+            !VerifyConstUtil.verifyAccount(username) -> LocalUtils.getString(R.string.error_member_account)
+            else -> null
+        }
+        _accountMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(0)
+        return msg
+    }
+    //用户随机验证码
+    fun checkValidCode(validCode: String): String? {
+        val msg = when {
+            validCode.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            else -> null
+        }
+        _accountCodeMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete(0)
+        return msg
+    }
     //手机号码输入验证
     fun checkPhone(phoneNum: String): String? {
         val msg = when {
@@ -124,6 +167,14 @@ class ForgetViewModel(
     //手机验证码页面检测
     private fun checkAllInputComplete(page: Int): Boolean {
         when (page) {
+            0->{
+                if (checkInputPair(accountMsg)) {
+                    return false
+                }
+                if (checkInputPair(accountCodeMsg)) {
+                    return false
+                }
+            }
             1 -> {
                 if (checkInputPair(phoneMsg)) {
                     return false
@@ -194,5 +245,27 @@ class ForgetViewModel(
             _resetPasswordResult.postValue(result)
         }
     }
+    //随机验证码网络请求
+    fun getValidCode(identity: String?) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.getValidCode(ValidCodeRequest(identity))
+            }
+            _validCodeResult.postValue(result)
+        }
+    }
+    //校验用户名
+    fun checkAccountExist(account: String) {
 
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.indexService.checkAccountExist(account)
+            }.let {
+                _checkAccountMsg.value = it
+
+                focusChangeCheckAllInputComplete(0)
+
+            }
+        }
+    }
 }
