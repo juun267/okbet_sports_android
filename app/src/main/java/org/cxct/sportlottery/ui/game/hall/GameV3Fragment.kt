@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
@@ -78,8 +77,6 @@ import java.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-@SuppressLint("NotifyDataSetChanged", "LogNotTimber")
-@RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class), Animation.AnimationListener {
 
     private val args: GameV3FragmentArgs by navArgs()

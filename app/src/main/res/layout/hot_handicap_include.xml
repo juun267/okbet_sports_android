@@ -30,15 +30,15 @@
         android:background="@drawable/shape_hot_handicap_bg"
         app:layout_constraintStart_toEndOf="@+id/tv_hot_handicap"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
         android:layout_marginStart="@dimen/margin_10"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <org.cxct.sportlottery.ui.component.StatusSpinnerNewView
             android:id="@+id/selector_order_status"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:paddingEnd="@dimen/margin_8"
             android:background="@drawable/shape_hot_handicap_bg"
             app:defaultStatusText="@string/ou_hdp_1x2_title"
             app:textColor="@color/color_025BE8_025BE8"
@@ -68,13 +68,14 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-       <androidx.recyclerview.widget.RecyclerView
-           android:id="@+id/rv_hot_handicap"
-           android:layout_marginHorizontal="@dimen/margin_14"
-           app:layout_constraintTop_toBottomOf="@+id/ll_hot_arrow"
-           android:paddingBottom="@dimen/margin_30"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           tools:itemCount="2"
-           tools:listitem="@layout/item_hot_handicap"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_hot_handicap"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        app:layout_constraintTop_toBottomOf="@+id/ll_hot_arrow"
+        android:paddingBottom="@dimen/margin_30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:itemCount="2"
+        tools:listitem="@layout/item_hot_handicap"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
+

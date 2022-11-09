@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -183,8 +182,6 @@ class MainHomeFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        LogUtil.d("onCreateView")
-        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -462,7 +459,6 @@ class MainHomeFragment :
                            }
                        }
                    }
-                   //循环遍历所有数据并解除订阅
                    hotHandicapAdapter.data.forEach {
                        it.matchInfos.forEach {
                            unSubscribeChannelHall(it.gameType, it.id)
@@ -515,6 +511,7 @@ class MainHomeFragment :
                         ) {
                             needUpdate = true
 //                            Log.d("hjq","needUpdate==="+hotMatchInfo.homeName)
+                            return@forEach
                             //TODO 更新邏輯待補，跟進GameV3Fragment
                         }
                     }
@@ -895,7 +892,6 @@ class MainHomeFragment :
     private fun subscribeChannelHall(recommend: HandicapData) {
         recommend.matchInfos.forEach {
             subscribeChannelHall(it.gameType, it.id)
-//            LogUtil.d("homeName=="+"${it.homeName}"+","+"订阅")
         }
     }
 

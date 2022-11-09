@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.core.view.doOnLayout
 import kotlinx.android.synthetic.main.item_play_spinner.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemPlaySpinnerNewBinding
 import org.cxct.sportlottery.ui.common.StatusSheetData
 
-class StatusSpinnerNewAdapter(dataItems: MutableList<StatusSheetData> = mutableListOf(),
-                              val widthCallback: (Int) -> Unit) : BaseAdapter() {
+class StatusSpinnerNewAdapter(dataItems: MutableList<StatusSheetData> = mutableListOf()) : BaseAdapter() {
 
     //加一項作為預設項目
     private val itemList = dataItems
@@ -43,13 +41,6 @@ class StatusSpinnerNewAdapter(dataItems: MutableList<StatusSheetData> = mutableL
         }
         view.tvPlay.setTextColor(color)
         viewHolder.bind(itemList[position], position)
-
-        view.measure(0, 0)
-        if (view.measuredWidth > maxWidth) {
-            maxWidth = view.measuredWidth
-            widthCallback.invoke(maxWidth)
-        }
-
         return view
     }
 
