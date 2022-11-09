@@ -84,6 +84,8 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 button_odd_detail.background = mBackground
             }
         } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
             typedArray.recycle()
         }
     }

@@ -14,6 +14,7 @@
         android:layout_height="139dp"
         tools:src="@drawable/ic_poker_item"/>
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_poker_name"
         android:textStyle="bold"
         android:textSize="@dimen/textSize14sp"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         tools:text="麻将牌九"/>
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_sub_poker_name"
         android:textSize="@dimen/textSize10sp"
         android:textColor="@color/color_6C7BA8_A7B2C4"

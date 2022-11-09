@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.coroutines.delay
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -90,38 +91,12 @@ class MainHomeFragment :
     private val homeHotLiveAdapter by lazy {//热门直播
         HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
 
-
-            val socketValue = data.matchInfo.socketMatchStatus
-            if (needCountStatus(socketValue)) {
-                tv_match_time.text = data.runningTime
-                listener = object : TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        if (timeMillis > 1000) {
-                            val min = TimeUtil.longToMinute(timeMillis)
-                            tv_match_time.text = String.format(
-                                getString(R.string.at_start_remain_minute),
-                                min
-                            )
-                        } else {
-                            //等待Socket更新
-                            tv_match_time.text = String.format(
-                               getString(R.string.at_start_remain_minute),
-                                0
-                            )
-                        }
-                        data.matchInfo.remainTime = timeMillis
-                        data.runningTime = tv_match_time.text.toString()
-                    }
-
-                }
-            }
             if (!data.matchInfo.statusName18n.isNullOrEmpty()){
                 tv_first_half_game.text = data.matchInfo.statusName18n
                 tv_first_half_game.setBackgroundResource(R.drawable.bg_radius_100_text)
             }else{
                 tv_first_half_game.setBackgroundResource(0)
             }
-            LogUtil.d(data.matchInfo.statusName18n)
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
@@ -137,12 +112,6 @@ class MainHomeFragment :
             tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
             data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
-
-            setupMatchTimeAndStatus(
-                item = data.matchInfo,
-                isTimerEnable = (data.matchInfo.gameType == GameType.FT.key || data.matchInfo.gameType == GameType.BK.key ),
-                isTimerPause = data.matchInfo.stopped == TimeCounting.STOP.value
-            )
         })
 
     }
@@ -220,14 +189,14 @@ class MainHomeFragment :
         super.onViewCreated(view, savedInstanceState)
         viewModel.getConfigData()
         viewModel.getGameEntryConfig(1, null)
-        viewModel.getHandicapConfig(1)
+
         viewModel.getHotLiveList()
         viewModel.getLiveRoundCount()
         initView()
         initObservable()
         queryData()
         initSocketObservers()
-
+        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
     }
 
     override fun onResume() {
@@ -328,9 +297,7 @@ class MainHomeFragment :
             })
             viewModel.getMoney()
         }
-//        lin_search.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-//        }
+
         setupLogin()
     }
     @SuppressLint("SetTextI18n")
@@ -350,11 +317,7 @@ class MainHomeFragment :
            // tv_live_count.text = it
             tv_hot_live_find_more.text = getString(R.string.see_more) + (if (it == "0") "" else it)
         }
-        viewModel.userInfo.observe(viewLifecycleOwner) {
-//            val newDiscount = userInfo?.discount ?: 1.0F
-//            viewModel.publicityUpdateDiscount(mPublicityAdapter.discount, newDiscount)
-//            mPublicityAdapter.discount = newDiscount
-        }
+
         viewModel.userMoney.observe(viewLifecycleOwner) {
 
         }
@@ -362,24 +325,6 @@ class MainHomeFragment :
             it?.let { oddsType ->
                 hotHandicapAdapter.oddsType = oddsType
             }
-        }
-        viewModel.publicityRecommend.observe(viewLifecycleOwner) { event ->
-//            event?.getContentIfNotHandled()?.let { recommendList ->
-//                hideLoading()
-//                if (recommendList.isEmpty()) return@observe //推薦賽事為empty不顯示
-//                recommendList.forEach { recommend ->
-//                    // 將儲存的賠率表指定的賽事列表裡面
-//                    val leagueOddFromMap = leagueOddMap[recommend.leagueId]
-//                    leagueOddFromMap?.let {
-//                        recommend.oddsMap = leagueOddFromMap.oddsMap
-//                    }
-//                }
-//                homeRecommendAdapter.data = recommendList
-//
-//                //先解除全部賽事訂
-//                unSubscribeChannelHallAll()
-//                subscribeQueryData(recommendList)
-//            }
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
@@ -414,16 +359,7 @@ class MainHomeFragment :
 //                if (it.isNotEmpty()) mPublicityAdapter.addPromotionAnnouncementList(it)
 //        }
 //
-        viewModel.publicityPromotionList.observe(viewLifecycleOwner) {
-            //非信用盤才顯示優惠活動
-//            if (!isCreditSystem())
-//                if (it.isNotEmpty()) {
-//                    lin_activity.visibility = View.VISIBLE
-//                    setupActivity(it)
-//                } else {
-//                    lin_activity.visibility = View.GONE
-//                }
-        }
+
 
         viewModel.publicityMenuData.observe(viewLifecycleOwner) {
             // setupType(it)
@@ -475,7 +411,7 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-                        LogUtil.d(matchInfo.statusName18n)
+                   //     LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -493,12 +429,6 @@ class MainHomeFragment :
                     matchInfo.roundNo?.let {
                         viewModel.getLiveInfo(it)
                     }
-
-                    setupMatchTimeAndStatus(
-                        item = matchInfo,
-                        isTimerEnable = (matchInfo.gameType == GameType.FT.key || matchInfo.gameType == GameType.BK.key ),
-                        isTimerPause = matchInfo.stopped == TimeCounting.STOP.value
-                    )
                 }
 
                     homeHotLiveAdapter.data = list
@@ -535,12 +465,12 @@ class MainHomeFragment :
                            unSubscribeChannelHall(it.gameType, it.id)
                        }
                    }
+
                    hotHandicapAdapter.setNewData(list)
-                   //先解除全部賽事訂
+                   //订阅赛事
                    subscribeQueryData(list)
                }
            }
-
         }
         viewModel.matchLiveInfo.observe(viewLifecycleOwner) { event ->
             event?.peekContent()?.let { matchRound ->
@@ -563,27 +493,46 @@ class MainHomeFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
+                    LogUtil.d("serviceConnectStatus")
+                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
         }
+
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
+
             event?.let { matchStatusChangeEvent ->
                 hotHandicapAdapter.data.forEachIndexed { index, handicapData ->
-                    var needUpdate = false
-                    handicapData.matchInfos.forEach { hotMatchInfo ->
 
-                        if (SocketUpdateUtil.updateMatchStatus(
-                                hotMatchInfo.gameType,
-                                handicapData.matchInfos as MutableList<MatchOdd>,
-                                matchStatusChangeEvent,
-                                context
-                            )
-                        ) {
-                            needUpdate = true
-                            //TODO 更新邏輯待補，跟進GameV3Fragment
+                    var needUpdate = false
+                    handicapData.matchInfos?.iterator()?.let {
+
+                        while (!needUpdate && it.hasNext()) {
+
+                            val next = it.next()
+                            if (SocketUpdateUtil.updateMatchStatus(next.gameType,
+                                    handicapData.matchInfos as MutableList<MatchOdd>,
+                                    matchStatusChangeEvent,
+                                    context)) {
+
+                                needUpdate = true
+                            }
                         }
                     }
+//                    handicapData.matchInfos.forEach { hotMatchInfo ->
+//
+//                        if (SocketUpdateUtil.updateMatchStatus(
+//                                hotMatchInfo.gameType,
+//                                handicapData.matchInfos as MutableList<MatchOdd>,
+//                                matchStatusChangeEvent,
+//                                context
+//                            )
+//                        ) {
+//                            needUpdate = true
+//                            return@forEach
+//                        }
+//                    }
          //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
@@ -593,6 +542,7 @@ class MainHomeFragment :
                 val targetList = homeHotLiveAdapter.data
                 var needUpdate = false // 记录是否要更新赛事清单
                  targetList.forEachIndexed { index, hotMatchLiveData ->
+
                      var matchList = listOf(hotMatchLiveData).toMutableList()
                      if (hotMatchLiveData.matchInfo.id==matchStatusChangeEvent.matchStatusCO?.matchId){
 
@@ -603,8 +553,9 @@ class MainHomeFragment :
                              matchStatusChangeEvent,
                              context
                      )){
-                         needUpdate = true
 
+                         needUpdate = true
+                         return@forEachIndexed
                      }
                  }
                 if (needUpdate) {
@@ -661,11 +612,6 @@ class MainHomeFragment :
             }
         }
 
-//        receiver.leagueChange.observe(viewLifecycleOwner) {
-//            it?.let { leagueChangeEvent ->
-//                viewModel.publicityLeagueChange(leagueChangeEvent)
-//            }
-//        }
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
@@ -692,6 +638,7 @@ class MainHomeFragment :
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
+                LogUtil.d("producerUp")
                 subscribeQueryData(hotHandicapAdapter.data)
                 subScribeLiveData(homeHotLiveAdapter.data)
             }
@@ -884,15 +831,7 @@ class MainHomeFragment :
         }
     }
 
-    private fun goLoginPage() {
-        startActivity(Intent(context, LoginActivity::class.java))
-    }
 
-
-    private fun goGamePage() {
-        GameActivity.reStart(activity ?: requireActivity())
-        activity?.finish()
-    }
 
     private fun addOddsDialog(
         gameTypeCode: String,
@@ -1124,11 +1063,7 @@ class MainHomeFragment :
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
-//            ll_home_content.visibility = View.GONE
-//            home_main_fragment.visibility = View.VISIBLE
-//            childFragmentManager.beginTransaction()
-//                .replace(R.id.home_main_fragment, HomeLiveFragment.newInstance())
-//                .commit()
+
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
         //点击电子跳转
@@ -1203,56 +1138,10 @@ class MainHomeFragment :
         return false
     }
 
-    private fun setStatusText(matchInfo: MatchInfo) {
-        tv_first_half_game.text = when {
-            (TimeUtil.isTimeInPlay(matchInfo?.startTime)
-                    && matchInfo?.status == GameStatus.POSTPONED.code
-                    && (matchInfo?.gameType == GameType.FT.name || matchInfo?.gameType == GameType.BK.name )) -> {
-               getString(R.string.game_postponed)
-            }
-            TimeUtil.isTimeInPlay(matchInfo?.startTime) -> {
-                if (matchInfo?.statusName18n != null) {
-                   matchInfo?.statusName18n
-                } else {
-                    ""
-                }
-            }
-            else -> {
-                if (TimeUtil.isTimeToday(matchInfo?.startTime))
-                    getString((R.string.home_tab_today))
-                else
-                   matchInfo?.startDateDisplay
-            }
-        }
-    }
 
-    //赛事时间状态的方法
-    private fun setupMatchTimeAndStatus(
-        item: MatchInfo,
-        isTimerEnable: Boolean,
-        isTimerPause: Boolean
-    ) {
-        setStatusText(item)
-        setTextViewStatus(item)
-    }
-    //上下半场
-    private fun setTextViewStatus(item: MatchInfo) {
-        when {
-            (TimeUtil.isTimeInPlay(item.startTime) && item.status == GameStatus.POSTPONED.code && (item.gameType == GameType.FT.name || item.gameType == GameType.BK.name || item.gameType == GameType.TN.name)) -> {
 
-                tv_match_time.visibility = View.GONE
-            }
 
-            TimeUtil.isTimeInPlay(item.startTime) -> {
-                if (item.statusName18n != null) {
-                    tvGameStatus.visibility = View.VISIBLE
-                }
-            }
-            TimeUtil.isTimeAtStart(item.startTime) -> {
-                tvGameStatus.visibility = View.GONE
-            }
-        }
-    }
+
 
 
 }

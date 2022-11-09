@@ -72,10 +72,10 @@ class HotHandicapAdapter(data:List<HandicapData>):
     override fun convert(helper: BaseViewHolder, item: HandicapData) {
         helper.setText(R.id.tv_league_name, item.league.name)
         helper.getView<ImageView>(R.id.iv_league_logo).setLeagueLogo(item.league.categoryIcon)
-
+    //    LogUtil.d("playType"+playType+","+"name"+"${item.league.name}"+"类型"+"${item.sportName}")
         when (playType){
             "1"-> {
-                if (item.sportName == "足球"){
+                if (item.sportName == LocalUtils.getString(R.string.soccer)){
                     helper.getView<TextView>(R.id.tv_title2).visibility = View.VISIBLE
                     helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.text_1))
                     helper.setText(R.id.tv_title2,LocalUtils.getString(R.string.text_x))
@@ -112,6 +112,7 @@ class HotHandicapAdapter(data:List<HandicapData>):
                 }
 
             } else {
+                (adapter as ItemHandicapAdapter).oddsType = oddsType
                 (adapter as ItemHandicapAdapter).data = item.matchInfos
             }
         }

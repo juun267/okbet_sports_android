@@ -111,6 +111,7 @@ class SportListFragment :
                 loading()
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
+                iv_arrow.isSelected = false
             }
 
             thirdGameListener = ThirdGameListener {
@@ -627,7 +628,7 @@ class SportListFragment :
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (SocketUpdateUtil.updateMatchStatus(
                                     gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
-                                    leagueOdd.matchOdds.toMutableList(),
+                                    leagueOdd.matchOdds?.toMutableList(),
                                     matchStatusChangeEvent,
                                     context
                                 ) &&
