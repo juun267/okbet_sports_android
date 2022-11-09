@@ -55,7 +55,7 @@
         android:paddingStart="10dp"
         android:id="@+id/rv_egame"
         android:layout_marginTop="@dimen/margin_20"
-        android:paddingBottom="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_15"
         app:layout_constraintTop_toBottomOf="@+id/iv_logo_handicap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
