@@ -33,6 +33,7 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.coroutines.delay
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -182,21 +183,20 @@ class MainHomeFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getConfigData()
         viewModel.getGameEntryConfig(1, null)
-        viewModel.getHandicapConfig(1)
+
         viewModel.getHotLiveList()
         viewModel.getLiveRoundCount()
         initView()
         initObservable()
         queryData()
         initSocketObservers()
-
+        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
     }
 
     override fun onResume() {
@@ -465,12 +465,12 @@ class MainHomeFragment :
                            unSubscribeChannelHall(it.gameType, it.id)
                        }
                    }
+
                    hotHandicapAdapter.setNewData(list)
                    //订阅赛事
                    subscribeQueryData(list)
                }
            }
-
         }
         viewModel.matchLiveInfo.observe(viewLifecycleOwner) { event ->
             event?.peekContent()?.let { matchRound ->
@@ -493,6 +493,8 @@ class MainHomeFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
+                    LogUtil.d("serviceConnectStatus")
+                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
         }
@@ -623,6 +625,7 @@ class MainHomeFragment :
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
+                LogUtil.d("producerUp")
                 subscribeQueryData(hotHandicapAdapter.data)
                 subScribeLiveData(homeHotLiveAdapter.data)
             }
