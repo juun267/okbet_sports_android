@@ -73,7 +73,6 @@ class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
 
     override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
-//        holder.binding.vavatarBg.isVisible = position == 0
         holder.bind(data = itemData, oddsType = oddsType)
     }
 

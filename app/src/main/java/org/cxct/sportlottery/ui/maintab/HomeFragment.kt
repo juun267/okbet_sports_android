@@ -50,6 +50,7 @@ class HomeFragment :
         switchTabByPosition(0)
     }
 
+
     fun switchTabByPosition(position: Int) {
         if (position>0){
             (activity as MainTabActivity).homeBackView(true)
@@ -83,11 +84,6 @@ class HomeFragment :
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-//        (fragments[0] as MainHomeFragment).let {
-//            if (it.isAdded&&it.isVisible){
-//                it.showChangeFragment()
-//            }
-//        }
         fragments.find {
             it.isAdded&&it.isVisible
         }?.let {
