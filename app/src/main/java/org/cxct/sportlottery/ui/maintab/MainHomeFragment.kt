@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,14 +73,11 @@ class MainHomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class),
     PLOnVideoSizeChangedListener, PLOnErrorListener {
 
-
-
     private lateinit var mMatchInfo: MatchInfo
     interface TimerListener {
         fun onTimerUpdate(timeMillis: Long)
     }
     var listener: TimerListener? = null
-
 
     companion object {
         fun newInstance(): MainHomeFragment {
@@ -534,9 +530,13 @@ class MainHomeFragment :
                            }
                        }
                    }
+                   hotHandicapAdapter.data.forEach {
+                       it.matchInfos.forEach {
+                           unSubscribeChannelHall(it.gameType, it.id)
+                       }
+                   }
                    hotHandicapAdapter.setNewData(list)
                    //先解除全部賽事訂
-                   unSubscribeChannelHallAll()
                    subscribeQueryData(list)
                }
            }
@@ -742,7 +742,6 @@ class MainHomeFragment :
                                 hotMatchInfo,
                                 oddsChangeEvent)
                         ) {
-                            Log.d("hjq", "oddsChangeListener=" + hotMatchInfo.homeName)
                             updateBetInfo(hotMatchInfo, oddsChangeEvent)
                             leagueOddMap[hotMatchInfo.id] = hotMatchInfo
                             needUpdate = true
