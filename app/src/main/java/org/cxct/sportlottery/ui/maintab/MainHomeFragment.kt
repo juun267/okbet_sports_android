@@ -423,7 +423,9 @@ class MainHomeFragment :
                         viewModel.getLiveInfo(it)
                     }
                 }
-
+                    if(homeHotLiveAdapter.data.isNullOrEmpty()){
+                        homeHotLiveAdapter.mSelectedId = list.firstOrNull()?.matchInfo?.id
+                    }
                     homeHotLiveAdapter.data = list
 
                      //订阅直播
@@ -1128,6 +1130,11 @@ class MainHomeFragment :
         }
         iv_live_type.visibility = View.VISIBLE
         return false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        iv_publicity.stopPlayback()
     }
     
 

@@ -36,6 +36,7 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
     private var mNegateTextColor = R.color.color_FFFFFF_414655
     private var isShowDivider: Boolean = false
     private var isShowDividerBottom: Boolean = true
+    var dissmisCallback: ((CustomAlertDialog)-> Unit)? = null
 
     var isShowing = dialog?.isShowing
 
@@ -153,5 +154,10 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
 
     fun setCanceledOnTouchOutside(boolean: Boolean){
         dialog?.setCanceledOnTouchOutside(boolean)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        dissmisCallback?.invoke(this)
     }
 }
