@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
@@ -9,10 +10,11 @@ import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class HomeLiveAdapter(private val homeLiveListener: HomeLiveListener) :
+class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: HomeLiveListener) :
     RecyclerView.Adapter<ItemHomeLiveHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeLiveHolder {
         return ItemHomeLiveHolder(
+            lifecycleOwner,
             ItemHomeLiveBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,

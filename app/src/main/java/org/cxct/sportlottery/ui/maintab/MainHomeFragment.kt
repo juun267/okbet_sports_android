@@ -117,7 +117,7 @@ class MainHomeFragment :
     }
 
     private val hotHandicapAdapter by lazy {
-        HotHandicapAdapter(mutableListOf()).apply {
+        HotHandicapAdapter(this, mutableListOf()).apply {
             homeRecommendListener = HomeRecommendListener(
                 onItemClickListener = {matchInfo ->
                     matchInfo?.let {

@@ -3,11 +3,14 @@ package org.cxct.sportlottery.util
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import org.cxct.sportlottery.ui.game.publicity.OddStateHomeViewHolder
 import java.util.*
 
 object ViewHolderUtils {
-    abstract class TimerViewHolderTimer(itemView: View) : OddStateHomeViewHolder(itemView) {
+    abstract class TimerViewHolderTimer(lifecycleOwner: LifecycleOwner, itemView: View)
+        : OddStateHomeViewHolder(lifecycleOwner, itemView) {
+
         interface TimerListener {
             fun onTimerUpdate(timeMillis: Long)
         }
@@ -37,6 +40,7 @@ object ViewHolderUtils {
         private fun startTimer(isTimerPause: Boolean, startTime: Int, isDecrease: Boolean) {
             var timeMillis = startTime * 1000L
             stopTimer()
+
             Handler(Looper.getMainLooper()).post {
                 listener?.onTimerUpdate(timeMillis)
             }
@@ -65,6 +69,11 @@ object ViewHolderUtils {
         fun stopTimer() {
             timer?.cancel()
             timer = null
+        }
+
+        override fun onLifeDestroy() {
+            super.onLifeDestroy()
+            stopTimer()
         }
     }
 

@@ -60,6 +60,7 @@ class PublicityNewFragment : BaseBottomNavigationFragment<GameViewModel>(GameVie
     private var mRecommendList: List<Recommend> = listOf()
     private val mPublicityAdapter =
         GamePublicityNewAdapter(
+            this,
             GamePublicityNewAdapter.PublicityAdapterNewListener(
                 onLogoClickListener = {
                     removeBetListFragment()

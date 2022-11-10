@@ -62,6 +62,7 @@ class HomeLiveFragment :
     }
     private val homeLiveAdapter by lazy {
         HomeLiveAdapter(
+            this,
             HomeLiveListener(
                 onItemClickListener = {
                     navOddsDetailFragment(MatchType.IN_PLAY, it.matchInfo)

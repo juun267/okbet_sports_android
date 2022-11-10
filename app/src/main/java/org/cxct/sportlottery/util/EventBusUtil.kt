@@ -28,7 +28,7 @@ object EventBusUtil {
     }
 
     fun unregister(target: Any) {
-        if (!EventBus.getDefault().isRegistered(target)) {
+        if (EventBus.getDefault().isRegistered(target)) {
             EventBus.getDefault().unregister(target)
         }
     }

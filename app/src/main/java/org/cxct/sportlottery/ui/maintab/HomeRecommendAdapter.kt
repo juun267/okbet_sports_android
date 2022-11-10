@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeRecommendBinding
@@ -10,10 +11,11 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class HomeRecommendAdapter(private val homeRecommendListener: HomeRecommendListener) :
+class HomeRecommendAdapter(val lifecycleOwner: LifecycleOwner, private val homeRecommendListener: HomeRecommendListener) :
     RecyclerView.Adapter<ItemHomeRecommendHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeRecommendHolder {
         return ItemHomeRecommendHolder(
+            lifecycleOwner,
             ItemHomeRecommendBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
