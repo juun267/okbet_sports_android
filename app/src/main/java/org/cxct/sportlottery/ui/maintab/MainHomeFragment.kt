@@ -2,12 +2,14 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -106,6 +108,7 @@ class MainHomeFragment :
             tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
             data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+          //  playMatchVideo(mMatchInfo)
         })
 
     }
@@ -206,6 +209,19 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
+            if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                iv_live_type.visibility = View.VISIBLE
+                context?.let {
+                    Glide.with(it)
+                        .load(mMatchInfo.frontCoverUrl)
+                        .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                            .error(R.drawable.icon_novideodata))
+                        .into(iv_live_type)
+                }
+                iv_publicity.stopPlayback()
+            }else{
+                iv_live_type.visibility = View.GONE
+            }
         }
     }
 
@@ -233,7 +249,6 @@ class MainHomeFragment :
         initListView()
 
         nsv_home.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            LogUtil.d("i=="+i+"i2=="+i2+"i3==="+i3+"i4==="+i4)
             ll_come_back.visibility =
                 if (nsv_home.canScrollVertically(-1)) View.VISIBLE else View.GONE
         }
@@ -404,7 +419,6 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-                   //     LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -474,6 +488,7 @@ class MainHomeFragment :
                        hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                        hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
                        homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
+                       mMatchInfo = hotMatchLiveData.matchInfo
                        playMatchVideo(hotMatchLiveData.matchInfo)
                    }
                }
@@ -488,7 +503,6 @@ class MainHomeFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-                    LogUtil.d("serviceConnectStatus")
                     viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
@@ -528,7 +542,6 @@ class MainHomeFragment :
 //                            return@forEach
 //                        }
 //                    }
-         //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -633,7 +646,6 @@ class MainHomeFragment :
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                LogUtil.d("producerUp")
                 subscribeQueryData(hotHandicapAdapter.data)
                 subScribeLiveData(homeHotLiveAdapter.data)
             }
@@ -1116,8 +1128,23 @@ class MainHomeFragment :
         if (iv_publicity == null) {
             return false
         }
-        mMatchInfo.pullRtmpUrl?.let {
-            iv_publicity.start()
+
+        if (p0==-3||p0==-2){
+            with(iv_publicity) {
+                iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    iv_publicity.releasePointerCapture()
+                }
+            }
+            LogUtil.d("iv_publicity.stopPlayback()")
+            iv_live_type.visibility = View.VISIBLE
+            context?.let {
+                Glide.with(it)
+                    .load(mMatchInfo.frontCoverUrl)
+                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                        .error(R.drawable.icon_novideodata))
+                    .into(iv_live_type)
+            }
         }
         if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
             context?.let {

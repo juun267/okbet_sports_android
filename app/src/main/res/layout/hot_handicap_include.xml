@@ -56,8 +56,7 @@
         <TextView
             android:textColor="@color/color_025BE8"
             android:textSize="@dimen/textSize12sp"
-            android:layout_marginEnd="@dimen/margin_5"
-            android:text="@string/find_all"
+            android:text="@string/see_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <ImageView

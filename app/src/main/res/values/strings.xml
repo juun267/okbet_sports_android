@@ -1305,7 +1305,7 @@
     <string name="sport_classify">Sports Classification</string>
     <string name="check_all_inplay">All</string>
     <string name="expand_live">Live</string>
-    <string name="home_recommend">Recommended</string>
+    <string name="home_recommend">Popular</string>
     <string name="home_live">Live</string>
     <string name="home_sports">Sports</string>
     <string name="home_slot">Slot</string>
