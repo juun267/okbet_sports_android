@@ -15,7 +15,7 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
 
     private lateinit var holder: ItemHomeLiveHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeLiveHolder {
-        holder = ItemHomeLiveHolder(
+        return ItemHomeLiveHolder(
             lifecycleOwner,
             ItemHomeLiveBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -23,7 +23,6 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
                 false
             ), homeLiveListener
         )
-        return holder
     }
 
 
@@ -79,6 +78,7 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
 
     override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
+        this.holder = holder
         holder.bind(data = itemData, oddsType = oddsType)
 
     }
@@ -86,7 +86,9 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
     override fun getItemCount(): Int = data.size
 
     fun setVolumeMute(){
-        holder.setVolumeStateMute()
+        if (this::holder.isInitialized){
+            holder.setVolumeStateMute()
+        }
     }
 
 }
