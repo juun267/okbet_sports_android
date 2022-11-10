@@ -5,35 +5,20 @@
     android:layout_marginHorizontal="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <ImageView
-        android:id="@+id/iv_poker_bg"
-        android:scaleType="fitXY"
+    <androidx.cardview.widget.CardView
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="176dp"
-        android:layout_height="139dp"
-        tools:src="@drawable/ic_poker_item"/>
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/tv_poker_name"
-        android:textStyle="bold"
-        android:textSize="@dimen/textSize14sp"
-        android:textColor="@color/color_FFFFFF_535D76"
-        android:layout_marginTop="@dimen/margin_27"
-        android:layout_marginStart="@dimen/margin_16"
-        app:layout_constraintStart_toStartOf="@+id/iv_poker_bg"
-        app:layout_constraintTop_toTopOf="@+id/iv_poker_bg"
+        app:cardCornerRadius="@dimen/margin_8"
+        android:elevation="0dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="麻将牌九"/>
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/tv_sub_poker_name"
-        android:textSize="@dimen/textSize10sp"
-        android:textColor="@color/color_6C7BA8_A7B2C4"
-        app:layout_constraintTop_toBottomOf="@+id/tv_poker_name"
-        app:layout_constraintStart_toStartOf="@+id/tv_poker_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="BOARDGAME"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_poker_bg"
+            android:scaleType="fitXY"
+            android:layout_width="176dp"
+            android:layout_height="139dp"
+            tools:src="@drawable/ic_poker_item"/>
+    </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -429,7 +429,9 @@ class MainHomeFragment :
                         viewModel.getLiveInfo(it)
                     }
                 }
-
+                    if(homeHotLiveAdapter.data.isNullOrEmpty()){
+                        homeHotLiveAdapter.mSelectedId = list.firstOrNull()?.matchInfo?.id
+                    }
                     homeHotLiveAdapter.data = list
 
                      //订阅直播

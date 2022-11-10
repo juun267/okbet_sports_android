@@ -21,11 +21,11 @@ import org.cxct.sportlottery.util.setTeamLogo
 
 class HotLiveAdapter(private var clickListener:ItemClickListener):
     RecyclerView.Adapter<HotLiveAdapter.ItemViewHolder>() {
-    private var mSelectedPosition = 0
+    open var mSelectedId :String?= null
     var data: List<HotMatchLiveData> = mutableListOf()
         set(value) {
-            mSelectedPosition = 0
             field = value
+
             notifyDataSetChanged()
         }
 
@@ -38,10 +38,11 @@ class HotLiveAdapter(private var clickListener:ItemClickListener):
         val item = data[position]
         holder.bind(item)
         holder.apply {
-            group.isSelected =  mSelectedPosition == position
-            arrow.visibility = if (mSelectedPosition == position) View.VISIBLE else View.INVISIBLE
+
+            group.isSelected =  mSelectedId == item.matchInfo.id
+            arrow.visibility = if (mSelectedId == item.matchInfo.id) View.VISIBLE else View.INVISIBLE
             group.setOnClickListener {
-                mSelectedPosition = position
+                mSelectedId = item.matchInfo.id
                 notifyDataSetChanged()
                 clickListener.onClick(item)
             }
