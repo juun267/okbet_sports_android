@@ -266,7 +266,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun setupBetBarVisiblity(position: Int) {
-        var needShowBetBar = position != 4
+        var needShowBetBar = when (position) {
+            0, 1, 3 -> true
+            else -> false
+        }
         cl_bet_list_bar.isVisible = needShowBetBar && betListCount > 0
     }
 

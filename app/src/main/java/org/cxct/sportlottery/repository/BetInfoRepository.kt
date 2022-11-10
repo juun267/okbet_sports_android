@@ -38,6 +38,7 @@ const val BET_INFO_MAX_COUNT = 10
 
 object BetInfoRepository {
 
+    var betListTabPosition = 0 //記錄betListTab位置
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
 
@@ -126,6 +127,8 @@ object BetInfoRepository {
 
         //檢查是否有不同的球賽種類
         val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
+        val hasDiffGameType =
+            betList.find { GameType.getGameType(it.matchOdd.gameType) != gameType } != null
 
         //檢查是否有相同賽事
         val matchIdList: MutableMap<String, MutableList<Int>> = mutableMapOf()
@@ -138,9 +141,8 @@ object BetInfoRepository {
             //parlay (是否可以参加过关，0：否，1：是)
             val cannotParlay = it.outrightMatchInfo?.parlay == 0
 //            Timber.e("parlay: ${it.outrightMatchInfo?.parlay}, cannotParlay: $cannotParlay")
-            if (cannotParlay || hasLcsGameType || hasMatchType ||
-                gameType != GameType.getGameType(it.matchOdd.gameType) ||
-                matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1
+            if (cannotParlay || hasLcsGameType || hasMatchType || hasDiffGameType
+                || (matchIdList[it.matchOdd.matchId]?.size ?: 0) > 1
             ) {
                 hasPointMark = true
                 it.pointMarked = true
@@ -258,6 +260,7 @@ object BetInfoRepository {
         checkBetInfoContent(betList)
         _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
+        betListTabPosition = 0
     }
 
     /**
@@ -398,15 +401,14 @@ object BetInfoRepository {
 
             if (it.value.num > 1) {
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
-                val parlayPayout =
-                    maxParlayPayout.div(
-                        if (it.value.isOnlyEUType) {
-                            //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
-                            it.value.odds.toDouble() - it.value.num
-                        } else {
-                            it.value.hdOdds.toDouble()
-                        }.toBigDecimal()
-                    ).times(it.value.num.toBigDecimal()).toLong().toBigDecimal()
+                val odds = if (it.value.isOnlyEUType) {
+                    //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
+                    it.value.odds - BigDecimal(it.value.num)
+                } else {
+                    it.value.hdOdds
+                }
+                val parlayPayout = ArithUtil.div(maxParlayPayout, odds, 2, RoundingMode.DOWN)
+                    .times(it.value.num.toBigDecimal())
 
                 val maxParlayBet = if (maxParlayBetMoney == BigDecimal(0)) {
                     //如果 maxParlayBetMoney 為 0 使用最大賠付額
@@ -438,15 +440,13 @@ object BetInfoRepository {
                 }
 
                 //賠付額上限計算投注限額
-                val oddsPayout =
-                    payout.divide(
-                        if (it.value.isOnlyEUType)
-                            it.value.odds - BigDecimal(1)
-                        else
-                            it.value.hdOdds,
-                        0,
-                        RoundingMode.DOWN
-                    )
+                val odds = if (it.value.isOnlyEUType) {
+                    //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
+                    it.value.odds - BigDecimal(1)
+                } else {
+                    it.value.hdOdds
+                }
+                val oddsPayout = ArithUtil.div(payout, odds, 2, RoundingMode.DOWN)
                 maxBet = if (matchTypeMaxBetMoney == BigDecimal(0)) {
                     //如果 matchTypeMaxBetMoney 為 0 使用最大賠付額
                     oddsPayout
@@ -459,32 +459,44 @@ object BetInfoRepository {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
                     matchType == MatchType.OUTRIGHT -> minCpBetMoney
                     else -> minBetMoney
-                } ?: BigDecimal(0)
+                }
 
                 //[Martin]為馬來盤＆印度計算投注上限
                 if (oddsType == OddsType.MYS && !it.value.isOnlyEUType) {
                     if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
                         //馬來盤使用者投注上限
-                        maxBet = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0).toBigDecimal())).toLong().toBigDecimal()
+                        maxBet = (ArithUtil.div(
+                            maxBetMoney,
+                            abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0).toBigDecimal(),
+                            2,
+                            RoundingMode.DOWN
+                        ))
                     }
                 } else if (oddsType == OddsType.IDN && !it.value.isOnlyEUType) {
-                    if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
+                    if ((matchOddList.getOrNull(0)?.indoOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
                         //印度使用者投注上限
-                        maxBet = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0).toBigDecimal()).toLong().toBigDecimal()
+                        maxBet = (ArithUtil.div(
+                            maxBetMoney,
+                            abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0).toBigDecimal(),
+                            2,
+                            RoundingMode.DOWN
+                        ))
                     }
                 }
             }
 
             ParlayOdd(
                 parlayType = it.key,
-                max = maxBet.toLong(),
-                min = minBet.toLong(),
+                max = maxBet.toDouble().toLong(),
+                min = minBet.toDouble().toLong(),
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
                 //Martin
-                malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.malayOdds?:0.0,
-                indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.indoOdds?:0.0
+                malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(
+                    0)?.malayOdds ?: 0.0,
+                indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(
+                    0)?.indoOdds ?: 0.0
             )
         }
     }
@@ -503,7 +515,7 @@ object BetInfoRepository {
 
         if (updateBetInfoList.isNullOrEmpty()) return
 
-        updateBetInfoList.forEach { betInfoListData ->
+        updateBetInfoList.toList().forEach { betInfoListData ->
             betInfoListData.matchType?.let { matchType ->
                 val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
                 gameType?.let {

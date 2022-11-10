@@ -545,7 +545,7 @@ class ItemHomeLiveHolder(
 
             else -> {
                 binding.tvGamePlayTime.text =
-                    TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                    TimeUtil.timeFormat(item.matchInfo?.startTime, TimeUtil.DM_HM_FORMAT)
             }
         }
     }
