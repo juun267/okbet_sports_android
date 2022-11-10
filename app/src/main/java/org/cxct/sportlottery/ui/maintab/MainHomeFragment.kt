@@ -212,6 +212,19 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
+            if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                iv_live_type.visibility = View.VISIBLE
+                context?.let {
+                    Glide.with(it)
+                        .load(mMatchInfo.frontCoverUrl)
+                        .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                            .error(R.drawable.icon_novideodata))
+                        .into(iv_live_type)
+                }
+                iv_publicity.stopPlayback()
+            }else{
+                iv_live_type.visibility = View.GONE
+            }
         }
     }
 
@@ -239,7 +252,6 @@ class MainHomeFragment :
         initListView()
 
         nsv_home.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            LogUtil.d("i=="+i+"i2=="+i2+"i3==="+i3+"i4==="+i4)
             ll_come_back.visibility =
                 if (nsv_home.canScrollVertically(-1)) View.VISIBLE else View.GONE
         }
@@ -410,7 +422,6 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-                   //     LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -494,7 +505,6 @@ class MainHomeFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-                    LogUtil.d("serviceConnectStatus")
                     viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
@@ -534,7 +544,6 @@ class MainHomeFragment :
 //                            return@forEach
 //                        }
 //                    }
-         //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -639,7 +648,6 @@ class MainHomeFragment :
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                LogUtil.d("producerUp")
                 subscribeQueryData(hotHandicapAdapter.data)
                 subScribeLiveData(homeHotLiveAdapter.data)
             }
@@ -1108,7 +1116,7 @@ class MainHomeFragment :
                 iv_live_type.visibility = View.VISIBLE
                 iv_publicity.pause()
             }
-            LogUtil.d(it.pullRtmpUrl)
+      //      LogUtil.d(it.pullRtmpUrl)
 
 
         }
@@ -1120,12 +1128,9 @@ class MainHomeFragment :
     override fun onError(p0: Int, p1: Any?): Boolean {
         //ERROR_CODE_IO_ERROR=-3 网络异常
         LogUtil.e(p0.toString() + "," + p1.toString())
-        if (iv_publicity == null) {
-            return false
-        }
-        mMatchInfo.pullRtmpUrl?.let {
-            iv_publicity.start()
-        }
+
+
+
         if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
             context?.let {
                 Glide.with(it)
