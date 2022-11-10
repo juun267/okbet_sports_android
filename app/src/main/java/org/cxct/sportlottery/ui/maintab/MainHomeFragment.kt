@@ -8,10 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.ImageView
-import android.widget.ScrollView
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -33,7 +30,6 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
-import kotlinx.coroutines.delay
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -43,7 +39,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
@@ -56,7 +51,6 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -1078,19 +1072,19 @@ class MainHomeFragment :
 
     fun initPlayView() {
 
-            val options = AVOptions()
-            options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-            options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-            options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-            options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-            iv_publicity.setCoverView( view?.findViewById<ImageView>(R.id.iv_live_type))
-            iv_publicity.setAVOptions(options)
-            iv_publicity.setOnVideoSizeChangedListener(this)
-            iv_publicity.setOnErrorListener(this)
-            iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-            iv_publicity.setVolume(0f, 0f)
+        val options = AVOptions()
+        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+        options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
+        options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
+        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
+        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+        iv_publicity.setCoverView(iv_live_type)
+        iv_publicity.setAVOptions(options)
+        iv_publicity.setOnVideoSizeChangedListener(this)
+        iv_publicity.setOnErrorListener(this)
+        iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+        iv_publicity.setVolume(0f, 0f)
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
         matchInfo?.let {
@@ -1099,15 +1093,14 @@ class MainHomeFragment :
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setVideoPath(it.pullFlvUrl)
             }
-            iv_publicity.start()
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
+                iv_publicity.start()
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
-                iv_publicity.pause()
+                iv_publicity.stopPlayback()
             }
             LogUtil.d(it.pullRtmpUrl)
-
 
         }
     }
