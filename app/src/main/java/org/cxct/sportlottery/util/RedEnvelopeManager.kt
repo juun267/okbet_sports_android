@@ -104,6 +104,7 @@ class RedEnvelopeManager {
                             )
                             removeRedEnvelopeBtn()
                             closeDialog?.dismiss()
+                            closeDialog = null
                         }
                     }
                 } else  {
@@ -194,7 +195,13 @@ class RedEnvelopeManager {
             negativeClickListener = negativeClickListener,
             title = LocalUtils.getString(R.string.prompt),
             errorMessage = LocalUtils.getString(R.string.redenvelope_close_hint)
-        )
+        )?.apply {
+            dissmisCallback = {
+                if (it == closeDialog) {
+                    closeDialog = null
+                }
+            }
+        }
     }
 
     fun isLogin(): Boolean {

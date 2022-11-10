@@ -40,7 +40,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
 
 class HomeLiveFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -53,8 +52,6 @@ class HomeLiveFragment :
             return fragment
         }
     }
-
-    var mmRvScrollY = 0
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(), 1).apply {
             setOnItemClickListener { adapter, view, position ->
@@ -112,11 +109,11 @@ class HomeLiveFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            Timber.d("显示：视频播放静音")
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {
             homeLiveAdapter.expandMatchId = null
+            //todo 待测试  Timber.d("视频播放静音")
             homeLiveAdapter.setVolumeMute()
         }
     }
@@ -148,14 +145,12 @@ class HomeLiveFragment :
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
         }
         iv_money_refresh.setOnClickListener {
-            iv_money_refresh.startAnimation(RotateAnimation(
-                0f,
+            iv_money_refresh.startAnimation(RotateAnimation(0f,
                 720f,
                 Animation.RELATIVE_TO_SELF,
                 0.5f,
                 Animation.RELATIVE_TO_SELF,
-                0.5f
-            ).apply {
+                0.5f).apply {
                 duration = 1000
             })
             viewModel.getMoney()
@@ -165,7 +160,6 @@ class HomeLiveFragment :
 //        }
         setupLogin()
     }
-
     private fun initObservable() {
         if (viewModel == null) {
             return
@@ -376,11 +370,9 @@ class HomeLiveFragment :
                         matchLiveData.betPlayCateNameMap?.putAll(betPlayCateNameMap)
                     }
                     //endregion
-                    if (SocketUpdateUtil.updateMatchOdds(
-                            context,
+                    if (SocketUpdateUtil.updateMatchOdds(context,
                             matchLiveData,
-                            oddsChangeEvent
-                        )
+                            oddsChangeEvent)
                     ) {
                         updateBetInfo(matchLiveData, oddsChangeEvent)
                         matchOddMap[matchLiveData.league.id] = matchLiveData
@@ -402,6 +394,7 @@ class HomeLiveFragment :
             }
         }
     }
+
 
 
     private fun initTabView() {
@@ -453,8 +446,7 @@ class HomeLiveFragment :
             )
         }
         ll_come_back.setOnClickListener {
-            rv_live.scrollToPosition(0)
-            mmRvScrollY = 0
+            rv_live.smoothScrollToPosition(0)
         }
     }
 
@@ -522,12 +514,10 @@ class HomeLiveFragment :
         matchType: MatchType,
         matchInfo: MatchInfo,
     ) {
-        SportDetailActivity.startActivity(
-            requireContext(),
+        SportDetailActivity.startActivity(requireContext(),
             matchInfo = matchInfo,
             matchType = matchType,
-            intoLive = true
-        )
+            intoLive = true)
     }
 
 
@@ -561,16 +551,12 @@ class HomeLiveFragment :
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
+       //列表滑动距离
 
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
-        object : RecyclerView.OnScrollListener() {
-            //列表滑动距离
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                mmRvScrollY += dy
-//            LogUtil.d("onScrolled: mmRvScrollY===:$mmRvScrollY dy===$dy")
-                ll_come_back.isVisible = mmRvScrollY > 1000
-            }
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            ll_come_back.isVisible = recyclerView.canScrollVertically(0)
         }
+    }
 }

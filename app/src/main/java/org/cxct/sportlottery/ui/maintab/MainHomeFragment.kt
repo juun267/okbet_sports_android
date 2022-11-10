@@ -1138,6 +1138,11 @@ class MainHomeFragment :
         iv_live_type.visibility = View.VISIBLE
         return false
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        iv_publicity.stopPlayback()
+    }
     
 
 }
