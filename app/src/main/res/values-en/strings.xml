@@ -334,7 +334,7 @@
     <string name="not_settled_order">Unsettled</string>
     <string name="settled_order">Settled bets</string>
     <string name="start_date">Start date</string>
-    <string name="end_date">Date closed</string>
+    <string name="end_date">End Date</string>
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Running</string>

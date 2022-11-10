@@ -408,10 +408,12 @@ class ItemHandicapHolder(
                     )
 
                 } else {
+                    stopTimer()
                     binding.tvGamePlayTime.visibility = View.GONE
                 }
             }
             else -> {
+                stopTimer()
                 binding.tvGamePlayTime.text =
                     TimeUtil.timeFormat(item.matchInfo?.startTime, TimeUtil.DM_HM_FORMAT)
 

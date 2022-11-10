@@ -43,12 +43,11 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private lateinit var languageAdapter: LanguageAdapter
 
-    private var isExpendOddsType = false
-    private var isExpendLanguage = false
     var fromPage = 0
         set(value) {
             field = value
             if (isAdded) {
+                clearAllSelect()
                 lin_home.isSelected = value == 0
                 lin_live.isSelected = value == 1
                 lin_slot.isSelected = value == 4
@@ -120,12 +119,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 getString(R.string.promotion))
         }
         lin_odds_type.setOnClickListener {
-            if (isExpendLanguage) {
-                lin_language.performClick()
-            }
-            isExpendOddsType = !isExpendOddsType
-            rv_odds_type.isVisible = isExpendOddsType
-            lin_odds_type.isSelected = isExpendOddsType
+            var isSelected = !lin_odds_type.isSelected
+            clearAllSelect()
+            lin_odds_type.isSelected = isSelected
+            rv_odds_type.isVisible = isSelected
         }
         lin_contactus.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
@@ -144,12 +141,10 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
         }
         lin_language.setOnClickListener {
-            if (isExpendOddsType) {
-                lin_odds_type.performClick()
-            }
-            isExpendLanguage = !isExpendLanguage
-            rv_language.isVisible = isExpendLanguage
-            lin_language.isSelected = isExpendLanguage
+            var isSelected = !lin_language.isSelected
+            clearAllSelect()
+            lin_language.isSelected = isSelected
+            rv_language.isVisible = isSelected
         }
 
     }
@@ -276,6 +271,17 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 MainTabActivity.reStart(it)
             }
         }
+    }
+
+    fun clearAllSelect() {
+        lin_home.isSelected = false
+        lin_live.isSelected = false
+        lin_slot.isSelected = false
+        lin_poker.isSelected = false
+        lin_language.isSelected = false
+        rv_language.isVisible = false
+        lin_odds_type.isSelected = false
+        rv_odds_type.isVisible = false
     }
 
 

@@ -48,6 +48,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     interface LiveToolBarListener {
         fun onFullScreen(fullScreen: Boolean)
+        fun onTabClick(position: Int)
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -73,28 +74,32 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     fun showLive() {
         curType = LiveType.LIVE
         iv_fullscreen.isVisible = true
+        switchPlayView(true)
         showPlayView()
         setWebViewHeight()
-        switchPlayView(true)
-        startPlayer(isLogin)
+        startPlayer()
+        liveToolBarListener?.onTabClick(0)
+
     }
 
     fun showVideo() {
         curType = LiveType.VIDEO
+        switchPlayView(false)
         showPlayView()
         setWebViewHeight()
         iv_fullscreen.isVisible = true
         openWebView()
-        switchPlayView(false)
+        liveToolBarListener?.onTabClick(1)
     }
 
     fun showAnime() {
         curType = LiveType.ANIMATION
+        switchPlayView(false)
         showPlayView()
         setWebViewHeight()
         iv_fullscreen.isVisible = true
         openWebView()
-        switchPlayView(false)
+        liveToolBarListener?.onTabClick(2)
     }
 
     private fun initOnclick() {
@@ -155,7 +160,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private fun switchPlayView(open: Boolean) {
         when (open) {
             true -> {
-                startPlayer(isLogin)
+                startPlayer()
             }
             false -> {
                 stopPlayer()
@@ -254,7 +259,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         }
     }
 
-    fun startPlayer(isLogin: Boolean) {
+    fun startPlayer() {
         if (player_view.isVisible) {
             initializePlayer(liveUrl)
         }
@@ -262,7 +267,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun stopPlayer() {
         if (player_view.isVisible) {
-            player_view.stop()
+            player_view.stopPlayback()
         }
     }
 
