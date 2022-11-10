@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class ItemHomeLiveHolder(
     lifecycleOwner: LifecycleOwner,
@@ -46,6 +48,13 @@ class ItemHomeLiveHolder(
         //設置賽事資訊是否顯示
         update(data, oddsType)
         updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id && data.matchInfo.isLive == 1)
+        binding.blockNormalGame.measure(0, 0)
+        val width = binding.blockNormalGame.measuredWidth
+        val margin = width + 4.dp
+        (binding.tvLeagueName.layoutParams as MarginLayoutParams).let {
+            it.leftMargin = margin
+            it.rightMargin = margin
+        }
     }
 
     fun updateLive(isExpandLive: Boolean) {
