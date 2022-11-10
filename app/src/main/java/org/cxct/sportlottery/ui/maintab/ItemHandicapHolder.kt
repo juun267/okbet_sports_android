@@ -12,7 +12,6 @@ import org.cxct.sportlottery.network.common.GameStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.TimeCounting
@@ -410,42 +409,6 @@ class ItemHandicapHolder(
 
                 } else {
                     binding.tvGamePlayTime.visibility = View.GONE
-                }
-            }
-
-            TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
-
-                binding.tvGamePlayTime.text = item.runningTime
-                listener = object : TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        if (timeMillis > 1000) {
-                            val min = TimeUtil.longToMinute(timeMillis)
-                            binding.tvGamePlayTime.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                min
-                            )
-                        } else {
-                            //等待Socket更新
-                            binding.tvGamePlayTime.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                0
-                            )
-                        }
-                        item.matchInfo?.remainTime = timeMillis
-
-//                        TODO 記錄時間?
-                        item.runningTime = binding.tvGamePlayTime.text.toString()
-//                        getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
-                    }
-                }
-
-                item.matchInfo?.remainTime?.let { remainTime ->
-                    updateTimer(
-                        true,
-                        isTimerPause,
-                        (remainTime / 1000).toInt(),
-                        true
-                    )
                 }
             }
             else -> {
