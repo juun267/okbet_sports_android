@@ -23,6 +23,7 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.HttpError
@@ -45,10 +46,13 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mTokenPromptDialog: CustomAlertDialog? = null
     private var mOnNetworkExceptionListener: View.OnClickListener? = null
     private var mPickerView: OptionsPickerView<String>? = null
-    public var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
-    private val mHandler = Handler(Looper.getMainLooper())
+    public var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一
     private var mRunnable: Runnable? = null
-
+    var hasHandler = false
+    private val mHandler by lazy {
+        hasHandler = true
+        Handler(Looper.getMainLooper())
+    }
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -71,6 +75,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
         onTokenStateChanged()
         onNetworkException()
+
+        if (BuildConfig.DEBUG) {
+            Log.e("For Test", "======>>> Activity ${this::class.java.name}")
+        }
     }
 
     private fun onTokenStateChanged() {
@@ -387,7 +395,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     fun avoidFastDoubleClick() {
         mIsEnabled = false
-        Handler().postDelayed({ mIsEnabled = true }, 500)
+        mHandler.postDelayed({ mIsEnabled = true }, 500)
     }
 
     private fun startCheckToken() {
@@ -436,5 +444,12 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             .statusBarDarkFont(darkFont)
             .fitsSystemWindows(true)
             .init()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (hasHandler) {
+            mHandler.removeCallbacksAndMessages(null)
+        }
     }
 }

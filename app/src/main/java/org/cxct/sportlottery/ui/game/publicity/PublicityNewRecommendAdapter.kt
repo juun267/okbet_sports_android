@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.PublicityNewRecommendItemBinding
@@ -11,10 +12,11 @@ import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
-class PublicityNewRecommendAdapter(private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener) :
+class PublicityNewRecommendAdapter(val lifecycleOwner: LifecycleOwner, private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener) :
     RecyclerView.Adapter<PublicityNewRecommendItemHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicityNewRecommendItemHolder {
         return PublicityNewRecommendItemHolder(
+            lifecycleOwner,
             PublicityNewRecommendItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,

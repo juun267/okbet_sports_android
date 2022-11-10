@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.publicity
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -24,9 +25,10 @@ import org.cxct.sportlottery.util.needCountStatus
 
 //TODO 棒球比分狀態顯示
 class PublicityNewRecommendItemHolder(
+    lifecycleOwner: LifecycleOwner,
     val binding: PublicityNewRecommendItemBinding,
     private val publicityAdapterListener: GamePublicityAdapter.PublicityAdapterListener
-) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
+) : ViewHolderUtils.TimerViewHolderTimer(lifecycleOwner, binding.root) {
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {}

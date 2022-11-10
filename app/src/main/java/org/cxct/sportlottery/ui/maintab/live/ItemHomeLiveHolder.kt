@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.maintab.live
 
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -21,11 +23,13 @@ import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class ItemHomeLiveHolder(
+    lifecycleOwner: LifecycleOwner,
     val binding: ItemHomeLiveBinding,
     private val homeLiveListener: HomeLiveListener,
-) : ViewHolderUtils.TimerViewHolderTimer(binding.root),
+) : ViewHolderUtils.TimerViewHolderTimer(lifecycleOwner, binding.root),
     PLOnInfoListener,
     PLOnVideoSizeChangedListener,
     PLOnErrorListener {
@@ -44,6 +48,13 @@ class ItemHomeLiveHolder(
         //設置賽事資訊是否顯示
         update(data, oddsType)
         updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id && data.matchInfo.isLive == 1)
+        binding.blockNormalGame.measure(0, 0)
+        val width = binding.blockNormalGame.measuredWidth
+        val margin = width + 4.dp
+        (binding.tvLeagueName.layoutParams as MarginLayoutParams).let {
+            it.leftMargin = margin
+            it.rightMargin = margin
+        }
     }
 
     fun updateLive(isExpandLive: Boolean) {
@@ -674,6 +685,11 @@ class ItemHomeLiveHolder(
                 }
             }
         }
+    }
+
+    override fun onLifeDestroy() {
+        super.onLifeDestroy()
+        binding.videoView.stopPlayback()
     }
 
 }

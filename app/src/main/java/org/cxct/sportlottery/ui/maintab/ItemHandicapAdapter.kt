@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.databinding.ItemHomeHandicapBinding
@@ -10,10 +11,11 @@ import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class ItemHandicapAdapter(private val homeRecommendListener: HomeRecommendListener) :
+class ItemHandicapAdapter(val lifecycleOwner: LifecycleOwner, private val homeRecommendListener: HomeRecommendListener) :
     RecyclerView.Adapter<ItemHandicapHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHandicapHolder {
         return ItemHandicapHolder(
+            lifecycleOwner,
             ItemHomeHandicapBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
