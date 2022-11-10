@@ -1103,8 +1103,8 @@ class MainHomeFragment :
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setVideoPath(it.pullFlvUrl)
             }
+            iv_publicity.start()
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
-                iv_publicity.start()
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
@@ -1121,10 +1121,14 @@ class MainHomeFragment :
     override fun onError(p0: Int, p1: Any?): Boolean {
         //ERROR_CODE_IO_ERROR=-3 网络异常
         LogUtil.e(p0.toString() + "," + p1.toString())
-
-
-
-        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+        if (iv_publicity == null) {
+            return false
+        }
+        mMatchInfo.let {
+            playMatchVideo(it)
+        }
+        if (p0==-3||p0==-2){
+            iv_publicity.stopPlayback();
             context?.let {
                 Glide.with(it)
                     .load(mMatchInfo.frontCoverUrl)
@@ -1133,7 +1137,17 @@ class MainHomeFragment :
                     .into(iv_live_type)
             }
         }
-        iv_live_type.visibility = View.VISIBLE
+        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+            context?.let {
+                Glide.with(it)
+                    .load(mMatchInfo.frontCoverUrl)
+                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                        .error(R.drawable.icon_novideodata))
+                    .into(iv_live_type)
+            }
+            iv_live_type.visibility = View.VISIBLE
+        }
+
         return false
     }
 
