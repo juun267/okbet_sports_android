@@ -199,13 +199,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 if (toolBar.isVisible) {
                     onBackPressed()
                 } else {
-                    toolBar.isVisible = true
-                    live_view_tool_bar.isVisible = false
-                    setScrollEnable(true)
-                    collaps_toolbar.isVisible = false
-                    collaps_toolbar.iv_toolbar_bg.isVisible = true
-                    live_view_tool_bar.release()
-                    showChatWebView(false)
+                    if (intoLive) {
+                        finish()
+                    } else {
+                        toolBar.isVisible = true
+                        live_view_tool_bar.isVisible = false
+                        setScrollEnable(true)
+                        collaps_toolbar.isVisible = false
+                        collaps_toolbar.iv_toolbar_bg.isVisible = true
+                        live_view_tool_bar.release()
+                        showChatWebView(false)
+                    }
                 }
             }
         }

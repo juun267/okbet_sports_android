@@ -4,6 +4,7 @@ package org.cxct.sportlottery.ui.maintab
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -24,7 +25,7 @@ import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.setLeagueLogo
 
 
-class HotHandicapAdapter(data:List<HandicapData>):
+class HotHandicapAdapter(val lifecycleOwner: LifecycleOwner, data:List<HandicapData>):
     BaseQuickAdapter<HandicapData,BaseViewHolder>(R.layout.item_hot_handicap,data) {
 
     var oddsType: OddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.EU
@@ -105,7 +106,7 @@ class HotHandicapAdapter(data:List<HandicapData>):
             }
             if (adapter == null) {
                 homeRecommendListener?.let {
-                    var itemAdapter = ItemHandicapAdapter(it)
+                    var itemAdapter = ItemHandicapAdapter(lifecycleOwner, it)
                     itemAdapter.oddsType = oddsType
                     itemAdapter.data = item.matchInfos
                     adapter = itemAdapter

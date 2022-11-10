@@ -2,12 +2,26 @@ package org.cxct.sportlottery.ui.game.publicity
 
 import android.os.Handler
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 
-abstract class OddStateHomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class OddStateHomeViewHolder(val lifecycleOwner: LifecycleOwner, itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    init {
+        lifecycleOwner.lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if (event == Lifecycle.Event.ON_DESTROY) {
+                    onLifeDestroy()
+                }
+            }
+        })
+    }
+
     interface OddStateChangeListener {
         fun refreshOddButton(odd: Odd)
     }
@@ -43,8 +57,8 @@ abstract class OddStateHomeViewHolder(itemView: View) : RecyclerView.ViewHolder(
             itemOdd.oddState = OddState.SAME.state
             setupOddState(oddsButton, itemOdd)
 //            oddStateChangeListener.refreshOddButton(itemOdd)
-            itemOdd.runnable = null
             itemOdd.runnable?.let { mHandler.removeCallbacks(it) }
+            itemOdd.runnable = null
         }
     }
 
@@ -56,5 +70,9 @@ abstract class OddStateHomeViewHolder(itemView: View) : RecyclerView.ViewHolder(
         val runnable = highLightRunnable(oddsButton, itemOdd)
         itemOdd.runnable = runnable
         mHandler.postDelayed(runnable, HIGH_LIGHT_TIME)
+    }
+
+    open fun onLifeDestroy() {
+        mHandler.removeCallbacksAndMessages(null)
     }
 }

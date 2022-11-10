@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,7 +31,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
 
-class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAdapterNewListener) :
+class GamePublicityNewAdapter(val lifecycleOwner: LifecycleOwner, private val publicityAdapterListener: PublicityAdapterNewListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //排序對應表
     private val sortMap = mapOf<Any, Int>(
@@ -337,6 +338,7 @@ class GamePublicityNewAdapter(private val publicityAdapterListener: PublicityAda
             //新版宣傳頁賽事樣式
             ItemType.RECOMMEND_LIST.ordinal -> {
                 PublicityNewRecommendViewHolder(
+                    lifecycleOwner,
                     PublicityRecommendViewBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,

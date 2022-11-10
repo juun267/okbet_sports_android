@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.button_odd_home.view.*
@@ -22,9 +23,10 @@ import org.cxct.sportlottery.util.*
 
 //TODO 棒球比分狀態顯示
 class ItemHandicapHolder(
+    lifecycleOwner: LifecycleOwner,
     val binding: ItemHomeHandicapBinding,
     private val homeRecommendListener: HomeRecommendListener,
-) : ViewHolderUtils.TimerViewHolderTimer(binding.root) {
+) : ViewHolderUtils.TimerViewHolderTimer(lifecycleOwner, binding.root) {
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {}
