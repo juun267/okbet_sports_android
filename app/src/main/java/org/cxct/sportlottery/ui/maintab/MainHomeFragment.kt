@@ -612,11 +612,6 @@ class MainHomeFragment :
             }
         }
 
-//        receiver.leagueChange.observe(viewLifecycleOwner) {
-//            it?.let { leagueChangeEvent ->
-//                viewModel.publicityLeagueChange(leagueChangeEvent)
-//            }
-//        }
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
@@ -836,15 +831,7 @@ class MainHomeFragment :
         }
     }
 
-    private fun goLoginPage() {
-        startActivity(Intent(context, LoginActivity::class.java))
-    }
 
-
-    private fun goGamePage() {
-        GameActivity.reStart(activity ?: requireActivity())
-        activity?.finish()
-    }
 
     private fun addOddsDialog(
         gameTypeCode: String,
@@ -1076,11 +1063,7 @@ class MainHomeFragment :
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
-//            ll_home_content.visibility = View.GONE
-//            home_main_fragment.visibility = View.VISIBLE
-//            childFragmentManager.beginTransaction()
-//                .replace(R.id.home_main_fragment, HomeLiveFragment.newInstance())
-//                .commit()
+
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
         }
         //点击电子跳转
@@ -1155,56 +1138,10 @@ class MainHomeFragment :
         return false
     }
 
-    private fun setStatusText(matchInfo: MatchInfo) {
-        tv_first_half_game.text = when {
-            (TimeUtil.isTimeInPlay(matchInfo?.startTime)
-                    && matchInfo?.status == GameStatus.POSTPONED.code
-                    && (matchInfo?.gameType == GameType.FT.name || matchInfo?.gameType == GameType.BK.name )) -> {
-               getString(R.string.game_postponed)
-            }
-            TimeUtil.isTimeInPlay(matchInfo?.startTime) -> {
-                if (matchInfo?.statusName18n != null) {
-                   matchInfo?.statusName18n
-                } else {
-                    ""
-                }
-            }
-            else -> {
-                if (TimeUtil.isTimeToday(matchInfo?.startTime))
-                    getString((R.string.home_tab_today))
-                else
-                   matchInfo?.startDateDisplay
-            }
-        }
-    }
 
-    //赛事时间状态的方法
-    private fun setupMatchTimeAndStatus(
-        item: MatchInfo,
-        isTimerEnable: Boolean,
-        isTimerPause: Boolean
-    ) {
-        setStatusText(item)
-        setTextViewStatus(item)
-    }
-    //上下半场
-    private fun setTextViewStatus(item: MatchInfo) {
-        when {
-            (TimeUtil.isTimeInPlay(item.startTime) && item.status == GameStatus.POSTPONED.code && (item.gameType == GameType.FT.name || item.gameType == GameType.BK.name || item.gameType == GameType.TN.name)) -> {
 
-                tv_match_time.visibility = View.GONE
-            }
 
-            TimeUtil.isTimeInPlay(item.startTime) -> {
-                if (item.statusName18n != null) {
-                    tvGameStatus.visibility = View.VISIBLE
-                }
-            }
-            TimeUtil.isTimeAtStart(item.startTime) -> {
-                tvGameStatus.visibility = View.GONE
-            }
-        }
-    }
+
 
 
 }

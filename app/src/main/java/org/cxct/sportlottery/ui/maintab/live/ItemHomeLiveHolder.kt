@@ -52,7 +52,9 @@ class ItemHomeLiveHolder(
         initPlayView()
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                binding.videoView.start()
+                if (!binding.videoView.isPlaying) {
+                    binding.videoView.start()
+                }
             }
             binding.rippleView.showWaveAnimation()
         } else {
@@ -108,10 +110,18 @@ class ItemHomeLiveHolder(
 
     fun setVolumeState() {
         if (binding.ivLiveSound.isSelected) {
-            binding.videoView.setVolume(1f, 1f)
+            setVolumeStateUnMute()
         } else {
-            binding.videoView.setVolume(0f, 0f)
+            setVolumeStateMute()
         }
+    }
+
+    fun setVolumeStateMute() {
+        binding.videoView.setVolume(0f, 0f)
+    }
+
+   private fun setVolumeStateUnMute() {
+        binding.videoView.setVolume(1f, 1f)
     }
 
     fun update(data: MatchLiveData, oddsType: OddsType) {
@@ -232,10 +242,10 @@ class ItemHomeLiveHolder(
     private fun setupGameInfo() {
         with(binding) {
             //聯賽名稱
-            if (data.matchInfo.streamerName.toString().isNotBlank()){
+            if (data.matchInfo.streamerName.toString().isNotBlank()) {
                 tvAnchorName.text = data.matchInfo.streamerName
-            }else{
-                tvAnchorName.text =  binding.tvAnchorName.context.getString(R.string.okbet_live_name)
+            } else {
+                tvAnchorName.text = binding.tvAnchorName.context.getString(R.string.okbet_live_name)
             }
 
             //region 隊伍名稱
@@ -523,6 +533,7 @@ class ItemHomeLiveHolder(
                     )
                 }
             }
+
             else -> {
                 binding.tvGamePlayTime.text =
                     TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
@@ -537,6 +548,7 @@ class ItemHomeLiveHolder(
                     && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
                 itemView.context.getString(R.string.game_postponed)
             }
+
             TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                 if (item.matchInfo?.statusName18n != null) {
                     item.matchInfo?.statusName18n
@@ -544,6 +556,7 @@ class ItemHomeLiveHolder(
                     ""
                 }
             }
+
             else -> {
                 if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
                     itemView.context.getString((R.string.home_tab_today))
@@ -564,6 +577,7 @@ class ItemHomeLiveHolder(
                     binding.tvGameStatus.visibility = View.VISIBLE
                 }
             }
+
             TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
                 binding.tvGameStatus.visibility = View.GONE
             }
@@ -580,6 +594,7 @@ class ItemHomeLiveHolder(
                 item.matchInfo?.gameType == GameType.BB.key && TimeUtil.isTimeInPlay(item.matchInfo?.startTime) -> {
                     blockNormalGame.visibility = View.GONE
                 }
+
                 else -> {
                     blockNormalGame.visibility = View.VISIBLE
                 }

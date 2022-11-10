@@ -138,6 +138,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
+                    setupBetBarVisiblity(getMenuItemPosition(menuItem))
                     return@OnNavigationItemSelectedListener true
                 }
         }
@@ -259,9 +260,14 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     var betListCount = 0
     override fun updateBetListCount(num: Int) {
         betListCount = num
-        cl_bet_list_bar.isVisible = num > 0
+        setupBetBarVisiblity(bottom_navigation_view.currentItem)
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
+    }
+
+    fun setupBetBarVisiblity(position: Int) {
+        var needShowBetBar = position != 4
+        cl_bet_list_bar.isVisible = needShowBetBar && betListCount > 0
     }
 
     override fun showLoginNotify() {
