@@ -2,12 +2,14 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -106,6 +108,7 @@ class MainHomeFragment :
             tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
             data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+          //  playMatchVideo(mMatchInfo)
         })
 
     }
@@ -485,6 +488,7 @@ class MainHomeFragment :
                        hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                        hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
                        homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
+                       mMatchInfo = hotMatchLiveData.matchInfo
                        playMatchVideo(hotMatchLiveData.matchInfo)
                    }
                }
@@ -1103,14 +1107,14 @@ class MainHomeFragment :
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setVideoPath(it.pullFlvUrl)
             }
-            iv_publicity.start()
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
+                iv_publicity.start()
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
                 iv_publicity.stopPlayback()
             }
-      //      LogUtil.d(it.pullRtmpUrl)
+            LogUtil.d(it.pullRtmpUrl)
 
         }
     }
@@ -1124,11 +1128,16 @@ class MainHomeFragment :
         if (iv_publicity == null) {
             return false
         }
-        mMatchInfo.let {
-            playMatchVideo(it)
-        }
+
         if (p0==-3||p0==-2){
-            iv_publicity.stopPlayback();
+            with(iv_publicity) {
+                iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    iv_publicity.releasePointerCapture()
+                }
+            }
+            LogUtil.d("iv_publicity.stopPlayback()")
+            iv_live_type.visibility = View.VISIBLE
             context?.let {
                 Glide.with(it)
                     .load(mMatchInfo.frontCoverUrl)
@@ -1145,9 +1154,8 @@ class MainHomeFragment :
                         .error(R.drawable.icon_novideodata))
                     .into(iv_live_type)
             }
-            iv_live_type.visibility = View.VISIBLE
         }
-
+        iv_live_type.visibility = View.VISIBLE
         return false
     }
 
