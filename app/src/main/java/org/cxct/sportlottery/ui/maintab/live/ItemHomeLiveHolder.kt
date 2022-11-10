@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.maintab.live
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,6 +26,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 
 class ItemHomeLiveHolder(
     lifecycleOwner: LifecycleOwner,
@@ -47,7 +50,10 @@ class ItemHomeLiveHolder(
     fun bind(data: MatchLiveData, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         update(data, oddsType)
-        updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id && data.matchInfo.isLive == 1)
+        val matchId = (bindingAdapter as HomeLiveAdapter).expandMatchId
+        val isExpendLive =
+            (!matchId.isNullOrEmpty()) && matchId == data.matchInfo.id && data.matchInfo.isLive == 1
+        updateLive(isExpendLive)
         binding.blockNormalGame.measure(0, 0)
         val width = binding.blockNormalGame.measuredWidth
         val margin = width + 4.dp
@@ -129,7 +135,7 @@ class ItemHomeLiveHolder(
         binding.videoView.setVolume(0f, 0f)
     }
 
-   private fun setVolumeStateUnMute() {
+    private fun setVolumeStateUnMute() {
         binding.videoView.setVolume(1f, 1f)
     }
 
