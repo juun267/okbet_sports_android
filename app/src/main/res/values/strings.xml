@@ -759,7 +759,7 @@
     <string name="no_setting">No set</string>
     <string name="service_1">Customer1</string>
     <string name="service_2">Customer2</string>
-    <string name="service_connect">connect</string>
+    <string name="service_connect">Connect</string>
     <string name="parlay_10_fold">10-Folds</string>
     <string name="parlay_10_block">Block (10)</string>
     <string name="parlay_2_fold">Doubles</string>

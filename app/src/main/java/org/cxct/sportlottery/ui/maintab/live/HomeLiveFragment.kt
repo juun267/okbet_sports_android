@@ -40,7 +40,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
 
 class HomeLiveFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -53,7 +52,6 @@ class HomeLiveFragment :
             return fragment
         }
     }
-    var mmRvScrollY = 0
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(), 1).apply {
             setOnItemClickListener { adapter, view, position ->
@@ -447,8 +445,7 @@ class HomeLiveFragment :
             )
         }
         ll_come_back.setOnClickListener {
-            rv_live.scrollToPosition(0)
-             mmRvScrollY = 0
+            rv_live.smoothScrollToPosition(0)
         }
     }
 
@@ -558,9 +555,7 @@ class HomeLiveFragment :
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            mmRvScrollY += dy
-//            LogUtil.d("onScrolled: mmRvScrollY===:$mmRvScrollY dy===$dy")
-            ll_come_back.isVisible = mmRvScrollY>1000
+            ll_come_back.isVisible = recyclerView.canScrollVertically(0)
         }
     }
 }
