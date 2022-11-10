@@ -225,7 +225,10 @@ class MainHomeFragment :
               //  LogUtil.d("onHiddenChanged")
                 iv_live_type.visibility = View.GONE
             }
+        }else{
+            iv_publicity.stop()
         }
+
     }
 
 
@@ -1112,7 +1115,7 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
                 iv_publicity.start()
-                LogUtil.d(it.pullRtmpUrl)
+          //      LogUtil.d(it.pullRtmpUrl)
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
@@ -1140,7 +1143,7 @@ class MainHomeFragment :
                     iv_publicity.releasePointerCapture()
                 }
             }
-            LogUtil.d("iv_publicity.stopPlayback()")
+//            LogUtil.d("iv_publicity.stopPlayback()")
             iv_live_type.visibility = View.VISIBLE
             context?.let {
                 Glide.with(it)
