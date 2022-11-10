@@ -104,6 +104,7 @@ class RedEnvelopeManager {
                             )
                             removeRedEnvelopeBtn()
                             closeDialog?.dismiss()
+                            closeDialog = null
                         }
                     }
                 } else  {

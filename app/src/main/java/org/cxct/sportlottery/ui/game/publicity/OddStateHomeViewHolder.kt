@@ -31,7 +31,11 @@ abstract class OddStateHomeViewHolder(val lifecycleOwner: LifecycleOwner, itemVi
     }
 
     abstract val oddStateChangeListener: OddStateChangeListener
-    private val mHandler: Handler by lazy { Handler() }
+    var hasHandler = false
+    private val mHandler: Handler by lazy {
+        hasHandler = true
+        Handler()
+    }
 
     protected fun setupOddState(oddsButton: OddsButtonHome, itemOdd: Odd?) {
         itemOdd?.let { odd ->
@@ -73,6 +77,8 @@ abstract class OddStateHomeViewHolder(val lifecycleOwner: LifecycleOwner, itemVi
     }
 
     open fun onLifeDestroy() {
-        mHandler.removeCallbacksAndMessages(null)
+        if (hasHandler) {
+            mHandler.removeCallbacksAndMessages(null)
+        }
     }
 }
