@@ -9,9 +9,14 @@ import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import timber.log.Timber
 
-class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: HomeLiveListener) :
+class HomeLiveAdapter(
+    val lifecycleOwner: LifecycleOwner,
+    val homeLiveListener: HomeLiveListener
+) :
     RecyclerView.Adapter<ItemHomeLiveHolder>() {
+
 
     private lateinit var holder: ItemHomeLiveHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHomeLiveHolder {
@@ -40,8 +45,8 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
             } else {
                 field = null
             }
-            data.forEachIndexed { index, recommend ->
-                notifyItemChanged(index, expandMatchId)
+            data.forEachIndexed { index, _ ->
+                notifyItemChanged(index)
             }
         }
 
@@ -49,7 +54,7 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
         set(value) {
             field = value
             notifyDataSetChanged()
-            if (expandMatchId.isNullOrEmpty()) {
+            if (expandMatchId == null) {
                 expandMatchId = value.firstOrNull()?.matchInfo?.id
             }
         }
@@ -78,15 +83,16 @@ class HomeLiveAdapter(val lifecycleOwner: LifecycleOwner, val homeLiveListener: 
 
     override fun onBindViewHolder(holder: ItemHomeLiveHolder, position: Int) {
         val itemData = data[position]
-        this.holder = holder
+        if (expandMatchId == itemData.matchInfo.id && itemData.matchInfo.isLive == 1) {
+            this.holder = holder
+        }
         holder.bind(data = itemData, oddsType = oddsType)
-
     }
 
     override fun getItemCount(): Int = data.size
 
-    fun setVolumeMute(){
-        if (this::holder.isInitialized){
+    fun setVolumeMute() {
+        if (this::holder.isInitialized) {
             holder.setVolumeStateMute()
         }
     }
