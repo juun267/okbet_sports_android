@@ -220,6 +220,9 @@ class MainHomeFragment :
                 }
                 iv_publicity.stopPlayback()
             }else{
+                iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
+                iv_publicity.start()
+              //  LogUtil.d("onHiddenChanged")
                 iv_live_type.visibility = View.GONE
             }
         }
@@ -1109,17 +1112,18 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
                 iv_publicity.start()
+                LogUtil.d(it.pullRtmpUrl)
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
                 iv_publicity.stopPlayback()
             }
-            LogUtil.d(it.pullRtmpUrl)
+
 
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        LogUtil.d("")
+//        LogUtil.d("")
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
