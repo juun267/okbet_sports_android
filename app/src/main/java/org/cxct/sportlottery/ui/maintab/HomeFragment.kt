@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.fragment.app.Fragment
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -16,45 +16,34 @@ import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.util.FragmentHelper
 
-class HomeFragment :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
-    lateinit var fragmentHelper: FragmentHelper
-    var fragments = arrayOf<Fragment>(
-        MainHomeFragment.newInstance(),
-        HomeLiveFragment.newInstance(),
-        HomeWorldCupFragment.newInstance(),
-        HomeElecFragment.newInstance(),
-        HomeSlotFragment.newInstance()
-    )
+class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    companion object {
-        fun newInstance(): HomeFragment {
-            val args = Bundle()
-            val fragment = HomeFragment()
-            fragment.arguments = args
-            return fragment
-        }
+    val containerId = 0x08989
+    val fragmentHelper: FragmentHelper by lazy {
+        FragmentHelper(childFragmentManager, containerId, arrayOf(
+            MainHomeFragment::class.java,
+            HomeLiveFragment::class.java,
+            HomeWorldCupFragment::class.java,
+            HomeElecFragment::class.java,
+            HomeSlotFragment::class.java))
     }
 
-    override fun onCreateView(
+    override fun createRootView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home1, container, false)
+        savedInstanceState: Bundle?
+    ): View {
+        return FrameLayout(requireContext()).apply { id = containerId }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        fragmentHelper = FragmentHelper(childFragmentManager, R.id.fl_content, fragments)
+    override fun onBindView(view: View) {
         switchTabByPosition(0)
     }
 
-
     fun switchTabByPosition(position: Int) {
-        if (position>0){
+        if (position>0) {
             (activity as MainTabActivity).homeBackView(true)
-        }else{
+        } else {
             (activity as MainTabActivity).homeBackView(false)
         }
         fragmentHelper.showFragment(position)
@@ -84,10 +73,11 @@ class HomeFragment :
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        fragments.find {
-            it.isAdded&&it.isVisible
+        fragmentHelper.getFragmentList().find {
+            it != null && it.isAdded && it.isVisible
         }?.let {
             it.onHiddenChanged(hidden)
         }
+
     }
 }

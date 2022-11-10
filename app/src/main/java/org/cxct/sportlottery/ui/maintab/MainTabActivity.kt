@@ -39,14 +39,15 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
 
-    lateinit var fragmentHelper: FragmentHelper
-    var fragments = arrayOf<Fragment>(
-        HomeFragment.newInstance(),
-        SportFragment.newInstance(),
-        BetRecordFragment.newInstance(),
-        FavoriteFragment.newInstance(),
-        ProfileCenterFragment.newInstance()
-    )
+    val fragmentHelper: FragmentHelper by lazy {
+        FragmentHelper(supportFragmentManager, R.id.fl_content, arrayOf (
+            HomeFragment::class.java,
+            SportFragment::class.java,
+            BetRecordFragment::class.java,
+            FavoriteFragment::class.java,
+            ProfileCenterFragment::class.java))
+    }
+
     private var betListFragment: BetListFragment? = null
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
@@ -114,7 +115,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initBottomFragment() {
-        fragmentHelper = FragmentHelper(supportFragmentManager, R.id.fl_content, fragments)
+
         bottom_navigation_view.apply {
             enableAnimation(false)
             enableShiftingMode(false)
@@ -134,7 +135,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     }
                     fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
                     if (getMenuItemPosition(menuItem) == 0) {
-                        (fragments[0] as HomeFragment).switchTabByPosition(0)
+                        (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
@@ -210,8 +211,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, sportLeftFragment)
                     .commit()
-                sportLeftFragment.matchType = (fragments[1] as SportFragment).getCurMatchType()
-                sportLeftFragment.gameType = (fragments[1] as SportFragment).getCurGameType()
+                val sportFragment = fragmentHelper.getFragment(1) as SportFragment
+                sportLeftFragment.matchType = sportFragment.getCurMatchType()
+                sportLeftFragment.gameType = sportFragment.getCurGameType()
             }
         }
     }
@@ -383,17 +385,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
         bottom_navigation_view.currentItem = 1
-        (fragments[1] as SportFragment).setJumpSport(matchType, gameType)
+        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }
 
     fun jumpToHome(tabPosition: Int) {
         bottom_navigation_view.currentItem = 0
-        (fragments[0] as HomeFragment).switchTabByPosition(tabPosition)
+        (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(tabPosition)
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
         bottom_navigation_view.currentItem = 2
-        (fragments[2] as BetRecordFragment).selectTab(tabPosition)
+        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 
     fun homeBackView(boolean: Boolean) {
@@ -405,7 +407,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             ll_home_back.visibility = View.GONE
         }
         ll_home_back.setOnClickListener {
-            (fragments[0] as HomeFragment).switchTabByPosition(0)
+            (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
         }
 
     }
