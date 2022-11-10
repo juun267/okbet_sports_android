@@ -71,7 +71,7 @@
             android:id="@+id/tv_away_name"
             android:maxLines="1"
             android:ellipsize="end"
-            android:maxWidth="75dp"
+            android:maxWidth="74dp"
             android:layout_toRightOf="@+id/iv_away_icon"
             android:layout_marginStart="@dimen/margin_8"
             android:textStyle="bold"

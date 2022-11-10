@@ -237,16 +237,15 @@ class MainHomeFragment :
         showChangeFragment()
         initHotHandicap()
         initListView()
-        nsv_home.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener {
-                _, _, scrollY, _, oldScrollY ->
-            ll_come_back.visibility = if (scrollY > 800) View.VISIBLE else View.GONE
 
-        })
+        nsv_home.setOnScrollChangeListener { view, i, i2, i3, i4 ->
+            LogUtil.d("i=="+i+"i2=="+i2+"i3==="+i3+"i4==="+i4)
+            ll_come_back.visibility =
+                if (nsv_home.canScrollVertically(-1)) View.VISIBLE else View.GONE
+        }
+
         ll_come_back.setOnClickListener {
-            nsv_home.post{
-                nsv_home.fullScroll(ScrollView.FOCUS_UP)
-            }
+            nsv_home.smoothScrollTo(0,0)
         }
         iv_live_type.setOnClickListener {
             SportDetailActivity.startActivity(requireContext(),
@@ -1137,11 +1136,6 @@ class MainHomeFragment :
         iv_live_type.visibility = View.VISIBLE
         return false
     }
-
-
-
-
-
-
+    
 
 }
