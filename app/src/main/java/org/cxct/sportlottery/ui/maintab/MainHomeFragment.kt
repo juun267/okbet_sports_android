@@ -217,11 +217,17 @@ class MainHomeFragment :
                             .error(R.drawable.icon_novideodata))
                         .into(iv_live_type)
                 }
-                iv_publicity.stopPlayback()
+                iv_publicity.stop()
             }else{
+                iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
+                iv_publicity.start()
+              //  LogUtil.d("onHiddenChanged")
                 iv_live_type.visibility = View.GONE
             }
+        }else{
+            iv_publicity.stop()
         }
+
     }
 
 
@@ -1108,17 +1114,18 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
                 iv_publicity.start()
+          //      LogUtil.d(it.pullRtmpUrl)
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
-                iv_publicity.stopPlayback()
+                iv_publicity.stop()
             }
-            LogUtil.d(it.pullRtmpUrl)
+
 
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        LogUtil.d("")
+//        LogUtil.d("")
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
@@ -1159,7 +1166,7 @@ class MainHomeFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        iv_publicity.stopPlayback()
+        iv_publicity.stop()
     }
     
 
