@@ -1330,7 +1330,7 @@
     <string name="text_x">X</string>
     <string name="your_bet_order_success">Your betting succesful</string>
     <string name="your_bet_order_fail">Betting failed, odds changed</string>
-    <string name="bet_others">Betting other</string>
+    <string name="bet_others">Other</string>
     <string name="check_bet_detail">Bets Details</string>
     <string name="dont_have_game">No Jackpot Games available</string>
     <string name="ou_hdp_hdp">Handicap</string>

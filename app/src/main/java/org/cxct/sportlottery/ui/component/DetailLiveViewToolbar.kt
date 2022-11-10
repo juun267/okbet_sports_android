@@ -74,10 +74,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     fun showLive() {
         curType = LiveType.LIVE
         iv_fullscreen.isVisible = true
-        switchPlayView(true)
         showPlayView()
+        switchPlayView(true)
         setWebViewHeight()
-        startPlayer()
         liveToolBarListener?.onTabClick(0)
 
     }
@@ -193,7 +192,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
                 iv_live.isVisible = false
-                LogUtil.d(videoUrl)
+                LogUtil.d(liveUrl)
                 iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
                 iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
             }
@@ -248,15 +247,13 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 //            mMediaController = MediaController(this, false, true)
 //            mMediaController.setOnClickSpeedAdjustListener(mOnClickSpeedAdjustListener)
 //            player_view.setMediaController(mMediaController)
-
+            LogUtil.d("initializePlayer=" + liveUrl)
             player_view.start();
         }
     }
 
     private fun releasePlayer() {
-        if (player_view.isVisible) {
-            player_view.stopPlayback()
-        }
+        player_view.stopPlayback()
     }
 
     fun startPlayer() {
@@ -267,7 +264,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun stopPlayer() {
         if (player_view.isVisible) {
-            player_view.stopPlayback()
+            player_view.stop()
         }
     }
 
