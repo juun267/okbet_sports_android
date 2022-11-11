@@ -77,14 +77,14 @@ class ItemHomeLiveHolder(
         initPlayView()
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                GSYVideoManager.instance().player.setNeedMute(true)
+                GSYVideoManager.instance().setNeedMute(true)
                 binding.videoView.startPlayLogic()
                 (bindingAdapter as HomeLiveAdapter).playerView = binding.videoView
             }
             binding.rippleView.showWaveAnimation()
         } else {
             binding.rippleView.cancelWaveAnimation()
-            GSYVideoManager.instance().player.setNeedMute(true)
+            GSYVideoManager.instance().setNeedMute(true)
             binding.videoView.release()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 binding.videoView.releasePointerCapture()
