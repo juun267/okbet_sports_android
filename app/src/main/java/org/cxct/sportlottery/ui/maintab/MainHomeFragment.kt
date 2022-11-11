@@ -65,12 +65,13 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.widget.OKVideoPlayer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainHomeFragment :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class)
+    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class), OKVideoPlayer.OnOkListener
     {
 
     private lateinit var mMatchInfo: MatchInfo
@@ -1089,7 +1090,7 @@ class MainHomeFragment :
 
 
     fun initPlayView() {
-
+        iv_publicity.setOnOkListener(this)
         iv_publicity.setIsTouchWigetFull(false)
 
     }
@@ -1123,5 +1124,13 @@ class MainHomeFragment :
         iv_publicity.release()
     }
 
+        override fun onPrepared() {
+            iv_live_type.isVisible = false
+        }
 
-}
+        override fun onError() {
+            iv_live_type.isVisible = true
+        }
+
+
+    }
