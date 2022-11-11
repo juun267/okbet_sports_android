@@ -205,8 +205,9 @@ class MainHomeFragment :
 
     override fun onResume() {
         super.onResume()
-        iv_publicity.onVideoResume()
+        iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
+        LogUtil.d("onResume")
     }
 
     override fun onPause() {
@@ -225,9 +226,8 @@ class MainHomeFragment :
             setupOddsChangeListener()
             iv_publicity.setUp(mMatchInfo.pullRtmpUrl, true, "");
             LogUtil.d(mMatchInfo.pullRtmpUrl)
-            iv_publicity.onVideoResume()
+            iv_publicity.startPlayLogic()
         } else {
-            iv_publicity.release()
             iv_publicity.onVideoPause()
         }
     }
@@ -1089,55 +1089,6 @@ class MainHomeFragment :
 
 
     fun initPlayView() {
-        GSYVideoManager.instance().setListener(object :GSYMediaPlayerListener{
-            override fun onPrepared() {
-
-            }
-
-            override fun onAutoCompletion() {
-
-            }
-
-            override fun onCompletion() {
-
-            }
-
-            override fun onBufferingUpdate(percent: Int) {
-
-            }
-
-            override fun onSeekComplete() {
-
-            }
-
-            override fun onError(what: Int, extra: Int) {
-                LogUtil.d(what.toString())
-            }
-
-            override fun onInfo(what: Int, extra: Int) {
-
-            }
-
-            override fun onVideoSizeChanged() {
-
-            }
-
-            override fun onBackFullscreen() {
-
-            }
-
-            override fun onVideoPause() {
-
-            }
-
-            override fun onVideoResume() {
-
-            }
-
-            override fun onVideoResume(seek: Boolean) {
-
-            }
-        })
 
         iv_publicity.setIsTouchWigetFull(false)
 
@@ -1152,7 +1103,7 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
-                iv_publicity.onVideoResume()
+                iv_publicity.startPlayLogic()
                 GSYVideoManager.instance().isNeedMute = true //静音播放
                 iv_live_type.visibility = View.GONE
             }else{
