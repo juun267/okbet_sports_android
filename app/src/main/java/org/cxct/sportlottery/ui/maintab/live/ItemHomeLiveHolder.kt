@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab.live
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
@@ -23,6 +22,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.widget.OKVideoPlayer
 
 class ItemHomeLiveHolder(
     lifecycleOwner: LifecycleOwner,
@@ -32,7 +32,6 @@ class ItemHomeLiveHolder(
     GSYVideoProgressListener {
     lateinit var data: MatchLiveData
     var lastExpandLive = false;
-    val ivCover: ImageView? = null;
 
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
@@ -105,14 +104,21 @@ class ItemHomeLiveHolder(
     fun initPlayView() {
         data.matchInfo.let {
             binding.videoView.setGSYVideoProgressListener(this)
-            if (ivCover == null) {
-                val ivCover = ImageView(binding.root.context)
-                Glide.with(binding.root.context)
-                    .load(data.matchInfo.frontCoverUrl)
-                    .apply(mRequestOptions)
-                    .into(ivCover)
-                binding.videoView.thumbImageView
-            }
+            binding.ivCover.isVisible = true
+            binding.videoView.setOnOkListener(object : OKVideoPlayer.OnOkListener {
+                override fun onPrepared() {
+                    binding.ivCover.isVisible = false
+                }
+
+                override fun onError() {
+                    binding.ivCover.isVisible = true
+                }
+            })
+            Glide.with(binding.root.context)
+                .load(data.matchInfo.frontCoverUrl)
+                .apply(mRequestOptions)
+                .into(binding.ivCover)
+            binding.videoView.thumbImageView
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.setUp(it.pullRtmpUrl, true, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
@@ -303,10 +309,7 @@ class ItemHomeLiveHolder(
             root.setOnClickListener {
                 homeLiveListener.onItemClickListener(data)
             }
-            binding.vEmpty.setOnClickListener {
-                homeLiveListener.onItemClickListener(data)
-            }
-            //endregion
+
         }
     }
 
