@@ -26,15 +26,6 @@ import org.greenrobot.eventbus.EventBus
 class HomeWorldCupFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    companion object {
-        fun newInstance(): HomeWorldCupFragment {
-            val args = Bundle()
-            val fragment = HomeWorldCupFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(), 5).apply {
             setOnItemClickListener { adapter, view, position ->
@@ -42,28 +33,18 @@ class HomeWorldCupFragment :
             }
         }
     }
+
     private val homeElecAdapter by lazy {
         HomeElecAdapter(mutableListOf())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home_worldcup, container, false)
-    }
+    override fun layoutId() = R.layout.fragment_home_worldcup
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onBindView(view: View) {
         viewModel.getConfigData()
-        initView()
+        initToolBar()
+        initTabView()
         initObservable()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -73,15 +54,6 @@ class HomeWorldCupFragment :
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    private fun initView() {
-        initToolBar()
-        initTabView()
-
-    }
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
