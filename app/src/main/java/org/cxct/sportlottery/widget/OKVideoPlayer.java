@@ -11,6 +11,18 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import org.cxct.sportlottery.R;
 
 public class OKVideoPlayer extends GSYVideoPlayer {
+    public interface OnOkListener {
+        void onPrepared();
+
+        void onError();
+    }
+
+    public OnOkListener onOkListener;
+
+    public void setOnOkListener(OnOkListener onOkListener) {
+        this.onOkListener = onOkListener;
+    }
+
     public OKVideoPlayer(Context context, Boolean fullFlag) {
         super(context, fullFlag);
     }
@@ -46,6 +58,9 @@ public class OKVideoPlayer extends GSYVideoPlayer {
             @Override
             public void onPrepared(String url, Object... objects) {
                 GSYVideoManager.instance().setNeedMute(true);
+                if (onOkListener != null) {
+                    onOkListener.onPrepared();
+                }
             }
 
             @Override
@@ -135,6 +150,9 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
             @Override
             public void onPlayError(String url, Object... objects) {
+                if (onOkListener != null) {
+                    onOkListener.onError();
+                }
             }
 
             @Override
