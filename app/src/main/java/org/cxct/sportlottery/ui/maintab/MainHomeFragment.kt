@@ -1098,9 +1098,9 @@ class MainHomeFragment :
         iv_live_type.visibility = View.VISIBLE
         matchInfo?.let {
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
-                iv_publicity.setUp(it.pullRtmpUrl, true, "");
+                iv_publicity.setUp(it.pullRtmpUrl, false, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-                iv_publicity.setUp(it.pullFlvUrl, true, "");
+                iv_publicity.setUp(it.pullFlvUrl, false, "");
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
@@ -1129,7 +1129,6 @@ class MainHomeFragment :
 
         override fun onError() {
             iv_live_type.isVisible = true
-            LogUtil.d("onError")
         }
 
 
