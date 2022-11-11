@@ -1444,10 +1444,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         if (chatLiveLoginData == null) {
             var builder = StringBuilder(host + "?")
             builder.append("device=android")
-            builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
-                LanguageManager.Language.ZH -> "zh"
-                else -> "en"
-            })
+            builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
             LogUtil.d("builder=" + builder.toString())
             wv_chat.loadUrl(builder.toString())
         } else {
@@ -1457,10 +1454,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             builder.append("&token=" + URLEncoder.encode(chatLiveLoginData.liveToken))
             builder.append("&role=" + 1)
             builder.append("&device=android")
-            builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
-                LanguageManager.Language.ZH -> "zh"
-                else -> "en"
-            })
+            builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
             LogUtil.d("builder=" + builder.toString())
             wv_chat.loadUrl(builder.toString())
         }
