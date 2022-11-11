@@ -18,6 +18,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pili.pldroid.player.PLOnErrorListener
 import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -219,7 +220,12 @@ class MainHomeFragment :
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
             iv_publicity.onVideoPause()
+            iv_publicity.setUp(mMatchInfo.pullRtmpUrl, true, "");
+            LogUtil.d(mMatchInfo.pullRtmpUrl)
+            iv_publicity.startPlayLogic()
+            GSYVideoManager.instance().isNeedMute = false
         } else {
+            iv_publicity.release()
             iv_publicity.onVideoResume()
         }
     }
@@ -1112,6 +1118,7 @@ class MainHomeFragment :
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
                 iv_publicity.startPlayLogic()
+                GSYVideoManager.instance().isNeedMute = true //静音播放
                 iv_live_type.visibility = View.GONE
             }else{
                 LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
