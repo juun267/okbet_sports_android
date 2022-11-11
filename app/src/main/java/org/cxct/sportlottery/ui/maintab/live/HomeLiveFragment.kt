@@ -110,18 +110,18 @@ class HomeLiveFragment :
 
     override fun onPause() {
         super.onPause()
-        homeLiveAdapter.playerView?.pause()
+        homeLiveAdapter.playerView?.onVideoPause()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            homeLiveAdapter.playerView?.start()
+            homeLiveAdapter.playerView?.onVideoResume()
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {
             homeLiveAdapter.expandMatchId = null
-            homeLiveAdapter.playerView?.pause()
+            homeLiveAdapter.playerView?.onVideoPause()
         }
     }
 

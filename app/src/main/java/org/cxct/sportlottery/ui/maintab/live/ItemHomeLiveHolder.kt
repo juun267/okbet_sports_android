@@ -14,7 +14,8 @@ import com.pili.pldroid.player.PLOnErrorListener
 import com.pili.pldroid.player.PLOnInfoListener
 import com.pili.pldroid.player.PLOnInfoListener.MEDIA_INFO_VIDEO_FRAME_RENDERING
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
-import com.pili.pldroid.player.widget.PLVideoView
+import com.shuyu.gsyvideoplayer.GSYVideoManager
+import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.common.*
@@ -81,13 +82,13 @@ class ItemHomeLiveHolder(
         initPlayView()
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                binding.videoView.start()
+                binding.videoView.startPlayLogic()
                 (bindingAdapter as HomeLiveAdapter).playerView = binding.videoView
             }
             binding.rippleView.showWaveAnimation()
         } else {
             binding.rippleView.cancelWaveAnimation()
-            binding.videoView.stopPlayback()
+            binding.videoView.release()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 binding.videoView.releasePointerCapture()
             }
@@ -113,21 +114,24 @@ class ItemHomeLiveHolder(
             options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
             options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
 
-            binding.videoView.setAVOptions(options)
-            binding.videoView.setOnVideoSizeChangedListener(this)
-            binding.videoView.setOnErrorListener(this)
-            binding.videoView.setOnInfoListener(this)
-            binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-            binding.videoView.setVolume(0f, 0f)
+//            binding.videoView.setAVOptions(options)
+//            binding.videoView.setOnVideoSizeChangedListener(this)
+//            binding.videoView.setOnErrorListener(this)
+//            binding.videoView.setOnInfoListener(this)
+//            binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+//            binding.videoView.setVolume(0f, 0f)
+            GSYVideoManager.instance().isNeedMute = true
 //            binding.videoView.setCoverView(binding.ivCover)
             Glide.with(binding.root.context)
                 .load(data.matchInfo.frontCoverUrl)
                 .apply(mRequestOptions)
                 .into(binding.ivCover)
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
-                binding.videoView.setVideoPath(it.pullRtmpUrl)
+                binding.videoView.setUp(it.pullRtmpUrl, true, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-                binding.videoView.setVideoPath(it.pullFlvUrl)
+                binding.videoView.setUp(it.pullFlvUrl, true, "");
+            } else {
+
             }
         }
     }
@@ -141,11 +145,11 @@ class ItemHomeLiveHolder(
     }
 
     fun setVolumeStateMute() {
-        binding.videoView.setVolume(0f, 0f)
+        GSYVideoManager.instance().isNeedMute = true
     }
 
     private fun setVolumeStateUnMute() {
-        binding.videoView.setVolume(1f, 1f)
+        GSYVideoManager.instance().isNeedMute = false
     }
 
     fun update(data: MatchLiveData, oddsType: OddsType) {
@@ -673,7 +677,7 @@ class ItemHomeLiveHolder(
 
     override fun onLifeDestroy() {
         super.onLifeDestroy()
-        binding.videoView.stopPlayback()
+        binding.videoView.release()
     }
 
 }

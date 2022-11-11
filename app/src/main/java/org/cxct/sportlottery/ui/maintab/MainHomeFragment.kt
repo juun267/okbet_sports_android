@@ -9,18 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.pili.pldroid.player.AVOptions
 import com.pili.pldroid.player.PLOnErrorListener
 import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
-import com.pili.pldroid.player.widget.PLVideoView
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -106,10 +103,14 @@ class MainHomeFragment :
                     .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
                     .into(iv_avatar_live)
             }
-            tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
+            tv_introduction.text =
+                data.matchInfo.streamerName ?: getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
-            data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
-          //  playMatchVideo(mMatchInfo)
+            if (data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+            } else {
+                playMatchVideo(data.matchInfo)
+            }
         })
 
     }
@@ -199,7 +200,14 @@ class MainHomeFragment :
 
     override fun onResume() {
         super.onResume()
+        iv_publicity.onVideoResume()
         rv_marquee.startAuto()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        iv_publicity.onVideoPause()
+        rv_marquee.stopAuto()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -210,36 +218,14 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-            if (this::mMatchInfo.isInitialized){
-                if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                    iv_live_type.visibility = View.VISIBLE
-                    context?.let {
-                        Glide.with(it)
-                            .load(mMatchInfo.frontCoverUrl)
-                            .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                                .error(R.drawable.icon_novideodata))
-                            .into(iv_live_type)
-                    }
-                    iv_publicity.stop()
-                }else{
-                    iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
-                    iv_publicity.start()
-                    //  LogUtil.d("onHiddenChanged")
-                    iv_live_type.visibility = View.GONE
-                }
-            }
-
-        }else{
-            iv_publicity.stop()
+            iv_publicity.onVideoPause()
+        } else {
+            iv_publicity.onVideoResume()
         }
-
     }
 
 
-    override fun onPause() {
-        super.onPause()
-        rv_marquee.stopAuto()
-    }
+
 
     private fun initView() {
         initToolBar()
@@ -1096,38 +1082,41 @@ class MainHomeFragment :
 
     fun initPlayView() {
 
-        val options = AVOptions()
-        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-        options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-        options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-        options.setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, 5)
-        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-        options.setInteger(AVOptions.KEY_FAST_OPEN, 1)
-        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-        iv_publicity.setCoverView(iv_live_type)
-        iv_publicity.setAVOptions(options)
-        iv_publicity.setOnVideoSizeChangedListener(this)
-        iv_publicity.setOnErrorListener(this)
-        iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-        iv_publicity.setVolume(0f, 0f)
+//        val options = AVOptions()
+//        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+//        options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
+//        options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
+//        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+//        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
+//        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+//        options.setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, 5)
+//        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+//        options.setInteger(AVOptions.KEY_FAST_OPEN, 1)
+//        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+//        iv_publicity.setCoverView(iv_live_type)
+//        iv_publicity.setAVOptions(options)
+//        iv_publicity.setOnVideoSizeChangedListener(this)
+//        iv_publicity.setOnErrorListener(this)
+//        iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+//        iv_publicity.setVolume(0f, 0f)
+        iv_publicity.setIsTouchWigetFull(false)
+
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
         matchInfo?.let {
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
-                iv_publicity.setVideoPath(it.pullRtmpUrl)
+                iv_publicity.setUp(it.pullRtmpUrl, true, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-                iv_publicity.setVideoPath(it.pullFlvUrl)
+                iv_publicity.setUp(it.pullFlvUrl, true, "");
             }
-            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
-                iv_publicity.start()
-          //      LogUtil.d(it.pullRtmpUrl)
+            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
+                LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
+                iv_publicity.startPlayLogic()
                 iv_live_type.visibility = View.GONE
             }else{
+                LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
-                iv_publicity.stop()
+//                iv_publicity.st()
             }
 
 
@@ -1143,13 +1132,11 @@ class MainHomeFragment :
         if (iv_publicity == null) {
             return false
         }
-
         if (p0==ERROR_CODE_IO_ERROR){
-            iv_publicity.start()
             with(iv_publicity) {
                 iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    iv_publicity.releasePointerCapture()
+                    iv_publicity.release()
                 }
             }
 //            LogUtil.d("iv_publicity.stopPlayback()")
@@ -1177,8 +1164,8 @@ class MainHomeFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        iv_publicity.stop()
+        iv_publicity.release()
     }
-    
+
 
 }
