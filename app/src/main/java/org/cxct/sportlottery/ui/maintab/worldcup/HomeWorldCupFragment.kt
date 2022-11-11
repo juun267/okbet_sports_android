@@ -1,33 +1,32 @@
-package org.cxct.sportlottery.ui.maintab
+package org.cxct.sportlottery.ui.maintab.worldcup
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
+import android.graphics.Color
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_live.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
+import org.cxct.sportlottery.ui.maintab.HomeFragment
+import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.elec.HomeElecAdapter
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
-import org.greenrobot.eventbus.EventBus
 
-class HomeWorldCupFragment :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
+class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(), 5).apply {
+    private val homeTabAdapter by lazy { HomeWorldCupTabAdapter().apply {
             setOnItemClickListener { adapter, view, position ->
                 (parentFragment as HomeFragment).onTabClickByPosition(position)
             }
@@ -43,8 +42,16 @@ class HomeWorldCupFragment :
     override fun onBindView(view: View) {
         viewModel.getConfigData()
         initToolBar()
+        setTheme()
         initTabView()
         initObservable()
+    }
+
+    private fun setTheme() {
+        iv_menu_left.setImageResource(R.drawable.icon_menu_withe)
+        iv_money_refresh.setImageResource(R.drawable.ic_refresh_withe)
+        tv_home_money.setTextColor(Color.WHITE)
+        iv_logo.setImageResource(R.drawable.logo_okbet_withe)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -56,9 +63,9 @@ class HomeWorldCupFragment :
 
 
     fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        view?.fitsSystemStatus()
         iv_menu_left.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(true))
+            EventBusUtil.post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0)
         }
         iv_logo.setOnClickListener {
@@ -99,10 +106,10 @@ class HomeWorldCupFragment :
     }
 
     private fun initTabView() {
+        rv_tab_home.clipToPadding = false
         with(rv_tab_home) {
             if (layoutManager == null) {
-                layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             }
             if (adapter == null) {
                 adapter = homeTabAdapter
