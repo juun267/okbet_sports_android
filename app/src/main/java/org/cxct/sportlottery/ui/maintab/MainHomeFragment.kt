@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -17,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.pili.pldroid.player.AVOptions
 import com.pili.pldroid.player.PLOnErrorListener
+import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import com.youth.banner.Banner
@@ -208,22 +210,25 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-            if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                iv_live_type.visibility = View.VISIBLE
-                context?.let {
-                    Glide.with(it)
-                        .load(mMatchInfo.frontCoverUrl)
-                        .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                            .error(R.drawable.icon_novideodata))
-                        .into(iv_live_type)
+            if (this::mMatchInfo.isInitialized){
+                if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                    iv_live_type.visibility = View.VISIBLE
+                    context?.let {
+                        Glide.with(it)
+                            .load(mMatchInfo.frontCoverUrl)
+                            .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                                .error(R.drawable.icon_novideodata))
+                            .into(iv_live_type)
+                    }
+                    iv_publicity.stop()
+                }else{
+                    iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
+                    iv_publicity.start()
+                    //  LogUtil.d("onHiddenChanged")
+                    iv_live_type.visibility = View.GONE
                 }
-                iv_publicity.stop()
-            }else{
-                iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
-                iv_publicity.start()
-              //  LogUtil.d("onHiddenChanged")
-                iv_live_type.visibility = View.GONE
             }
+
         }else{
             iv_publicity.stop()
         }
@@ -737,8 +742,8 @@ class MainHomeFragment :
 
     private fun setupBanner() {
         val requestOptions = RequestOptions()
-            .placeholder(R.drawable.ic_image_load)
-            .error(R.drawable.ic_image_broken)
+            .placeholder(R.drawable.img_banner01)
+            .error(R.drawable.img_banner01)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
 
@@ -1098,6 +1103,10 @@ class MainHomeFragment :
         options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
         options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
         options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+        options.setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, 5)
+        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+        options.setInteger(AVOptions.KEY_FAST_OPEN, 1)
+        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
         iv_publicity.setCoverView(iv_live_type)
         iv_publicity.setAVOptions(options)
         iv_publicity.setOnVideoSizeChangedListener(this)
@@ -1135,13 +1144,15 @@ class MainHomeFragment :
             return false
         }
 
-        if (p0==-3||p0==-2){
+        if (p0==ERROR_CODE_IO_ERROR){
+            iv_publicity.start()
             with(iv_publicity) {
                 iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     iv_publicity.releasePointerCapture()
                 }
             }
+//            LogUtil.d("iv_publicity.stopPlayback()")
             iv_live_type.visibility = View.VISIBLE
             context?.let {
                 Glide.with(it)

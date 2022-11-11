@@ -224,12 +224,16 @@
                 tools:listitem="@layout/item_hot_live" />
         </LinearLayout>
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_avatar_live"
             android:layout_width="@dimen/margin_28"
             android:layout_height="@dimen/margin_28"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_12"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            app:riv_border_width="@dimen/margin_1"
+            app:riv_oval="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_account"
             tools:src="@drawable/icon_avatar" />

@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_withdraw.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
@@ -612,9 +613,12 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         } else {
             lin_withdraw.visibility = View.VISIBLE
             fl_bet_station.visibility = View.GONE
-            if (betStationFragment != null && betStationFragment.isAdded) {
-                childFragmentManager.beginTransaction().hide(betStationFragment).commit()
+            if (this::betStationFragment.isInitialized){
+                if (betStationFragment != null && betStationFragment.isAdded) {
+                    childFragmentManager.beginTransaction().hide(betStationFragment).commit()
+                }
             }
+
         }
     }
 }
