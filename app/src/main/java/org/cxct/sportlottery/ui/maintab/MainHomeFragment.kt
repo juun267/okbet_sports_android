@@ -1145,8 +1145,7 @@ class MainHomeFragment :
 
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
-        matchInfo?.let { it ->
-
+        matchInfo?.let {
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
                 iv_publicity.setUp(it.pullRtmpUrl, true, "");
                 GSYVideoManager.instance().isNeedMute = true //静音播放
@@ -1161,7 +1160,6 @@ class MainHomeFragment :
             }else{
                 LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
-                iv_publicity.isShowPauseCover
             }
 
 

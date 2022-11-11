@@ -81,7 +81,6 @@ class HomeLiveAdapter(
         holder.bind(data = itemData, oddsType = oddsType)
     }
 
-
     override fun getItemCount(): Int = data.size
 
 
