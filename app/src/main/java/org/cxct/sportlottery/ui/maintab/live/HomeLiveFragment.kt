@@ -81,8 +81,10 @@ class HomeLiveFragment :
                         )
                     }
                 },
-                onClickLiveListener = { matchId, roundNo ->
-                    viewModel.getLiveInfo(roundNo)
+                onClickLiveListener = { matchInfo, roundNo ->
+                    if (matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                        viewModel.getLiveInfo(roundNo)
+                    }
                 }
             )
         )
@@ -106,19 +108,21 @@ class HomeLiveFragment :
         viewModel.getLiveRoundHall()
     }
 
+    override fun onPause() {
+        super.onPause()
+        homeLiveAdapter.playerView?.pause()
+    }
+
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
+            homeLiveAdapter.playerView?.start()
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {
-//            homeLiveAdapter.expandMatchId = ""
-            homeLiveAdapter.setVolumeMute()
+            homeLiveAdapter.expandMatchId = null
+            homeLiveAdapter.playerView?.pause()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     private fun initView() {
@@ -193,11 +197,12 @@ class HomeLiveFragment :
             unSubscribeChannelHallAll()
             subscribeQueryData(it)
             if (needGetLive) {
-                it.first()?.matchInfo.roundNo?.let {
-                    viewModel.getLiveInfo(it)
+                it.firstOrNull()?.let {
+                    if (it.matchInfo.isLive == 1 && !it.matchInfo.roundNo.isNullOrEmpty()) {
+                        viewModel.getLiveInfo(it.matchInfo.roundNo)
+                    }
                 }
             }
-
         }
 
         viewModel.betInfoList.observe(viewLifecycleOwner) { event ->
@@ -209,9 +214,12 @@ class HomeLiveFragment :
             event?.peekContent()?.let { matchRound ->
                 homeLiveAdapter.data.forEachIndexed { index, matchLiveData ->
                     if (matchLiveData.matchInfo.roundNo == matchRound.roundNo) {
+                        Log.e("hjq", "matchLiveInfo=" + matchLiveData.matchInfo.streamerName)
                         matchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                         matchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
                         homeLiveAdapter.notifyItemChanged(index, matchLiveData)
+                        homeLiveAdapter.expandMatchId = matchLiveData.matchInfo.id
+                        rv_live.smoothScrollToPosition(index)
                     }
                 }
             }
