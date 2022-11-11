@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.maintab.live
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,6 +26,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import timber.log.Timber
 
 class ItemHomeLiveHolder(
     lifecycleOwner: LifecycleOwner,
@@ -47,7 +50,10 @@ class ItemHomeLiveHolder(
     fun bind(data: MatchLiveData, oddsType: OddsType) {
         //設置賽事資訊是否顯示
         update(data, oddsType)
-        updateLive((bindingAdapter as HomeLiveAdapter).expandMatchId == data.matchInfo?.id && data.matchInfo.isLive == 1)
+        val matchId = (bindingAdapter as HomeLiveAdapter).expandMatchId
+        val isExpendLive =
+            (!matchId.isNullOrEmpty()) && matchId == data.matchInfo.id && data.matchInfo.isLive == 1
+        updateLive(isExpendLive)
         binding.blockNormalGame.measure(0, 0)
         val width = binding.blockNormalGame.measuredWidth
         val margin = width + 4.dp
@@ -70,6 +76,7 @@ class ItemHomeLiveHolder(
             binding.rippleView.cancelWaveAnimation()
             binding.videoView.stopPlayback()
         }
+        binding.videoView.isVisible = isExpandLive
         binding.flLive.isVisible = isExpandLive
         setVolumeState()
         binding.ivLiveSound.setOnClickListener {
@@ -129,7 +136,7 @@ class ItemHomeLiveHolder(
         binding.videoView.setVolume(0f, 0f)
     }
 
-   private fun setVolumeStateUnMute() {
+    private fun setVolumeStateUnMute() {
         binding.videoView.setVolume(1f, 1f)
     }
 
@@ -505,45 +512,12 @@ class ItemHomeLiveHolder(
                     )
 
                 } else {
+                    stopTimer()
                     binding.tvGamePlayTime.visibility = View.GONE
                 }
             }
-
-            TimeUtil.isTimeAtStart(item.matchInfo?.startTime) -> {
-                binding.tvGamePlayTime.text = item.runningTime
-                listener = object : TimerListener {
-                    override fun onTimerUpdate(timeMillis: Long) {
-                        if (timeMillis > 1000) {
-                            val min = TimeUtil.longToMinute(timeMillis)
-                            binding.tvGamePlayTime.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                min
-                            )
-                        } else {
-                            //等待Socket更新
-                            binding.tvGamePlayTime.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                0
-                            )
-                        }
-                        item.matchInfo?.remainTime = timeMillis
-//                        TODO 記錄時間?
-                        item.runningTime = binding.tvGamePlayTime.text.toString()
-//                        getRecommendData()[0].runningTime = binding.tvGamePlayTime.text.toString()
-                    }
-                }
-
-                item.matchInfo?.remainTime?.let { remainTime ->
-                    updateTimer(
-                        true,
-                        isTimerPause,
-                        (remainTime / 1000).toInt(),
-                        true
-                    )
-                }
-            }
-
             else -> {
+                stopTimer()
                 binding.tvGamePlayTime.text =
                     TimeUtil.timeFormat(item.matchInfo?.startTime, TimeUtil.DM_HM_FORMAT)
             }

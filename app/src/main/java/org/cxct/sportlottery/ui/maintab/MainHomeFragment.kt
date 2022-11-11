@@ -2,16 +2,14 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.ImageView
-import android.widget.ScrollView
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -33,7 +31,6 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
-import kotlinx.coroutines.delay
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -43,7 +40,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
@@ -56,7 +52,6 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -112,6 +107,7 @@ class MainHomeFragment :
             tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
             data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+          //  playMatchVideo(mMatchInfo)
         })
 
     }
@@ -212,7 +208,26 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
+            if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                iv_live_type.visibility = View.VISIBLE
+                context?.let {
+                    Glide.with(it)
+                        .load(mMatchInfo.frontCoverUrl)
+                        .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                            .error(R.drawable.icon_novideodata))
+                        .into(iv_live_type)
+                }
+                iv_publicity.stop()
+            }else{
+                iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
+                iv_publicity.start()
+              //  LogUtil.d("onHiddenChanged")
+                iv_live_type.visibility = View.GONE
+            }
+        }else{
+            iv_publicity.stop()
         }
+
     }
 
 
@@ -239,7 +254,6 @@ class MainHomeFragment :
         initListView()
 
         nsv_home.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            LogUtil.d("i=="+i+"i2=="+i2+"i3==="+i3+"i4==="+i4)
             ll_come_back.visibility =
                 if (nsv_home.canScrollVertically(-1)) View.VISIBLE else View.GONE
         }
@@ -410,7 +424,6 @@ class MainHomeFragment :
                         tv_match_name.text = league.name
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
-                   //     LogUtil.d(matchInfo.statusName18n)
                         context?.let {mContext->
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
@@ -429,7 +442,9 @@ class MainHomeFragment :
                         viewModel.getLiveInfo(it)
                     }
                 }
-
+                    if(homeHotLiveAdapter.data.isNullOrEmpty()){
+                        homeHotLiveAdapter.mSelectedId = list.firstOrNull()?.matchInfo?.id
+                    }
                     homeHotLiveAdapter.data = list
 
                      //订阅直播
@@ -478,6 +493,7 @@ class MainHomeFragment :
                        hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                        hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
                        homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
+                       mMatchInfo = hotMatchLiveData.matchInfo
                        playMatchVideo(hotMatchLiveData.matchInfo)
                    }
                }
@@ -492,7 +508,6 @@ class MainHomeFragment :
             it?.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-                    LogUtil.d("serviceConnectStatus")
                     viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
@@ -532,7 +547,6 @@ class MainHomeFragment :
 //                            return@forEach
 //                        }
 //                    }
-         //           LogUtil.toJson(matchStatusChangeEvent)
                     if (needUpdate) {
                         hotHandicapAdapter.notifyItemChanged(index)
                     }
@@ -637,7 +651,6 @@ class MainHomeFragment :
             it?.let {
                 //先解除全部賽事訂閱
                 unSubscribeChannelHallAll()
-                LogUtil.d("producerUp")
                 subscribeQueryData(hotHandicapAdapter.data)
                 subScribeLiveData(homeHotLiveAdapter.data)
             }
@@ -1078,19 +1091,19 @@ class MainHomeFragment :
 
     fun initPlayView() {
 
-            val options = AVOptions()
-            options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-            options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-            options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-            options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-            iv_publicity.setCoverView( view?.findViewById<ImageView>(R.id.iv_live_type))
-            iv_publicity.setAVOptions(options)
-            iv_publicity.setOnVideoSizeChangedListener(this)
-            iv_publicity.setOnErrorListener(this)
-            iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-            iv_publicity.setVolume(0f, 0f)
+        val options = AVOptions()
+        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
+        options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
+        options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
+        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
+        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+        iv_publicity.setCoverView(iv_live_type)
+        iv_publicity.setAVOptions(options)
+        iv_publicity.setOnVideoSizeChangedListener(this)
+        iv_publicity.setOnErrorListener(this)
+        iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
+        iv_publicity.setVolume(0f, 0f)
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
         matchInfo?.let {
@@ -1099,20 +1112,20 @@ class MainHomeFragment :
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setVideoPath(it.pullFlvUrl)
             }
-            iv_publicity.start()
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
+                iv_publicity.start()
+          //      LogUtil.d(it.pullRtmpUrl)
                 iv_live_type.visibility = View.GONE
             }else{
                 iv_live_type.visibility = View.VISIBLE
-                iv_publicity.pause()
+                iv_publicity.stop()
             }
-            LogUtil.d(it.pullRtmpUrl)
 
 
         }
     }
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        LogUtil.d("")
+//        LogUtil.d("")
     }
 
     override fun onError(p0: Int, p1: Any?): Boolean {
@@ -1121,8 +1134,22 @@ class MainHomeFragment :
         if (iv_publicity == null) {
             return false
         }
-        mMatchInfo.pullRtmpUrl?.let {
-            iv_publicity.start()
+
+        if (p0==-3||p0==-2){
+            with(iv_publicity) {
+                iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    iv_publicity.releasePointerCapture()
+                }
+            }
+            iv_live_type.visibility = View.VISIBLE
+            context?.let {
+                Glide.with(it)
+                    .load(mMatchInfo.frontCoverUrl)
+                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                        .error(R.drawable.icon_novideodata))
+                    .into(iv_live_type)
+            }
         }
         if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
             context?.let {
@@ -1139,7 +1166,7 @@ class MainHomeFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        iv_publicity.stopPlayback()
+        iv_publicity.stop()
     }
     
 

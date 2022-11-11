@@ -112,8 +112,7 @@ class HomeLiveFragment :
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {
-            homeLiveAdapter.expandMatchId = null
-            //todo 待测试  Timber.d("视频播放静音")
+//            homeLiveAdapter.expandMatchId = ""
             homeLiveAdapter.setVolumeMute()
         }
     }
@@ -160,6 +159,7 @@ class HomeLiveFragment :
 //        }
         setupLogin()
     }
+
     private fun initObservable() {
         if (viewModel == null) {
             return
@@ -394,7 +394,6 @@ class HomeLiveFragment :
             }
         }
     }
-
 
 
     private fun initTabView() {

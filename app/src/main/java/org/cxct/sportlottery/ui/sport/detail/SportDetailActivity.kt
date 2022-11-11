@@ -170,6 +170,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     showFullScreen(enable)
                 }
             }
+
+            override fun onTabClick(position: Int) {
+                showChatWebView(position == 0)
+            }
         }
     }
 
@@ -231,8 +235,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.v_statusbar_live.layoutParams = this
             }
             toolbar_layout.minimumHeight = it
-            collaps_toolbar.layoutParams.height =
-                it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+            view_status_collaps.layoutParams.apply {
+                height = it
+                view_status_collaps.height
+            }
         }
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
@@ -388,7 +394,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         startTimer()
         isLogin = viewModel.loginRepository.isLogin.value == true
         live_view_tool_bar.initLoginStatus(isLogin)
-        live_view_tool_bar.startPlayer(isLogin)
+        live_view_tool_bar.startPlayer()
     }
 
     override fun onPause() {
@@ -728,9 +734,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             lin_bottom.isVisible = false
-            collaps_toolbar.tv_toolbar_match_status.text = tv_match_status.text
+            collaps_toolbar.tv_toolbar_match_status.text = tv_match_status.text.trim()
             collaps_toolbar.tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-            collaps_toolbar.tv_toolbar_match_time.text = tv_match_time.text
+            collaps_toolbar.tv_toolbar_match_time.text = tv_match_time.text.trim()
             collaps_toolbar.tv_toolbar_match_time.isVisible = tv_match_time.isVisible
             collaps_toolbar.tv_toolbar_home_score.isVisible = tv_score.isVisible
             collaps_toolbar.tv_toolbar_away_score.isVisible = tv_score.isVisible
@@ -1176,7 +1182,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 }
             }
             tv_toolbar_match_status.isVisible = tv_match_status.isVisible
-            tv_toolbar_match_status.text = tv_match_status.text
+            tv_toolbar_match_status.text = tv_match_status.text.trim()
         }
     }
     /**
@@ -1378,7 +1384,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                     matchInfo.startDateDisplay
             }
         }
-        tv_toolbar_match_status.text = tv_match_status.text
+        tv_toolbar_match_status.text = tv_match_status.text.trim()
     }
 
     /**

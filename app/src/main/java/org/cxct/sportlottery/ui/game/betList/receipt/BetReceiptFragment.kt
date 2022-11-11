@@ -12,7 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.repository.BetInfoRepository.oddsType
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -280,7 +280,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             betList.filter { it.matchOdd.status == org.cxct.sportlottery.enum.BetStatus.ACTIVATED.code }
 
         val parlayList =
-            if (betList.size == betListFilter.size) betParlayList
+            if (betList.size == betListFilter.size) BetInfoRepository.parlayList.value
                 ?: mutableListOf() else mutableListOf()
 
         val tempParlayList = mutableListOf<ParlayOdd>()
@@ -315,7 +315,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.addBetList(
             betList,
             parlayList,
-            oddsType,
+            BetInfoRepository.oddsType,
             tabPosition,
             oddsChangeOption = 0
         )
