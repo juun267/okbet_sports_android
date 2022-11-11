@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -1091,15 +1090,13 @@ class MainHomeFragment :
     private fun playMatchVideo(matchInfo: MatchInfo?){
         matchInfo?.let {
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
-                iv_publicity.setUp(it.pullRtmpUrl, true, "");
-                GSYVideoManager.instance().isNeedMute = true //静音播放
+                iv_publicity.setUp(it.pullRtmpUrl, false, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-                iv_publicity.setUp(it.pullFlvUrl, true, "");
+                iv_publicity.setUp(it.pullFlvUrl, false, "");
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
                 iv_publicity.startPlayLogic()
-                GSYVideoManager.instance().isNeedMute = true //静音播放
                 iv_live_type.visibility = View.GONE
             }else{
                 LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
