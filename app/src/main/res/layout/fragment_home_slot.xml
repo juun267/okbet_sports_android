@@ -13,8 +13,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tab_home"
         android:layout_width="match_parent"
+        android:clipToPadding="false"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/margin_10"
         android:orientation="horizontal"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="6"
