@@ -66,7 +66,7 @@ class MainHomeFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class), OKVideoPlayer.OnOkListener
     {
 
-    private lateinit var mMatchInfo: MatchInfo
+    private  var mMatchInfo: MatchInfo?=null
     interface TimerListener {
         fun onTimerUpdate(timeMillis: Long)
     }
@@ -218,10 +218,10 @@ class MainHomeFragment :
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
             iv_publicity.release()
-            iv_publicity.setUp(mMatchInfo.pullRtmpUrl, true, "");
-            LogUtil.d(mMatchInfo.pullRtmpUrl)
-
+                iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
+                LogUtil.d(mMatchInfo?.pullRtmpUrl)
             iv_publicity.startPlayLogic()
+            LogUtil.e("startPlayLogic=mainhome" )
         } else {
             iv_publicity.onVideoPause()
         }
@@ -256,16 +256,20 @@ class MainHomeFragment :
             nsv_home.smoothScrollTo(0,0)
         }
         iv_live_type.setOnClickListener {
-            SportDetailActivity.startActivity(requireContext(),
-                matchInfo = mMatchInfo,
-                matchType = MatchType.IN_PLAY,
-                true)
+            mMatchInfo?.let { it1 ->
+                SportDetailActivity.startActivity(requireContext(),
+                    matchInfo = it1,
+                    matchType = MatchType.IN_PLAY,
+                    true)
+            }
         }
         view_action.setOnClickListener {
-            SportDetailActivity.startActivity(requireContext(),
-                matchInfo = mMatchInfo,
-                matchType = MatchType.IN_PLAY,
-                true)
+            mMatchInfo?.let { it1 ->
+                SportDetailActivity.startActivity(requireContext(),
+                    matchInfo = it1,
+                    matchType = MatchType.IN_PLAY,
+                    true)
+            }
         }
         ll_hot_live_more.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(1)
