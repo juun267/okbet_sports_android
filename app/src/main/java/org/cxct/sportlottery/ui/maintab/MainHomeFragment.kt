@@ -223,14 +223,12 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-            iv_publicity.onVideoPause()
             iv_publicity.setUp(mMatchInfo.pullRtmpUrl, true, "");
             LogUtil.d(mMatchInfo.pullRtmpUrl)
-            iv_publicity.startPlayLogic()
-            GSYVideoManager.instance().isNeedMute = false
+            iv_publicity.onVideoResume()
         } else {
             iv_publicity.release()
-            iv_publicity.onVideoResume()
+            iv_publicity.onVideoPause()
         }
     }
 
@@ -1154,7 +1152,7 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
-                iv_publicity.startPlayLogic()
+                iv_publicity.onVideoResume()
                 GSYVideoManager.instance().isNeedMute = true //静音播放
                 iv_live_type.visibility = View.GONE
             }else{
