@@ -1,20 +1,16 @@
 package org.cxct.sportlottery.ui.maintab.live
 
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.pili.pldroid.player.AVOptions
-import com.pili.pldroid.player.PLOnErrorListener
-import com.pili.pldroid.player.PLOnInfoListener
-import com.pili.pldroid.player.PLOnInfoListener.MEDIA_INFO_VIDEO_FRAME_RENDERING
-import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.shuyu.gsyvideoplayer.GSYVideoManager
+import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
@@ -33,11 +29,10 @@ class ItemHomeLiveHolder(
     val binding: ItemHomeLiveBinding,
     private val homeLiveListener: HomeLiveListener,
 ) : ViewHolderUtils.TimerViewHolderTimer(lifecycleOwner, binding.root),
-    PLOnInfoListener,
-    PLOnVideoSizeChangedListener,
-    PLOnErrorListener {
+    GSYVideoProgressListener {
     lateinit var data: MatchLiveData
     var lastExpandLive = false;
+    val ivCover: ImageView? = null;
 
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
@@ -50,7 +45,8 @@ class ItemHomeLiveHolder(
 
     fun bind(data: MatchLiveData, oddsType: OddsType) {
         //設置賽事資訊是否顯示
-        update(data, oddsType)
+        this.data = data
+        update(oddsType)
         val matchId = (bindingAdapter as HomeLiveAdapter).expandMatchId
         val isExpendLive =
             (!matchId.isNullOrEmpty()) && matchId == data.matchInfo.id && data.matchInfo.isLive == 1
@@ -82,12 +78,14 @@ class ItemHomeLiveHolder(
         initPlayView()
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                GSYVideoManager.instance().player.setNeedMute(true)
                 binding.videoView.startPlayLogic()
                 (bindingAdapter as HomeLiveAdapter).playerView = binding.videoView
             }
             binding.rippleView.showWaveAnimation()
         } else {
             binding.rippleView.cancelWaveAnimation()
+            GSYVideoManager.instance().player.setNeedMute(true)
             binding.videoView.release()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 binding.videoView.releasePointerCapture()
@@ -105,27 +103,16 @@ class ItemHomeLiveHolder(
     }
 
     fun initPlayView() {
-        data.matchInfo?.let {
-            val options = AVOptions()
-            options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-            options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-            options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-            options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-
-//            binding.videoView.setAVOptions(options)
-//            binding.videoView.setOnVideoSizeChangedListener(this)
-//            binding.videoView.setOnErrorListener(this)
-//            binding.videoView.setOnInfoListener(this)
-//            binding.videoView.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-//            binding.videoView.setVolume(0f, 0f)
-            GSYVideoManager.instance().isNeedMute = true
-//            binding.videoView.setCoverView(binding.ivCover)
-            Glide.with(binding.root.context)
-                .load(data.matchInfo.frontCoverUrl)
-                .apply(mRequestOptions)
-                .into(binding.ivCover)
+        data.matchInfo.let {
+            binding.videoView.setGSYVideoProgressListener(this)
+            if (ivCover == null) {
+                val ivCover = ImageView(binding.root.context)
+                Glide.with(binding.root.context)
+                    .load(data.matchInfo.frontCoverUrl)
+                    .apply(mRequestOptions)
+                    .into(ivCover)
+                binding.videoView.thumbImageView
+            }
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.setUp(it.pullRtmpUrl, true, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
@@ -152,8 +139,7 @@ class ItemHomeLiveHolder(
         GSYVideoManager.instance().isNeedMute = false
     }
 
-    fun update(data: MatchLiveData, oddsType: OddsType) {
-        this.data = data
+    fun update(oddsType: OddsType) {
         //設置賽事資訊是否顯示
         setupGameInfoVisibility(data)
 
@@ -315,6 +301,9 @@ class ItemHomeLiveHolder(
                 it.matchInfo
             }
             root.setOnClickListener {
+                homeLiveListener.onItemClickListener(data)
+            }
+            binding.vEmpty.setOnClickListener {
                 homeLiveListener.onItemClickListener(data)
             }
             //endregion
@@ -647,37 +636,32 @@ class ItemHomeLiveHolder(
         }
     }
 
-    override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        Log.e("hjq", "onVideoSizeChanged=" + p0.toString() + "," + p1)
-        binding.videoView.layoutParams.apply {
-            height = binding.videoView.width * p1 / p0
-        }
-    }
+//    override fun onVideoSizeChanged(p0: Int, p1: Int) {
+//        Log.e("hjq", "onVideoSizeChanged=" + p0.toString() + "," + p1)
+//        binding.videoView.layoutParams.apply {
+//            height = binding.videoView.width * p1 / p0
+//        }
+//    }
 
-    override fun onError(p0: Int, p1: Any?): Boolean {
-//        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
-//        LogUtil.e(p0.toString() + "," + p1)
-        Log.e("hjq", "onError=" + p0.toString() + "," + p1)
-        return false
-    }
-
-    override fun onInfo(p0: Int, p1: Int, p2: Any?) {
-        when (p0) {
-            MEDIA_INFO_VIDEO_FRAME_RENDERING -> {
-                if (p1 > 60 * 60 * 1000) {
-                    binding.tvLiveTime.text =
-                        TimeUtil.timeFormat(p1.toLong(), TimeUtil.HM_FORMAT_SS_12)
-                } else {
-                    binding.tvLiveTime.text =
-                        TimeUtil.timeFormat(p1.toLong(), TimeUtil.HM_FORMAT_MS)
-                }
-            }
-        }
-    }
 
     override fun onLifeDestroy() {
         super.onLifeDestroy()
         binding.videoView.release()
+    }
+
+    override fun onProgress(
+        progress: Long,
+        secProgress: Long,
+        currentPosition: Long,
+        duration: Long,
+    ) {
+        if (currentPosition > 60 * 60 * 1000) {
+            binding.tvLiveTime.text =
+                TimeUtil.timeFormat(currentPosition, TimeUtil.HM_FORMAT_SS_12)
+        } else {
+            binding.tvLiveTime.text =
+                TimeUtil.timeFormat(currentPosition, TimeUtil.HM_FORMAT_MS)
+        }
     }
 
 }

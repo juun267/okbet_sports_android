@@ -18,6 +18,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.pili.pldroid.player.PLOnErrorListener
 import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -1082,24 +1083,6 @@ class MainHomeFragment :
 
     fun initPlayView() {
 
-//        val options = AVOptions()
-//        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-//        options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-//        options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-//        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-//        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-//        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-//        options.setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, 5)
-//        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-//        options.setInteger(AVOptions.KEY_FAST_OPEN, 1)
-//        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-//        iv_publicity.setCoverView(iv_live_type)
-//        iv_publicity.setAVOptions(options)
-//        iv_publicity.setOnVideoSizeChangedListener(this)
-//        iv_publicity.setOnErrorListener(this)
-//        iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-//        iv_publicity.setVolume(0f, 0f)
-        iv_publicity.setIsTouchWigetFull(false)
 
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
@@ -1110,11 +1093,10 @@ class MainHomeFragment :
                 iv_publicity.setUp(it.pullFlvUrl, true, "");
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
-                LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
                 iv_publicity.startPlayLogic()
+                GSYVideoManager.instance().isNeedMute = true
                 iv_live_type.visibility = View.GONE
             }else{
-                LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
 //                iv_publicity.st()
             }
