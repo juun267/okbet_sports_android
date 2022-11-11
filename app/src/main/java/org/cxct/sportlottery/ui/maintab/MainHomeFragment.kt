@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -209,22 +210,25 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-            if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                iv_live_type.visibility = View.VISIBLE
-                context?.let {
-                    Glide.with(it)
-                        .load(mMatchInfo.frontCoverUrl)
-                        .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                            .error(R.drawable.icon_novideodata))
-                        .into(iv_live_type)
+            if (this::mMatchInfo.isInitialized){
+                if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                    iv_live_type.visibility = View.VISIBLE
+                    context?.let {
+                        Glide.with(it)
+                            .load(mMatchInfo.frontCoverUrl)
+                            .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
+                                .error(R.drawable.icon_novideodata))
+                            .into(iv_live_type)
+                    }
+                    iv_publicity.stop()
+                }else{
+                    iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
+                    iv_publicity.start()
+                    //  LogUtil.d("onHiddenChanged")
+                    iv_live_type.visibility = View.GONE
                 }
-                iv_publicity.stop()
-            }else{
-                iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
-                iv_publicity.start()
-              //  LogUtil.d("onHiddenChanged")
-                iv_live_type.visibility = View.GONE
             }
+
         }else{
             iv_publicity.stop()
         }
@@ -738,8 +742,8 @@ class MainHomeFragment :
 
     private fun setupBanner() {
         val requestOptions = RequestOptions()
-            .placeholder(R.drawable.ic_image_load)
-            .error(R.drawable.ic_image_broken)
+            .placeholder(R.drawable.img_banner01)
+            .error(R.drawable.img_banner01)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
 
@@ -1148,6 +1152,7 @@ class MainHomeFragment :
                     iv_publicity.releasePointerCapture()
                 }
             }
+//            LogUtil.d("iv_publicity.stopPlayback()")
             iv_live_type.visibility = View.VISIBLE
             context?.let {
                 Glide.with(it)
