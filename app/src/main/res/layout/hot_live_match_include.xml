@@ -233,6 +233,7 @@
             android:layout_centerVertical="true"
             android:scaleType="centerCrop"
             app:riv_border_width="@dimen/margin_1"
+            app:riv_border_color="@color/color_E23434_E23434"
             app:riv_oval="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cv_account"
