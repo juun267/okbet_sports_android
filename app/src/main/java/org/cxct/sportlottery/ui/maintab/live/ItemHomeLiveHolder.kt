@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.maintab.live
 
+import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.game.widget.OddsButtonHome
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import timber.log.Timber
 
 class ItemHomeLiveHolder(
     lifecycleOwner: LifecycleOwner,
@@ -37,6 +36,7 @@ class ItemHomeLiveHolder(
     PLOnVideoSizeChangedListener,
     PLOnErrorListener {
     lateinit var data: MatchLiveData
+    var lastExpandLive = false;
 
     override val oddStateChangeListener: OddStateChangeListener
         get() = object : OddStateChangeListener {
@@ -53,7 +53,21 @@ class ItemHomeLiveHolder(
         val matchId = (bindingAdapter as HomeLiveAdapter).expandMatchId
         val isExpendLive =
             (!matchId.isNullOrEmpty()) && matchId == data.matchInfo.id && data.matchInfo.isLive == 1
-        updateLive(isExpendLive)
+        binding.tvExpandLive.isVisible = !isExpendLive && data.matchInfo.isLive == 1
+        binding.tvExpandLive.setOnClickListener {
+            data.matchInfo.roundNo?.let {
+                if (data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                    homeLiveListener.onClickLiveListener(data.matchInfo, it)
+                } else {
+                    (bindingAdapter as HomeLiveAdapter).expandMatchId = data.matchInfo?.id
+                    homeLiveListener.onClickLiveListener(data.matchInfo, it)
+                }
+            }
+        }
+        if (lastExpandLive != isExpendLive) {
+            lastExpandLive = isExpendLive
+            updateLive(isExpendLive)
+        }
         binding.blockNormalGame.measure(0, 0)
         val width = binding.blockNormalGame.measuredWidth
         val margin = width + 4.dp
@@ -67,16 +81,17 @@ class ItemHomeLiveHolder(
         initPlayView()
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                if (!binding.videoView.isPlaying) {
-                    binding.videoView.start()
-                }
+                binding.videoView.start()
+                (bindingAdapter as HomeLiveAdapter).playerView = binding.videoView
             }
             binding.rippleView.showWaveAnimation()
         } else {
             binding.rippleView.cancelWaveAnimation()
             binding.videoView.stopPlayback()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                binding.videoView.releasePointerCapture()
+            }
         }
-        binding.videoView.isVisible = isExpandLive
         binding.flLive.isVisible = isExpandLive
         setVolumeState()
         binding.ivLiveSound.setOnClickListener {
@@ -85,13 +100,6 @@ class ItemHomeLiveHolder(
         }
         binding.tvCollse.setOnClickListener {
             (bindingAdapter as HomeLiveAdapter).expandMatchId = null
-        }
-        binding.tvExpandLive.isVisible = !isExpandLive && data.matchInfo.isLive == 1
-        binding.tvExpandLive.setOnClickListener {
-            (bindingAdapter as HomeLiveAdapter).expandMatchId = data.matchInfo?.id
-            data.matchInfo.roundNo?.let {
-                homeLiveListener.onClickLiveListener(data.matchInfo.id, it)
-            }
         }
     }
 
@@ -636,6 +644,7 @@ class ItemHomeLiveHolder(
     }
 
     override fun onVideoSizeChanged(p0: Int, p1: Int) {
+        Log.e("hjq", "onVideoSizeChanged=" + p0.toString() + "," + p1)
         binding.videoView.layoutParams.apply {
             height = binding.videoView.width * p1 / p0
         }
@@ -643,7 +652,8 @@ class ItemHomeLiveHolder(
 
     override fun onError(p0: Int, p1: Any?): Boolean {
 //        ToastUtil.showToast(context = binding.root.context, p0.toString() + "," + p1);
-        LogUtil.e(p0.toString() + "," + p1)
+//        LogUtil.e(p0.toString() + "," + p1)
+        Log.e("hjq", "onError=" + p0.toString() + "," + p1)
         return false
     }
 

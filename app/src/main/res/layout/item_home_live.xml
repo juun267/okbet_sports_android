@@ -18,7 +18,9 @@
         <FrameLayout
             android:id="@+id/fl_live"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="200dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <com.pili.pldroid.player.widget.PLVideoView
                 android:id="@+id/video_view"

@@ -235,9 +235,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.v_statusbar_live.layoutParams = this
             }
             toolbar_layout.minimumHeight = it
-            view_status_collaps.layoutParams.apply {
-                height = it
-                view_status_collaps.height
+            collaps_toolbar.layoutParams.apply {
+                height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+                collaps_toolbar.layoutParams = this
             }
         }
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
@@ -1444,10 +1444,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         if (chatLiveLoginData == null) {
             var builder = StringBuilder(host + "?")
             builder.append("device=android")
-            builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
-                LanguageManager.Language.ZH -> "zh"
-                else -> "en"
-            })
+            builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
             LogUtil.d("builder=" + builder.toString())
             wv_chat.loadUrl(builder.toString())
         } else {
@@ -1457,10 +1454,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             builder.append("&token=" + URLEncoder.encode(chatLiveLoginData.liveToken))
             builder.append("&role=" + 1)
             builder.append("&device=android")
-            builder.append("&lang=" + when (LanguageManager.getSelectLanguage(this)) {
-                LanguageManager.Language.ZH -> "zh"
-                else -> "en"
-            })
+            builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
             LogUtil.d("builder=" + builder.toString())
             wv_chat.loadUrl(builder.toString())
         }

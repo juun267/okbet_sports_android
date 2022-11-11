@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.odds.list.MatchLiveData
 open class HomeLiveListener(
     private val onItemClickListener: (item: MatchLiveData) -> Unit,
     private val onClickBetListener: (gameType: String, matchType: MatchType, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?, playCateMenuCode: String?) -> Unit,
-    private val onClickLiveListener: (matchId: String, roundNo: String) -> Unit,
+    private val onClickLiveListener: (matchInfo: MatchInfo, roundNo: String) -> Unit,
 ) {
     fun onItemClickListener(item: MatchLiveData) = onItemClickListener.invoke(item)
     fun onClickBetListener(
@@ -33,7 +33,7 @@ open class HomeLiveListener(
         )
     }
 
-    fun onClickLiveListener(matchId: String, roundNo: String) =
-        onClickLiveListener.invoke(matchId, roundNo)
+    fun onClickLiveListener(matchInfo: MatchInfo, roundNo: String) =
+        onClickLiveListener.invoke(matchInfo, roundNo)
 }
 
