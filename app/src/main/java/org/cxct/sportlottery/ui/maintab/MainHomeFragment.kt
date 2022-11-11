@@ -66,8 +66,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainHomeFragment :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class),
-    PLOnVideoSizeChangedListener, PLOnErrorListener {
+    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class)
+    {
 
     private lateinit var mMatchInfo: MatchInfo
     interface TimerListener {
@@ -1129,45 +1129,9 @@ class MainHomeFragment :
 
         }
     }
-    override fun onVideoSizeChanged(p0: Int, p1: Int) {
-//        LogUtil.d("")
-    }
 
-    override fun onError(p0: Int, p1: Any?): Boolean {
-        //ERROR_CODE_IO_ERROR=-3 网络异常
-        LogUtil.e(p0.toString() + "," + p1.toString())
-        if (iv_publicity == null) {
-            return false
-        }
-        if (p0==ERROR_CODE_IO_ERROR){
-            with(iv_publicity) {
-                iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    iv_publicity.release()
-                }
-            }
-//            LogUtil.d("iv_publicity.stopPlayback()")
-            iv_live_type.visibility = View.VISIBLE
-            context?.let {
-                Glide.with(it)
-                    .load(mMatchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                        .error(R.drawable.icon_novideodata))
-                    .into(iv_live_type)
-            }
-        }
-        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
-            context?.let {
-                Glide.with(it)
-                    .load(mMatchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                        .error(R.drawable.icon_novideodata))
-                    .into(iv_live_type)
-            }
-        }
-        iv_live_type.visibility = View.VISIBLE
-        return false
-    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
