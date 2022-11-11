@@ -335,7 +335,7 @@
     <string name="not_settled_order">Unsettled</string>
     <string name="settled_order">Settled bets</string>
     <string name="start_date">Start date</string>
-    <string name="end_date">Date closed</string>
+    <string name="end_date">End Date</string>
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
     <string name="undone">Running</string>
@@ -1330,7 +1330,7 @@
     <string name="text_x">X</string>
     <string name="your_bet_order_success">Your betting succesful</string>
     <string name="your_bet_order_fail">Betting failed, odds changed</string>
-    <string name="bet_others">Betting other</string>
+    <string name="bet_others">Other</string>
     <string name="check_bet_detail">Bets Details</string>
     <string name="dont_have_game">No Jackpot Games available</string>
     <string name="ou_hdp_hdp">Handicap</string>

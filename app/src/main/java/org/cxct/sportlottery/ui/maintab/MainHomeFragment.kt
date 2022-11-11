@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -1149,7 +1148,6 @@ class MainHomeFragment :
                     iv_publicity.releasePointerCapture()
                 }
             }
-//            LogUtil.d("iv_publicity.stopPlayback()")
             iv_live_type.visibility = View.VISIBLE
             context?.let {
                 Glide.with(it)

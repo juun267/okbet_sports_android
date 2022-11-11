@@ -48,6 +48,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     interface LiveToolBarListener {
         fun onFullScreen(fullScreen: Boolean)
+        fun onTabClick(position: Int)
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -74,27 +75,30 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         curType = LiveType.LIVE
         iv_fullscreen.isVisible = true
         showPlayView()
-        setWebViewHeight()
         switchPlayView(true)
-        startPlayer(isLogin)
+        setWebViewHeight()
+        liveToolBarListener?.onTabClick(0)
+
     }
 
     fun showVideo() {
         curType = LiveType.VIDEO
+        switchPlayView(false)
         showPlayView()
         setWebViewHeight()
         iv_fullscreen.isVisible = true
         openWebView()
-        switchPlayView(false)
+        liveToolBarListener?.onTabClick(1)
     }
 
     fun showAnime() {
         curType = LiveType.ANIMATION
+        switchPlayView(false)
         showPlayView()
         setWebViewHeight()
         iv_fullscreen.isVisible = true
         openWebView()
-        switchPlayView(false)
+        liveToolBarListener?.onTabClick(2)
     }
 
     private fun initOnclick() {
@@ -155,7 +159,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private fun switchPlayView(open: Boolean) {
         when (open) {
             true -> {
-                startPlayer(isLogin)
+                startPlayer()
             }
             false -> {
                 stopPlayer()
@@ -188,7 +192,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
                 iv_live.isVisible = false
-                LogUtil.d(videoUrl)
+                LogUtil.d(liveUrl)
                 iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
                 iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
             }
@@ -243,18 +247,16 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 //            mMediaController = MediaController(this, false, true)
 //            mMediaController.setOnClickSpeedAdjustListener(mOnClickSpeedAdjustListener)
 //            player_view.setMediaController(mMediaController)
-
+            LogUtil.d("initializePlayer=" + liveUrl)
             player_view.start();
         }
     }
 
     private fun releasePlayer() {
-        if (player_view.isVisible) {
-            player_view.stopPlayback()
-        }
+        player_view.stopPlayback()
     }
 
-    fun startPlayer(isLogin: Boolean) {
+    fun startPlayer() {
         if (player_view.isVisible) {
             initializePlayer(liveUrl)
         }
