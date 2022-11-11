@@ -109,7 +109,6 @@ class HomeLiveFragment :
         initSocketObservers()
         viewModel.getLiveRoundHall()
     }
-
     override fun onPause() {
         super.onPause()
         homeLiveAdapter.playerView?.onVideoPause()
@@ -118,7 +117,7 @@ class HomeLiveFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            homeLiveAdapter.playerView?.onVideoResume()
+            homeLiveAdapter.playerView?.startPlayLogic()
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {

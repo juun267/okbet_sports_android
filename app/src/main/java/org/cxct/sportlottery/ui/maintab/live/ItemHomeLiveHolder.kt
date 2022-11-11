@@ -10,7 +10,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
-import kotlinx.android.synthetic.main.hot_live_match_include.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
 import org.cxct.sportlottery.network.common.*
@@ -306,10 +305,14 @@ class ItemHomeLiveHolder(
             val matchInfoList = matchOddList.mapNotNull {
                 it.matchInfo
             }
-            root.setOnClickListener {
+            View.OnClickListener {
                 homeLiveListener.onItemClickListener(data)
+            }.let {
+                root.setOnClickListener(it)
+                binding.linEnterLive.setOnClickListener(it)
+                binding.vEmpty.setOnClickListener(it)
+                binding.ivCover.setOnClickListener(it)
             }
-
         }
     }
 

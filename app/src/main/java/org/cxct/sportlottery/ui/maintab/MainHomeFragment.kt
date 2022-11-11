@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.pili.pldroid.player.PLOnErrorListener
-import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
-import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.shuyu.gsyvideoplayer.GSYVideoManager
-import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
-import com.shuyu.gsyvideoplayer.listener.GSYMediaPlayerListener
-import com.shuyu.gsyvideoplayer.listener.GSYStateUiListener
-import com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_ERROR
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -1035,9 +1027,11 @@ class MainHomeFragment :
         //棋牌
         with(rv_chess){
             if (layoutManager == null) {
-                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
             if (adapter == null) {
+                addItemDecoration(SpaceItemDecoration(context,
+                    R.dimen.recyclerview_news_item_dec_spec))
                 adapter = homeChessAdapter
             }
 
