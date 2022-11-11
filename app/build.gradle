@@ -526,6 +526,7 @@ dependencies {
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
     implementation "com.miui.referrer:homereferrer:1.0.0.6"
+    implementation("com.qiniu:qplayer2-core:1.1.4")
 }
 
 repositories {

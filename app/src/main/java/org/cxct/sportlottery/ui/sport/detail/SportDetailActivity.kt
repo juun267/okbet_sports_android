@@ -235,9 +235,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 live_view_tool_bar.v_statusbar_live.layoutParams = this
             }
             toolbar_layout.minimumHeight = it
-            view_status_collaps.layoutParams.apply {
-                height = it
-                view_status_collaps.height
+            collaps_toolbar.layoutParams.apply {
+                height = it + resources.getDimensionPixelOffset(R.dimen.tool_bar_height)
+                collaps_toolbar.layoutParams = this
             }
         }
         app_bar_layout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
