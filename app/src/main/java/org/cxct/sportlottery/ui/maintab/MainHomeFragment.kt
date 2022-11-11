@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
 import com.pili.pldroid.player.AVOptions
 import com.pili.pldroid.player.PLOnErrorListener
+import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
 import com.pili.pldroid.player.PLOnVideoSizeChangedListener
 import com.pili.pldroid.player.widget.PLVideoView
 import com.youth.banner.Banner
@@ -1099,6 +1100,10 @@ class MainHomeFragment :
         options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
         options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
         options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+        options.setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, 5)
+        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
+        options.setInteger(AVOptions.KEY_FAST_OPEN, 1)
+        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
         iv_publicity.setCoverView(iv_live_type)
         iv_publicity.setAVOptions(options)
         iv_publicity.setOnVideoSizeChangedListener(this)
@@ -1136,7 +1141,8 @@ class MainHomeFragment :
             return false
         }
 
-        if (p0==-3||p0==-2){
+        if (p0==ERROR_CODE_IO_ERROR){
+            iv_publicity.start()
             with(iv_publicity) {
                 iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
