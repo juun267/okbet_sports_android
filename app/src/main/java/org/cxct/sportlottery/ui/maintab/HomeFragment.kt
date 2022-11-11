@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
@@ -15,6 +16,7 @@ import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.HomeWorldCupFragment
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
 
 class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -48,7 +50,9 @@ class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeVie
         } else {
             (activity as MainTabActivity).homeBackView(false)
         }
-        fragmentHelper.showFragment(position)
+
+        val fragment = fragmentHelper.showFragment(position)
+        EventBusUtil.post(HomeTabEvent(fragment))
     }
 
     fun onTabClickByPosition(position: Int) {

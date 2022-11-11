@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +8,12 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -48,6 +49,22 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             ProfileCenterFragment::class.java))
     }
 
+    val norTabIcons by lazy {
+        arrayOf(R.drawable.selector_tab_home,
+        R.drawable.selector_tab_sport,
+        R.drawable.selector_tab_betlist,
+        R.drawable.selector_tab_fav,
+        R.drawable.selector_tab_user)
+    }
+
+    val cupTabIcons by lazy {
+        arrayOf(R.drawable.selector_tab_home_cup,
+            R.drawable.selector_tab_sport_cup,
+            R.drawable.selector_tab_betlist_cup,
+            R.drawable.selector_tab_fav_cup,
+            R.drawable.selector_tab_user_cup)
+    }
+
     private var betListFragment: BetListFragment? = null
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
@@ -80,6 +97,34 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initBottomNavigation()
         initObserve()
         EventBusUtil.targetLifecycle(this)
+        resetBottomTheme(true)
+    }
+
+    var isWorldcupModel = false
+    @SuppressLint("RestrictedApi")
+    private fun resetBottomTheme(worldcupModel: Boolean) {
+        if (isWorldcupModel == worldcupModel) {
+            return
+        }
+
+        isWorldcupModel = worldcupModel
+        val iconArray = if (worldcupModel) {
+            iv_home_back.setImageResource(R.drawable.icon01_arrow_back_cup)
+            cupTabIcons
+        } else {
+            iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
+            norTabIcons
+        }
+        repeat(bottom_navigation_view.itemCount) {
+            bottom_navigation_view.getBottomNavigationItemView(it).setIcon(resources.getDrawable(iconArray[it]))
+        }
+
+    }
+
+
+    @Subscribe
+    fun onHomeTab(event: HomeTabEvent) {
+        resetBottomTheme(event.isWorldCupTab())
     }
 
     override fun onNightModeChanged(mode: Int) {

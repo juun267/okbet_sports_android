@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.adapter.recyclerview.BindingAdapter
 import org.cxct.sportlottery.adapter.recyclerview.VBViewHolder
-import org.cxct.sportlottery.databinding.ItemTabHomeBinding
+import org.cxct.sportlottery.databinding.ItemTabHomeCupBinding
 
-class HomeWorldCupTabAdapter: BindingAdapter<Pair<Int, Int>, ItemTabHomeBinding>(getItems()) {
+class HomeWorldCupTabAdapter: BindingAdapter<Pair<Int, Int>, ItemTabHomeCupBinding>(getItems()) {
 
     companion object {
         fun getItems() = mutableListOf(
@@ -21,20 +21,16 @@ class HomeWorldCupTabAdapter: BindingAdapter<Pair<Int, Int>, ItemTabHomeBinding>
             )
         }
 
-    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VBViewHolder<ItemTabHomeBinding> {
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VBViewHolder<ItemTabHomeCupBinding> {
         val viewHolder = super.onCreateDefViewHolder(parent, viewType)
-        viewHolder.vb.run {
-            tvName.setTextColor(Color.WHITE)
-            root.setPadding(root.paddingLeft, 0, root.paddingRight, 0)
-        }
+        viewHolder.vb.tvName.setTextColor(Color.WHITE)
         return viewHolder
     }
 
 
-    override fun onBinding(viewBinding: ItemTabHomeBinding, item: Pair<Int, Int>) = viewBinding.run  {
+    override fun onBinding(viewBinding: ItemTabHomeCupBinding, item: Pair<Int, Int>) = viewBinding.run  {
         ivLogo.setImageResource(item.first)
         tvName.setText(item.second)
-        root.setBackgroundResource(R.drawable.selector_tab_home_tabitem_cup)
         root.isSelected = item.second.equals(R.string.home_word_cup)
     }
 

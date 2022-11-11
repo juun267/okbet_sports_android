@@ -21,16 +21,20 @@ class FragmentHelper(
         return fragment!!
     }
 
-    fun showFragment(index: Int) {
+    fun showFragment(index: Int): Fragment {
         if (curPos == index) {
-            return
+            return getCurrentFragment()
         }
+
+        val fragment = getFragment(index)
         if (curPos >= 0) {
-            switchContent(fragments[curPos]?.get(), getFragment(index))
+            switchContent(fragments[curPos]?.get(), fragment)
         } else {
-            switchContent(null, getFragment(index))
+            switchContent(null, fragment)
         }
+
         curPos = index
+        return fragment
     }
 
     private fun switchContent(from: Fragment?, to: Fragment) {
@@ -50,4 +54,7 @@ class FragmentHelper(
         return Array(fragments.size) { fragments.get(it)?.get() }
     }
 
+    fun getCurrentFragment(): Fragment {
+        return getFragment(curPos)
+    }
 }

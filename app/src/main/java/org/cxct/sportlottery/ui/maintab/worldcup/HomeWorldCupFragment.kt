@@ -5,9 +5,13 @@ import android.graphics.Color
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.webkit.WebView
+import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_home_live.*
+import kotlinx.android.synthetic.main.fragment_home_live.lin_toolbar
+import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
+import kotlinx.android.synthetic.main.fragment_home_worldcup.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -31,6 +35,14 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
                 (parentFragment as HomeFragment).onTabClickByPosition(position)
             }
         }
+    }
+
+    var initedWebView = false
+    private val webView by lazy {
+        initedWebView = true
+        val web = WebView(requireContext())
+        rootView.addView(web, 0, FrameLayout.LayoutParams(-1, -1))
+        web
     }
 
     private val homeElecAdapter by lazy {
@@ -63,7 +75,8 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
 
     fun initToolBar() {
-        view?.fitsSystemStatus()
+        lin_toolbar.fitsSystemStatus()
+        rv_tab_home.fitsSystemStatus()
         iv_menu_left.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0)
@@ -106,7 +119,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
     }
 
     private fun initTabView() {
-        rv_tab_home.clipToPadding = false
         with(rv_tab_home) {
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -123,6 +135,13 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
             btn_register.isVisible = !it
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (initedWebView) {
+            webView.destroy()
         }
     }
 }
