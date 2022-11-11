@@ -106,10 +106,10 @@ class ResultsSettlementActivity :
     private fun initEvent() {
         viewModel.requestListener = object : RequestListener {
             override fun requestIng(loading: Boolean) {
-                if (loading)
-                    loading()
-                else
-                    hideLoading()
+//                if (loading)
+//                    loading()
+//                else
+//                    hideLoading()
             }
         }
 
