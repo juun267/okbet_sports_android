@@ -225,8 +225,10 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
+            iv_publicity.release()
             iv_publicity.setUp(mMatchInfo.pullRtmpUrl, true, "");
             LogUtil.d(mMatchInfo.pullRtmpUrl)
+
             iv_publicity.startPlayLogic()
         } else {
             iv_publicity.onVideoPause()
@@ -1095,17 +1097,16 @@ class MainHomeFragment :
 
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
+        iv_live_type.visibility = View.VISIBLE
         matchInfo?.let {
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
                 iv_publicity.setUp(it.pullRtmpUrl, true, "");
-                GSYVideoManager.instance().isNeedMute = true //静音播放
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.setUp(it.pullFlvUrl, true, "");
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
                 iv_publicity.startPlayLogic()
-                GSYVideoManager.instance().isNeedMute = true //静音播放
                 iv_live_type.visibility = View.GONE
             }else{
                 LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
@@ -1130,6 +1131,7 @@ class MainHomeFragment :
 
         override fun onError() {
             iv_live_type.isVisible = true
+            LogUtil.d("onError")
         }
 
 
