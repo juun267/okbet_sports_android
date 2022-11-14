@@ -13,7 +13,6 @@ import org.cxct.sportlottery.R;
 public class OKVideoPlayer extends GSYVideoPlayer {
     public interface OnOkListener {
         void onPrepared();
-
         void onError();
     }
 
@@ -170,6 +169,11 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
             }
         });
+    }
+
+    @Override
+    public void onVideoSizeChanged() {
+        super.onVideoSizeChanged();
     }
 
     @Override

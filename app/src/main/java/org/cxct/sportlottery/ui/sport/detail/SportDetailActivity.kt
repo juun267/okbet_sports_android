@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -814,6 +815,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?.let { updatedDataList ->
                             oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
                         } ?: run {
+                        var needUpdate = false
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
                                     oddsDetailListData,
@@ -821,9 +823,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                                 )
                                 && oddsDetailListData.isExpand
                             ) {
+                                needUpdate = true
                                 updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
-                                oddsDetailListAdapter?.notifyItemChanged(index)
                             }
+                        }
+                        if (needUpdate) {
+                            Log.d("hjq", "needUpdate")
+                            oddsDetailListAdapter?.notifyDataSetChanged()
                         }
                     }
                 }
@@ -1458,6 +1464,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             LogUtil.d("builder=" + builder.toString())
             wv_chat.loadUrl(builder.toString())
         }
+        Log.d("hjq", "loginChat=" + host)
     }
 
     fun setupInput() {
@@ -1542,7 +1549,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun showChatWebView(visible: Boolean) {
         wv_chat.isVisible = visible
         (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
-            bottomMargin = if (visible) 56.dp else 0
+            bottomMargin = if (visible) 53.dp else 0
         }
     }
 

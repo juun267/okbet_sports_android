@@ -8,20 +8,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:id="@+id/cl_item"
-        android:background="@color/color_404040_cccccc">
+        android:background="@color/color_FFFFFF">
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:background="@color/color_191919_FCFCFC"
             android:gravity="start|center"
             android:paddingHorizontal="@dimen/activity_horizontal_margin"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintWidth_percent="0.392"
             tools:text="Mario Gavranovic" />
 
@@ -32,9 +33,7 @@
             android:layout_marginStart="1dp"
             app:layout_constraintEnd_toStartOf="@+id/button_odds_ant"
             app:layout_constraintStart_toEndOf="@id/tv_name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:ob_background="@drawable/selector_button_radius_0_odds"
-            app:ob_fillet="false" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
             android:id="@+id/button_odds_ant"
@@ -43,9 +42,7 @@
             android:layout_marginStart="1dp"
             app:layout_constraintEnd_toStartOf="@+id/button_odds_last"
             app:layout_constraintStart_toEndOf="@id/button_odds_1st"
-            app:layout_constraintTop_toTopOf="parent"
-            app:ob_background="@drawable/selector_button_radius_0_odds"
-            app:ob_fillet="false" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <org.cxct.sportlottery.ui.game.widget.OddsButtonDetail
             android:id="@+id/button_odds_last"
@@ -54,9 +51,7 @@
             android:layout_marginStart="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_odds_ant"
-            app:layout_constraintTop_toTopOf="parent"
-            app:ob_background="@drawable/selector_button_radius_0_odds"
-            app:ob_fillet="false" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

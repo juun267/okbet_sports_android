@@ -102,10 +102,16 @@ class MainHomeViewModel(
     val hotHandicap: LiveData<List<HandicapData>?>
         get() = _hotHandicap
     private val _hotHandicap = MutableLiveData<List<HandicapData>?>()
-    //賽事直播網址
+
+    //賽事列表直播網址
     private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
     val matchLiveInfo: LiveData<Event<MatchRound>?>
         get() = _matchLiveInfo
+
+    //首页的直播地址获取
+    private val _homeMatchLiveInfo = MutableLiveData<Event<MatchRound>?>()
+    val homeMatchLiveInfo: LiveData<Event<MatchRound>?>
+        get() = _homeMatchLiveInfo
 
     private val _liveRoundCount = MutableLiveData<String>()
     val liveRoundCount: LiveData<String>
@@ -676,7 +682,13 @@ class MainHomeViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.thirdGameService.getHotHandicapList(handicapType)
             }
-            result?.rows.let { handicapList->
+            result?.rows.let { handicapList ->
+                handicapList?.forEach { hotHandicap ->
+                    hotHandicap.matchInfos.forEach {
+                        it.leagueName =
+                            if (TextUtils.isEmpty(it.leagueName)) hotHandicap.league.name else it.leagueName
+                    }
+                }
                 _hotHandicap.postValue(handicapList)
             }
         }
@@ -706,17 +718,21 @@ class MainHomeViewModel(
         }
     }
 
-    fun getLiveInfo(roundNo: String) {
+    fun getLiveInfo(roundNo: String, position: Int) {
         viewModelScope.launch {
             var result = doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchLiveRound(roundNo)
             }
             result?.matchRound?.let {
                 it.roundNo = roundNo
-                _matchLiveInfo.postValue(Event(it))
+                if (position == 0) {
+                    _homeMatchLiveInfo.postValue(Event(it))
+                } else {
+                    _matchLiveInfo.postValue(Event(it))
+                }
+
             }
         }
-
     }
     //直播数量
     fun getLiveRoundCount() {

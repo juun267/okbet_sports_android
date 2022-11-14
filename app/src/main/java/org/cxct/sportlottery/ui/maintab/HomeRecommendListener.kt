@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.maintab
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
+import org.cxct.sportlottery.util.LogUtil
 
 class HomeRecommendListener(
     private val onItemClickListener: (matchInfo: MatchInfo?) -> Unit,
@@ -26,6 +26,7 @@ class HomeRecommendListener(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateMenuCode: String?,
     ) {
+        LogUtil.toJson(matchInfo)
         onClickBetListener.invoke(
             gameType,
             matchType,
