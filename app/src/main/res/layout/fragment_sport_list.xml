@@ -27,6 +27,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_E8F4FF"
                 android:orientation="vertical">
 
 
@@ -34,7 +35,7 @@
                     android:id="@+id/ll_sport_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
+                    android:elevation="10dp"
                     android:background="@drawable/bg_white_radius_10_bottom"
                     android:gravity="center_horizontal"
                     tools:ignore="MissingConstraints">
@@ -43,7 +44,6 @@
                         android:id="@+id/sport_type_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingHorizontal="12dp"
                         android:nestedScrollingEnabled="false"
                         tools:itemCount="1"
                         tools:listitem="@layout/itemview_sport_type_v6" />
