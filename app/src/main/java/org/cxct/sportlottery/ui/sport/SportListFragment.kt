@@ -112,6 +112,7 @@ class SportListFragment :
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
                 iv_arrow.isSelected = false
+                lin_filter.isVisible = gameType != GameType.ALL.key
             }
 
             thirdGameListener = ThirdGameListener {

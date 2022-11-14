@@ -411,7 +411,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     override fun onDestroy() {
         viewModel.clearLiveInfo()
         live_view_tool_bar.release()
+        releaseWebView()
         super.onDestroy()
+    }
+
+    private fun releaseWebView() {
+        wv_analyze.destroy()
+        wv_chat.destroy()
     }
 
     private fun initUI() {
@@ -1517,6 +1523,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         activity.updateWebHeight(data)
                     }
                 }
+                "onEmoji" -> {
+                    activity.runOnUiThread {
+                        activity.updateBetBarVisibily(data)
+                    }
+                }
                 "requireLogin" -> {
                     activity.runOnUiThread {
                         activity.startActivity(Intent(activity, LoginActivity::class.java))
@@ -1540,4 +1551,14 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             bottomMargin = if (visible) 56.dp else 0
         }
     }
+
+    /**
+     * 显示emoji的时候，要隐藏注单bar
+     */
+    fun updateBetBarVisibily(showEmoji: Boolean) {
+        cl_bet_list_bar.isVisible =
+            viewModel.betInfoList.value?.peekContent().isNullOrEmpty() || showEmoji
+    }
+
+
 }

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -200,7 +200,7 @@ class MainHomeFragment :
         super.onResume()
         iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
-        LogUtil.d("onResume")
+        Log.e("hjq", "startPlayLogic 333")
     }
 
     override fun onPause() {
@@ -383,6 +383,7 @@ class MainHomeFragment :
 
 
         viewModel.homeGameData.observe(viewLifecycleOwner) {
+            LogUtil.d("homeGameData")
             it?.let { gameList->
                 //棋牌
                 val mHotChessList = gameList.filter { data->
@@ -1104,14 +1105,13 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
+                Log.e("hjq", "startPlayLogic 444")
                 iv_publicity.startPlayLogic()
                 iv_live_type.visibility = View.GONE
             }else{
                 LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
             }
-
-
         }
     }
 

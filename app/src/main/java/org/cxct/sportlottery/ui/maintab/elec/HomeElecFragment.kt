@@ -168,7 +168,7 @@ class HomeElecFragment :
             }
         }
 
-        viewModel.homeGameData.observe(viewLifecycleOwner) {
+        viewModel.slotGameData.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 lin_empty_game.isVisible = true
                 rv_elec.isVisible = false
