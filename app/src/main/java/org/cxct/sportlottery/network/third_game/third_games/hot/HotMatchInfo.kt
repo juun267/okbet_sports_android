@@ -28,7 +28,7 @@ data class HotMatchInfo(
     @Json(name = "id")
     val id: String,
     @Json(name = "leagueId")
-    val leagueId: String,
+    var leagueId: String,
     @Json(name = "leagueName")
     var leagueName: String? = null,
     @Json(name = "liveVideo")
