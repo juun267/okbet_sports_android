@@ -11,18 +11,19 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         ndk {
-            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/\
+            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/ \
+
         }
         applicationId "org.cxct.sportlottery"
         minSdkVersion 23
-        targetSdkVersion 30
-        versionName "1.1.19"
-        versionCode 42
+        targetSdkVersion 31
+        versionName "1.1.20"
+        versionCode 43
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -526,6 +527,7 @@ dependencies {
     //appsflyer
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
     implementation "com.miui.referrer:homereferrer:1.0.0.6"
+    implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'
 }
 
 repositories {

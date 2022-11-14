@@ -22,11 +22,16 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <com.pili.pldroid.player.widget.PLVideoView
+            <org.cxct.sportlottery.widget.OKVideoPlayer
                 android:id="@+id/video_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@color/transparent_black_40" />
+
+            <View
+                android:id="@+id/v_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <ImageView
                 android:id="@+id/iv_cover"

@@ -11,6 +11,8 @@ import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_live.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
@@ -107,21 +109,20 @@ class HomeLiveFragment :
         initSocketObservers()
         viewModel.getLiveRoundHall()
     }
-
     override fun onPause() {
         super.onPause()
-        homeLiveAdapter.playerView?.pause()
+        homeLiveAdapter.playerView?.onVideoPause()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            homeLiveAdapter.playerView?.start()
+            homeLiveAdapter.playerView?.startPlayLogic()
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {
             homeLiveAdapter.expandMatchId = null
-            homeLiveAdapter.playerView?.pause()
+            homeLiveAdapter.playerView?.onVideoPause()
         }
     }
 
@@ -214,10 +215,9 @@ class HomeLiveFragment :
             event?.peekContent()?.let { matchRound ->
                 homeLiveAdapter.data.forEachIndexed { index, matchLiveData ->
                     if (matchLiveData.matchInfo.roundNo == matchRound.roundNo) {
-                        Log.e("hjq", "matchLiveInfo=" + matchLiveData.matchInfo.streamerName)
                         matchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                         matchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
-                        homeLiveAdapter.notifyItemChanged(index, matchLiveData)
+                        homeLiveAdapter.notifyItemChanged(index)
                         homeLiveAdapter.expandMatchId = matchLiveData.matchInfo.id
                         rv_live.smoothScrollToPosition(index)
                     }
@@ -241,10 +241,8 @@ class HomeLiveFragment :
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
             event?.let { matchStatusChangeEvent ->
                 val targetList = homeLiveAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
                 targetList.forEachIndexed { index, matchLiveData ->
-                    val matchList = listOf(matchLiveData).toMutableList()
+                    val matchList = mutableListOf(matchLiveData)
                     if (SocketUpdateUtil.updateMatchStatus(
                             matchLiveData.matchInfo.gameType,
                             matchList as MutableList<org.cxct.sportlottery.network.common.MatchOdd>,
@@ -252,12 +250,8 @@ class HomeLiveFragment :
                             context
                         )
                     ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                        homeLiveAdapter.notifyItemChanged(index)
                     }
-                }
-                if (needUpdate) {
-                    homeLiveAdapter.data = targetList
                 }
             }
         }
@@ -265,8 +259,6 @@ class HomeLiveFragment :
         receiver.matchClock.observe(viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 val targetList = homeLiveAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
                 targetList.forEachIndexed { index, recommend ->
                     if (
                         SocketUpdateUtil.updateMatchClock(
@@ -274,14 +266,10 @@ class HomeLiveFragment :
                             matchClockEvent
                         )
                     ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                        homeLiveAdapter.notifyItemChanged(index)
                     }
                 }
 
-                if (needUpdate) {
-                    homeLiveAdapter.data = targetList
-                }
             }
         }
 
@@ -290,41 +278,27 @@ class HomeLiveFragment :
         receiver.matchOddsLock.observe(viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 val targetList = homeLiveAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
 
                 targetList.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(recommend, matchOddsLockEvent)
                     ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                        homeLiveAdapter.notifyItemChanged(index)
                     }
                 }
 
-//                if (needUpdate) {
-//                    homeRecommendAdapter.data = targetList
-//                }
             }
         }
 
-//        receiver.leagueChange.observe(viewLifecycleOwner) {
-//            it?.let { leagueChangeEvent ->
-//                viewModel.publicityLeagueChange(leagueChangeEvent)
-//            }
-//        }
 
         receiver.globalStop.observe(viewLifecycleOwner) {
             it?.let { globalStopEvent ->
-                val targetList = homeLiveAdapter.data
-                var needUpdate = false // 紀錄是否需要更新整個推薦賽事清單
-
-                targetList.forEachIndexed { index, recommend ->
+                homeLiveAdapter.data.forEachIndexed { index, recommend ->
                     if (SocketUpdateUtil.updateOddStatus(
                             recommend,
                             globalStopEvent
                         )
                     ) {
-                        needUpdate = true
-                        //TODO 更新邏輯待補，跟進GameV3Fragment
+                        homeLiveAdapter.notifyItemChanged(index)
                     }
                 }
 
@@ -384,7 +358,7 @@ class HomeLiveFragment :
                     ) {
                         updateBetInfo(matchLiveData, oddsChangeEvent)
                         matchOddMap[matchLiveData.league.id] = matchLiveData
-                        homeLiveAdapter.notifyItemChanged(index, matchLiveData)
+                        homeLiveAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -418,13 +392,21 @@ class HomeLiveFragment :
 
     private fun initListView() {
         with(rv_live) {
+            val pool = RecycledViewPool()
+            pool.setMaxRecycledViews(0, 10)
+            setRecycledViewPool(pool)
+            itemAnimator?.changeDuration = 0
+            setHasFixedSize(true);
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false;
             if (layoutManager == null) {
                 layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             }
+
             if (adapter == null) {
                 adapter = homeLiveAdapter
                 addOnScrollListener(recyclerViewOnScrollListener)
+
             }
             addScrollWithItemVisibility(
                 onScrolling = {

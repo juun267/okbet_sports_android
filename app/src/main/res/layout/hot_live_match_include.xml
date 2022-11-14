@@ -123,10 +123,12 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view">
-            <com.pili.pldroid.player.widget.PLVideoView
+
+            <org.cxct.sportlottery.widget.OKVideoPlayer
                 android:id="@+id/iv_publicity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
             <ImageView
                 android:id="@+id/iv_live_type"
                 android:layout_width="match_parent"

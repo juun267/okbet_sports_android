@@ -244,7 +244,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 LanguageManager.Language.ZH,
                 LanguageManager.Language.EN,
                 LanguageManager.Language.VI,
-                LanguageManager.Language.TH
             )
         )
         languageAdapter.setOnItemClickListener { adapter, view, position ->

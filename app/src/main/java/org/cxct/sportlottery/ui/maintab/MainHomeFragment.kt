@@ -2,25 +2,19 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gyf.immersionbar.ImmersionBar
-import com.pili.pldroid.player.AVOptions
-import com.pili.pldroid.player.PLOnErrorListener
-import com.pili.pldroid.player.PLOnErrorListener.ERROR_CODE_IO_ERROR
-import com.pili.pldroid.player.PLOnVideoSizeChangedListener
-import com.pili.pldroid.player.widget.PLVideoView
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.youth.banner.Banner
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
@@ -63,15 +57,16 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.widget.OKVideoPlayer
 import org.greenrobot.eventbus.EventBus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainHomeFragment :
-    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class),
-    PLOnVideoSizeChangedListener, PLOnErrorListener {
+    BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class), OKVideoPlayer.OnOkListener
+    {
 
-    private lateinit var mMatchInfo: MatchInfo
+    private  var mMatchInfo: MatchInfo?=null
     interface TimerListener {
         fun onTimerUpdate(timeMillis: Long)
     }
@@ -106,10 +101,14 @@ class MainHomeFragment :
                     .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
                     .into(iv_avatar_live)
             }
-            tv_introduction.text = data.matchInfo.streamerName?:getString(R.string.okbet_live_name)
+            tv_introduction.text =
+                data.matchInfo.streamerName ?: getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
-            data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
-          //  playMatchVideo(mMatchInfo)
+            if (data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
+                data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+            } else {
+                playMatchVideo(data.matchInfo)
+            }
         })
 
     }
@@ -199,7 +198,15 @@ class MainHomeFragment :
 
     override fun onResume() {
         super.onResume()
+        iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
+        LogUtil.d("onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        iv_publicity.onVideoPause()
+        rv_marquee.stopAuto()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -210,36 +217,18 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-            if (this::mMatchInfo.isInitialized){
-                if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                    iv_live_type.visibility = View.VISIBLE
-                    context?.let {
-                        Glide.with(it)
-                            .load(mMatchInfo.frontCoverUrl)
-                            .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                                .error(R.drawable.icon_novideodata))
-                            .into(iv_live_type)
-                    }
-                    iv_publicity.stop()
-                }else{
-                    iv_publicity.setVideoPath(mMatchInfo.pullRtmpUrl)
-                    iv_publicity.start()
-                    //  LogUtil.d("onHiddenChanged")
-                    iv_live_type.visibility = View.GONE
-                }
-            }
-
-        }else{
-            iv_publicity.stop()
+            iv_publicity.release()
+                iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
+                LogUtil.d(mMatchInfo?.pullRtmpUrl)
+            iv_publicity.startPlayLogic()
+            LogUtil.e("startPlayLogic=mainhome" )
+        } else {
+            iv_publicity.onVideoPause()
         }
-
     }
 
 
-    override fun onPause() {
-        super.onPause()
-        rv_marquee.stopAuto()
-    }
+
 
     private fun initView() {
         initToolBar()
@@ -267,16 +256,20 @@ class MainHomeFragment :
             nsv_home.smoothScrollTo(0,0)
         }
         iv_live_type.setOnClickListener {
-            SportDetailActivity.startActivity(requireContext(),
-                matchInfo = mMatchInfo,
-                matchType = MatchType.IN_PLAY,
-                true)
+            mMatchInfo?.let { it1 ->
+                SportDetailActivity.startActivity(requireContext(),
+                    matchInfo = it1,
+                    matchType = MatchType.IN_PLAY,
+                    true)
+            }
         }
         view_action.setOnClickListener {
-            SportDetailActivity.startActivity(requireContext(),
-                matchInfo = mMatchInfo,
-                matchType = MatchType.IN_PLAY,
-                true)
+            mMatchInfo?.let { it1 ->
+                SportDetailActivity.startActivity(requireContext(),
+                    matchInfo = it1,
+                    matchType = MatchType.IN_PLAY,
+                    true)
+            }
         }
         ll_hot_live_more.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(1)
@@ -1038,9 +1031,11 @@ class MainHomeFragment :
         //棋牌
         with(rv_chess){
             if (layoutManager == null) {
-                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
             if (adapter == null) {
+                addItemDecoration(SpaceItemDecoration(context,
+                    R.dimen.recyclerview_news_item_dec_spec))
                 adapter = homeChessAdapter
             }
 
@@ -1095,90 +1090,46 @@ class MainHomeFragment :
 
 
     fun initPlayView() {
+        iv_publicity.setOnOkListener(this)
+        iv_publicity.setIsTouchWigetFull(false)
 
-        val options = AVOptions()
-        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-        options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-        options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-        options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
-        options.setInteger(AVOptions.KEY_OPEN_RETRY_TIMES, 5)
-        options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-        options.setInteger(AVOptions.KEY_FAST_OPEN, 1)
-        options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-        iv_publicity.setCoverView(iv_live_type)
-        iv_publicity.setAVOptions(options)
-        iv_publicity.setOnVideoSizeChangedListener(this)
-        iv_publicity.setOnErrorListener(this)
-        iv_publicity.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-        iv_publicity.setVolume(0f, 0f)
     }
     private fun playMatchVideo(matchInfo: MatchInfo?){
+        iv_live_type.visibility = View.VISIBLE
         matchInfo?.let {
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
-                iv_publicity.setVideoPath(it.pullRtmpUrl)
+                iv_publicity.setUp(it.pullRtmpUrl, false, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-                iv_publicity.setVideoPath(it.pullFlvUrl)
+                iv_publicity.setUp(it.pullFlvUrl, false, "");
             }
-            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()){
-                iv_publicity.start()
-          //      LogUtil.d(it.pullRtmpUrl)
+            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
+                LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
+                iv_publicity.startPlayLogic()
                 iv_live_type.visibility = View.GONE
             }else{
+                LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
-                iv_publicity.stop()
             }
 
 
         }
     }
-    override fun onVideoSizeChanged(p0: Int, p1: Int) {
-//        LogUtil.d("")
-    }
 
-    override fun onError(p0: Int, p1: Any?): Boolean {
-        //ERROR_CODE_IO_ERROR=-3 网络异常
-        LogUtil.e(p0.toString() + "," + p1.toString())
-        if (iv_publicity == null) {
-            return false
-        }
 
-        if (p0==ERROR_CODE_IO_ERROR){
-            iv_publicity.start()
-            with(iv_publicity) {
-                iv_live_type.setBackgroundColor(resources.getColor(R.color.color_2b2b2b_ffffff))
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    iv_publicity.releasePointerCapture()
-                }
-            }
-//            LogUtil.d("iv_publicity.stopPlayback()")
-            iv_live_type.visibility = View.VISIBLE
-            context?.let {
-                Glide.with(it)
-                    .load(mMatchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                        .error(R.drawable.icon_novideodata))
-                    .into(iv_live_type)
-            }
-        }
-        if (mMatchInfo.pullRtmpUrl.isNullOrEmpty()) {
-            context?.let {
-                Glide.with(it)
-                    .load(mMatchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata)
-                        .error(R.drawable.icon_novideodata))
-                    .into(iv_live_type)
-            }
-        }
-        iv_live_type.visibility = View.VISIBLE
-        return false
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
-        iv_publicity.stop()
+        iv_publicity.release()
     }
-    
 
-}
+        override fun onPrepared() {
+            iv_live_type.isVisible = false
+        }
+
+        override fun onError() {
+            iv_live_type.isVisible = true
+        }
+
+
+    }
