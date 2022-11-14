@@ -24,10 +24,10 @@ class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeVie
     val containerId = 0x08989
     val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(childFragmentManager, containerId, arrayOf(
-            HomeWorldCupFragment::class.java,
+//            HomeWorldCupFragment::class.java,
             MainHomeFragment::class.java,
             HomeLiveFragment::class.java,
-//            HomeWorldCupFragment::class.java,
+            HomeWorldCupFragment::class.java,
             HomeElecFragment::class.java,
             HomeSlotFragment::class.java))
     }
@@ -45,7 +45,7 @@ class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeVie
     }
 
     fun switchTabByPosition(position: Int) {
-        if (position>0) {
+        if (position > 0) {
             (activity as MainTabActivity).homeBackView(true)
         } else {
             (activity as MainTabActivity).homeBackView(false)

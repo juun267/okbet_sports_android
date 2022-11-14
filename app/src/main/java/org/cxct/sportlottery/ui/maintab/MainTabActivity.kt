@@ -97,28 +97,26 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initBottomNavigation()
         initObserve()
         EventBusUtil.targetLifecycle(this)
-        resetBottomTheme(true)
     }
 
     var isWorldcupModel = false
     @SuppressLint("RestrictedApi")
     private fun resetBottomTheme(worldcupModel: Boolean) {
-        if (isWorldcupModel == worldcupModel) {
-            return
-        }
-
         isWorldcupModel = worldcupModel
         val iconArray = if (worldcupModel) {
             iv_home_back.setImageResource(R.drawable.icon01_arrow_back_cup)
             cupTabIcons
         } else {
-            iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
+            resetBackIcon()
             norTabIcons
         }
         repeat(bottom_navigation_view.itemCount) {
             bottom_navigation_view.getBottomNavigationItemView(it).setIcon(resources.getDrawable(iconArray[it]))
         }
+    }
 
+    private fun resetBackIcon() {
+        iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
     }
 
 
@@ -160,7 +158,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initBottomFragment() {
-
+        ll_home_back.setOnClickListener {
+            (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
+        }
         bottom_navigation_view.apply {
             enableAnimation(false)
             enableShiftingMode(false)
@@ -177,14 +177,20 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
+
+                        R.id.home -> {
+                            resetBottomTheme(isWorldcupModel)
+                        }
                     }
-                    fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
-                    if (getMenuItemPosition(menuItem) == 0) {
+
+                    val position = getMenuItemPosition(menuItem)
+                    fragmentHelper.showFragment(position)
+                    if (position == 0) {
                         (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
-                    setupBetBarVisiblity(getMenuItemPosition(menuItem))
+                    setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
                 }
         }
@@ -450,9 +456,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         } else {
             bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.VISIBLE
             ll_home_back.visibility = View.GONE
-        }
-        ll_home_back.setOnClickListener {
-            (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
         }
 
     }
