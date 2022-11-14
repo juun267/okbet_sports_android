@@ -21,13 +21,6 @@ class HomeWorldCupTabAdapter: BindingAdapter<Pair<Int, Int>, ItemTabHomeCupBindi
             )
         }
 
-    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VBViewHolder<ItemTabHomeCupBinding> {
-        val viewHolder = super.onCreateDefViewHolder(parent, viewType)
-        viewHolder.vb.tvName.setTextColor(Color.WHITE)
-        return viewHolder
-    }
-
-
     override fun onBinding(viewBinding: ItemTabHomeCupBinding, item: Pair<Int, Int>) = viewBinding.run  {
         ivLogo.setImageResource(item.first)
         tvName.setText(item.second)
