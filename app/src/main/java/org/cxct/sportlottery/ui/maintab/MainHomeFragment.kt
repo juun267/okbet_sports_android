@@ -383,6 +383,7 @@ class MainHomeFragment :
 
 
         viewModel.homeGameData.observe(viewLifecycleOwner) {
+            LogUtil.d("homeGameData")
             it?.let { gameList->
                 //棋牌
                 val mHotChessList = gameList.filter { data->
