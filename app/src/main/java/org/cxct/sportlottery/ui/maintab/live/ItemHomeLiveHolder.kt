@@ -107,6 +107,10 @@ class ItemHomeLiveHolder(
             binding.videoView.setGSYVideoProgressListener(this)
             binding.ivCover.isVisible = true
             binding.videoView.setOnOkListener(object : OKVideoPlayer.OnOkListener {
+                override fun onStartPrepared() {
+
+                }
+
                 override fun onPrepared() {
                     binding.ivCover.isVisible = false
                 }

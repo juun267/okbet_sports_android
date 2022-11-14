@@ -95,7 +95,7 @@ class MainHomeFragment :
                 Glide.with(it)
                     .load(data.matchInfo.frontCoverUrl)
                     .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
-                    .into(iv_live_type)
+                    .into(view_action)
                 Glide.with(it)
                     .load(data.matchInfo.streamerIcon)
                     .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
@@ -427,7 +427,7 @@ class MainHomeFragment :
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
                                 .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
-                                .into(iv_live_type)
+                                .into(view_action)
                             Glide.with(mContext)
                                 .load(matchInfo.streamerIcon)
                                 .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
@@ -1123,12 +1123,18 @@ class MainHomeFragment :
         iv_publicity.release()
     }
 
+        override fun onStartPrepared() {
+            view_action.isVisible = true
+            LogUtil.d("onStartPrepared")
+        }
         override fun onPrepared() {
-            iv_live_type.isVisible = false
+            view_action.isVisible = false
+            LogUtil.d("onPrepared")
         }
 
         override fun onError() {
-            iv_live_type.isVisible = true
+            LogUtil.d("onError")
+            view_action.isVisible = true
         }
 
 
