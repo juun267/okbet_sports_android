@@ -12,6 +12,7 @@ import org.cxct.sportlottery.R;
 
 public class OKVideoPlayer extends GSYVideoPlayer {
     public interface OnOkListener {
+        void onStartPrepared();
         void onPrepared();
         void onError();
     }
@@ -52,6 +53,9 @@ public class OKVideoPlayer extends GSYVideoPlayer {
             @Override
             public void onStartPrepared(String url, Object... objects) {
                 GSYVideoManager.instance().setNeedMute(true);
+                if (onOkListener != null) {
+                    onOkListener.onStartPrepared();
+                }
             }
 
             @Override
