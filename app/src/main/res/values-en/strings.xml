@@ -1309,7 +1309,7 @@
     <string name="your_bet_order_fail">Betting failed, odds changed</string>
     <string name="bet_others">Other</string>
     <string name="check_bet_detail">Bets Details</string>
-    <string name="big_or_small">Over/Under</string>
+    <string name="big_or_small">O/U</string>
     <string name="text_1">1</string>
     <string name="text_2">2</string>
     <string name="text_x">X</string>
