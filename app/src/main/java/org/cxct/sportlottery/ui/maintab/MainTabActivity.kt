@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -103,15 +104,26 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     @SuppressLint("RestrictedApi")
     private fun resetBottomTheme(worldcupModel: Boolean) {
         isWorldcupModel = worldcupModel
+        var textColor: ColorStateList
         val iconArray = if (worldcupModel) {
             iv_home_back.setImageResource(R.drawable.icon01_arrow_back_cup)
+            tv_home_back.setTextColor(resources.getColor(R.color.color_CC0054))
+            bottom_navigation_view.setBackgroundResource(R.color.color_B2_FFFFFF)
+            textColor = resources.getColorStateList(R.color.main_tab_cup_text_selector)
             cupTabIcons
         } else {
             resetBackIcon()
+            tv_home_back.setTextColor(resources.getColor(R.color.color_025BE8))
+            bottom_navigation_view.setBackgroundResource(R.drawable.bg_icon_bottom_bar)
+            textColor = resources.getColorStateList(R.color.main_tab_text_selector)
             norTabIcons
         }
+
         repeat(bottom_navigation_view.itemCount) {
-            bottom_navigation_view.getBottomNavigationItemView(it).setIcon(resources.getDrawable(iconArray[it]))
+            bottom_navigation_view.getBottomNavigationItemView(it).run {
+                setIcon(resources.getDrawable(iconArray[it]))
+                setTextColor(textColor)
+            }
         }
     }
 
@@ -169,6 +181,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setIconSize(30f)
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                    var wordcupModel = false
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
@@ -179,9 +192,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         }
 
                         R.id.home -> {
-                            resetBottomTheme(isWorldcupModel)
+                            wordcupModel = isWorldcupModel
                         }
                     }
+
+                    resetBottomTheme(wordcupModel)
 
                     val position = getMenuItemPosition(menuItem)
                     fragmentHelper.showFragment(position)

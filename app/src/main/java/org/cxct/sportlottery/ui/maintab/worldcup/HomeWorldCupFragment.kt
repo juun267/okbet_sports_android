@@ -2,13 +2,12 @@ package org.cxct.sportlottery.ui.maintab.worldcup
 
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_home_live.lin_toolbar
@@ -18,7 +17,6 @@ import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -70,14 +68,16 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
     private fun initWeb() {
         webView.settings.javaScriptEnabled = true
+        webView.settings.domStorageEnabled = true
         webView.addJavascriptInterface(WorldCupJsInterface(), "WorldCupJsInterface")
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
             }
         }
-//      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
-        webView.loadUrl(Constants.getWorldCupH5Url(requireContext()))
+
+      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
+//        webView.loadUrl(Constants.getWorldCupH5Url(requireContext()))
     }
 
     private fun setTheme() {
@@ -160,6 +160,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
     override fun onDestroy() {
         super.onDestroy()
-        webView.destroy()
+        webView?.destroy()
     }
 }
