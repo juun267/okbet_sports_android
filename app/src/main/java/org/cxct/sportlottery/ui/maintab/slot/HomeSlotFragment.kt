@@ -140,10 +140,9 @@ class HomeSlotFragment :
         viewModel.isLogin.observe(viewLifecycleOwner) {
             setupLogin()
         }
-        viewModel.homeGameData.observe(viewLifecycleOwner) {
+        viewModel.slotGameData.observe(viewLifecycleOwner) {
             it?.let {
                 homeSlotAdapter.setNewData(it)
-                LogUtil.d("HomeSlotFragment")
             }
         }
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
