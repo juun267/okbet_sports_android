@@ -200,7 +200,7 @@ class MainHomeFragment :
         super.onResume()
         iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
-        Log.e("hjq", "startPlayLogic 333")
+//        Log.e("hjq", "startPlayLogic 333")
     }
 
     override fun onPause() {
@@ -219,9 +219,10 @@ class MainHomeFragment :
             setupOddsChangeListener()
             iv_publicity.release()
                 iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
-                LogUtil.d(mMatchInfo?.pullRtmpUrl)
+//                LogUtil.d(mMatchInfo?.pullRtmpUrl)
             iv_publicity.startPlayLogic()
-            LogUtil.e("startPlayLogic=mainhome" )
+//            LogUtil.e("startPlayLogic=mainhome" )
+//            Log.e("hjq", "startPlayLogic HomeOnHiddenChanged")
         } else {
             iv_publicity.onVideoPause()
         }
@@ -383,7 +384,6 @@ class MainHomeFragment :
 
 
         viewModel.homeGameData.observe(viewLifecycleOwner) {
-            LogUtil.d("homeGameData")
             it?.let { gameList->
                 //棋牌
                 val mHotChessList = gameList.filter { data->
@@ -1104,12 +1104,12 @@ class MainHomeFragment :
                 iv_publicity.setUp(it.pullFlvUrl, false, "");
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
-                LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
-                Log.e("hjq", "startPlayLogic 444")
+//                LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
+//                Log.e("hjq", "startPlayLogic 444")
                 iv_publicity.startPlayLogic()
                 iv_live_type.visibility = View.GONE
             }else{
-                LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
+//                LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
             }
         }
