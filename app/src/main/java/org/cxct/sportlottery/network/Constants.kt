@@ -222,6 +222,12 @@ object Constants {
         ) + "&service=" + URLEncoder.encode(sConfigData?.customerServiceUrl ?: "", "utf-8")
     }
 
+    //2022世界杯内容h5地址
+    fun getWorldCupH5Url(context: Context): String {
+        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/worldcup?platform=" + context.getString(
+            R.string.app_name)
+    }
+
     //web页面增加夜间模式参数
     fun appendMode(url: String?): String? {
         if (url.isNullOrEmpty() || url.contains("mode=")) {

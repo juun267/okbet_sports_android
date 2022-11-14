@@ -2,10 +2,12 @@ package org.cxct.sportlottery.ui.maintab.worldcup
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -32,21 +35,26 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
     private val homeTabAdapter by lazy { HomeWorldCupTabAdapter().apply {
             setOnItemClickListener { adapter, view, position ->
-                (parentFragment as HomeFragment).onTabClickByPosition(position)
+                if (position == 1) {
+                    return@setOnItemClickListener
+                }
+                if (position == 0) { //体育
+                    (parentFragment as HomeFragment).onTabClickByPosition(2)
+                    return@setOnItemClickListener
+                }
+
+                if (position == 2) { //老虎机
+                    (parentFragment as HomeFragment).onTabClickByPosition(4)
+                    return@setOnItemClickListener
+                }
+
+                if (position == 3) { //棋牌
+                    (parentFragment as HomeFragment).onTabClickByPosition(5)
+                    return@setOnItemClickListener
+                }
+
             }
         }
-    }
-
-    var initedWebView = false
-    private val webView by lazy {
-        initedWebView = true
-        val web = WebView(requireContext())
-        rootView.addView(web, 0, FrameLayout.LayoutParams(-1, -1))
-        web
-    }
-
-    private val homeElecAdapter by lazy {
-        HomeElecAdapter(mutableListOf())
     }
 
     override fun layoutId() = R.layout.fragment_home_worldcup
@@ -57,6 +65,19 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         setTheme()
         initTabView()
         initObservable()
+        initWeb()
+    }
+
+    private fun initWeb() {
+        webView.settings.javaScriptEnabled = true
+        webView.addJavascriptInterface(WorldCupJsInterface(), "WorldCupJsInterface")
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+            }
+        }
+//      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
+        webView.loadUrl(Constants.getWorldCupH5Url(requireContext()))
     }
 
     private fun setTheme() {
@@ -108,13 +129,12 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         if (viewModel == null) {
             return
         }
+
+        viewModel.isLogin.observe(viewLifecycleOwner) { setupLogin() }
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let {
                 tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
             }
-        }
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-            setupLogin()
         }
     }
 
@@ -140,8 +160,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
     override fun onDestroy() {
         super.onDestroy()
-        if (initedWebView) {
-            webView.destroy()
-        }
+        webView.destroy()
     }
 }

@@ -24,7 +24,6 @@ class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeVie
     val containerId = 0x08989
     val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(childFragmentManager, containerId, arrayOf(
-//            HomeWorldCupFragment::class.java,
             MainHomeFragment::class.java,
             HomeLiveFragment::class.java,
             HomeWorldCupFragment::class.java,
