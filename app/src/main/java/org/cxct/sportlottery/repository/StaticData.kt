@@ -40,6 +40,10 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
+    set(value) {
+        value?.worldCupOpen = 0
+        field = value
+    }
 
 /**
  * 當前需要顯示的幣種符號
