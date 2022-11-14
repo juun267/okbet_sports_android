@@ -97,7 +97,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/lin_game_result"
@@ -300,7 +300,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_sport_inplay"
