@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab.live
 
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
@@ -77,6 +78,7 @@ class ItemHomeLiveHolder(
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 GSYVideoManager.instance().setNeedMute(true)
+                Log.e("hjq", "startPlayLogic 111")
                 binding.videoView.startPlayLogic()
                 (bindingAdapter as HomeLiveAdapter).playerView = binding.videoView
             }

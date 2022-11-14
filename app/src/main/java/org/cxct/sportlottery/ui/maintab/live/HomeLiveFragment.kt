@@ -117,6 +117,7 @@ class HomeLiveFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
+            Log.e("hjq", "startPlayLogic 222")
             homeLiveAdapter.playerView?.startPlayLogic()
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
