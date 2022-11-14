@@ -92,10 +92,11 @@ class MainHomeFragment :
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
             context?.let {
+
                 Glide.with(it)
                     .load(data.matchInfo.frontCoverUrl)
                     .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
-                    .into(view_action)
+                    .into(iv_live_type)
                 Glide.with(it)
                     .load(data.matchInfo.streamerIcon)
                     .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
@@ -252,14 +253,7 @@ class MainHomeFragment :
         ll_come_back.setOnClickListener {
             nsv_home.smoothScrollTo(0,0)
         }
-        iv_live_type.setOnClickListener {
-            mMatchInfo?.let { it1 ->
-                SportDetailActivity.startActivity(requireContext(),
-                    matchInfo = it1,
-                    matchType = MatchType.IN_PLAY,
-                    true)
-            }
-        }
+
         view_action.setOnClickListener {
             mMatchInfo?.let { it1 ->
                 SportDetailActivity.startActivity(requireContext(),
@@ -420,10 +414,11 @@ class MainHomeFragment :
                         tv_first_half_game.text = matchInfo.statusName18n
                         tv_match_time.text = runningTime
                         context?.let {mContext->
+
                             Glide.with(mContext)
                                 .load(matchInfo.frontCoverUrl)
-                                .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
-                                .into(view_action)
+                                .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
+                                .into(iv_live_type)
                             Glide.with(mContext)
                                 .load(matchInfo.streamerIcon)
                                 .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
@@ -1102,9 +1097,6 @@ class MainHomeFragment :
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
                 iv_publicity.startPlayLogic()
-                iv_live_type.visibility = View.GONE
-            }else{
-                iv_live_type.visibility = View.VISIBLE
             }
         }
     }
@@ -1118,17 +1110,17 @@ class MainHomeFragment :
     }
 
         override fun onStartPrepared() {
-            view_action.isVisible = true
+            iv_live_type.visibility = View.VISIBLE
             LogUtil.d("onStartPrepared")
         }
         override fun onPrepared() {
-            view_action.isVisible = false
+            iv_live_type.visibility = View.INVISIBLE
             LogUtil.d("onPrepared")
         }
 
         override fun onError() {
             LogUtil.d("onError")
-            view_action.isVisible = true
+            iv_live_type.visibility = View.VISIBLE
         }
 
 

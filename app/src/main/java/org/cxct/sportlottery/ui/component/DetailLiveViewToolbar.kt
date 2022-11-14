@@ -236,6 +236,10 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 GSYVideoManager.instance().isNeedMute = !iv_live_sound.isSelected
             }
             player_view.setOnOkListener(object : OKVideoPlayer.OnOkListener {
+                override fun onStartPrepared() {
+
+                }
+
                 override fun onPrepared() {
                     player_view.layoutParams.apply {
                         LogUtil.d(player_view.currentVideoWidth.toString() + "," + player_view.currentVideoHeight)

@@ -133,16 +133,14 @@
                 android:id="@+id/iv_live_type"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:src="@drawable/icon_novideodata"
                 android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 
-        <ImageView
+        <View
             android:id="@+id/view_action"
             android:layout_width="0dp"
             android:layout_height="104dp"
-            android:background="@drawable/bg_radius_8_button_white"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_novideodata"
             android:layout_marginStart="@dimen/margin_24"
             android:layout_marginTop="@dimen/margin_10"
             android:layout_marginEnd="@dimen/margin_5"
