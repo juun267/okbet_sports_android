@@ -14,7 +14,6 @@ public class OKVideoPlayer extends GSYVideoPlayer {
     public interface OnOkListener {
         void onStartPrepared();
         void onPrepared();
-
         void onError();
     }
 
@@ -174,6 +173,11 @@ public class OKVideoPlayer extends GSYVideoPlayer {
 
             }
         });
+    }
+
+    @Override
+    public void onVideoSizeChanged() {
+        super.onVideoSizeChanged();
     }
 
     @Override

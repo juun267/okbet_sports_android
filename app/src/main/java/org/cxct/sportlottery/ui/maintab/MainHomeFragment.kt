@@ -105,7 +105,7 @@ class MainHomeFragment :
                 data.matchInfo.streamerName ?: getString(R.string.okbet_live_name)
             mMatchInfo = data.matchInfo
             if (data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it) }
+                data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it, 0) }
             } else {
                 playMatchVideo(data.matchInfo)
             }
@@ -200,7 +200,6 @@ class MainHomeFragment :
         super.onResume()
         iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
-//        Log.e("hjq", "startPlayLogic 333")
     }
 
     override fun onPause() {
@@ -217,12 +216,9 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-            iv_publicity.release()
                 iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
-//                LogUtil.d(mMatchInfo?.pullRtmpUrl)
+                LogUtil.d(mMatchInfo?.pullRtmpUrl)
             iv_publicity.startPlayLogic()
-//            LogUtil.e("startPlayLogic=mainhome" )
-//            Log.e("hjq", "startPlayLogic HomeOnHiddenChanged")
         } else {
             iv_publicity.onVideoPause()
         }
@@ -438,7 +434,7 @@ class MainHomeFragment :
                     tv_introduction.text = matchInfo.streamerName
 
                     matchInfo.roundNo?.let {
-                        viewModel.getLiveInfo(it)
+                        viewModel.getLiveInfo(it, 0)
                     }
                 }
                     if(homeHotLiveAdapter.data.isNullOrEmpty()){
@@ -465,6 +461,7 @@ class MainHomeFragment :
                    it.forEach { handi ->
                        handi.matchInfos.forEach { hotdata ->
                            hotdata.getBuildMatchInfo()
+                           hotdata.leagueId = handi.league.id
                            hotdata.oddsSort = handi.oddsSort
                            // 將儲存的賠率表指定的賽事列表裡面
                            val leagueOddFromMap = leagueOddMap[hotdata.id]
@@ -485,17 +482,17 @@ class MainHomeFragment :
                }
            }
         }
-        viewModel.matchLiveInfo.observe(viewLifecycleOwner) { event ->
+        viewModel.homeMatchLiveInfo.observe(viewLifecycleOwner) { event ->
             event?.peekContent()?.let { matchRound ->
-               homeHotLiveAdapter.data.forEachIndexed { index, hotMatchLiveData ->
-                   if (hotMatchLiveData.matchInfo.roundNo == matchRound.roundNo){
-                       hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
-                       hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
-                       homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
-                       mMatchInfo = hotMatchLiveData.matchInfo
-                       playMatchVideo(hotMatchLiveData.matchInfo)
-                   }
-               }
+                homeHotLiveAdapter.data.forEachIndexed { index, hotMatchLiveData ->
+                    if (hotMatchLiveData.matchInfo.roundNo == matchRound.roundNo) {
+                        hotMatchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
+                        hotMatchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
+                        homeHotLiveAdapter.notifyItemChanged(index, hotMatchLiveData)
+                        mMatchInfo = hotMatchLiveData.matchInfo
+                        playMatchVideo(hotMatchLiveData.matchInfo)
+                    }
+                }
             }
         }
     }
@@ -1104,12 +1101,9 @@ class MainHomeFragment :
                 iv_publicity.setUp(it.pullFlvUrl, false, "");
             }
             if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
-//                LogUtil.e("start=" + it.streamerName + "，" + it.pullRtmpUrl)
-//                Log.e("hjq", "startPlayLogic 444")
                 iv_publicity.startPlayLogic()
                 iv_live_type.visibility = View.GONE
             }else{
-//                LogUtil.e("stop=" + it.streamerName + "," + it.pullRtmpUrl)
                 iv_live_type.visibility = View.VISIBLE
             }
         }

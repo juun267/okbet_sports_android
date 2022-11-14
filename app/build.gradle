@@ -384,7 +384,6 @@ dependencies {
     implementation 'androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03'
     implementation 'androidx.webkit:webkit:1.4.0'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
-    implementation files('src/main/libs/pldroid-player-2.4.1.jar')
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

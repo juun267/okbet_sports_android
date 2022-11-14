@@ -1082,13 +1082,11 @@ object SocketUpdateUtil {
                             oddValue > oddSocketValue -> {
                                 odd.oddState =
                                     OddState.SMALLER.state
-
                                 isNeedRefresh = true
                             }
                             oddValue < oddSocketValue -> {
                                 odd.oddState =
                                     OddState.LARGER.state
-
                                 isNeedRefresh = true
                             }
                             oddValue == oddSocketValue -> {
@@ -1106,25 +1104,21 @@ object SocketUpdateUtil {
 
                 if (odd?.status != oddSocket.status) {
                     odd?.status = oddSocket.status
-
                     isNeedRefresh = true
                 }
 
                 if (odd?.spread != oddSocket.spread) {
                     odd?.spread = oddSocket.spread
-
                     isNeedRefresh = true
                 }
 
                 if (odd?.extInfo != oddSocket.extInfo) {
                     odd?.extInfo = oddSocket.extInfo
-
                     isNeedRefresh = true
                 }
 
                 if (oddsDetailListData.rowSort != odds.rowSort) {
                     oddsDetailListData.rowSort = odds.rowSort
-
                     isNeedRefresh = true
                 }
             }
