@@ -87,6 +87,9 @@ class MainHomeViewModel(
     val homeGameData: LiveData<List<QueryGameEntryData>?>
         get() = _homeGameData
     private val _homeGameData = MutableLiveData<List<QueryGameEntryData>?>()
+    val slotGameData: LiveData<List<QueryGameEntryData>?>
+        get() = _slotGameData
+    private val _slotGameData = MutableLiveData<List<QueryGameEntryData>?>()
 
     private val _totalRewardAmount = MutableLiveData<List<TotalRewardAmountData>>()
     val totalRewardAmount: LiveData<List<TotalRewardAmountData>>
@@ -653,7 +656,11 @@ class MainHomeViewModel(
                 )
             }
             result?.rows.let {
-                _homeGameData.postValue(it)
+                if (position==2){
+                    _slotGameData.postValue(it)
+                }else{
+                    _homeGameData.postValue(it)
+                }
             }
         }
     }

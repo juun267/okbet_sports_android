@@ -412,7 +412,13 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     override fun onDestroy() {
         viewModel.clearLiveInfo()
         live_view_tool_bar.release()
+        releaseWebView()
         super.onDestroy()
+    }
+
+    private fun releaseWebView() {
+        wv_analyze.destroy()
+        wv_chat.destroy()
     }
 
     private fun initUI() {
@@ -1560,4 +1566,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         cl_bet_list_bar.isVisible =
             viewModel.betInfoList.value?.peekContent().isNullOrEmpty() || showEmoji
     }
+
+
 }

@@ -547,7 +547,7 @@ class HomeLiveFragment :
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            ll_come_back.isVisible = recyclerView.canScrollVertically(0)
+            ll_come_back.isVisible = recyclerView.canScrollVertically(-1)
         }
     }
 }
