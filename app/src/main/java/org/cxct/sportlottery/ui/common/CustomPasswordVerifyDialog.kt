@@ -118,7 +118,7 @@ class CustomPasswordVerifyDialog : BaseDialog<SelfLimitViewModel>(SelfLimitViewM
             PassVerifyEnum.BET -> {
                 if (!checkPassword(password)) return
                 inputValue?.let {
-                    viewModel.passwordVerifyForLimitBet(MD5Util.MD5Encode(password), it.toInt())
+                    viewModel.passwordVerifyForLimitBet(MD5Util.MD5Encode(password), it.toDouble().toInt())
                 }
             }
         }
