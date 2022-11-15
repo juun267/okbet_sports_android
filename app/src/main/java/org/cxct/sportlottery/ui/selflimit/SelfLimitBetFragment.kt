@@ -43,6 +43,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
                 when {
                     it.isNullOrEmpty() -> viewModel.setBetEditTextError(true)
                     it.toDouble() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(false)
+                    it.toDouble() > perBetMaxAmount -> etMount.
+                    setText(perBetMaxAmount.toString().toCharArray(),0,perBetMaxAmount.toString().length)
                     else -> viewModel.setBetEditTextError(true)
                 }
             }
