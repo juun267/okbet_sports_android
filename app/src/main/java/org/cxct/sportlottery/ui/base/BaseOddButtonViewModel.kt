@@ -427,7 +427,6 @@ abstract class BaseOddButtonViewModel(
                     if (!haveSingleItemFaild && !haveParlayItemFaild) {
                         betInfoRepository.clear()
                         _oddChange.postValue(false)
-                        LogUtil.e("下注成功")
                     } else {
                         it.receipt?.singleBets?.forEach {
                             if (it.status != 7) {
@@ -443,7 +442,6 @@ abstract class BaseOddButtonViewModel(
                                 }
                             }
                         }
-                        LogUtil.e("更新赔率，更新UI")
                         //处理赔率更新
                         _oddChange.postValue(true)
                     }
