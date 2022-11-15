@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
@@ -64,7 +65,7 @@ class HomeFragment : BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeVie
                     .visibility = View.GONE
             }
             3 ->
-                if (sConfigData?.worldCupOpen == 1) {
+                if (StaticData.worldCupOpened()) {
                     switchTabByPosition(2)
                 } else {
                     (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)

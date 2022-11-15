@@ -65,5 +65,9 @@ class StaticData {
         fun getTestFlag(index: Long?): TestFlag? {
             return TestFlag.values().find { it.index == index }
         }
+
+        fun worldCupOpened(): Boolean {
+            return sConfigData?.worldCupOpen == 1
+        }
     }
 }
