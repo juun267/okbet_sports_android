@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.exception.DoNoConnectException
@@ -62,7 +63,7 @@ class VersionUpdateViewModel(
     }
 
     fun checkAppVersion() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             mServerUrlIndex = 0
             check {
                 compareVersion(it)
@@ -71,7 +72,7 @@ class VersionUpdateViewModel(
     }
 
     fun checkAppMinVersion() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             mServerUrlIndex = 0
             check {
                 compareMinVersion(it)
