@@ -85,7 +85,7 @@ class HomeLiveFragment :
                 },
                 onClickLiveListener = { matchInfo, roundNo ->
                     if (matchInfo.pullRtmpUrl.isNullOrEmpty()) {
-                        viewModel.getLiveInfo(roundNo)
+                        viewModel.getLiveInfo(roundNo, 1)
                     }
                 }
             )
@@ -117,13 +117,12 @@ class HomeLiveFragment :
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
-            Log.e("hjq", "startPlayLogic 222")
-            homeLiveAdapter.playerView?.startPlayLogic()
+//            homeLiveAdapter.playerView?.startPlayLogic()
             viewModel.getLiveRoundHall()
             setupOddsChangeListener()
         } else {
-            homeLiveAdapter.expandMatchId = null
             homeLiveAdapter.playerView?.onVideoPause()
+            homeLiveAdapter.expandMatchId = null
         }
     }
 
@@ -192,17 +191,14 @@ class HomeLiveFragment :
                     matchLiveData.oddsMap = leagueOddFromMap.oddsMap
                 }
             }
-            var needGetLive = homeLiveAdapter.data.isEmpty()
             homeLiveAdapter.data = it
             rv_live?.firstVisibleRange(homeLiveAdapter, activity ?: requireActivity())
             //先解除全部賽事訂
             unSubscribeChannelHallAll()
             subscribeQueryData(it)
-            if (needGetLive) {
-                it.firstOrNull()?.let {
-                    if (it.matchInfo.isLive == 1 && !it.matchInfo.roundNo.isNullOrEmpty()) {
-                        viewModel.getLiveInfo(it.matchInfo.roundNo)
-                    }
+            it.firstOrNull()?.let {
+                if (it.matchInfo.isLive == 1 && !it.matchInfo.roundNo.isNullOrEmpty()) {
+                    viewModel.getLiveInfo(it.matchInfo.roundNo, 1)
                 }
             }
         }
@@ -213,14 +209,16 @@ class HomeLiveFragment :
             }
         }
         viewModel.matchLiveInfo.observe(viewLifecycleOwner) { event ->
-            event?.peekContent()?.let { matchRound ->
+            event?.getContentIfNotHandled()?.let { matchRound ->
                 homeLiveAdapter.data.forEachIndexed { index, matchLiveData ->
                     if (matchLiveData.matchInfo.roundNo == matchRound.roundNo) {
                         matchLiveData.matchInfo.pullRtmpUrl = matchRound.pullRtmpUrl
                         matchLiveData.matchInfo.pullFlvUrl = matchRound.pullFlvUrl
-                        homeLiveAdapter.notifyItemChanged(index)
-                        homeLiveAdapter.expandMatchId = matchLiveData.matchInfo.id
-                        rv_live.smoothScrollToPosition(index)
+                        if (isVisible) {
+                            homeLiveAdapter.notifyItemChanged(index)
+                            homeLiveAdapter.expandMatchId = matchLiveData.matchInfo.id
+                            rv_live.smoothScrollToPosition(index)
+                        }
                     }
                 }
             }

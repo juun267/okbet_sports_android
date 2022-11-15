@@ -22,15 +22,15 @@ data class HotMatchInfo(
     @Json(name = "homeName")
     val homeName: String,
     @Json(name = "homeIcon")
-    val homeIcon: String? ,
+    val homeIcon: String?,
     @Json(name = "awayIcon")
-    val awayIcon: String? ,
+    val awayIcon: String?,
     @Json(name = "id")
     val id: String,
     @Json(name = "leagueId")
-    val leagueId: String,
+    var leagueId: String,
     @Json(name = "leagueName")
-    val leagueName: String,
+    var leagueName: String? = null,
     @Json(name = "liveVideo")
     val liveVideo: Int,
     @Json(name = "neutral")

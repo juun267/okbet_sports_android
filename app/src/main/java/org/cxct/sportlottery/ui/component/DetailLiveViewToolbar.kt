@@ -15,12 +15,13 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import com.pili.pldroid.player.*
-import com.pili.pldroid.player.widget.PLVideoView
+import com.shuyu.gsyvideoplayer.GSYVideoManager
 import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
+import kotlinx.android.synthetic.main.view_video_ok.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.widget.OKVideoPlayer
 
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -29,8 +30,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
 ) :
-    LinearLayout(context, attrs, defStyle), PLOnPreparedListener, PLOnInfoListener,
-    PLOnCompletionListener, PLOnVideoSizeChangedListener, PLOnErrorListener {
+    LinearLayout(context, attrs, defStyle) {
 
     enum class LiveType {
         LIVE, VIDEO, ANIMATION
@@ -135,7 +135,18 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }
             super.onTouchEvent(event)
         }
-        player_view.setOnTouchListener { v, event ->
+        player_view.surface_container.setOnTouchListener { v, event ->
+            onTouchScreenListener?.let {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        it.onTouchScreen()
+                        it.onReleaseScreen()
+                    }
+                }
+            }
+            super.onTouchEvent(event)
+        }
+        player_view.rl_tran_cover.setOnTouchListener { v, event ->
             onTouchScreenListener?.let {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
@@ -192,6 +203,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
                 iv_live.isVisible = false
+                iv_live_sound.isVisible = true
                 LogUtil.d(liveUrl)
                 iv_video.isVisible = !TextUtils.isEmpty(videoUrl)
                 iv_animation.isVisible = !TextUtils.isEmpty(animeUrl)
@@ -204,12 +216,14 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 tvStatus.isVisible = false
                 iv_live.isVisible = !liveUrl.isNullOrEmpty()
                 iv_video.isVisible = false
+                iv_live_sound.isVisible = false
                 iv_animation.isVisible = !animeUrl.isNullOrEmpty()
             }
             LiveType.ANIMATION -> {
                 player_view.isVisible = false
                 web_view.isVisible = true
                 iv_live_status.isVisible = false
+                iv_live_sound.isVisible = false
                 iv_live_status.setImageResource(R.drawable.bg_no_play)
                 tvStatus.isVisible = false
                 iv_live.isVisible = !liveUrl.isNullOrEmpty()
@@ -227,33 +241,37 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     private fun initializePlayer(streamUrl: String?) {
         streamUrl?.let {
             LogUtil.d("streamUrl=" + it)
-            // 1 -> hw codec enable, 0 -> disable [recommended]
-            val options = AVOptions()
-            options.setInteger(AVOptions.KEY_PREPARE_TIMEOUT, 10 * 1000)
-            options.setInteger(AVOptions.KEY_SEEK_MODE, 1)
-            options.setInteger(AVOptions.KEY_MEDIACODEC, AVOptions.MEDIA_CODEC_HW_DECODE)
-            options.setInteger(AVOptions.KEY_LIVE_STREAMING, 1)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION, 200)
-            options.setInteger(AVOptions.KEY_CACHE_BUFFER_DURATION_SPEED_ADJUST, 0)
+            iv_live_sound.isSelected = true
+            GSYVideoManager.instance().isNeedMute = !iv_live_sound.isSelected
+            iv_live_sound.setOnClickListener {
+                it.isSelected = !it.isSelected
+                GSYVideoManager.instance().isNeedMute = !iv_live_sound.isSelected
+            }
+            player_view.showTranBar(true)
+            player_view.setOnOkListener(object : OKVideoPlayer.OnOkListener {
+                override fun onStartPrepared() {
 
-            player_view.setAVOptions(options)
-            player_view.setOnPreparedListener(this);
-            player_view.setOnInfoListener(this);
-            player_view.setOnCompletionListener(this);
-            player_view.setOnVideoSizeChangedListener(this);
-            player_view.setOnErrorListener(this);
-            player_view.setDisplayAspectRatio(PLVideoView.ASPECT_RATIO_FIT_PARENT)
-            player_view.setVideoPath(it)
-//            mMediaController = MediaController(this, false, true)
-//            mMediaController.setOnClickSpeedAdjustListener(mOnClickSpeedAdjustListener)
-//            player_view.setMediaController(mMediaController)
-            LogUtil.d("initializePlayer=" + liveUrl)
-            player_view.start();
+                }
+
+                override fun onPrepared() {
+                    player_view.layoutParams.apply {
+                        LogUtil.d(player_view.currentVideoWidth.toString() + "," + player_view.currentVideoHeight)
+                        height =
+                            player_view.width * player_view.currentVideoHeight / player_view.currentVideoWidth
+                        player_view.layoutParams = this
+                    }
+                }
+
+                override fun onError() {
+                }
+            })
+            player_view.setUp(it, true, "");
+            player_view.startPlayLogic();
         }
     }
 
     private fun releasePlayer() {
-        player_view.stopPlayback()
+        player_view.release()
     }
 
     fun startPlayer() {
@@ -264,7 +282,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
 
     fun stopPlayer() {
         if (player_view.isVisible) {
-            player_view.stop()
+            player_view.onVideoPause()
         }
     }
 
@@ -329,13 +347,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     fun release() {
-        if (player_view.isVisible) {
-            releasePlayer()
-        }
-        if (web_view.isVisible) {
-            web_view.stopLoading()
-            web_view.clearCache(false)
-        }
+        releasePlayer()
+        web_view.stopLoading()
+        web_view.clearCache(false)
     }
 
     fun showFullScreen(fullScreen: Boolean) {
@@ -387,32 +401,6 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }
         }
     }
-
-    override fun onPrepared(p0: Int) {
-        LogUtil.d("onPrepared" + p0)
-    }
-
-    override fun onInfo(p0: Int, p1: Int, p2: Any?) {
-
-    }
-
-    override fun onCompletion() {
-        LogUtil.d("onCompletion")
-    }
-
-    override fun onVideoSizeChanged(p0: Int, p1: Int) {
-        LogUtil.d("onVideoSizeChanged=" + p0 + "," + p1)
-        player_view.layoutParams.apply {
-            this.height = player_view.width * p1 / p0
-        }
-    }
-
-    override fun onError(p0: Int, p1: Any?): Boolean {
-        LogUtil.e(p0.toString() + "," + p1.toString())
-//        ToastUtil.showToast(context, p0.toString() + "," + p1.toString())
-        return false
-    }
-
     private var onTouchScreenListener: OnTouchScreenListener? = null
     fun setOnTouchScreenListener(onTouchScreenListener: OnTouchScreenListener) {
         this.onTouchScreenListener = onTouchScreenListener
@@ -422,4 +410,5 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
         fun onTouchScreen()
         fun onReleaseScreen()
     }
+
 }

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.live
 
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
@@ -78,13 +77,13 @@ class ItemHomeLiveHolder(
         if (isExpandLive) {
             if (!data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 GSYVideoManager.instance().setNeedMute(true)
-                Log.e("hjq", "startPlayLogic 111")
                 binding.videoView.startPlayLogic()
                 (bindingAdapter as HomeLiveAdapter).playerView = binding.videoView
             }
             binding.rippleView.showWaveAnimation()
         } else {
             binding.rippleView.cancelWaveAnimation()
+            binding.tvLiveTime.text = null
             GSYVideoManager.instance().setNeedMute(true)
             binding.videoView.release()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -92,10 +91,10 @@ class ItemHomeLiveHolder(
             }
         }
         binding.flLive.isVisible = isExpandLive
-        setVolumeState()
+        GSYVideoManager.instance().isNeedMute = !binding.ivLiveSound.isSelected
         binding.ivLiveSound.setOnClickListener {
             it.isSelected = !it.isSelected
-            setVolumeState()
+            GSYVideoManager.instance().isNeedMute = !binding.ivLiveSound.isSelected
         }
         binding.tvCollse.setOnClickListener {
             (bindingAdapter as HomeLiveAdapter).expandMatchId = null
@@ -107,8 +106,17 @@ class ItemHomeLiveHolder(
             binding.videoView.setGSYVideoProgressListener(this)
             binding.ivCover.isVisible = true
             binding.videoView.setOnOkListener(object : OKVideoPlayer.OnOkListener {
+                override fun onStartPrepared() {
+
+                }
+
                 override fun onPrepared() {
                     binding.ivCover.isVisible = false
+                    binding.videoView.layoutParams.apply {
+                        height =
+                            binding.videoView.width * binding.videoView.currentVideoHeight / binding.videoView.currentVideoWidth
+                        binding.videoView.layoutParams = this
+                    }
                 }
 
                 override fun onError() {
@@ -119,7 +127,6 @@ class ItemHomeLiveHolder(
                 .load(data.matchInfo.frontCoverUrl)
                 .apply(mRequestOptions)
                 .into(binding.ivCover)
-            binding.videoView.thumbImageView
             if (!it.pullRtmpUrl.isNullOrEmpty()) {
                 binding.videoView.setUp(it.pullRtmpUrl, true, "");
             } else if (!it.pullFlvUrl.isNullOrEmpty()) {
@@ -129,23 +136,6 @@ class ItemHomeLiveHolder(
             }
         }
     }
-
-    fun setVolumeState() {
-        if (binding.ivLiveSound.isSelected) {
-            setVolumeStateUnMute()
-        } else {
-            setVolumeStateMute()
-        }
-    }
-
-    fun setVolumeStateMute() {
-        GSYVideoManager.instance().isNeedMute = true
-    }
-
-    private fun setVolumeStateUnMute() {
-        GSYVideoManager.instance().isNeedMute = false
-    }
-
     fun update(oddsType: OddsType) {
         //設置賽事資訊是否顯示
         setupGameInfoVisibility(data)
@@ -643,14 +633,6 @@ class ItemHomeLiveHolder(
             }
         }
     }
-
-//    override fun onVideoSizeChanged(p0: Int, p1: Int) {
-//        Log.e("hjq", "onVideoSizeChanged=" + p0.toString() + "," + p1)
-//        binding.videoView.layoutParams.apply {
-//            height = binding.videoView.width * p1 / p0
-//        }
-//    }
-
 
     override fun onLifeDestroy() {
         super.onLifeDestroy()

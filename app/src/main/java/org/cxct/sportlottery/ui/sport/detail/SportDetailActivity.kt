@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -45,6 +46,7 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -358,7 +360,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun updateBetListCount(num: Int) {
-        cl_bet_list_bar.isVisible = num > 0
+        setUpBetBarVisible()
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoney()
@@ -820,6 +822,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         ?.let { updatedDataList ->
                             oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
                         } ?: run {
+                        var needUpdate = false
                         oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
                                     oddsDetailListData,
@@ -827,9 +830,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                                 )
                                 && oddsDetailListData.isExpand
                             ) {
+                                needUpdate = true
                                 updateBetInfo(oddsDetailListData, matchOddsChangeEvent)
-                                oddsDetailListAdapter?.notifyItemChanged(index)
                             }
+                        }
+                        if (needUpdate) {
+                            oddsDetailListAdapter?.notifyDataSetChanged()
                         }
                     }
                 }
@@ -1464,6 +1470,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             LogUtil.d("builder=" + builder.toString())
             wv_chat.loadUrl(builder.toString())
         }
+        Log.d("hjq", "loginChat=" + host)
     }
 
     fun setupInput() {
@@ -1520,12 +1527,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             when (action) {
                 "onMini" -> {
                     activity.runOnUiThread {
+                        activity.onMini = data
                         activity.updateWebHeight(data)
+                        activity.setUpBetBarVisible()
                     }
                 }
                 "onEmoji" -> {
                     activity.runOnUiThread {
-                        activity.updateBetBarVisibily(data)
+                        activity.showEmoji = data
+                        activity.setUpBetBarVisible()
                     }
                 }
                 "requireLogin" -> {
@@ -1540,24 +1550,25 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun updateWebHeight(onMini: Boolean) {
         wv_chat.post {
             var lp = wv_chat.layoutParams
-            lp.height = if (onMini) 56.dp else LayoutParams.MATCH_PARENT
+            lp.height = if (onMini) 60.dp else LayoutParams.MATCH_PARENT
             wv_chat.layoutParams = lp
         }
+
     }
 
     fun showChatWebView(visible: Boolean) {
         wv_chat.isVisible = visible
         (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
-            bottomMargin = if (visible) 56.dp else 0
+            bottomMargin = if (visible) 57.dp else 0
         }
     }
 
-    /**
-     * 显示emoji的时候，要隐藏注单bar
-     */
-    fun updateBetBarVisibily(showEmoji: Boolean) {
+    var showEmoji = false
+    var onMini = true
+    fun setUpBetBarVisible() {
         cl_bet_list_bar.isVisible =
-            viewModel.betInfoList.value?.peekContent().isNullOrEmpty() || showEmoji
+            !BetInfoRepository.betInfoList.value?.peekContent().isNullOrEmpty()
+                    && (!showEmoji && onMini)
     }
 
 

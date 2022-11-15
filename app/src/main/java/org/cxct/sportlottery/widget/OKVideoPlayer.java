@@ -3,6 +3,7 @@ package org.cxct.sportlottery.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack;
@@ -12,8 +13,8 @@ import org.cxct.sportlottery.R;
 
 public class OKVideoPlayer extends GSYVideoPlayer {
     public interface OnOkListener {
+        void onStartPrepared();
         void onPrepared();
-
         void onError();
     }
 
@@ -53,6 +54,9 @@ public class OKVideoPlayer extends GSYVideoPlayer {
             @Override
             public void onStartPrepared(String url, Object... objects) {
                 GSYVideoManager.instance().setNeedMute(true);
+                if (onOkListener != null) {
+                    onOkListener.onStartPrepared();
+                }
             }
 
             @Override
@@ -173,6 +177,11 @@ public class OKVideoPlayer extends GSYVideoPlayer {
     }
 
     @Override
+    public void onVideoSizeChanged() {
+        super.onVideoSizeChanged();
+    }
+
+    @Override
     protected void showWifiDialog() {
 
     }
@@ -250,5 +259,9 @@ public class OKVideoPlayer extends GSYVideoPlayer {
     @Override
     protected void changeUiToPlayingBufferingShow() {
 
+    }
+
+    public void showTranBar(Boolean show) {
+        findViewById(R.id.rl_tran_cover).setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

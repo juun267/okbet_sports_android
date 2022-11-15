@@ -290,6 +290,8 @@ class MoneyRechViewModel(
 
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
+            AFInAppEventUtil.deposit(depositMoney ?: "",
+                sConfigData?.systemCurrency ?: "")
 
             _onlinePayResult.value = depositMoney.toLong() //金額帶入result
         }
@@ -315,8 +317,10 @@ class MoneyRechViewModel(
             )
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
-
-            _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(), (mSelectRechCfgs?.exchangeRate ?: 0.0)) //金額帶入result
+            AFInAppEventUtil.deposit(depositMoney ?: "",
+                sConfigData?.systemCurrency ?: "")
+            _onlinePayCryptoResult.value = ArithUtil.mul(depositMoney.toDouble(),
+                (mSelectRechCfgs?.exchangeRate ?: 0.0)) //金額帶入result
         }
     }
 
