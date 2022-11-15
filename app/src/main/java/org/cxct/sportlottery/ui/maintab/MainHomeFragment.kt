@@ -1111,15 +1111,12 @@ class MainHomeFragment :
 
         override fun onStartPrepared() {
             iv_live_type.visibility = View.VISIBLE
-            LogUtil.d("onStartPrepared")
         }
         override fun onPrepared() {
             iv_live_type.visibility = View.INVISIBLE
-            LogUtil.d("onPrepared")
         }
 
         override fun onError() {
-            LogUtil.d("onError")
             iv_live_type.visibility = View.VISIBLE
         }
 
