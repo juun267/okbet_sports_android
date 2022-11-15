@@ -283,7 +283,8 @@ class SportListViewModel(
         if (jobGetOddsList?.isActive == true) {
             jobGetOddsList?.cancel()
         }
-        jobGetOddsList = viewModelScope.launch {
+
+        jobGetOddsList = viewModelScope.launch(Dispatchers.IO) {
             var result: OddsListResult? = null
             if (matchType == MatchType.IN_PLAY.postValue && gameType == GameType.ALL.key) {
                 doNetwork(androidContext) {
@@ -324,6 +325,7 @@ class SportListViewModel(
                     )
                 }
             }
+
             result?.updateMatchType()
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -377,6 +379,7 @@ class SportListViewModel(
                     _oddsListGameHallResult.postValue(Event(result))
                 }
             }
+
             notifyFavorite(FavoriteType.MATCH)
         }
     }
