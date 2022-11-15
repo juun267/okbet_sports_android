@@ -1550,7 +1550,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun updateWebHeight(onMini: Boolean) {
         wv_chat.post {
             var lp = wv_chat.layoutParams
-            lp.height = if (onMini) 56.dp else LayoutParams.MATCH_PARENT
+            lp.height = if (onMini) 60.dp else LayoutParams.MATCH_PARENT
             wv_chat.layoutParams = lp
         }
 
@@ -1559,7 +1559,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun showChatWebView(visible: Boolean) {
         wv_chat.isVisible = visible
         (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
-            bottomMargin = if (visible) 53.dp else 0
+            bottomMargin = if (visible) 57.dp else 0
         }
     }
 
