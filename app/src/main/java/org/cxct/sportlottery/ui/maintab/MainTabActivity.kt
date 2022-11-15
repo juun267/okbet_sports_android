@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -109,15 +111,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             iv_home_back.setImageResource(R.drawable.icon01_arrow_back_cup)
             tv_home_back.setTextColor(resources.getColor(R.color.color_CC0054))
             bottom_navigation_view.setBackgroundResource(R.color.color_B2_FFFFFF)
+            ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin = 0
             textColor = resources.getColorStateList(R.color.main_tab_cup_text_selector)
             cupTabIcons
         } else {
-            resetBackIcon()
+            iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
             tv_home_back.setTextColor(resources.getColor(R.color.color_025BE8))
             bottom_navigation_view.setBackgroundResource(R.drawable.bg_icon_bottom_bar)
+            ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin = -8.dp
             textColor = resources.getColorStateList(R.color.main_tab_text_selector)
             norTabIcons
         }
+
 
         repeat(bottom_navigation_view.itemCount) {
             bottom_navigation_view.getBottomNavigationItemView(it).run {
@@ -126,11 +131,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         }
     }
-
-    private fun resetBackIcon() {
-        iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
-    }
-
 
     @Subscribe
     fun onHomeTab(event: HomeTabEvent) {
