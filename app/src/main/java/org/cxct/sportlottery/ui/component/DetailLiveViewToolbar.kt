@@ -146,6 +146,17 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }
             super.onTouchEvent(event)
         }
+        player_view.rl_tran_cover.setOnTouchListener { v, event ->
+            onTouchScreenListener?.let {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        it.onTouchScreen()
+                        it.onReleaseScreen()
+                    }
+                }
+            }
+            super.onTouchEvent(event)
+        }
     }
 
     fun onBackPressed() {
@@ -236,6 +247,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 it.isSelected = !it.isSelected
                 GSYVideoManager.instance().isNeedMute = !iv_live_sound.isSelected
             }
+            player_view.showTranBar(true)
             player_view.setOnOkListener(object : OKVideoPlayer.OnOkListener {
                 override fun onStartPrepared() {
 

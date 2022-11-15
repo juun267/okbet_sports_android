@@ -15,6 +15,25 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_tran_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/bg_play_view_trans_top" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/bg_play_view_trans_bottom" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/thumb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
