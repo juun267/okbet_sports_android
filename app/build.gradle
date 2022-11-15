@@ -21,7 +21,7 @@ android {
         }
         applicationId "org.cxct.sportlottery"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 30
         versionName "1.1.20"
         versionCode 43
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -378,6 +378,9 @@ dependencies {
 //
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
 
+    debugImplementation 'io.github.didi.dokit:dokitx:3.5.0.1'
+    releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.5.0.1'
+
 
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -389,8 +392,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.core:core-ktx:1.3fdsa ΩΩ.2'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

@@ -15,6 +15,7 @@ import com.adjust.sdk.Adjust
 import com.adjust.sdk.AdjustConfig
 import com.adjust.sdk.LogLevel
 import com.appsflyer.AppsFlyerLib
+import com.didichuxing.doraemonkit.DoKit
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -243,7 +244,12 @@ class MultiLanguagesApplication : Application() {
 
         if (BuildConfig.DEBUG) {
             CrashHandler.setup(this) //错误日志收集
+            DoKit.Builder(this) //性能监控模块
+                .build()
         }
+
+
+
     }
 
     private fun initAdjustSDK() {
