@@ -11,7 +11,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    compileSdkVersion 31
+    compileSdk 31
 //    buildToolsVersion "29.0.3"
 
     defaultConfig {
@@ -20,8 +20,8 @@ android {
 
         }
         applicationId "org.cxct.sportlottery"
-        minSdkVersion 23
-        targetSdkVersion 30
+        minSdk 23
+        targetSdk 31
         versionName "1.1.20"
         versionCode 43
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -392,7 +392,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'

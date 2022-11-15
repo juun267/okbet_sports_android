@@ -33,10 +33,10 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
     private val homeTabAdapter by lazy { HomeWorldCupTabAdapter().apply {
             setOnItemClickListener { adapter, view, position ->
-                if (position == 1) {
+                if (position == 0) {
                     return@setOnItemClickListener
                 }
-                if (position == 0) { //体育
+                if (position == 1) { //体育
                     (parentFragment as HomeFragment).onTabClickByPosition(2)
                     return@setOnItemClickListener
                 }
