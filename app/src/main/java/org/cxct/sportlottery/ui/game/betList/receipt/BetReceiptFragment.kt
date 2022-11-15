@@ -179,12 +179,15 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun setupTotalValue() {
         var betCount = 0
+        var totalCount = 0
         betResultData?.singleBets?.forEach {
             if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            totalCount += (it.num ?: 0)
         }
 
         betResultData?.parlayBets?.forEach {
             if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            totalCount += (it.num ?: 0)
         }
 
         tv_all_bet_count.text = betCount.toString()
@@ -195,7 +198,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
 
         //顯示注單收據的數量
-        tv_bet_list_count.text = betCount.toString()
+        tv_bet_list_count.text = totalCount.toString()
     }
 
     private fun initButton() {

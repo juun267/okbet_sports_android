@@ -1309,4 +1309,6 @@
     <string name="okbet_live_name">MC OKBET</string>
     <string name="cs_center">CSKH</string>
     <string name="bet_others">Khác</string>
+    <string name="Pinned">Đã ghim</string>
+    <string name="Unpin">Huỷ ghim</string>
 </resources>

@@ -1337,6 +1337,8 @@
     <string name="see_more">See more&#160;</string>
     <string name="less_than_the">U</string>
     <string name="cs_center">CS Center</string>
+    <string name="Pinned">Pinned</string>
+    <string name="Unpin">Unpin</string>
 
 
 </resources>

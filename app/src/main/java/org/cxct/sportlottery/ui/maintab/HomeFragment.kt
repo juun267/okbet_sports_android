@@ -64,12 +64,7 @@ class HomeFragment :
         when (position) {
             0 -> switchTabByPosition(0)
             1 -> switchTabByPosition(1)
-            2 -> {
-                (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
-                (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)
-                    .visibility = View.GONE
-            }
-            3 ->
+            2 ->
                 if (sConfigData?.worldCupOpen == 1) {
                     switchTabByPosition(2)
                 } else {
@@ -77,6 +72,11 @@ class HomeFragment :
                     (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)
                         .visibility = View.GONE
                 }
+            3 -> {
+                (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
+                (activity as MainTabActivity).findViewById<LinearLayout>(R.id.ll_home_back)
+                    .visibility = View.GONE
+            }
             4 -> switchTabByPosition(3)
             5 -> switchTabByPosition(4)
         }

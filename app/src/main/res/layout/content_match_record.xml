@@ -310,10 +310,16 @@
                             android:src="@drawable/ic_copy" />
                     </LinearLayout>
 
-                    <TextView
+                    <androidx.legacy.widget.Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:gravity="end"
                         android:text="@string/bet_time"
                         android:textColor="@color/color_A5A9B3"

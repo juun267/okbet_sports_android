@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.maintab
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -266,7 +265,7 @@ class MainHomeFragment :
             (parentFragment as HomeFragment).onTabClickByPosition(1)
         }
         ll_hot_handicap_more.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(2)
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
         ll_hot_elect.setOnClickListener {
             (parentFragment as HomeFragment).onTabClickByPosition(4)
