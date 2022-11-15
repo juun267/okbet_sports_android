@@ -84,28 +84,6 @@
             android:text="@string/home_word_cup"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/include_layout2"
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_marginRight="4dp"
-        android:layout_weight="1"
-        android:background="@drawable/bg_tab_open_unselector"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:src="@drawable/sport0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
-        <TextView
-            android:gravity="center"
-            android:text="@string/home_sports"
-            android:textSize="@dimen/textSize10sp"
-            android:layout_marginBottom="3dp"
-            android:textColor="@color/color_535D76"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/include_layout4"
         android:visibility="gone"
         android:orientation="vertical"
@@ -128,6 +106,29 @@
             android:layout_height="wrap_content"
             android:text="@string/home_in_play"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/include_layout2"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_marginRight="4dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_tab_open_unselector"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/sport0"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_30" />
+        <TextView
+            android:gravity="center"
+            android:text="@string/home_sports"
+            android:textSize="@dimen/textSize10sp"
+            android:layout_marginBottom="3dp"
+            android:textColor="@color/color_535D76"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/include_layout5"
         android:orientation="vertical"

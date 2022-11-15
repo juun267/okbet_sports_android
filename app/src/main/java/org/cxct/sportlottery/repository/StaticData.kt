@@ -41,7 +41,7 @@ const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
     set(value) {
-        value?.worldCupOpen = 0
+//        value?.worldCupOpen = 0
         field = value
     }
 
