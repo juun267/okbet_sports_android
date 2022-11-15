@@ -375,6 +375,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
         setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(R.id.snackbar_holder)
+            show()
+        }
+
     }
 
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {

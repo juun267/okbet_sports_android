@@ -1321,4 +1321,6 @@
     <string name="please_input_you_account">Please enter your account</string>
     <string name="okbet_live_name">OKBET MC</string>
     <string name="cs_center">CS Center</string>
+    <string name="Pinned">Pinned</string>
+    <string name="Unpin">Unpin</string>
 </resources>
