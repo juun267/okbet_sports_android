@@ -1339,6 +1339,8 @@
     <string name="cs_center">CS Center</string>
     <string name="Pinned">Pinned</string>
     <string name="Unpin">Unpin</string>
+    <string name="new_game_and_testing">(新游戏，测试中...)</string>
+    <string name="dont_have_slot_game">暂无棋牌游戏</string>
 
 
 </resources>

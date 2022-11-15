@@ -1059,16 +1059,15 @@ class MainHomeFragment :
         }
         //点击体育跳转
         include_layout2.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(2)
+            (parentFragment as HomeFragment).onTabClickByPosition(3)
         }
         //点击世界杯跳转
         include_layout3.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(3)
+            (parentFragment as HomeFragment).onTabClickByPosition(2)
         }
         //点击滚球跳转
         include_layout4.setOnClickListener {
-
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.FT)
+            (parentFragment as HomeFragment).onTabClickByPosition(2)
         }
         //点击电子跳转
         include_layout5.setOnClickListener {

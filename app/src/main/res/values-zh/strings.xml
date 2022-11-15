@@ -1326,4 +1326,6 @@
     <string name="cs_center">帮助中心</string>
     <string name="Pinned">已置顶</string>
     <string name="Unpin">取消置顶</string>
+    <string name="new_game_and_testing">(新游戏，测试中...)</string>
+    <string name="dont_have_slot_game">暂无棋牌游戏</string>
 </resources>

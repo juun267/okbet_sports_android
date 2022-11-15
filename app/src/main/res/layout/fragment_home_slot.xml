@@ -27,4 +27,27 @@
         android:layout_height="match_parent"
         tools:itemCount="3"
         tools:listitem="@layout/item_home_slot" />
+
+    <LinearLayout
+        android:id="@+id/lin_empty_game"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/bg_okgame_empty" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-20dp"
+            android:textSize="15sp"
+            android:textColor="@color/color_A7B2C4"
+            android:text="@string/dont_have_slot_game" />
+    </LinearLayout>
 </LinearLayout>
