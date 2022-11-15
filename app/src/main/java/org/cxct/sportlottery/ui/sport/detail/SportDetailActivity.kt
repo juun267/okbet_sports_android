@@ -46,6 +46,7 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -359,7 +360,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     override fun updateBetListCount(num: Int) {
-        cl_bet_list_bar.isVisible = num > 0
+        setUpBetBarVisible()
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoney()
@@ -834,7 +835,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                             }
                         }
                         if (needUpdate) {
-                            Log.d("hjq", "needUpdate")
                             oddsDetailListAdapter?.notifyDataSetChanged()
                         }
                     }
@@ -1527,12 +1527,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             when (action) {
                 "onMini" -> {
                     activity.runOnUiThread {
+                        activity.onMini = data
                         activity.updateWebHeight(data)
+                        activity.setUpBetBarVisible()
                     }
                 }
                 "onEmoji" -> {
                     activity.runOnUiThread {
-                        activity.updateBetBarVisibily(data)
+                        activity.showEmoji = data
+                        activity.setUpBetBarVisible()
                     }
                 }
                 "requireLogin" -> {
@@ -1550,6 +1553,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             lp.height = if (onMini) 56.dp else LayoutParams.MATCH_PARENT
             wv_chat.layoutParams = lp
         }
+
     }
 
     fun showChatWebView(visible: Boolean) {
@@ -1559,12 +1563,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
-    /**
-     * 显示emoji的时候，要隐藏注单bar
-     */
-    fun updateBetBarVisibily(showEmoji: Boolean) {
+    var showEmoji = false
+    var onMini = true
+    fun setUpBetBarVisible() {
         cl_bet_list_bar.isVisible =
-            viewModel.betInfoList.value?.peekContent().isNullOrEmpty() || showEmoji
+            !BetInfoRepository.betInfoList.value?.peekContent().isNullOrEmpty()
+                    && (!showEmoji && onMini)
     }
 
 

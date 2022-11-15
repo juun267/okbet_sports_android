@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import kotlinx.android.synthetic.main.activity_detail_sport.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_live.view.*
+import kotlinx.android.synthetic.main.view_video_ok.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.OKVideoPlayer
@@ -134,7 +135,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
             }
             super.onTouchEvent(event)
         }
-        player_view.setOnTouchListener { v, event ->
+        player_view.surface_container.setOnTouchListener { v, event ->
             onTouchScreenListener?.let {
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
@@ -334,13 +335,9 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
     }
 
     fun release() {
-        if (player_view.isVisible) {
-            releasePlayer()
-        }
-        if (web_view.isVisible) {
-            web_view.stopLoading()
-            web_view.clearCache(false)
-        }
+        releasePlayer()
+        web_view.stopLoading()
+        web_view.clearCache(false)
     }
 
     fun showFullScreen(fullScreen: Boolean) {

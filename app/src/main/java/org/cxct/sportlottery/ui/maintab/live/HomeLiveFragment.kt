@@ -191,17 +191,14 @@ class HomeLiveFragment :
                     matchLiveData.oddsMap = leagueOddFromMap.oddsMap
                 }
             }
-            var needGetLive = homeLiveAdapter.data.isEmpty()
             homeLiveAdapter.data = it
             rv_live?.firstVisibleRange(homeLiveAdapter, activity ?: requireActivity())
             //先解除全部賽事訂
             unSubscribeChannelHallAll()
             subscribeQueryData(it)
-            if (needGetLive) {
-                it.firstOrNull()?.let {
-                    if (it.matchInfo.isLive == 1 && !it.matchInfo.roundNo.isNullOrEmpty()) {
-                        viewModel.getLiveInfo(it.matchInfo.roundNo, 1)
-                    }
+            it.firstOrNull()?.let {
+                if (it.matchInfo.isLive == 1 && !it.matchInfo.roundNo.isNullOrEmpty()) {
+                    viewModel.getLiveInfo(it.matchInfo.roundNo, 1)
                 }
             }
         }
