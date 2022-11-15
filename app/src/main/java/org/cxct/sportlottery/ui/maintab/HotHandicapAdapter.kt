@@ -83,8 +83,8 @@ class HotHandicapAdapter(val lifecycleOwner: LifecycleOwner, data:List<HandicapD
                     helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.text_2))
                 }else{
                     helper.getView<TextView>(R.id.tv_title2).visibility = View.GONE
-                    helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.text_1))
-                    helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.text_2))
+                    helper.setText(R.id.tv_title1,LocalUtils.getString(R.string.odds_button_name_home))
+                    helper.setText(R.id.tv_title3,LocalUtils.getString(R.string.odds_button_name_away))
                 }
             }
             "2"-> {
