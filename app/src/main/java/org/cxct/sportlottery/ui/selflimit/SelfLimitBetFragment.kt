@@ -38,14 +38,19 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
 
         override fun afterTextChanged(s: Editable?) {
             s.toString().let {
-                val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
-                val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
-                when {
-                    it.isNullOrEmpty() -> viewModel.setBetEditTextError(true)
-                    it.toDouble() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(false)
-                    it.toDouble() > perBetMaxAmount -> etMount.
-                    setText(perBetMaxAmount.toString().toCharArray(),0,perBetMaxAmount.toString().length)
-                    else -> viewModel.setBetEditTextError(true)
+                try {
+                    val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
+                    val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
+                    when {
+                        it.isNullOrEmpty() -> viewModel.setBetEditTextError(true)
+                        it.toDouble()<=0 -> return@let
+                        it.toDouble() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(false)
+                        it.toDouble() > perBetMaxAmount -> etMount.
+                        setText(perBetMaxAmount.toString().toCharArray(),0,perBetMaxAmount.toString().length)
+                        else -> viewModel.setBetEditTextError(true)
+                    }
+                }catch (e:Exception){
+                 e.printStackTrace()
                 }
             }
         }

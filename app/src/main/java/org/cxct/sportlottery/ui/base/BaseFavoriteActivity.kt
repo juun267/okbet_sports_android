@@ -46,9 +46,9 @@ abstract class BaseFavoriteActivity<T : BaseFavoriteViewModel>(clazz: KClass<T>)
 
             MyFavoriteNotifyType.MATCH_REMOVE.code-> getString(R.string.myfavorite_notify_match_remove)
 
-            MyFavoriteNotifyType.DETAIL_ADD.code-> getString(R.string.myfavorite_notify_detail_add)
+            MyFavoriteNotifyType.DETAIL_ADD.code -> getString(R.string.Pinned)
 
-            MyFavoriteNotifyType.DETAIL_REMOVE.code-> getString(R.string.myfavorite_notify_detail_remove)
+            MyFavoriteNotifyType.DETAIL_REMOVE.code -> getString(R.string.Unpin)
 
             else -> ""
         }
