@@ -693,6 +693,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         viewBtOdd.isVisible = isShowOdd
         rv_detail.isVisible = isShowOdd
         lin_categroy.isVisible = isShowOdd
+        vDivider.isVisible = isShowOdd
 
         btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
         viewBtnAnalyze.isVisible = !isShowOdd
