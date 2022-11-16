@@ -26,7 +26,6 @@ class HomeRecommendListener(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
         playCateMenuCode: String?,
     ) {
-        LogUtil.toJson(matchInfo)
         onClickBetListener.invoke(
             gameType,
             matchType,
