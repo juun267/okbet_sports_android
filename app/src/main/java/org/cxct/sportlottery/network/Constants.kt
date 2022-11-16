@@ -3,12 +3,14 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.text.TextUtils
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
@@ -224,8 +226,11 @@ object Constants {
 
     //2022世界杯内容h5地址
     fun getWorldCupH5Url(context: Context): String {
-        return getH5BaseUrl() + "sports-rule/#/${getLanguageTag(context)}v2/worldcup?platform=" + context.getString(
-            R.string.app_name)
+        val language = getLanguageTag(context)
+        if (TextUtils.isEmpty(language)) {
+            return getH5BaseUrl() + "sports-rule/#/worldcup?platform=${context.getString(R.string.app_name)}&d=android"
+        }
+        return getH5BaseUrl() + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android"
     }
 
     //web页面增加夜间模式参数

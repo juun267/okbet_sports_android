@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.worldcup
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
@@ -10,6 +11,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.fastjson.JSON
 import kotlinx.android.synthetic.main.fragment_home_live.lin_toolbar
 import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
 import kotlinx.android.synthetic.main.fragment_home_worldcup.*
@@ -17,6 +19,7 @@ import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -66,18 +69,43 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         initWeb()
     }
 
+    val string = "<!DOCTYPE html>\n" +
+            "<html lang=\"en\">\n" +
+            "<head>\n" +
+            "    <meta charset=\"UTF-8\">\n" +
+            "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+            "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+            "    <title>Document</title>\n" +
+            "</head>\n" +
+            "<body>\n" +
+            "    <button id=\"btn\">exe android func</button>\n" +
+            "</body>\n" +
+            "<script>\n" +
+            "    document.getElementById(\"btn\").addEventListener(\"click\", function(){\n" +
+            "\n" +
+            "    const obj ={\n" +
+            "            id: 'asfsdfjfsdafj',\n" +
+            "            name: '234324',\n" +
+            "            team: 'portugal',\n" +
+            "            price: 100,\n" +
+            "          }\n" +
+            "\n" +
+            "        window.worldCupJsInterface.tapAndroidEvent(obj);\n" +
+            "    });\n" +
+            "</script>\n" +
+            "</html>"
+
     private fun initWeb() {
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
-        webView.addJavascriptInterface(WorldCupJsInterface(), "WorldCupJsInterface")
-        webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-            }
-        }
+        webView.addJavascriptInterface(WorldCupJsInterface(), "worldCupJsInterface")
 
-      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
-//        webView.loadUrl(Constants.getWorldCupH5Url(requireContext()))
+
+//      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
+        val url = Constants.getWorldCupH5Url(requireContext())
+        webView.loadData(string, null, null)
+        Log.e("For Test", "=====>>> WorldCupJsInterface url ${url}")
+//        webView.loadUrl(url)
     }
 
     private fun setTheme() {
@@ -98,6 +126,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
     fun initToolBar() {
         lin_toolbar.fitsSystemStatus()
         rv_tab_home.fitsSystemStatus()
+        lin_toolbar.setBackgroundColor(Color.TRANSPARENT)
         iv_menu_left.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0)
