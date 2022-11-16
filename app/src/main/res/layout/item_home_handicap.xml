@@ -125,7 +125,6 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_time"
-
         android:layout_marginTop="@dimen/margin_8"
         android:background="@drawable/bg_timer"
         android:layout_marginHorizontal="@dimen/margin_10"
@@ -135,8 +134,8 @@
         android:layout_height="@dimen/margin_25">
         <TextView
             android:id="@+id/tvGameStatus"
+            android:visibility="gone"
             android:gravity="center"
-            android:paddingVertical="@dimen/margin_4"
             android:paddingStart="@dimen/margin_10"
             android:textSize="@dimen/textSize12sp"
             android:layout_width="wrap_content"
@@ -146,14 +145,14 @@
             android:id="@+id/tv_game_play_time"
             android:gravity="center"
             android:textSize="@dimen/textSize12sp"
-            android:paddingStart="@dimen/margin_6"
+            android:paddingStart="@dimen/margin_10"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             tools:text="80：02"/>
         <TextView
             android:id="@+id/tvPlayCateCount"
             android:layout_marginEnd="@dimen/margin_10"
-           android:gravity="end"
+            android:gravity="end"
             android:textSize="@dimen/textSize12sp"
             android:textColor="@color/color_1D9F51"
             android:layout_width="match_parent"
