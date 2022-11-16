@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.*
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -20,6 +23,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 
@@ -158,6 +162,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
                     }
                 }
+                //不管成功与否刷新当前金额
+                viewModel.getMoney()
+                EventBus.getDefault().post(MoneyEvent(true))
             }
         }
 

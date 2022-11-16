@@ -30,6 +30,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -58,6 +59,8 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.OKVideoPlayer
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -198,12 +201,14 @@ class MainHomeFragment :
 
     override fun onResume() {
         super.onResume()
+        LogUtil.d("onResume")
         iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
     }
 
     override fun onPause() {
         super.onPause()
+        LogUtil.d("onPause")
         iv_publicity.onVideoPause()
         rv_marquee.stopAuto()
     }
@@ -213,6 +218,7 @@ class MainHomeFragment :
         if (!hidden) {
             viewModel.getLiveRoundCount()
             viewModel.getHotLiveList()
+            onRefreshMoney()
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
@@ -338,6 +344,7 @@ class MainHomeFragment :
                 if (isReload) {
                     setupBanner()
                     viewModel.getPublicityPromotion()
+                    viewModel.getMoney()
                 }
                 viewModel.getSportMenuFilter()
             }
@@ -1100,8 +1107,23 @@ class MainHomeFragment :
     }
 
 
-
-
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun refreshMoney(moneyEvent: MoneyEvent){
+            if (moneyEvent.refresh){
+                viewModel.getMoney()
+            }
+        }
+    private fun onRefreshMoney(){
+        iv_money_refresh.startAnimation(RotateAnimation(0f,
+            720f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f).apply {
+            duration = 1000
+        })
+        viewModel.getMoney()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         iv_publicity.release()

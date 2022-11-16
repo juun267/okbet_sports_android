@@ -473,7 +473,10 @@ class ProfileCenterFragment :
     /*private fun initServiceButton() {
         btn_floating_service.setView(this)
     }*/
-
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        getMoney()
+    }
     private fun getUserInfo() {
         viewModel.getUserInfo()
     }
