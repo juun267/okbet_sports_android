@@ -228,9 +228,9 @@ object Constants {
     fun getWorldCupH5Url(context: Context): String {
         val language = getLanguageTag(context)
         if (TextUtils.isEmpty(language)) {
-            return getH5BaseUrl() + "sports-rule/#/worldcup?platform=${context.getString(R.string.app_name)}&d=android"
+            return getH5BaseUrl() + "sports-rule/#/worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
         }
-        return getH5BaseUrl() + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android"
+        return getH5BaseUrl() + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
     }
 
     //web页面增加夜间模式参数

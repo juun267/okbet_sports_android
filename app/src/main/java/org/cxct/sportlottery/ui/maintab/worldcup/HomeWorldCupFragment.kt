@@ -12,6 +12,7 @@ import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.fastjson.JSON
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_home_live.lin_toolbar
 import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
 import kotlinx.android.synthetic.main.fragment_home_worldcup.*
@@ -96,16 +97,20 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
             "</html>"
 
     private fun initWeb() {
+        Glide.with(ivBg).load(R.drawable.bg_worldcup_top_0).into(ivBg)
+
+        webView.setBackgroundColor(0)
+        webView.getBackground()?.setAlpha(0)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
-        webView.addJavascriptInterface(WorldCupJsInterface(), "worldCupJsInterface")
+        webView.addJavascriptInterface(WorldCupJsInterface(webView.context), WorldCupJsInterface.name)
 
 
 //      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
         val url = Constants.getWorldCupH5Url(requireContext())
-        webView.loadData(string, null, null)
+//        webView.loadData(string, null, null)
         Log.e("For Test", "=====>>> WorldCupJsInterface url ${url}")
-//        webView.loadUrl(url)
+        webView.loadUrl(url)
     }
 
     private fun setTheme() {
