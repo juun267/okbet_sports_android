@@ -57,7 +57,7 @@
                 android:id="@+id/ll_home_back"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:elevation="2dp"
+                android:elevation="6dp"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/margin_4"
                 android:visibility="gone"
