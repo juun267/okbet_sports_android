@@ -188,7 +188,7 @@ enum class PlayCate(val value: String) {
     PK_5TH_H("PK-5TH-H"),
     PK_FINISH("PK-FINISH"),  //    PK-FINISH,点球大战-最后结束回合
     PK_HDP("PK-HDP"),//    PK-HDP,点球大战- 让球
-    OU_PK("O/U-PK"),//    PK-HDP,点球大战- 让球
+    OU_PK("O/U-PK"),//    PK-HDP,点球大战- 进球/大小
     SINGLE_PK("1X2-PK"),//独赢
     PK_ROUND1("PK-ROUND1"),//    PK-ROUND1,点球大战-第一回合获胜队伍
     PK_ROUND2("PK-ROUND2"),
@@ -769,6 +769,25 @@ enum class PlayCate(val value: String) {
                 OU_2_WAY_1ST_C.value -> OU_2_WAY_1ST_C
                 OU_2_WAY_1ST_H.value -> OU_2_WAY_1ST_H
                 FS_LD_CS.value -> FS_LD_CS
+                PK_1ST_C.value -> PK_1ST_C
+                PK_1ST_H.value -> PK_1ST_H
+                PK_2ND_C.value -> PK_2ND_C
+                PK_2ND_H.value -> PK_2ND_H
+                PK_3RD_C.value -> PK_3RD_C
+                PK_3RD_H.value -> PK_3RD_H
+                PK_4TH_C.value -> PK_4TH_C
+                PK_4TH_H.value -> PK_4TH_H
+                PK_5TH_C.value -> PK_5TH_C
+                PK_5TH_H.value -> PK_5TH_H
+                PK_FINISH.value -> PK_FINISH
+                PK_HDP.value -> PK_HDP
+                OU_PK.value -> OU_PK
+                SINGLE_PK.value -> SINGLE_PK
+                PK_ROUND1.value -> PK_ROUND1
+                PK_ROUND2.value -> PK_ROUND2
+                PK_ROUND3.value -> PK_ROUND3
+                PK_ROUND4.value -> PK_ROUND4
+                PK_ROUND5.value -> PK_ROUND5
                 BOTTOM_NAVIGATION.value -> BOTTOM_NAVIGATION
                 NO_DATA.value -> NO_DATA
                 else -> UNCHECK

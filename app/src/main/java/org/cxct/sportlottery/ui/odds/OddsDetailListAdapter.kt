@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.util.setTeamLogo
@@ -159,6 +160,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        LogUtil.d("viewType=" + viewType)
         val layout: Int = when (sportCode) {
             GameType.FT -> {
                 when (viewType) {
