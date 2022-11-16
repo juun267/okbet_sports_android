@@ -7,7 +7,8 @@ import java.lang.ref.WeakReference
 class FragmentHelper(
     var fragmentManager: FragmentManager,
     private val viewId: Int,
-    private val fragmentClasses: Array<Class<out Fragment>>) {
+    private val fragmentClasses: Array<Class<out Fragment>>
+) {
 
     private var curPos = -1
     private val fragments: Array<WeakReference<out Fragment>?> = Array(fragmentClasses.size) { null }

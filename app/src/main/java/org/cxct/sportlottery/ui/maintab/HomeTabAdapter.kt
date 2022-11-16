@@ -26,13 +26,7 @@ class HomeTabAdapter(data: List<HomeTabItem>?, val selectPos: Int, homeFragment:
 
     init {
         setOnItemClickListener { adapter, view, position ->
-            if (position == 2 && StaticData.worldCupOpened()) {
-                homeFragment.onTabClickByPosition(3)
-            } else if (position == 3 && StaticData.worldCupOpened()) {
-                homeFragment.onTabClickByPosition(2)
-            } else {
-                homeFragment.onTabClickByPosition(position)
-            }
+            homeFragment.onTabClickByPosition(position)
         }
     }
 

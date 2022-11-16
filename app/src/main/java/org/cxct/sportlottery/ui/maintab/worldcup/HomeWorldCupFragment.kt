@@ -37,7 +37,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
                     return@setOnItemClickListener
                 }
                 if (position == 1) { //体育
-                    (parentFragment as HomeFragment).onTabClickByPosition(2)
+                    (parentFragment as HomeFragment).onTabClickByPosition(3)
                     return@setOnItemClickListener
                 }
 
