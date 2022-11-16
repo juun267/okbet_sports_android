@@ -45,7 +45,6 @@ android {
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
-            buildConfigField "String", "STORE_NAME", "\"\""
         }
 
         release {
@@ -55,7 +54,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
-            buildConfigField "String", "STORE_NAME", "\"\""//只有google的签名文件跟其他不一样，所以需要跳应用市场，其他包一律下载覆盖安装
         }
     }
 
