@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setPlayContent
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter :
@@ -114,34 +113,37 @@ class TransactionRecordDiffAdapter :
                     matchOdds.oddsType
                 )
 
-                val formatForOdd = if(matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
+                val formatForOdd =
+                    if (matchOdds.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
+                        matchOdds.odds - 1) else TextUtil.formatForOdd(matchOdds.odds)
                 play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
                     formatForOdd
                 )
 
-                match_play_time.text = TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
+                match_play_time.text =
+                    TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
 
-//                if(data.betConfirmTime?.toInt() != 0){
-//                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
-//                    object : CountDownTimer(leftTime ?: 0, 1000) {
-//
-//                        override fun onTick(millisUntilFinished: Long) {
-//                            tv_count_down.visibility = View.VISIBLE
-//                            tv_count_down.text = "${TimeUtil.longToSecond(millisUntilFinished)} ${context.getString(R.string.sec)}"
-//                        }
-//
-//                        override fun onFinish() {
-//                            tv_count_down.text = "0 ${context.getString(R.string.sec)}"
-//                            if(data.status != 0){
-//                                tv_count_down.visibility = View.GONE
-//                            }
-//                        }
-//                    }.start()
-//                }else{
-//                    tv_count_down.visibility = View.GONE
-//                }
+                if (data.betConfirmTime?.toInt() != 0) {
+                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+                    object : CountDownTimer(leftTime ?: 0, 1000) {
+
+                        override fun onTick(millisUntilFinished: Long) {
+                            tv_bet_result.text = String.format(
+                                context.getString(R.string.pending),
+                                TimeUtil.longToSecond(millisUntilFinished)
+                            )
+                        }
+
+                        override fun onFinish() {
+                            tv_bet_result.text =
+                                String.format(context.getString(R.string.pending), 0)
+                        }
+                    }.start()
+                } else {
+                    tv_bet_result.visibility = View.GONE
+                }
 
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
@@ -149,7 +151,8 @@ class TransactionRecordDiffAdapter :
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
                 when (data.gameType) {
                     GameType.FT.key, GameType.BK.key -> {
-                        if (matchOdds.rtScore?.isNotEmpty() == true) tv_score.text = "(${matchOdds.rtScore})"
+                        if (matchOdds.rtScore?.isNotEmpty() == true) tv_score.text =
+                            "(${matchOdds.rtScore})"
                     }
                 }
 
@@ -157,7 +160,8 @@ class TransactionRecordDiffAdapter :
                     context.getString(R.string.bet_record_single) + "-${GameType.getGameTypeString(context, data.gameType)}"
                 tv_match_title.text = singleTitle
 
-                tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
+                if (data.status != 0) tv_bet_result.setBetReceiptStatus(data.status,
+                    data.cancelledBy)
                 tv_bet_result.isVisible = data.status != 7
 
                 ll_copy_bet_order.setOnClickListener {
@@ -279,7 +283,28 @@ class TransactionRecordDiffAdapter :
                 content_parlay_order_no.text = data.orderNo
                 content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
 
-                tv_bet_result_parlay.setBetReceiptStatus(data.status, data.cancelledBy)
+                if (data.betConfirmTime?.toInt() != 0) {
+                    val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
+                    object : CountDownTimer(leftTime ?: 0, 1000) {
+
+                        override fun onTick(millisUntilFinished: Long) {
+                            tv_bet_result_parlay.text = String.format(
+                                context.getString(R.string.pending),
+                                TimeUtil.longToSecond(millisUntilFinished)
+                            )
+                        }
+
+                        override fun onFinish() {
+                            tv_bet_result_parlay.text =
+                                String.format(context.getString(R.string.pending), 0)
+                        }
+                    }.start()
+                } else {
+                    tv_bet_result_parlay.visibility = View.GONE
+                }
+
+                if (data.status != 0) tv_bet_result_parlay.setBetReceiptStatus(data.status,
+                    data.cancelledBy)
                 tv_bet_result_parlay.isVisible = data.status != 7
 
                 ll_copy_bet_order_parlay.setOnClickListener {
