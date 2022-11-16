@@ -68,6 +68,7 @@ import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
 import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 import org.json.JSONArray
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -82,14 +83,17 @@ fun RecyclerView.addScrollWithItemVisibility(
     onScrolling: () -> Unit,
     onVisible: (visibleList: List<Pair<Int, Int>>) -> Unit
 ) {
+
+
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             val currentAdapter = adapter
+            Timber.d("onScrollStateChanged")
             when (newState) {
                 //停止
                 RecyclerView.SCROLL_STATE_IDLE -> {
-
+                    Timber.d("SCROLL_STATE_IDLE")
                     val visibleRangePair = mutableListOf<Pair<Int, Int>>()
 
                     when (currentAdapter) {
@@ -183,6 +187,7 @@ fun RecyclerView.addScrollWithItemVisibility(
 
                 //手指滾動
                 RecyclerView.SCROLL_STATE_DRAGGING -> {
+                    Timber.d("SCROLL_STATE_DRAGGING")
                     onScrolling()
                 }
             }
