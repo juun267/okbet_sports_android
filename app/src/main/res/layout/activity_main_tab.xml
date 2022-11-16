@@ -3,77 +3,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_home_menu_left">
+    android:background="@drawable/bg_home_menu_left"
+    android:orientation="vertical">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/fl_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/background">
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-            <FrameLayout
-                android:id="@+id/fl_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-8dp">
+
+            <org.cxct.sportlottery.widget.bottomnavigationview.BottomNavigationViewEx
+                android:id="@+id/bottom_navigation_view"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="55dp"
+                android:background="@drawable/bg_icon_bottom_bar"
+                app:elevation="5dp"
+                app:itemIconSize="30dp"
+                app:itemTextColor="@color/main_tab_text_selector"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:menu="@menu/main_menu_navigation" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <View
+                android:id="@+id/space1"
+                android:background="@color/color_FFFFFF"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-8dp">
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view" />
 
-                <org.cxct.sportlottery.widget.bottomnavigationview.BottomNavigationViewEx
-                    android:id="@+id/bottom_navigation_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    app:elevation="1dp"
-                    android:background="@drawable/bg_icon_bottom_bar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:itemTextColor="@color/main_tab_text_selector"
-                    app:itemIconSize="30dp"
-                    app:labelVisibilityMode="labeled"
-                    app:menu="@menu/main_menu_navigation" />
+            <include
+                android:id="@+id/cl_bet_list_bar"
+                layout="@layout/bet_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bet_list_bar_height"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/space1"
+                tools:visibility="visible" />
 
-                <include
-                    android:id="@+id/cl_bet_list_bar"
-                    layout="@layout/bet_bar_layout"
+            <LinearLayout
+                android:id="@+id/ll_home_back"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/margin_4"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/bottom_navigation_view"
+                app:layout_constraintTop_toTopOf="@+id/bottom_navigation_view">
+
+                <ImageView
+                    android:id="@+id/iv_home_back"
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:src="@drawable/icon01_arrow_back" />
+
+                <TextView
+                    android:id="@+id/tv_home_back"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bet_list_bar_height"
-                    android:layout_marginBottom="58dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:visibility="visible" />
-                <LinearLayout
-                    android:id="@+id/ll_home_back"
-                    android:orientation="vertical"
-                    android:elevation="2dp"
-                    android:paddingTop="@dimen/margin_4"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="@+id/bottom_navigation_view"
-                    app:layout_constraintStart_toStartOf="@+id/bottom_navigation_view"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent">
-                    <ImageView
-                       android:layout_gravity="center"
-                        android:id="@+id/iv_home_back"
-                        android:layout_marginTop="@dimen/margin_6"
-                        android:src="@drawable/icon01_arrow_back"
-                        android:layout_width="32dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/tv_home_back"
-                        android:text="@string/home_back"
-                        android:gravity="center"
-                        android:textColor="@color/color_025BE8"
-                        android:textSize="@dimen/textSize10sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/home_back"
+                    android:textColor="@color/color_025BE8"
+                    android:textSize="@dimen/textSize10sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
     <!-- 投注單列表 & 快捷投注單 -->
     <FrameLayout
         android:id="@+id/fl_bet_list"
@@ -81,14 +90,15 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="gone" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/left_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@color/transparent"
         android:outlineAmbientShadowColor="@color/transparent"
         android:outlineSpotShadowColor="@color/transparent"
-        android:background="@color/transparent"
-        android:layout_gravity="left"
         android:tag="LEFT"
         tools:layout="@layout/fragment_main_left" />
 
