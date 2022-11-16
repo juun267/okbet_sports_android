@@ -41,7 +41,6 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.util.setTeamLogo
@@ -160,7 +159,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        LogUtil.d("viewType=" + viewType)
         val layout: Int = when (sportCode) {
             GameType.FT -> {
                 when (viewType) {
@@ -190,6 +188,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.PK_4TH_H.ordinal,
                     PlayCate.PK_5TH_C.ordinal,
                     PlayCate.PK_5TH_H.ordinal,
+                    PlayCate.PK_FINISH.ordinal,
                     PlayCate.OU_PK.ordinal,
                     PlayCate.PK_HDP.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
@@ -752,6 +751,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.PK_4TH_H.ordinal,
                         PlayCate.PK_5TH_C.ordinal,
                         PlayCate.PK_5TH_H.ordinal,
+                        PlayCate.PK_FINISH.ordinal,
                         PlayCate.OU_PK.ordinal,
                         PlayCate.PK_HDP.ordinal,
                         -> forSingle(oddsDetail, 2)
