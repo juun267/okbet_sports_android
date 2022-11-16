@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.view_toolbar_home.*
 import kotlinx.android.synthetic.main.view_toolbar_home.iv_menu_left
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -156,6 +157,13 @@ class BetRecordFragment :
                 rv_record_settled.scrollToPosition(0)
             } else {
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        }
+        viewModel.settlementNotificationMsg.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                if (it.status == Status.UN_DONE.code || it.status == Status.CANCEL.code) {
+                    viewModel.getBetList(true)
+                }
             }
         }
     }
