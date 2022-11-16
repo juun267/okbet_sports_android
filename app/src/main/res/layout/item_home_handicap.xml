@@ -25,7 +25,7 @@
             android:id="@+id/iv_home_icon"
             android:layout_marginStart="@dimen/margin_11"
             android:layout_width="@dimen/margin_20"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/margin_20"
             tools:src="@drawable/icon_team_sign"/>
 
         <TextView
@@ -65,7 +65,7 @@
             android:id="@+id/iv_away_icon"
             android:layout_marginStart="@dimen/margin_11"
             android:layout_width="@dimen/margin_20"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/margin_20"
             tools:src="@drawable/icon_team_sign"/>
         <TextView
             android:id="@+id/tv_away_name"
@@ -135,18 +135,20 @@
         android:layout_height="@dimen/margin_25">
         <TextView
             android:id="@+id/tvGameStatus"
+            android:gravity="center"
             android:paddingVertical="@dimen/margin_4"
             android:paddingStart="@dimen/margin_10"
             android:textSize="@dimen/textSize12sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:text="上半场"/>
         <TextView
             android:id="@+id/tv_game_play_time"
+            android:gravity="center"
             android:textSize="@dimen/textSize12sp"
             android:paddingStart="@dimen/margin_6"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:text="80：02"/>
         <TextView
             android:id="@+id/tvPlayCateCount"
