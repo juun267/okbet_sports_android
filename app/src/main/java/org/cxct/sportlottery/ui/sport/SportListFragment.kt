@@ -131,7 +131,7 @@ class SportListFragment :
 
 
     private val sportLeagueAdapter by lazy {
-        SportLeagueAdapter(matchType).apply {
+        SportLeagueAdapter(this, matchType).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {

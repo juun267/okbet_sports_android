@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_league.view.*
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.PayLoadEnum
 import org.cxct.sportlottery.network.common.FoldState
@@ -27,31 +30,39 @@ import org.cxct.sportlottery.util.setLeagueLogo
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
-class SportLeagueAdapter(private val matchType: MatchType) :
+class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: MatchType) :
     BaseGameAdapter() {
 
     private fun refreshByBetInfo() {
-        data.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                matchOdd.oddsMap?.values?.forEach { oddList ->
-                    oddList?.forEach { odd ->
-                        odd?.isSelected = betInfoList.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                    }
-                }
-                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                    quickPlayCate.quickOdds.forEach { map ->
-                        map.value?.forEach { odd ->
+        lifecycle.lifecycleScope.launch(Dispatchers.IO) {
+
+            data.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.oddsMap?.values?.forEach { oddList ->
+                        oddList?.forEach { odd ->
                             odd?.isSelected = betInfoList.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
                             }
                         }
                     }
+                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                        quickPlayCate.quickOdds.forEach { map ->
+                            map.value?.forEach { odd ->
+                                odd?.isSelected = betInfoList.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                data.forEachIndexed { index, leagueOdd ->
+                    updateLeague(index, leagueOdd)
                 }
             }
         }
-        data.forEachIndexed { index, leagueOdd -> updateLeague(index, leagueOdd) }
     }
 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
