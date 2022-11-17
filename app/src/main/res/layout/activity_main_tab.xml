@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/bg_icon_bottom_bar"
-                app:elevation="6dp"
+                app:elevation="4dp"
                 app:itemIconSize="30dp"
                 app:itemTextColor="@color/main_tab_text_selector"
                 app:labelVisibilityMode="labeled"
