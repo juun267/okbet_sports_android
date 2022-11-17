@@ -22,17 +22,8 @@ import org.cxct.sportlottery.ui.maintab.LanguageAdapter
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import org.greenrobot.eventbus.EventBus
 
 class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
-    companion object {
-        fun newInstance(): MainLeftFragment {
-            val args = Bundle()
-            val fragment = MainLeftFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     private val oddsTypeList by lazy {
         sConfigData?.handicapShow?.split(",")?.filter { it.isNotEmpty() }
@@ -85,31 +76,31 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initView() {
         lin_home.isSelected = fromPage == 0
         lin_home.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToHome(0)
         }
         lin_sport.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
         }
         lin_inplay.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
         lin_live.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToHome(1)
         }
         lin_poker.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToHome(4)
         }
         lin_slot.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToHome(3)
         }
         lin_promotion.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             JumpUtil.toInternalWeb(
                 requireContext(),
                 Constants.getPromotionUrl(
@@ -125,7 +116,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             rv_odds_type.isVisible = isSelected
         }
         lin_contactus.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {

@@ -469,7 +469,7 @@
     <string name="online_bank">Banking</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Withdraw</string>
-    <string name="online_online_bank">GCash / Others</string>
+    <string name="online_online_bank">Online Banking</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -693,7 +693,7 @@
     <string name="bet_num_and_bet_date">Bet slip No / Settled bets</string>
     <string name="date">Date</string>
     <string name="bet_amount">Stake</string>
-    <string name="available_amount">Winable</string>
+    <string name="available_amount">Winnable</string>
     <string name="win_lose">Win / Lose</string>
     <string name="win_lose_mark">Win / Lose: </string>
     <string name="all_sport">All Sports</string>
@@ -1305,7 +1305,7 @@
     <string name="accept_current_odd_to_bet">Bet at current odds</string>
     <string name="home_back">Back</string>
     <string name="enter_live">Masuk ke ruang live</string>
-    <string name="your_bet_order_success">Your betting succesful</string>
+    <string name="your_bet_order_success">Your betting successful</string>
     <string name="your_bet_order_fail">Betting failed, odds changed</string>
     <string name="bet_others">Other</string>
     <string name="check_bet_detail">Bets Details</string>
@@ -1324,4 +1324,5 @@
     <string name="Pinned">Pinned</string>
     <string name="Unpin">Unpin</string>
     <string name="new_game_and_testing">New Games | Beta</string>
+    <string name="dont_have_slot_game">No games</string>
 </resources>

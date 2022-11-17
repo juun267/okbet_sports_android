@@ -86,7 +86,9 @@ class BetRecordFragment :
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if (!hidden) initData()
+        if (!hidden) {
+            initData()
+        }
     }
 
     private fun initView() {
@@ -313,6 +315,11 @@ class BetRecordFragment :
         this.startTabPosition = tabPosition
         if (isAdded) {
             setupTabUI(tabPosition == 0)
+            if (tabPosition == 0) {
+                rv_record_settled.scrollToPosition(0)
+            } else {
+                rv_record_unsettled.scrollToPosition(0)
+            }
         }
     }
 }

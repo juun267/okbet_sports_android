@@ -23,7 +23,11 @@ object EventBusUtil {
 
     fun register(target: Any) {
         if (!EventBus.getDefault().isRegistered(target)) {
-            EventBus.getDefault().register(target)
+            try {
+                EventBus.getDefault().register(target)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

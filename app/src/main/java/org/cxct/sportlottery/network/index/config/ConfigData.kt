@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.network.index.config
 
+import org.cxct.sportlottery.BuildConfig
+
 data class ConfigData(
     val platformId: Long?,
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级
@@ -117,11 +119,15 @@ data class ConfigData(
     val nationCurrencyList: List<NationCurrency>?, //国家币种列表
     val liveChatHost: String?,
     var liveChatOpen: Int?,
-    var worldCupOpen: Int?,//是否开启世界杯入口
+
     var liveCount: Int?,//直播总数
 ) {
     var enterCertified: Int? = -1 //ProfileCenterViewModel.SecurityEnter
     var hasGetTwoFactorResult: Boolean? = false //判斷是不是已經成功發送過簡訊認證碼 (關掉彈窗要重新設置為false)
+    var worldCupOpen: Int = 0//是否开启世界杯入口
+    get() { // 仅测试
+        return if (BuildConfig.DEBUG) { 1 } else field
+    }
 }
 
 enum class VerifySwitchType(val value: String) {

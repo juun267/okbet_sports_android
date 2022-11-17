@@ -1,18 +1,21 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -33,20 +36,38 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
 
-    lateinit var fragmentHelper: FragmentHelper
-    var fragments = arrayOf<Fragment>(
-        HomeFragment.newInstance(),
-        SportFragment.newInstance(),
-        BetRecordFragment.newInstance(),
-        FavoriteFragment.newInstance(),
-        ProfileCenterFragment.newInstance()
-    )
+    val fragmentHelper: FragmentHelper by lazy {
+        FragmentHelper(supportFragmentManager, R.id.fl_content, arrayOf (
+            HomeFragment::class.java,
+            SportFragment::class.java,
+            BetRecordFragment::class.java,
+            FavoriteFragment::class.java,
+            ProfileCenterFragment::class.java))
+    }
+
+    val norTabIcons by lazy {
+        arrayOf(R.drawable.selector_tab_home,
+        R.drawable.selector_tab_sport,
+        R.drawable.selector_tab_betlist,
+        R.drawable.selector_tab_fav,
+        R.drawable.selector_tab_user)
+    }
+
+    val cupTabIcons by lazy {
+        arrayOf(R.drawable.selector_tab_home_cup,
+            R.drawable.selector_tab_sport_cup,
+            R.drawable.selector_tab_betlist_cup,
+            R.drawable.selector_tab_fav_cup,
+            R.drawable.selector_tab_user_cup)
+    }
+
     private var betListFragment: BetListFragment? = null
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
@@ -79,6 +100,41 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initBottomNavigation()
         initObserve()
         EventBusUtil.targetLifecycle(this)
+    }
+
+    var isWorldcupModel = false
+    @SuppressLint("RestrictedApi")
+    private fun resetBottomTheme(worldcupModel: Boolean) {
+        isWorldcupModel = worldcupModel
+        var textColor: ColorStateList
+        val iconArray = if (worldcupModel) {
+            iv_home_back.setImageResource(R.drawable.icon01_arrow_back_cup)
+            tv_home_back.setTextColor(resources.getColor(R.color.color_CC0054))
+            bottom_navigation_view.setBackgroundResource(R.color.color_B2_FFFFFF)
+            ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin = 0
+            textColor = resources.getColorStateList(R.color.main_tab_cup_text_selector)
+            cupTabIcons
+        } else {
+            iv_home_back.setImageResource(R.drawable.icon01_arrow_back)
+            tv_home_back.setTextColor(resources.getColor(R.color.color_025BE8))
+            bottom_navigation_view.setBackgroundResource(R.drawable.bg_icon_bottom_bar)
+            ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin = -8.dp
+            textColor = resources.getColorStateList(R.color.main_tab_text_selector)
+            norTabIcons
+        }
+
+
+        repeat(bottom_navigation_view.itemCount) {
+            bottom_navigation_view.getBottomNavigationItemView(it).run {
+                setIcon(resources.getDrawable(iconArray[it]))
+                setTextColor(textColor)
+            }
+        }
+    }
+
+    @Subscribe
+    fun onHomeTab(event: HomeTabEvent) {
+        resetBottomTheme(event.isWorldCupTab())
     }
 
     override fun onNightModeChanged(mode: Int) {
@@ -114,7 +170,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initBottomFragment() {
-        fragmentHelper = FragmentHelper(supportFragmentManager, R.id.fl_content, fragments)
+        ll_home_back.setOnClickListener {
+            (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
+        }
         bottom_navigation_view.apply {
             enableAnimation(false)
             enableShiftingMode(false)
@@ -123,6 +181,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setIconSize(30f)
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+                    var wordcupModel = false
                     when (menuItem.itemId) {
                         R.id.i_betlist, R.id.i_favorite, R.id.i_user -> {
                             if (viewModel.isLogin.value == false) {
@@ -131,14 +190,22 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                                 return@OnNavigationItemSelectedListener false
                             }
                         }
+
+                        R.id.home -> {
+                            wordcupModel = isWorldcupModel
+                        }
                     }
-                    fragmentHelper.showFragment(this.getMenuItemPosition(menuItem))
-                    if (getMenuItemPosition(menuItem) == 0) {
-                        (fragments[0] as HomeFragment).switchTabByPosition(0)
+
+                    resetBottomTheme(wordcupModel)
+
+                    val position = getMenuItemPosition(menuItem)
+                    fragmentHelper.showFragment(position)
+                    if (position == 0) {
+                        (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
-                    setupBetBarVisiblity(getMenuItemPosition(menuItem))
+                    setupBetBarVisiblity(position)
                     return@OnNavigationItemSelectedListener true
                 }
         }
@@ -210,8 +277,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.left_menu, sportLeftFragment)
                     .commit()
-                sportLeftFragment.matchType = (fragments[1] as SportFragment).getCurMatchType()
-                sportLeftFragment.gameType = (fragments[1] as SportFragment).getCurGameType()
+                val sportFragment = fragmentHelper.getFragment(1) as SportFragment
+                sportLeftFragment.matchType = sportFragment.getCurMatchType()
+                sportLeftFragment.gameType = sportFragment.getCurGameType()
             }
         }
     }
@@ -383,17 +451,17 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
         bottom_navigation_view.currentItem = 1
-        (fragments[1] as SportFragment).setJumpSport(matchType, gameType)
+        (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }
 
     fun jumpToHome(tabPosition: Int) {
         bottom_navigation_view.currentItem = 0
-        (fragments[0] as HomeFragment).switchTabByPosition(tabPosition)
+        (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(tabPosition)
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
         bottom_navigation_view.currentItem = 2
-        (fragments[2] as BetRecordFragment).selectTab(tabPosition)
+        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 
     fun homeBackView(boolean: Boolean) {
@@ -403,9 +471,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         } else {
             bottom_navigation_view.getBottomNavigationItemView(0).visibility = View.VISIBLE
             ll_home_back.visibility = View.GONE
-        }
-        ll_home_back.setOnClickListener {
-            (fragments[0] as HomeFragment).switchTabByPosition(0)
         }
 
     }

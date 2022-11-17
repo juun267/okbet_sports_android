@@ -40,7 +40,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import java.util.*
 
-class SportOddAdapter(private val matchType: MatchType) :
+class SportOddAdapter(private val matchType: MatchType, private val oddBtnCachePool: RecyclerView.RecycledViewPool) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var data = listOf<MatchOdd>()
@@ -110,7 +110,7 @@ class SportOddAdapter(private val matchType: MatchType) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
+        return ViewHolderHdpOu.from(parent, oddStateRefreshListener, oddBtnCachePool)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -1095,12 +1095,12 @@ class SportOddAdapter(private val matchType: MatchType) :
         }
 
         companion object {
-            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): ViewHolderHdpOu {
+            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener, cachePool: RecyclerView.RecycledViewPool): ViewHolderHdpOu {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view =
-                    layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
-
-                return ViewHolderHdpOu(view, refreshListener)
+                val view = layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
+                val hodler = ViewHolderHdpOu(view, refreshListener)
+                hodler.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(cachePool)
+                return hodler
             }
         }
 

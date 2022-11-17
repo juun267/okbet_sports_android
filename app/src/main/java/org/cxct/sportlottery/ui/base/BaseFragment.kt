@@ -5,18 +5,17 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.text.Spanned
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.event.NULLEvent
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
 
@@ -26,19 +25,28 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     val viewModel: T by sharedViewModel(clazz = clazz)
     var mIsEnabled = true //避免快速連點，所有的 item 一次只能點擊一個
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return createRootView(inflater, container, savedInstanceState)
+    }
+
+    open protected fun createRootView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(layoutId(), container, false)
+    }
+
+    open protected fun layoutId() = 0
+    open protected fun onBindView(view: View) { }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe
-    open fun onMainEvent(event: NULLEvent?) {
-        //空方法，不能删除，适配EventBus
+        onBindView(view)
     }
 
     /*弹出加载界面*/

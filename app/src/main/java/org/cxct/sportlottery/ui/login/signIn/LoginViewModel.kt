@@ -102,6 +102,7 @@ class LoginViewModel(
             }
         }
     }
+
     fun validateLoginDeviceSms(code: String, deviceId: String) {
 
         val validateRequest = ValidateLoginDeviceSmsRequest(
@@ -124,7 +125,7 @@ class LoginViewModel(
     }
 
 
-    suspend fun getUserPhone():String?{
+    suspend fun getUserPhone(): String? {
         return withContext(Dispatchers.IO) {
             userInfoRepository.userInfo?.value?.phone.toString()
         }
@@ -155,6 +156,7 @@ class LoginViewModel(
             !VerifyConstUtil.verifyCombinationAccount(username) -> {
                 LocalUtils.getString(R.string.error_member_account)
             }
+
             else -> null
         }
         _accountMsg.value = Pair(msg, msg == null)
@@ -164,10 +166,12 @@ class LoginViewModel(
 
     fun checkPassword(password: String): String? {
         val msg = when {
-            password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
-            password.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
-            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
+            password.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwdFormat(password)
+                    or (password.length !in 6..20)
+                    or (!VerifyConstUtil.verifyPwd(password)) -> LocalUtils.getString(R.string.error_register_password)
+//             -> LocalUtils.getString(R.string.error_register_password)
+//             -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
         _passwordMsg.value = Pair(msg, msg == null)
@@ -185,9 +189,9 @@ class LoginViewModel(
         return msg
     }
 
-     fun focusChangeCheckAllInputComplete() {
-         _loginEnable.value = checkAllInputComplete()
-     }
+    fun focusChangeCheckAllInputComplete() {
+        _loginEnable.value = checkAllInputComplete()
+    }
 
     private fun checkAllInputComplete(): Boolean {
         if (checkInputPair(accountMsg)) {

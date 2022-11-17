@@ -46,20 +46,8 @@ import org.greenrobot.eventbus.EventBus
 class HomeLiveFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    companion object {
-        fun newInstance(): HomeLiveFragment {
-            val args = Bundle()
-            val fragment = HomeLiveFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
     private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(), 1).apply {
-            setOnItemClickListener { adapter, view, position ->
-                (parentFragment as HomeFragment).onTabClickByPosition(position)
-            }
-        }
+        HomeTabAdapter(HomeTabAdapter.getItems(), 1, (parentFragment as HomeFragment))
     }
     private val homeLiveAdapter by lazy {
         HomeLiveAdapter(
