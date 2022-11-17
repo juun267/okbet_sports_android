@@ -97,7 +97,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         lin_worldcup.isVisible = sConfigData?.worldCupOpen == 1
         lin_worldcup.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToHome(3)
+            (activity as MainTabActivity).jumpToHome(2)
         }
         lin_today.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(false))
