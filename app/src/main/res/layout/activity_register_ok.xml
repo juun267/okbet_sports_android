@@ -486,7 +486,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/color_2b2b2b_ffffff"
                         android:textSize="@dimen/textSize14sp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/etIdentity"
                         app:layout_constraintTop_toTopOf="@+id/etIdentity"
                         app:layout_constraintBottom_toBottomOf="@+id/etIdentity" />
@@ -593,7 +593,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/color_FCFCFC"
                         android:textSize="@dimen/textSize14sp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/etIdentity2"
                         app:layout_constraintTop_toTopOf="@+id/etIdentity2"
                         app:layout_constraintBottom_toBottomOf="@+id/etIdentity2" />
