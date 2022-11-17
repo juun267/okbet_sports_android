@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -147,6 +148,13 @@ class TransactionRecordDiffAdapter :
 
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
+                (content_order_no.layoutParams as LinearLayout.LayoutParams).apply {
+                    weight = when (LanguageManager.getSelectLanguage(context)) {
+                        LanguageManager.Language.ZH -> 0f
+                        else -> 1f
+                    }
+                    content_order_no.layoutParams = this
+                }
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
                 when (data.gameType) {
@@ -209,11 +217,21 @@ class TransactionRecordDiffAdapter :
                 match_play_time.isVisible = data.parlayType != ParlayType.OUTRIGHT.key
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
+                (content_order_no.layoutParams as LinearLayout.LayoutParams).apply {
+                    weight = when (LanguageManager.getSelectLanguage(context)) {
+                        LanguageManager.Language.ZH -> 0f
+                        else -> 1f
+                    }
+                    content_order_no.layoutParams = this
+                }
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
 
                 val singleTitle =
-                    context.getString(R.string.bet_record_single) + "-${GameType.getGameTypeString(context, data.gameType)}"
+                    context.getString(R.string.bet_record_single) + "-${
+                        GameType.getGameTypeString(context,
+                            data.gameType)
+                    }"
                 tv_match_title.text = singleTitle
 
                 tv_bet_result.setBetReceiptStatus(data.status, data.cancelledBy)
