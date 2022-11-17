@@ -501,10 +501,10 @@ class MainHomeFragment :
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it?.let {
+            it.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+//                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
         }

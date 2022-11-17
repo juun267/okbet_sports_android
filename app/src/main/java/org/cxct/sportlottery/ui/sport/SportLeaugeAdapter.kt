@@ -33,6 +33,9 @@ import java.util.*
 class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: MatchType) :
     BaseGameAdapter() {
 
+    val cachePool = RecyclerView.RecycledViewPool()
+    val oddBtnCachePool = RecyclerView.RecycledViewPool()
+
     private fun refreshByBetInfo() {
         lifecycle.lifecycleScope.launch(Dispatchers.IO) {
 
@@ -171,8 +174,10 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
-                ItemViewHolder(LayoutInflater.from(parent.context)
+                val itemHolder = ItemViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
+                itemHolder.itemView.league_odd_list.setRecycledViewPool(cachePool)
+                itemHolder
             }
 
             else -> initBaseViewHolders(parent, viewType)
@@ -286,7 +291,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val sportOddAdapter by lazy {
-            SportOddAdapter(matchType)
+            SportOddAdapter(matchType, oddBtnCachePool)
         }
 
         fun bind(

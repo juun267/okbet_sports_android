@@ -61,20 +61,18 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
     private fun highLightRunnable(oddsButton: OddsButton, itemOdd: Odd): Runnable {
         return Runnable {
             itemOdd.oddState = OddState.SAME.state
-            setupOddState(oddsButton, itemOdd)
-//            oddStateChangeListener.refreshOddButton(itemOdd)
-            itemOdd.runnable = null
+            oddsButton.oddStatus = OddState.SAME.state
             itemOdd.runnable?.let { mHandler.removeCallbacks(it) }
+            itemOdd.runnable = null
         }
     }
 
     private fun highLightRunnable(oddsButton: OddsOutrightButton, itemOdd: Odd): Runnable {
         return Runnable {
             itemOdd.oddState = OddState.SAME.state
-            setupOddState(oddsButton, itemOdd)
-//            oddStateChangeListener.refreshOddButton(itemOdd)
-            itemOdd.runnable = null
+            oddsButton.oddStatus = OddState.SAME.state
             itemOdd.runnable?.let { mHandler.removeCallbacks(it) }
+            itemOdd.runnable = null
         }
     }
 
