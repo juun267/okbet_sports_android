@@ -16,15 +16,15 @@ class WorldCupJsInterface(val context: Context) {
     }
 
     @JavascriptInterface
-    fun tapAndroidEvent(param: String) {
-        if (TextUtils.isEmpty(param)) {
+    fun tapAndroidEvent(infoString: String) {
+
+        if (TextUtils.isEmpty(infoString)) {
             ToastUtil.showToast(context, R.string.bad_param)
             return
         }
-        toSportDetailActivity(param)
-    }
 
-    private fun toSportDetailActivity(infoString: String) {
+//        val leagueOdd: LeagueOdd? = infoString.fromJson()
+//        val matchInfo: MatchInfo? = leagueOdd?.matchOdds?.get(0)?.matchInfo
 
         val matchInfo: MatchInfo? = infoString.fromJson()
         if (matchInfo == null) {
