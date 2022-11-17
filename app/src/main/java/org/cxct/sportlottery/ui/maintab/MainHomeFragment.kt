@@ -201,14 +201,14 @@ class MainHomeFragment :
 
     override fun onResume() {
         super.onResume()
-        LogUtil.d("onResume")
+//        LogUtil.d("onResume")
         iv_publicity.startPlayLogic()
         rv_marquee.startAuto()
     }
 
     override fun onPause() {
         super.onPause()
-        LogUtil.d("onPause")
+//        LogUtil.d("onPause")
         iv_publicity.onVideoPause()
         rv_marquee.stopAuto()
     }
@@ -344,7 +344,6 @@ class MainHomeFragment :
                 if (isReload) {
                     setupBanner()
                     viewModel.getPublicityPromotion()
-                    viewModel.getMoney()
                 }
                 viewModel.getSportMenuFilter()
             }
