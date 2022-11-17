@@ -35,26 +35,14 @@ import org.cxct.sportlottery.util.observe
 
 class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
+    private val worldcupPosition = 2
     private val homeTabAdapter by lazy { HomeWorldCupTabAdapter().apply {
             setOnItemClickListener { adapter, view, position ->
-                if (position == 0) {
-                    return@setOnItemClickListener
-                }
-                if (position == 1) { //体育
-                    (parentFragment as HomeFragment).onTabClickByPosition(3)
+                if (position == worldcupPosition) { //世界杯
                     return@setOnItemClickListener
                 }
 
-                if (position == 2) { //老虎机
-                    (parentFragment as HomeFragment).onTabClickByPosition(4)
-                    return@setOnItemClickListener
-                }
-
-                if (position == 3) { //棋牌
-                    (parentFragment as HomeFragment).onTabClickByPosition(5)
-                    return@setOnItemClickListener
-                }
-
+                (parentFragment as HomeFragment).onTabClickByPosition(position)
             }
         }
     }
@@ -148,6 +136,8 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
             if (adapter == null) {
                 adapter = homeTabAdapter
             }
+
+//            scrollToPosition(worldcupPosition)
         }
     }
 

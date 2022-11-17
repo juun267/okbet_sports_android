@@ -10,11 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.distinctUntilChanged
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -92,7 +94,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     fun initToolBar() {
-        view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
+        lin_toolbar.fitsSystemStatus()
         iv_menu_left.setOnClickListener {
             (activity as MainTabActivity).showLeftFrament(1, tabLayout.selectedTabPosition)
             EventBus.getDefault().post(MenuEvent(true))
