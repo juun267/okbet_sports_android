@@ -290,30 +290,28 @@
 
                     <LinearLayout
                         android:id="@+id/ll_copy_bet_order"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|left">
 
                         <TextView
                             android:id="@+id/content_order_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:textAlignment="viewStart"
                             android:textColor="@color/color_A5A9B3"
                             android:textSize="@dimen/textSize10sp"
+                            android:singleLine="true"
+                            android:ellipsize="end"
                             tools:text="b000003612091822030128" />
-
                         <ImageView
                             android:layout_width="10dp"
                             android:layout_height="10dp"
                             android:layout_marginStart="4dp"
                             android:src="@drawable/ic_copy" />
                     </LinearLayout>
-
-                    <androidx.legacy.widget.Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
 
                     <TextView
                         android:layout_width="wrap_content"

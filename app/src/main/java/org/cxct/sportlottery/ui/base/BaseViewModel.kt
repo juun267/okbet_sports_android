@@ -3,15 +3,13 @@ package org.cxct.sportlottery.ui.base
 import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.Nullable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.exception.DoNoConnectException
+import org.cxct.sportlottery.extentions.clean
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -22,13 +20,11 @@ import org.cxct.sportlottery.network.money.RedEnvelopeResult
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.NetworkUtil
-import org.cxct.sportlottery.util.updateDefaultHandicapType
+import org.cxct.sportlottery.util.*
 import retrofit2.Response
 import timber.log.Timber
 import java.net.SocketTimeoutException
+import java.util.concurrent.ConcurrentHashMap
 
 
 abstract class BaseViewModel(
@@ -36,6 +32,43 @@ abstract class BaseViewModel(
     val betInfoRepository: BetInfoRepository,
     val infoCenterRepository: InfoCenterRepository
 ) : ViewModel() {
+
+    private lateinit var liveSet: HashMap<Class<*>, MutableLiveData<*>>
+
+    @Synchronized
+    private fun <T> getLiveData(clazz: Class<T>): MutableLiveData<T> {
+
+        var liveData: MutableLiveData<T>? = null
+        if (!::liveSet.isInitialized) {
+            liveSet = HashMap()
+            liveData = MutableLiveData<T>()
+            liveSet.put(clazz, liveData)
+            return liveData
+        }
+
+         liveData = liveSet.get(clazz) as MutableLiveData<T>?
+        if (liveData == null) {
+            liveData = MutableLiveData<T>()
+            liveSet.put(clazz, liveData)
+            return liveData
+        }
+
+        return liveData!!
+    }
+
+    fun <T> oberserve(lifecycleOwner: LifecycleOwner, clazz: Class<T>, oberver: Observer<T>) {
+        getLiveData(clazz).observe(lifecycleOwner, oberver)
+    }
+
+    protected fun post(data: Any) {
+        getLiveData(data::class.java).postValue(data as Nothing)
+    }
+
+    override fun onCleared() {
+        if (::liveSet.isInitialized) {
+            liveSet.values.forEach { it.clean() }
+        }
+    }
 
     private val _rainResult = MutableLiveData<Event<RedEnvelopeResult>>()
     val rainResult: LiveData<Event<RedEnvelopeResult>>
