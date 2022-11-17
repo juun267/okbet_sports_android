@@ -457,7 +457,7 @@
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
     <string name="online_dispenshing">Rút tiền</string>
-    <string name="online_online_bank">GCash / Khác</string>
+    <string name="online_online_bank">Online Banking</string>
     <string name="online_gcash">Gcash</string>
     <string name="online_grab">GrabPay</string>
     <string name="online_maya">PayMaya</string>
@@ -1311,4 +1311,5 @@
     <string name="bet_others">Khác</string>
     <string name="Pinned">Đã ghim</string>
     <string name="Unpin">Huỷ ghim</string>
+    <string name="your_bet_order_success">Cược đơn thành công</string>
 </resources>
