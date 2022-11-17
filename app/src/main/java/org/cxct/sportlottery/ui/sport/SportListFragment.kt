@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,8 +53,6 @@ import java.util.*
 /**
  * @app_destination 滾球、即將、今日、早盤、冠軍、串關
  */
-@SuppressLint("NotifyDataSetChanged", "LogNotTimber")
-@RequiresApi(Build.VERSION_CODES.M)
 class SportListFragment :
     BaseBottomNavigationFragment<SportListViewModel>(SportListViewModel::class) {
     companion object {
@@ -783,19 +780,21 @@ class SportListFragment :
      * 若投注單處於未開啟狀態且有加入注單的賠率項資訊有變動時, 更新投注單內資訊
      */
     private fun updateBetInfo(leagueOdd: LeagueOdd, oddsChangeEvent: OddsChangeEvent) {
-        if (!getBetListPageVisible()) {
-            //尋找是否有加入注單的賠率項
-            if (leagueOdd.matchOdds.filter { matchOdd ->
-                    matchOdd.matchInfo?.id == oddsChangeEvent.eventId
-                }.any { matchOdd ->
-                    matchOdd.oddsMap?.values?.any { oddList ->
-                        oddList?.any { odd ->
-                            odd?.isSelected == true
-                        } == true
+        if (getBetListPageVisible()) {
+            return
+        }
+
+        //尋找是否有加入注單的賠率項
+        if (leagueOdd.matchOdds.filter { matchOdd ->
+                matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+            }.any { matchOdd ->
+                matchOdd.oddsMap?.values?.any { oddList ->
+                    oddList?.any { odd ->
+                        odd?.isSelected == true
                     } == true
-                }) {
-                viewModel.updateMatchOdd(oddsChangeEvent)
-            }
+                } == true
+            }) {
+            viewModel.updateMatchOdd(oddsChangeEvent)
         }
     }
 
@@ -803,9 +802,7 @@ class SportListFragment :
     private fun updateAllGameList() {
         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
             sportLeagueAdapter.data.forEachIndexed { index, leagueOdd ->
-                sportLeagueAdapter.updateLeague(
-                    index, leagueOdd
-                )
+                sportLeagueAdapter.updateLeague(index, leagueOdd)
             }
         }
     }
@@ -890,64 +887,41 @@ class SportListFragment :
         playCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
-        gameType?.let {
-            matchInfo?.let { matchInfo ->
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                )
-                (activity as MainTabActivity).setupBetData(fastBetDataBean)
-            }
+        val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        if (gameType == null || matchInfo == null) {
+            return
         }
+
+        val fastBetDataBean = FastBetDataBean(
+            matchType = matchType,
+            gameType = gameType!!,
+            playCateCode = playCateCode,
+            playCateName = playCateName,
+            matchInfo = matchInfo!!,
+            matchOdd = null,
+            odd = odd,
+            subscribeChannelType = ChannelType.HALL,
+            betPlayCateNameMap = betPlayCateNameMap,
+        )
+        (activity as MainTabActivity).setupBetData(fastBetDataBean)
     }
 
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
-                true -> {
-                    subscribeChannelHall(
-                        leagueOdd.gameType?.key, matchOdd.matchInfo?.id
-                    )
-                }
-
-                false -> {
-                    unSubscribeChannelHall(
-                        leagueOdd.gameType?.key, matchOdd.matchInfo?.id
-                    )
-                }
+            if (leagueOdd.unfold == FoldState.UNFOLD.code) {
+                subscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
+            } else {
+                unSubscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
             }
         }
     }
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
-                true -> {
-                    unSubscribeChannelHall(
-                        leagueOdd.gameType?.key, matchOdd.matchInfo?.id
-                    )
-
-                    matchOdd.quickPlayCateList?.forEach {
-                        when (it.isSelected) {
-                            true -> {
-                                unSubscribeChannelHall(
-                                    leagueOdd.gameType?.key, matchOdd.matchInfo?.id
-                                )
-                            }
-                        }
-                    }
-                }
+            if (leagueOdd.unfold == FoldState.UNFOLD.code) {
+                unSubscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
             }
         }
     }
