@@ -70,32 +70,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         initWeb()
     }
 
-    val string = "<!DOCTYPE html>\n" +
-            "<html lang=\"en\">\n" +
-            "<head>\n" +
-            "    <meta charset=\"UTF-8\">\n" +
-            "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
-            "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-            "    <title>Document</title>\n" +
-            "</head>\n" +
-            "<body>\n" +
-            "    <button id=\"btn\">exe android func</button>\n" +
-            "</body>\n" +
-            "<script>\n" +
-            "    document.getElementById(\"btn\").addEventListener(\"click\", function(){\n" +
-            "\n" +
-            "    const obj ={\n" +
-            "            id: 'asfsdfjfsdafj',\n" +
-            "            name: '234324',\n" +
-            "            team: 'portugal',\n" +
-            "            price: 100,\n" +
-            "          }\n" +
-            "\n" +
-            "        window.worldCupJsInterface.tapAndroidEvent(obj);\n" +
-            "    });\n" +
-            "</script>\n" +
-            "</html>"
-
     private fun initWeb() {
         Glide.with(ivBg).load(R.drawable.bg_worldcup_top_0).into(ivBg)
 
@@ -104,12 +78,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.addJavascriptInterface(WorldCupJsInterface(webView.context), WorldCupJsInterface.name)
-
-
-//      webView.loadUrl("https://okbet-v2.cxsport.net/sports-rule/#/worldcup?platform=OKbet")
         val url = Constants.getWorldCupH5Url(requireContext())
-//        webView.loadData(string, null, null)
-        Log.e("For Test", "=====>>> WorldCupJsInterface url ${url}")
         webView.loadUrl(url)
     }
 
