@@ -208,6 +208,7 @@ class SportOutrightFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventBusUtil.targetLifecycle(this)
         //打开指定球类
         viewModel.matchType = matchType
         gameType = arguments?.getString("gameType")

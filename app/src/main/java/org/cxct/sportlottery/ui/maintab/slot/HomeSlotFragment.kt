@@ -49,16 +49,11 @@ class HomeSlotFragment :
     }
 
     private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(), 5).apply {
-            setOnItemClickListener { adapter, view, position ->
-                (parentFragment as HomeFragment).onTabClickByPosition(position)
-            }
-        }
+        HomeTabAdapter(HomeTabAdapter.getItems(), 5, (parentFragment as HomeFragment))
     }
     private val homeSlotAdapter by lazy {
         HomeSlotAdapter(mutableListOf())
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
