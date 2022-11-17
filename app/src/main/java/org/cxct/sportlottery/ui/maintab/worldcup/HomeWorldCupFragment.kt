@@ -74,7 +74,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         Glide.with(ivBg).load(R.drawable.bg_worldcup_top_0).into(ivBg)
 
         webView.setBackgroundColor(0)
-        webView.getBackground()?.setAlpha(0)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.addJavascriptInterface(WorldCupJsInterface(webView.context), WorldCupJsInterface.name)
