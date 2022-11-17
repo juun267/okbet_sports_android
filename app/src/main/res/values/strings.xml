@@ -1340,7 +1340,7 @@
     <string name="Pinned">Pinned</string>
     <string name="Unpin">Unpin</string>
     <string name="new_game_and_testing">New Games | Beta</string>
-    <string name="dont_have_slot_game">暂无棋牌游戏</string>
+    <string name="dont_have_slot_game">No games</string>
     <string name="bad_param">参数错误</string>
 
 </resources>

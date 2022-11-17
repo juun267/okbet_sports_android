@@ -1312,4 +1312,5 @@
     <string name="Pinned">Đã ghim</string>
     <string name="Unpin">Huỷ ghim</string>
     <string name="your_bet_order_success">Cược đơn thành công</string>
+    <string name="dont_have_slot_game">Hiện không có game</string>
 </resources>

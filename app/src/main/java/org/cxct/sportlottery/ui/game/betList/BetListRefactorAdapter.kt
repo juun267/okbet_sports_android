@@ -1892,9 +1892,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    inputMinMoney.toLong().toString()
 //                )
                 val betHint = context.getString(
-                    R.string.hint_bet_limit_range,
-                    inputMinMoney.toLong().toString(),
-                    inputMaxMoney.toLong().toString()
+                    R.string.min_bet_format,
+                    inputMinMoney.toLong().toString()
                 )
                 if (LoginRepository.isLogin.value == true) {
                     //限額用整數提示
