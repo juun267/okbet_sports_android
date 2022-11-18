@@ -18,9 +18,19 @@ public class ParlayBetLimit {
     private BigDecimal odds;
 
     /**
+     * 串关最大赔率
+     */
+    private BigDecimal maxOdds;
+
+    /**
      * 香港盘总赔率
      */
     private BigDecimal hdOdds;
+
+    /**
+     * 串关最大香港盘总赔率
+     */
+    private BigDecimal maxHdOdds;
 
     /**
      * 馬來盤
@@ -109,6 +119,22 @@ public class ParlayBetLimit {
 
     public void setIsOnlyEUType(Boolean isOnlyEUType) {
         this.isOnlyEUType = isOnlyEUType;
+    }
+
+    public BigDecimal getMaxOdds() {
+        return maxOdds;
+    }
+
+    public void setMaxOdds(BigDecimal maxOdds) {
+        this.maxOdds = maxOdds;
+    }
+
+    public BigDecimal getMaxHdOdds() {
+        return maxHdOdds;
+    }
+
+    public void setMaxHdOdds(BigDecimal maxHdOdds) {
+        this.maxHdOdds = maxHdOdds;
     }
 
     @Override
