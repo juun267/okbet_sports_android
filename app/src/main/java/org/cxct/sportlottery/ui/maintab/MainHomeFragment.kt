@@ -746,10 +746,10 @@ class MainHomeFragment :
         }
         imageList?.let { list->
             if (list.size<=1){
-                rll_left_right.visibility = View.GONE
+                rll_left_right.isVisible = false
                 banner.isAutoLoop(false)
             }else{
-                rll_left_right.visibility = View.VISIBLE
+                rll_left_right.isVisible = true
                 banner.isAutoLoop(true)
             }
         }
