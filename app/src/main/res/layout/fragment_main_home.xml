@@ -57,6 +57,7 @@
                     tl:layout_constraintTop_toTopOf="parent" />
                 <RelativeLayout
                     android:id="@+id/rll_left_right"
+                    android:visibility="gone"
                     android:orientation="horizontal"
                     android:layout_gravity="center_vertical"
                     android:layout_width="match_parent"
