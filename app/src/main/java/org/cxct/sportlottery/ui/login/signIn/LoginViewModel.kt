@@ -153,10 +153,9 @@ class LoginViewModel(
     fun checkAccount(username: String): String? {
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyCombinationAccount(username) -> {
+            !VerifyConstUtil.verifyLengthRange(username, 4, 16) -> {
                 LocalUtils.getString(R.string.error_member_account)
             }
-
             else -> null
         }
         _accountMsg.value = Pair(msg, msg == null)
@@ -167,9 +166,9 @@ class LoginViewModel(
     fun checkPassword(password: String): String? {
         val msg = when {
             password.isEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password)
-                    or (password.length !in 6..20)
-                    or (!VerifyConstUtil.verifyPwd(password)) -> LocalUtils.getString(R.string.error_register_password)
+            !VerifyConstUtil.verifyLengthRange(password,
+                6,
+                20) -> LocalUtils.getString(R.string.error_register_password)
 //             -> LocalUtils.getString(R.string.error_register_password)
 //             -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
