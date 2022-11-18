@@ -197,6 +197,7 @@ class MainHomeFragment :
         queryData()
         initSocketObservers()
         viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+        EventBusUtil.targetLifecycle(this)
     }
 
     override fun onResume() {
@@ -1106,12 +1107,13 @@ class MainHomeFragment :
     }
 
 
-        @Subscribe(threadMode = ThreadMode.MAIN)
-        fun refreshMoney(moneyEvent: MoneyEvent){
-            if (moneyEvent.refresh){
-                viewModel.getMoney()
-            }
-        }
+     @Subscribe(threadMode = ThreadMode.MAIN)
+     fun refreshMoney(moneyEvent: MoneyEvent){
+         if (moneyEvent.refresh){
+             viewModel.getMoney()
+             LogUtil.d("money")
+         }
+     }
     private fun onRefreshMoney(){
         iv_money_refresh.startAnimation(RotateAnimation(0f,
             720f,

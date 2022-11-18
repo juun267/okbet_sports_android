@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
@@ -165,6 +166,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 //不管成功与否刷新当前金额
                 viewModel.getMoney()
                 EventBus.getDefault().post(MoneyEvent(true))
+                LogUtil.d("投注成功")
             }
         }
 
