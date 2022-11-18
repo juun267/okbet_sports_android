@@ -1602,6 +1602,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             isGetMax: Boolean,
             betList: MutableList<BetInfoListData>
         ): Double {
+
             val defaultMax = 9999999L
             var min = betList.firstOrNull()?.parlayOdds?.min ?: 0
             var max = betList.firstOrNull()?.parlayOdds?.max ?: defaultMax
