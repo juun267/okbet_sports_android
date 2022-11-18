@@ -209,7 +209,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
-                    
+
                     setupBetBarVisiblity(position)
                     EventBusUtil.post(MainTabEvent(fragment))
                     return@OnNavigationItemSelectedListener true
@@ -466,18 +466,23 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
-        bottom_navigation_view.currentItem = 1
-        Log.e("For Test", "=====>>> jumpToTheSport 111")
+        if (bottom_navigation_view.currentItem != 1) {
+            bottom_navigation_view.currentItem = 1
+        }
         (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }
 
     fun jumpToHome(tabPosition: Int) {
-        bottom_navigation_view.currentItem = 0
+        if (bottom_navigation_view.currentItem != 0) {
+            bottom_navigation_view.currentItem = 0
+        }
         (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(tabPosition)
     }
 
     fun jumpToBetInfo(tabPosition: Int) {
-        bottom_navigation_view.currentItem = 2
+        if (bottom_navigation_view.currentItem != 2) {
+            bottom_navigation_view.currentItem = 2
+        }
         (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 

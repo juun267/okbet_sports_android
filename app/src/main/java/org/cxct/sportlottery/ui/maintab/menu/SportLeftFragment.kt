@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,6 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     var gameType: GameType? = null
         set(value) {
             field = value
-            worldcupSelected = false
             if (isAdded) {
                 updateGameType()
             }
@@ -60,8 +60,6 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         set(value) {
             field = value
             lin_worldcup?.isSelected = value
-            tvWorldCup?.isSelected = value
-            ivWorldCup?.isSelected = value
         }
 
     override fun onCreateView(
@@ -108,7 +106,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
         }
 
-        worldcupSelected = worldcupSelected
+        lin_worldcup.isSelected = worldcupSelected
         lin_worldcup.isVisible = StaticData.worldCupOpened()
         lin_worldcup.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
@@ -202,26 +200,27 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun updateGameType() {
         lin_sport_classify.isSelected = false
-        tvWorldCup.isSelected = false
-        ivWorldCup.isSelected = false
         when (matchType) {
             MatchType.IN_PLAY -> {
                 sportInPlayAdapter.gameType = gameType
                 sportClassifyAdapter.gameType = null
                 lin_sport_classify.isSelected = false
                 lin_today.isSelected = false
+                worldcupSelected = false
             }
             MatchType.EARLY -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = gameType
                 lin_sport_classify.isSelected = expandSportClassify
                 lin_today.isSelected = false
+                worldcupSelected = false
             }
             MatchType.TODAY -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = null
                 lin_sport_classify.isSelected = false
                 lin_today.isSelected = true
+                worldcupSelected = false
             }
             else -> {
                 sportInPlayAdapter.gameType = null
