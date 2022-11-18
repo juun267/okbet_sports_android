@@ -1736,6 +1736,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun setupInputMoney(itemData: ParlayOdd?) {
+            LogUtil.toJson(itemData)
             val parlayMaxBet = itemData?.max ?: 0
             //未登录的情况下，最大限额为7个9
             inputMaxMoney = if (mUserLogin) parlayMaxBet.toDouble() else 9999999.toDouble()
@@ -1892,8 +1893,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    inputMinMoney.toLong().toString()
 //                )
                 val betHint = context.getString(
-                    R.string.min_bet_format,
-                    inputMinMoney.toLong().toString()
+                    R.string.hint_bet_limit_range,
+                    inputMinMoney.toLong().toString(),
+                    inputMaxMoney.toLong().toString()
                 )
                 if (LoginRepository.isLogin.value == true) {
                     //限額用整數提示

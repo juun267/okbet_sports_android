@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
+import android.util.Log
+import com.didichuxing.doraemonkit.util.GsonUtils
 import org.cxct.sportlottery.util.ArithUtil
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -41,7 +43,6 @@ object ParlayLimitUtil {
         val result: MutableMap<String, ParlayBetLimit> = LinkedHashMap()
         max = max ?: BigDecimal.valueOf(999)
         min = min ?: BigDecimal.ONE
-
         parlayComList.forEachIndexed { index, parlayCom ->
             val parlayBetLimit = ParlayBetLimit()
             val odds = getTotalOdds(oddsList, parlayCom.getComList())
@@ -49,7 +50,6 @@ object ParlayLimitUtil {
             val hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList())
             // 投注限額 設定值/odds
             //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
-
             val maxPayLimit = ArithUtil.div(max!!, hkOdds, 0, RoundingMode.DOWN)
             parlayBetLimit.odds = odds
             parlayBetLimit.hdOdds = hkOdds
@@ -78,7 +78,9 @@ object ParlayLimitUtil {
                 //  賠率相乘
                 odd = odd.multiply(oddsList[index].first)
             }
-            totalOdds = totalOdds.add(odd)
+            Log.d("hjq", GsonUtils.toJson(oddsIndexArray) + "," + odd)
+            //取各组中的最大值
+            totalOdds = totalOdds.max(odd)
         }
         return totalOdds
     }
@@ -90,7 +92,7 @@ object ParlayLimitUtil {
             for (index in oddsIndexArray) {
                 odd = odd.multiply(oddsList[index].first)
             }
-            totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd))
+            totalOdds = totalOdds.max(OddsLadder.oddsEuToHk(odd))
         }
         return if (totalOdds == BigDecimal.ZERO) BigDecimal.ONE else totalOdds
     }

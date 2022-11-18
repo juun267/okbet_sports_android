@@ -377,14 +377,12 @@ object BetInfoRepository {
         val maxPayoutTakeMin = betInfoList.minOfOrNull { it?.maxPayout ?: maxDefaultBigDecimal }
         val minBetMoneyTakeMax = betInfoList.maxOfOrNull { it?.minBetMoney ?: minDefaultBigDecimal }
 //        Timber.e("costTime: ${System.nanoTime() - startTime}")
-
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
             parlayComList,
             maxBetMoneyTakeMin,
             minBetMoneyTakeMax
         )
-
         return parlayBetLimitMap.map {
             var maxBet: BigDecimal
             val maxPayout = betInfo?.maxPayout ?: maxDefaultBigDecimal
@@ -398,7 +396,6 @@ object BetInfoRepository {
             val minBetMoney = betInfo?.minBetMoney ?: minDefaultBigDecimal
             val minCpBetMoney = betInfo?.minCpBetMoney ?: minDefaultBigDecimal
             val minParlayBetMoney = minBetMoneyTakeMax ?: minDefaultBigDecimal
-
             if (it.value.num > 1) {
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val odds = if (it.value.isOnlyEUType) {
@@ -408,8 +405,6 @@ object BetInfoRepository {
                     it.value.hdOdds
                 }
                 val parlayPayout = ArithUtil.div(maxParlayPayout, odds, 2, RoundingMode.DOWN)
-                    .times(it.value.num.toBigDecimal())
-
                 val maxParlayBet = if (maxParlayBetMoney == BigDecimal(0)) {
                     //如果 maxParlayBetMoney 為 0 使用最大賠付額
                     parlayPayout
@@ -452,7 +447,7 @@ object BetInfoRepository {
                     oddsPayout
                 } else {
                     //用戶投注限額與賠付額計算投注限額取小
-                    oddsPayout.min(matchTypeMaxBetMoney)
+                    oddsPayout.min(maxParlayBetMoney)
                 }
 
                 minBet = when {
