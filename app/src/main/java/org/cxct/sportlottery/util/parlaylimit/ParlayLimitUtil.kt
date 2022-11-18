@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
-import android.util.Log
-import com.didichuxing.doraemonkit.util.GsonUtils
 import org.cxct.sportlottery.util.ArithUtil
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -78,7 +76,6 @@ object ParlayLimitUtil {
                 //  賠率相乘
                 odd = odd.multiply(oddsList[index].first)
             }
-            Log.d("hjq", GsonUtils.toJson(oddsIndexArray) + "," + odd)
             //取各组中的最大值
             totalOdds = totalOdds.max(odd)
         }

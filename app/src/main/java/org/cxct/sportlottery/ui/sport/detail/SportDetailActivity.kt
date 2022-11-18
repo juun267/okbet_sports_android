@@ -697,7 +697,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
         btn_analyze.setTextColor(if (!isShowOdd) selectColor else nomalColor)
         viewBtnAnalyze.isVisible = !isShowOdd
-        wv_analyze.isVisible = !isShowOdd
+        ns_analyze.isVisible = !isShowOdd
 
     }
 
@@ -1026,7 +1026,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     fun showFullScreen(enable: Boolean) {
         if (enable) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-            sv_content.isVisible = false
             lin_center.isVisible = false
             toolBar.isVisible = false
             live_view_tool_bar.isVisible = true
@@ -1035,7 +1034,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setScrollEnable(false)
         } else {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            sv_content.isVisible = true
             lin_center.isVisible = true
             toolBar.isVisible = false
             live_view_tool_bar.isVisible = true
