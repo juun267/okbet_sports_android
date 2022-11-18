@@ -58,4 +58,8 @@ class FragmentHelper(
     fun getCurrentFragment(): Fragment {
         return getFragment(curPos)
     }
+
+    fun getCurrentPosition(): Int {
+        return curPos
+    }
 }
