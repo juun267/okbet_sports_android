@@ -13,14 +13,14 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
+import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.observe
-import org.greenrobot.eventbus.EventBus
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {
@@ -50,9 +50,18 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     var gameType: GameType? = null
         set(value) {
             field = value
+            worldcupSelected = false
             if (isAdded) {
                 updateGameType()
             }
+        }
+
+    private var worldcupSelected = false
+        set(value) {
+            field = value
+            lin_worldcup?.isSelected = value
+            tvWorldCup?.isSelected = value
+            ivWorldCup?.isSelected = value
         }
 
     override fun onCreateView(
@@ -80,27 +89,34 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     lin_sport.isVisible = true
                     lin_inplay.isVisible = false
                     viewModel.getSportList()
-                    (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
+                    if (!worldcupSelected) {
+                        (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY, GameType.FT)
+                    }
                 }
                 R.id.rbtn_inplay -> {
                     lin_sport.isVisible = false
                     lin_inplay.isVisible = true
                     viewModel.getInPlayList()
-                    (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+                    if (!worldcupSelected) {
+                        (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+                    }
                 }
             }
         }
         lin_game_result.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             startActivity(Intent(requireActivity(), ResultsSettlementActivity::class.java))
         }
-        lin_worldcup.isVisible = sConfigData?.worldCupOpen == 1
+
+        worldcupSelected = worldcupSelected
+        lin_worldcup.isVisible = StaticData.worldCupOpened()
         lin_worldcup.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToHome(2)
         }
         lin_today.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
+            worldcupSelected = false
             (activity as MainTabActivity).jumpToTheSport(MatchType.TODAY, GameType.FT)
         }
         lin_sport_classify.setOnClickListener {
@@ -109,7 +125,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             lin_sport_classify.isSelected = expandSportClassify
         }
         lin_all_inplay.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
         iv_search.setOnClickListener {
@@ -124,7 +140,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         rv_sport_classify.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         sportClassifyAdapter.setOnItemClickListener { adapter, view, position ->
             gameType = GameType.getGameType(sportClassifyAdapter.getItem(position)?.code)
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY,
                 GameType.getGameType(sportClassifyAdapter.getItem(position)?.code) ?: GameType.FT)
         }
@@ -135,7 +151,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         rv_sport_inplay.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         sportInPlayAdapter.setOnItemClickListener { adapter, view, position ->
             gameType = GameType.getGameType(sportClassifyAdapter.getItem(position)?.code)
-            EventBus.getDefault().post(MenuEvent(false))
+            EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY,
                 GameType.getGameType(sportInPlayAdapter.getItem(position)?.code) ?: GameType.ALL)
         }
@@ -185,6 +201,9 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun updateGameType() {
+        lin_sport_classify.isSelected = false
+        tvWorldCup.isSelected = false
+        ivWorldCup.isSelected = false
         when (matchType) {
             MatchType.IN_PLAY -> {
                 sportInPlayAdapter.gameType = gameType
@@ -207,10 +226,15 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             else -> {
                 sportInPlayAdapter.gameType = null
                 sportClassifyAdapter.gameType = null
-                lin_sport_classify.isSelected = false
                 lin_today.isSelected = false
             }
         }
+    }
+
+    fun selectWorldCup() {
+        matchType = MatchType.MAIN
+        gameType = null
+        worldcupSelected = true
     }
 
 }

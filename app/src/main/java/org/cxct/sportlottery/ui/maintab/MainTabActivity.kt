@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.HomeTabEvent
+import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -168,7 +170,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 }
         }
     }
-
+    var iii = 0
     private fun initBottomFragment() {
         ll_home_back.setOnClickListener {
             (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
@@ -179,6 +181,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             setTextVisibility(true)
             setTextSize(10f)
             setIconSize(30f)
+
             onNavigationItemSelectedListener =
                 BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
                     var wordcupModel = false
@@ -199,13 +202,16 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     resetBottomTheme(wordcupModel)
 
                     val position = getMenuItemPosition(menuItem)
-                    fragmentHelper.showFragment(position)
+
+                    val fragment = fragmentHelper.showFragment(position)
                     if (position == 0) {
                         (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
                     } else {
                         ll_home_back.visibility = View.GONE
                     }
+                    
                     setupBetBarVisiblity(position)
+                    EventBusUtil.post(MainTabEvent(fragment))
                     return@OnNavigationItemSelectedListener true
                 }
         }
@@ -266,22 +272,32 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun showLeftFrament(position: Int, fromPage: Int = -1) {
-        when (position) {
-            0 -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.left_menu, homeLeftFragment)
-                    .commit()
-                homeLeftFragment.fromPage = fromPage
-            }
-            else -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.left_menu, sportLeftFragment)
-                    .commit()
-                val sportFragment = fragmentHelper.getFragment(1) as SportFragment
-                sportLeftFragment.matchType = sportFragment.getCurMatchType()
-                sportLeftFragment.gameType = sportFragment.getCurGameType()
+        if (position == 0) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.left_menu, homeLeftFragment)
+                .commit()
+            homeLeftFragment.fromPage = fromPage
+            return
+        }
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.left_menu, sportLeftFragment)
+            .commit()
+
+        val currentFragment = fragmentHelper.getCurrentFragment()
+        if (currentFragment is SportFragment) {
+            sportLeftFragment.matchType = currentFragment.getCurMatchType()
+            sportLeftFragment.gameType = currentFragment.getCurGameType()
+            return
+        }
+
+        if (currentFragment is HomeFragment) {
+            if (currentFragment.isWorldCupTab()) {
+                sportLeftFragment.selectWorldCup()
             }
         }
+
+
     }
 
     override fun initMenu() {
@@ -451,6 +467,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
         bottom_navigation_view.currentItem = 1
+        Log.e("For Test", "=====>>> jumpToTheSport 111")
         (fragmentHelper.getFragment(1) as SportFragment).setJumpSport(matchType, gameType)
     }
 
