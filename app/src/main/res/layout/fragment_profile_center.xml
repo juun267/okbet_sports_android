@@ -69,8 +69,7 @@
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:layout_centerInParent="true"
-
-                            android:layout_marginEnd="-8dp"
+                            android:layout_marginEnd="-4dp"
                             android:src="@drawable/ic_icon_massage02" />
 
                         <ImageView
@@ -454,7 +453,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginEnd="@dimen/margin_5"
+
                                     android:layout_toStartOf="@+id/iv_line"
                                     android:layout_toEndOf="@+id/tv_fund_detail"
                                     android:ellipsize="end"
@@ -520,7 +519,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginEnd="@dimen/margin_5"
                                     android:layout_toStartOf="@+id/iv_line1"
                                     android:src="@drawable/ic_icon_gift" />
 
@@ -681,7 +679,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginRight="20dp"
+                                    android:layout_marginRight="15dp"
                                     android:layout_toRightOf="@+id/tv_help"
                                     android:gravity="center_vertical|end"
                                     android:orientation="horizontal">
@@ -898,6 +896,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:ellipsize="end"
+                                            android:layout_marginEnd="@dimen/margin_5"
                                             android:singleLine="true"
                                             android:text="@string/updatable"
                                             android:textColor="@color/color_A7B2C4"
@@ -1029,7 +1028,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
-                                    android:layout_marginRight="20dp"
+                                    android:layout_marginRight="15dp"
                                     android:layout_toRightOf="@+id/tv_aboutus"
                                     android:gravity="center_vertical|end"
                                     android:orientation="horizontal">

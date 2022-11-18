@@ -14,7 +14,10 @@
     <include
         android:id="@+id/lin_toolbar"
         layout="@layout/view_toolbar_home" />
-
+    <View
+        android:background="@color/color_FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_home"
         android:layout_width="match_parent"

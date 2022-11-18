@@ -315,5 +315,9 @@
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="6"
             tools:listitem="@layout/item_tab_home" />
+        <View
+            android:background="@color/color_FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
     </LinearLayout>
 </FrameLayout>
