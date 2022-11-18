@@ -391,7 +391,7 @@ object BetInfoRepository {
             val maxBetMoney = betInfo?.maxBetMoney ?: maxDefaultBigDecimal
             val maxCpBetMoney = betInfo?.maxCpBetMoney ?: maxDefaultBigDecimal
             val maxParlayPayout = maxPayoutTakeMin ?: maxDefaultBigDecimal
-            val maxParlayBetMoney = maxBetMoneyTakeMin ?: maxDefaultBigDecimal
+            var maxParlayBetMoney = maxBetMoneyTakeMin ?: maxDefaultBigDecimal
 
             val minBet: BigDecimal
             val minBetMoney = betInfo?.minBetMoney ?: minDefaultBigDecimal
@@ -400,7 +400,7 @@ object BetInfoRepository {
             if (it.value.num > 1) {
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val odds = if (it.value.isOnlyEUType) {
-                    //賠付額計算需扣除本金, 此處為串關有幾注就要Hjq
+                    //賠付額計算需扣除本金, 此處為串關有幾注就要
                     it.value.maxOdds - BigDecimal(1)
                 } else {
                     it.value.maxHdOdds
@@ -415,8 +415,11 @@ object BetInfoRepository {
                 }
                 maxBet = maxParlayBet
                 minBet = minParlayBetMoney
-            }else{
+            }else {
                 val payout: BigDecimal
+                betInfo?.maxBetMoney?.let {
+                    maxParlayBetMoney = it
+                }
                 //根據賽事類型的投注上限
                 val matchTypeMaxBetMoney = when {
                     matchType == MatchType.PARLAY && isParlayBet -> {
@@ -479,7 +482,6 @@ object BetInfoRepository {
                     }
                 }
             }
-
             ParlayOdd(
                 parlayType = it.key,
                 max = maxBet.toDouble().toLong(),

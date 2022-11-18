@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
