@@ -37,12 +37,14 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     var fromPage = 0
         set(value) {
             field = value
-            if (isAdded) {
+            if (lin_home != null) {
                 clearAllSelect()
                 lin_home.isSelected = value == 0
                 lin_live.isSelected = value == 1
                 lin_slot.isSelected = value == 4
                 lin_poker.isSelected = value == 5
+            }
+            if (isAdded) {
                 viewModel.getInPlayList()
                 viewModel.getLiveRoundCount()
             }
@@ -63,6 +65,7 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         initLanguageView()
         initObserver()
         getOddsType()
+        fromPage = fromPage
         viewModel.getInPlayList()
         viewModel.getLiveRoundCount()
     }
