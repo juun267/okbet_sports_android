@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
 import kotlinx.android.synthetic.main.fragment_home_worldcup.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.event.HomeTabEvent
+import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.network.Constants
@@ -33,6 +35,8 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
@@ -57,14 +61,17 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         setTheme()
         initTabView()
         initObservable()
-        initWeb()
+        initWeb(view)
+        EventBusUtil.targetLifecycle(this)
     }
 
     var isInitedWeb = false
-    private fun initWeb() {
+    private fun initWeb(view: View) {
         isInitedWeb = true
         Glide.with(ivBg).load(R.drawable.bg_worldcup_top_0).into(ivBg)
 
+//        view.findViewById<View>(R.id.rl_loading).setBackgroundColor(0)
+        loading.isVisible = true
         webView.setBackgroundColor(0)
         webView.webChromeClient = MyWebChromeClient()
         webView.settings.run {
@@ -81,6 +88,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
 
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
+                loading.isVisible = false
             }
         }
 
@@ -134,7 +142,49 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        webView.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pauseWebVideo()
+        webView.onPause()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTableChanged(event: HomeTabEvent) {
+        if (!event.isWorldCupTab()) {
+            pauseWebVideo()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onTableChanged(event: MainTabEvent) {
+        if (!event.isHomeTab()) {
+            pauseWebVideo()
+        }
+    }
+
+    private fun pauseWebVideo() {
+        try {
+            webView.loadUrl("javascript:window._player.stop()")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun playWebVideo() {
+        try {
+            webView.loadUrl("javascript:window._player.play()")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     fun reloadWeb() {
+        loading.isVisible = true
         webView.reload()
     }
 
@@ -159,7 +209,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         lin_toolbar.setBackgroundColor(Color.TRANSPARENT)
         iv_menu_left.setOnClickListener {
             EventBusUtil.post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0)
+            (activity as MainTabActivity).showLeftFrament(1)
         }
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
@@ -219,8 +269,8 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         webView?.destroy()
     }
 }
