@@ -383,6 +383,7 @@ object BetInfoRepository {
             maxBetMoneyTakeMin,
             minBetMoneyTakeMax
         )
+
         return parlayBetLimitMap.map {
             var maxBet: BigDecimal
             val maxPayout = betInfo?.maxPayout ?: maxDefaultBigDecimal
@@ -399,10 +400,10 @@ object BetInfoRepository {
             if (it.value.num > 1) {
                 //大於1 即為組合型串關 最大下注金額有特殊規則：賠付額上限計算方式
                 val odds = if (it.value.isOnlyEUType) {
-                    //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
-                    it.value.odds - BigDecimal(it.value.num)
+                    //賠付額計算需扣除本金, 此處為串關有幾注就要Hjq
+                    it.value.maxOdds - BigDecimal(1)
                 } else {
-                    it.value.hdOdds
+                    it.value.maxHdOdds
                 }
                 val parlayPayout = ArithUtil.div(maxParlayPayout, odds, 2, RoundingMode.DOWN)
                 val maxParlayBet = if (maxParlayBetMoney == BigDecimal(0)) {
@@ -437,9 +438,9 @@ object BetInfoRepository {
                 //賠付額上限計算投注限額
                 val odds = if (it.value.isOnlyEUType) {
                     //賠付額計算需扣除本金, 此處為串關有幾注就要扣幾個本金
-                    it.value.odds - BigDecimal(1)
+                    it.value.maxOdds - BigDecimal(1)
                 } else {
-                    it.value.hdOdds
+                    it.value.maxHdOdds
                 }
                 val oddsPayout = ArithUtil.div(payout, odds, 2, RoundingMode.DOWN)
                 maxBet = if (matchTypeMaxBetMoney == BigDecimal(0)) {
@@ -449,7 +450,6 @@ object BetInfoRepository {
                     //用戶投注限額與賠付額計算投注限額取小
                     oddsPayout.min(maxParlayBetMoney)
                 }
-
                 minBet = when {
                     matchType == MatchType.PARLAY && isParlayBet -> minParlayBetMoney
                     matchType == MatchType.OUTRIGHT -> minCpBetMoney

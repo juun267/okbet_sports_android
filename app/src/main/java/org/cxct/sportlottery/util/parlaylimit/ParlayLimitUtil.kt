@@ -43,14 +43,20 @@ object ParlayLimitUtil {
         min = min ?: BigDecimal.ONE
         parlayComList.forEachIndexed { index, parlayCom ->
             val parlayBetLimit = ParlayBetLimit()
-            val odds = getTotalOdds(oddsList, parlayCom.getComList())
+            val oddsArray = getTotalOdds(oddsList, parlayCom.getComList())
+            val maxOdds = oddsArray[0]
+            val odds = oddsArray[1]
             // 香港盤 可以 odds-num
-            val hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList())
+            val hkOddsArray = getTotalHkOdds(oddsList, parlayCom.getComList())
+            val maxHkOdds = hkOddsArray[0]
+            val hkOdds = hkOddsArray[1]
             // 投注限額 設定值/odds
             //val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
             val maxPayLimit = ArithUtil.div(max!!, hkOdds, 0, RoundingMode.DOWN)
             parlayBetLimit.odds = odds
+            parlayBetLimit.maxOdds = maxOdds
             parlayBetLimit.hdOdds = hkOdds
+            parlayBetLimit.maxHdOdds = maxHkOdds
             parlayBetLimit.max = maxPayLimit
             parlayBetLimit.min = min
             parlayBetLimit.num = parlayCom.num
@@ -66,9 +72,12 @@ object ParlayLimitUtil {
      * @param oddsList
      * @return
      */
-    private fun getTotalOdds(oddsList: List<Pair<BigDecimal?, Boolean>>, comList: List<IntArray>): BigDecimal {
+    private fun getTotalOdds(
+        oddsList: List<Pair<BigDecimal?, Boolean>>,
+        comList: List<IntArray>,
+    ): List<BigDecimal> {
         var totalOdds = BigDecimal.ZERO
-
+        var maxOdds = BigDecimal.ZERO
         // 取出每種排列組合 [0,1] [0,2] [0,1,2,3]
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
@@ -76,22 +85,29 @@ object ParlayLimitUtil {
                 //  賠率相乘
                 odd = odd.multiply(oddsList[index].first)
             }
-            //取各组中的最大值
-            totalOdds = totalOdds.max(odd)
+            maxOdds = maxOdds.max(odd)
+            totalOdds = totalOdds.add(odd)
         }
-        return totalOdds
+        return listOf(maxOdds, totalOdds)
     }
 
-    private fun getTotalHkOdds(oddsList: List<Pair<BigDecimal?, Boolean>>, comList: List<IntArray>): BigDecimal {
+    private fun getTotalHkOdds(
+        oddsList: List<Pair<BigDecimal?, Boolean>>,
+        comList: List<IntArray>,
+    ): List<BigDecimal> {
         var totalOdds = BigDecimal.ZERO
+        var maxOdds = BigDecimal.ZERO
         for (oddsIndexArray in comList) {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
                 odd = odd.multiply(oddsList[index].first)
             }
-            totalOdds = totalOdds.max(OddsLadder.oddsEuToHk(odd))
+            maxOdds = maxOdds.max(OddsLadder.oddsEuToHk(odd))
+            totalOdds = totalOdds.add(OddsLadder.oddsEuToHk(odd))
         }
-        return if (totalOdds == BigDecimal.ZERO) BigDecimal.ONE else totalOdds
+        totalOdds = if (totalOdds == BigDecimal.ZERO) BigDecimal.ONE else totalOdds
+        maxOdds = if (maxOdds == BigDecimal.ZERO) BigDecimal.ONE else maxOdds
+        return listOf(maxOdds, totalOdds)
     }
 
 

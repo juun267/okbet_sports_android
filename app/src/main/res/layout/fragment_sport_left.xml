@@ -158,16 +158,18 @@
                     android:background="@drawable/selector_tran_blue">
 
                     <ImageView
+                        android:id="@+id/ivWorldCup"
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/ic_menu_worldcup" />
+                        android:src="@drawable/selector_menu_worldcup" />
 
                     <TextView
+                        android:id="@+id/tvWorldCup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
                         android:text="@string/worldcup"
-                        android:textColor="@color/color_FFFFFF_414655"
+                        android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 
                     <androidx.legacy.widget.Space
