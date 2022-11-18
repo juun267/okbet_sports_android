@@ -1,17 +1,19 @@
 package org.cxct.sportlottery.ui.maintab.worldcup
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.graphics.Color
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.webkit.WebSettings
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_home_live.lin_toolbar
 import kotlinx.android.synthetic.main.fragment_home_live.rv_tab_home
@@ -28,10 +30,10 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.ui.maintab.elec.HomeElecAdapter
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
+
 
 class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
@@ -58,15 +60,82 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         initWeb()
     }
 
+    var isInitedWeb = false
     private fun initWeb() {
+        isInitedWeb = true
         Glide.with(ivBg).load(R.drawable.bg_worldcup_top_0).into(ivBg)
 
         webView.setBackgroundColor(0)
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
+        webView.webChromeClient = MyWebChromeClient()
+        webView.settings.run {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            setJavaScriptCanOpenWindowsAutomatically(true)
+            setUseWideViewPort(true); // 关键点
+        }
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                view.loadUrl(url)
+                return true
+            }
+
+            override fun onPageFinished(view: WebView, url: String) {
+                super.onPageFinished(view, url)
+            }
+        }
+
         webView.addJavascriptInterface(WorldCupJsInterface(webView.context), WorldCupJsInterface.name)
         val url = Constants.getWorldCupH5Url(requireContext())
         webView.loadUrl(url)
+    }
+
+    private inner class MyWebChromeClient : WebChromeClient() {
+        private var mCustomView: View? = null
+        private var mCustomViewCallback: CustomViewCallback? = null
+
+        override fun onShowCustomView(view: View?, callback: CustomViewCallback) {
+            super.onShowCustomView(view, callback)
+            if (mCustomView != null) {
+                callback.onCustomViewHidden()
+                return
+            }
+            mCustomView = view
+            (requireActivity().window.decorView as ViewGroup).addView(mCustomView)
+            mCustomViewCallback = callback
+            webView.setVisibility(View.GONE)
+            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        }
+
+        override fun onHideCustomView() {
+            webView.setVisibility(View.VISIBLE)
+            if (mCustomView == null) {
+                return
+            }
+            mCustomView!!.visibility = View.GONE
+            (requireActivity().window.decorView as ViewGroup).removeView(mCustomView)
+            mCustomViewCallback!!.onCustomViewHidden()
+            mCustomView = null
+            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+            super.onHideCustomView()
+        }
+    }
+
+    override fun onConfigurationChanged(config: Configuration) {
+        super.onConfigurationChanged(config)
+        when (config.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+                requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            }
+            Configuration.ORIENTATION_PORTRAIT -> {
+                requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                requireActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN)
+            }
+        }
+    }
+
+    fun reloadWeb() {
+        webView.reload()
     }
 
     private fun setTheme() {

@@ -44,12 +44,13 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
     }
 
     fun switchTabByPosition(position: Int) {
-        if (position>0){
-            (activity as MainTabActivity).homeBackView(true)
-        }else{
-            (activity as MainTabActivity).homeBackView(false)
+        (activity as MainTabActivity).homeBackView(position > 0)
+        val fragment = fragmentHelper.showFragment(position)
+        EventBusUtil.post(HomeTabEvent(fragment))
+
+        if (fragment is HomeWorldCupFragment && fragment.isInitedWeb) {
+            fragment.reloadWeb()
         }
-        EventBusUtil.post(HomeTabEvent(fragmentHelper.showFragment(position)))
     }
 
     fun onTabClickByPosition(position: Int) {
