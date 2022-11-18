@@ -1111,7 +1111,6 @@ class MainHomeFragment :
      fun refreshMoney(moneyEvent: MoneyEvent){
          if (moneyEvent.refresh){
              viewModel.getMoney()
-             LogUtil.d("money")
          }
      }
     private fun onRefreshMoney(){

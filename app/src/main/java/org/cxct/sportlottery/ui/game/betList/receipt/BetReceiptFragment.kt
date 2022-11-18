@@ -166,7 +166,6 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 //不管成功与否刷新当前金额
                 viewModel.getMoney()
                 EventBus.getDefault().post(MoneyEvent(true))
-                LogUtil.d("投注成功")
             }
         }
 
