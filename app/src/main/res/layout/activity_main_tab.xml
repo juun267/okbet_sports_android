@@ -5,13 +5,11 @@
     android:id="@+id/drawerLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_home_menu_left">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
         android:orientation="vertical">
 
         <FrameLayout
@@ -30,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/bg_icon_bottom_bar"
-                app:elevation="6dp"
+                app:elevation="4dp"
                 app:itemIconSize="30dp"
                 app:itemTextColor="@color/main_tab_text_selector"
                 app:labelVisibilityMode="labeled"
@@ -59,7 +57,6 @@
                 android:layout_height="match_parent"
                 android:elevation="6dp"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/margin_4"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/bottom_navigation_view"
                 app:layout_constraintTop_toTopOf="@+id/bottom_navigation_view">

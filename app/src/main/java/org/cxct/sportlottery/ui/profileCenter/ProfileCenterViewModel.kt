@@ -69,7 +69,9 @@ class ProfileCenterViewModel(
         get() = _appVersionState
     fun getUserInfo() {
         viewModelScope.launch {
-            userInfoRepository.getUserInfo()
+            doNetwork(androidContext) {
+                userInfoRepository.getUserInfo()
+            }
         }
     }
 
@@ -103,7 +105,11 @@ class ProfileCenterViewModel(
     //提款設置判斷權限
     fun settingCheckPermissions() {
         viewModelScope.launch {
-            withdrawRepository.settingCheckPermissions()
+            try {
+                withdrawRepository.settingCheckPermissions()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

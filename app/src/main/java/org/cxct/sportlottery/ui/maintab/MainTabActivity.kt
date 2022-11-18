@@ -108,7 +108,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         isWorldcupModel = worldcupModel
         var textColor: ColorStateList
         val iconArray = if (worldcupModel) {
-            iv_home_back.setImageResource(R.drawable.icon01_arrow_back_cup)
+            iv_home_back.setImageResource(R.drawable.icon01_arrow_back_sel)
             tv_home_back.setTextColor(resources.getColor(R.color.color_CC0054))
             bottom_navigation_view.setBackgroundResource(R.color.color_B2_FFFFFF)
             ((bottom_navigation_view.parent as View).layoutParams as MarginLayoutParams).topMargin = 0

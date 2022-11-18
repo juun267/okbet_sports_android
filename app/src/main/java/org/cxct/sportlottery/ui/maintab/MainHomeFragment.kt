@@ -504,7 +504,7 @@ class MainHomeFragment :
             it.let {
                 if (it == ServiceConnectStatus.CONNECTED) {
                     subscribeSportChannelHall()
-//                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
                 }
             }
         }

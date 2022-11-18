@@ -127,21 +127,14 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/game_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/game_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_bbbbbb_ffffff"
-            android:overScrollMode="never"
-            android:paddingTop="0dp"
-            tools:itemCount="1"
-            tools:listitem="@layout/item_league" />
-    </FrameLayout>
+        android:overScrollMode="never"
+        android:paddingTop="0dp"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_league"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
