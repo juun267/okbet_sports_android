@@ -51,6 +51,12 @@ object VerifyConstUtil {
         return Pattern.matches("(?=.*[$NUMBER])(?=.*[$ENGLISH_WORD]).{4,16}", account)
     }
 
+    //
+    fun verifyLengthRange(content: CharSequence, min: Int, max: Int): Boolean {
+        return content.length in min..max
+    }
+
+
     fun verifyPwdFormat(pwd: CharSequence): Boolean {
         return !(Pattern.matches("[$NUMBER]*", pwd) || Pattern.matches("[$ENGLISH_WORD]*", pwd))
     }
