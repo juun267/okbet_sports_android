@@ -27,9 +27,10 @@
             android:id="@+id/rv_league"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_10"
+            android:paddingTop="@dimen/margin_10"
             android:layout_marginRight="@dimen/margin_36"
             android:layout_weight="1"
+            android:clipToPadding="false"
             tools:listitem="@layout/item_league_select"
             tools:itemCount="3" />
 

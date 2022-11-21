@@ -132,7 +132,13 @@ class LeagueSelectActivity :
         rv_league.addItemDecoration(VerticalDecoration(this, R.drawable.divider_vertical_6))
         leagueSelectAdapter = LeagueSelectAdapter(listOf())
         leagueSelectAdapter.setOnItemClickListener { adapter, view, position ->
-            itemData[position].t.apply {
+
+            var item = itemData[position]
+            if (item.isHeader || item.t == null) { // 字母标签不让点
+                return@setOnItemClickListener
+            }
+
+            item.t.apply {
                 isSelected = !isSelected
             }
             leagueSelectAdapter.notifyItemChanged(position)
@@ -163,7 +169,7 @@ class LeagueSelectActivity :
         viewModel.leagueList.observe(this) {
             it.let {
                 leagueList = it
-                var map = it.groupBy {
+                var map: Map<String, List<League>> = it.groupBy {
                     it.firstCap
                 }.toSortedMap(Comparator<String> { o1: String, o2: String ->
                     o1.compareTo(o2)
