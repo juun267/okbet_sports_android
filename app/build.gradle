@@ -175,6 +175,52 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+        //okbet9测试环境
+        credit {
+            buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
+            resValue "string", "app_name", "OKbet9"
+            applicationId "com.okbet.cdplat1"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "0ef3e0b1b397bd252f23b2ac", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
+        //okbet9正式环境
+        spk9 {
+            buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
+            resValue "string", "app_name", "OKbet9"
+            applicationId "com.okbet.spcd"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "0cf211236261e69cc4bf682e", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
+
+        //現金網預發布
+        sabaplat1 {
+            buildConfigField "String", "CHANNEL_NAME", "\"sabaplat1\""
+            resValue "string", "app_name", "OKbet"
+            applicationId "com.okbet.sabaplat1"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
     }
 
     compileOptions {
