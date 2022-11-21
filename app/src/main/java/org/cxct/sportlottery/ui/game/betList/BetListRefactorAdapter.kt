@@ -1133,8 +1133,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (LoginRepository.isLogin.value == true) {
                     //更新bet editText hint
                     val betHint = context.getString(
-                        R.string.min_bet_format,
-                        inputMinMoney.toLong().toString()
+                        R.string.hint_bet_limit_range,
+                        inputMinMoney.toLong().toString(),
+                        inputMaxMoney.toLong().toString()
                     )
                     //限額用整數提示
                     tv_hint_default.text = betHint
@@ -1147,8 +1148,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     //更新win editText hint
                     val winHint = context.getString(
-                        R.string.min_bet_format,
-                        inputWinMinMoney.toLong().toString()
+                        R.string.hint_bet_limit_range,
+                        inputWinMinMoney.toLong().toString(),
+                        inputWinMaxMoney.toLong().toString()
                     )
                     //限額用整數提示
                     tv_win_hint_default.text = winHint
@@ -1657,8 +1659,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 if (LoginRepository.isLogin.value == true) {
                     //更新bet single editText hint
-                    val hint =
-                        context.getString(R.string.min_bet_format, minBet.toLong().toString())
+                    val hint = context.getString(
+                        R.string.hint_bet_limit_range,
+                        minBet.toLong().toString(),
+                        maxBet.toLong().toString()
+                    )
                     //限額用整數提示
                     tv_hint_single_default.text = hint
                     val etBetHasInput = !et_bet_single.text.isNullOrEmpty()
@@ -1893,8 +1898,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    inputMinMoney.toLong().toString()
 //                )
                 val betHint = context.getString(
-                    R.string.min_bet_format,
-                    inputMinMoney.toLong().toString()
+                    R.string.hint_bet_limit_range,
+                    inputMinMoney.toLong().toString(),
+                    inputMaxMoney.toLong().toString()
                 )
                 if (LoginRepository.isLogin.value == true) {
                     //限額用整數提示
