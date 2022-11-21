@@ -430,10 +430,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             }
         })
 
-        ft.setCustomAnimations(R.anim.push_bottom_to_top_enter,
-            R.anim.pop_bottom_to_top_exit,
-            R.anim.push_bottom_to_top_enter,
-            R.anim.pop_bottom_to_top_exit
+
+        ft.setCustomAnimations(R.anim.fade_in_200,
+            R.anim.fade_out_200,
+            R.anim.fade_in_200,
+            R.anim.fade_out_200
         )
         .add(R.id.fl_bet_list, betListFragment!!)
         .addToBackStack(BetListFragment::class.java.simpleName)

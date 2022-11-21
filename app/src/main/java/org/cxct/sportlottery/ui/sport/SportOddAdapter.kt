@@ -110,7 +110,16 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolderHdpOu.from(parent, oddStateRefreshListener, oddBtnCachePool)
+        return from(parent, oddStateRefreshListener, oddBtnCachePool)
+    }
+
+    private fun from(parent: ViewGroup, refreshListener: OddStateViewHolder.OddStateChangeListener, cachePool: RecyclerView.RecycledViewPool): ViewHolderHdpOu {
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val view = layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
+        val hodler = ViewHolderHdpOu(view, refreshListener)
+        hodler.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(cachePool)
+        Log.e("For Test","======>>> 创建 222 ViewHolderHdpOu SportOddAdapter$${this.hashCode()}")
+        return hodler
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -200,10 +209,12 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         }
     }
 
-    class ViewHolderHdpOu private constructor(
+    inner class ViewHolderHdpOu constructor(
         itemView: View,
         private val refreshListener: OddStateChangeListener,
     ) : ViewHolderTimer(itemView) {
+
+        val oddButtonPagerAdapter = OddButtonPagerAdapter()
 
         fun bind(
             matchType: MatchType,
@@ -1024,7 +1035,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             )
         }
 
-        val oddButtonPagerAdapter = OddButtonPagerAdapter()
         private fun setupOddsButton(
             matchType: MatchType,
             item: MatchOdd,
@@ -1039,22 +1049,22 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                 (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
                     false
 
-                this.adapter = oddButtonPagerAdapter.apply {
-                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                    //this.odds = item.oddsMap ?: mutableMapOf()
-                    //this.oddsType = oddsType
-                    this.matchType = matchType
-                    this.listener =
-                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
-                            leagueOddListener?.onClickBet(
-                                matchInfo,
-                                odd,
-                                playCateCode,
-                                betPlayCateName,
-                                item.betPlayCateNameMap
-                            )
-                        }
-                }
+//                this.adapter = oddButtonPagerAdapter.apply {
+//                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
+//                    //this.odds = item.oddsMap ?: mutableMapOf()
+//                    //this.oddsType = oddsType
+//                    this.matchType = matchType
+//                    this.listener =
+//                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+//                            leagueOddListener?.onClickBet(
+//                                matchInfo,
+//                                odd,
+//                                playCateCode,
+//                                betPlayCateName,
+//                                item.betPlayCateNameMap
+//                            )
+//                        }
+//                }
                 Log.d("Hewie4",
                     "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
                 updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
@@ -1094,15 +1104,8 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
         }
 
-        companion object {
-            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener, cachePool: RecyclerView.RecycledViewPool): ViewHolderHdpOu {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
-                val hodler = ViewHolderHdpOu(view, refreshListener)
-                hodler.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(cachePool)
-                return hodler
-            }
-        }
+
+
 
         override val oddStateChangeListener: OddStateChangeListener
             get() = refreshListener
