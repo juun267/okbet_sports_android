@@ -118,13 +118,11 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         val view = layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
         val hodler = ViewHolderHdpOu(view, refreshListener)
         hodler.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(cachePool)
-        Log.e("For Test","======>>> 创建 222 ViewHolderHdpOu SportOddAdapter$${this.hashCode()}")
         return hodler
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
-        Log.d("Hewie", "綁定：賽事($position)")
         val matchInfoList = data.mapNotNull {
             it.matchInfo
         }
@@ -1065,8 +1063,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                             )
                         }
                 }
-                Log.d("Hewie4",
-                    "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
                 updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
 
                 OverScrollDecoratorHelper.setUpOverScroll(this,

@@ -34,7 +34,9 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     BaseGameAdapter() {
 
     val cachePool = RecyclerView.RecycledViewPool()
-    val oddBtnCachePool = RecyclerView.RecycledViewPool()
+    val oddBtnCachePool = RecyclerView.RecycledViewPool().apply {
+        setMaxRecycledViews(ItemType.ITEM.ordinal,50)
+    }
 
     private fun refreshByBetInfo() {
         lifecycle.lifecycleScope.launch(Dispatchers.IO) {
