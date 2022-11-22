@@ -27,15 +27,50 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.setLeagueLogo
+import java.lang.ref.WeakReference
 import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
 class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: MatchType) :
     BaseGameAdapter() {
 
-    val cachePool = RecyclerView.RecycledViewPool()
-    val oddBtnCachePool = RecyclerView.RecycledViewPool().apply {
-        setMaxRecycledViews(ItemType.ITEM.ordinal,50)
+    companion object {
+
+        private var rootCachePool: WeakReference<RecyclerView.RecycledViewPool>? = null
+        private var oddListCachePool: WeakReference<RecyclerView.RecycledViewPool>? = null
+        private var oddBtnCachePool: WeakReference<RecyclerView.RecycledViewPool>? = null
+
+        private fun getSportRootCache(): RecyclerView.RecycledViewPool {
+            var cache = rootCachePool?.get()
+            if (cache == null) {
+                cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,15) }
+                rootCachePool = WeakReference(cache)
+            }
+            return cache
+        }
+
+        private fun getOddListCache(): RecyclerView.RecycledViewPool {
+            var cache = oddListCachePool?.get()
+            if (cache == null) {
+                cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,50) }
+                oddListCachePool = WeakReference(cache)
+            }
+            return cache
+        }
+
+        private fun getOddButtonCache(): RecyclerView.RecycledViewPool {
+            var cache = oddBtnCachePool?.get()
+            if (cache == null) {
+                cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,150) }
+                oddBtnCachePool = WeakReference(cache)
+            }
+            return cache
+        }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclerView.setRecycledViewPool(getSportRootCache())
     }
 
     private fun refreshByBetInfo() {
@@ -178,7 +213,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             ItemType.ITEM.ordinal -> {
                 val itemHolder = ItemViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
-                itemHolder.itemView.league_odd_list.setRecycledViewPool(cachePool)
+                itemHolder.itemView.league_odd_list.setRecycledViewPool(getOddListCache())
                 itemHolder
             }
 
@@ -293,7 +328,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val sportOddAdapter by lazy {
-            SportOddAdapter(matchType, oddBtnCachePool)
+            SportOddAdapter(matchType, getOddButtonCache())
         }
 
         fun bind(

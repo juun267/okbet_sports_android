@@ -75,6 +75,10 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return SportLeagueAdapter.ItemType.ITEM.ordinal
+    }
+
     // region Update functions
     fun update() {
         // Update MatchOdd list
