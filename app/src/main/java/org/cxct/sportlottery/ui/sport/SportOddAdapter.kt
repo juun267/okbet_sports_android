@@ -1049,22 +1049,22 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                 (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
                     false
 
-//                this.adapter = oddButtonPagerAdapter.apply {
-//                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
-//                    //this.odds = item.oddsMap ?: mutableMapOf()
-//                    //this.oddsType = oddsType
-//                    this.matchType = matchType
-//                    this.listener =
-//                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
-//                            leagueOddListener?.onClickBet(
-//                                matchInfo,
-//                                odd,
-//                                playCateCode,
-//                                betPlayCateName,
-//                                item.betPlayCateNameMap
-//                            )
-//                        }
-//                }
+                this.adapter = oddButtonPagerAdapter.apply {
+                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
+                    //this.odds = item.oddsMap ?: mutableMapOf()
+                    //this.oddsType = oddsType
+                    this.matchType = matchType
+                    this.listener =
+                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                            leagueOddListener?.onClickBet(
+                                matchInfo,
+                                odd,
+                                playCateCode,
+                                betPlayCateName,
+                                item.betPlayCateNameMap
+                            )
+                        }
+                }
                 Log.d("Hewie4",
                     "綁定(${item.matchInfo?.homeName})：item.oddsMap.size => ${item.oddsMap?.size}")
                 updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
