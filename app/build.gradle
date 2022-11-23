@@ -223,6 +223,17 @@ android {
         }
     }
 
+    sourceSets {
+        fastlane.res.srcDirs = ["${fastlane_res_src_dir}"]
+
+        cdplat1.res.srcDirs = ['src/okbet9_ph/res'] //okbet9测试环境
+        spk9.res.srcDirs = ['src/okbet9_ph/res'] //okbet9正式环境
+        sabaplat1.res.srcDirs = ['src/okbet_ph/res'] //现金预发环境
+        main {
+            jniLibs.srcDirs = ['src/main/libs']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
