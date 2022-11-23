@@ -354,7 +354,7 @@
     <string name="game_filter_row_search_hint">Vui lòng nhập tên giải đấu</string>
     <string name="date_row_all">TẤT CẢ</string>
     <string name="date_row_live">trận đấu đang diễn ra</string>
-    <string name="date_row_today">trận đấu hôm nay</string>
+    <string name="date_row_today">Sự kiện hôm nay</string>
     <string name="ou_hdp_hdp_title">Cược Chấp</string>
     <string name="ou_hdp_1x2_title">Đội Vô Địch</string>
     <string name="odd_button_ou_o">Trên</string>
@@ -643,7 +643,7 @@
     <string name="transfer_info">chuyển đổi thông tin</string>
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
-    <string name="bottom_nav_home">trang chủ</string>
+    <string name="bottom_nav_home">Trang chủ</string>
     <string name="bottom_nav_game">Sự kiện</string>
     <string name="bottom_nav_promotion">Khuyến mãi</string>
     <string name="bottom_nav_chat">trò truyện</string>
