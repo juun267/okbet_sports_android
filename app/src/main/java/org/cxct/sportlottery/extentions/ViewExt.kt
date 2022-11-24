@@ -1,6 +1,12 @@
 package org.cxct.sportlottery.extentions
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.view.View
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.BraetheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 
 /**
@@ -62,4 +68,23 @@ fun View.fitsSystemStatus() {
         layoutParams.height = layoutParams.height + statuHeight
     }
     setPadding(paddingLeft, paddingTop + statuHeight, paddingRight, paddingBottom)
+}
+
+fun View.flashAnimation(duration:Long = 1000,repeatCount:Int = ValueAnimator.INFINITE ,startAlpha:Float = 0f,endAlpha:Float = 1f): ObjectAnimator {
+    this.clearAnimation()
+
+    val alphaAnimator: ObjectAnimator = ObjectAnimator.ofFloat(this, "alpha", startAlpha, endAlpha)
+    alphaAnimator.duration = duration
+    alphaAnimator.interpolator = BraetheInterpolator()
+    alphaAnimator.repeatCount = repeatCount
+    alphaAnimator.addListener(object : AnimatorListenerAdapter() {
+
+        override fun onAnimationEnd(animation: Animator?) {
+            this@flashAnimation.alpha = 1f
+        }
+
+    })
+
+    alphaAnimator.start()
+    return alphaAnimator
 }

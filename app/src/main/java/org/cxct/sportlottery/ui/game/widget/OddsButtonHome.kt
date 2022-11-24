@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.widget
 
 
+import android.animation.Animator
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -25,6 +27,7 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -375,7 +378,7 @@ class OddsButtonHome @JvmOverloads constructor(
 
     private fun setupOddState(oddState: Int) {
         if (!isEnabled) return
-
+        var status = false
         when (oddState) {
             OddState.LARGER.state -> {
                 tv_odds.setTextColor(
@@ -388,10 +391,11 @@ class OddsButtonHome @JvmOverloads constructor(
                     setImageResource(R.drawable.ic_arrow_odd_up)
                     visibility = View.VISIBLE
                 }
+                status = true
                 isActivated = false
             }
             OddState.SMALLER.state -> {
-                tv_odds.setTextColor(
+                    tv_odds.setTextColor(
                     ContextCompat.getColor(
                         context,
                         R.color.color_E23434
@@ -401,6 +405,7 @@ class OddsButtonHome @JvmOverloads constructor(
                     setImageResource(R.drawable.ic_arrow_odd_down)
                     visibility = View.VISIBLE
                 }
+                status = true
                 isActivated = false
             }
             OddState.SAME.state -> {
@@ -417,6 +422,20 @@ class OddsButtonHome @JvmOverloads constructor(
                 }
                 isActivated = false
             }
+        }
+
+        val animator = lin_odd.tag
+        if (animator is Animator) {
+            animator.cancel()
+            if (status) {
+                animator.start()
+                return
+            }
+        }
+
+        if (status) {
+            lin_odd.tag = lin_odd.flashAnimation(1000,3,0.3f)
+            LogUtil.d("flashAnimation++")
         }
 //        updateOddsTextColor()
     }
