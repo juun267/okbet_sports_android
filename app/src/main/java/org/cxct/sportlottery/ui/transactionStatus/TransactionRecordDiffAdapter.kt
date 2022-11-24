@@ -139,7 +139,7 @@ class TransactionRecordDiffAdapter :
 
                         override fun onFinish() {
                             tv_bet_result.text =
-                                String.format(context.getString(R.string.pending), 0)
+                                context.getString(R.string.bet_info_add_bet_success) //倒計時走完，顯示投注成功
                         }
                     }.start()
                 } else {
