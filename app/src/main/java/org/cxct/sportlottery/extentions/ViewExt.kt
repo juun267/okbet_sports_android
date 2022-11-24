@@ -70,6 +70,13 @@ fun View.fitsSystemStatus() {
     setPadding(paddingLeft, paddingTop + statuHeight, paddingRight, paddingBottom)
 }
 
+/**
+ * 扩展方法 控件添加闪烁动画 可选传值
+ * @duration 闪烁一次的时间
+ * @repeatCount 闪烁几次
+ * @startAlpha 开始的透明度 默认为全透明
+ * @endAlpha 结束的透明度 默人为完全显示
+ */
 fun View.flashAnimation(duration:Long = 1000,repeatCount:Int = ValueAnimator.INFINITE ,startAlpha:Float = 0f,endAlpha:Float = 1f): ObjectAnimator {
     this.clearAnimation()
 
