@@ -1,15 +1,11 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
-import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.util.Event
 
 abstract class BaseSocketViewModel(
     androidContext: Application,
@@ -26,10 +22,6 @@ abstract class BaseSocketViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
-        get() = _settlementNotificationMsg
-
-    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
 
     init {
         /* gotConfigData 判斷：避免進 WebViewActivity crash */
@@ -38,7 +30,9 @@ abstract class BaseSocketViewModel(
                 loginRepository.checkToken()
 
                 if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
-                    userInfoRepository.getUserInfo()
+                    doNetwork(androidContext, exceptionHandle = false) {
+                        userInfoRepository.getUserInfo()
+                    }
                 }
             }
         }
@@ -56,7 +50,7 @@ abstract class BaseSocketViewModel(
         event?.sportBet?.let {
             when (it.status) {
                 Status.UN_CHECK.code, Status.UN_DONE.code, Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code,  Status.LOSE.code,  Status.LOSE_HALF.code,  Status.DRAW.code -> {
-                    _settlementNotificationMsg.value = Event(it)
+                    betInfoRepository.postSettlementNotificationMsg(it)
                 }
             }
         }

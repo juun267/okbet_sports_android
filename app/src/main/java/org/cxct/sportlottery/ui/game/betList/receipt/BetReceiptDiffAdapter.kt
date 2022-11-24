@@ -121,7 +121,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     private fun refreshTime(startTime: Long, position: Int, tvTime: TextView) {
         if (startTime.minus(System.currentTimeMillis()).div(1000L) < 0) {
-            tvTime.text = tvTime.context.getString(R.string.bet_info_add_bet_success) //倒計時走完，顯示投注成功
+            tvTime.text = String.format(tvTime.context.getString(R.string.pending), 0)
             stopRunnable(position)
         } else {
             tvTime.text = String.format(
