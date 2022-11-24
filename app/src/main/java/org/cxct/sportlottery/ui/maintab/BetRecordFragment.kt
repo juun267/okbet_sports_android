@@ -149,6 +149,7 @@ class BetRecordFragment :
         }
         viewModel.betListData.observe(viewLifecycleOwner) {
             recordDiffAdapter.setupBetList(it)
+            rv_record_unsettled.smoothScrollToPosition(0)
 //            btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
 //            divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
         }
@@ -156,7 +157,6 @@ class BetRecordFragment :
         viewModel.betRecordResult.observe(viewLifecycleOwner) {
             if (it.success) {
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
-                rv_record_settled.scrollToPosition(0)
             } else {
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }

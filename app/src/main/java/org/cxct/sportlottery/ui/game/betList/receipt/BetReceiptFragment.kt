@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.*
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -21,7 +19,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
@@ -82,7 +79,6 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             //TODO 此處若使用getContentIfNotHandled(), 於GameActivity時此處會一直取得null
             event.peekContent().let { sportBet ->
                 var needUpdate = false
-
                 //單注單
                 betResultData?.singleBets?.find { betResult ->
                     betResult.orderNo == sportBet.orderNo

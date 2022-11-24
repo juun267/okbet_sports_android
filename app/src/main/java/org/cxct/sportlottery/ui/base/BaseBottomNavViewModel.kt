@@ -9,7 +9,6 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.Event
 
@@ -41,6 +40,8 @@ abstract class BaseBottomNavViewModel(
     val nowTransNum: LiveData<Int?> get() = loginRepository.transNum
     val navPublicityPage: LiveData<Event<Boolean>>
         get() = _navPublicityPage
+    val settlementNotificationMsg
+        get() = betInfoRepository.settlementNotificationMsg
 
     private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
     private val _showShoppingCart = MutableLiveData<Event<Boolean>>()
