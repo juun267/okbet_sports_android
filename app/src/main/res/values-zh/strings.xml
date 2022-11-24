@@ -1112,7 +1112,7 @@
     <string name="total_capital">本金(%s)：</string>
     <string name="total_win_amount">可赢(%s)：</string>
     <string name="delete_bet">删除</string>
-    <string name="btn_login_bet">登录并投注</string>
+    <string name="btn_login_bet">登录后可投注</string>
     <string name="confirm_single_bets">确认%d单注投注</string>
     <string name="confirm_multiple_bets">确认%d串关投注</string>
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>

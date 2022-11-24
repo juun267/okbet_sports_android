@@ -1127,7 +1127,7 @@
 
     <string name="total_capital">เดิมพันทั้งหมด(%s)：</string> <!--F008-->
     <string name="delete_bet">ลบ</string>
-    <string name="btn_login_bet">เข้าสู่ระบบและเดิมพัน</string>
+    <string name="btn_login_bet">เข้าสูระบบแล้วเดิมพันได้</string>
     <string name="btn_remove_closed_selections">ลบตัวเลือกที่ปิดอยู่</string>
 
 
