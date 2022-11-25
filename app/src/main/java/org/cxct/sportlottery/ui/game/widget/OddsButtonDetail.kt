@@ -432,7 +432,7 @@ class OddsButtonDetail @JvmOverloads constructor(
         }
 
         if (status) {
-            ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,3,0.3f)
+            ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
     }

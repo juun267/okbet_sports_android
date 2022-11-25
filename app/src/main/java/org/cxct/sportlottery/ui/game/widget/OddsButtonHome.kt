@@ -434,7 +434,7 @@ class OddsButtonHome @JvmOverloads constructor(
         }
 
         if (status) {
-            lin_odd.tag = lin_odd.flashAnimation(1000,3,0.3f)
+            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f)
             LogUtil.d("flashAnimation++")
         }
 //        updateOddsTextColor()
