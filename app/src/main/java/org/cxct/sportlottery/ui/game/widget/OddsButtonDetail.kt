@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.widget
 
 
+import android.animation.Animator
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -10,11 +11,20 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.button_odd_detail.view.button_odd_detail
+import kotlinx.android.synthetic.main.button_odd_detail.view.img_odd_lock
+import kotlinx.android.synthetic.main.button_odd_detail.view.img_odd_unknown
+import kotlinx.android.synthetic.main.button_odd_detail.view.iv_arrow
+import kotlinx.android.synthetic.main.button_odd_detail.view.tv_name
+import kotlinx.android.synthetic.main.button_odd_detail.view.tv_odds
+import kotlinx.android.synthetic.main.button_odd_detail.view.tv_spread
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.extentions.flashAnimation
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -367,7 +377,7 @@ class OddsButtonDetail @JvmOverloads constructor(
 
     private fun setupOddState(oddState: Int) {
         if (!isEnabled) return
-
+        var status = false
         when (oddState) {
             OddState.LARGER.state -> {
                 tv_odds.setTextColor(
@@ -380,6 +390,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                     setImageResource(R.drawable.ic_arrow_odd_up)
                     visibility = View.VISIBLE
                 }
+                status = true
                 isActivated = false
             }
             OddState.SMALLER.state -> {
@@ -393,6 +404,7 @@ class OddsButtonDetail @JvmOverloads constructor(
                     setImageResource(R.drawable.ic_arrow_odd_down)
                     visibility = View.VISIBLE
                 }
+                status = true
                 isActivated = false
             }
             OddState.SAME.state -> {
@@ -409,6 +421,18 @@ class OddsButtonDetail @JvmOverloads constructor(
                 }
                 isActivated = false
             }
+        }
+        val animator = ll_odd_detail.tag
+        if (animator is Animator) {
+            animator.cancel()
+            if (status) {
+                animator.start()
+                return
+            }
+        }
+
+        if (status) {
+            ll_odd_detail.tag = ll_odd_detail.flashAnimation(1000,3,0.3f)
         }
 //        updateOddsTextColor()
     }
