@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityForgetPasswordBinding
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.ValidateUserResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 
 import org.cxct.sportlottery.repository.sConfigData
@@ -47,9 +48,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
 
     private lateinit var binding: ActivityForgetPasswordBinding
     private var mSmsTimer: Timer? = null
-    private var page = 1
+    private var page = 0
     private var state = 1
     private var userName: String? = null
+    private var mIdentity: String? = null
+    private  var secs: Int = 120
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ImmersionBar.with(this)
@@ -66,6 +69,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         initObserve()
         viewModel.focusChangeCheckAllInputComplete(page)
         viewModel.smsCheckComplete()
+        updateValidCode()
     }
 
     fun initView(){
@@ -73,8 +77,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         binding.tvTitleForgetPassword.setGradientSpan(getColor(R.color.color_71ADFF),
             getColor(R.color.color_1971FD),
             true)
-        binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
-        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
+        binding.eetAccountForget.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetVerificationCodeForget.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetPhoneNum.checkRegisterListener{viewModel.checkPhone(it)}
         binding.eetSmsCode.checkRegisterListener { viewModel.checkSecurityCode(it) }
         binding.eetLoginPasswordForget.transformationMethod =
@@ -87,7 +91,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         binding.ivReturn.setOnClickListener { updateValidCode() }
         binding.btnSendSms.setOnClickListener {
             //先校验手机号码
-            viewModel.getSendSms(phoneNum = eet_phone_num.text.toString())
+            viewModel.getSendSms(phone = eet_phone_num.text.toString(),userName = eet_account_forget.text.toString())
         }
         binding.btnPut.setOnClickListener{
             if (page ==3){
@@ -96,7 +100,13 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             }
             if (page<3){
                 if (page == 0){
-
+                    mIdentity?.let {
+                        viewModel.checkValidateUser(validCode = eet_verification_code_forget.text.toString(),
+                            userName = eet_account_forget.text.toString(),
+                            validCodeIdentity = mIdentity!!
+                        )
+                    }
+                    return@setOnClickListener
                 }
                 if (page ==1){
                    viewModel.getCheckPhone(
@@ -172,7 +182,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private fun initObserve() {
         viewModel.accountMsg.observe(this){
             if (it.first == null) {
-                viewModel.checkAccountExist(binding.eetAccount.text.toString())
+                viewModel.checkAccountExist(binding.eetAccountForget.text.toString())
                 return@observe
             }else{
                 binding.etAccount.setError(
@@ -180,6 +190,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     false
                 )
             }
+        }
+        viewModel.validDateResult.observe(this){
+            updateUiWithResult(it)
+            page++
+            setPage()
         }
         viewModel.smsResult.observe(this) {
             updateUiWithResult(it)
@@ -340,19 +355,20 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     private fun updateValidCode() {
         val data = viewModel.validCodeResult.value?.validCodeData
         viewModel.getValidCode(data?.identity)
-        binding.eetVerificationCode.apply {
+        binding.eetVerificationCodeForget.apply {
             if (text.isNotBlank()) {
                 text = null
             }
         }
     }
-
+//图形验证码展示
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
         if (validCodeResult?.success == true) {
             val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
             Glide.with(this)
                 .load(bitmap)
                 .into(binding.ivVerification)
+            mIdentity = validCodeResult?.validCodeData?.identity
         } else {
             updateValidCode()
 
@@ -362,12 +378,18 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             )
         }
     }
-
+    private fun updateUiWithResult(validateUserResult: ValidateUserResult?){
+        if(validateUserResult?.success == true) {
+             validateUserResult?.validData?.let {
+                 secs = it.countDownSec!!
+            }
+        }
+    }
     //发送验证码开始倒计时
     private fun showSmeTimer300() {
         try {
             stopSmeTimer()
-            var sec = 120
+            var sec = secs
             mSmsTimer = Timer()
             mSmsTimer?.schedule(object : TimerTask() {
                 override fun run() {
