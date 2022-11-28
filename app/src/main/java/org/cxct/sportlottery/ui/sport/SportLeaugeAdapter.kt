@@ -70,7 +70,9 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        recyclerView.setRecycledViewPool(getSportRootCache())
+
+
+//        recyclerView.setRecycledViewPool(getSportRootCache())  // 对局部刷新有影响
     }
 
     private fun refreshByBetInfo() {
