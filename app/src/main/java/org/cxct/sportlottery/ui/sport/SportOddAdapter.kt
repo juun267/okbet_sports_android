@@ -61,9 +61,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
 
     var leagueOddListener: LeagueOddListener? = null
     var leagueOdd: LeagueOdd? = null
-    var playSelectedCodeSelectionType: Int? = null
-    var playSelectedCode: String? = null
-    var isNeedRecreateViews = true
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
@@ -81,10 +78,12 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
 
     // region Update functions
     fun update() {
-        // Update MatchOdd list
         data.forEachIndexed { index, matchOdd -> notifyItemChanged(index, matchOdd) }
     }
-    // endregion
+
+    fun updateIndex(index: Int, matchOdd: MatchOdd) {
+        notifyItemChanged(index, matchOdd)
+    }
 
     fun updateByBetInfo(clickOdd: Odd?) {
         data.forEachIndexed { index, matchOdd ->
@@ -130,7 +129,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         val matchInfoList = data.mapNotNull {
             it.matchInfo
         }
-
         when (holder) {
             is ViewHolderHdpOu -> {
                 holder.stopTimer()
@@ -140,9 +138,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                     leagueOddListener,
                     isTimerEnable,
                     oddsType,
-                    matchInfoList,
-                    playSelectedCodeSelectionType,
-                    playSelectedCode
+                    matchInfoList
                 )
             }
         }
@@ -156,7 +152,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
     ) {
         if (payloads.isNullOrEmpty()) {
             onBindViewHolder(holder, position)
-            //(holder as ViewHolderHdpOu).update(matchType, data[position], leagueOddListener, isTimerEnable, oddsType, playSelectedCodeSelectionType)
         } else {
             Log.d("Hewie", "更新：賽事($position)")
 
@@ -168,9 +163,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                         matchOdd,
                         leagueOddListener,
                         isTimerEnable,
-                        oddsType,
-                        playSelectedCodeSelectionType,
-                        playSelectedCode
+                        oddsType
                     )
                 }
 
@@ -182,8 +175,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                                     item = second as MatchOdd,
                                     leagueOddListener = leagueOddListener,
                                     oddsType = oddsType,
-                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
-                                    playSelectedCode = playSelectedCode
                                 )
                             }
 
@@ -191,7 +182,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                                 (holder as ViewHolderHdpOu).updateByPlayCate(
                                     item = second as MatchOdd,
                                     oddsType = oddsType,
-                                    playSelectedCodeSelectionType = playSelectedCodeSelectionType,
                                 )
                             }
                         }
@@ -225,8 +215,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             isTimerEnable: Boolean,
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>,
-            playSelectedCodeSelectionType: Int?,
-            playSelectedCode: String?,
         ) {
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
@@ -240,8 +228,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             setupOddsButton(matchType,
                 item,
                 oddsType,
-                leagueOddListener,
-                playSelectedCodeSelectionType)
+                leagueOddListener)
 
             //setupQuickCategory(item, oddsType, leagueOddListener)
         }
@@ -253,8 +240,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            playSelectedCodeSelectionType: Int?,
-            playSelectedCode: String?,
         ) {
             updateMatchInfo(item, matchType)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
@@ -265,7 +250,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                     isTimerPause,
                     leagueOddListener)
             }
-            updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
+            updateOddsButton(item, oddsType)
             setupCsTextLayout(matchType, item, leagueOddListener)
         }
 
@@ -368,8 +353,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?,
-            playSelectedCodeSelectionType: Int?,
-            playSelectedCode: String?,
         ) {
             updateOddsButtonByBetInfo(item)
         }
@@ -377,9 +360,8 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         fun updateByPlayCate(
             item: MatchOdd,
             oddsType: OddsType,
-            playSelectedCodeSelectionType: Int?,
         ) {
-            updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
+            updateOddsButton(item, oddsType)
         }
 
         private fun updateMatchInfo(item: MatchOdd, matchType: MatchType) {
@@ -1042,7 +1024,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             item: MatchOdd,
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?,
-            playSelectedCodeSelectionType: Int?,
         ) {
             itemView.rv_league_odd_btn_pager_main.apply {
                 linearLayoutManager.isAutoMeasureEnabled = false
@@ -1067,7 +1048,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                             )
                         }
                 }
-                updateOddsButton(item, oddsType, playSelectedCodeSelectionType)
+                updateOddsButton(item, oddsType)
 
                 OverScrollDecoratorHelper.setUpOverScroll(this,
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
@@ -1079,7 +1060,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         private fun updateOddsButton(
             item: MatchOdd,
             oddsType: OddsType,
-            playSelectedCodeSelectionType: Int?,
         ) {
             itemView.rv_league_odd_btn_pager_main.apply {
                 oddButtonPagerAdapter.setData(
@@ -1087,7 +1067,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                     item.oddsSort,
                     item.playCateNameMap,
                     item.betPlayCateNameMap,
-                    playSelectedCodeSelectionType,
+                    null,
                     item
                 )
                 oddButtonPagerAdapter.apply {

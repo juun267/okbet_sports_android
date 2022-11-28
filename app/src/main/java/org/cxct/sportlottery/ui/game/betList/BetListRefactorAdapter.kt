@@ -1130,15 +1130,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     else R.drawable.bg_radius_2_edittext_unfocus
                 )
 
+                //更新bet editText hint
+                val betHint = context.getString(
+                    R.string.hint_bet_limit_range,
+                    inputMinMoney.toLong().toString(),
+                    inputMaxMoney.toLong().toString()
+                )
+                //限額用整數提示
+                tv_hint_default.text = betHint
                 if (LoginRepository.isLogin.value == true) {
-                    //更新bet editText hint
-                    val betHint = context.getString(
-                        R.string.hint_bet_limit_range,
-                        inputMinMoney.toLong().toString(),
-                        inputMaxMoney.toLong().toString()
-                    )
-                    //限額用整數提示
-                    tv_hint_default.text = betHint
                     val etBetHasInput = !et_bet.text.isNullOrEmpty()
 //                if (etBetHasInput) {
                     tv_hint_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
@@ -1162,7 +1162,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    tv_win_hint_default.isVisible = !itemData.isInputWin
 //                }
                 } else {
-                    tv_hint_default.isVisible = false
+                    tv_hint_default.isVisible = true
                     et_win.isEnabled = false
                     tv_win_hint_default.isVisible = false
                 }

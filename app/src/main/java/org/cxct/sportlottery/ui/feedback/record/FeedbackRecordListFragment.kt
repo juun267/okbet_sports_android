@@ -10,22 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.date_range_selector
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.status_selector
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.tv_no_data
-import kotlinx.android.synthetic.main.fragment_feedback_record_list.view_no_record
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
-import org.cxct.sportlottery.util.LogUtil
-import java.util.*
-import kotlin.math.log
 
 /**
  * @app_destination 意见反馈-反馈记录
@@ -132,7 +122,7 @@ class FeedbackRecordListFragment : BaseFragment<FeedbackViewModel>(FeedbackViewM
             if ( !rv_pay_type.canScrollVertically(1)&&!listData.isNullOrEmpty()){
                 tv_no_data.visibility = View.VISIBLE
             }else{
-                tv_no_data.visibility = View.GONE
+                tv_no_data.visibility = View.INVISIBLE
             }
 
             if (listData.size == 0) {

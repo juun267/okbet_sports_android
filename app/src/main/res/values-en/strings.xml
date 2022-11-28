@@ -267,7 +267,7 @@
     <string name="fourth_session">4th period</string>
     <string name="add_time_first_half_game">Overtime 1st Half</string>
     <string name="add_time_second_half_game">Overtime 2nd Half</string>
-    <string name="account_balance">Total</string>
+    <string name="account_balance">Total Balance</string>
     <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposit</string>
     <string name="account_transfer">Transfer Limit</string>
@@ -673,10 +673,10 @@
     <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
     <string name="third_game_ky">KY games</string>
     <string name="odd_type_title">Odds Setting</string>
-    <string name="odd_type_eu">EU Odds</string>
-    <string name="odd_type_hk">HK Odds</string>
-    <string name="odd_type_mys">MY Odds</string>
-    <string name="odd_type_idn">ID Odds</string>
+    <string name="odd_type_eu">EU</string>
+    <string name="odd_type_hk">HK</string>
+    <string name="odd_type_mys">MY</string>
+    <string name="odd_type_idn">ID</string>
     <string name="submit_time">Submit time:</string>
     <string name="feedback_time">Feedback time:</string>
     <string name="not_reply_yet">Has not been feedback</string>
@@ -1206,7 +1206,7 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit %1$s</string>
+    <string name="hint_bet_limit_range">Limit 1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">To Win(%s)：</string>
@@ -1278,8 +1278,8 @@
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">Hot Handicap</string>
     <string name="hot_live_match">Hot Live</string>
-    <string name="hot_gaming_electronics">Hot Slot</string>
-    <string name="hot_poker_game">OKGames</string>
+    <string name="hot_gaming_electronics">SLOT GAME</string>
+    <string name="hot_poker_game">Card Games</string>
     <string name="find_all">"More&#160;"</string>
     <string name="check_all">All</string>
     <string name="worldcup">WC 2022</string>
@@ -1300,7 +1300,7 @@
     <string name="go_back_top">Back to top</string>
     <string name="win_line">Home&amp;Away</string>
     <string name="draw_name">Draw</string>
-    <string name="home_all_game">All</string>
+    <string name="home_all_game">All Games</string>
     <string name="collse_live">Save live</string>
     <string name="accept_current_odd_to_bet">Bet at current odds</string>
     <string name="home_back">Back</string>
