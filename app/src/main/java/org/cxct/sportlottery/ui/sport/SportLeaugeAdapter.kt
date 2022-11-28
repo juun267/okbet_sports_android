@@ -40,6 +40,12 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         private var oddListCachePool: WeakReference<RecyclerView.RecycledViewPool>? = null
         private var oddBtnCachePool: WeakReference<RecyclerView.RecycledViewPool>? = null
 
+        fun clearCachePool() {
+            rootCachePool = null
+            oddListCachePool = null
+            oddListCachePool = null
+        }
+
         private fun getSportRootCache(): RecyclerView.RecycledViewPool {
             var cache = rootCachePool?.get()
             if (cache == null) {
