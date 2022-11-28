@@ -380,8 +380,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     }
     private fun updateUiWithResult(validateUserResult: ValidateUserResult?){
         if(validateUserResult?.success == true) {
-             validateUserResult?.validData?.let {
-                 secs = it.countDownSec!!
+             validateUserResult.validData?.countDownSec?.let {
+                 secs = it
             }
         }
     }
