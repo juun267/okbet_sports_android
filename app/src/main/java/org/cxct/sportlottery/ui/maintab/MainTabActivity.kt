@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.maintab.menu.MainLeftFragment
 import org.cxct.sportlottery.ui.maintab.menu.SportLeftFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterFragment
+import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteFragment
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -89,6 +90,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        SportLeagueAdapter.clearCachePool()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_tab)
         ImmersionBar.with(this)
@@ -496,5 +498,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             ll_home_back.visibility = View.GONE
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SportLeagueAdapter.clearCachePool()
     }
 }
