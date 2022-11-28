@@ -395,7 +395,7 @@ class SportListFragment :
 
 
     private fun initObserve() {
-        viewModel.notifyLogin.observe(this) {
+        viewModel.notifyLogin.observe(viewLifecycleOwner) {
             (activity as MainTabActivity).showLoginNotify()
         }
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
@@ -633,14 +633,13 @@ class SportListFragment :
                 when (game_list.adapter) {
                     is SportLeagueAdapter -> {
                         val leagueOdds = sportLeagueAdapter.data
-
-                        leagueOdds.forEachIndexed { _, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateMatchClock(
-                                        matchOdd, matchClockEvent
-                                    )
-                                } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //暫時不處理 防止過多更新
+                        leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                if (SocketUpdateUtil.updateMatchClock(matchOdd,
+                                        matchClockEvent) && leagueOdd.unfold == FoldState.UNFOLD.code
+                                ) {
+                                    updateMatch(leagueIndex, matchOdd)
+                                }
                             }
                         }
                     }
@@ -656,11 +655,13 @@ class SportListFragment :
                     is SportLeagueAdapter -> {
                         val leagueOdds = sportLeagueAdapter.data
 
-                        leagueOdds.forEachIndexed { _, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
-                                } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //暫時不處理 防止過多更新
+                        leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                if (SocketUpdateUtil.updateOddStatus(matchOdd,
+                                        matchOddsLockEvent) && leagueOdd.unfold == FoldState.UNFOLD.code
+                                ) {
+                                    updateMatch(leagueIndex, matchOdd)
+                                }
                             }
                         }
                     }
@@ -674,13 +675,15 @@ class SportListFragment :
                 when (game_list.adapter) {
                     is SportLeagueAdapter -> {
                         val leagueOdds = sportLeagueAdapter.data
-                        leagueOdds.forEachIndexed { _, leagueOdd ->
-                            if (leagueOdd.matchOdds.any { matchOdd ->
-                                    SocketUpdateUtil.updateOddStatus(
+                        leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                if (SocketUpdateUtil.updateOddStatus(
                                         matchOdd, globalStopEvent
-                                    )
-                                } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                                //暫時不處理 防止過多更新
+                                    ) && leagueOdd.unfold == FoldState.UNFOLD.code
+                                ) {
+                                    //暫時不處理 防止過多更新
+                                    updateMatch(leagueIndex, matchOdd)
+                                }
                             }
                         }
                     }
@@ -692,7 +695,6 @@ class SportListFragment :
         receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelHallAll()
-
                 when (game_list.adapter) {
                     is SportLeagueAdapter -> {
                         sportLeagueAdapter.data.forEach { leagueOdd ->
@@ -730,46 +732,28 @@ class SportListFragment :
 
     private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            when (game_list?.adapter) {
-                is SportLeagueAdapter -> {
-
-                    val leagueOdds = sportLeagueAdapter.data
-
-                    leagueOdds.sortOddsMap()
-                    //翻譯更新
-
-                    leagueOdds.forEach { LeagueOdd ->
-                        LeagueOdd.matchOdds.forEach { MatchOdd ->
-                            if (MatchOdd.matchInfo?.id == oddsChangeEvent.eventId) {
-                                //馬克說betPlayCateNameMap還是由socket更新
-                                oddsChangeEvent.betPlayCateNameMap?.let {
-                                    MatchOdd.betPlayCateNameMap?.putAll(it)
-                                }
-                            }
-                        }
-                    }
-                    leagueOdds.forEachIndexed { index, leagueOdd ->
-                        if (leagueOdd.matchOdds.any { matchOdd ->
-                                SocketUpdateUtil.updateMatchOdds(
-                                    context, matchOdd, oddsChangeEvent
-                                )
-                            } && leagueOdd.unfold == FoldState.UNFOLD.code) {
-                            leagueOddMap[leagueOdd.league.id] = leagueOdd
-                            updateGameList(index, leagueOdd)
-                            updateBetInfo(leagueOdd, oddsChangeEvent)
-                        } else {
-                            updateGameList(index, leagueOdd)
-                        }
+            val leagueOdds = sportLeagueAdapter.data
+            leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
+                leagueOdd.matchOdds.forEachIndexed { index, matchOdd ->
+                    if (SocketUpdateUtil.updateMatchOdds(context, matchOdd, oddsChangeEvent)) {
+                        leagueOddMap[leagueOdd.league.id] = leagueOdd
+                        updateMatch(leagueIndex, matchOdd)
+                        updateBetInfo(leagueOdd, oddsChangeEvent)
                     }
                 }
             }
         }
     }
 
-    private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {
-        sportLeagueAdapter.data[index] = leagueOdd
+    private fun updateLeague(index: Int, leagueOdd: LeagueOdd) {
         if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
             sportLeagueAdapter.updateLeague(index, leagueOdd)
+        }
+    }
+
+    private fun updateMatch(index: Int, matchOdd: MatchOdd) {
+        if (game_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !game_list.isComputingLayout) {
+            sportLeagueAdapter.updateMatch(index, matchOdd)
         }
     }
 

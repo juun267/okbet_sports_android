@@ -668,8 +668,8 @@
     <string name="can_input_1_to_500_word">Có thể nhập 1-500 từ</string>
     <string name="third_game_ky">Game bài KY</string>
     <string name="odd_type_title">Thể loại kèo</string>
-    <string name="odd_type_eu">Kèo Châu Âu</string>
-    <string name="odd_type_hk">Kèo Hồng Kông</string>
+    <string name="odd_type_eu">EU</string>
+    <string name="odd_type_hk">HK</string>
     <string name="odd_type_mys">Kèo Malay</string>
     <string name="odd_type_idn">Kèo Indo</string>
     <string name="submit_time">thời gian gửi</string>
@@ -1267,8 +1267,8 @@
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">"Thị trường hot "</string>
     <string name="hot_live_match">Live Hot</string>
-    <string name="hot_gaming_electronics">Slot Hot</string>
-    <string name="hot_poker_game">OKGames</string>
+    <string name="hot_gaming_electronics">Lô tô</string>
+    <string name="hot_poker_game">Cờ vua</string>
     <string name="find_all">Xem thêm&#160;</string>
     <string name="check_all">Tất cả</string>
     <string name="worldcup">WC 2022</string>
@@ -1289,7 +1289,7 @@
     <string name="hot_elec_game">Game thưởng khủng</string>
     <string name="go_back_top">Về đầu trang</string>
     <string name="win_line">Chủ &amp; Khách</string>
-    <string name="home_all_game">Tất cả</string>
+    <string name="home_all_game">Tất cả game</string>
     <string name="draw_name">hòa</string>
     <string name="collse_live">Lưu livestream</string>
     <string name="accept_current_odd_to_bet">Cược với tỷ lệ cược hiện tại</string>

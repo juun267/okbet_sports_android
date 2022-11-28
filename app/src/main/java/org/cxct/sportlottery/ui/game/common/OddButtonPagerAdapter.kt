@@ -16,7 +16,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -33,7 +32,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     private var oddsSort: String?= null
     private var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null
     private var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?= null //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
-    private var getPlaySelectedCodeSelectionType: Int? = null
     private var matchOdd: MatchOdd? = null
 
     fun setData(matchInfo: MatchInfo?, oddsSort: String?, playCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
@@ -46,7 +44,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
             this.oddsSort = oddsSort
         this.playCateNameMap = playCateNameMap
         this.betPlayCateNameMap = betPlayCateNameMap
-        this.getPlaySelectedCodeSelectionType = getPlaySelectedCodeSelectionType
         this.matchOdd = matchOdd
     }
 
@@ -79,9 +76,6 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                             this.isNullOrEmpty() ->{
                                 gameListFilter = mutableListOf()
                                 gameListFilter.add("EmptyData1")
-                            }
-                            getPlaySelectedCodeSelectionType == SelectionType.SELECTABLE.code -> {
-                                gameListFilter = this.take(this.size + 1) as MutableList<String>
                             }
                             this.size > sizeCount(matchInfo?.gameType) -> {
                                 gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String>
@@ -181,6 +175,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         return OddButtonPagerViewHolder.from(parent, oddStateRefreshListener)
     }
 
+
     override fun onBindViewHolder(holder: OddButtonPagerViewHolder, position: Int) {
         Log.d("Hewie", "綁定(${matchInfo?.homeName})：賠率表($position)")
         holder.bind(
@@ -199,8 +194,9 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: OddButtonPagerViewHolder, position: Int, payloads: MutableList<Any>) {
-        if(payloads.isNullOrEmpty()) { onBindViewHolder(holder, position) }
-        else {
+        if (payloads.isNullOrEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
             payloads.forEach { payload ->
                 Log.d("Hewie", "更新：賠率表($position)")
                 val list = payload as ArrayList<Pair<String, List<Odd?>?>>

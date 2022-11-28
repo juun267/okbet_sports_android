@@ -39,12 +39,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/margin_20"
         android:background="@drawable/bg_square_shape_6dp_gray_deposit_stroke"
         android:orientation="vertical"
+        android:padding="1dp"
         android:layout_marginTop="@dimen/margin_10"
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@id/tv_no_data"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         <LinearLayout
@@ -88,11 +90,10 @@
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="330dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_1"
             android:layout_marginRight="@dimen/margin_1"
             android:layout_marginBottom="@dimen/margin_20"
-            app:layout_constraintTop_toBottomOf="@id/rech_log_column"
             app:srlDragRate="0.3"
             app:srlEnableLoadMore="true"
             app:srlEnablePureScrollMode="true"

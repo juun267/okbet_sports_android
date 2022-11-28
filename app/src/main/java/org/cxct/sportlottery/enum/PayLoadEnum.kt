@@ -6,5 +6,5 @@ package org.cxct.sportlottery.enum
  * @description
  */
 enum class PayLoadEnum {
-    PAYLOAD_BET_INFO, PAYLOAD_PLAYCATE, EXPAND
+    PAYLOAD_ODDS, PAYLOAD_BET_INFO, PAYLOAD_PLAYCATE, EXPAND, PAYLOAD_MATCH_CLOCK
 }

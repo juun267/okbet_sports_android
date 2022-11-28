@@ -226,14 +226,16 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         notifyItemChanged(position, payload)
     }
 
-    private fun updateLeagueByBetInfo(position: Int) {
-        notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
+    fun updateMatch(position: Int, payload: MatchOdd) {
+        notifyItemChanged(position, payload)
     }
 
-    fun updateLeagueByPlayCate() {
-        data.forEachIndexed { index, _ ->
-            notifyItemChanged(index, PayLoadEnum.PAYLOAD_PLAYCATE)
-        }
+    fun updateMatchOdd(position: Int, payload: MatchOdd) {
+        notifyItemChanged(position, PayLoadEnum.PAYLOAD_ODDS)
+    }
+
+    private fun updateLeagueByBetInfo(position: Int) {
+        notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
     }
 
     fun updateLeagueByExpand(position: Int) {
@@ -265,7 +267,9 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
                     is LeagueOdd -> {
                         (holder as ItemViewHolder).update(it, matchType, oddsType)
                     }
-
+                    is MatchOdd -> {
+                        (holder as ItemViewHolder).update(it, matchType, oddsType)
+                    }
                     is PayLoadEnum -> {
                         when (it) {
                             PayLoadEnum.PAYLOAD_BET_INFO -> {
@@ -275,6 +279,14 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
                                 (holder as ItemViewHolder).updateByPlayCate()
                             }
                             PayLoadEnum.EXPAND -> {
+                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
+                                    matchType)
+                            }
+                            PayLoadEnum.PAYLOAD_MATCH_CLOCK -> {
+                                (holder as ItemViewHolder).updateLeagueExpand(data[position],
+                                    matchType)
+                            }
+                            PayLoadEnum.PAYLOAD_ODDS -> {
                                 (holder as ItemViewHolder).updateLeagueExpand(data[position],
                                     matchType)
                             }
@@ -354,6 +366,11 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             updateTimer(matchType, item.gameType)
         }
 
+        fun update(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
+            updateMatchOdds(item, oddsType)
+            updateTimer(matchType, GameType.getGameType(item.matchInfo?.gameType))
+        }
+
         fun updateByBetInfo() {
             sportOddAdapter.updateByBetInfo(leagueOddListener?.clickOdd)
         }
@@ -386,6 +403,17 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             }
         }
 
+        private fun updateMatchOdds(item: MatchOdd, oddsType: OddsType) {
+            sportOddAdapter.oddsType = oddsType
+            sportOddAdapter.data.forEachIndexed { index, matchOdd ->
+                if (item.matchInfo?.id == matchOdd.matchInfo?.id) {
+                    if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
+                        sportOddAdapter.updateIndex(index, item)
+                    }
+                }
+            }
+        }
+
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             itemView.league_odd_list.visibility =
                 if (item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
@@ -395,7 +423,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         private fun setupLeagueOddList(
             item: LeagueOdd,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
+            oddsType: OddsType,
         ) {
             itemView.league_odd_list.apply {
                 //league_odd_list.itemAnimator = null
