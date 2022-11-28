@@ -411,7 +411,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
         if (status) {
-            ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,3,0.3f)
+            ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
     }

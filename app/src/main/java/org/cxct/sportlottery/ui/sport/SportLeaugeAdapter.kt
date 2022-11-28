@@ -105,44 +105,33 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         }
     }
 
+    var lastBetInfoSize = 0
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
+
+            // 会重复设置的问题
+            if (field == value && lastBetInfoSize == value.size) {
+                return
+            }
+            lastBetInfoSize = value.size
             field = value
             if (leagueOddListener?.clickOdd == null) {
                 refreshByBetInfo()
                 return
             }
 
-            var isInMatch = false
-            var isInQuick = false
             data.forEachIndexed { index, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.oddsMap?.values?.forEach { oddList ->
-                        oddList?.forEach { odd ->
+                    matchOdd.oddsMap?.values?.forEachIndexed {i, oddList ->
+                        oddList?.forEachIndexed {j, odd ->
                             odd?.isSelected = field.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
                             }
                             if (leagueOddListener?.clickOdd?.id == odd?.id) {
-                                isInMatch = true
+                                updateLeague(index, leagueOdd)
+                                return@forEach
                             }
                         }
-                    }
-                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                        quickPlayCate.quickOdds.forEach { map ->
-                            map.value?.forEach { odd ->
-                                odd?.isSelected = field.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                                if (leagueOddListener?.clickOdd?.id == odd?.id) {
-                                    isInQuick = true
-                                }
-                            }
-                        }
-                    }
-                    if (isInMatch || isInQuick) {
-                        updateLeagueByBetInfo(index)
-                        isInMatch = false
-                        isInQuick = false
                     }
                 }
             }

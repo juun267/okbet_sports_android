@@ -399,7 +399,7 @@ open class OddsButton @JvmOverloads constructor(
         }
 
         if (status) {
-            ll_status_group.tag = ll_status_group.flashAnimation(1000,3,0.3f)
+            ll_status_group.tag = ll_status_group.flashAnimation(1000,2,0.3f)
         }
 //        updateOddsTextColor()
     }
