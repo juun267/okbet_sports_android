@@ -372,7 +372,7 @@
     <string name="odd_button_ou_o">Over</string>
     <string name="odd_button_ou_u">Under</string>
     <string name="game_tab_league_odd">Match</string>
-    <string name="game_tab_outright_odd">Outright</string>
+    <string name="game_tab_outright_odd">Outrights</string>
     <string name="game_tab_price_boosts_odd">Price boosts</string>
     <string name="button_league_submit">Submit (%d)</string>
     <string name="login_notify">Please log in to use this feature</string>
@@ -1250,7 +1250,7 @@
     <string name="download">Download</string>
     <string name="can_input_1_to_500_word">Can enter 1–500 words</string>
     <string name="half">Half</string>
-    <string name="other_bet">Other Betting History</string>
+    <string name="other_bet">Other betting</string>
     <string name="skin_mode">Mode: Day/Night</string>
     <string name="main_tab_home">Home</string>
     <string name="main_tab_sport">Sports</string>
@@ -1294,7 +1294,7 @@
     <string name="home_on_game">OKGames</string>
     <string name="go_back_top">Back to top</string>
     <string name="win_line">Home&amp;Away</string>
-    <string name="match_live">Live Matches</string>
+    <string name="match_live">Live match</string>
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">Hot Handicap</string>
     <string name="hot_live_match">Hot Live</string>

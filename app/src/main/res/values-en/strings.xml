@@ -371,7 +371,7 @@
     <string name="odd_button_ou_o">Over</string>
     <string name="odd_button_ou_u">Under</string>
     <string name="game_tab_league_odd">Match</string>
-    <string name="game_tab_outright_odd">Outright</string>
+    <string name="game_tab_outright_odd">Outrights</string>
     <string name="game_tab_price_boosts_odd">Price boosts</string>
     <string name="button_league_submit">Submit (%d)</string>
     <string name="login_notify">Please log in to use this feature</string>
@@ -1237,7 +1237,7 @@
     <string name="error_recommend_agent">No matched</string>
     <string name="login_welcome">Hi, Welcome to OKbet~</string>
     <string name="betting">Betting</string>
-    <string name="other_bet">Other Betting History</string>
+    <string name="other_bet">Other betting</string>
     <string name="sport_match">Matches</string>
     <string name="remove_account_warning">Are you sure you want to cancel your current account?</string>
     <string name="register_and_login">Sign Up/Login</string>
@@ -1274,7 +1274,7 @@
     <string name="forget_password">Forgot Password</string>
     <string name="member_name">Member</string>
     <string name="home_recommend">Popular</string>
-    <string name="match_live">Hot Live</string>
+    <string name="match_live">Live match</string>
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">Hot Handicap</string>
     <string name="hot_live_match">Hot Live</string>
