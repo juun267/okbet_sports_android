@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_forget_password.*
-import kotlinx.android.synthetic.main.activity_forget_password.tv_customer_service
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.eet_confirm_password
@@ -73,7 +72,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     }
 
     fun initView(){
-        binding.tvTitleForgetPassword.text = getString(R.string.forget_password)
+        binding.tvTitleForgetPassword.text = getString(R.string.find_back_password)
         binding.tvTitleForgetPassword.setGradientSpan(getColor(R.color.color_71ADFF),
             getColor(R.color.color_1971FD),
             true)
@@ -161,7 +160,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 eetConfirmPasswordForget.setSelection(eetConfirmPasswordForget.text.toString().length)
             }
         }
-        binding.tvCustomerService.setOnClickListener {
+        binding.clLiveChat.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
@@ -193,8 +192,6 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         }
         viewModel.validDateResult.observe(this){
             updateUiWithResult(it)
-            page++
-            setPage()
         }
         viewModel.smsResult.observe(this) {
             updateUiWithResult(it)
@@ -320,7 +317,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         if (smsResult?.success == true) {
             userName = smsResult.ResetPasswordData?.userName
             state +=1
-            binding.tvSmsSend.visibility = View.VISIBLE
+         //   binding.tvSmsSend.visibility = View.VISIBLE
 
             val tipsContentBuilder = SpannableStringBuilder()
             val stringSpan = SpannableString(getString(R.string.has_send_message_to_phone))
@@ -342,10 +339,10 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     it,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
-            binding.tvSmsSend.text = tipsContentBuilder.append(stringSpan).append(phoneNum)
+      //      binding.tvSmsSend.text = tipsContentBuilder.append(stringSpan).append(phoneNum)
             showSmeTimer300()
         } else {
-            binding.tvSmsSend.visibility = View.GONE
+         //   binding.tvSmsSend.visibility = View.GONE
             //做异常处理
             binding.etSmsValidCode.setError(smsResult?.msg,false)
         }
@@ -371,7 +368,6 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             mIdentity = validCodeResult?.validCodeData?.identity
         } else {
             updateValidCode()
-
             ToastUtil.showToastInCenter(
                 this@ForgetPasswordActivity,
                 getString(R.string.get_valid_code_fail_point)
@@ -382,7 +378,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         if(validateUserResult?.success == true) {
              validateUserResult.validData?.countDownSec?.let {
                  secs = it
+                 page++
+                 setPage()
             }
+        }else{
+            binding.etAccount.setError(validateUserResult?.msg,false)
         }
     }
     //发送验证码开始倒计时
