@@ -39,7 +39,6 @@
             android:id="@+id/selector_order_status"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:background="@drawable/shape_hot_handicap_bg"
             app:defaultStatusText="@string/ou_hdp_1x2_title"
             app:textColor="@color/color_025BE8_025BE8"
             app:arrowSrc = "@drawable/icon_arrow_blue"
