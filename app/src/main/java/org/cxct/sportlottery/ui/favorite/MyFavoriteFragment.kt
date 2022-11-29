@@ -283,7 +283,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                             matchStatusChangeEvent,
                             context
                         ) &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                         if (leagueOdd.matchOdds.isNullOrEmpty()) {
                             leagueAdapter.data.remove(leagueOdd)
@@ -306,7 +306,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                                 matchClockEvent
                             )
                         } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code) {
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                     }
                 }
             }
@@ -346,7 +346,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                             oddsChangeEvent
                         )
                     } &&
-                    leagueOdd.unfold == FoldState.UNFOLD.code
+                    leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                 ) {
                     updateBetInfo(leagueOdd, oddsChangeEvent)
                     updateGameList(index, leagueOdd)
@@ -363,7 +363,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                         } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                     }
                 }
@@ -381,7 +381,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                                 globalStopEvent
                             )
                         } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                     }
                 }
@@ -703,7 +703,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -722,7 +722,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,

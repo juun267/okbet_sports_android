@@ -107,7 +107,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                if (it.unfold == FoldState.FOLD.code) {
+                if (it.unfoldStatus == FoldState.FOLD.code) {
                     Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
                     unSubscribeChannelHall(it)
                 }
@@ -263,7 +263,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -365,7 +365,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                                 unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
                                 val targetLeagueOdd = leagueAdapter.data[targetIndex]
                                 leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
-                                    this.unfold = targetLeagueOdd.unfold
+                                    this.unfoldStatus = targetLeagueOdd.unfoldStatus
                                     this.gameType = targetLeagueOdd.gameType
                                     this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
                                 }
@@ -467,7 +467,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             matchStatusChangeEvent,
                             context
                         ) &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                         if (leagueOdd.matchOdds.isNullOrEmpty()) {
                             leagueAdapter.data.remove(leagueOdd)
@@ -490,7 +490,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                                 matchClockEvent
                             )
                         } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code) {
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
 
 //                        leagueAdapter.notifyItemChanged(index)
                     }
@@ -521,7 +521,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                             context, matchOdd, oddsChangeEvent
                         )
                     } &&
-                    leagueOdd.unfold == FoldState.UNFOLD.code
+                    leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                 ) {
                     leagueOddMap[leagueOdd.league.id] = leagueOdd
                     updateBetInfo(leagueOdd, oddsChangeEvent)
@@ -540,7 +540,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                         } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -560,7 +560,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                                 globalStopEvent
                             )
                         } &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -573,7 +573,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 unSubscribeChannelHallAll()
 
                 leagueAdapter.data.forEach { leagueOdd ->
-                    if (leagueOdd.unfold == FoldState.UNFOLD.code)
+                    if (leagueOdd.unfoldStatus == FoldState.UNFOLD.code)
                         subscribeChannelHall(leagueOdd)
                 }
             }
@@ -760,7 +760,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,

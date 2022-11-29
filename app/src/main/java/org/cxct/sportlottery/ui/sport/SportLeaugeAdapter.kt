@@ -349,7 +349,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         ) {
             itemView.league_text.text = item.league.name
             itemView.iv_country.setLeagueLogo(item.league.categoryIcon)
-            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
@@ -358,7 +358,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         fun update(item: LeagueOdd, matchType: MatchType, oddsType: OddsType) {
             itemView.league_text.text = item.league.name
             itemView.iv_country.setLeagueLogo(item.league.categoryIcon)
-            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
@@ -413,7 +413,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
 
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             itemView.league_odd_list.visibility =
-                if (item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+                if (item.unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
 
@@ -451,20 +451,21 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
 
+            val position = bindingAdapterPosition
             itemView.league_odd_list.visibility =
-                if (item.unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+                if (item.unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
-                if (adapterPosition > data.size - 1) return@setOnClickListener
-                item.unfold = if (item.unfold == FoldState.UNFOLD.code) {
+                if (position > data.size - 1) return@setOnClickListener
+                item.unfoldStatus = if (item.unfoldStatus == FoldState.UNFOLD.code) {
                     FoldState.FOLD.code
                 } else {
                     FoldState.UNFOLD.code
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
-                itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
+                itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
-                updateLeagueByExpand(bindingAdapterPosition)
+                updateLeagueByExpand(position)
 
                 leagueListener?.onClickLeague(item)
             }
