@@ -61,6 +61,11 @@ class ForgetViewModel(
     val smsEnable: LiveData<Boolean>
         get() = _smsEnable
     private val _smsEnable = MutableLiveData<Boolean>()
+    //用户校验返回值
+    val validDateResult: LiveData<ValidateUserResult?>
+        get() = _validDateResult
+    private val _validDateResult = MutableLiveData<ValidateUserResult?>()
+
     val smsResult: LiveData<SendSmsResult?>
         get() = _smsResult
     private val _smsResult = MutableLiveData<SendSmsResult?>()
@@ -99,6 +104,7 @@ class ForgetViewModel(
     fun checkValidCode(validCode: String): String? {
         val msg = when {
             validCode.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code_forget)
             else -> null
         }
         _accountCodeMsg.value = Pair(msg, msg == null)
@@ -174,6 +180,7 @@ class ForgetViewModel(
                 if (checkInputPair(accountCodeMsg)) {
                     return false
                 }
+
             }
             1 -> {
                 if (checkInputPair(phoneMsg)) {
@@ -204,12 +211,12 @@ class ForgetViewModel(
      * @phoneNum 手机号码
      *  获取短信你验证码
      */
-    fun getSendSms(phoneNum: String) {
+    fun getSendSms(phone: String,userName: String) {
         //先检测手机号 暂时做假数据处理
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.sendSmsForget(
-                    SendSmsRequest(phoneNum)
+                    SendSmsRequest(phone,userName)
                 )
             }
             _smsResult.postValue(result)
@@ -268,4 +275,24 @@ class ForgetViewModel(
             }
         }
     }
+
+    //账户认证
+    /**
+     * @param validCode 验证码
+     * @param userName  用户账户
+     * @param validCodeIdentity 验证码标识
+     */
+    fun checkValidateUser(validCode: String,userName: String,validCodeIdentity: String){
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.indexService.checkValidateUser(
+                    ValidateUserRequest(validCode,userName,validCodeIdentity)
+                )
+            }.let {
+                _validDateResult.postValue(it)
+            }
+        }
+
+    }
+
 }

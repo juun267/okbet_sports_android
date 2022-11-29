@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_LOGIN_DEVICE_SMS
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
+import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
@@ -82,5 +83,8 @@ interface IndexService {
     suspend fun resetPassWord(@Body resetPasswordRequest: ResetPasswordRequest): Response<ResetPasswordResult>
     @POST(SEND_SMS_FORGET)
     suspend fun sendSmsForget(@Body sendSmsRequest: SendSmsRequest): Response<SendSmsResult>
+
+    @POST(VALIDATE_USER)
+    suspend fun checkValidateUser(@Body sendSmsRequest: ValidateUserRequest): Response<ValidateUserResult>
 
 }
