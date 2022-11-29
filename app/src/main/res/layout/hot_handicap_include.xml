@@ -68,7 +68,6 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_hot_handicap"
-        android:layout_marginHorizontal="@dimen/margin_14"
         app:layout_constraintTop_toBottomOf="@+id/ll_hot_arrow"
         android:paddingBottom="@dimen/margin_30"
         android:layout_width="match_parent"
