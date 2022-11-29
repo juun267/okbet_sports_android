@@ -945,33 +945,33 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
                         tv_name.text =
-                            when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
+                            when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                                 true -> {
-                                    when {
-                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
-                                            itemData.matchOdd.playCateName
-                                        }
-                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
-                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
-                                                itemData.matchOdd.playCateName
-                                            } else {
-                                                context.getString(
-                                                    R.string.bet_info_in_play_score,
-                                                    itemData.matchOdd.playCateName,
-                                                    itemData.matchOdd.homeCornerKicks.toString(),
-                                                    itemData.matchOdd.awayCornerKicks.toString()
-                                                )
-                                            }
-                                        }
-                                        else -> {
-                                            context.getString(
-                                                R.string.bet_info_in_play_score,
-                                                itemData.matchOdd.playCateName,
-                                                itemData.matchOdd.homeScore.toString(),
-                                                itemData.matchOdd.awayScore.toString()
-                                            )
-                                        }
-                                    }
+//                                    when {
+//                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+//                                            itemData.matchOdd.playCateName
+//                                        }
+//                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+//                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+//                                                itemData.matchOdd.playCateName
+//                                            } else {
+//                                                context.getString(
+//                                                    R.string.bet_info_in_play_score,
+//                                                    itemData.matchOdd.playCateName,
+//                                                    itemData.matchOdd.homeCornerKicks.toString(),
+//                                                    itemData.matchOdd.awayCornerKicks.toString()
+//                                                )
+//                                            }
+//                                        }
+//                                        else -> {
+                                    context.getString(
+                                        R.string.bet_info_in_play_score,
+                                        itemData.matchOdd.playCateName,
+                                        itemData.matchOdd.homeScore.toString(),
+                                        itemData.matchOdd.awayScore.toString()
+                                    )
+//                                        }
+//                                    }
                                 }
                                 else -> itemData.matchOdd.playCateName
                             }
@@ -985,33 +985,33 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             ?.get(LanguageManager.getSelectLanguage(context).key)
                             ?: ""
                         tv_name.text =
-                            when (inPlay && itemData.matchType != MatchType.OUTRIGHT && itemData.matchOdd.gameType == GameType.FT.key) {
+                            when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
                                 true -> {
-                                    when {
-                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
-                                            nameOneLine(playCateName)
-                                        }
-                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
-                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
-                                                nameOneLine(playCateName)
-                                            } else {
-                                                context.getString(
-                                                    R.string.bet_info_in_play_score,
-                                                    playCateName,
-                                                    itemData.matchOdd.homeCornerKicks.toString(),
-                                                    itemData.matchOdd.awayCornerKicks.toString()
-                                                )
-                                            }
-                                        }
-                                        else -> {
-                                            context.getString(
-                                                R.string.bet_info_in_play_score,
-                                                playCateName,
-                                                itemData.matchOdd.homeScore.toString(),
-                                                itemData.matchOdd.awayScore.toString()
-                                            )
-                                        }
-                                    }
+//                                    when {
+//                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
+//                                            nameOneLine(playCateName)
+//                                        }
+//                                        PlayCate.needShowCurrentCorner(itemData.matchOdd.playCode) -> {
+//                                            if (itemData.matchOdd.homeCornerKicks == null || itemData.matchOdd.awayCornerKicks == null) {
+//                                                nameOneLine(playCateName)
+//                                            } else {
+//                                                context.getString(
+//                                                    R.string.bet_info_in_play_score,
+//                                                    playCateName,
+//                                                    itemData.matchOdd.homeCornerKicks.toString(),
+//                                                    itemData.matchOdd.awayCornerKicks.toString()
+//                                                )
+//                                            }
+//                                        }
+//                                        else -> {
+                                    context.getString(
+                                        R.string.bet_info_in_play_score,
+                                        playCateName,
+                                        itemData.matchOdd.homeScore.toString(),
+                                        itemData.matchOdd.awayScore.toString()
+                                    )
+//                                        }
+//                                    }
                                 }
                                 else -> nameOneLine(playCateName)
                             }

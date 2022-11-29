@@ -488,12 +488,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             isSelected = false
             setOnClickListener {
                 isSelected = !isSelected
-                oddsDetailListAdapter?.apply {
-                    oddsDetailDataList.forEach {
-                        it.isExpand = !isSelected
-                    }
-                    notifyDataSetChanged()
+                oddsDetailListAdapter?.oddsDetailDataList?.forEach {
+                    it.isExpand = !isSelected
                 }
+                oddsDetailListAdapter?.notifyDataSetChanged()
             }
         }
         matchInfo?.id?.let {

@@ -712,14 +712,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             }
             //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
-            TextUtils.equals(oddsDetail.matchInfo?.homeName, oddsDetail.oddArrayList[0]?.name).let {
-                itemView.lin_match?.isVisible = it
-                itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
-                itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
-                itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
-                itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
-            }
-
+            itemView.tv_home_name?.text = oddsDetail.matchInfo?.homeName
+            itemView.tv_away_name?.text = oddsDetail.matchInfo?.awayName
+            itemView.iv_home_logo?.setTeamLogo(oddsDetail.matchInfo?.homeIcon)
+            itemView.iv_away_logo?.setTeamLogo(oddsDetail.matchInfo?.awayIcon)
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             itemView.lin_match?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             when (sportCode) {

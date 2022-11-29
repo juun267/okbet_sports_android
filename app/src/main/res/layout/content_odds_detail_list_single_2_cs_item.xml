@@ -14,41 +14,7 @@
 
 
         <include layout="@layout/content_odds_detail_list_item" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_home_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="8dp"
-                android:textColor="@color/color_909090_666666"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="皇家马德里" />
-
-            <TextView
-                android:id="@+id/tv_away_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:paddingStart="8dp"
-                android:textColor="@color/color_909090_666666"
-                android:textSize="@dimen/textSize14sp"
-                tools:text="利物浦" />
-        </LinearLayout>
-
+        <include layout="@layout/content_odds_detail_list_team" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bet"
             android:layout_width="match_parent"
