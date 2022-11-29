@@ -382,7 +382,12 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                  setPage()
             }
         }else{
-            binding.etAccount.setError(validateUserResult?.msg,false)
+            if (validateUserResult?.code==2751){
+                binding.etAccount.setError(validateUserResult?.msg,false)
+            }else{
+                binding.etVerificationCode.setError(validateUserResult?.msg,false)
+            }
+
         }
     }
     //发送验证码开始倒计时
