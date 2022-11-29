@@ -433,6 +433,7 @@ object Constants {
     const val CANCEL_ACCOUNT = "/api/front/user/remove"
 
     //忘记密码 发送短信
+    const val VALIDATE_USER =  "/api/front/index/validateUser" //用户校验
     const val FORGET_PASSWORD_SMS = "/api/front/index/validateForgotPasswordSMS"
     const val RESET_FORGET_PASSWORD = "/api/front/index/resetForgotPassword" //重设密码
     const val SEND_SMS_FORGET = "/api/front/index/sendSmsForgotPassword" //获取短信验证码

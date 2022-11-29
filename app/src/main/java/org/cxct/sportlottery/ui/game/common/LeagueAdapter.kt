@@ -363,10 +363,10 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+                    data[adapterPosition].unfoldStatus = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
-            itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            itemView.league_odd_list.visibility = if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
 
@@ -405,16 +405,16 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfold = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+                    data[adapterPosition].unfoldStatus = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
-            itemView.league_odd_list.visibility = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            itemView.league_odd_list.visibility = if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
-                data[adapterPosition].unfold = if (data[adapterPosition].unfold == FoldState.UNFOLD.code) {
+                data[adapterPosition].unfoldStatus = if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) {
                     expandCheckList[data[adapterPosition].league.id] = false
                     FoldState.FOLD.code
                 } else {

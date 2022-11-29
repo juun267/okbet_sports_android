@@ -298,7 +298,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
                 GameType.getGameTypeString(itemView.context, gameType)
             itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
             itemView.iv_sport.isSelected = true
-            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
@@ -314,7 +314,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
                 GameType.getGameTypeString(itemView.context, gameType)
             itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
             itemView.iv_sport.isSelected = true
-            itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
@@ -352,12 +352,12 @@ class FavoriteAdapter(private val matchType: MatchType) :
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfold =
+                    data[adapterPosition].unfoldStatus =
                         if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
             itemView.rv_league.visibility =
-                if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+                if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
 
@@ -390,19 +390,19 @@ class FavoriteAdapter(private val matchType: MatchType) :
         ) {
             expandCheckList[data[adapterPosition].league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfold =
+                    data[adapterPosition].unfoldStatus =
                         if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
             itemView.rv_league.visibility =
-                if (data[adapterPosition].unfold == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+                if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
                 if (adapterPosition > data.size - 1) return@setOnClickListener
-                data[adapterPosition].unfold =
-                    if (data[adapterPosition].unfold == FoldState.UNFOLD.code) {
+                data[adapterPosition].unfoldStatus =
+                    if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) {
                         expandCheckList[data[adapterPosition].league.id] = false
                         FoldState.FOLD.code
                     } else {
@@ -410,11 +410,11 @@ class FavoriteAdapter(private val matchType: MatchType) :
                         FoldState.UNFOLD.code
                     } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
 
-                itemView.iv_arrow.isSelected = item.unfold == FoldState.FOLD.code
+                itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
                 data.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.gameType == data[adapterPosition].gameType) {
-                        leagueOdd.unfold = data[adapterPosition].unfold
+                        leagueOdd.unfoldStatus = data[adapterPosition].unfoldStatus
                     }
                     updateLeagueByExpand(index)
                 }
