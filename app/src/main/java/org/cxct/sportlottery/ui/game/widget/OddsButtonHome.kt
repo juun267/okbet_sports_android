@@ -27,7 +27,6 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils.getString
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -435,7 +434,6 @@ class OddsButtonHome @JvmOverloads constructor(
 
         if (status) {
             lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f)
-            LogUtil.d("flashAnimation++")
         }
 //        updateOddsTextColor()
     }

@@ -38,6 +38,7 @@ object TimeUtil {
     //    private const val YMDE_HMS_FORMAT = "yyyy-MM/dd-EEE HH:mm:ss"
     private const val DMY_HM_FORMAT = "yyyy-MM-dd HH:mm"
     private const val BIRTHDAY_FORMAT = "yyyy / MM / dd"
+    const val HM_FORMAT_SSS = "HH:mm:ss:SSS"
 
     const val TIMEZONE_DEFAULT = "GMT-4"
 

@@ -129,7 +129,7 @@ class SportListFragment :
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                if (it.unfold == FoldState.FOLD.code) {
+                if (it.unfoldStatus == FoldState.FOLD.code) {
                     Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
                     unSubscribeChannelHall(it)
                 }
@@ -325,7 +325,7 @@ class SportListFragment :
         iv_arrow.setOnClickListener {
             iv_arrow.isSelected = !iv_arrow.isSelected
             sportLeagueAdapter.data.forEach { it ->
-                it.unfold = if (iv_arrow.isSelected) FoldState.FOLD.code else FoldState.UNFOLD.code
+                it.unfoldStatus = if (iv_arrow.isSelected) FoldState.FOLD.code else FoldState.UNFOLD.code
             }
             sportLeagueAdapter.notifyDataSetChanged()
         }
@@ -616,7 +616,7 @@ class SportListFragment :
                             leagueOdd.matchOdds?.toMutableList(),
                             matchStatusChangeEvent,
                             context
-                        ) && leagueOdd.unfold == FoldState.UNFOLD.code
+                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                         if (leagueOdd.matchOdds.isNullOrEmpty()) {
                             unSubscribeChannelHall(leagueOdd)
@@ -636,7 +636,7 @@ class SportListFragment :
                         leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                             leagueOdd.matchOdds.forEach { matchOdd ->
                                 if (SocketUpdateUtil.updateMatchClock(matchOdd,
-                                        matchClockEvent) && leagueOdd.unfold == FoldState.UNFOLD.code
+                                        matchClockEvent) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                                 ) {
                                     updateMatch(leagueIndex, matchOdd)
                                 }
@@ -658,7 +658,7 @@ class SportListFragment :
                         leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                             leagueOdd.matchOdds.forEach { matchOdd ->
                                 if (SocketUpdateUtil.updateOddStatus(matchOdd,
-                                        matchOddsLockEvent) && leagueOdd.unfold == FoldState.UNFOLD.code
+                                        matchOddsLockEvent) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                                 ) {
                                     updateMatch(leagueIndex, matchOdd)
                                 }
@@ -679,7 +679,7 @@ class SportListFragment :
                             leagueOdd.matchOdds.forEach { matchOdd ->
                                 if (SocketUpdateUtil.updateOddStatus(
                                         matchOdd, globalStopEvent
-                                    ) && leagueOdd.unfold == FoldState.UNFOLD.code
+                                    ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                                 ) {
                                     //暫時不處理 防止過多更新
                                     updateMatch(leagueIndex, matchOdd)
@@ -891,7 +891,7 @@ class SportListFragment :
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            if (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            if (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 subscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
             } else {
                 unSubscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
@@ -901,7 +901,7 @@ class SportListFragment :
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            if (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            if (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 unSubscribeChannelHall(leagueOdd.gameType?.key, matchOdd.matchInfo?.id)
             }
         }

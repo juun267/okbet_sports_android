@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -324,7 +322,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
         ).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
             leagueListener = LeagueListener {
-                if (it.unfold == FoldState.FOLD.code) {
+                if (it.unfoldStatus == FoldState.FOLD.code) {
                     Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
                     unSubscribeChannelHall(it)
                 }
@@ -1058,7 +1056,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                 unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
                                 val targetLeagueOdd = leagueAdapter.data[targetIndex]
                                 leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
-                                    this.unfold = targetLeagueOdd.unfold
+                                    this.unfoldStatus = targetLeagueOdd.unfoldStatus
                                     this.gameType = targetLeagueOdd.gameType
                                     this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
                                 }
@@ -1489,7 +1487,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     matchStatusChangeEvent,
                                     context
                                 ) &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code
+                                leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                             ) {
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     unSubscribeChannelHall(leagueOdd)
@@ -1563,7 +1561,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                                     context, matchOdd, oddsChangeEvent, args.matchType
                                 )
                             } &&
-                            leagueOdd.unfold == FoldState.UNFOLD.code
+                            leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                         ) {
                             leagueOddMap[leagueOdd.league.id] = leagueOdd
                             updateBetInfo(leagueOdd, oddsChangeEvent)
@@ -2163,7 +2161,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -2183,7 +2181,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,

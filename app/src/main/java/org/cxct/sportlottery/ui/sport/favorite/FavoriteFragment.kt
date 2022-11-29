@@ -79,7 +79,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener {
-                if (it.unfold == FoldState.FOLD.code) {
+                if (it.unfoldStatus == FoldState.FOLD.code) {
                     Log.d("[subscribe]", "取消訂閱 ${it.league.name}")
                     unSubscribeChannelHall(it)
                 }
@@ -196,7 +196,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                                     context, matchOdd, oddsChangeEvent
                                 )
                             } &&
-                            leagueOdd.unfold == FoldState.UNFOLD.code
+                            leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                         ) {
                             leagueOddMap[leagueOdd.league.id] = leagueOdd
                             updateGameList(index, leagueOdd)
@@ -378,7 +378,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                             matchStatusChangeEvent,
                             context
                         ) &&
-                        leagueOdd.unfold == FoldState.UNFOLD.code
+                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                     ) {
                         if (leagueOdd.matchOdds.isNullOrEmpty()) {
                             unSubscribeChannelHall(leagueOdd)
@@ -403,7 +403,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                                         matchClockEvent
                                     )
                                 } &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code) {
+                                leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                                 //暫時不處理 防止過多更新
                             }
                         }
@@ -423,7 +423,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                         leagueOdds.forEachIndexed { _, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
-                                } && leagueOdd.unfold == FoldState.UNFOLD.code) {
+                                } && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                                 //暫時不處理 防止過多更新
                             }
                         }
@@ -445,7 +445,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                                         globalStopEvent
                                     )
                                 } &&
-                                leagueOdd.unfold == FoldState.UNFOLD.code
+                                leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                             ) {
                                 //暫時不處理 防止過多更新
                             }
@@ -657,7 +657,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -676,7 +676,7 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
 
     private fun unSubscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            when (leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
                 true -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
