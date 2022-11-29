@@ -3,59 +3,56 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:layout_marginTop="@dimen/margin_8"
     android:layout_marginHorizontal="@dimen/margin_10"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/include_layout0"
-        android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="4dp"
+        android:layout_height="60dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_selector"
         android:gravity="center"
-        android:elevation="8dp"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
+
         <ImageView
             android:id="@+id/iv_tab_icon"
-            android:src="@drawable/icon_recommend"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="23dp"
+            android:src="@drawable/icon_recommend" />
+
         <TextView
-            android:gravity="center"
             android:id="@+id/tv_tab_title"
-            android:text="@string/home_recommend"
-            android:textSize="@dimen/textSize12sp"
-            android:textColor="@color/color_E9F4FA"
-            android:textStyle="bold"
-            android:layout_marginHorizontal="@dimen/margin_2"
-            android:layout_marginBottom="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text = "推荐"/>
+            android:gravity="center"
+            android:layout_marginBottom="6dp"
+            android:text="@string/home_recommend"
+            android:textColor="@color/color_E9F4FA"
+            android:textSize="@dimen/textSize11sp"
+            android:textStyle="bold"
+            tools:text="推荐" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/include_layout1"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginRight="4dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_unselector"
         android:gravity="center"
-        android:elevation="8dp"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
             android:src="@drawable/live0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
+            android:layout_width="30dp"
+            android:layout_height="23dp" />
         <TextView
             android:gravity="center"
             android:text="@string/home_live"
             android:textSize="@dimen/textSize10sp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="6dp"
             android:textColor="@color/color_535D76"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -65,19 +62,18 @@
         android:id="@+id/include_layout3"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginRight="4dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_unselector"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
             android:src="@drawable/word_cup0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
+            android:layout_width="30dp"
+            android:layout_height="23dp" />
         <TextView
             android:gravity="center"
             android:textSize="@dimen/textSize10sp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="6dp"
             android:textColor="@color/color_535D76"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,9 +82,9 @@
     <LinearLayout
         android:id="@+id/include_layout4"
         android:visibility="gone"
+        android:layout_marginHorizontal="2dp"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginRight="4dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_unselector"
         android:gravity="center"
@@ -110,20 +106,19 @@
         android:id="@+id/include_layout2"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginRight="4dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_unselector"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
             android:src="@drawable/sport0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="23dp" />
         <TextView
             android:gravity="center"
             android:text="@string/home_sports"
             android:textSize="@dimen/textSize10sp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="6dp"
             android:textColor="@color/color_535D76"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -133,20 +128,19 @@
         android:id="@+id/include_layout5"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginRight="4dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_unselector"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
             android:src="@drawable/icon_ok_game0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
+            android:layout_width="30dp"
+            android:layout_height="23dp" />
         <TextView
             android:gravity="center"
             android:text="@string/home_slot"
             android:textSize="@dimen/textSize10sp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="6dp"
             android:textColor="@color/color_535D76"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -155,20 +149,19 @@
         android:id="@+id/include_layout6"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_marginRight="2dp"
         android:layout_weight="1"
         android:background="@drawable/bg_tab_open_unselector"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
             android:src="@drawable/icon_on_game0"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/margin_30" />
+            android:layout_width="@dimen/margin_30"
+            android:layout_height="23dp" />
         <TextView
             android:gravity="center"
             android:text="@string/home_on_game"
             android:textSize="@dimen/textSize10sp"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="6dp"
             android:maxLines="2"
             android:textColor="@color/color_535D76"
             android:layout_width="match_parent"
