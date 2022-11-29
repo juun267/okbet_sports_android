@@ -90,10 +90,10 @@ class ForgetViewModel(
     fun checkAccount(username: String): String? {
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyCombinationAccount(username) -> {
-                LocalUtils.getString(R.string.error_member_account)
-            }
-            !VerifyConstUtil.verifyAccount(username) -> LocalUtils.getString(R.string.error_member_account)
+//            !VerifyConstUtil.verifyCombinationAccount(username) -> {
+//                LocalUtils.getString(R.string.error_member_account)
+//            }
+//            !VerifyConstUtil.verifyAccount(username) -> LocalUtils.getString(R.string.error_member_account)
             else -> null
         }
         _accountMsg.value = Pair(msg, msg == null)
