@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.sport
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,15 +65,19 @@ class SportOutrightAdapter : BaseGameAdapter() {
 
     fun updateOdds(odd: Odd) {
         data.forEachIndexed { index, outrightItem ->
-            outrightItem.oddsList.find {
-                var newOdd = it.find { index ->
-                    index.id == odd.id
+            outrightItem.oddsList.forEachIndexed { index1, odds ->
+                odds.forEachIndexed { index2, odd1 ->
+                    if (odd1.id == odd.id) {
+                        notifyItemChanged(index, mutableListOf(index1, index2))
+                        return
+                    }
                 }
-                newOdd = odd
-                notifyItemChanged(index)
-                return
             }
         }
+    }
+
+    fun updateOutrightItem(index: Int, outrightItem: OutrightItem) {
+        notifyItemChanged(index, outrightItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -89,6 +94,31 @@ class SportOutrightAdapter : BaseGameAdapter() {
             is OutrightLeagueViewHolder -> {
                 holder.bind(data[position], oddsType, outrightOddListener)
             }
+        }
+    }
+
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>,
+    ) {
+        if (payloads.isNullOrEmpty()) {
+            onBindViewHolder(holder, position)
+        } else {
+            payloads.forEach { payload ->
+                when (payload) {
+                    is MutableList<*> -> {
+                        (holder as OutrightLeagueViewHolder).update(payload[0] as Int,
+                            payload[1] as Int)
+                    }
+                    is OutrightItem -> {
+                        (holder as OutrightLeagueViewHolder).bind(payload,
+                            oddsType,
+                            outrightOddListener)
+                    }
+                }
+            }
+
         }
     }
 
@@ -152,11 +182,21 @@ class SportOutrightAdapter : BaseGameAdapter() {
                         this@OutrightLeagueViewHolder,
                         outrightOddListener).apply {
                     }
+                    (adapter as OddsOutrightCatagoryAdapter).bindToRecyclerView(this)
                 } else {
                     (adapter as OddsOutrightCatagoryAdapter).update(outrightItem, oddsType)
                 }
             }
+        }
 
+        fun update(firstPosition: Int, secondPos: Int) {
+            Log.d("hjq", "update=" + firstPosition + "," + secondPos)
+            (itemView.rv_catagory.adapter as OddsOutrightCatagoryAdapter)
+                .apply {
+                    ((getViewByPosition(firstPosition, R.id.rv_odds) as RecyclerView)
+                        .adapter as OddsOutrightOddsAdapter)
+                        .notifyItemChanged(secondPos)
+                }
         }
     }
 
