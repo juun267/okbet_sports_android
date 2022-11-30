@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -211,7 +212,19 @@ class SportOutrightAdapter : BaseGameAdapter() {
         override fun convert(helper: BaseViewHolder?, item: List<Odd>?) {
             helper?.setText(R.id.tv_match_name, outrightItem.subTitleList[helper.layoutPosition])
             helper?.setText(R.id.tv_time,
-                "${outrightItem.matchOdd?.startDate ?: ""} ${outrightItem.matchOdd?.startTime ?: ""}")
+                "${outrightItem.matchOdd?.startDate ?: ""} ${outrightItem.matchOdd?.startTime ?: ""} " + mContext.getString(
+                    R.string.deadline))
+            helper?.setGone(R.id.rv_odds,
+                !outrightItem.collsePosition.contains(helper.layoutPosition))
+            helper?.getView<LinearLayout>(R.id.lin_categroy_name)?.setOnClickListener {
+                if (outrightItem.collsePosition.contains(helper.layoutPosition)) {
+                    outrightItem.collsePosition.remove(element = helper.layoutPosition)
+                    helper?.setGone(R.id.rv_odds, true)
+                } else {
+                    outrightItem.collsePosition.add(element = helper.layoutPosition)
+                    helper?.setGone(R.id.rv_odds, false)
+                }
+            }
             helper?.getView<RecyclerView>(R.id.rv_odds)?.apply {
                 if (adapter == null) {
                     layoutManager = GridLayoutManager(context, 2)

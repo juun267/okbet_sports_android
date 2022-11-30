@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/margin_12"
+        android:visibility="gone"
         tools:itemCount="3"
         tools:listitem="@layout/item_home_slot" />
 
@@ -36,13 +37,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
+        android:gravity="center_horizontal"
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:layout_marginTop="120dp"
             android:src="@drawable/bg_okgame_empty" />
 
         <TextView
