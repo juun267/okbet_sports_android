@@ -1314,6 +1314,6 @@
     <string name="your_bet_order_success">Cược đơn thành công</string>
     <string name="dont_have_slot_game">Hiện không có game</string>
     <string name="find_back_password">lấy lại mật khẩu</string>
-    <string name="place_enter_your_account">vui lòng nhập tên đăng nhập</string>
     <string name="deadline">Hạn đến</string>
+    <string name="place_enter_your_account">Mời nhập tên người dùng</string>
 </resources>
