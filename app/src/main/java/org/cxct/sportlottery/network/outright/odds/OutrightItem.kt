@@ -8,4 +8,6 @@ data class OutrightItem(
     val subTitleList: List<String>,
     var leagueExpanded: Boolean,
     val oddsList: List<List<Odd>>,
-)
+) {
+    var collsePosition = mutableListOf<Int>()
+}

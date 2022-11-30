@@ -118,9 +118,14 @@ class SportOutrightFragment :
     }
     private val mOddsChangeListener by lazy {
         ServiceBroadcastReceiver.OddsChangeListener { oddsChangeEvent ->
-            when (game_list?.adapter) {
-                is SportOutrightAdapter -> {
-                    viewModel.updateOutrightOddsChange(context, oddsChangeEvent)
+            oddsChangeEvent.oddsList.let { outrightList ->
+                sportOutrightAdapter.data.forEachIndexed { index, outrightItem ->
+                    if (SocketUpdateUtil.updateMatchOdds(context,
+                            outrightItem.matchOdd,
+                            oddsChangeEvent)
+                    ) {
+                        sportOutrightAdapter.updateOutrightItem(index, outrightItem)
+                    }
                 }
             }
         }
@@ -484,7 +489,7 @@ class SportOutrightFragment :
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let { betInfoList ->
-                sportOutrightAdapter.data.filterIsInstance<OutrightItem>().forEach { outrightItem ->
+                sportOutrightAdapter.data.forEach { outrightItem ->
                     outrightItem.oddsList.forEach { odds ->
                         odds.forEach { odd ->
                             val betInfoSelected = betInfoList.any { betInfoListData ->

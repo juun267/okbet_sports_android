@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -19,7 +18,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SportMenuData
@@ -710,21 +708,6 @@ class SportListViewModel(
 
     fun setCurMatchType(matchType: MatchType) {
         this.matchType = matchType
-    }
-
-    fun updateOutrightOddsChange(context: Context?, oddsChangeEvent: OddsChangeEvent) {
-        viewModelScope.launch(Dispatchers.IO) {
-            outrightMatchList.value?.peekContent()?.let { outrightList ->
-                outrightList.filterIsInstance<OutrightItem>().forEach { outrightItem ->
-                    SocketUpdateUtil.updateMatchOdds(
-                        context, outrightItem.matchOdd, oddsChangeEvent
-                    )
-                }
-                withContext(Dispatchers.Main) {
-                    _outrightMatchList.value = Event(outrightList)
-                }
-            }
-        }
     }
 
     fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
