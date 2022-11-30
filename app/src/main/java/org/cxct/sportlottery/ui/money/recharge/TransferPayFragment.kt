@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
@@ -453,14 +454,14 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 ll_qr.visibility = View.VISIBLE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-
+                tv_dio.isVisible = false
                 tv_hint1.text = getString(R.string.cft_recharge_hint)
             }
             MoneyType.WX_TYPE.code -> {
                 hideEditText()
                 ll_qr.visibility = View.VISIBLE
                 et_wx_id.visibility = View.VISIBLE
-
+                tv_dio.isVisible = false
                 tv_hint1.text = getString(R.string.wx_recharge_hint)
 
             }
@@ -469,7 +470,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 ll_qr.visibility = View.VISIBLE
                 et_nickname.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-
+                tv_dio.isVisible = false
                 tv_hint1.text = getString(R.string.ali_recharge_hint)
             }
             MoneyType.GCASH_TYPE.code -> {
@@ -477,7 +478,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 ll_qr.visibility = View.VISIBLE
                 et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
-
+                tv_dio.isVisible = false
                 tv_hint1.text = getString(R.string.gcash_recharge_hint)
             }
             MoneyType.GRABPAY_TYPE.code -> {
@@ -485,7 +486,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 ll_qr.visibility = View.VISIBLE
                 et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
-
+                tv_dio.isVisible = false
                 tv_hint1.text = getString(R.string.grabpay_recharge_hint)
             }
             MoneyType.PAYMAYA_TYPE.code -> {
@@ -493,7 +494,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 ll_qr.visibility = View.VISIBLE
                 et_nickname.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
-
+                tv_dio.isVisible = false
                 tv_hint1.text = getString(R.string.paymaya_recharge_hint)
             }
         }
