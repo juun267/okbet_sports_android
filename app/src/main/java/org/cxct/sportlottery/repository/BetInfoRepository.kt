@@ -264,7 +264,7 @@ object BetInfoRepository {
     }
 
     /**
-     * 點擊賠率按鈕加入投注清單, 並產生串關注單
+     * 点击赔率按钮加入投注清单，并产生串关注单
      */
     fun addInBetInfo(
         matchType: MatchType,

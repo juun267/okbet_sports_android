@@ -107,7 +107,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    fun getLockMoney(){
+    fun getLockMoney() {
         viewModelScope.launch {
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.lockMoney()
@@ -125,16 +125,18 @@ abstract class BaseOddButtonViewModel(
         val oddId = data.odd.id
 //        Timber.e("oddId: $oddId")
         if (savedOddId == oddId) return
-        savedOddId = oddId.orEmpty() //保存savedOddId
-        if (data.matchType == MatchType.OUTRIGHT){
-            updateMatchBetListForOutRight(//TODO Bill 這裡要看冠軍的
+        savedOddId = oddId.orEmpty()
+        if (data.matchType == MatchType.OUTRIGHT) {
+            //冠军
+            updateMatchBetListForOutRight(
                 matchType = MatchType.OUTRIGHT,
                 gameType = data.gameType,
                 playCateCode = data.playCateCode ?: "",
                 matchOdd = data.matchOdd!!,
                 odd = data.odd
             )
-        }else{
+        } else {
+            //除冠军外 其他分类
             updateMatchBetList(
                 data.matchType,
                 data.gameType,
@@ -172,30 +174,32 @@ abstract class BaseOddButtonViewModel(
         if (betItem == null) {
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchInfo.id,
-                        odd.id.toString()))
+                    OneBoSportApi.betService.getBetInfo(
+                        BetInfoRequest(
+                            matchInfo.id,
+                            odd.id.toString()
+                        )
+                    )
                 }?.let { result ->
                     //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
                     savedOddId = "savedOddId" //重設savedOddId
                     if (result.success) {
                         val betInfo = result.BetInfo
-                        matchInfo.let {
-                            betInfoRepository.addInBetInfo(
-                                matchType,
-                                gameType,
-                                playCateCode,
-                                otherPlayCateName ?: playCateName,
-                                odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
-                                    ?: odd.name ?: "",
-                                it,
-                                odd,
-                                subscribeChannelType,
-                                playCateMenuCode,
-                                currentOddsType,
-                                betPlayCateNameMap,
-                                betInfo = betInfo
-                            )
-                        }
+                        betInfoRepository.addInBetInfo(
+                            matchType,
+                            gameType,
+                            playCateCode,
+                            otherPlayCateName ?: playCateName,
+                            odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                                ?: odd.name ?: "",
+                            matchInfo,
+                            odd,
+                            subscribeChannelType,
+                            playCateMenuCode,
+                            currentOddsType,
+                            betPlayCateNameMap,
+                            betInfo = betInfo
+                        )
                     }
                 }
             }
@@ -216,6 +220,7 @@ abstract class BaseOddButtonViewModel(
                 LanguageManager.Language.ZH -> {
                     it?.zh
                 }
+
                 else -> {
                     it?.en
                 }
@@ -233,7 +238,12 @@ abstract class BaseOddButtonViewModel(
         if (betItem == null) {
             viewModelScope.launch {
                 doNetwork(androidContext) {
-                    OneBoSportApi.betService.getBetInfo(BetInfoRequest(matchOdd.matchInfo?.id.toString(), odd.id.toString()))
+                    OneBoSportApi.betService.getBetInfo(
+                        BetInfoRequest(
+                            matchOdd.matchInfo?.id.toString(),
+                            odd.id.toString()
+                        )
+                    )
                 }?.let { result ->
                     //如有其他地方呼叫getBetInfo，api回傳之後也要重設savedOddId
                     savedOddId = "savedOddId" //重設savedOddId
@@ -246,8 +256,11 @@ abstract class BaseOddButtonViewModel(
                                 playCateCode = playCateCode,
                                 playCateName = outrightCateName
                                     ?: "",
-                                playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(
-                                    androidContext).key)
+                                playName = odd.nameMap?.get(
+                                    LanguageManager.getSelectLanguage(
+                                        androidContext
+                                    ).key
+                                )
                                     ?: odd.name ?: "",
                                 matchInfo = it,
                                 odd = odd,
@@ -384,7 +397,12 @@ abstract class BaseOddButtonViewModel(
         parlayBetList.forEach {
             if (it.betAmount > 0) {
                 val betAmount = if (tabPosition == 1) it.betAmount else 0.0
-                parlayList.add(Stake(TextUtil.replaceCByParlay(androidContext, it.parlayType), betAmount))
+                parlayList.add(
+                    Stake(
+                        TextUtil.replaceCByParlay(androidContext, it.parlayType),
+                        betAmount
+                    )
+                )
             }
         }
 
@@ -653,7 +671,7 @@ abstract class BaseOddButtonViewModel(
         val discount = userInfo.value?.discount ?: 1F
         this.odds.forEach { (key, value) ->
             value.odds.forEach { odd ->
-                if(!key.contains(PlayCate.LCS.value)) { //反波膽不處理折扣
+                if (!key.contains(PlayCate.LCS.value)) { //反波膽不處理折扣
                     odd?.setupDiscount(discount)
                 }
 
@@ -688,7 +706,8 @@ abstract class BaseOddButtonViewModel(
                         newItem.status.let { status -> oldItem.status = status }
 
                         //賠率為啟用狀態時才去判斷是否有賠率變化
-                        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
+                        var currentOddsType =
+                            MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
                         if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.oddState = getOddState(
@@ -708,7 +727,9 @@ abstract class BaseOddButtonViewModel(
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
                             newItem.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
-                            newItem.malayOdds.let { malayOdds -> oldItem.malayOdds = malayOdds ?: 0.0 }
+                            newItem.malayOdds.let { malayOdds ->
+                                oldItem.malayOdds = malayOdds ?: 0.0
+                            }
                             newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 

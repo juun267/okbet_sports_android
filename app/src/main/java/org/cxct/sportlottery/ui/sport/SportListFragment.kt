@@ -325,7 +325,8 @@ class SportListFragment :
         iv_arrow.setOnClickListener {
             iv_arrow.isSelected = !iv_arrow.isSelected
             sportLeagueAdapter.data.forEach { it ->
-                it.unfoldStatus = if (iv_arrow.isSelected) FoldState.FOLD.code else FoldState.UNFOLD.code
+                it.unfoldStatus =
+                    if (iv_arrow.isSelected) FoldState.FOLD.code else FoldState.UNFOLD.code
             }
             sportLeagueAdapter.notifyDataSetChanged()
         }
@@ -635,8 +636,9 @@ class SportListFragment :
                         val leagueOdds = sportLeagueAdapter.data
                         leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                             leagueOdd.matchOdds.forEach { matchOdd ->
-                                if (SocketUpdateUtil.updateMatchClock(matchOdd,
-                                        matchClockEvent) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                                if (SocketUpdateUtil.updateMatchClock(
+                                        matchOdd, matchClockEvent
+                                    ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                                 ) {
                                     updateMatch(leagueIndex, matchOdd)
                                 }
@@ -657,8 +659,9 @@ class SportListFragment :
 
                         leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                             leagueOdd.matchOdds.forEach { matchOdd ->
-                                if (SocketUpdateUtil.updateOddStatus(matchOdd,
-                                        matchOddsLockEvent) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                                if (SocketUpdateUtil.updateOddStatus(
+                                        matchOdd, matchOddsLockEvent
+                                    ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
                                 ) {
                                     updateMatch(leagueIndex, matchOdd)
                                 }
@@ -869,23 +872,26 @@ class SportListFragment :
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
 
-        val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
         if (gameType == null || matchInfo == null) {
             return
         }
 
         val fastBetDataBean = FastBetDataBean(
             matchType = matchType,
-            gameType = gameType!!,
+            gameType = gameType,
             playCateCode = playCateCode,
             playCateName = playCateName,
-            matchInfo = matchInfo!!,
+            matchInfo = matchInfo,
             matchOdd = null,
             odd = odd,
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as MainTabActivity).setupBetData(fastBetDataBean)
+        if (activity != null && activity is MainTabActivity) {
+            (activity as MainTabActivity).setupBetData(fastBetDataBean)
+        }
     }
 
 

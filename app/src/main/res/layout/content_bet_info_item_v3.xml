@@ -6,13 +6,6 @@
     tools:ignore="RtlSymmetry,SpUsage,ContentDescription,HardcodedText,Autofill">
 
 
-    <data>
-
-        <variable
-            name="parlayOdd"
-            type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
-
-    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -190,10 +183,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_8"
-                    android:background="@drawable/bg_delete_button"
+                    android:background="@drawable/ic_bet_list_delete"
                     android:paddingHorizontal="7dp"
                     android:paddingVertical="1dp"
-                    android:text="@string/delete_bet"
                     android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
