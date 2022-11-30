@@ -465,21 +465,22 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_today), 0.7f)
                 tv_number?.text = countToday.toString()
             }
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 4)?.customView?.apply {
+                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
+                tv_number?.text = countParlay.toString()
+            }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.EARLY) ?: 4)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.EARLY) ?: 5)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_early), 0.7f)
                 tv_number?.text = countEarly.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 5)?.customView?.apply {
+            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.OUTRIGHT) ?: 6)?.customView?.apply {
                 tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_outright), 0.7f)
                 tv_number?.text = countOutright.toString()
             }
 
-            tabLayout.getTabAt(getMatchTypeTabPosition(MatchType.PARLAY) ?: 6)?.customView?.apply {
-                tv_title?.setTextWithStrokeWidth(getString(R.string.home_tab_parlay), 0.7f)
-                tv_number?.text = countParlay.toString()
-            }
+
 
             //0401需求先隱藏特優賠率
 //            val tabEps = tabLayout.getTabAt(7)?.customView
@@ -513,8 +514,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         MatchType.AT_START to 1,
         MatchType.TODAY to 2,
         MatchType.EARLY to 3,
-        MatchType.OUTRIGHT to 4,
-        MatchType.PARLAY to 5,
+        MatchType.PARLAY to 4,
+        MatchType.OUTRIGHT to 5,
         MatchType.EPS to 6,
         MatchType.MAIN to 99
     )
