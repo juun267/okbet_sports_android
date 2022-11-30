@@ -1263,7 +1263,7 @@
     <string name="please_set_forget_password">请设置您的新账号密码!</string>
     <string name="has_send_message_to_phone">验证码已经发送到你的手机: </string>
     <string name="to_back_login">返回登录</string>
-    <string name="get_phone_code">获取</string>
+    <string name="get_phone_code">发送</string>
     <string name="reget_phone_code">重新发送</string>
     <string name="new_login_password">新登录密码</string>
     <string name="new_login_password_confirm">确认新登录密码</string>
