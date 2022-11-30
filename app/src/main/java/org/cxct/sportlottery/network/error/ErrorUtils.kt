@@ -78,6 +78,7 @@ import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
 import org.cxct.sportlottery.network.Constants.VALIDATE_TWO_FACTOR
+import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.Constants.WITHDRAW_ADD
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
@@ -98,6 +99,7 @@ import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.ForgetSmsResult
 import org.cxct.sportlottery.network.index.forgetPassword.ResetPasswordResult
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
+import org.cxct.sportlottery.network.index.forgetPassword.ValidateUserResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -181,7 +183,10 @@ object ErrorUtils {
             if (it.success != null && it.code != null && it.msg != null) {
                 val url = response.raw().request.url.toString()
                 when {
-
+                    (url.contains(VALIDATE_USER))->{
+                        @Suppress("UNCHECKED_CAST")
+                        return ValidateUserResult(it.code,it.msg,it.success,null) as T
+                    }
                     (url.contains(HOT_LIVE_LIST))-> {
                         @Suppress("UNCHECKED_CAST")
                         return HotMatchLiveResult(it.code, it.msg, it.success,null) as T

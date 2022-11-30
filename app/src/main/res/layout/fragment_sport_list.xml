@@ -35,7 +35,7 @@
                     android:id="@+id/ll_sport_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="10dp"
+                    android:elevation="4dp"
                     android:background="@drawable/bg_white_radius_10_bottom"
                     android:gravity="center_horizontal"
                     tools:ignore="MissingConstraints">

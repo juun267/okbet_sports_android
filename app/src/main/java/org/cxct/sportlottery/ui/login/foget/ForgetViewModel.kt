@@ -90,10 +90,10 @@ class ForgetViewModel(
     fun checkAccount(username: String): String? {
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyCombinationAccount(username) -> {
-                LocalUtils.getString(R.string.error_member_account)
-            }
-            !VerifyConstUtil.verifyAccount(username) -> LocalUtils.getString(R.string.error_member_account)
+//            !VerifyConstUtil.verifyCombinationAccount(username) -> {
+//                LocalUtils.getString(R.string.error_member_account)
+//            }
+//            !VerifyConstUtil.verifyAccount(username) -> LocalUtils.getString(R.string.error_member_account)
             else -> null
         }
         _accountMsg.value = Pair(msg, msg == null)
@@ -116,7 +116,7 @@ class ForgetViewModel(
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phoneNum) -> {
-                LocalUtils.getString(R.string.error_phone_number)
+                LocalUtils.getString(R.string.error_phone_num)
             }
             else -> null
         }
@@ -139,8 +139,8 @@ class ForgetViewModel(
     fun checkPassword(password: String, confirmPassword: String? = null): String? {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_register_password)
-            password.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
+            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_new_password)
+            password.length !in 6..20 -> LocalUtils.getString(R.string.error_new_password)
             !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
             else -> null
         }
@@ -155,7 +155,7 @@ class ForgetViewModel(
     fun checkConfirmPassword(password: String?, confirmPassword: String?) {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            password != confirmPassword -> LocalUtils.getString(R.string.error_confirm_password_forget)
+            password != confirmPassword -> LocalUtils.getString(R.string.error_tips_confirm_password)
             else -> null
         }
         _confirmPasswordMsg.value = Pair(msg, msg == null)

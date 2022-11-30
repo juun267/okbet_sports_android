@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.maintab
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_sport.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.android.synthetic.main.view_toolbar_home.view.toolBar
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
@@ -57,16 +59,16 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             return fragment
         }
 
-         val matchTypeTabPositionMap = mapOf<MatchType, Int>(
-             MatchType.IN_PLAY to 0,
-             MatchType.AT_START to 1,
-             MatchType.TODAY to 2,
-             MatchType.EARLY to 3,
-             MatchType.CS to 4,
-             MatchType.OUTRIGHT to 5,
-             MatchType.PARLAY to 6,
-             MatchType.MAIN to 99
-         )
+        val matchTypeTabPositionMap = mapOf<MatchType, Int>(
+            MatchType.IN_PLAY to 0,
+            MatchType.AT_START to 1,
+            MatchType.TODAY to 2,
+            MatchType.EARLY to 3,
+            MatchType.CS to 4,
+            MatchType.OUTRIGHT to 5,
+            MatchType.PARLAY to 6,
+            MatchType.MAIN to 99
+        )
     }
 
     private var betListFragment = BetListFragment()
@@ -95,6 +97,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     fun initToolBar() {
         lin_toolbar.fitsSystemStatus()
+//        lin_toolbar.toolBar.setBackgroundColor(Color.parseColor("#ffffff"))
+        lin_toolbar.setBackgroundColor(Color.parseColor("#ffffff"))
         iv_menu_left.setOnClickListener {
             (activity as MainTabActivity).showLeftFrament(1, tabLayout.selectedTabPosition)
             EventBus.getDefault().post(MenuEvent(true))
@@ -138,6 +142,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
+
             override fun onTabReselected(tab: TabLayout.Tab?) {
 
             }
@@ -202,8 +207,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
 
-
-
     private fun selectTab(position: Int?) {
         if (position == null) return
         var matchType =
@@ -239,6 +242,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             updateUiWithResult(it)
         }
     }
+
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
     }
@@ -312,6 +316,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         showFragment = when (matchType) {
             MatchType.OUTRIGHT ->
                 SportOutrightFragment.newInstance(gameType = gameType)
+
             else ->
                 SportListFragment.newInstance(matchType = matchType, gameType = gameType)
         }
@@ -345,9 +350,11 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             is SportListFragment -> {
                 (showFragment as SportListFragment).getCurGameType()
             }
+
             is SportOutrightFragment -> {
                 (showFragment as SportOutrightFragment).getCurGameType()
             }
+
             else -> {
                 null
             }
