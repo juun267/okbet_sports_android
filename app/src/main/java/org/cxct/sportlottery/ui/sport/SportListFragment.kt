@@ -605,26 +605,19 @@ class SportListFragment :
                                 sportLeagueAdapter.notifyItemRemoved(index)
                             }
                         }
-                    }
-                }
-
-                val leagueOdds = sportLeagueAdapter.data
-
-                leagueOdds.forEachIndexed { index, leagueOdd ->
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
-                            leagueOdd.matchOdds?.toMutableList(),
-                            matchStatusChangeEvent,
-                            context
-                        ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-                    ) {
-                        if (leagueOdd.matchOdds.isNullOrEmpty()) {
-                            unSubscribeChannelHall(leagueOdd)
-                            sportLeagueAdapter.data.remove(leagueOdd)
-                            sportLeagueAdapter.notifyItemRemoved(index)
+                    } else {
+                        if (SocketUpdateUtil.updateMatchStatus(
+                                leagueOdd.gameType?.key,
+                                leagueOdd.matchOdds?.toMutableList(),
+                                matchStatusChangeEvent,
+                                context
+                            ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                        ) {
+                            sportLeagueAdapter.updateLeague(index, leagueOdd)
                         }
                     }
                 }
+
             }
         }
 
