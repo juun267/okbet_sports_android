@@ -75,17 +75,24 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     companion object {
+
+        var activityInstance: MainTabActivity? = null
+
         fun reStart(context: Context) {
             val intent = Intent(context, MainTabActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
 
-        fun start2Tab(context: Context, startTabPosition: Int) {
-            val intent = Intent(context, MainTabActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.putExtra("startTabPosition", startTabPosition)
-            context.startActivity(intent)
+        fun start2Tab(context: Context, position: Int) {
+            if (activityInstance != null) {
+                activityInstance!!.switchTabByPosition(position)
+            } else {
+                val intent = Intent(context, MainTabActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.putExtra("startTabPosition", position)
+                context.startActivity(intent)
+            }
         }
     }
 
@@ -103,6 +110,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initBottomFragment()
         initBottomNavigation()
         initObserve()
+        activityInstance = this
         EventBusUtil.targetLifecycle(this)
     }
 
@@ -196,7 +204,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                             }
                         }
 
-                        R.id.home -> {
+                        R.id.i_home -> {
                             wordcupModel = isWorldcupModel
                         }
                     }
@@ -502,6 +510,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun onDestroy() {
         super.onDestroy()
+        if (activityInstance == this) {
+            activityInstance == null
+        }
         SportLeagueAdapter.clearCachePool()
     }
 }

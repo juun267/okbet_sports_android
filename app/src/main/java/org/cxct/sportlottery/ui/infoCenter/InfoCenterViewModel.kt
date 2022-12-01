@@ -131,7 +131,11 @@ class InfoCenterViewModel(
     //只取得資料總筆數(Tab顯示要用)
     fun getMsgCount(dataType: MsgType) {
         viewModelScope.launch {
-            infoCenterRepository.getMsgCount(dataType.code)
+            try {
+                infoCenterRepository.getMsgCount(dataType.code)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 

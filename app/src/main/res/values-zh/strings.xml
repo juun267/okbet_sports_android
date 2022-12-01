@@ -1263,7 +1263,7 @@
     <string name="please_set_forget_password">请设置您的新账号密码!</string>
     <string name="has_send_message_to_phone">验证码已经发送到你的手机: </string>
     <string name="to_back_login">返回登录</string>
-    <string name="get_phone_code">获取</string>
+    <string name="get_phone_code">发送</string>
     <string name="reget_phone_code">重新发送</string>
     <string name="new_login_password">新登录密码</string>
     <string name="new_login_password_confirm">确认新登录密码</string>
@@ -1329,4 +1329,12 @@
     <string name="new_game_and_testing">(新游戏，测试中...)</string>
     <string name="dont_have_slot_game">暂无棋牌游戏</string>
     <string name="deadline">截止</string>
+    <string name="error_verification_code_forget">验证码错误</string>
+    <string name="find_back_password">密码找回</string>
+    <string name="place_enter_your_account">请输入用户名</string>
+    <string name="error_phone_num">手机号码错误</string>
+    <string name="tips_login_password_success">登陆密码修改成功，请重新登录。</string>
+    <string name="error_tips_confirm_password">您输入的密码不一致，请重新输入</string>
+    <string name="hide_confirm_password">确认新登录密码</string>
+    <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
 </resources>

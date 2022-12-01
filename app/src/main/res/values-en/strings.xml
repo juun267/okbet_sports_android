@@ -1206,7 +1206,7 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit 1$s-%2$s</string>
+    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
     <string name="bet_receipt_win_quota_with_sign">To Win(%s)：</string>
@@ -1326,4 +1326,5 @@
     <string name="new_game_and_testing">New Games | Beta</string>
     <string name="dont_have_slot_game">No games</string>
     <string name="deadline">Deadline</string>
+    <string name="place_enter_your_account">Please enter user name</string>
 </resources>
