@@ -466,6 +466,8 @@
     <color name="color_80414655">#80414655</color>
     <color name="color_E5EFFF">#E5EFFF</color>
     <color name="color_EC9007">#EC9007</color>
+    <color name="color_C0CCEC">#C0CCEC</color>
+    <color name="color_e3e8ee">#E3E8EE</color>
     <!--region keyboard-->
     <color name="color_43546F">#43546F</color>
     <color name="color_5A799E">#5A799E</color>
@@ -537,4 +539,5 @@
     <color name="color_181922_F0F5FA">@color/color_F0F5FA</color>
     <color name="color_79839F_6C7BA8">@color/color_6C7BA8</color>
     <color name="okb1_app_text_color_gray01">#6C7BA8</color>
+
 </resources>

@@ -1329,4 +1329,5 @@
     <string name="new_game_and_testing">(新游戏，测试中...)</string>
     <string name="dont_have_slot_game">暂无棋牌游戏</string>
     <string name="deadline">截止</string>
+    <string name="accept_any_change_in_odds">接受任何赔率变化</string>
 </resources>
