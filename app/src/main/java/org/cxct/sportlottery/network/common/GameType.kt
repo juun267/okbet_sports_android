@@ -317,7 +317,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 IH.key -> R.drawable.bg_menu_inplay_icehockey
                 BX.key -> R.drawable.bg_menu_inplay_boxing
                 CB.key -> R.drawable.bg_menu_inplay_billiards
-                CK.key -> R.drawable.bg_menu_inplay_electronic
+                CK.key -> R.drawable.bg_menu_inplay_cricket
                 BB.key -> R.drawable.bg_menu_inplay_baseball
                 RB.key -> R.drawable.bg_menu_inplay_rugby
                 AFT.key -> R.drawable.bg_menu_inplay_usfootball
