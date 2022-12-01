@@ -75,13 +75,23 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
 
                 //未讀的資料打開要變成已讀
                 if (currentPage == YET_READ) {
-                    viewModel.setDataRead(data.id.toString())
+                    markMessageReaded(data)
                 }
             }
         })
     }
 
+    private fun markMessageReaded(bean: InfoCenterData) {
+        adapter.removeItem(bean)
+        viewModel.setDataRead(bean.id.toString())
+        custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), ++readedNum)
+        unReadedNum = Math.max(0, unReadedNum - 1)
+        custom_tab_layout.secondTabText = String.format(resources.getString(R.string.unread_letters), unReadedNum)
+    }
+
     private var mNowLoading: Boolean = false
+    private var readedNum = 0
+    private var unReadedNum = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,6 +187,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         })
         //已讀總筆數
         viewModel.totalReadMsgCount.observe(this@InfoCenterActivity) {
+            readedNum = it
             custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), it)
         }
         //未讀訊息清單
@@ -198,6 +209,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
         })
         //未讀總筆數
         viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity) {
+            unReadedNum = it
             custom_tab_layout.secondTabText =
                 String.format(resources.getString(R.string.unread_letters), it)
         }

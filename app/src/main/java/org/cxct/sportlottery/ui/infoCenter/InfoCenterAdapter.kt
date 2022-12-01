@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setDateTime
 
 class InfoCenterAdapter(private val clickListener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -45,6 +44,14 @@ class InfoCenterAdapter(private val clickListener: ItemClickListener) : Recycler
             }
             is NoDataViewHolder -> {
             }
+        }
+    }
+
+    fun removeItem(bean: InfoCenterData) {
+        val position = data.indexOf(bean)
+        if (position >= 0) {
+            data.removeAt(position)
+            notifyItemRemoved(position)
         }
     }
 
