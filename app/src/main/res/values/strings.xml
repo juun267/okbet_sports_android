@@ -1343,7 +1343,7 @@
     <string name="dont_have_slot_game">No games</string>
     <string name="bad_param">参数错误</string>
     <string name="error_verification_code_forget">验证码错误</string>
-    <string name="find_back_password">密码找回</string>
+    <string name="find_back_password">Recover password</string>
     <string name="place_enter_your_account">Please enter user name</string>
     <string name="error_phone_num">手机号码错误</string>
     <string name="tips_login_password_success">登陆密码修改成功，请重新登录。</string>
