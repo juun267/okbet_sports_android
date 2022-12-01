@@ -370,7 +370,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
-    private fun getListSize(): Int {
+    fun getListSize(): Int {
         //region 20220607 投注單版面調整
         val betListSize = betList?.size ?: 0
         return when (adapterBetType) {

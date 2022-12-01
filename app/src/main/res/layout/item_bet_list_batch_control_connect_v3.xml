@@ -202,7 +202,7 @@
                     android:paddingTop="@dimen/margin_15"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    tools:visibility="visible" />
+                    tools:visibility="gone" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
