@@ -209,7 +209,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             if (viewModel.oddChange.value == true) {
                 addBet()
             } else {
-                activity?.onBackPressed()
+                activity?.finish()
                 when (activity) {
                     is MainTabActivity -> (activity as MainTabActivity).jumpToBetInfo(2)
                     else -> MainTabActivity.start2Tab(AppManager.currentActivity(), 2)
