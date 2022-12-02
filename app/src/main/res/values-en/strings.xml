@@ -1323,7 +1323,7 @@
     <string name="cs_center">CS Center</string>
     <string name="Pinned">Pinned</string>
     <string name="Unpin">Unpin</string>
-    <string name="new_game_and_testing">New Games | Beta</string>
+    <string name="new_game_and_testing">(New Games | Beta)</string>
     <string name="dont_have_slot_game">No games</string>
     <string name="deadline">Deadline</string>
     <string name="place_enter_your_account">Please enter user name</string>

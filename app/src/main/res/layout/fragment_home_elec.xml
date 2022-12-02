@@ -251,7 +251,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="@string/new_games_beta"
+                android:text="@string/new_game_and_testing"
                 android:textAllCaps="true"
                 android:textColor="@color/color_EC9007"
                 android:textSize="@dimen/textSize14sp" />
