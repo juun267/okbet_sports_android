@@ -3,20 +3,21 @@ package org.cxct.sportlottery.network
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.text.TextUtils
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.isMultipleSitePlat
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("24w2pjn3.com", "gdcwqdq5.com", "rjxs4mds.com", "dde2x4hh.com")
+    val SERVER_URL_LIST = when (BuildConfig.FLAVOR) {
+        "phuat" -> listOf("abaoooiap.com")
+        else -> listOf("24w2pjn3.com", "gdcwqdq5.com", "rjxs4mds.com", "dde2x4hh.com")
+    }
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
     private var mBaseUrl = ""

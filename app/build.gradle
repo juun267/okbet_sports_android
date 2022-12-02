@@ -111,7 +111,7 @@ android {
         }
         //okbet预发环境 app-phuat.abaoooiap.com
         phuat {
-            buildConfigField "String", "CHANNEL_NAME", "\"app-phuat\""
+            buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
             resValue "string", "app_name", "OKbet"
             applicationId "com.okbet.ph"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
