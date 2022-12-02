@@ -71,6 +71,7 @@ object MoneyManager {
             MoneyType.VIETTELPAY.code -> R.drawable.ic_viettelpay
             MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
             MoneyType.QQONLINE.code -> R.drawable.ic_qq_online
+            MoneyType.FORTUNE_PAY.code -> R.drawable.ic_fortunepay
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -92,6 +93,7 @@ object MoneyManager {
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay_type
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya_type
             MoneyType.PAYPAL_TYPE.code -> R.drawable.ic_paypal_type
+            MoneyType.FORTUNE_PAY.code -> R.drawable.ic_fortunepay
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -185,6 +187,7 @@ object MoneyManager {
             OnlineType.ZALOPAY.type -> mContext.resources.getString(R.string.online_zalopay)
             OnlineType.VIETTELPAY.type -> mContext.resources.getString(R.string.online_viettelpay)
             OnlineType.RECHARGE_CARD.type -> mContext.resources.getString(R.string.online_recharge_card_pay)
+            OnlineType.FORTUNE_PAY.type -> mContext.resources.getString(R.string.online_fortune_pay)
             else -> ""
         }
     }

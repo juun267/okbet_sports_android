@@ -160,7 +160,8 @@ class MoneyRechViewModel(
         try {
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
-
+            LogUtil.toJson(rechTypesList)
+            LogUtil.toJson(rechConfigList)
             //篩選，後台有開"且"使用者有權限的充值方式
             val filterRechargeDataList = mutableListOf<RechCfg>()
             rechTypesList.forEach { rechTypes ->
@@ -170,7 +171,7 @@ class MoneyRechViewModel(
                     }
                 }
             }
-
+            LogUtil.toJson(filterRechargeDataList)
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
                 if (filterRechargeDataList.firstOrNull {
@@ -180,7 +181,6 @@ class MoneyRechViewModel(
                     dataList.add(moneyPayWay)
                 }
             }
-
             dataList.forEach {
                 when (it.rechType) {
                     org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> {
@@ -197,7 +197,6 @@ class MoneyRechViewModel(
 
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -638,6 +637,7 @@ class MoneyRechViewModel(
             OnlineType.PAYMAYA.type -> androidContext.resources.getString(R.string.online_maya)
             OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
             OnlineType.DRAGON_PAY.type -> androidContext.resources.getString(R.string.online_gragon_pay)
+            OnlineType.FORTUNE_PAY.type -> androidContext.resources.getString(R.string.online_fortune_pay)
             else -> ""
         }
     }
