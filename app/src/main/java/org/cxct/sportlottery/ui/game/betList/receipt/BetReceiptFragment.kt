@@ -220,7 +220,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     it.finish()
                 }
             }
-            MainTabActivity.start2Tab(AppManager.currentActivity(), 2)
+            MainTabActivity.activityInstance?.jumpToBetInfo(1)
         }
 
         btn_cancel.setOnClickListener { activity?.onBackPressed() }

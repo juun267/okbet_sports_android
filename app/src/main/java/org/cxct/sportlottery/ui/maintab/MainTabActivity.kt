@@ -181,7 +181,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 }
         }
     }
-    var iii = 0
+
     private fun initBottomFragment() {
         ll_home_back.setOnClickListener {
             (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
@@ -497,7 +497,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (bottom_navigation_view.currentItem != 2) {
             bottom_navigation_view.currentItem = 2
         }
-//        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
+        (fragmentHelper.getFragment(2) as BetRecordFragment).selectTab(tabPosition)
     }
 
     fun homeBackView(boolean: Boolean) {
