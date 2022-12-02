@@ -81,63 +81,36 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
 //        recyclerView.setRecycledViewPool(getSportRootCache())  // 对局部刷新有影响
     }
 
-    private fun refreshByBetInfo() {
-        lifecycle.lifecycleScope.launch(Dispatchers.IO) {
-
-            data.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.oddsMap?.values?.forEach { oddList ->
-                        oddList?.forEach { odd ->
-                            odd?.isSelected = betInfoList.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd?.id
-                            }
-                        }
-                    }
-                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                        quickPlayCate.quickOdds.forEach { map ->
-                            map.value?.forEach { odd ->
-                                odd?.isSelected = betInfoList.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            withContext(Dispatchers.Main) {
-                data.forEachIndexed { index, leagueOdd ->
-                    updateLeague(index, leagueOdd)
-                }
-            }
-        }
-    }
-
-    var lastBetInfoSize = 0
+    //缓存最新更新的赔率列表，用来比较判断是否需要更新
+    var lastOddIds = mutableListOf<String>()
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
-
-            // 会重复设置的问题
-            if (field == value && lastBetInfoSize == value.size) {
-                return
-            }
-            lastBetInfoSize = value.size
-            field = value
-            if (leagueOddListener?.clickOdd == null) {
-                refreshByBetInfo()
-                return
-            }
-
-            data.forEachIndexed { index, leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.oddsMap?.values?.forEachIndexed {i, oddList ->
-                        oddList?.forEachIndexed {j, odd ->
-                            odd?.isSelected = field.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd?.id
+            var newOddsIds = value.map { it.matchOdd.oddsId }.toMutableList()
+            var needUpdate = lastOddIds != newOddsIds
+            if (needUpdate) {
+                field = value
+                lastOddIds = newOddsIds
+                lifecycle.lifecycleScope.launch(Dispatchers.IO) {
+                    data.forEachIndexed { index, leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            var needUpdateMatch = false
+                            matchOdd.oddsMap?.values?.forEach { odds ->
+                                odds?.forEach { odd ->
+                                    val betInfoSelected = betInfoList.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                                    if (odd?.isSelected != betInfoSelected) {
+                                        odd?.isSelected = betInfoSelected
+                                        needUpdateMatch = true
+                                    }
+                                }
                             }
-                            if (leagueOddListener?.clickOdd?.id == odd?.id) {
-                                updateLeague(index, leagueOdd)
-                                return@forEach
+                            if (needUpdateMatch) {
+                                Log.d("hjq",
+                                    " index=" + index + "," + matchOdd.matchInfo?.leagueName + "," + matchOdd.matchInfo?.homeName)
+                                withContext(Dispatchers.Main) {
+                                    updateMatch(index, matchOdd)
+                                }
                             }
                         }
                     }
@@ -362,7 +335,6 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
-
         fun update(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
             updateMatchOdds(item, oddsType)
             updateTimer(matchType, GameType.getGameType(item.matchInfo?.gameType))

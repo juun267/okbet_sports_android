@@ -606,14 +606,16 @@ class SportListFragment :
                             }
                         }
                     } else {
-                        if (SocketUpdateUtil.updateMatchStatus(
-                                leagueOdd.gameType?.key,
-                                leagueOdd.matchOdds?.toMutableList(),
-                                matchStatusChangeEvent,
-                                context
-                            ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-                        ) {
-                            sportLeagueAdapter.updateLeague(index, leagueOdd)
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            if (SocketUpdateUtil.updateMatchStatus(
+                                    leagueOdd.gameType?.key,
+                                    matchOdd,
+                                    matchStatusChangeEvent,
+                                    context
+                                ) && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                            ) {
+                                sportLeagueAdapter.updateMatch(index, matchOdd)
+                            }
                         }
                     }
                 }

@@ -30,68 +30,32 @@ import java.util.*
 class FavoriteAdapter(private val matchType: MatchType) :
     BaseGameAdapter() {
 
-    private fun refreshByBetInfo() {
-        data.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                matchOdd.oddsMap?.values?.forEach { oddList ->
-                    oddList?.forEach { odd ->
-                        odd?.isSelected = betInfoList.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                    }
-                }
-                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                    quickPlayCate.quickOdds.forEach { map ->
-                        map.value?.forEach { odd ->
-                            odd?.isSelected = betInfoList.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd?.id
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        data.forEachIndexed { index, leagueOdd -> updateLeague(index, leagueOdd) }
-    }
-
+    //缓存最新更新的赔率列表，用来比较判断是否需要更新
+    var lastOddIds = mutableListOf<String>()
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
-            field = value
-            if (leagueOddListener?.clickOdd == null) {
-                refreshByBetInfo()
-                return
-            }
-
-            var isInMatch = false
-            var isInQuick = false
-            data.forEachIndexed { index, leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.oddsMap?.values?.forEach { oddList ->
-                        oddList?.forEach { odd ->
-                            odd?.isSelected = field.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd?.id
-                            }
-                            if (leagueOddListener?.clickOdd?.id == odd?.id) {
-                                isInMatch = true
-                            }
-                        }
-                    }
-                    matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                        quickPlayCate.quickOdds.forEach { map ->
-                            map.value?.forEach { odd ->
-                                odd?.isSelected = field.any { betInfoListData ->
+            var newOddsIds = value.map { it.matchOdd.oddsId }.toMutableList()
+            var needUpdate = lastOddIds != newOddsIds
+            if (needUpdate) {
+                field = value
+                lastOddIds = newOddsIds
+                data.forEachIndexed { index, leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        var needUpdateMatch = false
+                        matchOdd.oddsMap?.values?.forEach { odds ->
+                            odds?.forEach { odd ->
+                                val betInfoSelected = betInfoList.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
-                                if (leagueOddListener?.clickOdd?.id == odd?.id) {
-                                    isInQuick = true
+                                if (odd?.isSelected != betInfoSelected) {
+                                    odd?.isSelected = betInfoSelected
+                                    needUpdateMatch = true
                                 }
                             }
                         }
-                    }
-                    if (isInMatch || isInQuick) {
-                        updateLeagueByBetInfo(index)
-                        isInMatch = false
-                        isInQuick = false
+                        if (needUpdateMatch) {
+                            updateMatch(index, matchOdd)
+                        }
                     }
                 }
             }
@@ -173,6 +137,10 @@ class FavoriteAdapter(private val matchType: MatchType) :
         notifyItemChanged(position, payload)
     }
 
+    fun updateMatch(position: Int, payload: MatchOdd) {
+        notifyItemChanged(position, payload)
+    }
+
     private fun updateLeagueByBetInfo(position: Int) {
         notifyItemChanged(position, PayLoadEnum.PAYLOAD_BET_INFO)
     }
@@ -219,7 +187,11 @@ class FavoriteAdapter(private val matchType: MatchType) :
                                 matchType,
                                 oddsType)
                         }
-
+                        is MatchOdd -> {
+                            (holder as FavoriteAdapter.ItemViewHolder).update(it,
+                                matchType,
+                                oddsType)
+                        }
                         is PayLoadEnum -> {
                             when (it) {
                                 PayLoadEnum.PAYLOAD_BET_INFO -> {
@@ -317,6 +289,17 @@ class FavoriteAdapter(private val matchType: MatchType) :
             itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
+        }
+
+        fun update(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
+            sportFavoriteAdapter.oddsType = oddsType
+            sportFavoriteAdapter.data.forEachIndexed { index, matchOdd ->
+                if (item.matchInfo?.id == matchOdd.matchInfo?.id) {
+                    if (itemView.league_odd_list.scrollState == RecyclerView.SCROLL_STATE_IDLE && !itemView.league_odd_list.isComputingLayout) {
+                        sportFavoriteAdapter.notifyItemChanged(index, item)
+                    }
+                }
+            }
         }
 
         fun updateByBetInfo() {
