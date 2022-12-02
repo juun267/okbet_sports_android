@@ -40,6 +40,7 @@ import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_single_list
 import kotlinx.android.synthetic.main.fragment_bet_list.tvExpandOrStacked
+import kotlinx.android.synthetic.main.include_bet_odds_tips.ivClearCarts
 import kotlinx.android.synthetic.main.include_bet_odds_tips.tvAcceptOddsChange
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.tv_notify
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.txv_title
@@ -432,6 +433,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             popupWindow.showUpCenter(it)
         }
 
+        ivClearCarts.setOnClickListener {
+            clearCarts()
+        }
+
     }
 
 
@@ -444,7 +449,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             activity?.onBackPressed()
         }
         binding.clTitle.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
-        initDeleteAllOnClickEvent()
     }
 
     private fun initAdapter() {
@@ -660,38 +664,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         return winnable
     }
 
-    private fun initDeleteAllOnClickEvent() {/*val exitAnimation =
-            AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
-                setAnimationListener(deleteAllLayoutAnimationListener)
-                duration = 300
-            }
-        binding.apply {
-            btnDeleteAll.setOnClickListener {
-                val enterAnimation =
-                    AnimationUtils.loadAnimation(context, R.anim.push_right_to_left_enter).apply {
-                        duration = 300
-                    }
 
-                llDeleteAll.visibility = View.VISIBLE
-                btnDeleteAllConfirm.startAnimation(enterAnimation)
-            }
-            btnDeleteAllCancel.setOnClickListener {
-                btnDeleteAllConfirm.startAnimation(exitAnimation)
-            }
-
-            btnDeleteAllConfirm.setOnClickListener {
-                btnDeleteAllConfirm.startAnimation(exitAnimation)
-                viewModel.removeBetInfoAll()
-            }
-        }*/
-
-        binding.btnDeleteAll.setOnClickListener {
-            if (mIsEnabled) {
-                avoidFastDoubleClick()
-                viewModel.betInfoList.removeObservers(viewLifecycleOwner)
-                viewModel.removeBetInfoAll()
-                activity?.supportFragmentManager?.popBackStack()
-            }
+    private fun clearCarts() {
+        if (mIsEnabled) {
+            avoidFastDoubleClick()
+            viewModel.betInfoList.removeObservers(viewLifecycleOwner)
+            viewModel.removeBetInfoAll()
+            activity?.supportFragmentManager?.popBackStack()
         }
     }
 

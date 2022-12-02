@@ -1357,6 +1357,7 @@
     <string name="accept_never_change_in_odds">永不接受赔率变化</string>
     <string name="expand_more_combinations">展开更多组合</string>
     <string name="stacked_combination">叠起组合</string>
+    <string name="bet_parlay">+串关</string>
     <!--投注改版-->
 
 </resources>

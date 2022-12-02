@@ -317,11 +317,21 @@ object BetInfoRepository {
                 this.betInfo = betInfo
             }
 
+            Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
             oddIDArray.add(it.oddsId)
+            if (oddIDArray.isEmpty()) {
+                oddIDArray.add(it.oddsId)
+            }else{
+                oddIDArray[0] = it.oddsId
+            }
             _betIDList.postValue(Event(oddIDArray))
 
-            betList.add(data)
+            if (betList.isEmpty()){
+                betList.add(data)
+            }else{
+                betList[0] = data
+            }
 
             updateQuickListManager(betList)
 

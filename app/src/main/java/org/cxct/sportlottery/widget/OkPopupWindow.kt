@@ -24,6 +24,8 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
 
     private var parentView: View? = null
 
+    private var lastSelectPosition :Int = 0
+
     private var listData: MutableList<Pair<String, Boolean>> = mutableListOf(
         Pair(context.getString(R.string.accept_any_change_in_odds), false),
         Pair(context.getString(R.string.accept_better_change_in_odds), false),
@@ -61,7 +63,10 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
                 helper.setText(R.id.tvOdds, item.first)
                 helper.setTextColor(
                     R.id.tvOdds,
-                    if (item.first == currentSelectText) context.getColor(R.color.color_025BE8) else context.getColor(
+                    if (item.first == currentSelectText){
+                        lastSelectPosition = helper.layoutPosition
+                        context.getColor(R.color.color_025BE8)
+                    } else context.getColor(
                         R.color.color_414655
                     )
                 )
@@ -83,7 +88,10 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
 
         listAdapter.setOnItemClickListener { adapter, view, position ->
             currentSelectText = listData[position].first
-            listAdapter.notifyDataSetChanged()
+            //刷新当前选中颜色
+            listAdapter.notifyItemChanged(position)
+            //刷新上一次选中颜色
+            listAdapter.notifyItemChanged(lastSelectPosition)
             onItemClickListener(currentSelectText)
             dismiss()
         }
