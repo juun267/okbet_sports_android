@@ -485,11 +485,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
         iv_arrow.apply {
-            isSelected = false
+            isSelected = true
             setOnClickListener {
                 isSelected = !isSelected
                 oddsDetailListAdapter?.oddsDetailDataList?.forEach {
-                    it.isExpand = !isSelected
+                    it.isExpand = isSelected
                 }
                 oddsDetailListAdapter?.notifyDataSetChanged()
             }
