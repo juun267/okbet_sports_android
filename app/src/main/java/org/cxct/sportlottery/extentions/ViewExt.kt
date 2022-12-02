@@ -95,3 +95,4 @@ fun View.flashAnimation(duration:Long = 1000,repeatCount:Int = ValueAnimator.INF
     alphaAnimator.start()
     return alphaAnimator
 }
+

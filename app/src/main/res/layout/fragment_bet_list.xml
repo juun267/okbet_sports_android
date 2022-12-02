@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="gameViewModel"
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
@@ -143,16 +142,16 @@
                         android:id="@+id/cl_parlay_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="50dp"
                         android:orientation="vertical"
                         android:visibility="gone"
+                        android:clipToPadding="false"
+                        android:paddingTop="10dp"
                         tools:visibility="visible">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_parlay_list"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12.5dp"
+                            android:layout_height="45dp"
                             android:overScrollMode="never"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:itemCount="1"
@@ -166,7 +165,7 @@
                             android:drawableEnd="@drawable/ic_arrow_down_blue"
                             android:drawablePadding="4dp"
                             android:gravity="center"
-                            android:paddingHorizontal="20dp"
+                            android:paddingHorizontal="100dp"
                             android:paddingVertical="10dp"
                             android:text="@string/expand_more_combinations"
                             android:textColor="@color/color_025BE8"
