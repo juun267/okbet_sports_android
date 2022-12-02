@@ -208,20 +208,23 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         btn_complete.setOnClickListener {
             if (viewModel.oddChange.value == true) {
                 addBet()
-            } else {
-                activity?.finish()
-                when (activity) {
-                    is MainTabActivity -> (activity as MainTabActivity).jumpToBetInfo(2)
-                    else -> MainTabActivity.start2Tab(AppManager.currentActivity(), 2)
+                return@setOnClickListener
+            }
+
+            activity?.let {
+                it.supportFragmentManager
+                    .beginTransaction()
+                    .remove(this@BetReceiptFragment)
+                    .commitAllowingStateLoss()
+                if (!(it is MainTabActivity)) {
+                    it.finish()
                 }
             }
+            MainTabActivity.start2Tab(AppManager.currentActivity(), 2)
         }
-        btn_cancel.setOnClickListener {
-            activity?.onBackPressed()
-        }
-        cl_title.setOnClickListener {
-            activity?.onBackPressed()
-        }
+
+        btn_cancel.setOnClickListener { activity?.onBackPressed() }
+        cl_title.setOnClickListener { activity?.onBackPressed() }
     }
 
     private fun initRecyclerView() {

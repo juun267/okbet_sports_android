@@ -691,7 +691,7 @@
     <string name="date">Ngày tháng</string>
     <string name="bet_amount">Tiền Cược</string> <!--I005-->
     <string name="available_amount">Số tiền hợp lệ</string>
-    <string name="win_lose">Thắng hay thua</string>
+    <string name="win_lose">Thắng/ thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
     <string name="all_sport">Tất cả các môn thể thao</string>
     <string name="back_to_top">Quay lại đầu trang</string>

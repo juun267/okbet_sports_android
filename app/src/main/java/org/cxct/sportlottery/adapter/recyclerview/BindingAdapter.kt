@@ -37,6 +37,20 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
 
     fun setEmptyText(text: String) = _emptyView?.setEmptyText(text)
 
+    fun positionOf(bean: T): Int {
+        if (data.isNullOrEmpty()) {
+            return -1
+        }
+        return data.indexOf(bean)
+    }
+
+    fun removeItem(bean: T) {
+        val position = positionOf(bean)
+        if (position >= 0) {
+            remove(position)
+        }
+    }
+
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VBViewHolder<VB> {
         val vbClass: Class<VB> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
         val inflate = vbClass.getDeclaredMethod(
@@ -48,10 +62,10 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
     }
 
     override fun convert(helper: VBViewHolder<VB>, item: T) {
-        onBinding(helper.vb, item)
+        onBinding(positionOf(item), helper.vb, item)
     }
 
-    abstract fun onBinding(viewBinding: VB, item: T)
+    abstract fun onBinding(position: Int, viewBinding: VB, item: T)
 }
 
 class VBViewHolder<VB : ViewBinding>(val vb: VB) : BaseViewHolder(vb.root)

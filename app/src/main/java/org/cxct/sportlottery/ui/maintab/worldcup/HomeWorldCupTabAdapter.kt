@@ -18,7 +18,7 @@ class HomeWorldCupTabAdapter: BindingAdapter<Pair<Int, Int>, ItemTabHomeCupBindi
             )
         }
 
-    override fun onBinding(viewBinding: ItemTabHomeCupBinding, item: Pair<Int, Int>) = viewBinding.run  {
+    override fun onBinding(position: Int, viewBinding: ItemTabHomeCupBinding, item: Pair<Int, Int>) = viewBinding.run  {
         ivLogo.setImageResource(item.first)
         tvName.setText(item.second)
         root.isSelected = item.second.equals(R.string.home_word_cup)
