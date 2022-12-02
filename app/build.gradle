@@ -109,6 +109,21 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+        //okbet预发环境 app-phuat.abaoooiap.com
+        phuat {
+            buildConfigField "String", "CHANNEL_NAME", "\"app-phuat\""
+            resValue "string", "app_name", "OKbet"
+            applicationId "com.okbet.ph"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
         google {
             buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
             resValue "string", "app_name", "OKbet"
@@ -294,6 +309,7 @@ android {
         credit.res.srcDirs = ['src/okbet9_ph/res']
         uatcd1.res.srcDirs = ['src/okbet9_ph/res']
         sabaplat1.res.srcDirs = ['src/okbet_ph/res']
+        phuat.res.srcDirs = ['src/okbet_ph/res']
         main {
             jniLibs.srcDirs = ['src/main/libs']
         }
