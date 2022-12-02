@@ -183,9 +183,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                     adapter.addData(userMsgList)//上拉加載
                 } else {
                     if (it.isNullOrEmpty()) {
-                        image_no_message.visibility = View.VISIBLE
                     } else {
-                        image_no_message.visibility = View.GONE
                         adapter.setNewData(userMsgList.toMutableList()) //重新載入
                     }
                 }
@@ -203,11 +201,9 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
             if (currentPage == YET_READ) {
                 when(userMsgList.isNullOrEmpty()){
                     true ->{
-                        image_no_message.visibility = View.VISIBLE
                         adapter.setNewData(mutableListOf())
                     }
                     false ->{
-                        image_no_message.visibility = View.GONE
                         adapter.setNewData(userMsgList.toMutableList()) //重新載入
                     }
                 }
