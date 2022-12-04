@@ -102,7 +102,7 @@ class OddBtnList @JvmOverloads constructor(
     fun enableAllOddsBtn(includeDrawBtn: Boolean) {
         setViewVisiable(oddBtnType, oddBtnHome, oddBtnAway)
         oddBtnOther?.gone()
-        if (drawBtnEnable) {
+        if (includeDrawBtn) {
             getDrawOddsBtn().visible()
         }
 
