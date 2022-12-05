@@ -40,8 +40,8 @@ import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_single_list
 import kotlinx.android.synthetic.main.fragment_bet_list.tvExpandOrStacked
-import kotlinx.android.synthetic.main.include_bet_odds_tips.ivClearCarts
-import kotlinx.android.synthetic.main.include_bet_odds_tips.tvAcceptOddsChange
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.tv_notify
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.txv_title
 import org.cxct.sportlottery.MultiLanguagesApplication

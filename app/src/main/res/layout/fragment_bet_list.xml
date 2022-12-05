@@ -147,7 +147,7 @@
                         android:visibility="gone"
                         android:clipToPadding="false"
                         android:paddingTop="10dp"
-                        tools:visibility="visible">
+                        tools:visibility="gone">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_parlay_list"
@@ -175,7 +175,7 @@
 
                         <include
                             android:id="@+id/includeOddsLayout"
-                            layout="@layout/include_bet_odds_tips" />
+                            layout="@layout/include_bet_odds_tips_parlay" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <!--单项投注-->
