@@ -6,7 +6,6 @@
     tools:ignore="RtlSymmetry,SpUsage,ContentDescription,HardcodedText,Autofill">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -140,42 +139,42 @@
                     android:id="@+id/tv_match"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize13sp"
-                    android:layout_marginStart="21dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/guideline"
                     app:layout_constraintBottom_toTopOf="@+id/tv_league_name"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="Manchester United FC (Mad) vs. SS Lazio(Dasko)" />
 
                 <TextView
                     android:id="@+id/tv_league_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize13sp"
-                    android:layout_marginStart="21dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/guideline"
                     app:layout_constraintBottom_toTopOf="@+id/tv_start_time"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="GT 联赛 - 12分钟赛事" />
 
                 <TextView
                     android:id="@+id/tv_start_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="21dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize13sp"
-                    android:layout_marginStart="21dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/guideline"
                     app:layout_constraintBottom_toTopOf="@+id/cl_editText_container"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="2022-08-05 15:30:00" />
 
                 <TextView
@@ -189,7 +188,7 @@
                     android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_editText_container"
@@ -197,8 +196,8 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/margin_8"
                     android:paddingTop="9dp"
-                    tools:visibility="visible"
-                    app:layout_constraintBottom_toTopOf="@id/ll_single_tips">
+                    app:layout_constraintBottom_toTopOf="@id/ll_single_tips"
+                    tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_input"
@@ -304,13 +303,74 @@
                         tools:text="@string/hint_bet_limit_range" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                <!--region 提示文字 -->
+                <LinearLayout
+                    android:id="@+id/ll_single_tips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="6dp"
+                    app:layout_constraintBottom_toTopOf="@id/includeOddsLayout">
 
+                    <TextView
+                        android:id="@+id/tvBalanceInsufficientMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_8"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:paddingTop="@dimen/margin_8"
+                        android:text="@string/bet_info_bet_balance_insufficient"
+                        android:textColor="@color/color_E23434_E23434"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tvErrorMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_8"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:paddingTop="@dimen/margin_8"
+                        android:text="@string/bet_info_list_minimum_limit_amount"
+                        android:textColor="@color/color_E23434_E23434"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/tvPleaseEnterCorrectAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_8"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:paddingTop="@dimen/margin_8"
+                        android:text="@string/please_enter_correct_amount"
+                        android:textColor="@color/color_E23434_E23434"
+                        android:textSize="@dimen/textSize12sp"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/includeOddsLayout"
+                    layout="@layout/include_bet_odds_tips_single"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!--endregion 提示文字 -->
                 <org.cxct.sportlottery.util.KeyboardView
                     android:id="@+id/layoutKeyBoard"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/keyboard_height"
                     android:layout_marginHorizontal="@dimen/margin_8"
-                    android:paddingTop="@dimen/margin_12"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView"
                     tools:visibility="visible" />
@@ -387,58 +447,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--region 提示文字 -->
-                <LinearLayout
-                    android:id="@+id/ll_single_tips"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@id/layoutKeyBoard">
-
-                    <TextView
-                        android:id="@+id/tvBalanceInsufficientMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_8"
-                        android:gravity="end"
-                        android:includeFontPadding="false"
-                        android:paddingTop="@dimen/margin_8"
-                        android:text="@string/bet_info_bet_balance_insufficient"
-                        android:textColor="@color/color_E23434_E23434"
-                        android:textSize="@dimen/textSize12sp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <TextView
-                        android:id="@+id/tvErrorMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_8"
-                        android:gravity="end"
-                        android:includeFontPadding="false"
-                        android:paddingTop="@dimen/margin_8"
-                        android:text="@string/bet_info_list_minimum_limit_amount"
-                        android:textColor="@color/color_E23434_E23434"
-                        android:textSize="@dimen/textSize12sp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <TextView
-                        android:id="@+id/tvPleaseEnterCorrectAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_8"
-                        android:gravity="end"
-                        android:includeFontPadding="false"
-                        android:paddingTop="@dimen/margin_8"
-                        android:text="@string/please_enter_correct_amount"
-                        android:textColor="@color/color_E23434_E23434"
-                        android:textSize="@dimen/textSize12sp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-                <!--endregion 提示文字 -->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
