@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -54,6 +55,10 @@ class InfoCenterViewModel(
     private var mNeedMoreLoadingRead = false //已讀資料判斷滑到底是否需要繼續加載
     private var mNeedMoreLoadingUnRead = false //未讀資料判斷滑到底是否需要繼續加載
 
+    //Loading
+    val onMessageReaded: LiveData<InfoCenterData>
+        get() = _onMessageReaded
+    private var _onMessageReaded = MutableLiveData<InfoCenterData>()
 
     fun getUserMsgList(isReload: Boolean = true, currentTotalCount: Int = 0, dataType: DataType) {
         _isLoading.value = true
@@ -139,15 +144,19 @@ class InfoCenterViewModel(
         }
     }
 
-    fun setDataRead(msgId: String) {
+    fun setDataRead(bean: InfoCenterData) {
         viewModelScope.launch {
             _isLoading.value = true
-            doNetwork(androidContext) {
-                infoCenterRepository.setMsgRead(msgId)
+            val response = doNetwork(androidContext) {
+                infoCenterRepository.setMsgRead(bean.id.toString())
                 //原本的邏輯是"未讀的資料打開要變成已讀" 並且更新Tab，2022/06/16要求修改，先註解保留原本邏輯
 //                val infoCenterRequest =
 //                    InfoCenterRequest(mUnReadNextRequestPage, pageSize, 0)
 //                infoCenterRepository.getUserNoticeList(infoCenterRequest)
+            }
+
+            if (response?.success == true) {
+                _onMessageReaded.postValue(bean)
             }
 //            infoCenterRepository.getMsgCount(MsgType.NOTICE_READED.code)
             _isLoading.value = false

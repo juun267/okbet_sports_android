@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BaseGameAdapter
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.game.common.view.OddsButton2
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
@@ -44,18 +45,19 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             rootCachePool = null
             oddListCachePool = null
             oddListCachePool = null
+            OddsButton2.clearOddsViewCaches()
         }
 
         private fun getSportRootCache(): RecyclerView.RecycledViewPool {
             var cache = rootCachePool?.get()
             if (cache == null) {
-                cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,15) }
+                cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,25) }
                 rootCachePool = WeakReference(cache)
             }
             return cache
         }
 
-        private fun getOddListCache(): RecyclerView.RecycledViewPool {
+         fun getOddListCache(): RecyclerView.RecycledViewPool {
             var cache = oddListCachePool?.get()
             if (cache == null) {
                 cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,50) }
@@ -64,7 +66,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             return cache
         }
 
-        private fun getOddButtonCache(): RecyclerView.RecycledViewPool {
+         fun getOddButtonCache(): RecyclerView.RecycledViewPool {
             var cache = oddBtnCachePool?.get()
             if (cache == null) {
                 cache = RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(ItemType.ITEM.ordinal,150) }
@@ -129,6 +131,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             isPreload = false
         }
 
+
     var discount: Float = 1.0F
         set(value) {
             if (field == value) return
@@ -173,19 +176,6 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         return when {
             data.isEmpty() -> BaseItemType.NO_DATA.type
             else -> ItemType.ITEM.ordinal
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ItemType.ITEM.ordinal -> {
-                val itemHolder = ItemViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
-                itemHolder.itemView.league_odd_list.setRecycledViewPool(getOddListCache())
-                itemHolder
-            }
-
-            else -> initBaseViewHolders(parent, viewType)
         }
     }
 
@@ -291,16 +281,6 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         data.size
     }
 
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-
-        when (holder) {
-            is ItemViewHolder -> {
-                holder.itemView.league_odd_list.adapter = null
-            }
-        }
-    }
-
     fun updateLeagueBySelectCsTab(position: Int, matchOdd: MatchOdd) {
         notifyItemChanged(position, matchOdd)
     }
@@ -333,6 +313,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
+
         fun update(item: MatchOdd, matchType: MatchType, oddsType: OddsType) {
             updateMatchOdds(item, oddsType)
             updateTimer(matchType, GameType.getGameType(item.matchInfo?.gameType))
@@ -390,7 +371,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         private fun setupLeagueOddList(
             item: LeagueOdd,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType,
+            oddsType: OddsType
         ) {
             itemView.league_odd_list.apply {
                 //league_odd_list.itemAnimator = null
@@ -445,6 +426,30 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
             sportOddAdapter.isTimerEnable =
                 itemView.league_odd_list.visibility == View.VISIBLE && (gameType == GameType.FT || gameType == GameType.BK || gameType == GameType.RB || gameType == GameType.AFT || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
         }
+
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ItemType.ITEM.ordinal -> {
+                val itemHolder = ItemViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
+                itemHolder.itemView.league_odd_list.setRecycledViewPool(getOddListCache())
+                itemHolder
+            }
+
+            else -> initBaseViewHolders(parent, viewType)
+        }
+    }
+
+
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+
+        if (holder is ItemViewHolder) {
+            holder.itemView.league_odd_list.adapter = null
+        }
+    }
+
 
 }

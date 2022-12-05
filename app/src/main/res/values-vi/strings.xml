@@ -63,6 +63,8 @@
     <string name="hint_withdrawal_pwd">Mật khẩu gồm 4 chữ số</string>
     <string name="phone_number">Số điện thoại</string>
     <string name="hint_phone_number">Vui lòng nhập số điện thoại</string>
+    <string name="hint_phone_num">Vui lòng nhập số điện thoại</string>
+
     <string name="error_phone_number">Định dạng số điện thoại không đúng</string>
     <string name="qq_number">Số tài khoản QQ</string>
     <string name="hint_qq_number">Vui lòng nhập QQTài khoản</string>
@@ -691,7 +693,7 @@
     <string name="date">Ngày tháng</string>
     <string name="bet_amount">Tiền Cược</string> <!--I005-->
     <string name="available_amount">Số tiền hợp lệ</string>
-    <string name="win_lose">Thắng hay thua</string>
+    <string name="win_lose">Thắng/ thua</string>
     <string name="win_lose_mark">Thắng hay thua : </string>
     <string name="all_sport">Tất cả các môn thể thao</string>
     <string name="back_to_top">Quay lại đầu trang</string>
@@ -1113,6 +1115,7 @@
     <string name="more_info">Hơn Thông Tin</string>
     <string name="e_game">Cờ vua</string>
     <string name="new_games_beta">New Games | Beta</string>
+    <string name="new_game_and_testing">(New Games | Beta)</string>
 
     <string name="work_time_">Giờ làm việc：</string>
     <string name="appointment_">Hẹn thời gian：</string>
@@ -1255,6 +1258,7 @@
      <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn: </string>
     <string name="get_phone_code">Nhận</string>
     <string name="reget_phone_code">Nhận lại</string>
+    <string name="reget_phone_code_for">Nhận lại</string>
     <string name="error_wechat">Lỗi định dạng ID WeChat</string>
     <string name="min_bet_format">Tối thiểu: %s</string>
     <string name="error_confirm_password_forget">Xác nhận mật khẩu không khớp</string>
@@ -1321,5 +1325,5 @@
     <string name="error_tips_confirm_password">Mật khẩu bạn nhập khác nhau, mời nhập lại</string>
     <string name="hide_confirm_password">Xác nhận mật khẩu mới</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
-
+    <string name="error_verification_code_forget">Mã xác nhận sai</string>
 </resources>

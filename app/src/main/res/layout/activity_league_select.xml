@@ -113,12 +113,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:singleLine="true"
-            android:ellipsize="end"
+            android:maxLines="1"
             android:layout_marginLeft="@dimen/margin_20"
             android:layout_marginRight="@dimen/margin_10"
             android:textSize="@dimen/textSize14sp"
             android:textColor="@color/color_414655"
+            android:autoSizeMaxTextSize="@dimen/textSize14sp"
+            android:autoSizeMinTextSize="@dimen/textSize8sp"
+            android:autoSizeTextType="uniform"
             tools:text="联赛: 109 个" />
 
 

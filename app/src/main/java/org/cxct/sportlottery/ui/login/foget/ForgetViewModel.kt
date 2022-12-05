@@ -116,7 +116,7 @@ class ForgetViewModel(
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phoneNum) -> {
-                LocalUtils.getString(R.string.error_phone_num)
+                LocalUtils.getString(R.string.error_phone_number)
             }
             else -> null
         }

@@ -7,6 +7,8 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_info_center.iv_scroll_to_top
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
@@ -68,22 +70,22 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     val adapter by lazy {
-        InfoCenterAdapter(InfoCenterAdapter.ItemClickListener {
-            it.let { data ->
+        InfoCenterAdapter(this@InfoCenterActivity).apply {
+            setOnItemClickListener { adapter, view, position ->
+
+                val data = adapter.getItem(position) as InfoCenterData
                 val detailDialog = InfoCenterDetailDialog(data)
                 detailDialog.show(supportFragmentManager, "")
-
-                //未讀的資料打開要變成已讀
                 if (currentPage == YET_READ) {
                     markMessageReaded(data)
                 }
             }
-        })
+        }
     }
 
     private fun markMessageReaded(bean: InfoCenterData) {
         adapter.removeItem(bean)
-        viewModel.setDataRead(bean.id.toString())
+        viewModel.setDataRead(bean)
         custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), ++readedNum)
         unReadedNum = Math.max(0, unReadedNum - 1)
         custom_tab_layout.secondTabText = String.format(resources.getString(R.string.unread_letters), unReadedNum)
@@ -133,7 +135,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun selectReadTab() {
-        adapter.data = mutableListOf()//清空資料
+        adapter.setNewData(mutableListOf())//清空資料
         viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
         viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
         currentPage = BEEN_READ
@@ -141,7 +143,7 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun selectUnReadTab() {
-        adapter.data = mutableListOf()//清空資料
+        adapter.setNewData(mutableListOf())//清空資料
         viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
         viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
         currentPage = YET_READ
@@ -149,6 +151,8 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun initSelectTab() {
+        custom_tab_layout.firstTabText = String.format(resources.getString(R.string.inbox), 0)
+        custom_tab_layout.secondTabText = String.format(resources.getString(R.string.unread_letters), 0)
         when (mDefaultShowPage) {
             BEEN_READ -> {
                 if (custom_tab_layout.selectedTabPosition == BEEN_READ) {
@@ -168,6 +172,9 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
     }
 
     private fun initLiveData() {
+
+        viewModel.onMessageReaded.observe(this) { adapter.removeItem(it) }
+
         //已讀訊息清單
         viewModel.userReadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
@@ -176,10 +183,8 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
                     adapter.addData(userMsgList)//上拉加載
                 } else {
                     if (it.isNullOrEmpty()) {
-                        image_no_message.visibility = View.VISIBLE
                     } else {
-                        image_no_message.visibility = View.GONE
-                        adapter.data = userMsgList as MutableList<InfoCenterData>//重新載入
+                        adapter.setNewData(userMsgList.toMutableList()) //重新載入
                     }
                 }
             }
@@ -196,12 +201,10 @@ class InfoCenterActivity : BaseSocketActivity<InfoCenterViewModel>(InfoCenterVie
             if (currentPage == YET_READ) {
                 when(userMsgList.isNullOrEmpty()){
                     true ->{
-                        image_no_message.visibility = View.VISIBLE
-                        adapter.data = mutableListOf()
+                        adapter.setNewData(mutableListOf())
                     }
                     false ->{
-                        image_no_message.visibility = View.GONE
-                        adapter.data = userMsgList as MutableList<InfoCenterData> //重新載入
+                        adapter.setNewData(userMsgList.toMutableList()) //重新載入
                     }
                 }
             }

@@ -202,7 +202,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         viewModel.smsCodeResult.observe(this){
             it?.let { result->
                 if (!result.success){
-                    binding.etSmsValidCode.setError(result.msg,false)
+                    if (result.code == 2765||result.code == 2766){
+                        binding.etPhone.setError(result.msg,false)
+                    }else{
+                        binding.etSmsValidCode.setError(result.msg,false)
+                    }
                 }else{
                     page++
                     setPage()
@@ -415,9 +419,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                             binding.btnSendSms.setBackgroundResource(R.drawable.btn_send_sms)
 
                             if (state == 1){
-                                binding.btnSendSms.text = getString(R.string.get_phone_code)
+                                binding.btnSendSms.text = getString(R.string.get_security_code)
                             }else{
-                                binding.btnSendSms.text = getString(R.string.reget_phone_code)
+                                binding.btnSendSms.text = getString(R.string.reget_phone_code_for)
                             }
                             binding.btnSendSms.setTextColor(Color.WHITE)
                         }
@@ -429,9 +433,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             stopSmeTimer()
             binding.btnSendSms.isEnabled = true
             if (state == 1){
-                binding.btnSendSms.text = getString(R.string.get_phone_code)
+                binding.btnSendSms.text = getString(R.string.get_security_code)
             }else{
-                binding.btnSendSms.text = getString(R.string.reget_phone_code)
+                binding.btnSendSms.text = getString(R.string.reget_phone_code_for)
             }
 
         }

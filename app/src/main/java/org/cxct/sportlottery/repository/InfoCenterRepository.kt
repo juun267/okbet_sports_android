@@ -90,16 +90,10 @@ class InfoCenterRepository {
         val response = OneBoSportApi.infoCenterService.setMsgReaded(msgId)
 
         if (response.isSuccessful) {
-
             val noticeList = _unreadList.value?.toMutableList()
-            val noticeRead = noticeList?.find {
-                it.id == msgId.toInt()
-            }
-//            noticeList?.remove(noticeRead)
-            _unreadList.postValue(noticeList?.toList() ?: listOf())
-
+            noticeList?.find { it.id == msgId.toInt()}?.let { noticeList?.remove(it) }
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
-
+//            response.body()?.total?.let { _totalUnreadMsgCount.postValue(it) }
         }
 
         return response

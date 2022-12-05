@@ -1255,7 +1255,7 @@
     <string name="not_sign_up">Don\'t have an account yet</string>
     <string name="no_search_match">No matches were found</string>
     <string name="error_full_name">The name that you entered is not valid</string>
-    <string name="hint_verification_code">Please enter the verification code.</string>
+    <string name="hint_verification_code">Please enter verify code</string>
     <string name="please_enter_question">Please describe the problem</string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
     <string name="please_get_forget_password">Please retrieve your OKBet password!</string>
@@ -1323,14 +1323,16 @@
     <string name="cs_center">CS Center</string>
     <string name="Pinned">Pinned</string>
     <string name="Unpin">Unpin</string>
-    <string name="new_game_and_testing">New Games | Beta</string>
+    <string name="new_game_and_testing">(New Games | Beta)</string>
     <string name="dont_have_slot_game">No games</string>
     <string name="deadline">Deadline</string>
+    <string name="error_verification_code_forget">Verify code wrong</string>
     <string name="place_enter_your_account">Please enter user name</string>
     <string name="find_back_password">Recover password</string>
-    <string name="error_phone_num">手机号码错误</string>
-    <string name="tips_login_password_success">登陆密码修改成功，请重新登录。</string>
-    <string name="error_tips_confirm_password">您输入的密码不一致，请重新输入</string>
-    <string name="hide_confirm_password">确认新登录密码</string>
-    <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
+    <string name="error_phone_num">Phone No. wrong</string>
+    <string name="tips_login_password_success">Login password change successful, Please login again.</string>
+    <string name="error_tips_confirm_password">Password you entered does not match, please re-enter</string>
+    <string name="hide_confirm_password">Confirm new login password</string>
+    <string name="error_new_password">Password consist 6-20 characters and must have a combination of numbers and letters.</string>
+    <string name="reget_phone_code_for">Reacquire</string>
 </resources>

@@ -584,6 +584,7 @@
     <string name="hint_e_mail">กรุณากรอกอีเมล์ของคุณ</string>
     <string name="error_e_mail">รูปแบบอีเมลผิดพลาด</string>
     <string name="hint_phone_number">กรุณากรอกหมายเลขโทรศัพท์</string>
+    <string name="hint_phone_num">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="error_phone_number">รูปแบบหมายเลขโทรศัพท์ไม่ถูกต้อง</string>
     <string name="setting_password">ตั้งรหัสผ่าน</string>
     <string name="login_password">รหัสผ่านในการเข้าสู่ระบบ</string>
@@ -1210,6 +1211,7 @@
     <string name="has_send_message_to_phone">รหัสยืนยันถูกส่งไปยังโทรศัพท์ของคุณแล้ว</string>
     <string name="get_phone_code">รับรหัส</string>
     <string name="reget_phone_code">รับใหม่อีกครั้ง</string>
+    <string name="reget_phone_code_for">รับใหม่อีกครั้ง</string>
     <string name="error_wechat">ข้อผิดพลาดรูปแบบ WeChat ID</string>
     <string name="comingsoon">เร็วๆ นี้</string>
     <string name="forget_password">ลืมรหัสผ่าน</string>
@@ -1232,5 +1234,11 @@
     <string name="cs_center">ศูนย์ช่วยเหลือ</string>
     <string name="home_slot">สล็อต</string>
     <string name="deadline">กำหนดสิ้นสุด</string>
+    <string name="error_phone_num">เบอร์โทรศัพท์ไม่ถูกต้อง</string>
+    <string name="tips_login_password_success">เปลี่ยนแปลงรหัสผ่านสำเร็จ กรุณาทำการล็อกอินอีกครั้ง</string>
+    <string name="error_tips_confirm_password">รหัสผ่านไม่เหมือนกัน กรุณากรอกใหม่อีกครั้ง</string>
+    <string name="hide_confirm_password">ยืนยันรหัสผ่านใหม่</string>
+    <string name="error_new_password">รหัสผ่่าน 6-20 ตัวต้องมีทั้งตัวเลขและตัวอักษร</string>
+    <string name="error_verification_code_forget">รหัสยืนยันไม่ถูกต้อง</string>
     <!--F005-->
 </resources>

@@ -156,6 +156,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        activityInstance = this
         intent?.getIntExtra("startTabPosition", 0)?.let {
             bottom_navigation_view.currentItem = it
         }
@@ -180,7 +181,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 }
         }
     }
-    var iii = 0
+
     private fun initBottomFragment() {
         ll_home_back.setOnClickListener {
             (fragmentHelper.getFragment(0) as HomeFragment).switchTabByPosition(0)
@@ -473,7 +474,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     fun switchTabByPosition(position: Int) {
-        bottom_navigation_view.currentItem = position
+        if (bottom_navigation_view.currentItem != position) {
+            bottom_navigation_view.currentItem = position
+        }
     }
 
     fun jumpToTheSport(matchType: MatchType, gameType: GameType) {

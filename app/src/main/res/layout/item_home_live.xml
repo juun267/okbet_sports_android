@@ -154,15 +154,17 @@
             android:layout_height="0.5dp"
             android:background="@color/color_E3E8EE" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_10">
+            android:paddingVertical="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/blockNormalGame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="10dp">
 
                 <TextView
                     android:id="@+id/tvGameStatus"
@@ -181,6 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
+                    android:paddingRight="10dp"
                     android:textColor="@color/color_6C7BA8"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintStart_toEndOf="@id/tvGameStatus"
@@ -192,8 +195,9 @@
 
             <TextView
                 android:id="@+id/tvLeagueName"
-                android:layout_width="160dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.2"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:textColor="@color/color_6C7BA8"
@@ -205,14 +209,16 @@
 
             <TextView
                 android:id="@+id/tv_game_play_cate_code_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_gravity="right"
+                android:paddingRight="10dp"
                 android:gravity="right"
                 android:textColor="@color/color_6C7BA8"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="Handicap"/>
-        </FrameLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

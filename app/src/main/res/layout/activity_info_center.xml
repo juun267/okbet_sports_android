@@ -28,28 +28,16 @@
         app:srlEnableLoadMore="true"
         app:srlEnablePureScrollMode="true">
 
-        <FrameLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_data"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            tools:context="org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter"
+            tools:itemCount="5"
+            tools:listitem="@layout/content_infocenter_list"
+            tools:orientation="vertical" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                tools:context="org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter"
-                tools:itemCount="5"
-                tools:listitem="@layout/content_infocenter_list"
-                tools:orientation="vertical" />
-
-            <include
-                android:id="@+id/image_no_message"
-                layout="@layout/view_no_record"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
-        </FrameLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <ImageView
