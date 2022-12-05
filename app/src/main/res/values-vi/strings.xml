@@ -1322,5 +1322,5 @@
     <string name="error_tips_confirm_password">Mật khẩu bạn nhập khác nhau, mời nhập lại</string>
     <string name="hide_confirm_password">Xác nhận mật khẩu mới</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
-
+    <string name="pay_maya">Paymaya</string>
 </resources>

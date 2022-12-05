@@ -1338,4 +1338,5 @@
     <string name="hide_confirm_password">确认新登录密码</string>
     <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
     <string name="reget_phone_code_for">重新获取</string>
+    <string name="pay_maya">Paymaya</string>
 </resources>
