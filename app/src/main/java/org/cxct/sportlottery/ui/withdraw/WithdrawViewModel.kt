@@ -496,6 +496,11 @@ class WithdrawViewModel(
                                     TransferType.STATION.type
                                 )
                             }
+                            UWType.PAY_MAYA.type -> {
+                                if (withdrawConfig.find { it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN) tabList.add(
+                                    TransferType.PAYMAYA.type
+                                )
+                            }
                         }
                     }
                     _withdrawTabIsShow.postValue(tabList)
@@ -765,6 +770,12 @@ class WithdrawViewModel(
                 0,
                 RoundingMode.FLOOR
             )
+            TransferType.PAYMAYA -> ArithUtil.div(
+                (userMoney.value ?: 0.0),
+                ((cardConfig?.feeRate?.plus(1) ?: 1.0)),
+                0,
+                RoundingMode.FLOOR
+            )
         }
     }
 
@@ -865,6 +876,9 @@ class WithdrawViewModel(
             }
             TransferType.STATION -> {
                 rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.STATION.type }?.detailList?.first()
+            }
+            TransferType.PAYMAYA -> {
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.PAYMAYA.type }?.detailList?.first()
             }
         }
     }
