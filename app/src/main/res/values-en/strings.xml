@@ -1334,4 +1334,5 @@
     <string name="error_tips_confirm_password">Password you entered does not match, please re-enter</string>
     <string name="hide_confirm_password">Confirm new login password</string>
     <string name="error_new_password">Password consist 6-20 characters and must have a combination of numbers and letters.</string>
+    <string name="reget_phone_code_for">Reacquire</string>
 </resources>
