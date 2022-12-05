@@ -1272,7 +1272,7 @@
     <string name="please_enter_question">Please describe the problem</string>
     <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
     <string name="error_full_name">The name that you entered is not valid</string>
-    <string name="hint_verification_code">Please enter the verification code.</string>
+    <string name="hint_verification_code">Please enter verify code</string>
     <string name="please_get_forget_password">Please retrieve your OKBet password!</string>
     <string name="please_set_forget_password">Please set your new account password!</string>
     <string name="new_login_password">New Login Password</string>

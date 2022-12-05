@@ -1255,7 +1255,7 @@
     <string name="not_sign_up">Don\'t have an account yet</string>
     <string name="no_search_match">No matches were found</string>
     <string name="error_full_name">The name that you entered is not valid</string>
-    <string name="hint_verification_code">Please enter the verification code.</string>
+    <string name="hint_verification_code">Please enter verify code</string>
     <string name="please_enter_question">Please describe the problem</string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
     <string name="please_get_forget_password">Please retrieve your OKBet password!</string>

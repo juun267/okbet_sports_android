@@ -202,7 +202,11 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         viewModel.smsCodeResult.observe(this){
             it?.let { result->
                 if (!result.success){
-                    binding.etSmsValidCode.setError(result.msg,false)
+                    if (result.code == 2765||result.code == 2766){
+                        binding.etPhone.setError(result.msg,false)
+                    }else{
+                        binding.etSmsValidCode.setError(result.msg,false)
+                    }
                 }else{
                     page++
                     setPage()
