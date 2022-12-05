@@ -89,4 +89,5 @@ data class Odd(
     var belongMatchOdd: MatchOdd? = null //紀錄所屬的MatchOdd
 
     var leagueExpanded: Boolean = true //所屬MatchOdd是否為展開
+
 }

@@ -106,8 +106,6 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
                                 }
                             }
                             if (needUpdateMatch) {
-                                Log.d("hjq",
-                                    " index=" + index + "," + matchOdd.matchInfo?.leagueName + "," + matchOdd.matchInfo?.homeName)
                                 withContext(Dispatchers.Main) {
                                     updateMatch(index, matchOdd)
                                 }

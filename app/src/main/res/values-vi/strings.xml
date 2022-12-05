@@ -211,7 +211,7 @@
     <string name="badminton">Cầu lông</string>
     <string name="volleyball">Bóng Chuyền</string>
     <string name="table_tennis">Bóng bàn</string>
-    <string name="ice_hockey">Ice hockey</string>
+    <string name="ice_hockey">Ice Hockey</string>
     <string name="boxing">Quyền anh</string> <!--C029-->
     <string name="snooker">Bida</string>
     <string name="cricket">Bóng gậy</string>
@@ -1302,7 +1302,7 @@
     <string name="text_x">X</string>
     <string name="ou_hdp_hdp">Cược chấp</string>
     <string name="see_more">Xem thêm&#160;</string>
-    <string name="less_than_the">U</string>
+    <string name="less_than_the">Xỉu</string>
     <string name="more_than_the">Tài</string>
     <string name="dont_have_game">Hiện không có Games Jackpot</string>
     <string name="please_input_you_account">Mời nhập tài khoản của bạn</string>

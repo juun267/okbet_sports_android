@@ -231,14 +231,14 @@
     <string name="tennis">Tennis</string>
     <string name="badminton">Badminton</string>
     <string name="volleyball">Volleyball</string>
-    <string name="table_tennis">Table tennis</string>
-    <string name="ice_hockey">Ice hockey</string>
+    <string name="table_tennis">Table Tennis</string>
+    <string name="ice_hockey">Ice Hockey</string>
     <string name="boxing">Boxing</string>
     <string name="snooker">Billiards</string>
     <string name="cricket">Cricket</string>
     <string name="baseball">Baseball</string>
     <string name="rugby_football">Rugby</string>
-    <string name="america_football">American football</string>
+    <string name="america_football">American Football</string>
     <string name="motor_racing">Motor Racing</string>
     <string name="golf">Golf</string>
     <string name="financial_bets">Financial Bets</string>

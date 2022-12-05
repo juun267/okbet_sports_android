@@ -138,8 +138,7 @@ class TransactionRecordDiffAdapter :
                         }
 
                         override fun onFinish() {
-                            tv_bet_result.text =
-                                String.format(context.getString(R.string.pending), 0)
+                            tv_bet_result.setBetReceiptStatus(data.status)
                         }
                     }.start()
                 } else {
@@ -313,8 +312,7 @@ class TransactionRecordDiffAdapter :
                         }
 
                         override fun onFinish() {
-                            tv_bet_result_parlay.text =
-                                String.format(context.getString(R.string.pending), 0)
+                            tv_bet_result_parlay.setBetReceiptStatus(data.status)
                         }
                     }.start()
                 } else {
