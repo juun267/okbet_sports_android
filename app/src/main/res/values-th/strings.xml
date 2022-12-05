@@ -1232,5 +1232,11 @@
     <string name="cs_center">ศูนย์ช่วยเหลือ</string>
     <string name="home_slot">สล็อต</string>
     <string name="deadline">กำหนดสิ้นสุด</string>
+    <string name="error_phone_num">เบอร์โทรศัพท์ไม่ถูกต้อง</string>
+    <string name="tips_login_password_success">เปลี่ยนแปลงรหัสผ่านสำเร็จ กรุณาทำการล็อกอินอีกครั้ง</string>
+    <string name="error_tips_confirm_password">รหัสผ่านไม่เหมือนกัน กรุณากรอกใหม่อีกครั้ง</string>
+    <string name="hide_confirm_password">ยืนยันรหัสผ่านใหม่</string>
+    <string name="error_new_password">รหัสผ่่าน 6-20 ตัวต้องมีทั้งตัวเลขและตัวอักษร</string>
+    <string name="error_verification_code_forget">รหัสยืนยันไม่ถูกต้อง</string>
     <!--F005-->
 </resources>
