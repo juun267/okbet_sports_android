@@ -1358,6 +1358,7 @@
     <string name="expand_more_combinations">展开更多组合</string>
     <string name="stacked_combination">叠起组合</string>
     <string name="bet_parlay">+串关</string>
+    <string name="bet_single">单注</string>
     <!--投注改版-->
 
 </resources>

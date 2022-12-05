@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.repository
 
 
+import androidx.annotation.IntDef
+import androidx.annotation.StringDef
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -23,6 +25,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
@@ -80,6 +83,7 @@ object BetInfoRepository {
     val betParlaySuccess: LiveData<Boolean>
         get() = _betParlaySuccess
 
+
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
@@ -108,6 +112,18 @@ object BetInfoRepository {
 
     fun postSettlementNotificationMsg(sportBet: SportBet) {
         _settlementNotificationMsg.postValue(Event(sportBet))
+    }
+
+    val currentStateSingleOrParlay: LiveData<Event<Int>>
+        get() = _currentStateSingleOrParlay
+    private val _currentStateSingleOrParlay = MutableLiveData(Event(0))
+
+
+    @IntDef(BetListFragment.SINGLE, BetListFragment.PARLAY)
+    annotation class BetType
+
+    fun setCurrentBetState(@BetType currentState: Int) {
+        _currentStateSingleOrParlay.value = (Event(currentState))
     }
 
     /**
@@ -141,8 +157,8 @@ object BetInfoRepository {
             //parlay (是否可以参加过关，0：否，1：是)
             val cannotParlay = it.outrightMatchInfo?.parlay == 0
 //            Timber.e("parlay: ${it.outrightMatchInfo?.parlay}, cannotParlay: $cannotParlay")
-            if (cannotParlay || hasLcsGameType || hasMatchType || hasDiffGameType
-                || (matchIdList[it.matchOdd.matchId]?.size ?: 0) > 1
+            if (cannotParlay || hasLcsGameType || hasMatchType || hasDiffGameType || (matchIdList[it.matchOdd.matchId]?.size
+                    ?: 0) > 1
             ) {
                 hasPointMark = true
                 it.pointMarked = true
@@ -165,8 +181,9 @@ object BetInfoRepository {
                  * 原在此處有將N串1移至第一項的排序邏輯移動至ParlayLimitUtil.getCom()
                  * @see ParlayLimitUtil.getCom N串1排序
                  */
-                val newParlayList =
-                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, true, betInfo = betInfo).toMutableList()
+                val newParlayList = getParlayOdd(
+                    MatchType.PARLAY, it, parlayMatchOddList, true, betInfo = betInfo
+                ).toMutableList()
 
                 if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
@@ -319,20 +336,20 @@ object BetInfoRepository {
 
             Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
-            oddIDArray.add(it.oddsId)
-            if (oddIDArray.isEmpty()) {
+
+            //单注模式
+            if ((currentStateSingleOrParlay.value?.getContentIfNotHandled() ?: 0) == 0) {
+                oddIDArray.clear()
                 oddIDArray.add(it.oddsId)
-            }else{
-                oddIDArray[0] = it.oddsId
-            }
-            _betIDList.postValue(Event(oddIDArray))
-
-            if (betList.isEmpty()){
+                betList.clear()
                 betList.add(data)
-            }else{
-                betList[0] = data
+            } else {
+                //串关投注
+                oddIDArray.add(it.oddsId)
+                betList.add(data)
             }
 
+            _betIDList.postValue(Event(oddIDArray))
             updateQuickListManager(betList)
 
             //產生串關注單
@@ -388,10 +405,7 @@ object BetInfoRepository {
         val minBetMoneyTakeMax = betInfoList.maxOfOrNull { it?.minBetMoney ?: minDefaultBigDecimal }
 //        Timber.e("costTime: ${System.nanoTime() - startTime}")
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
-            oddsList,
-            parlayComList,
-            maxBetMoneyTakeMin,
-            minBetMoneyTakeMax
+            oddsList, parlayComList, maxBetMoneyTakeMin, minBetMoneyTakeMax
         )
 
         return parlayBetLimitMap.map {
@@ -425,7 +439,7 @@ object BetInfoRepository {
                 }
                 maxBet = maxParlayBet
                 minBet = minParlayBetMoney
-            }else {
+            } else {
                 val payout: BigDecimal
                 betInfo?.maxBetMoney?.let {
                     maxParlayBetMoney = it
@@ -436,11 +450,13 @@ object BetInfoRepository {
                         payout = maxParlayPayout
                         maxParlayBetMoney
                     }
+
                     matchType == MatchType.OUTRIGHT -> {
                         //冠軍賠付額
                         payout = maxCpPayout
                         maxCpBetMoney
                     }
+
                     else -> {
                         //一般賠付額
                         payout = maxPayout
@@ -501,9 +517,11 @@ object BetInfoRepository {
                 hkOdds = it.value.hdOdds.toDouble(),
                 //Martin
                 malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(
-                    0)?.malayOdds ?: 0.0,
+                    0
+                )?.malayOdds ?: 0.0,
                 indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(
-                    0)?.indoOdds ?: 0.0
+                    0
+                )?.indoOdds ?: 0.0
             )
         }
     }
@@ -582,6 +600,7 @@ object BetInfoRepository {
                     }
                     hasPlatClose = true
                 }
+
                 else -> { //BetStatus.ACTIVATED.code
                     it.matchOdd.betAddError != null
                 }
@@ -598,7 +617,8 @@ object BetInfoRepository {
 
     private fun updateQuickListManager(betList: MutableList<BetInfoListData>) {
         //更新快捷投注項選中list
-        QuickListManager.setQuickSelectedList(betList.map { bet -> bet.matchOdd.oddsId }.toMutableList())
+        QuickListManager.setQuickSelectedList(betList.map { bet -> bet.matchOdd.oddsId }
+            .toMutableList())
     }
 
     fun updateMatchOdd(changeEvent: Any) {
@@ -645,8 +665,7 @@ object BetInfoRepository {
     }
 
     private fun updateItem(
-        oldItem: MatchOdd,
-        newList: List<Odd>
+        oldItem: MatchOdd, newList: List<Odd>
     ) {
         for (newItem in newList) {
             try {
@@ -656,18 +675,18 @@ object BetInfoRepository {
                         newItem.status.let { status -> oldItem.status = status }
 
                         //賠率為啟用狀態時才去判斷是否有賠率變化
-                        var currentOddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
+                        var currentOddsType =
+                            MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.HK
                         if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.oddState = getOddState(
                                 getOdds(
-                                    oldItem,
-                                    currentOddsType
+                                    oldItem, currentOddsType
                                 ), newItem
                             )
 
-                            if (oldItem.oddState != OddState.SAME.state)
-                                oldItem.oddsHasChanged = true
+                            if (oldItem.oddState != OddState.SAME.state) oldItem.oddsHasChanged =
+                                true
                         }
 
                         oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
@@ -676,14 +695,14 @@ object BetInfoRepository {
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
                             newItem.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
-                            newItem.malayOdds.let { malayOdds -> oldItem.malayOdds = malayOdds ?: 0.0 }
+                            newItem.malayOdds.let { malayOdds ->
+                                oldItem.malayOdds = malayOdds ?: 0.0
+                            }
                             newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                        if (oldItem.oddState != OddState.SAME.state &&
-                            oldItem.status == BetStatus.ACTIVATED.code
-                        ) {
+                        if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.betAddError = null
                         }
 
@@ -696,8 +715,7 @@ object BetInfoRepository {
     }
 
     private fun getOddState(
-        oldItemOdds: Double,
-        newOdd: Odd
+        oldItemOdds: Double, newOdd: Odd
     ): Int {
         //馬來盤、印尼盤為null時自行計算
         var newMalayOdds = 0.0
@@ -707,9 +725,8 @@ object BetInfoRepository {
             newMalayOdds =
                 if (newOdd.hkOdds ?: 0.0 > 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
                     .toDouble() else newOdd.hkOdds ?: 0.0
-            newIndoOdds =
-                if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
-                    .toDouble() else newOdd.hkOdds ?: 0.0
+            newIndoOdds = if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                .toDouble() else newOdd.hkOdds ?: 0.0
         }
 
         val odds = when (MultiLanguagesApplication.mInstance.mOddsType.value) {
@@ -728,9 +745,8 @@ object BetInfoRepository {
         }
     }
 
-    private fun getSpreadState(oldSpread: String, newSpread: String): Int =
-        when {
-            newSpread != oldSpread -> SpreadState.DIFFERENT.state
-            else -> SpreadState.SAME.state
-        }
+    private fun getSpreadState(oldSpread: String, newSpread: String): Int = when {
+        newSpread != oldSpread -> SpreadState.DIFFERENT.state
+        else -> SpreadState.SAME.state
+    }
 }

@@ -71,6 +71,8 @@ abstract class BaseOddButtonViewModel(
     val betAddResult: LiveData<Event<BetAddResult?>>
         get() = _betAddResult
 
+
+
     protected val mUserMoney = MutableLiveData<Double?>()
     protected val mLockMoney = MutableLiveData<Double?>()
     protected val _oddChange = MutableLiveData<Boolean>()

@@ -502,6 +502,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 //editText container
                 cl_editText_container.isVisible = isVisible
+                includeOddsLayout.isVisible = isVisible
                 //提示文字Container
                 ll_single_tips.isVisible = isVisible
                 //不支援串關的提示
