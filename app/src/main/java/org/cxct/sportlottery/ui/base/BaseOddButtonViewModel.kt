@@ -42,6 +42,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import timber.log.Timber
 
 
 abstract class BaseOddButtonViewModel(
@@ -187,6 +188,7 @@ abstract class BaseOddButtonViewModel(
                     savedOddId = "savedOddId" //重設savedOddId
                     if (result.success) {
                         val betInfo = result.BetInfo
+                        Timber.d("betInfoRepository:$betInfoRepository  ${betInfoRepository.currentStateSingleOrParlay}")
                         betInfoRepository.addInBetInfo(
                             matchType,
                             gameType,

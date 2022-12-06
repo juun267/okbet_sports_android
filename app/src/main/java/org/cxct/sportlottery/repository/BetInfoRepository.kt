@@ -114,16 +114,10 @@ object BetInfoRepository {
         _settlementNotificationMsg.postValue(Event(sportBet))
     }
 
-    val currentStateSingleOrParlay: LiveData<Event<Int>>
-        get() = _currentStateSingleOrParlay
-    private val _currentStateSingleOrParlay = MutableLiveData(Event(0))
+    var currentStateSingleOrParlay: Int = 0
 
-
-    @IntDef(BetListFragment.SINGLE, BetListFragment.PARLAY)
-    annotation class BetType
-
-    fun setCurrentBetState(@BetType currentState: Int) {
-        _currentStateSingleOrParlay.value = (Event(currentState))
+    fun setCurrentBetState(currentState: Int) {
+        currentStateSingleOrParlay = (currentState)
     }
 
     /**
@@ -280,6 +274,38 @@ object BetInfoRepository {
         betListTabPosition = 0
     }
 
+    fun switchSingleMode() {
+        var betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        var oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+        if (betList.size > 1) {
+            betList = betList.subList(0, 1)
+        }
+        if (oddIDArray.size > 1) {
+            oddIDArray = oddIDArray.subList(0, 1)
+        }
+        _matchOddList.value?.clear()
+        _parlayList.value?.clear()
+
+        updateQuickListManager(betList)
+
+        checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
+        _betInfoList.postValue(Event(betList))
+        betListTabPosition = 0
+    }
+
+    fun switchParlayMode() {
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
+
+        updateQuickListManager(betList)
+
+        checkBetInfoContent(betList)
+        _betIDList.postValue(Event(oddIDArray))
+        _betInfoList.postValue(Event(betList))
+        betListTabPosition = 0
+    }
+
     /**
      * 点击赔率按钮加入投注清单，并产生串关注单
      */
@@ -337,13 +363,15 @@ object BetInfoRepository {
             Timber.d("==Bet Refactor==> _betIDList.size():${_betIDList.value?.peekContent()?.size}")
             val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
-            //单注模式
-            if ((currentStateSingleOrParlay.value?.getContentIfNotHandled() ?: 0) == 0) {
+            if (currentStateSingleOrParlay == 0) {
+                //单注模式
+                Timber.d("单注模式")
                 oddIDArray.clear()
                 oddIDArray.add(it.oddsId)
                 betList.clear()
                 betList.add(data)
             } else {
+                Timber.d("串关模式")
                 //串关投注
                 oddIDArray.add(it.oddsId)
                 betList.add(data)
@@ -361,6 +389,7 @@ object BetInfoRepository {
             }
         }
     }
+
 
     suspend fun getBetInfo(betInfoRequest: BetInfoRequest): Response<BetInfoResult> {
         return OneBoSportApi.betService.getBetInfo(betInfoRequest)
