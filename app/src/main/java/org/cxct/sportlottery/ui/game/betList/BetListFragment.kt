@@ -114,7 +114,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var showReceipt: Boolean = false
 
-    private var tabPosition = 0 //tab的位置
+//    private var tabPosition = 0 //tab的位置
 
     private var needUpdateBetLimit = false //是否需要更新投注限額
 
@@ -603,7 +603,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val betList = getCurrentBetList()
         val parlayList = getCurrentParlayList()
         //僅判斷對應tab裡的amountError
-        if (tabPosition == 0) {
+        if (currentBetType == 0) {
             betList.forEach {
                 if (it.amountError) {
                     btn_bet.amountCanBet = false
@@ -646,13 +646,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //        } + parlayList.sumByDouble { getComboWinnable(it.betAmount, getOdds(it, OddsType.EU), it.num) }
 
         //只取得對應tab內的totalBetAmount
-        val totalBetAmount = if (tabPosition == 0) {
+        val totalBetAmount = if (currentBetType == 0) {
             list.sumOf { it.realAmount }
         } else {
             parlayList.sumOf { it.betAmount * it.num }
         }
 
-        val winnableAmount = if (tabPosition == 0) {
+        val winnableAmount = if (currentBetType == 0) {
             list.sumOf {
                 var currentOddsType = oddsType
                 if (it.matchOdd.odds == it.matchOdd.malayOdds || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
@@ -688,13 +688,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tvTotalWinnableAmount.text = TextUtil.formatForOdd(winnableAmount)
         }
 
-        val betCount = if (tabPosition == 0) {
+        val betCount = if (currentBetType == 0) {
             list.count { it.betAmount > 0 }
         } else {
             parlayList.filter { it.betAmount > 0 }.sumOf { it.num }
         }
         binding.btnBet.apply {
-            isParlay = tabPosition == 1
+            isParlay = currentBetType == 1
             betCounts = betCount
         }
 
@@ -769,7 +769,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             when (currentBetType) {
                 //單項投注
                 0 -> {
-                    tabPosition = 0
+//                    tabPosition = 0
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     binding.apply {
                         clParlayList.visibility = View.GONE
@@ -778,7 +778,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
                 //串關投注
                 1 -> {
-                    tabPosition = 1
+//                    tabPosition = 1
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                     refreshLlMoreOption()
@@ -1048,7 +1048,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betParlayList = tempParlayList
 
         //只取得對應tab內的totalBetAmount
-        val totalBetAmount = if (tabPosition == 0) {
+        val totalBetAmount = if (currentBetType == 0) {
             betListFilter.sumOf { it.realAmount }
         } else {
             parlayList.sumOf { it.betAmount * it.num }
@@ -1071,7 +1071,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.addBetList(
-            getCurrentBetList(), parlayList, oddsType, tabPosition
+            getCurrentBetList(), parlayList, oddsType, currentBetType
         )
     }
 
