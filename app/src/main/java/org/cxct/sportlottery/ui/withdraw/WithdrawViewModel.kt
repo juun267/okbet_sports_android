@@ -919,6 +919,7 @@ class WithdrawViewModel(
         var showAddCryptoCard = false //是否顯示虛擬幣
         val showAddBankCard: Boolean // 是否顯示銀行卡
         val showAddEWalletCard: Boolean // 是否顯示eWallet
+        val showAddPayMayaCard: Boolean // 是否顯示eWallet
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen =

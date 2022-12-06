@@ -415,9 +415,7 @@
             android:id="@+id/cv_recharge_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            app:cardBackgroundColor="@color/color_191919_FCFCFC">
 
 
                 <LinearLayout
@@ -557,7 +555,67 @@
 -->
 
         </androidx.cardview.widget.CardView>
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cv_recharge_upload_evidence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@color/color_191919_FCFCFC">
+            <TextView
+                android:id="@+id/tv_upload_evidence"
+                android:text="上传凭证"
+                android:gravity="center"
+                android:textSize="@dimen/margin_14"
+                android:textColor="@color/color_D2E4FF_414655"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/margin_14"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"/>
+            <View
+                android:id="@+id/view_upload"
+                android:background="@color/color_eeeeee"
+                app:layout_constraintTop_toBottomOf="@+id/tv_upload_evidence"
+                android:layout_marginStart="@dimen/margin_14"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <Button
+                android:id="@+id/bt_check_files"
+                android:text="选择文件"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize16sp"
+                android:layout_marginEnd="@dimen/margin_14"
+               android:layout_marginTop="@dimen/margin_8"
+                android:background="@drawable/btn_send_sms"
+                app:layout_constraintTop_toBottomOf="@+id/view_upload"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="85dp"
+                android:layout_height="35dp"/>
+            <View
+                android:layout_marginTop="@dimen/margin_8"
+                android:id="@+id/view_upload2"
+                android:background="@color/color_eeeeee"
+                android:layout_marginStart="@dimen/margin_14"
+                app:layout_constraintTop_toBottomOf="@+id/bt_check_files"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <EditText
+                android:id="@+id/tv_hint_upload"
+                app:layout_constraintTop_toBottomOf="@+id/view_upload"
+                app:layout_constraintBottom_toTopOf="@+id/view_upload2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bt_check_files"
+                android:layout_width="0dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="null"
+                android:hint="No file chosen"
+                android:enabled="false"
+                android:textColorHint="@color/color_C9CFD7"
+                android:layout_marginStart="@dimen/margin_14"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
