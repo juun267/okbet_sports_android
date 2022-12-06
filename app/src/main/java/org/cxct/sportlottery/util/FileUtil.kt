@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.util
 
 import android.content.res.AssetManager
+import android.graphics.BitmapFactory
 import android.text.TextUtils
 import java.io.*
+import java.text.DecimalFormat
 
 object FileUtil {
 
@@ -135,29 +137,80 @@ object FileUtil {
      * @return double类型的值 对应MB
      */
     @JvmStatic
-    private fun getFilesSize(filePath: String?): Double {
+     fun getFilesSizeByType(filePath: String?,sizeType:Int): Double {
         var file = filePath?.let { File(it) }
         var blockSize:Long = 0
         try {
             if (file != null) {
-                if (file.isDirectory){
-                    blockSize = getf(filePath).toLong()
-                }
+                blockSize = getFileSize(file)
             }
         }catch (e:Exception){
             e.printStackTrace()
         }
+
+        return formatFileSize(blockSize,sizeType)
     }
     /**
      * 获取文件大小
      */
     @JvmStatic
-    private fun getFileSize():Long{
+     fun getFileSize(file: File?): Long{
+        var size:Long = 0
         try {
+            if (file != null) {
+                if (file.exists()){
+                  var fis = FileInputStream(file)
+                    size = fis.available().toLong()
+                }else{
 
+                }
+            }
         }catch (e:Exception){
-
+            e.printStackTrace()
         }
+        return size
     }
-
+    /**
+     * 转化文件大小
+     * @param fileS 文件大小
+     * @param sizeType 大小类型 0:B,1:KB,2:MB 3:GB
+     */
+    @JvmStatic
+     fun formatFileSize(fileS: Long,sizeType: Int):Double{
+        var df = DecimalFormat("#.00")
+        var fileSizeLong:Double = 0.0
+        when(sizeType){
+            0 ->{
+                fileSizeLong = df.format(fileS).toDouble()
+            }
+            1 ->{
+                fileSizeLong = df.format(fileS).toDouble()/1024
+            }
+            2->{
+                fileSizeLong = df.format(fileS).toDouble()/1048576
+            }
+            3->{
+                fileSizeLong = df.format(fileS).toDouble()/1073741824
+            }
+        }
+        return  fileSizeLong
+    }
+    /**
+     * 获取文件后缀名返回为png、jpeg、gif等字段
+     * 手机中会显示jpg对应jpeg格式
+     * @param imagePath 图片路径
+     * @return imageType 图片类型
+     */
+    @JvmStatic
+    fun getImageType(imagePath:String):String {
+        var imageType:String
+        var option = BitmapFactory.Options()
+        option.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(imagePath,option)
+        imageType = option.outMimeType
+        if (!imageType.isNullOrEmpty()){
+            imageType = imageType.substring(6,imageType.length)
+        }
+        return imageType
+    }
 }
