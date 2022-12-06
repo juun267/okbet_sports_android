@@ -125,8 +125,9 @@ class TransactionRecordDiffAdapter :
 
                 match_play_time.text =
                     TimeUtil.timeFormat(matchOdds.startTime, TimeUtil.DM_HM_FORMAT)
-
-                if (data.betConfirmTime?.toInt() != 0) {
+                if (data.betConfirmTime?.toInt() != 0 && System.currentTimeMillis() < (data.betConfirmTime
+                        ?: 0L)
+                ) {
                     val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
                     object : CountDownTimer(leftTime ?: 0, 1000) {
 
@@ -300,7 +301,9 @@ class TransactionRecordDiffAdapter :
                 content_parlay_order_no.text = data.orderNo
                 content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
 
-                if (data.betConfirmTime?.toInt() != 0) {
+                if (data.betConfirmTime?.toInt() != 0 && System.currentTimeMillis() < (data.betConfirmTime
+                        ?: 0L)
+                ) {
                     val leftTime = data.betConfirmTime?.minus(TimeUtil.getNowTimeStamp())
                     object : CountDownTimer(leftTime ?: 0, 1000) {
 
