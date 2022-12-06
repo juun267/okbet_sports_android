@@ -144,7 +144,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/block_editText"
         app:layout_constraintTop_toBottomOf="@+id/block_editText" />
-
+    <View
+        android:id="@+id/v_bottom_line2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="14dp"
+        android:background="@color/color_eeeeee"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/block_editText"
+        app:layout_constraintTop_toBottomOf="@+id/block_editText" />
     <TextView
         android:id="@+id/tv_error"
         android:layout_width="0dp"

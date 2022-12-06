@@ -415,6 +415,7 @@
             android:id="@+id/cv_recharge_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardElevation="0dp"
             app:cardBackgroundColor="@color/color_191919_FCFCFC">
 
 
@@ -583,7 +584,7 @@
                 android:id="@+id/bt_check_files"
                 android:text="选择文件"
                 android:textColor="@color/color_2b2b2b_ffffff"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize14sp"
                 android:layout_marginEnd="@dimen/margin_14"
                android:layout_marginTop="@dimen/margin_8"
                 android:background="@drawable/btn_send_sms"
@@ -608,7 +609,8 @@
                 android:layout_width="0dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:background="null"
+                android:textSize="@dimen/textSize14sp"
+                android:background="@null"
                 android:hint="No file chosen"
                 android:enabled="false"
                 android:textColorHint="@color/color_C9CFD7"

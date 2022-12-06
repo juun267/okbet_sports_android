@@ -128,4 +128,36 @@ object FileUtil {
             }
         }
     }
+
+    /**
+     * 获取指定路径文件大小
+     * @param filePath 文件路径
+     * @return double类型的值 对应MB
+     */
+    @JvmStatic
+    private fun getFilesSize(filePath: String?): Double {
+        var file = filePath?.let { File(it) }
+        var blockSize:Long = 0
+        try {
+            if (file != null) {
+                if (file.isDirectory){
+                    blockSize = getf(filePath).toLong()
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+    /**
+     * 获取文件大小
+     */
+    @JvmStatic
+    private fun getFileSize():Long{
+        try {
+
+        }catch (e:Exception){
+
+        }
+    }
+
 }
