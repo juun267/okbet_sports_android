@@ -56,6 +56,7 @@ class BankCardListAdapter(private val mBankCardListClickListener: BankCardListCl
                      TransferType.BANK -> CardType.EDIT.ordinal
                     TransferType.CRYPTO -> CardType.CRYPTO_EDIT.ordinal
                     TransferType.E_WALLET -> CardType.EDIT.ordinal
+                    TransferType.PAYMAYA -> CardType.EDIT.ordinal
                     TransferType.STATION -> CardType.EDIT.ordinal
         }
     }

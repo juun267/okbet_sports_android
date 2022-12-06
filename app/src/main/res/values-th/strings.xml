@@ -501,7 +501,9 @@
     <string name="text_crypto_add_success">ผูกสกุลเงินเสมือนสำเร็จแล้ว</string>
     <string name="text_crypto_delete_success">ลบสกุลเงินเสมือนเรียบร้อยแล้ว</string>
     <string name="text_e_wallet_add_success">ผูก eWallet สำเร็จ</string>
+    <string name="text_pay_maya_add_success">ผูก Paymaya สำเร็จ</string>
     <string name="text_e_wallet_delete_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
+    <string name="text_pay_maya_delete_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
     <string name="text_money_get_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
     <string name="please_setting_money_card">โปรดตั้งค่าบัตรธนาคาร/สกุลเงินเสมือน/eWallet ก่อน</string>
     <string name="please_setting_bank_card">กรุณาตั้งค่าบัตรธนาคารก่อน</string>
@@ -995,6 +997,7 @@
     <string name="text_crypto_modify_success">แก้ไขความสำเร็จของสกุลเงินเสมือน</string>
     <string name="text_bank_card_modify_success">แก้ไขบัตรธนาคารสำเร็จ</string>
     <string name="text_e_wallet_modify_success">แก้ไข eWallet สำเร็จ</string>
+    <string name="text_paymaya_add_success">แก้ไข Paymaya สำเร็จ</string>
     <string name="bank_list_add">เพิ่ม %1$s</string>
     <string name="add_credit_or_virtual">เพิ่ม %1$s</string>
     <string name="label_in_play_games">เปตอง</string>

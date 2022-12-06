@@ -103,7 +103,7 @@
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">YYYY/MM/DD</string>
     <string name="hint_real_name">Match the bank account name</string>
-    <string name="verification_code">Verification code</string>
+    <string name="verification_code">Verify code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code">CAPTCHA incorrectly</string>
     <string name="hint_verification_code_by_sms">SMS</string>
@@ -538,6 +538,7 @@
     <string name="please_enter_wallet_phone_number">Please enter the phone number</string>
     <string name="delete_bank_card">Delete</string>
     <string name="delete_crypto">Delete</string>
+    <string name="delete_paymaya">Delete</string>
     <string name="delete_e_wallet">Delete</string>
     <string name="select_currency_protocol">Select agreement/currency</string>
     <string name="error_withdraw_password">The Password you entered is incorrect</string>
@@ -546,12 +547,16 @@
     <string name="text_bank_card_delete_success">Bank card deleted successfully</string>
     <string name="text_crypto_delete_success">The virtual coin was successfully deleted</string>
     <string name="text_e_wallet_delete_success">eWallet deleted successfully</string>
+    <string name="text_pay_maya_delete_success">Paymaya deleted successfully</string>
     <string name="text_bank_card_add_success">Bank card binding successfully</string>
     <string name="text_crypto_add_success">Crypto binding successfully</string>
     <string name="text_e_wallet_add_success">eWallet binding successfully</string>
+    <string name="text_pay_maya_add_success">eWallet binding successfully</string>
+    <string name="text_paymaya_add_success">Paymaya binding successfully</string>
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="text_e_wallet_modify_success">Edit eWallet successfully</string>
+    <string name="text_pay_maya_modify_success">Edit Paymaya successfully</string>
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
