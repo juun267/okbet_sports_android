@@ -583,7 +583,7 @@
     <string name="e_mail">อีเมล</string>
     <string name="hint_e_mail">กรุณากรอกอีเมล์ของคุณ</string>
     <string name="error_e_mail">รูปแบบอีเมลผิดพลาด</string>
-    <string name="hint_phone_number">กรุณากรอกหมายเลขโทรศัพท์</string>
+    <string name="hint_phone_number">กรุณาป้อนเบอร์โทรติดต่อ</string>
     <string name="hint_phone_num">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="error_phone_number">รูปแบบหมายเลขโทรศัพท์ไม่ถูกต้อง</string>
     <string name="setting_password">ตั้งรหัสผ่าน</string>

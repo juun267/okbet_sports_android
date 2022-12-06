@@ -62,7 +62,7 @@
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">4 digit password</string>
-    <string name="phone_number">Phone No.</string>
+    <string name="phone_number">Phone number</string>
     <string name="hint_phone_number">Please enter the correct phone number</string>
     <string name="hint_phone_num">Please enter phone number</string>
     <string name="error_phone_number">Phone number formatted incorrectly</string>
@@ -105,11 +105,11 @@
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">YYYY/MM/DD</string>
     <string name="hint_real_name">Match the bank account name</string>
-    <string name="verification_code">Verification code</string>
+    <string name="verification_code">Verify code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code">CAPTCHA incorrectly</string>
-    <string name="hint_verification_code_by_sms">SMS</string>
-    <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
+    <string name="hint_verification_code_by_sms">SMS verify code</string>
+    <string name="error_verification_code_by_sms">SMS verify code incorrectly</string>
     <string name="get_verification_code">SEND</string>
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="get_security_code">Send code</string>
