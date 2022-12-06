@@ -107,7 +107,7 @@
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code">CAPTCHA incorrectly</string>
     <string name="hint_verification_code_by_sms">SMS verify code</string>
-    <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
+    <string name="error_verification_code_by_sms">SMS verify code incorrectly</string>
     <string name="get_verification_code">SEND</string>
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="get_security_code">Send code</string>
