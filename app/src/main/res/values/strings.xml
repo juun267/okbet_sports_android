@@ -62,7 +62,7 @@
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">4 digit password</string>
-    <string name="phone_number">Phone No.</string>
+    <string name="phone_number">Phone number</string>
     <string name="hint_phone_number">Please enter the correct phone number</string>
     <string name="hint_phone_num">Please enter phone number</string>
     <string name="error_phone_number">Phone number formatted incorrectly</string>
