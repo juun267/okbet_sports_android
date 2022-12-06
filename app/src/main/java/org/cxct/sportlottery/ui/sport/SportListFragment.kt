@@ -22,7 +22,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
@@ -111,7 +110,7 @@ class SportListFragment :
                 loading()
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
-                iv_arrow.isSelected = false
+                iv_arrow.isSelected = true
                 lin_filter.isVisible = gameType != GameType.ALL.key
             }
 
@@ -320,11 +319,12 @@ class SportListFragment :
                 null,
                 leagueIdList)
         }
-
+        iv_arrow.isSelected = true
         iv_arrow.setOnClickListener {
             iv_arrow.isSelected = !iv_arrow.isSelected
             sportLeagueAdapter.data.forEach {
-                it.unfoldStatus = if (iv_arrow.isSelected) FoldState.FOLD.code else FoldState.UNFOLD.code
+                it.unfoldStatus =
+                    if (iv_arrow.isSelected) FoldState.UNFOLD.code else FoldState.FOLD.code
             }
             sportLeagueAdapter.notifyDataSetChanged()
         }
