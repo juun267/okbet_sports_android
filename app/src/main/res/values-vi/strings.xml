@@ -62,7 +62,7 @@
     <string name="withdrawal_pwd">Mật khẩu rút tiền</string>
     <string name="hint_withdrawal_pwd">Mật khẩu gồm 4 chữ số</string>
     <string name="phone_number">Số điện thoại</string>
-    <string name="hint_phone_number">Vui lòng nhập số điện thoại</string>
+    <string name="hint_phone_number">Vui lòng nhập số điện thoại chính xác</string>
     <string name="hint_phone_num">Vui lòng nhập số điện thoại</string>
 
     <string name="error_phone_number">Định dạng số điện thoại không đúng</string>
@@ -107,7 +107,7 @@
     <string name="verification_code">Mã xác nhận</string>
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
     <string name="error_verification_code">Mã xác nhận không đúng</string>
-    <string name="hint_verification_code_by_sms">SMS</string>
+    <string name="hint_verification_code_by_sms">Vui lòng nhập mã xác nhận SMS</string>
     <string name="error_verification_code_by_sms">SMS mã xác nhận không đúng</string>
     <string name="get_verification_code">Gửi</string>
     <string name="get_valid_code_fail_point">yêu cầu nhận mã xác nhận thất bại, vui lòng nhấp để thử lại !</string>

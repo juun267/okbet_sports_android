@@ -103,10 +103,10 @@
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">YYYY/MM/DD</string>
     <string name="hint_real_name">Match the bank account name</string>
-    <string name="verification_code">Verification code</string>
+    <string name="verification_code">Verify code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code">CAPTCHA incorrectly</string>
-    <string name="hint_verification_code_by_sms">SMS</string>
+    <string name="hint_verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
