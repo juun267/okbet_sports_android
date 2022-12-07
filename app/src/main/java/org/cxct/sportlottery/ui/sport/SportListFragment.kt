@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.sport
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
+import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -140,9 +141,7 @@ class SportListFragment :
                     unSubscribeChannelHall(it)
                 }
                 //目前無法監聽收合動畫
-                Handler().postDelayed(
-                    { game_list?.firstVisibleRange(this, activity ?: requireActivity()) }, 400
-                )
+                firstVisibleRange(400)
             }
             leagueOddListener =
                 LeagueOddListener(clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
@@ -360,6 +359,15 @@ class SportListFragment :
     }
 
     private fun setupGameListView() = game_list.run {
+        if (this.layoutManager != null) {
+            if (viewModel.getMatchCount(matchType) < 1) {
+                sportLeagueAdapter.removePreloadItem()
+            } else {
+                sportLeagueAdapter.setPreloadItem()
+            }
+            return@run
+        }
+
         this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = sportLeagueAdapter
         addItemDecoration(VerticalDecoration(context, R.drawable.bg_divide_light_blue_8))
@@ -380,11 +388,7 @@ class SportListFragment :
             }
         })
 
-        if (viewModel.getMatchCount(matchType) < 1) {
-            sportLeagueAdapter.removePreloadItem()
-        } else {
-            sportLeagueAdapter.setPreloadItem()
-        }
+        sportLeagueAdapter.setPreloadItem()
     }
 
 
@@ -481,7 +485,7 @@ class SportListFragment :
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { oddsListResult ->
-                if (oddsListResult.success) {
+                if (oddsListResult.success && !oddsListResult.oddsListData?.leagueOdds.isNullOrEmpty()) {
 //                    sportLeagueAdapter.removePreloadItem()
                     var mLeagueOddList = (oddsListResult.oddsListData?.leagueOddsFilter
                         ?: oddsListResult.oddsListData?.leagueOdds)?.toMutableList()
@@ -512,8 +516,10 @@ class SportListFragment :
                     // TODO 這裡要確認是否有其他地方重複呼叫
                     Log.d("Hewie", "observe => OddsListGameHallResult")
 
-                    game_list?.firstVisibleRange(sportLeagueAdapter, activity ?: requireActivity())
+                    firstVisibleRange()
 
+                } else {
+                    sportLeagueAdapter.removePreloadItem()
                 }
             } ?: run {
                 sportLeagueAdapter.setPreloadItem()
@@ -937,4 +943,32 @@ class SportListFragment :
     open fun getCurGameType(): GameType {
         return GameType.getGameType(gameType) ?: GameType.ALL
     }
+
+     private fun firstVisibleRange(delay: Long = 100) = game_list.postDelayed({
+         val adapter = game_list.adapter as SportLeagueAdapter
+        if(adapter.data.isNullOrEmpty()) {
+            return@postDelayed
+        }
+
+        game_list.getVisibleRangePosition().forEach { leaguePosition ->
+            val view = game_list.layoutManager?.findViewByPosition(leaguePosition) ?: return@postDelayed
+
+            val viewHolder = game_list.getChildViewHolder(view)
+            if (viewHolder is SportLeagueAdapter.ItemViewHolder) {
+                viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
+                    if (leaguePosition < adapter.data.size) {
+
+                        val leagueOdd = adapter.data.getOrNull(leaguePosition)
+                        val matchOdd = leagueOdd?.matchOdds?.getOrNull(matchPosition)
+
+                        Log.d("[subscribe]", "訂閱 ${leagueOdd?.league?.name} -> " +
+                                "${matchOdd?.matchInfo?.homeName} vs " +
+                                "${matchOdd?.matchInfo?.awayName}")
+
+                        subscribeChannelHall(leagueOdd?.gameType?.key, matchOdd?.matchInfo?.id)
+                    }
+                }
+            }
+        }
+    }, delay)
 }
