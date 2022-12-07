@@ -18,7 +18,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -41,6 +43,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
@@ -377,6 +380,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         line_shadow.isVisible = !cl_bet_list_bar.isVisible
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
+    }
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
+        val multipleOdds = getMultipleOdds(list)
+        cl_bet_list_bar.tvOdds.text = multipleOdds
     }
 
     override fun showLoginNotify() {

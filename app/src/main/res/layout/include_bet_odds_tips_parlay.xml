@@ -67,7 +67,7 @@
         android:background="@drawable/bg_drawable_odds_change_tips"
         android:drawableStart="@drawable/ic_odds_change_tips_white"
         android:layout_width="match_parent"
-        android:text="赔率已经变化,请确认最新赔率"
+        android:text="@string/str_odds_already_changed_check_please"
         android:paddingStart="14dp"
         android:textColor="@color/color_FFFFFF"
         android:drawablePadding="8dp"

@@ -13,7 +13,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.activity_profile_center.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
@@ -27,6 +29,7 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.withdraw.uwcheck.ValidateTwoFactorRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -924,6 +927,10 @@ class ProfileCenterActivity :
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+    }
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
+        val multipleOdds = getMultipleOdds(list)
+        cl_bet_list_bar.tvOdds.text = multipleOdds
     }
 
     override fun showLoginNotify() {

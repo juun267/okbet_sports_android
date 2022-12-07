@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_account_history.*
 import kotlinx.android.synthetic.main.activity_bet_list.*
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.head_bet_list.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -22,11 +23,13 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.getMultipleOdds
 
 
 class BetListActivity :
@@ -180,7 +183,9 @@ class BetListActivity :
     }
 
     override fun updateBetListCount(num: Int) {
-        sport_bottom_navigation.setBetCount(num)
+//        sport_bottom_navigation.setBetCount(num)
+    }
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
     }
 
     override fun showLoginNotify() {

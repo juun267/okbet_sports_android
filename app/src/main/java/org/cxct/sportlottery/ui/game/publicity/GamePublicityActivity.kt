@@ -9,6 +9,8 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game_publicity.*
+import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -18,6 +20,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.Page
@@ -445,6 +448,10 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
         }
         tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
+    }
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
+        val multipleOdds = getMultipleOdds(list)
+        cl_bet_list_bar.tvOdds.text = "@ $multipleOdds"
     }
 
     override fun showLoginNotify() {

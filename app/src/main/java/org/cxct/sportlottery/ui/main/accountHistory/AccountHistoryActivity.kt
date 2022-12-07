@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_account_history.*
+import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -35,6 +38,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.getMultipleOdds
 
 
 class AccountHistoryActivity :
@@ -124,6 +128,10 @@ class AccountHistoryActivity :
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+    }
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
+        val multipleOdds = getMultipleOdds(list)
+        cl_bet_list_bar.tvOdds.text = multipleOdds
     }
 
     override fun showLoginNotify() {

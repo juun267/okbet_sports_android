@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -38,6 +39,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     abstract fun updateOddsType(oddsType: OddsType)
 
     abstract fun updateBetListCount(num: Int)
+
+    abstract fun updateBetListOdds(list: MutableList<BetInfoListData>)
 
     abstract fun showLoginNotify()
 
@@ -78,6 +81,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.betInfoList.observe(this) {
             updateBetListCount(it.peekContent().size)
+            updateBetListOdds(it.peekContent())
         }
 
         viewModel.notifyLogin.observe(this) {
@@ -94,12 +98,14 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                             false -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_REMOVE.ordinal)
                         }
                     }
+
                     FavoriteType.MATCH -> {
                         when (result.isFavorite) {
                             true -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_ADD.ordinal)
                             false -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
                         }
                     }
+
                     FavoriteType.PLAY_CATE -> {
                         when (result.isFavorite) {
                             true -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_ADD.ordinal)
@@ -119,19 +125,16 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
         containerId: Int,
     ) {
 //        if (isMultiBet) {
-            supportFragmentManager.beginTransaction()
+        supportFragmentManager.beginTransaction()
 //                .setCustomAnimations(
 //                    R.anim.push_right_to_left_enter,
 //                    R.anim.pop_bottom_to_top_exit,
 //                    R.anim.push_right_to_left_enter,
 //                    R.anim.pop_bottom_to_top_exit
 //                )
-                .replace(
-                    containerId,
-                    BetReceiptFragment.newInstance(betResultData, betParlayList)
-                )
-                .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                .commit()
+            .replace(
+                containerId, BetReceiptFragment.newInstance(betResultData, betParlayList)
+            ).addToBackStack(BetReceiptFragment::class.java.simpleName).commit()
 //        } else {
 //            BetInfoCarReceiptDialog(betResultData).show(
 //                supportFragmentManager,
@@ -149,9 +152,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
             if (isHide) {
                 isViewHide = true
                 translationY = 0f
-                animate()
-                    .translationY(bottomNavBarHeight)
-                    .setDuration(duration)
+                animate().translationY(bottomNavBarHeight).setDuration(duration)
                     .setListener(object : AnimatorListenerAdapter() {
                         override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
                             translationY = bottomNavBarHeight
@@ -160,9 +161,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
             } else {
                 isViewHide = false
                 translationY = bottomNavBarHeight
-                animate()
-                    .translationY(0f)
-                    .setDuration(duration)
+                animate().translationY(0f).setDuration(duration)
                     .setListener(object : AnimatorListenerAdapter() {
                         override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
                             translationY = 0f

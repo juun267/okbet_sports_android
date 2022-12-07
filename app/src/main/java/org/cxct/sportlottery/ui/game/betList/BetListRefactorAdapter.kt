@@ -22,11 +22,14 @@ import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoa
 import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.btnOddsChangeDes
 import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.tvAcceptOddsChange
 import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.tvMaxBetMoney
+import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.tvOddsChangedTips
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_v3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -125,7 +128,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var parlayList: MutableList<ParlayOdd>? = mutableListOf()
         set(value) {
             //若無法組合串關時, 給予空物件用來紀錄”單注填充所有單注“的輸入金額
-            Timber.d("parlayList 设置数据 set")
             field = value
             notifyDataSetChanged()
         }
@@ -143,41 +145,31 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return when (viewType) {
             ViewType.Bet.ordinal -> BetInfoItemViewHolder(
                 layoutInflater.inflate(
-                    R.layout.content_bet_info_item_v3,
-                    parent,
-                    false
+                    R.layout.content_bet_info_item_v3, parent, false
                 )
             )
 
             ViewType.Warn.ordinal -> CantParlayWarnViewHolder(
                 layoutInflater.inflate(
-                    R.layout.content_cant_parlay_warn,
-                    parent,
-                    false
+                    R.layout.content_cant_parlay_warn, parent, false
                 )
             )
 
             ViewType.Single.ordinal -> BatchSingleInMoreOptionViewHolder(
                 layoutInflater.inflate(
-                    R.layout.item_bet_list_batch_control_v3,
-                    parent,
-                    false
+                    R.layout.item_bet_list_batch_control_v3, parent, false
                 )
             )
 
             ViewType.OddsWarn.ordinal -> OddsChangedWarnViewHolder(
                 layoutInflater.inflate(
-                    R.layout.content_odds_changed_warn,
-                    parent,
-                    false
+                    R.layout.content_odds_changed_warn, parent, false
                 )
             )
 
             else -> BatchParlayConnectViewHolder(
                 layoutInflater.inflate(
-                    R.layout.item_bet_list_batch_control_connect_v3,
-                    parent,
-                    false
+                    R.layout.item_bet_list_batch_control_connect_v3, parent, false
                 )
             )
         }
@@ -186,11 +178,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentOddsType = oddsType
         betList?.getOrNull(position)?.apply {
-            if (matchOdd.isOnlyEUType
-                || matchOdd.odds == matchOdd.malayOdds
-                || matchType == MatchType.OUTRIGHT
-                || matchType == MatchType.OTHER_OUTRIGHT
-            ) {
+            if (matchOdd.isOnlyEUType || matchOdd.odds == matchOdd.malayOdds || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
                 currentOddsType = OddsType.EU
             }
         }
@@ -299,8 +287,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             else -> {
                 ViewType.Bet.ordinal
             }
-        }
-        /*
+        }/*
         val betSize = betList?.size ?: 0
         val parlaySize = parlayList?.size ?: 0
         return when {
@@ -318,8 +305,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun getItemCount(): Int {
         //region 20220607 投注單版面調整
-        return getListSize()
-        /*
+        return getListSize()/*
         var size = getListSize()
         if (isCantParlayWarn) {
             size++
@@ -432,8 +418,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             else -> {
                 0
             }
-        }
-        /*
+        }/*
         val betListSize = betList?.size ?: 0
         val parlayListSize = when {
             betListSize < 2 -> 0
@@ -534,7 +519,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onItemClickListener.onOddsChangesAcceptTips(itemView.btnOddsChangeDes)
                 }
 
-                itemView.tvMaxBetMoney.text  = itemView.context.getString(R.string.str_max_bet_money) + inputMaxMoney
+                itemView.tvMaxBetMoney.text =
+                    itemView.context.getString(R.string.str_max_bet_money) + inputMaxMoney
             }
         }
 
@@ -551,10 +537,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (isLock) layoutKeyBoard.hideKeyboard()
                 tv_bet_lock.isVisible = isLock
                 tv_bet_lock.text =
-                    if (cannotParlay)
-                        context.getString(R.string.bet_info_no_parlay_hint)
-                    else
-                        context.getString(R.string.bet_info_bet_lock_hint)
+                    if (cannotParlay) context.getString(R.string.bet_info_no_parlay_hint)
+                    else context.getString(R.string.bet_info_bet_lock_hint)
             }
         }
 
@@ -611,11 +595,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 checkBetLimit(itemData)
 
                 setupOddInfo(
-                    itemData,
-                    currentOddsType,
-                    betListSize,
-                    onItemClickListener,
-                    adapterBetType
+                    itemData, currentOddsType, betListSize, onItemClickListener, adapterBetType
                 )
 
                 if (itemData.isInputWin) {
@@ -654,8 +634,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             }
 
                             val win = itemData.betAmount * getOddsAndSaveRealAmount(
-                                itemData,
-                                currentOddsType
+                                itemData, currentOddsType
                             )
 //                            Timber.d("win: $win")
                             //更新可贏額
@@ -666,18 +645,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                        s: CharSequence?, start: Int, count: Int, after: Int
                     ) {
                     }
 
                     override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
+                        s: CharSequence?, start: Int, before: Int, count: Int
                     ) {
                     }
                 }
@@ -712,8 +685,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             }
 
                             val bet = itemData.betWin / getOddsAndSaveRealAmount(
-                                itemData,
-                                currentOddsType
+                                itemData, currentOddsType
                             )
 //                            Timber.d("bet: $bet")
                             //更新下注額
@@ -724,18 +696,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
+                        s: CharSequence?, start: Int, count: Int, after: Int
                     ) {
                     }
 
                     override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
+                        s: CharSequence?, start: Int, before: Int, count: Int
                     ) {
                     }
                 }
@@ -751,12 +717,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             onItemClickListener.onHideKeyBoard()
                             layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                             layoutKeyBoard.showKeyboard(
-                                et_bet,
-                                position
+                                et_bet, position
                             )
                             onSelectedPositionListener.onSelectChange(
-                                bindingAdapterPosition,
-                                BetViewType.SINGLE
+                                bindingAdapterPosition, BetViewType.SINGLE
                             )
                             onItemClickListener.onShowKeyboard(position)
                         }
@@ -770,8 +734,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     itemData.isInputBet = true
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
-                        et_bet,
-                        position
+                        et_bet, position
                     )
                 }
                 et_bet.setOnFocusChangeListener { _, hasFocus ->
@@ -792,12 +755,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             onItemClickListener.onHideKeyBoard()
                             layoutKeyBoard.setupMaxBetMoney(inputWinMaxMoney)
                             layoutKeyBoard.showKeyboard(
-                                et_win,
-                                position
+                                et_win, position
                             )
                             onSelectedPositionListener.onSelectChange(
-                                bindingAdapterPosition,
-                                BetViewType.SINGLE
+                                bindingAdapterPosition, BetViewType.SINGLE
                             )
                             onItemClickListener.onShowKeyboard(position)
                         }
@@ -824,6 +785,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         var oldOdds = ""
         var handler = Handler(Looper.getMainLooper())
         private val totalAnimationDuration = 3000L //動畫總共呈現時間
+        private val totalAnimationTipsDur = 5000L //
         private val animationDuration = 750L //單次動畫持續時間
         private val delayResetTime = totalAnimationDuration - animationDuration * 2
 
@@ -842,16 +804,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         ivArrow.setImageResource(R.drawable.ic_arrow_odd_up)
                         tvOdds.setTextColor(
                             ContextCompat.getColor(
-                                tvOdds.context,
-                                R.color.color_34CB8A_1D9F51
+                                tvOdds.context, R.color.color_34CB8A_1D9F51
                             )
                         )
                     } else {
                         ivArrow.setImageResource(R.drawable.ic_arrow_odd_down)
                         tvOdds.setTextColor(
                             ContextCompat.getColor(
-                                tvOdds.context,
-                                R.color.color_D35555_D35555
+                                tvOdds.context, R.color.color_D35555_D35555
                             )
                         )
                     }
@@ -911,9 +871,37 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
                         setAnimation(ivOddsArrow, tvOdds, false)
                     }
-                    odds_change_layout.visibility =
-                        if (handler != null) View.VISIBLE else View.GONE
+                    odds_change_layout.visibility = if (handler != null) {
+                        Timber.d("显示赔率变化")
+                        if (adapterBetType == SINGLE) {
+//                            includeOddsLayout.visible()
+                            includeOddsLayout.tvOddsChangedTips.visible()
+                            handler?.postDelayed({
+                                Timber.d(" includeOddsLayout.tvOddsChangedTips.gone() postDelay")
+                                includeOddsLayout.tvOddsChangedTips.gone()
+                            }, totalAnimationTipsDur)
+                        } else {
+                            onItemClickListener.onOddsChangesWarningTips(true)
+                            handler?.postDelayed({
+                                Timber.d("   onItemClickListener.onOddsChangesWarningTips(false) postDelay")
+                                onItemClickListener.onOddsChangesWarningTips(false)
+                            }, totalAnimationTipsDur)
+                        }
+                        View.GONE
+                    } else {
+                        Timber.d("隐藏赔率变化")
+                        includeOddsLayout.gone()
+                        if (adapterBetType == SINGLE) {
+                            includeOddsLayout.tvOddsChangedTips.gone()
+                        } else {
+                            onItemClickListener.onOddsChangesWarningTips(false)
+                        }
+                        View.GONE
+                    }
+
+
                     handler?.postDelayed({
+                        Timber.d("odds_change_layout隐藏 postDelay")
                         odds_change_layout?.visibility = View.GONE
                     }, totalAnimationDuration)
 //                    tv_odd_content_changed.text =
@@ -935,8 +923,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 var spread = ""
                 spread =
-                    if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT
-                    ) {
+                    if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT) {
                         ""
                     } else {
                         itemData.matchOdd.spread
@@ -954,11 +941,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //反波膽顯示 %
                 var tvOdd =
                     "@ " + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
-                if (itemData.matchOdd.playCode == PlayCate.LCS.value)
-                    tvOdd = "@ " + TextUtil.formatForOddPercentage(
+                if (itemData.matchOdd.playCode == PlayCate.LCS.value) tvOdd =
+                    "@ " + TextUtil.formatForOddPercentage(
                         getOdds(
-                            itemData.matchOdd,
-                            currentOddsType
+                            itemData.matchOdd, currentOddsType
                         ) - 1
                     )
 
@@ -1016,9 +1002,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
                 when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                        tv_name.text =
-                            when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
-                                true -> {
+                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                            true -> {
 //                                    when {
 //                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
 //                                            itemData.matchOdd.playCateName
@@ -1036,30 +1021,26 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                                            }
 //                                        }
 //                                        else -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        itemData.matchOdd.playCateName,
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                context.getString(
+                                    R.string.bet_info_in_play_score,
+                                    itemData.matchOdd.playCateName,
+                                    itemData.matchOdd.homeScore.toString(),
+                                    itemData.matchOdd.awayScore.toString()
+                                )
 //                                        }
 //                                    }
-                                }
-
-                                else -> itemData.matchOdd.playCateName
                             }
+
+                            else -> itemData.matchOdd.playCateName
+                        }
                     }
 
                     else -> {
                         val playCateName = itemData.betPlayCateNameMap?.getNameMap(
-                            itemData.matchOdd.gameType,
-                            itemData.matchOdd.playCode
-                        )
-                            ?.get(LanguageManager.getSelectLanguage(context).key)
-                            ?: ""
-                        tv_name.text =
-                            when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
-                                true -> {
+                            itemData.matchOdd.gameType, itemData.matchOdd.playCode
+                        )?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                        tv_name.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
+                            true -> {
 //                                    when {
 //                                        PlayCate.isIntervalCornerPlayCate(itemData.matchOdd.playCode) -> {
 //                                            nameOneLine(playCateName)
@@ -1077,18 +1058,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                                            }
 //                                        }
 //                                        else -> {
-                                    context.getString(
-                                        R.string.bet_info_in_play_score,
-                                        playCateName,
-                                        itemData.matchOdd.homeScore.toString(),
-                                        itemData.matchOdd.awayScore.toString()
-                                    )
+                                context.getString(
+                                    R.string.bet_info_in_play_score,
+                                    playCateName,
+                                    itemData.matchOdd.homeScore.toString(),
+                                    itemData.matchOdd.awayScore.toString()
+                                )
 //                                        }
 //                                    }
-                                }
-
-                                else -> nameOneLine(playCateName)
                             }
+
+                            else -> nameOneLine(playCateName)
+                        }
                     }
                 }
                 //加上OddsType名稱
@@ -1115,8 +1096,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun getOddsAndSaveRealAmount(
-            itemData: BetInfoListData,
-            currentOddsType: OddsType
+            itemData: BetInfoListData, currentOddsType: OddsType
         ): Double {
             var odds = 0.0
             var realAmount = itemData.betAmount
@@ -1125,8 +1105,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
                         realAmount = itemData.betAmount * Math.abs(
                             getOdds(
-                                itemData.matchOdd,
-                                currentOddsType
+                                itemData.matchOdd, currentOddsType
                             )
                         )
 //                        win = itemData.betAmount
@@ -1137,8 +1116,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                            currentOddsType
 //                        )
                         odds = getOdds(
-                            itemData.matchOdd,
-                            currentOddsType
+                            itemData.matchOdd, currentOddsType
                         )
                     }
 
@@ -1148,8 +1126,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
                         realAmount = itemData.betAmount * Math.abs(
                             getOdds(
-                                itemData.matchOdd,
-                                currentOddsType
+                                itemData.matchOdd, currentOddsType
                             )
                         )
 //                        win = itemData.betAmount
@@ -1160,8 +1137,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                            currentOddsType
 //                        )
                         odds = getOdds(
-                            itemData.matchOdd,
-                            currentOddsType
+                            itemData.matchOdd, currentOddsType
                         )
                     }
                 }
@@ -1172,8 +1148,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                        currentOddsType
 //                    ) - 1)
                     odds = (getOdds(
-                        itemData.matchOdd,
-                        currentOddsType
+                        itemData.matchOdd, currentOddsType
                     ) - 1)
                 }
 
@@ -1183,8 +1158,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                        currentOddsType
 //                    )
                     odds = getOdds(
-                        itemData.matchOdd,
-                        currentOddsType
+                        itemData.matchOdd, currentOddsType
                     )
                 }
             }
@@ -1308,9 +1282,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun setupDeleteButton(
-            itemData: BetInfoListData,
-            itemCount: Int,
-            onItemClickListener: OnItemClickListener
+            itemData: BetInfoListData, itemCount: Int, onItemClickListener: OnItemClickListener
         ) {
             itemView.tv_close.setOnClickListener {
                 onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
@@ -1502,8 +1474,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             setEtBetSingleBackground(itemData)
 
                             betList.forEachIndexed { _, data ->
-                                if (data.matchOdd.status != BetStatus.ACTIVATED.code)
-                                    return@forEachIndexed
+                                if (data.matchOdd.status != BetStatus.ACTIVATED.code) return@forEachIndexed
 
                                 checkBetLimitSingle(data, inputValue)
 
@@ -1523,11 +1494,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                                 var dataOddsType = currentOddsType
                                 data.apply {
-                                    if (matchOdd.isOnlyEUType
-                                        || matchOdd.odds == matchOdd.malayOdds
-                                        || matchType == MatchType.OUTRIGHT
-                                        || matchType == MatchType.OTHER_OUTRIGHT
-                                    ) {
+                                    if (matchOdd.isOnlyEUType || matchOdd.odds == matchOdd.malayOdds || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
                                         dataOddsType = OddsType.EU
                                     }
                                 }
@@ -1539,8 +1506,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                         if (getOdds(data.matchOdd, dataOddsType) < 0) {
                                             realAmount = data.betAmount * abs(
                                                 getOdds(
-                                                    data.matchOdd,
-                                                    dataOddsType
+                                                    data.matchOdd, dataOddsType
                                                 )
                                             )
                                         }
@@ -1550,8 +1516,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                         if (getOdds(data.matchOdd, dataOddsType) < 0) {
                                             realAmount = data.betAmount * abs(
                                                 getOdds(
-                                                    data.matchOdd,
-                                                    dataOddsType
+                                                    data.matchOdd, dataOddsType
                                                 )
                                             )
                                         }
@@ -1570,18 +1535,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
 
                         override fun beforeTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            count: Int,
-                            after: Int
+                            s: CharSequence?, start: Int, count: Int, after: Int
                         ) {
                         }
 
                         override fun onTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            before: Int,
-                            count: Int
+                            s: CharSequence?, start: Int, before: Int, count: Int
                         ) {
                         }
                     }
@@ -1600,13 +1559,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         onItemClickListener.onHideKeyBoard()
                         layoutKeyBoard.setupMaxBetMoney(getMaxOrMinAmount(isGetMax = true, betList))
                         layoutKeyBoard.showKeyboard(
-                            et_bet_single,
-                            position
+                            et_bet_single, position
                         )
                         //onItemClickListener.onShowParlayKeyboard(et_bet_single, itemData, position, getMaxOrMinAmount(isGetMax = true, betList))
                         onSelectedPositionListener.onSelectChange(
-                            bindingAdapterPosition,
-                            BetViewType.SINGLE
+                            bindingAdapterPosition, BetViewType.SINGLE
                         )
                         onItemClickListener.onShowKeyboard(position)
                     }
@@ -1650,9 +1607,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
          * 填充所有單注後獲取總可贏額
          */
         private fun getAllSingleWinnableAmount(
-            betAmount: Double,
-            currentOddsType: OddsType,
-            betList: MutableList<BetInfoListData>
+            betAmount: Double, currentOddsType: OddsType, betList: MutableList<BetInfoListData>
         ): Double {
             var allWinnableAmount = 0.0
             betList.forEach {
@@ -1690,8 +1645,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun getMaxOrMinAmount(
-            isGetMax: Boolean,
-            betList: MutableList<BetInfoListData>
+            isGetMax: Boolean, betList: MutableList<BetInfoListData>
         ): Double {
 
             val defaultMax = 9999999L
@@ -1713,8 +1667,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun checkBetLimitSingle(
-            itemData: BetInfoListData,
-            betAmount: Double
+            itemData: BetInfoListData, betAmount: Double
         ) {
             itemView.apply {
                 var amountError = false
@@ -1798,8 +1751,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 setupItemEnable(hasBetClosed)
 
                 itemData?.let { data ->
-                    tv_parlay_type.text =
+                    tv_parlay_type.text = if (data.num == 1) {
                         getParlayName(data.parlayType).plus("*").plus(data.num.toString())
+                    } else {
+                        getParlayName(data.parlayType).plus("*").plus(data.num.toString())
+                    }
 
 //                    //item_bet_list_batch_control_connect_v3 無 tv_parlay_odd, tv_symbol_odd
 //                    tv_parlay_odd.apply {
@@ -1814,7 +1770,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                        if (firstItem && !hasBetClosed) View.VISIBLE else View.GONE
 
 //                    tv_com_count.text = data.num.toString()
-
                     setupBetAmountInput(
                         data,
                         OddsType.EU,
@@ -1912,18 +1867,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
 
                         override fun beforeTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            count: Int,
-                            after: Int
+                            s: CharSequence?, start: Int, count: Int, after: Int
                         ) {
                         }
 
                         override fun onTextChanged(
-                            s: CharSequence?,
-                            start: Int,
-                            before: Int,
-                            count: Int
+                            s: CharSequence?, start: Int, before: Int, count: Int
                         ) {
                         }
                     }
@@ -1938,13 +1887,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         et_bet_parlay.isFocusable = true
                         layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                         layoutKeyBoard.showKeyboard(
-                            et_bet_parlay,
-                            position,
-                            isParlay = true
+                            et_bet_parlay, position, isParlay = true
                         )
                         onSelectedPositionListener.onSelectChange(
-                            bindingAdapterPosition,
-                            BetViewType.PARLAY
+                            bindingAdapterPosition, BetViewType.PARLAY
                         )
                         onItemClickListener.onShowParlayKeyboard(position)
                     }
@@ -1974,12 +1920,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     et_bet_parlay.isEnabled = true
                     if (itemData.amountError) {
                         et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
-                    } else
-                        if (itemData.isInputBet) {
-                            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
-                        } else {
-                            et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
-                        }
+                    } else if (itemData.isInputBet) {
+                        et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
+                    } else {
+                        et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
+                    }
                 }
 
                 //更新bet parlay editText hint
@@ -2008,8 +1953,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun checkBetLimitParlay(
-            itemData: ParlayOdd,
-            betAmount: Double = itemData.betAmount
+            itemData: ParlayOdd, betAmount: Double = itemData.betAmount
         ) {
             itemView.apply {
                 var amountError: Boolean
@@ -2065,8 +2009,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
         private fun setupParlayRuleButton(
-            data: ParlayOdd,
-            onItemClickListener: OnItemClickListener
+            data: ParlayOdd, onItemClickListener: OnItemClickListener
         ) {
 //            itemView.btn_rule.setOnClickListener {
 //                onItemClickListener.showParlayRule(
@@ -2098,6 +2041,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun onMoreOptionClick()
         fun onOddsChangesAcceptTips(ivImageView: ImageView)
         fun onOddsChangeAcceptSelect(tvTextSelect: TextView)
+        fun onOddsChangesWarningTips(isShow: Boolean)
     }
 
     interface OnSelectedPositionListener {

@@ -3,6 +3,8 @@ package org.cxct.sportlottery.util
 
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -60,8 +62,7 @@ fun getOddsNew(matchOdd: MatchOdd?, oddsType: OddsType): Double {
 }
 
 fun getOdds(
-    matchOdd: org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd?,
-    oddsType: String
+    matchOdd: org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd?, oddsType: String
 ): Double {
     return when (oddsType) {
         OddsType.EU.code -> matchOdd?.odds ?: 0.0
@@ -74,8 +75,7 @@ fun getOdds(
 }
 
 fun getOdds(
-    matchOdd: org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd?,
-    oddsType: OddsType
+    matchOdd: org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd?, oddsType: OddsType
 ): Double {
     return when (oddsType) {
         OddsType.EU -> matchOdd?.odds ?: 0.0
@@ -109,8 +109,7 @@ fun getOdds(parlayOdd: ParlayOdd, oddsType: OddsType): Double {
 }
 
 fun getOddTypeRes(
-    matchOdd: org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd,
-    oddsType: OddsType
+    matchOdd: org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd, oddsType: OddsType
 ): Int {
     val sameValue = mutableSetOf<Double>()
     sameValue.add(matchOdd.odds ?: 0.0)
@@ -125,4 +124,29 @@ fun getOddTypeRes(
     }
 }
 
+
+fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
+    var currentOddsType = OddsType.EU
+    var multipleOdds = 1.00
+    list.forEach { itemData ->
+        if (itemData.matchOdd.isOnlyEUType
+            || itemData.matchOdd.odds == itemData.matchOdd.malayOdds
+            || itemData.matchType == MatchType.OUTRIGHT
+            || itemData.matchType == MatchType.OTHER_OUTRIGHT
+        ) {
+            currentOddsType = OddsType.EU
+        }
+
+        //反波膽顯示 %
+        var tvOdd = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+        if (itemData.matchOdd.playCode == PlayCate.LCS.value) tvOdd =
+            TextUtil.formatForOddPercentage(
+                getOdds(
+                    itemData.matchOdd, currentOddsType
+                ) - 1
+            )
+        multipleOdds *= tvOdd.toDouble()
+    }
+    return "@"+TextUtil.formatForOdd(multipleOdds)
+}
 

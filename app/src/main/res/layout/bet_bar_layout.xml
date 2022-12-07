@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:text="@string/bet_slip"
-        android:textFontWeight="500"
         android:textColor="@color/color_FFFFFF_414655"
+        android:textFontWeight="500"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/viewLeftLine"
@@ -44,6 +44,7 @@
         tools:ignore="SpUsage" />
 
     <View
+        android:id="@+id/view3"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/bg_circle_317fff_0760d4"
@@ -65,15 +66,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
+
     <TextView
         android:id="@+id/tv_balance_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_2"
-        android:textColor="@color/color_FFFFFF_414655"
-        android:textSize="@dimen/textSize16sp"
-        android:textFontWeight="700"
         android:fontFamily="@font/din_regular"
+        android:textColor="@color/color_FFFFFF_414655"
+        android:textFontWeight="700"
+        android:textSize="@dimen/textSize16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_balance"
         app:layout_constraintTop_toTopOf="parent"
@@ -84,13 +86,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_10"
-        android:textColor="@color/color_FFFFFF_414655"
-        android:textSize="@dimen/textSize18sp"
-        android:textFontWeight="700"
         android:fontFamily="@font/din_regular"
+        android:textColor="@color/color_FFFFFF_414655"
+        android:textFontWeight="700"
+        android:textSize="@dimen/textSize18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_arrow"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="9,875,241.000" />
+
+    <TextView
+        android:id="@+id/tvOdds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="center"
+        android:textColor="@color/color_025BE8"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintStart_toEndOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        tools:text="\@2.58" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

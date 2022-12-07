@@ -24,8 +24,10 @@ import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
+import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.edittext_form.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
@@ -50,6 +52,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
@@ -364,6 +367,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
         Timber.e("num: $num")
         if (num > 0) viewModel.getMoney()
+    }
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
+        val multipleOdds = getMultipleOdds(list)
+        cl_bet_list_bar.tvOdds.text = multipleOdds
     }
 
     override fun showLoginNotify() {
