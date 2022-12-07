@@ -139,9 +139,7 @@ class ForgetViewModel(
     fun checkPassword(password: String, confirmPassword: String? = null): String? {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_new_password)
-            password.length !in 6..20 -> LocalUtils.getString(R.string.error_new_password)
-            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_new_password)
             else -> null
         }
         if (confirmPassword?.isNotEmpty() == true)
