@@ -2,12 +2,10 @@ package org.cxct.sportlottery.ui.game.common.view
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
@@ -171,7 +169,6 @@ class OddsButton2 @JvmOverloads constructor(
                 })
             }
 
-            Log.e("For Test", "=======>>>> setupOddState 444444 $status  ${tv_odds.tag?.javaClass?.name}")
         }
     }
 
@@ -256,7 +253,6 @@ class OddsButton2 @JvmOverloads constructor(
     }
 
     private fun getOddsValueView(): TextView {
-        val t = System.currentTimeMillis()
         recyclerLockedView()
         recyclerUnknownView()
         if (oddsValue != null) {

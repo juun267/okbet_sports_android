@@ -113,34 +113,18 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return from(parent, oddStateRefreshListener, oddBtnCachePool)
-    }
-
-    private fun from(parent: ViewGroup, refreshListener: OddStateViewHolder.OddStateChangeListener, cachePool: RecyclerView.RecycledViewPool): ViewHolderHdpOu {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.item_sport_odd, parent, false)
-        val hodler = ViewHolderHdpOu(view, refreshListener)
-        hodler.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(cachePool)
-        return hodler
+        val vh = ViewHolderHdpOu(view, oddStateRefreshListener)
+        vh.itemView.rv_league_odd_btn_pager_main.setRecycledViewPool(oddBtnCachePool)
+        return vh
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = data[position]
-        val matchInfoList = data.mapNotNull {
-            it.matchInfo
-        }
-        when (holder) {
-            is ViewHolderHdpOu -> {
-                holder.stopTimer()
-                holder.bind(
-                    matchType,
-                    item,
-                    leagueOddListener,
-                    isTimerEnable,
-                    oddsType,
-                    matchInfoList
-                )
-            }
+        if (holder is ViewHolderHdpOu) {
+            val item = data[position]
+            val matchInfoList = data.mapNotNull { it.matchInfo }
+            holder.bind(matchType, item, leagueOddListener, isTimerEnable, oddsType, matchInfoList)
         }
     }
 
@@ -206,7 +190,23 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
         private val refreshListener: OddStateChangeListener,
     ) : ViewHolderTimer(itemView) {
 
-        val oddButtonPagerAdapter = OddButtonPagerAdapter()
+        private val oddButtonPagerAdapter = OddButtonPagerAdapter()
+
+        init {
+            itemView.rv_league_odd_btn_pager_main.run {
+                layoutManager = CustomLinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL,false).apply {
+                    isAutoMeasureEnabled = false
+                }
+
+                oddButtonPagerAdapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT
+                adapter = oddButtonPagerAdapter
+                setHasFixedSize(true)
+                (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+                OverScrollDecoratorHelper.setUpOverScroll(this, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                itemView.hIndicator.bindRecyclerView(this)
+            }
+        }
 
         fun bind(
             matchType: MatchType,
@@ -216,6 +216,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>,
         ) {
+
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             item.matchInfo?.let {
@@ -225,6 +226,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                     isTimerPause,
                     leagueOddListener)
             }
+
             setupOddsButton(matchType,
                 item,
                 oddsType,
@@ -1011,50 +1013,24 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
 
         }
 
-        val linearLayoutManager by lazy {
-            CustomLinearLayoutManager(
-                itemView.context,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-        }
-
         private fun setupOddsButton(
             matchType: MatchType,
             item: MatchOdd,
             oddsType: OddsType,
-            leagueOddListener: LeagueOddListener?,
-        ) {
-            itemView.rv_league_odd_btn_pager_main.apply {
-                linearLayoutManager.isAutoMeasureEnabled = false
-                layoutManager = linearLayoutManager
-                setHasFixedSize(true)
-                (rv_league_odd_btn_pager_main.itemAnimator as SimpleItemAnimator).supportsChangeAnimations =
-                    false
+            leagueOddListener: LeagueOddListener?) = oddButtonPagerAdapter.run {
 
-                this.adapter = oddButtonPagerAdapter.apply {
-                    stateRestorationPolicy = StateRestorationPolicy.PREVENT
-                    //this.odds = item.oddsMap ?: mutableMapOf()
-                    //this.oddsType = oddsType
-                    this.matchType = matchType
-                    this.listener =
-                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
-                            leagueOddListener?.onClickBet(
-                                matchInfo,
-                                odd,
-                                playCateCode,
-                                betPlayCateName,
-                                item.betPlayCateNameMap
-                            )
-                        }
-                }
-                updateOddsButton(item, oddsType)
-
-                OverScrollDecoratorHelper.setUpOverScroll(this,
-                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
-                itemView.hIndicator.bindRecyclerView(this)
+            this.matchType = matchType
+            this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                leagueOddListener?.onClickBet(
+                    matchInfo,
+                    odd,
+                    playCateCode,
+                    betPlayCateName,
+                    item.betPlayCateNameMap
+                )
             }
 
+            updateOddsButton(item, oddsType)
         }
 
         private fun updateOddsButton(

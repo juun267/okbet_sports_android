@@ -9,7 +9,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.core.view.isVisible
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 
@@ -105,7 +105,10 @@ class HIndicator @JvmOverloads constructor(
             val extend = recyclerView.computeHorizontalScrollExtent()
             val ratio = extend * 1f / range
             this@HIndicator.ratio = ratio       //设置指示器所占的长度比例
-            this@HIndicator.isVisible = ratio < 1f
+
+//            this@HIndicator.isVisible = ratio < 1f // 需要requestLayout(), 不然在recyclervie中有可能显示不出来
+            this@HIndicator.isInvisible = ratio >= 1f
+
         }
     }
 
