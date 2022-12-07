@@ -342,6 +342,7 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         val homeList: MutableList<Odd> = mutableListOf()
         val drawList: MutableList<Odd> = mutableListOf()
         val awayList: MutableList<Odd> = mutableListOf()
+        val otherList: MutableList<Odd?> = mutableListOf()
         if (csList != null) {
             for (odd in csList) {
                 if (odd?.name?.contains(" - ") == true) {
@@ -355,6 +356,8 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
                     if (stringArray[0].toInt() < stringArray[1].toInt()) {
                         awayList.add(odd)
                     }
+                } else {
+                    otherList.add(odd)
                 }
             }
 
@@ -374,13 +377,19 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
             val newList: MutableList<MutableList<Odd?>> = mutableListOf()
             homeList.forEachIndexed { index, _ ->
-                if(index > drawList.size -1)
+                if (index > drawList.size - 1)
                     newList.add(mutableListOf(homeList[index], awayList[index]))
                 else
                     newList.add(mutableListOf(homeList[index], awayList[index], drawList[index]))
             }
-            newList.add(newList.size, mutableListOf(csList[csList.lastIndex]))
-            val csMap = newList.associateBy(keySelector = { "${matchOdd?.csTabSelected?.value}_${newList.indexOf(it)}" }, valueTransform = { it })
+            if (otherList.size > 0) {
+                newList.add(newList.size, otherList)
+            }
+            val csMap = newList.associateBy(keySelector = {
+                "${matchOdd?.csTabSelected?.value}_${
+                    newList.indexOf(it)
+                }"
+            }, valueTransform = { it })
             oddsMap = csMap
         }
         return oddsMap
