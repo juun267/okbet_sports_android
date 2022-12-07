@@ -1329,4 +1329,5 @@
     <string name="over_size">Tệp quá lớn</string>
     <string name="upload_error">Tải lên thất bại</string>
     <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
+    <string name="no_file">Chưa chọn tập tin</string>
 </resources>

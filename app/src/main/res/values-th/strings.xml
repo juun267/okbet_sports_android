@@ -1237,5 +1237,6 @@
     <string name="home_slot">สล็อต</string>
     <string name="deadline">กำหนดสิ้นสุด</string>
     <string name="pay_maya">Paymaya</string>
+    <string name="no_file">ไม่ได้เลือกไฟล์</string>
     <!--F005-->
 </resources>
