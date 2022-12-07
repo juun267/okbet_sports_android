@@ -42,6 +42,7 @@ import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_single_list
 import kotlinx.android.synthetic.main.fragment_bet_list.tvExpandOrStacked
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.btnOddsChangeDes
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.view.tvOddsChangedTips
@@ -442,8 +443,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         checkAllAmountCanBet()
         refreshAllAmount()
         checkSingleAndParlayBetLayoutVisible()
-
-
+        btnOddsChangeDes.setOnClickListener {
+            showOddsChangeTips()
+        }
         tvExpandOrStacked.setOnClickListener {
             if (isOpen) {
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
@@ -562,23 +564,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
 
-            override fun onOddsChangesAcceptTips(ivImageView: ImageView) {
-                val dialog = CustomAlertDialog(requireContext())
-                dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
-                val message = """
-                    ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
-                    ${getString(R.string.str_if_accept_odds_changes_des1)}
-                    ${getString(R.string.str_if_accept_odds_changes_des2)}
-                """.trimIndent()
-                dialog.setMessage(message)
-                dialog.setCanceledOnTouchOutside(true)
-                dialog.isCancelable = true
-                dialog.setNegativeButtonText(null)
-                dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
-                dialog.setPositiveClickListener {
-                    dialog.dismiss()
-                }
-                dialog.show(childFragmentManager, null)
+            override fun onOddsChangesAcceptTips() {
+                showOddsChangeTips()
             }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
@@ -603,6 +590,24 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun showOddsChangeTips(){
+        val dialog = CustomAlertDialog(requireContext())
+        dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
+        val message = """
+                    ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
+                    ${getString(R.string.str_if_accept_odds_changes_des1)}
+                    ${getString(R.string.str_if_accept_odds_changes_des2)}
+                """.trimIndent()
+        dialog.setMessage(message)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.isCancelable = true
+        dialog.setNegativeButtonText(null)
+        dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
+        dialog.setPositiveClickListener {
+            dialog.dismiss()
+        }
+        dialog.show(childFragmentManager, null)
+    }
 
     private fun checkAllAmountCanBet() {
         val betList = getCurrentBetList()

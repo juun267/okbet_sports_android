@@ -366,10 +366,17 @@ object BetInfoRepository {
             if (currentStateSingleOrParlay == 0) {
                 //单注模式
                 Timber.d("单注模式")
-                oddIDArray.clear()
-                oddIDArray.add(it.oddsId)
-                betList.clear()
-                betList.add(data)
+
+                if (oddIDArray.size!=0){
+                    oddIDArray[0] = it.oddsId
+                }else{
+                    oddIDArray.add(it.oddsId)
+                }
+                if (betList.size!=0){
+                    betList[0] = data
+                }else{
+                    betList.add(data)
+                }
             } else {
                 Timber.d("串关模式")
                 //串关投注

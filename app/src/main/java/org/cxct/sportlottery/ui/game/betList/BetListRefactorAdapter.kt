@@ -516,7 +516,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
 
                 itemView.btnOddsChangeDes.setOnClickListener {
-                    onItemClickListener.onOddsChangesAcceptTips(itemView.btnOddsChangeDes)
+                    onItemClickListener.onOddsChangesAcceptTips()
                 }
 
                 itemView.tvMaxBetMoney.text =
@@ -2039,7 +2039,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun refreshBetInfoTotal(isSingleAdapter: Boolean = false)
         fun showParlayRule(parlayType: String, parlayRule: String)
         fun onMoreOptionClick()
-        fun onOddsChangesAcceptTips(ivImageView: ImageView)
+        fun onOddsChangesAcceptTips()
         fun onOddsChangeAcceptSelect(tvTextSelect: TextView)
         fun onOddsChangesWarningTips(isShow: Boolean)
     }

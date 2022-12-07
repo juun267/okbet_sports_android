@@ -37,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnOddsChangeDes"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@null"

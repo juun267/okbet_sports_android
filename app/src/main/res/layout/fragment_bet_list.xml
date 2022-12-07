@@ -147,7 +147,7 @@
                         android:visibility="gone"
                         android:clipToPadding="false"
                         android:paddingTop="10dp"
-                        tools:visibility="gone">
+                        tools:visibility="visible">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_parlay_list"
