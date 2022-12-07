@@ -5,9 +5,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -125,7 +127,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         ll_transfer_time2.setOnClickListener {
             dateTimePickerHMS.show()
         }
-        btn_update.setOnClickListener {
+
+        bt_check_files.setOnClickListener {
             this.activity?.let { activity ->
                 activity.supportFragmentManager.let { fragmentManager ->
                     RechargePicSelectorDialog(
@@ -231,6 +234,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             if (it.success) {
                 resetEvent()
                 getBankType(0)
+            }
+        }
+        viewModel.uploadPayResult.observe(viewLifecycleOwner){
+            it.getContentIfNotHandled()?.let { upload->
+                if (upload.success){
+                    var lastIndexOf = upload.imgData?.path?.lastIndexOf("/")
+                    tv_hint_upload.setText(lastIndexOf?.let { it1 ->
+                        upload.imgData?.path?.substring(
+                            it1+1, upload.imgData?.path?.length)
+                    })
+                }else{
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,true,LocalUtils.getString(R.string.upload_fail),0) }
+                }
             }
         }
     }
@@ -768,13 +784,24 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     media?.isCut == true -> media.cutPath
                     else -> media?.path
                 }
-                FileUtil.getImageType(path!!)
-                LogUtil.d(FileUtil.getImageType(path!!))
                 val file = File(path!!)
-                if (file.exists())
-                    uploadImg(file)
-                else
-                    throw FileNotFoundException()
+                val imageType = FileUtil.getImageType(path)
+                val fileSize = FileUtil.getFilesSizeByType(path,2)
+                if (imageType!="jpeg"&&imageType!="png"){
+                    //弹出类型错误的弹窗
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,true,LocalUtils.getString(R.string.format_error),0) }
+                    return
+                }else if (fileSize>2.0){
+                    //弹出文件过大的弹窗
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,true,LocalUtils.getString(R.string.over_size),0) }
+                    return
+                }else{
+                    if (file.exists())
+                        uploadImg(file)
+                    else
+                        throw FileNotFoundException()
+                }
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))

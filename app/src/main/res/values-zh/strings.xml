@@ -1342,4 +1342,8 @@
     <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
     <string name="reget_phone_code_for">重新获取</string>
     <string name="pay_maya">Paymaya</string>
+    <string name="format_error">格式不符</string>
+    <string name="over_size">文件过大</string>
+    <string name="upload_error">上传失败</string>
+    <string name="optional_tips">选填:仅支持PNG或者JPG格式的文件，且小于2MB</string>
 </resources>

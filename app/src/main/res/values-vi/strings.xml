@@ -1325,4 +1325,8 @@
     <string name="hide_confirm_password">Xác nhận mật khẩu mới</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="pay_maya">Paymaya</string>
+    <string name="format_error">Định dạng không phù hợp</string>
+    <string name="over_size">Tệp quá lớn</string>
+    <string name="upload_error">Tải lên thất bại</string>
+    <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
 </resources>

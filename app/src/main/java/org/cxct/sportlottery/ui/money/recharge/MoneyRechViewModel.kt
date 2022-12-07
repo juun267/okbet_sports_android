@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.money.config.RechType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.*
@@ -131,7 +132,8 @@ class MoneyRechViewModel(
 
     //上傳支付截圖
     val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
-
+    //上传支付截图
+    val uploadPayResult:LiveData<Event<UploadImgResult?>> = avatarRepository.uploadResult
     //線上首次充值提示文字
     val onlinePayFirstRechargeTips: LiveData<Event<String?>>
         get() = _onlinePayFirstRechargeTips

@@ -1359,4 +1359,8 @@
     <string name="reget_phone_code_for">Reacquire</string>
     <string name="online_fortune_pay">FortunePay</string>
     <string name="pay_maya">Paymaya</string>
+    <string name="format_error">format doesn\'t match</string>
+    <string name="over_size">oversized files</string>
+    <string name="upload_error">upload failed</string>
+    <string name="optional_tips">Optional:Only support PNG or JPG format files, and less than 2MB</string>
 </resources>

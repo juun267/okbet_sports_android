@@ -613,15 +613,23 @@
                 android:background="@null"
                 android:hint="No file chosen"
                 android:enabled="false"
+                android:textColor="@color/color_FFFFFF_414655"
                 android:textColorHint="@color/color_C9CFD7"
                 android:layout_marginStart="@dimen/margin_14"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:layout_height="wrap_content"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_marginHorizontal="@dimen/margin_14"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional_tips"
+            android:textColor="@color/color_E44438_e44438"
+            android:textSize="@dimen/textSize12sp"/>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:cardBackgroundColor="@color/color_191919_FCFCFC"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
