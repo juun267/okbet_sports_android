@@ -74,7 +74,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private lateinit var bankCardAdapter: BtsRvAdapter
 
     private var bankPosition = 0
-
+    private var imgResultUrl: String? = null
     private lateinit var dateTimePicker: TimePickerView
     private lateinit var dateTimePickerHMS: TimePickerView
 
@@ -240,12 +240,13 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             it.getContentIfNotHandled()?.let { upload->
                 if (upload.success){
                     var lastIndexOf = upload.imgData?.path?.lastIndexOf("/")
+                    imgResultUrl = upload.imgData?.path
                     tv_hint_upload.setText(lastIndexOf?.let { it1 ->
                         upload.imgData?.path?.substring(
                             it1+1, upload.imgData?.path?.length)
                     })
                 }else{
-                    context?.let { it1 -> SingleToast.showSingleToast(it1,true,LocalUtils.getString(R.string.upload_fail),0) }
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.upload_fail),0) }
                 }
             }
         }
@@ -693,7 +694,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerBankName = mBottomSheetList[bankPosition].bankName.toString(),
                     payerInfo = "",
                     depositDate = mCalendar.time.time
-                )
+                ).apply {
+                    proofImg = imgResultUrl
+                }
             }
             MoneyType.WX_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                 MoneyAddRequest(
@@ -709,7 +712,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerBankName = null,
                     payerInfo = null,
                     depositDate = mCalendar.time.time
-                )
+                ).apply {
+                    proofImg = imgResultUrl
+                }
             }
             MoneyType.ALI_TYPE.code -> {
                 MoneyAddRequest(
@@ -725,7 +730,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerBankName = null,
                     payerInfo = et_name.getText(),
                     depositDate = mCalendar.time.time
-                )
+                ).apply {
+                    proofImg = imgResultUrl
+                }
             }
             else -> null
         }
@@ -789,11 +796,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 val fileSize = FileUtil.getFilesSizeByType(path,2)
                 if (imageType!="jpeg"&&imageType!="png"){
                     //弹出类型错误的弹窗
-                    context?.let { it1 -> SingleToast.showSingleToast(it1,true,LocalUtils.getString(R.string.format_error),0) }
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.format_error),0) }
                     return
                 }else if (fileSize>2.0){
                     //弹出文件过大的弹窗
-                    context?.let { it1 -> SingleToast.showSingleToast(it1,true,LocalUtils.getString(R.string.over_size),0) }
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.over_size),0) }
                     return
                 }else{
                     if (file.exists())

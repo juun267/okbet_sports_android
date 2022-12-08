@@ -1364,4 +1364,6 @@
     <string name="upload_error">upload failed</string>
     <string name="optional_tips">Optional:Only support PNG or JPG format files, and less than 2MB</string>
     <string name="no_file">No file chosen</string>
+    <string name="error_amount_limit_less">充值额小于最低限额</string>
+
 </resources>
