@@ -170,26 +170,32 @@ object ParlayLimitUtil {
         //跟當前串關單數相同的, N串1移動至第一項, 其餘的按照N的順序排序
         //舉例: 5單串關則排序為 5串1 - 2串1 - 3串1 - 4串1
         parlayComSOList.sortWith { o1, o2 ->
-            when (matchIdArray.size) {
-                o1.parlayType.split("C")[0].toInt() -> -1
-                o2.parlayType.split("C")[0].toInt() -> 1
-                else -> {
-                    compareValuesBy(o1, o2) { it.parlayType.split("C")[0].toInt() }
-                }
-            }
+//            when (matchIdArray.size) {
+//                o1.parlayType.split("C")[0].toInt() -> -1
+//                o2.parlayType.split("C")[0].toInt() -> 1
+//                else -> {
+//                    compareValuesBy(o1, o2) { it.parlayType.split("C")[0].toInt() }
+//                }
+//            }
+            //N串1排序，按照N的值从大到小排序
+            compareValuesBy(o2, o1) { it.parlayType.split("C")[0].toInt() }
         }
         //endregion
 
-        if (all.size > 2) {
-            //N串M场景
-            val nParlayM = ParlayCom()
-            nParlayM.num = all.size
-            nParlayM.setComList(all)
-            nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
-            parlayComSOList.add(nParlayM)
+//        if (all.size > 2) {
+//            //N串M场景
+//            val nParlayM = ParlayCom()
+//            nParlayM.num = all.size
+//            nParlayM.setComList(all)
+//            nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
+//            parlayComSOList.add(nParlayM)
+//        }
+        //截取前三个
+        return if (parlayComSOList.size > 3) {
+            parlayComSOList.subList(0, 3)
+        } else {
+            parlayComSOList
         }
-
-        return parlayComSOList
     }
 
     /**
