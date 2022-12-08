@@ -202,12 +202,18 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         viewModel.smsCodeResult.observe(this){
             it?.let { result->
                 if (!result.success){
-                    binding.etSmsValidCode.setError(result.msg,false)
+                    if (result.code == 2765||result.code == 2766){
+                        binding.etPhone.setError(result.msg,false)
+                    }else{
+                        binding.etSmsValidCode.setError(result.msg,false)
+                    }
                 }else{
                     page++
                     setPage()
                 }
             }
+//            page++
+//            setPage()
         }
 
 
@@ -289,6 +295,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 binding.clAccount.visibility = View.GONE
                 binding.clPassword.visibility = View.GONE
                 binding.clSuccess.visibility = View.GONE
+//                adjustEnableLoginButton(false)
                // binding.labelRegister.text = getString(R.string.please_get_forget_password)
                 binding.btnPut.text = getString(R.string.next_step)
             }
@@ -297,6 +304,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.VISIBLE
                 binding.clSuccess.visibility = View.GONE
+                adjustEnableLoginButton(false)
               // binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.submit)
             }
@@ -304,6 +312,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 binding.clAccount.visibility = View.GONE
                 binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.GONE
+                binding.clLiveChat.visibility = View.GONE
                 binding.clSuccess.visibility = View.VISIBLE
               //  binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.to_back_login)
@@ -415,9 +424,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                             binding.btnSendSms.setBackgroundResource(R.drawable.btn_send_sms)
 
                             if (state == 1){
-                                binding.btnSendSms.text = getString(R.string.get_phone_code)
+                                binding.btnSendSms.text = getString(R.string.get_security_code)
                             }else{
-                                binding.btnSendSms.text = getString(R.string.reget_phone_code)
+                                binding.btnSendSms.text = getString(R.string.reget_phone_code_for)
                             }
                             binding.btnSendSms.setTextColor(Color.WHITE)
                         }
@@ -429,9 +438,9 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             stopSmeTimer()
             binding.btnSendSms.isEnabled = true
             if (state == 1){
-                binding.btnSendSms.text = getString(R.string.get_phone_code)
+                binding.btnSendSms.text = getString(R.string.get_security_code)
             }else{
-                binding.btnSendSms.text = getString(R.string.reget_phone_code)
+                binding.btnSendSms.text = getString(R.string.reget_phone_code_for)
             }
 
         }

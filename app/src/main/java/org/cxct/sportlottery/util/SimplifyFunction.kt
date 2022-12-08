@@ -280,6 +280,7 @@ fun RecyclerView.getVisibleRangePosition(): List<Int> {
 /**
  * 初次獲取資料訂閱可視範圍內賽事(GameV3Fragment、GameLeagueFragment、MyFavoriteFragment)
  */
+@Deprecated("不建议使用这种没有复用逻辑的集合式")
 @SuppressLint("LogNotTimber")
 fun RecyclerView.firstVisibleRange(
     adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
@@ -306,40 +307,6 @@ fun RecyclerView.firstVisibleRange(
                                         (activity as BaseSocketActivity<*>).subscribeChannelHall(
                                             adapter.data[leaguePosition].gameType?.key,
                                             adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
-                                        )
-                                    }
-                                }
-                        }
-                    }
-                }
-
-                is SportLeagueAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is SportLeagueAdapter.ItemViewHolder) {
-                            val viewHolder =
-                                getChildViewHolder(view) as SportLeagueAdapter.ItemViewHolder
-                            viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                .forEach { matchPosition ->
-                                    if (adapter.data.isNotEmpty() && leaguePosition < adapter.data.size) {
-                                        Log.d(
-                                            "[subscribe]",
-                                            "訂閱 ${adapter.data.getOrNull(leaguePosition)?.league?.name} -> " +
-                                                    "${
-                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition
-                                                        )?.matchInfo?.homeName
-                                                    } vs " +
-                                                    "${
-                                                        adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                            matchPosition
-                                                        )?.matchInfo?.awayName
-                                                    }"
-                                        )
-                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                            adapter.data.getOrNull(leaguePosition)?.gameType?.key,
-                                            adapter.data.getOrNull(leaguePosition)?.matchOdds?.getOrNull(
-                                                matchPosition
-                                            )?.matchInfo?.id
                                         )
                                     }
                                 }

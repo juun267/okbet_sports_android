@@ -109,6 +109,7 @@ class SportOutrightFragment :
                 loading()
                 unSubscribeChannelHallAll()
                 viewModel.switchGameType(it)
+                iv_arrow.isSelected = true
             }
 
             thirdGameListener = ThirdGameListener {
@@ -275,12 +276,13 @@ class SportOutrightFragment :
                     leagueIdList)
             }
         }
+        iv_arrow.isSelected = true
         iv_arrow.setOnClickListener {
             iv_arrow.isSelected = !iv_arrow.isSelected
             sportOutrightAdapter.data.forEach { it ->
                 when (it) {
                     is OutrightItem ->
-                        it.leagueExpanded = !iv_arrow.isSelected
+                        it.leagueExpanded = iv_arrow.isSelected
                 }
             }
             sportOutrightAdapter.notifyDataSetChanged()

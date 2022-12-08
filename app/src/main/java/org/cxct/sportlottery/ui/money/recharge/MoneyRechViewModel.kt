@@ -215,7 +215,7 @@ class MoneyRechViewModel(
         }
     }
 
-    //充值頁面[虛擬幣充值]-[按鈕]提交申請
+    //充值页面[虚拟币充值]-[按钮]提交申请
     fun rechargeCryptoSubmit(
         moneyAddRequest: MoneyAddRequest,
         rechType: String?,

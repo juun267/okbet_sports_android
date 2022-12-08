@@ -63,13 +63,13 @@ class ItemHomeLiveHolder(
             lastExpandLive = isExpendLive
             updateLive(isExpendLive)
         }
-        binding.blockNormalGame.measure(0, 0)
-        val width = binding.blockNormalGame.measuredWidth
-        val margin = width + 4.dp
-        (binding.tvLeagueName.layoutParams as MarginLayoutParams).let {
-            it.leftMargin = margin
-            it.rightMargin = margin
-        }
+//        binding.blockNormalGame.measure(0, 0)
+//        val width = binding.blockNormalGame.measuredWidth
+//        val margin = width + 4.dp
+//        (binding.tvLeagueName.layoutParams as MarginLayoutParams).let {
+//            it.leftMargin = margin
+//            it.rightMargin = margin
+//        }
     }
 
     fun updateLive(isExpandLive: Boolean) {
@@ -540,17 +540,21 @@ class ItemHomeLiveHolder(
             }
 
             else -> {
-                if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
-                    itemView.context.getString((R.string.home_tab_today))
-                else
+                if (TimeUtil.isTimeToday(item.matchInfo?.startTime)) {
+                    ""
+                    //                    itemView.context.getString((R.string.home_tab_today))
+                } else {
                     item.matchInfo?.startDateDisplay
+                }
             }
         }
     }
 
     private fun setTextViewStatus(item: MatchLiveData) {
         when {
-            (TimeUtil.isTimeInPlay(item.matchInfo?.startTime) && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
+            (TimeUtil.isTimeInPlay(item.matchInfo?.startTime)
+                    && item.matchInfo?.status == GameStatus.POSTPONED.code
+                    && (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name || item.matchInfo?.gameType == GameType.TN.name)) -> {
                 binding.tvGamePlayTime.visibility = View.GONE
             }
 

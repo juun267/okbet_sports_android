@@ -184,7 +184,7 @@ abstract class BaseViewModel(
 
     fun doLogoutAPI() {
         viewModelScope.launch {
-            loginRepository.logoutAPI()
+            runCatching { loginRepository.logoutAPI() }
         }
     }
 

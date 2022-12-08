@@ -116,7 +116,7 @@ class ForgetViewModel(
         val msg = when {
             phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             !VerifyConstUtil.verifyPhone(phoneNum) -> {
-                LocalUtils.getString(R.string.error_phone_num)
+                LocalUtils.getString(R.string.error_phone_number)
             }
             else -> null
         }
@@ -139,9 +139,7 @@ class ForgetViewModel(
     fun checkPassword(password: String, confirmPassword: String? = null): String? {
         val msg = when {
             password.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPwdFormat(password) -> LocalUtils.getString(R.string.error_new_password)
-            password.length !in 6..20 -> LocalUtils.getString(R.string.error_new_password)
-            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPwd(password) -> LocalUtils.getString(R.string.error_new_password)
             else -> null
         }
         if (confirmPassword?.isNotEmpty() == true)
@@ -180,7 +178,6 @@ class ForgetViewModel(
                 if (checkInputPair(accountCodeMsg)) {
                     return false
                 }
-
             }
             1 -> {
                 if (checkInputPair(phoneMsg)) {

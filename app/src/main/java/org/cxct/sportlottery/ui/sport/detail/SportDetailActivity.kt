@@ -492,11 +492,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
         iv_arrow.apply {
-            isSelected = false
+            isSelected = true
             setOnClickListener {
                 isSelected = !isSelected
                 oddsDetailListAdapter?.oddsDetailDataList?.forEach {
-                    it.isExpand = !isSelected
+                    it.isExpand = isSelected
                 }
                 oddsDetailListAdapter?.notifyDataSetChanged()
             }
@@ -536,7 +536,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 when (result.success) {
                     true -> {
                         result.setupPlayCateTab()
-
+                        oddsDetailListAdapter?.notifyDataSetChangedByCode(tabCateAdapter.dataList[tabCateAdapter.selectedPosition].code)
                         matchOdd = result.oddsDetailData?.matchOdd
 
                         result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->

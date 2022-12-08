@@ -62,8 +62,9 @@
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
     <string name="withdrawal_pwd">Withdrawal password</string>
     <string name="hint_withdrawal_pwd">4 digit password</string>
-    <string name="phone_number">Phone No.</string>
+    <string name="phone_number">Phone number</string>
     <string name="hint_phone_number">Please enter the correct phone number</string>
+    <string name="hint_phone_num">Please enter phone number</string>
     <string name="error_phone_number">Phone number formatted incorrectly</string>
     <string name="qq_number">QQ Number</string>
     <string name="hint_qq_number">QQ Account</string>
@@ -104,11 +105,11 @@
     <string name="birth_date">Birthdate</string>
     <string name="hint_birth_date">YYYY/MM/DD</string>
     <string name="hint_real_name">Match the bank account name</string>
-    <string name="verification_code">Verification code</string>
+    <string name="verification_code">Verify code</string>
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="error_verification_code">CAPTCHA incorrectly</string>
-    <string name="hint_verification_code_by_sms">SMS</string>
-    <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
+    <string name="hint_verification_code_by_sms">SMS verify code</string>
+    <string name="error_verification_code_by_sms">SMS verify code incorrectly</string>
     <string name="get_verification_code">SEND</string>
     <string name="get_valid_code_fail_point">Verification failed， please try again！</string>
     <string name="get_security_code">Send code</string>
@@ -131,7 +132,7 @@
     <string name="home_tab_in_play">IN-PLAY</string>
     <string name="home_tab_today">TODAY</string>
     <string name="home_tab_early">EARLY</string>
-    <string name="home_tab_cs">CORRECT</string>
+    <string name="home_tab_cs">CORRECT SCORE</string>
     <string name="home_tab_parlay">PARLAY</string>
     <string name="home_tab_outright">OUTRIGHTS</string>
     <string name="home_tab_at_start">SOON</string>
@@ -232,14 +233,14 @@
     <string name="tennis">Tennis</string>
     <string name="badminton">Badminton</string>
     <string name="volleyball">Volleyball</string>
-    <string name="table_tennis">Table tennis</string>
-    <string name="ice_hockey">Ice hockey</string>
+    <string name="table_tennis">Table Tennis</string>
+    <string name="ice_hockey">Ice Hockey</string>
     <string name="boxing">Boxing</string>
     <string name="snooker">Billiards</string>
     <string name="cricket">Cricket</string>
     <string name="baseball">Baseball</string>
     <string name="rugby_football">Rugby</string>
-    <string name="america_football">American football</string>
+    <string name="america_football">American Football</string>
     <string name="motor_racing">Motor Racing</string>
     <string name="golf">Golf</string>
     <string name="financial_bets">Financial Bets</string>
@@ -1272,7 +1273,7 @@
     <string name="please_enter_question">Please describe the problem</string>
     <string name="getget">"###&#044;###&#044;###&#044;##0&#046;000"</string>
     <string name="error_full_name">The name that you entered is not valid</string>
-    <string name="hint_verification_code">Please enter the verification code.</string>
+    <string name="hint_verification_code">Please enter verify code</string>
     <string name="please_get_forget_password">Please retrieve your OKBet password!</string>
     <string name="please_set_forget_password">Please set your new account password!</string>
     <string name="new_login_password">New Login Password</string>
@@ -1322,7 +1323,7 @@
     <string name="home_all_game">All Games</string>
     <string name="home_back">Back</string>
     <string name="draw_name">Draw</string>
-    <string name="more_than_the">O</string>
+    <string name="more_than_the">Over</string>
     <string name="okbet_live_name">OKBET MC</string>
     <string name="please_input_you_account">Please enter your account</string>
     <string name="text_1">1</string>
@@ -1335,21 +1336,21 @@
     <string name="dont_have_game">No Jackpot Games available</string>
     <string name="ou_hdp_hdp">Handicap</string>
     <string name="see_more">More&#160;</string>
-    <string name="less_than_the">U</string>
+    <string name="less_than_the">Under</string>
     <string name="cs_center">CS Center</string>
     <string name="Pinned">Pinned</string>
     <string name="Unpin">Unpin</string>
-    <string name="new_game_and_testing">New Games | Beta</string>
+    <string name="new_game_and_testing">(New Games | Beta)</string>
     <string name="dont_have_slot_game">No games</string>
     <string name="bad_param">参数错误</string>
-    <string name="error_verification_code_forget">验证码错误</string>
-    <string name="find_back_password">密码找回</string>
-    <string name="place_enter_your_account">请输入用户名</string>
-    <string name="error_phone_num">手机号码错误</string>
-    <string name="tips_login_password_success">登陆密码修改成功，请重新登录。</string>
-    <string name="error_tips_confirm_password">您输入的密码不一致，请重新输入</string>
-    <string name="hide_confirm_password">确认新登录密码</string>
-    <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
+    <string name="error_verification_code_forget">Verify code wrong</string>
+    <string name="find_back_password">Recover password</string>
+    <string name="place_enter_your_account">Please enter user name</string>
+    <string name="error_phone_num">Phone No. wrong</string>
+    <string name="tips_login_password_success">Login password change successful, Please login again.</string>
+    <string name="error_tips_confirm_password">Password you entered does not match, please re-enter</string>
+    <string name="hide_confirm_password">Confirm new login password</string>
+    <string name="error_new_password">Password consist 6-20 characters and must have a combination of numbers and letters.</string>
     <string name="deadline">Deadline</string>
     <!--投注改版-->
     <string name="accept_any_change_in_odds">接受任何赔率变化</string>
@@ -1369,4 +1370,5 @@
     <string name="str_odds_already_changed_check_please">赔率已经变化,请确认最新赔率</string>
     <!--投注改版-->
 
+    <string name="reget_phone_code_for">Reacquire</string>
 </resources>

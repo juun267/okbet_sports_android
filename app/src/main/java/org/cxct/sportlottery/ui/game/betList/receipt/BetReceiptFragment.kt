@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
@@ -208,25 +209,29 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         btn_complete.setOnClickListener {
             if (viewModel.oddChange.value == true) {
                 addBet()
-            } else {
-                activity?.onBackPressed()
-                when (activity) {
-                    is MainTabActivity -> (activity as MainTabActivity).jumpToBetInfo(2)
-                    else -> MainTabActivity.start2Tab(AppManager.currentActivity(), 2)
+                return@setOnClickListener
+            }
+
+            activity?.let {
+                it.supportFragmentManager
+                    .beginTransaction()
+                    .remove(this@BetReceiptFragment)
+                    .commitAllowingStateLoss()
+                if (!(it is MainTabActivity)) {
+                    it.finish()
                 }
             }
+            MainTabActivity.activityInstance?.jumpToBetInfo(1)
         }
-        btn_cancel.setOnClickListener {
-            activity?.onBackPressed()
-        }
-        cl_title.setOnClickListener {
-            activity?.onBackPressed()
-        }
+
+        btn_cancel.setOnClickListener { activity?.onBackPressed() }
+        cl_title.setOnClickListener { activity?.onBackPressed() }
     }
 
     private fun initRecyclerView() {
         rv_bet_receipt.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            LogUtil.toJson(betResultData?.singleBets)
             betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {
                     submit(

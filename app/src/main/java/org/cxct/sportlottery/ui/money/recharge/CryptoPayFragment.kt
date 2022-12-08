@@ -678,7 +678,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 event.invoke(customEditText.et_input.text.toString())
         }
     }
-
+//选择图片回调监听
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
             try {
@@ -711,7 +711,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             Timber.i("PictureSelector Cancel")
         }
     }
-
+    //上传凭证接口
     private fun uploadImg(file: File) {
         val userId = viewModel.loginRepository.userId.toString()
         val uploadImgRequest =

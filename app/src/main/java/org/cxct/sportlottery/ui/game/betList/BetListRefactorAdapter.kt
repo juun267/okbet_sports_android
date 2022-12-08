@@ -1211,7 +1211,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 //                    tv_win_hint_default.isVisible = !itemData.isInputWin
 //                }
                 } else {
-                    tv_hint_default.isVisible = true
+                    tv_hint_default.isVisible = false
                     et_win.isEnabled = false
                     tv_win_hint_default.isVisible = false
                 }

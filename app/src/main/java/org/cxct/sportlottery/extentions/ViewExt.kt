@@ -25,6 +25,18 @@ fun View.inVisible(){
     this.visibility = View.INVISIBLE
 }
 
+fun setViewVisiable(vararg views: View) {
+    views.forEach { it.visibility = View.VISIBLE }
+}
+
+fun setViewGone(vararg views: View) {
+    views.forEach { it.visibility = View.GONE }
+}
+
+fun setViewInvisiable(vararg views: View) {
+    views.forEach { it.visibility = View.INVISIBLE }
+}
+
 //私有扩展属性，允许2次点击的间隔时间
 private var <T : View> T.delayTime: Long
     get() = getTag(0x7FFF0001) as? Long ?: 0

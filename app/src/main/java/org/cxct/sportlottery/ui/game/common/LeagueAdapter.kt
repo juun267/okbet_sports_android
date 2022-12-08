@@ -361,12 +361,14 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         fun updateLeagueExpand(item: LeagueOdd, matchType: MatchType) {
-            expandCheckList[data[adapterPosition].league.id].apply {
+            val position = bindingAdapterPosition
+            val positionData = data[position]
+            expandCheckList[positionData.league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfoldStatus = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+                    positionData.unfoldStatus = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
-            itemView.league_odd_list.visibility = if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            itemView.league_odd_list.visibility = if (positionData.unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
         }
 
@@ -403,22 +405,24 @@ class LeagueAdapter(private val matchType: MatchType, var playSelectedCodeSelect
         }
 
         private fun setupLeagueOddExpand(item: LeagueOdd, matchType: MatchType, leagueListener: LeagueListener?) {
-            expandCheckList[data[adapterPosition].league.id].apply {
+            val position = bindingAdapterPosition
+            val positionData = data[position]
+            expandCheckList[positionData.league.id].apply {
                 if (this != null) {
-                    data[adapterPosition].unfoldStatus = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
+                    positionData.unfoldStatus = if (this == true) FoldState.UNFOLD.code else FoldState.FOLD.code
                 }
             }
 
-            itemView.league_odd_list.visibility = if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
+            itemView.league_odd_list.visibility = if (positionData.unfoldStatus == FoldState.UNFOLD.code) View.VISIBLE else View.GONE
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
-                if (adapterPosition > data.size - 1) return@setOnClickListener
-                data[adapterPosition].unfoldStatus = if (data[adapterPosition].unfoldStatus == FoldState.UNFOLD.code) {
-                    expandCheckList[data[adapterPosition].league.id] = false
+                if (position > data.size - 1) return@setOnClickListener
+                positionData.unfoldStatus = if (positionData.unfoldStatus == FoldState.UNFOLD.code) {
+                    expandCheckList[positionData.league.id] = false
                     FoldState.FOLD.code
                 } else {
-                    expandCheckList[data[adapterPosition].league.id] = true
+                    expandCheckList[positionData.league.id] = true
                     FoldState.UNFOLD.code
                 } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
                 updateTimer(matchType, item.gameType)

@@ -1091,7 +1091,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             ) {}
             return
         }
-
+        MultiLanguagesApplication.mInstance.mOddsType.value?.let {
+            oddsType = it
+        }
         viewModel.addBetList(
             getCurrentBetList(), parlayList, oddsType, currentBetType
         )

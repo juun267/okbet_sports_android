@@ -60,10 +60,12 @@ object EncryptUtil {
         if (str == null || str.length == 0) {
             return null
         }
+
+        var gzip: GZIPOutputStream? = null
         try {
             // gzip壓縮
             val baos = ByteArrayOutputStream()
-            val gzip = GZIPOutputStream(baos)
+            gzip = GZIPOutputStream(baos)
             gzip.write(str.toByteArray(charset("UTF-8")))
             gzip.close()
             val encode: ByteArray = baos.toByteArray()
@@ -77,6 +79,8 @@ object EncryptUtil {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            gzip?.let { kotlin.runCatching { it.close() } }
         }
         return null
     }
@@ -91,12 +95,14 @@ object EncryptUtil {
         if (str == null || str.length == 0) {
             return null
         }
+
+        var gzip: GZIPInputStream? = null
         try {
             var decode = str.toByteArray(charset("UTF-8"))
 
             //gzip 解壓縮
             val bais = ByteArrayInputStream(decode)
-            val gzip = GZIPInputStream(bais)
+            gzip = GZIPInputStream(bais)
             val buf = ByteArray(BUFFER_SIZE)
             var len = 0
             val baos = ByteArrayOutputStream()
@@ -112,6 +118,8 @@ object EncryptUtil {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            gzip?.let { kotlin.runCatching { it.close() } }
         }
         return null
     }
@@ -130,6 +138,11 @@ object EncryptUtil {
         while (gunzip.read(buffer).also { n = it } >= 0) {
             out.write(buffer, 0, n)
         }
-        return out.toString()
+
+        val result = out.toString()
+
+        kotlin.runCatching { gunzip.close() }
+
+        return result
     }
 }
