@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 
-class OkPopupWindow(context: Context, var currentSelectText: String,val onItemClickListener:(String)->Unit ) : PopupWindow(context) {
+class OkPopupWindow(context: Context, var currentSelectText: String,val onItemClickListener:(String,Int)->Unit ) : PopupWindow(context) {
 
     private var popupWidth = 0
 
@@ -92,7 +92,14 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
             listAdapter.notifyItemChanged(position)
             //刷新上一次选中颜色
             listAdapter.notifyItemChanged(lastSelectPosition)
-            onItemClickListener(currentSelectText)
+            val descriptionPosition =  when(position){
+                0 -> 2
+                1 -> 0
+                2 -> 1
+                else -> 0
+            }
+            onItemClickListener(currentSelectText,descriptionPosition)
+
             dismiss()
         }
 

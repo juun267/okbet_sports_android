@@ -871,34 +871,28 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
                         setAnimation(ivOddsArrow, tvOdds, false)
                     }
-                    odds_change_layout.visibility = if (handler != null) {
-                        Timber.d("显示赔率变化")
+                    odds_change_layout.visibility = View.GONE
+                    if (handler != null) {
+                        Timber.d("Ray===> 显示赔率变化")
                         if (adapterBetType == SINGLE) {
-//                            includeOddsLayout.visible()
                             includeOddsLayout.tvOddsChangedTips.visible()
                             handler?.postDelayed({
-                                Timber.d(" includeOddsLayout.tvOddsChangedTips.gone() postDelay")
                                 includeOddsLayout.tvOddsChangedTips.gone()
                             }, totalAnimationTipsDur)
                         } else {
                             onItemClickListener.onOddsChangesWarningTips(true)
                             handler?.postDelayed({
-                                Timber.d("   onItemClickListener.onOddsChangesWarningTips(false) postDelay")
                                 onItemClickListener.onOddsChangesWarningTips(false)
                             }, totalAnimationTipsDur)
                         }
-                        View.GONE
                     } else {
-                        Timber.d("隐藏赔率变化")
-                        includeOddsLayout.gone()
+                        Timber.d("Ray===> 隐藏赔率变化")
                         if (adapterBetType == SINGLE) {
                             includeOddsLayout.tvOddsChangedTips.gone()
                         } else {
                             onItemClickListener.onOddsChangesWarningTips(false)
                         }
-                        View.GONE
                     }
-
 
                     handler?.postDelayed({
                         Timber.d("odds_change_layout隐藏 postDelay")

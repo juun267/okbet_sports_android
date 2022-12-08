@@ -123,6 +123,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var currentBetType: Int = 0
 
+    /**
+     * 当前所选赔率
+     */
+    private var currentBetOption = 0
+
 
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -471,10 +476,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         tvAcceptOddsChange.setOnClickListener {
-            val popupWindow =
-                OkPopupWindow(requireContext(), tvAcceptOddsChange.text.toString()) { text ->
-                    tvAcceptOddsChange.text = text
-                }
+            val popupWindow = OkPopupWindow(
+                requireContext(), tvAcceptOddsChange.text.toString()
+            ) { text, position ->
+                tvAcceptOddsChange.text = text
+                currentBetOption = position
+            }
             popupWindow.showUpCenter(it)
         }
 
@@ -569,15 +576,19 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
-                val popupWindow =
-                    OkPopupWindow(requireContext(), tvTextSelect.text.toString()) { text ->
-                        tvTextSelect.text = text
-                    }
+                val popupWindow = OkPopupWindow(
+                    requireContext(), tvTextSelect.text.toString()
+                ) { text, position ->
+                    tvTextSelect.text = text
+                    currentBetOption = position
+                }
                 popupWindow.showUpCenter(tvTextSelect)
             }
 
             override fun onOddsChangesWarningTips(isShow: Boolean) {
+                Timber.d("isShow:$isShow")
                 if (includeOddsLayout != null && includeOddsLayout.tvOddsChangedTips != null) {
+                    includeOddsLayout.visible()
                     includeOddsLayout.tvOddsChangedTips.isVisible = isShow
                 }
             }
@@ -590,7 +601,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun showOddsChangeTips(){
+    private fun showOddsChangeTips() {
         val dialog = CustomAlertDialog(requireContext())
         dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
         val message = """
@@ -960,15 +971,16 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner) {
             showOddChangeWarn = it
             btn_bet.isOddsChanged = it
-//            showHideWarn()
-            if (it) {
-                includeOddsLayout.visible()
-            } else {
-                includeOddsLayout.gone()
-            }
+            Timber.d("isShow: showOddsChangeWarn:$it")
 //            when (it) {
-//                true -> betParlayListRefactorAdapter?.showOddsChangedWarn()
-//                false -> betParlayListRefactorAdapter?.hideOddsChangedWarn()
+//                true -> {
+////                    includeOddsLayout.visible()
+////                    betParlayListRefactorAdapter?.showOddsChangedWarn()
+//                }
+//                false -> {
+////                    includeOddsLayout.gone()
+////                    betParlayListRefactorAdapter?.hideOddsChangedWarn()
+//                }
 //            }
         }
 

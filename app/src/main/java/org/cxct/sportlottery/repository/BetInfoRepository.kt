@@ -366,7 +366,6 @@ object BetInfoRepository {
             if (currentStateSingleOrParlay == 0) {
                 //单注模式
                 Timber.d("单注模式")
-
                 if (oddIDArray.size!=0){
                     oddIDArray[0] = it.oddsId
                 }else{
