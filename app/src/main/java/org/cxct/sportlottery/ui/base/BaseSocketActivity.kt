@@ -71,7 +71,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService?.doReconnect() }
+                    showPromptDialog(message = getString(R.string.message_socket_connect)) { backService?.doReconnect() }
                 }
                 ServiceConnectStatus.CONNECTING -> {
 //                    loading()
