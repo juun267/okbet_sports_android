@@ -8,15 +8,17 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bigkoo.pickerview.utils.PickerViewAnimateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
@@ -25,7 +27,6 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -459,11 +460,24 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
         ft
 //            .setCustomAnimations(
-//            R.anim.fade_in_200, R.anim.fade_out_200, R.anim.fade_in_200, R.anim.fade_out_200
+//            R.anim.pickerview_slide_in_bottom,
+//            R.anim.pickerview_slide_out_bottom,
+//            R.anim.pickerview_slide_in_bottom,
+//            R.anim.pickerview_slide_out_bottom
 //        )
             .add(R.id.fl_bet_list, betListFragment!!)
-            .addToBackStack(BetListFragment::class.java.simpleName).commit()
+            .addToBackStack(null).commit()
     }
+
+//    private fun getInAnimation(): Animation? {
+//        val res = PickerViewAnimateUtil.getAnimationResource(this.animGravity, true)
+//        return AnimationUtils.loadAnimation(context, res)
+//    }
+//
+//    private fun getOutAnimation(): Animation? {
+//        val res = PickerViewAnimateUtil.getAnimationResource(this.animGravity, false)
+//        return AnimationUtils.loadAnimation(context, res)
+//    }
 
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
