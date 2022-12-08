@@ -178,7 +178,6 @@ class ForgetViewModel(
                 if (checkInputPair(accountCodeMsg)) {
                     return false
                 }
-
             }
             1 -> {
                 if (checkInputPair(phoneMsg)) {
