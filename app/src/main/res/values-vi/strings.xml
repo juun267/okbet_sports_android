@@ -1254,7 +1254,7 @@
     <string name="please_set_forget_password">Vui lòng đặt mật khẩu tài khoản mới của bạn！</string>
     <string name="new_login_password">Mật khẩu đăng nhập mới</string>
     <string name="new_login_password_confirm">Xác nhận mật khẩu đăng nhập mới</string>
-    <string name="to_back_login">Quay lại trang đăng nhập</string>
+    <string name="to_back_login">Trở về trang đăng nhập</string>
      <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn: </string>
     <string name="get_phone_code">Nhận</string>
     <string name="reget_phone_code">Nhận lại</string>

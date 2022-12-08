@@ -212,6 +212,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     setPage()
                 }
             }
+//            page++
+//            setPage()
         }
 
 
@@ -293,6 +295,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 binding.clAccount.visibility = View.GONE
                 binding.clPassword.visibility = View.GONE
                 binding.clSuccess.visibility = View.GONE
+//                adjustEnableLoginButton(false)
                // binding.labelRegister.text = getString(R.string.please_get_forget_password)
                 binding.btnPut.text = getString(R.string.next_step)
             }
@@ -301,6 +304,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                 binding.firstPager.visibility = View.GONE
                 binding.clPassword.visibility = View.VISIBLE
                 binding.clSuccess.visibility = View.GONE
+                adjustEnableLoginButton(false)
               // binding.labelRegister.text = getString(R.string.please_set_forget_password)
                 binding.btnPut.text = getString(R.string.submit)
             }
