@@ -299,9 +299,9 @@
   },
   {
     "titleNameMap": {
-      "zh": "fortunePay",
-      "en": "fortunePay",
-      "vi": "fortunePay"
+      "zh": "FortunePay",
+      "en": "FortunePay",
+      "vi": "FortunePay"
     },
     "subtitle": "FortunePay支付",
     "image": "ic_fortunepay",
