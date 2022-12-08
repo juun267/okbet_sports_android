@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.fragment_bank_card.eet_wallet
 import kotlinx.android.synthetic.main.fragment_bet_list.bg_dim_mount
 import kotlinx.android.synthetic.main.fragment_bet_list.btnParlaySingle
 import kotlinx.android.synthetic.main.fragment_bet_list.btn_bet
-import kotlinx.android.synthetic.main.fragment_bet_list.includeOddsLayout
 import kotlinx.android.synthetic.main.fragment_bet_list.ll_root
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
@@ -476,11 +475,25 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         tvAcceptOddsChange.setOnClickListener {
+            tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                null
+            )
             val popupWindow = OkPopupWindow(
                 requireContext(), tvAcceptOddsChange.text.toString()
             ) { text, position ->
                 tvAcceptOddsChange.text = text
                 currentBetOption = position
+            }
+            popupWindow.setOnDismissListener {
+                tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                    null
+                )
             }
             popupWindow.showUpCenter(it)
         }
@@ -576,21 +589,33 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
+                tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                    null
+                )
                 val popupWindow = OkPopupWindow(
                     requireContext(), tvTextSelect.text.toString()
                 ) { text, position ->
                     tvTextSelect.text = text
                     currentBetOption = position
                 }
+                popupWindow.setOnDismissListener {
+                    tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                        null
+                    )
+                }
                 popupWindow.showUpCenter(tvTextSelect)
             }
 
             override fun onOddsChangesWarningTips(isShow: Boolean) {
                 Timber.d("isShow:$isShow")
-                if (includeOddsLayout != null && includeOddsLayout.tvOddsChangedTips != null) {
-                    includeOddsLayout.visible()
-                    includeOddsLayout.tvOddsChangedTips.isVisible = isShow
-                }
+                binding.includeOddsLayout.root.visible()
+                binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
             }
         }
 

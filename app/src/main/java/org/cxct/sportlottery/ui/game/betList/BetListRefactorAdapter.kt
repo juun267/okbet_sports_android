@@ -871,8 +871,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
                         setAnimation(ivOddsArrow, tvOdds, false)
                     }
-                    odds_change_layout.visibility = View.GONE
-                    if (handler != null) {
+                    odds_change_layout.visibility = if (handler != null) {
                         Timber.d("Ray===> 显示赔率变化")
                         if (adapterBetType == SINGLE) {
                             includeOddsLayout.tvOddsChangedTips.visible()
@@ -885,13 +884,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 onItemClickListener.onOddsChangesWarningTips(false)
                             }, totalAnimationTipsDur)
                         }
+                        View.GONE
+
                     } else {
                         Timber.d("Ray===> 隐藏赔率变化")
                         if (adapterBetType == SINGLE) {
+                            includeOddsLayout.gone()
                             includeOddsLayout.tvOddsChangedTips.gone()
                         } else {
                             onItemClickListener.onOddsChangesWarningTips(false)
                         }
+                        View.GONE
+
                     }
 
                     handler?.postDelayed({
