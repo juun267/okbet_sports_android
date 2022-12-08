@@ -9,10 +9,11 @@ data class MoneyAddRequest(
     val payerBankName: String?,//充值银行名称
     val payerInfo: String?,//充值附加信息
     val depositDate: Long,//充值日期
-
+    var appsFlyerId: String? = null,
 ) {
     var payee: String? = null
     var payeeName: String? = null
     var txHashCode: String? = null//虚拟币转账交易单号
     var voucherPath: String? = null//虚拟币转账凭证
+    val clientType: Int = 2
 }

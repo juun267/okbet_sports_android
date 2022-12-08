@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.appsflyer.AppsFlyerLib
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -270,7 +271,8 @@ class WithdrawViewModel(
             withdrawPwd = MD5Util.MD5Encode(withdrawPwd),
             bettingStationId = bettingStationId,
             appointmentDate = appointmentDate,
-            appointmentHour = appointmentHour
+            appointmentHour = appointmentHour,
+            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(androidContext)
         )
     }
     //检测消息提示 预约时间提示要做判断 银行卡没有预约时间

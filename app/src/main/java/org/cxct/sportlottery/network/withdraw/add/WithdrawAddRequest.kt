@@ -7,4 +7,6 @@ data class WithdrawAddRequest(
     val bettingStationId: Int?,
     val appointmentDate: String?,
     val appointmentHour: String?,
+    var appsFlyerId: String? = null,
+    val clientType: Int = 2,
 )
