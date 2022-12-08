@@ -134,7 +134,7 @@ class MoneyRechViewModel(
     val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
     //上传支付截图
     val uploadPayResult:LiveData<Event<UploadImgResult?>> = avatarRepository.uploadResult
-    //線上首次充值提示文字
+    //线上首次充值提示文字
     val onlinePayFirstRechargeTips: LiveData<Event<String?>>
         get() = _onlinePayFirstRechargeTips
     private val _onlinePayFirstRechargeTips = MutableLiveData<Event<String?>>()
@@ -162,8 +162,6 @@ class MoneyRechViewModel(
         try {
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
-            LogUtil.toJson(rechTypesList)
-            LogUtil.toJson(rechConfigList)
             //篩選，後台有開"且"使用者有權限的充值方式
             val filterRechargeDataList = mutableListOf<RechCfg>()
             rechTypesList.forEach { rechTypes ->
@@ -173,7 +171,6 @@ class MoneyRechViewModel(
                     }
                 }
             }
-            LogUtil.toJson(filterRechargeDataList)
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
                 if (filterRechargeDataList.firstOrNull {
@@ -194,9 +191,6 @@ class MoneyRechViewModel(
                     else -> transferData.add(it)
                 }
             }
-
-            Log.e(">>>", "onlineData = ${onlineData.size}, transferData = ${transferData.size}")
-
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData
         } catch (e: Exception) {
@@ -276,7 +270,8 @@ class MoneyRechViewModel(
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
-            if (!checkOnlinePayFirstRechargeLimit(depositMoney)) return
+            if (!checkOnlinePayFirstRechargeLimit(depositMoney))
+                return
 
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(

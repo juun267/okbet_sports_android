@@ -25,7 +25,7 @@ import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
 /**
- * @app_destination 在線支付
+ * @app_destination 在线支付
  */
 @SuppressLint("SetTextI18n")
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
