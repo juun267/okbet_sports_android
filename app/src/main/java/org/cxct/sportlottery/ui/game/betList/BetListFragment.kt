@@ -475,11 +475,25 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         tvAcceptOddsChange.setOnClickListener {
+            tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                null
+            )
             val popupWindow = OkPopupWindow(
                 requireContext(), tvAcceptOddsChange.text.toString()
             ) { text, position ->
                 tvAcceptOddsChange.text = text
                 currentBetOption = position
+            }
+            popupWindow.setOnDismissListener {
+                tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                    null
+                )
             }
             popupWindow.showUpCenter(it)
         }
@@ -575,19 +589,33 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
+                tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                    null
+                )
                 val popupWindow = OkPopupWindow(
                     requireContext(), tvTextSelect.text.toString()
                 ) { text, position ->
                     tvTextSelect.text = text
                     currentBetOption = position
                 }
+                popupWindow.setOnDismissListener {
+                    tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                        null,
+                        null,
+                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                        null
+                    )
+                }
                 popupWindow.showUpCenter(tvTextSelect)
             }
 
             override fun onOddsChangesWarningTips(isShow: Boolean) {
                 Timber.d("isShow:$isShow")
-                    binding.includeOddsLayout.root.visible()
-                    binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
+                binding.includeOddsLayout.root.visible()
+                binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
             }
         }
 
