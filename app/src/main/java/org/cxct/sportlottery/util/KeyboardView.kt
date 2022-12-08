@@ -117,6 +117,7 @@ class KeyboardView @JvmOverloads constructor(
                 setSnackBarNotify()
             }
         }
+        setOnClickListener { /*这里加个点击事件空实现，为了防止点击到间隔处把键盘消失*/ }
     }
 
     private fun numberClick(number: String) {
