@@ -355,7 +355,7 @@
                         tools:visibility="visible" />
 
                 </LinearLayout>
-
+                <!-- 单关赔率变化提示框-->
                 <include
                     android:id="@+id/includeOddsLayout"
                     layout="@layout/include_bet_odds_tips_single"

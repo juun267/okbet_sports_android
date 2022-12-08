@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.fragment_bank_card.eet_wallet
 import kotlinx.android.synthetic.main.fragment_bet_list.bg_dim_mount
 import kotlinx.android.synthetic.main.fragment_bet_list.btnParlaySingle
 import kotlinx.android.synthetic.main.fragment_bet_list.btn_bet
-import kotlinx.android.synthetic.main.fragment_bet_list.includeOddsLayout
 import kotlinx.android.synthetic.main.fragment_bet_list.ll_root
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
@@ -587,10 +586,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             override fun onOddsChangesWarningTips(isShow: Boolean) {
                 Timber.d("isShow:$isShow")
-                if (includeOddsLayout != null && includeOddsLayout.tvOddsChangedTips != null) {
-                    includeOddsLayout.visible()
-                    includeOddsLayout.tvOddsChangedTips.isVisible = isShow
-                }
+                    binding.includeOddsLayout.root.visible()
+                    binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
             }
         }
 
