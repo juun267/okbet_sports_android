@@ -369,6 +369,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         cl_bet_list_bar.tv_bet_list_count.text = num.toString()
         if (num > 0) viewModel.getMoney()
     }
+
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
         val multipleOdds = getMultipleOdds(list)
         cl_bet_list_bar.tvOdds.text = multipleOdds
@@ -414,8 +415,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
         if (thirdGameCategory != null) {
             val intent = Intent(this, MainActivity::class.java).putExtra(
-                MainActivity.ARGS_THIRD_GAME_CATE,
-                thirdGameCategory
+                MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
             )
             startActivity(intent)
 
@@ -457,9 +457,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         })
 
 
-        ft.setCustomAnimations(
-            R.anim.fade_in_200, R.anim.fade_out_200, R.anim.fade_in_200, R.anim.fade_out_200
-        ).add(R.id.fl_bet_list, betListFragment!!)
+        ft
+//            .setCustomAnimations(
+//            R.anim.fade_in_200, R.anim.fade_out_200, R.anim.fade_in_200, R.anim.fade_out_200
+//        )
+            .add(R.id.fl_bet_list, betListFragment!!)
             .addToBackStack(BetListFragment::class.java.simpleName).commit()
     }
 
