@@ -27,13 +27,9 @@
         android:layout_marginTop="@dimen/margin_5"
         android:ellipsize="end"
         android:gravity="center_vertical"
-        android:paddingEnd="4dp"
         android:textColor="@color/selector_blue_black"
-        android:autoSizeMaxTextSize="@dimen/textSize12sp"
-        android:autoSizeMinTextSize="@dimen/textSize10sp"
-        android:autoSizeTextType="uniform"
         android:singleLine="true"
-        android:textSize="@dimen/textSize12sp"
+        android:textSize="@dimen/textSize10sp"
         tools:text="银行卡转账" />
 
     <ImageView

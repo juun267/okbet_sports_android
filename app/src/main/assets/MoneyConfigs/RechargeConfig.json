@@ -310,9 +310,9 @@
   },
   {
     "titleNameMap": {
-      "zh": "其他",
-      "en": "Others",
-      "vi": "Khác"
+      "zh": "网银支付",
+      "en": "Online Banking",
+      "vi": "Ngân hàng online"
     },
     "subtitle": "菲律賓在線網銀",
     "image": "ic_internet_bank",
