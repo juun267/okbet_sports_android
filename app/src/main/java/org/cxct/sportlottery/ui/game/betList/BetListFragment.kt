@@ -631,7 +631,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
         val message = """
                     ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
+                    
                     ${getString(R.string.str_if_accept_odds_changes_des1)}
+                    
                     ${getString(R.string.str_if_accept_odds_changes_des2)}
                 """.trimIndent()
         dialog.setMessage(message)
