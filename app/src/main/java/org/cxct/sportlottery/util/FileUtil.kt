@@ -178,7 +178,7 @@ object FileUtil {
     @JvmStatic
      fun formatFileSize(fileS: Long,sizeType: Int):Double{
         var df = DecimalFormat("#.00")
-        var fileSizeLong:Double = 0.0
+        var fileSizeLong = 0.0
         when(sizeType){
             0 ->{
                 fileSizeLong = df.format(fileS).toDouble()

@@ -800,20 +800,20 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 val file = File(path!!)
                 val imageType = FileUtil.getImageType(path)
                 val fileSize = FileUtil.getFilesSizeByType(path,2)
-                if (imageType!="jpeg"&&imageType!="png"){
+                if (imageType!="jpeg"&&imageType!="png"&&imageType!="jpg"){
                     //弹出类型错误的弹窗
                     context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.format_error),0) }
                     return
-                }else if (fileSize>2.0){
+                }
+                if (fileSize>2.0){
                     //弹出文件过大的弹窗
                     context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.over_size),0) }
                     return
-                }else{
-                    if (file.exists())
-                        uploadImg(file)
-                    else
-                        throw FileNotFoundException()
                 }
+                if (file.exists())
+                    uploadImg(file)
+                    else throw FileNotFoundException()
+
 
             } catch (e: Exception) {
                 e.printStackTrace()
