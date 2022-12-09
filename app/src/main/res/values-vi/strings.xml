@@ -1327,9 +1327,9 @@
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
     <!--投注改版-->
-    <string name="accept_any_change_in_odds">Nhận mọi tỷ lệ cược</string>
-    <string name="accept_better_change_in_odds">Nhận tỷ lệ cược tốt hơn</string>
-    <string name="accept_never_change_in_odds">Không nhận thay đổi tỷ lệ cược</string>
+    <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
+    <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
+    <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
     <string name="expand_more_combinations">Thêm các tổ hợp</string>
     <string name="stacked_combination">Xếp chồng tổ hợp</string>
     <string name="bet_parlay">+Xâu</string>
@@ -1340,7 +1340,7 @@
     <string name="str_if_accept_odds_changes_des2">2. Nhận tỷ lệ cược tốt nhất - khi bạn chọn tùy chọn này, nếu tỷ lệ cược mới nhất tốt hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ tạo đơn cược. Nếu tỷ lệ cược mới nhất thấp hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về sự thay đổi tỷ lệ cược
 </string>
     <string name="str_ok_i_got_it">Tôi biết rồi</string>
-    <string name="str_max_bet_money">Số tiền đặt cược tối đa:</string>
+    <string name="str_max_bet_money">Tiền cược tối đa:</string>
     <string name="str_odds_already_changed_check_please">Tỷ lệ cược thay đổi, vui lòng xác nhận tỷ lệ cược mới nhất</string>
     <!--投注改版-->
 </resources>
