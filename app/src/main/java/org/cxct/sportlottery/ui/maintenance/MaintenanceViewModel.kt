@@ -34,7 +34,7 @@ class MaintenanceViewModel(
     val configResult: LiveData<ConfigResult?>
         get() = _configResult
     private val _configResult = MutableLiveData<ConfigResult?>()
-
+    //获取配置文件
     fun getConfig() {
         val hostUrl = hostRepository.hostUrl
 

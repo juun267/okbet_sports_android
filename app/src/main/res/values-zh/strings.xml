@@ -1347,4 +1347,6 @@
     <string name="upload_error">上传失败</string>
     <string name="optional_tips">选填:仅支持PNG或者JPG格式的文件，且小于2MB</string>
     <string name="no_file">没有选中任何文件</string>
+    <string name="error_amount_limit_less">充值额小于最低限额</string>
+
 </resources>
