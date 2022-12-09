@@ -365,7 +365,7 @@ class MoneyRechViewModel(
                 channelMinMoney,
                 channelMaxMoney
             ) == -1 -> {
-                LocalUtils.getString(R.string.error_amount_limit_exceeded)
+                LocalUtils.getString(R.string.error_amount_limit_less)
             }
             VerifyConstUtil.verifyRechargeAmount(
                 rechargeAmount,

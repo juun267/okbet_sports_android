@@ -795,8 +795,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 val path = when {
                     media?.isCompressed == true -> media.compressPath
                     media?.isCut == true -> media.cutPath
-                    else -> media?.path
+                    else -> media?.realPath
                 }
+                LogUtil.d(path)
                 val file = File(path!!)
                 val imageType = FileUtil.getImageType(path)
                 val fileSize = FileUtil.getFilesSizeByType(path,2)

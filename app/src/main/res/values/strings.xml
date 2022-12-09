@@ -1226,6 +1226,7 @@
     <string name="upload_id_photo">Upload Photo</string>
     <string name="hint_file_selected">Selected file</string>
     <string name="select_file">Select file</string>
+    <string name="select_file1">Select file</string>
     <string name="error_recommend_agent">No matched</string>
     <string name="local_time">Local Time:</string>
     <string name="click_upload_id_photo">Click upload ID photo</string>
