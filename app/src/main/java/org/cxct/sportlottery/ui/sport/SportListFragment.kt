@@ -945,6 +945,9 @@ class SportListFragment :
     }
 
      private fun firstVisibleRange(delay: Long = 100) = game_list.postDelayed({
+         if (game_list == null) {
+             return@postDelayed
+         }
          val adapter = game_list.adapter as SportLeagueAdapter
         if(adapter.data.isNullOrEmpty()) {
             return@postDelayed
