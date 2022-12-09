@@ -519,8 +519,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onItemClickListener.onOddsChangesAcceptTips()
                 }
 
-                itemView.tvMaxBetMoney.text =
-                    itemView.context.getString(R.string.str_max_bet_money) + inputMaxMoney
+                itemView.tvMaxBetMoney.text = String.format(itemView.context.getString(R.string.str_max_bet_money),TextUtil.formatInputMoney(inputMaxMoney))
+
             }
         }
 

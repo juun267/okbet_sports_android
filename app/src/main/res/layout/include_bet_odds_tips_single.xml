@@ -51,7 +51,7 @@
 
     <!--赔率已变化，请确认最新赔率-->
     <TextView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/tvOddsChangedTips"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
@@ -59,6 +59,8 @@
         android:background="@drawable/bg_drawable_odds_change_tips"
         android:drawableStart="@drawable/ic_odds_change_tips_white"
         android:layout_width="match_parent"
+             android:maxLines="1"
+        android:ellipsize="end"
         android:text="@string/str_odds_already_changed_check_please"
         android:paddingStart="14dp"
         android:textColor="@color/color_FFFFFF"
