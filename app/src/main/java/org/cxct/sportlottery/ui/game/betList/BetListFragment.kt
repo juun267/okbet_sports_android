@@ -124,6 +124,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     /**
      * 当前所选赔率
+     * 0：不接受更新赔率
+     * 1：接受更新赔率
+     * 2：接受更好的赔率
      */
     private var currentBetOption = 0
 
@@ -1122,7 +1125,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             oddsType = it
         }
         viewModel.addBetList(
-            getCurrentBetList(), parlayList, oddsType, currentBetType
+            getCurrentBetList(), parlayList, oddsType, currentBetType,currentBetOption
         )
     }
 

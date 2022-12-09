@@ -1338,6 +1338,22 @@
     <string name="error_tips_confirm_password">您输入的密码不一致，请重新输入</string>
     <string name="hide_confirm_password">确认新登录密码</string>
     <string name="error_new_password">密码为6-20个字符必须含有数字和字母的组合！</string>
-    <string name="reget_phone_code_for">重新获取</string>
+    <!--投注改版-->
     <string name="accept_any_change_in_odds">接受任何赔率变化</string>
+    <string name="accept_better_change_in_odds">接受更好赔率变化</string>
+    <string name="accept_never_change_in_odds">永不接受赔率变化</string>
+    <string name="expand_more_combinations">展开更多组合</string>
+    <string name="stacked_combination">叠起组合</string>
+    <string name="bet_parlay">+串关</string>
+    <string name="bet_single">单注</string>
+    <string name="str_if_accept_odds_changes_title">是否接受赔率变化</string>
+    <string name="str_if_accept_odds_changes_des_subtitle">因为赛事赔率可能随时会产生变化（特别是滚球阶段）。为了让您有能更好的下注体验。您可以选择以下三种投注方式。</string>
+    <string name="str_if_accept_odds_changes_des1">1.接受任何赔率变化—选择该选项时.我们会按照最新的赔率给您生成注单。</string>
+    <string name="str_if_accept_odds_changes_des2">2.接受最优赔率变化—选择该选项时 如果最新的赔率优于您选择的赔率，我们会生成注单。如果最新的赔率低于您选择的赔率，我们不会生成注单，并提醒您赔率变化
+</string>
+    <string name="str_ok_i_got_it">好的,我知道了</string>
+    <string name="str_max_bet_money">最大投注额度:</string>
+    <string name="str_odds_already_changed_check_please">赔率已经变化,请确认最新赔率</string>
+    <!--投注改版-->
+    <string name="reget_phone_code_for">重新获取</string>
 </resources>

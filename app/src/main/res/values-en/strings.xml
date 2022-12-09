@@ -1334,5 +1334,20 @@
     <string name="error_tips_confirm_password">Password you entered does not match, please re-enter</string>
     <string name="hide_confirm_password">Confirm new login password</string>
     <string name="error_new_password">Password consist 6-20 characters and must have a combination of numbers and letters.</string>
+    <string name="accept_any_change_in_odds">Accept any odds</string>
+    <string name="accept_better_change_in_odds">Accept better odds</string>
+    <string name="accept_never_change_in_odds">Never accept odds change</string>
+    <string name="expand_more_combinations">More combinations</string>
+    <string name="stacked_combination">Stack up combination</string>
+    <string name="bet_parlay">+Parlay</string>
+    <string name="bet_single">Single</string>
+    <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
+    <string name="str_if_accept_odds_changes_des_subtitle">Match odds can change at any time (especially during in-play). In order to give you a better betting experience. You can choose the following three betting methods.</string>
+    <string name="str_if_accept_odds_changes_des1">1. Accept any odds -- when this option is selected. We\'ll give you a slip based on the latest odds.</string>
+    <string name="str_if_accept_odds_changes_des2">2. Accept best odds - When selecting this option, if the latest odds are better than your chosen odds, we will generate a slip. If the latest odds are lower than the odds you have chosen, we do not generate a slip and remind you of the odds change
+</string>
+    <string name="str_ok_i_got_it">Ok, I see</string>
+    <string name="str_max_bet_money">Max bet limit:</string>
+    <string name="str_odds_already_changed_check_please">The odds changed. Please confirm latest odds</string>
     <string name="reget_phone_code_for">Reacquire</string>
 </resources>

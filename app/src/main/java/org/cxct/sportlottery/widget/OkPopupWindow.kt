@@ -93,9 +93,9 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
             //刷新上一次选中颜色
             listAdapter.notifyItemChanged(lastSelectPosition)
             val descriptionPosition =  when(position){
-                0 -> 2
-                1 -> 0
-                2 -> 1
+                0 -> 1
+                1 -> 2
+                2 -> 0
                 else -> 0
             }
             onItemClickListener(currentSelectText,descriptionPosition)

@@ -236,7 +236,7 @@
             android:paddingHorizontal="15dp"
             android:gravity="center_vertical"
             android:visibility="gone"
-            android:background="@color/color_31D089">
+            android:background="@color/color_1EB65B">
 
             <ImageView
                 android:id="@+id/iv_result_status"

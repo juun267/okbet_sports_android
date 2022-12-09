@@ -335,7 +335,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     fun updateBetResultStatus(oddChange: Boolean) {
         lin_result_status.isVisible = true
         if (!oddChange) {
-            lin_result_status.setBackgroundResource(R.color.color_31D089)
+            lin_result_status.setBackgroundResource(R.color.color_1EB65B)
             iv_result_status.setImageResource(R.drawable.ic_success_white)
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btn_cancel.text = getString(R.string.bet_others)
