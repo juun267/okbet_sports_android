@@ -231,6 +231,8 @@ class MoneyRechViewModel(
     //轉帳支付 - 一般充值
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
         if (checkTransferPayInput()) {
+            if (!checkOnlinePayFirstRechargeLimit(moneyAddRequest.depositMoney!!))
+                return
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     moneyRepository.rechargeAdd(moneyAddRequest)

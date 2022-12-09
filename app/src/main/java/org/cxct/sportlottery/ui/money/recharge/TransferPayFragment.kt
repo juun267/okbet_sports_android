@@ -250,6 +250,12 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 }
             }
         }
+        //转账充值首充提示
+        viewModel.onlinePayFirstRechargeTips.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { tipString ->
+                showPromptDialog(getString(R.string.prompt), tipString) {}
+            }
+        }
     }
 
     private fun setPayBankBottomSheet() {

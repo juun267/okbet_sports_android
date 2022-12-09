@@ -396,7 +396,7 @@
     <string name="please_enter_bank_card_rule">Vui lòng nhập số thẻ ngân hàng</string>
     <string name="title_recharge_time">Thời gian gửi tiền</string>
     <string name="title_current_money">Số dư hiện tại</string>
-    <string name="btn_submit">Nộp</string>
+    <string name="btn_submit">Gửi</string>
     <string name="btn_copy">Sao chép</string>
     <string name="title_qr_pay">Quét mã QR để thanh toán：</string>
     <string name="title_hint_qr_pay">Quét mã thanh toán KuaiJie, nếu bạn có bất kỳ vấn đề gì vui lòng liên hệ với bộ phận chăm sóc khách hàng!</string>
@@ -1206,7 +1206,7 @@
     <string name="cancel_account">Xoá tài khoản</string>
     <string name="match_analyze">Phân tích trận đấu</string>
     <string name="half">Nửa</string>
-    <string name="customer_service_help">Nếu cần trợ giúp, vui lòng liên hệ UsKH</string>
+    <string name="customer_service_help">NNếu cần trợ giúp, vui lòng liên hệ CSKH</string>
     <string name="click_upload_id_photo">Nhấn tải lên ảnh ID</string>
     <string name="main_tab_sport">Thể thao</string>
     <string name="main_tab_betlist">Đơn cược</string>
