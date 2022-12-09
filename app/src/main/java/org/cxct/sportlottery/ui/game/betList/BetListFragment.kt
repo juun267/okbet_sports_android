@@ -74,6 +74,7 @@ import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.NetworkUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -463,6 +464,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     null
                 )
             } else {
+                betParlayListRefactorAdapter?.closeAllKeyboard()
                 tvExpandOrStacked.text = getString(R.string.stacked_combination)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
@@ -470,6 +472,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
                     null
                 )
+
             }
             betParlayListRefactorAdapter?.apply {
                 BetListRcvUtil.setFitHeight(isOpen, rv_parlay_list, this)
@@ -796,8 +799,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             avoidFastDoubleClick()
             viewModel.betInfoList.removeObservers(viewLifecycleOwner)
             viewModel.removeBetInfoAll()
+            setCurrentBetModeSingle()
             activity?.supportFragmentManager?.popBackStack()
         }
+    }
+
+    private fun setCurrentBetModeSingle(){
+        currentBetType = SINGLE
+        BetInfoRepository.setCurrentBetState(SINGLE)
+        betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
     }
 
     private fun switchCurrentBetMode() {
@@ -839,6 +849,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             checkAllAmountCanBet()
             refreshAllAmount()
             checkSingleAndParlayBetLayoutVisible()
+            activity?.supportFragmentManager?.popBackStack()
         }
     }
 
@@ -887,6 +898,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
                 if (list.size == 0) {
+                    setCurrentBetModeSingle()
                     activity?.supportFragmentManager?.popBackStack()
                     return@observe
                 }
@@ -1084,6 +1096,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun addBet() {
+       if (!NetworkUtil.isAvailable(requireContext())){
+           showPromptDialog(
+               getString(R.string.prompt),
+               getString(R.string.message_network_no_connect)
+           ) {}
+           return
+       }
         //顯示betLoading
         setBetLoadingVisibility(true)
 

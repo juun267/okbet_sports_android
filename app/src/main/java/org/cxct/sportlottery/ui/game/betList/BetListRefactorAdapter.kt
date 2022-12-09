@@ -62,7 +62,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
      */
     enum class BetRvType { SINGLE, PARLAY_SINGLE, PARLAY }
 
-    var adapterBetType: BetRvType = BetRvType.SINGLE
+    var adapterBetType: BetRvType = SINGLE
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -380,7 +380,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         //region 20220607 投注單版面調整
         val betListSize = betList?.size ?: 0
         return when (adapterBetType) {
-            BetRvType.SINGLE -> {
+            SINGLE -> {
 
 //                if (betListSize > 1) {
 //                    betListSize + 1
@@ -477,7 +477,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     when (adapterBetType) {
-                        BetRvType.SINGLE -> {
+                        SINGLE -> {
 //                        cl_to_win.isVisible = true
                             setupContainerUI(isVisible = true, isLock = false, cannotParlay = false)
                         }
@@ -733,9 +733,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     et_bet.requestFocus()
                     itemData.isInputBet = true
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
-                    layoutKeyBoard.showKeyboard(
-                        et_bet, position
-                    )
+                    if(adapterBetType ==SINGLE){
+                        layoutKeyBoard.showKeyboard(
+                            et_bet, position
+                        )
+                    }
                 }
                 et_bet.setOnFocusChangeListener { _, hasFocus ->
 //                    if (!hasFocus) layoutKeyBoard?.hideKeyboard() //兩個輸入匡會互搶focus不能這樣關閉鍵盤
@@ -987,7 +989,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_league_name.isVisible = true
                         itemData.matchOdd.startTime?.let {
                             tv_start_time.text = TimeUtil.stampToDateHMS(it)
-                            tv_start_time.isVisible = true
+                            tv_start_time.isVisible = adapterBetType !=SINGLE
                         }
                     }
                 }
