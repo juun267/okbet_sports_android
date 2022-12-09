@@ -989,7 +989,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_league_name.isVisible = true
                         itemData.matchOdd.startTime?.let {
                             tv_start_time.text = TimeUtil.stampToDateHMS(it)
-                            tv_start_time.isVisible = adapterBetType !=SINGLE
+                            tv_start_time.isVisible = false
                         }
                     }
                 }

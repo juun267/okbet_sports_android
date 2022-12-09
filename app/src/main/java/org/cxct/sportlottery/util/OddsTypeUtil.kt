@@ -147,6 +147,6 @@ fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
             )
         multipleOdds *= tvOdd.toDouble()
     }
-    return "@"+TextUtil.formatForOdd(multipleOdds)
+    return "@"+TextUtil.formatMoney(multipleOdds,2)
 }
 

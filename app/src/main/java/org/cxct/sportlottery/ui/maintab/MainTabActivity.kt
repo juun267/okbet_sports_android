@@ -22,6 +22,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -371,9 +373,19 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (num > 0) viewModel.getMoney()
     }
 
+    /**
+     * 单关不显示赔率
+     * 串关显示赔率
+     */
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        val multipleOdds = getMultipleOdds(list)
-        cl_bet_list_bar.tvOdds.text = multipleOdds
+        if (list.size>1){
+            val multipleOdds = getMultipleOdds(list)
+            cl_bet_list_bar.tvOdds.text = multipleOdds
+            cl_bet_list_bar.tvOdds.visible()
+        }else{
+            cl_bet_list_bar.tvOdds.gone()
+        }
+
     }
 
     fun setupBetBarVisiblity(position: Int) {
