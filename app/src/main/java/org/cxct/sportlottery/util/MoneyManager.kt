@@ -147,7 +147,7 @@ object MoneyManager {
         PAYMAYA("Paymaya", R.drawable.ic_pay_maya_type),
         JUANCASH("JuanCash", R.drawable.ic_juancash_type),
         GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
-        ALIPAY("Alipay", R.drawable.ic_alipay_type)
+        ALIPAY("Alipay", R.drawable.ic_alipay_type),
     }
 
     fun getMoneyBankTypeTitle(rechType:String):String{

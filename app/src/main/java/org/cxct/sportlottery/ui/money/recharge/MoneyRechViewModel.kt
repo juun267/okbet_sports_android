@@ -644,6 +644,7 @@ class MoneyRechViewModel(
             OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
             OnlineType.DRAGON_PAY.type -> androidContext.resources.getString(R.string.online_gragon_pay)
             OnlineType.FORTUNE_PAY.type -> androidContext.resources.getString(R.string.online_fortune_pay)
+            OnlineType.ONLINEBANK.type -> androidContext.resources.getString(R.string.online_online_bank)
             else -> ""
         }
     }
