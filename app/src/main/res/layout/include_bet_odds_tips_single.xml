@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp">
@@ -12,14 +12,14 @@
 
         <TextView
             android:id="@+id/tvMaxBetMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:text="最大投注额度:1000,000,000"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvAcceptOddsChange"
@@ -51,20 +51,19 @@
 
     <!--赔率已变化，请确认最新赔率-->
     <TextView
-        android:visibility="visible"
         android:id="@+id/tvOddsChangedTips"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
         android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
         android:layout_marginHorizontal="10dp"
         android:background="@drawable/bg_drawable_odds_change_tips"
         android:drawableStart="@drawable/ic_odds_change_tips_white"
-        android:layout_width="match_parent"
-             android:maxLines="1"
-        android:ellipsize="end"
-        android:text="@string/str_odds_already_changed_check_please"
-        android:paddingStart="14dp"
-        android:textColor="@color/color_FFFFFF"
         android:drawablePadding="8dp"
-        android:textSize="16sp"
-        android:layout_height="36dp" />
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="8dp"
+        android:text="@string/str_odds_already_changed_check_please"
+        android:textColor="@color/color_FFFFFF"
+        android:textSize="14sp"
+        android:visibility="gone" />
 </FrameLayout>
