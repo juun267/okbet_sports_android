@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.money.config.RechType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.*
@@ -131,8 +132,9 @@ class MoneyRechViewModel(
 
     //上傳支付截圖
     val voucherUrlResult: LiveData<Event<String>> = avatarRepository.voucherUrlResult
-
-    //線上首次充值提示文字
+    //上传支付截图
+    val uploadPayResult:LiveData<Event<UploadImgResult?>> = avatarRepository.uploadResult
+    //线上首次充值提示文字
     val onlinePayFirstRechargeTips: LiveData<Event<String?>>
         get() = _onlinePayFirstRechargeTips
     private val _onlinePayFirstRechargeTips = MutableLiveData<Event<String?>>()
@@ -160,7 +162,6 @@ class MoneyRechViewModel(
         try {
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
-
             //篩選，後台有開"且"使用者有權限的充值方式
             val filterRechargeDataList = mutableListOf<RechCfg>()
             rechTypesList.forEach { rechTypes ->
@@ -170,7 +171,6 @@ class MoneyRechViewModel(
                     }
                 }
             }
-
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
                 if (filterRechargeDataList.firstOrNull {
@@ -180,7 +180,6 @@ class MoneyRechViewModel(
                     dataList.add(moneyPayWay)
                 }
             }
-
             dataList.forEach {
                 when (it.rechType) {
                     org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> {
@@ -192,12 +191,8 @@ class MoneyRechViewModel(
                     else -> transferData.add(it)
                 }
             }
-
-            Log.e(">>>", "onlineData = ${onlineData.size}, transferData = ${transferData.size}")
-
             _onlinePayList.value = onlineData
             _transferPayList.value = transferData
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -236,6 +231,8 @@ class MoneyRechViewModel(
     //轉帳支付 - 一般充值
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest) {
         if (checkTransferPayInput()) {
+            if (!checkOnlinePayFirstRechargeLimit(moneyAddRequest.depositMoney!!))
+                return
             viewModelScope.launch {
                 doNetwork(androidContext) {
                     moneyRepository.rechargeAdd(moneyAddRequest)
@@ -275,7 +272,8 @@ class MoneyRechViewModel(
     ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
-            if (!checkOnlinePayFirstRechargeLimit(depositMoney)) return
+            if (!checkOnlinePayFirstRechargeLimit(depositMoney))
+                return
 
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
             val queryMap = hashMapOf(
@@ -366,7 +364,14 @@ class MoneyRechViewModel(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) != 0 -> {
+            ) == -1 -> {
+                LocalUtils.getString(R.string.error_amount_limit_less)
+            }
+            VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) == 1 -> {
                 LocalUtils.getString(R.string.error_amount_limit_exceeded)
             }
             else -> ""
@@ -638,6 +643,8 @@ class MoneyRechViewModel(
             OnlineType.PAYMAYA.type -> androidContext.resources.getString(R.string.online_maya)
             OnlineType.PAYPAL.type -> androidContext.resources.getString(R.string.online_paypal)
             OnlineType.DRAGON_PAY.type -> androidContext.resources.getString(R.string.online_gragon_pay)
+            OnlineType.FORTUNE_PAY.type -> androidContext.resources.getString(R.string.online_fortune_pay)
+            OnlineType.ONLINEBANK.type -> androidContext.resources.getString(R.string.online_online_bank)
             else -> ""
         }
     }

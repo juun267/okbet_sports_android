@@ -17,7 +17,10 @@ class AvatarRepository(private val androidContext: Context) {
     private val _editIconUrlResult = MutableLiveData<Event<IconUrlResult?>>()
     val editIconUrlResult: LiveData<Event<IconUrlResult?>>
         get() = _editIconUrlResult
-
+    //存款支付凭证上传
+    private val _uploadResult = MutableLiveData<Event<UploadImgResult?>>()
+    val uploadResult: LiveData<Event<UploadImgResult?>>
+        get() = _uploadResult
     private val _voucherUrlResult = MutableLiveData<Event<String>>()
     val voucherUrlResult: LiveData<Event<String>>
         get() = _voucherUrlResult
@@ -88,6 +91,7 @@ class AvatarRepository(private val androidContext: Context) {
 
                 }
             }
+            _uploadResult.postValue(Event(result))
         }
         return response
     }

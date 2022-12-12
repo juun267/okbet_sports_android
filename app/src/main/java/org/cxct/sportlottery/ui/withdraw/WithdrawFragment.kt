@@ -215,6 +215,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_e_wallet))
                         clearEvent()
                     }
+                    getString(R.string.pay_maya) -> {
+                        selectBetStationTab(false)
+                        selectDealType(TransferType.PAYMAYA)
+                        dealType = TransferType.PAYMAYA
+                        transferTypeAddSwitch.apply {
+                            add_bank_group.visibility = if (walletTransfer)View.VISIBLE else View.GONE
+                        }
+                        tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.pay_maya))
+                        clearEvent()
+                    }
                     getString(R.string.Outlets_Reserve) -> {
                         selectBetStationTab(true)
 //                        viewModel.setDealType(TransferType.STATION)
@@ -568,6 +578,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
                         TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
                         TransferType.STATION -> getBankIconByBankName(it.bankName)
+                        TransferType.PAYMAYA -> getBankIconByBankName(it.bankName)
                     }
 
 
@@ -687,6 +698,7 @@ class WithdrawBankCardAdapter(
                         TransferType.CRYPTO -> getCryptoIconByCryptoName(bankCard.transferType.type)
                         TransferType.E_WALLET -> getBankIconByBankName(bankCard.bankName)
                         TransferType.STATION -> getBankIconByBankName(bankCard.bankName)
+                        TransferType.PAYMAYA -> getBankIconByBankName(bankCard.bankName)
                     }
                 )
                 checkBank.isChecked = selectedPosition == position

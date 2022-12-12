@@ -35,6 +35,7 @@ class LoginEditText @JvmOverloads constructor(
     private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
         v_bottom_line.isSelected = hasFocus
         block_editText.isSelected = hasFocus
+        v_bottom_line2.isVisible = false
         setError(null)
     }
 
@@ -64,6 +65,7 @@ class LoginEditText @JvmOverloads constructor(
     }
 
     private val editable by lazy { typedArray.getBoolean(R.styleable.CustomView_cvEditable, true) }
+    private val isShowLine by lazy { typedArray.getBoolean(R.styleable.CustomView_cvBottomLine, false) }
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
@@ -79,7 +81,7 @@ class LoginEditText @JvmOverloads constructor(
             view.tv_title.setTextColor( typedArray.getInt(R.styleable.CustomView_cvTextColor, 1))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
-
+            view.v_bottom_line2.isVisible = isShowLine
             if (!editable) {
                 view.et_input.isEnabled = false
                 view.et_input.inputType = InputType.TYPE_NULL

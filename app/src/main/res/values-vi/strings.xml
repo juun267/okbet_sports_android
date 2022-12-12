@@ -398,7 +398,7 @@
     <string name="please_enter_bank_card_rule">Vui lòng nhập số thẻ ngân hàng</string>
     <string name="title_recharge_time">Thời gian gửi tiền</string>
     <string name="title_current_money">Số dư hiện tại</string>
-    <string name="btn_submit">Nộp</string>
+    <string name="btn_submit">Gửi</string>
     <string name="btn_copy">Sao chép</string>
     <string name="title_qr_pay">Quét mã QR để thanh toán：</string>
     <string name="title_hint_qr_pay">Quét mã thanh toán KuaiJie, nếu bạn có bất kỳ vấn đề gì vui lòng liên hệ với bộ phận chăm sóc khách hàng!</string>
@@ -540,9 +540,11 @@
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
     <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
+    <string name="text_pay_maya_delete_success">Đã xóa Paymaya thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
     <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
+    <string name="text_pay_maya_add_success">Mặc định Paymaya thành công</string>
     <string name="text_crypto_add_success">Mặc định tiền ảo thành công</string>
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
@@ -1207,7 +1209,7 @@
     <string name="cancel_account">Xoá tài khoản</string>
     <string name="match_analyze">Phân tích trận đấu</string>
     <string name="half">Nửa</string>
-    <string name="customer_service_help">Nếu cần trợ giúp, vui lòng liên hệ UsKH</string>
+    <string name="customer_service_help">NNếu cần trợ giúp, vui lòng liên hệ CSKH</string>
     <string name="click_upload_id_photo">Nhấn tải lên ảnh ID</string>
     <string name="main_tab_sport">Thể thao</string>
     <string name="main_tab_betlist">Đơn cược</string>
@@ -1221,6 +1223,7 @@
     <string name="join_us_win_wealth">Tham gia ngay để cùng giàu có</string>
     <string name="payment_method">Kiểu thanh toán</string>
     <string name="select_file">Chọn tệp tin</string>
+    <string name="select_file1">Chọn tệp</string>
     <string name="error_recommend_agent">Không khớp</string>
     <string name="filter">Lọc</string>
     <string name="anime">Animasi</string>
@@ -1283,7 +1286,7 @@
     <string name="home_live">Live</string>
     <string name="home_sports">Thể Thao</string>
     <string name="home_word_cup">WC 2022</string>
-    <string name="home_slot">Trò Chơi</string>
+    <string name="home_slot">Slot</string>
     <string name="home_on_game">Cờ vua</string>
     <string name="langugae_setting">Cài đặt ngôn ngữ</string>
     <string name="setting_center">Cài đặt</string>
@@ -1326,4 +1329,11 @@
     <string name="hide_confirm_password">Xác nhận mật khẩu mới</string>
     <string name="error_new_password">Mật khẩu từ 6-20 ký tự bao gồm cả chữ và số</string>
     <string name="error_verification_code_forget">Mã xác nhận sai</string>
+    <string name="pay_maya">Paymaya</string>
+    <string name="format_error">Định dạng không phù hợp</string>
+    <string name="over_size">Tệp quá lớn</string>
+    <string name="upload_error">Tải lên thất bại</string>
+    <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
+    <string name="no_file">Chưa chọn tập tin</string>
+    <string name="error_amount_limit_less">Tiền nạp nhỏ hơn mức tối thiểu</string>
 </resources>

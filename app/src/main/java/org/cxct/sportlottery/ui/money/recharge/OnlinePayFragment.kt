@@ -25,7 +25,7 @@ import org.cxct.sportlottery.util.*
 import kotlin.math.abs
 
 /**
- * @app_destination 在線支付
+ * @app_destination 在线支付
  */
 @SuppressLint("SetTextI18n")
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -149,12 +149,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
             OnlineType.JUAN.type -> R.drawable.ic_juancash_type
             OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash_type
-            OnlineType.ONLINEBANK.type -> R.drawable.icon_bank_default//阿喵說照Ian回應用此圖
+            OnlineType.ONLINEBANK.type -> R.drawable.icon_onlinebank//阿喵說照Ian回應用此圖
             OnlineType.GCASH.type -> R.drawable.ic_g_cash_type
             OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
             OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
             OnlineType.PAYPAL.type -> R.drawable.ic_paypal_type
             OnlineType.DRAGON_PAY.type -> R.drawable.ic_gragon_pay_type
+            OnlineType.FORTUNE_PAY.type -> R.drawable.icon_fortunepay
             else -> R.drawable.ic_online_pay_type
         }
         return this

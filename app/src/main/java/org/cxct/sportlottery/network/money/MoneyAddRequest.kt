@@ -15,4 +15,5 @@ data class MoneyAddRequest(
     var payeeName: String? = null
     var txHashCode: String? = null//虚拟币转账交易单号
     var voucherPath: String? = null//虚拟币转账凭证
+    var proofImg: String? = null //支付凭证图片，转账执联
 }
