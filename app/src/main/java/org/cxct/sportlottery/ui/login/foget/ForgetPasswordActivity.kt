@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import java.util.*
@@ -96,6 +97,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             if (page ==3){
                 //提交修改密码的逻辑
                 startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
+                finish()
             }
             if (page<3){
                 if (page == 0){
@@ -269,7 +271,8 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     finish()
                 }
                 3-> {
-                    startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
+                    startActivity(Intent(this@ForgetPasswordActivity, MainTabActivity::class.java))
+                    finish()
                 }
                 else -> {
                     page--
