@@ -110,10 +110,9 @@ class OddsButton2 @JvmOverloads constructor(
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        // 状态发生改变时处于选中状态，执行点击事件触发上层逻辑清除去选中状态
+        // 状态发生改变时处于选中状态,取消选中状态
         if (!enabled && isSelected) {
             isSelected = false
-            performClick()
         }
     }
 
