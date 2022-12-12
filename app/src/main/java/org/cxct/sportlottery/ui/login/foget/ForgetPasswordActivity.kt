@@ -96,7 +96,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         binding.btnPut.setOnClickListener{
             if (page ==3){
                 //提交修改密码的逻辑
-                startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
+              //  startActivity(Intent(this@ForgetPasswordActivity, LoginActivity::class.java))
                 finish()
             }
             if (page<3){
@@ -271,7 +271,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     finish()
                 }
                 3-> {
-                    startActivity(Intent(this@ForgetPasswordActivity, MainTabActivity::class.java))
+                   // startActivity(Intent(this@ForgetPasswordActivity, MainTabActivity::class.java))
                     finish()
                 }
                 else -> {
