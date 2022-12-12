@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -87,8 +86,8 @@ object ArithUtil : DecimalFormatUtil() {
      * @return 兩個參數的和
      */
     fun add(v1: Double, v2: Double): Double{
-        val b1 = BigDecimal(v1)
-        val b2 = BigDecimal(v2)
+        val b1 = v1.toBigDecimal()
+        val b2 = v2.toBigDecimal()
         return b1.add(b2).toDouble()
     }
 
@@ -99,8 +98,8 @@ object ArithUtil : DecimalFormatUtil() {
      * @return 兩個參數的差
      */
     fun sub(v1: Double, v2: Double): Double {
-        val b1 = BigDecimal(v1)
-        val b2 = BigDecimal(v2)
+        val b1 = v1.toBigDecimal()
+        val b2 = v2.toBigDecimal()
         return b1.subtract(b2).toDouble()
     }
 
@@ -115,8 +114,8 @@ object ArithUtil : DecimalFormatUtil() {
      */
     fun div(v1: Double, v2: Double, scale: Int, roundMode: RoundingMode? = RoundingMode.HALF_UP): Double {
         require(scale >= 0) { "保留的小数位数必须大于零" }
-        val b1 = BigDecimal(v1)
-        val b2 = BigDecimal(v2)
+        val b1 = v1.toBigDecimal()
+        val b2 = v2.toBigDecimal()
         val divisor = if (b2.toDouble() == 0.0) BigDecimal(1.0) else b2
         return b1.divide(divisor, scale, roundMode).toDouble()
     }
@@ -139,9 +138,9 @@ object ArithUtil : DecimalFormatUtil() {
     /**
      * 提供(相對)精確的除法運算，當發生除不盡的情況時，精確到小數點以後10位，以後的數字四捨五入
      */
-    fun div(v1: Double, v2: Double):Double{
-        val b1 = BigDecimal(v1)
-        val b2 = BigDecimal(v2)
+    fun div(v1: Double, v2: Double):Double {
+        val b1 = v1.toBigDecimal()
+        val b2 = v2.toBigDecimal()
         return b1.divide(b2, BigDecimal.ROUND_HALF_UP).toDouble()
     }
 
@@ -152,11 +151,8 @@ object ArithUtil : DecimalFormatUtil() {
      * @return 两个参数的积
      */
     fun mul(v1: Double, v2: Double): Double {
-//        val s1 = java.lang.Double.toString(v1)
-//        val s2 = java.lang.Double.toString(v2)
-        val b1 = BigDecimal(v1)
-        val b2 = BigDecimal(v2)
-//        val m = b1.multiply(b2)
+        val b1 = v1.toBigDecimal()
+        val b2 = v2.toBigDecimal()
         return b1.multiply(b2).toDouble()
     }
 }
