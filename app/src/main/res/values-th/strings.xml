@@ -501,7 +501,9 @@
     <string name="text_crypto_add_success">ผูกสกุลเงินเสมือนสำเร็จแล้ว</string>
     <string name="text_crypto_delete_success">ลบสกุลเงินเสมือนเรียบร้อยแล้ว</string>
     <string name="text_e_wallet_add_success">ผูก eWallet สำเร็จ</string>
+    <string name="text_pay_maya_add_success">ผูก Paymaya สำเร็จ</string>
     <string name="text_e_wallet_delete_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
+    <string name="text_pay_maya_delete_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
     <string name="text_money_get_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
     <string name="please_setting_money_card">โปรดตั้งค่าบัตรธนาคาร/สกุลเงินเสมือน/eWallet ก่อน</string>
     <string name="please_setting_bank_card">กรุณาตั้งค่าบัตรธนาคารก่อน</string>
@@ -583,8 +585,7 @@
     <string name="e_mail">อีเมล</string>
     <string name="hint_e_mail">กรุณากรอกอีเมล์ของคุณ</string>
     <string name="error_e_mail">รูปแบบอีเมลผิดพลาด</string>
-    <string name="hint_phone_number">กรุณาป้อนเบอร์โทรติดต่อ</string>
-    <string name="hint_phone_num">กรุณากรอกหมายเลขโทรศัพท์</string>
+    <string name="hint_phone_number">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="error_phone_number">รูปแบบหมายเลขโทรศัพท์ไม่ถูกต้อง</string>
     <string name="setting_password">ตั้งรหัสผ่าน</string>
     <string name="login_password">รหัสผ่านในการเข้าสู่ระบบ</string>
@@ -996,6 +997,7 @@
     <string name="text_crypto_modify_success">แก้ไขความสำเร็จของสกุลเงินเสมือน</string>
     <string name="text_bank_card_modify_success">แก้ไขบัตรธนาคารสำเร็จ</string>
     <string name="text_e_wallet_modify_success">แก้ไข eWallet สำเร็จ</string>
+    <string name="text_paymaya_add_success">แก้ไข Paymaya สำเร็จ</string>
     <string name="bank_list_add">เพิ่ม %1$s</string>
     <string name="add_credit_or_virtual">เพิ่ม %1$s</string>
     <string name="label_in_play_games">เปตอง</string>
@@ -1174,6 +1176,7 @@
     <string name="join_us_win_wealth">เข้าร่วมกับเราชนะความรวย</string>
     <string name="payment_method">วิธีการชำระเงิน</string>
     <string name="select_file">เลือกไฟล์</string>
+    <string name="select_file1">เลือกไฟล์</string>
     <string name="filter">คัดเลือก</string>
     <string name="anime">แอนิเมชั่น</string>
     <string name="video">วีดีโอ</string>
@@ -1240,5 +1243,7 @@
     <string name="hide_confirm_password">ยืนยันรหัสผ่านใหม่</string>
     <string name="error_new_password">รหัสผ่่าน 6-20 ตัวต้องมีทั้งตัวเลขและตัวอักษร</string>
     <string name="error_verification_code_forget">รหัสยืนยันไม่ถูกต้อง</string>
+    <string name="pay_maya">Paymaya</string>
+    <string name="no_file">ไม่ได้เลือกไฟล์</string>
     <!--F005-->
 </resources>

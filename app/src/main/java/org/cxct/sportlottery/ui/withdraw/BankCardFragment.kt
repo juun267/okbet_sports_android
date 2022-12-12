@@ -130,6 +130,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 }
                 getString(R.string.delete_e_wallet)
             }
+//            TransferType.PAYMAYA -> {
+//                when (LanguageManager.getSelectLanguage(context)) {
+//                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
+//                        false
+//                    else -> btn_delete_bank.isAllCaps = true
+//                }
+//                getString(R.string.delete_e_wallet)
+//            }
             TransferType.STATION -> {
                 when (LanguageManager.getSelectLanguage(context)) {
                     LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> btn_delete_bank.isAllCaps =
@@ -520,7 +528,8 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_modify_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_modify_success)
-                        TransferType.STATION -> getString(R.string.text_e_wallet_modify_success)
+                  //      TransferType.PAYMAYA -> getString(R.string.text_pay_maya_modify_success)
+                        TransferType.STATION -> getString(R.string.text_pay_maya_modify_success)
                     }
                     ToastUtil.showToast(context, promptMessage)
                     mNavController.popBackStack()
@@ -530,6 +539,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         TransferType.BANK -> getString(R.string.text_bank_card_add_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
                         TransferType.E_WALLET -> getString(R.string.text_e_wallet_add_success)
+                    //    TransferType.PAYMAYA -> getString(R.string.text_pay_maya_add_success)
                         TransferType.STATION -> getString(R.string.text_e_wallet_add_success)
                     }
                     showPromptDialog(getString(R.string.prompt), promptMessage) {
@@ -547,6 +557,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
                     TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
                     TransferType.E_WALLET -> getString(R.string.text_e_wallet_delete_success)
+                   // TransferType.PAYMAYA -> getString(R.string.text_pay_maya_delete_success)
                     TransferType.STATION -> getString(R.string.text_e_wallet_delete_success)
                 }
                 showPromptDialog(

@@ -60,7 +60,7 @@ object MoneyManager {
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
             MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//202 Peter說要隱藏掉
-            MoneyType.ONLINEBANK.code -> R.drawable.ic_coin_bank_default//阿喵說照Ian回應用此圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_online_banking//阿喵說照Ian回應用此圖
             MoneyType.GCASH.code -> R.drawable.ic_g_cash
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
@@ -71,6 +71,7 @@ object MoneyManager {
             MoneyType.VIETTELPAY.code -> R.drawable.ic_viettelpay
             MoneyType.RECHARGE_CARD.code -> R.drawable.ic_recharge_card
             MoneyType.QQONLINE.code -> R.drawable.ic_qq_online
+            MoneyType.FORTUNE_PAY.code -> R.drawable.ic_fortunepay
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -87,11 +88,12 @@ object MoneyManager {
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash_type
             MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash_type//202 Peter說要隱藏掉
-            MoneyType.ONLINEBANK.code -> R.drawable.icon_bank_default//阿喵說照Ian回應用此圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_online_banking//阿喵說照Ian回應用此圖
             MoneyType.GCASH.code -> R.drawable.ic_g_cash_type
             MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay_type
             MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya_type
             MoneyType.PAYPAL_TYPE.code -> R.drawable.ic_paypal_type
+            MoneyType.FORTUNE_PAY.code -> R.drawable.ic_fortunepay
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -145,7 +147,7 @@ object MoneyManager {
         PAYMAYA("Paymaya", R.drawable.ic_pay_maya_type),
         JUANCASH("JuanCash", R.drawable.ic_juancash_type),
         GRABPAY("Grabpay", R.drawable.ic_grab_pay_type),
-        ALIPAY("Alipay", R.drawable.ic_alipay_type)
+        ALIPAY("Alipay", R.drawable.ic_alipay_type),
     }
 
     fun getMoneyBankTypeTitle(rechType:String):String{
@@ -185,6 +187,7 @@ object MoneyManager {
             OnlineType.ZALOPAY.type -> mContext.resources.getString(R.string.online_zalopay)
             OnlineType.VIETTELPAY.type -> mContext.resources.getString(R.string.online_viettelpay)
             OnlineType.RECHARGE_CARD.type -> mContext.resources.getString(R.string.online_recharge_card_pay)
+            OnlineType.FORTUNE_PAY.type -> mContext.resources.getString(R.string.online_fortune_pay)
             else -> ""
         }
     }

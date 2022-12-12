@@ -299,9 +299,20 @@
   },
   {
     "titleNameMap": {
-      "zh": "其他",
-      "en": "Others",
-      "vi": "Khác"
+      "zh": "FortunePay",
+      "en": "FortunePay",
+      "vi": "FortunePay"
+    },
+    "subtitle": "FortunePay支付",
+    "image": "ic_fortunepay",
+    "rechType": "onlinePayment",
+    "onlineType": "212"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Online Banking",
+      "en": "Online Banking",
+      "vi": "Online Banking"
     },
     "subtitle": "菲律賓在線網銀",
     "image": "ic_internet_bank",

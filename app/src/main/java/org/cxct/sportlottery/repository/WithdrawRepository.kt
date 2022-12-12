@@ -90,13 +90,13 @@ object WithdrawRepository {
         }
     }
 
-    suspend fun getRechCfg(): Response<MoneyRechCfgResult> {
-        val response = OneBoSportApi.moneyService.getRechCfg()
-        if (response.isSuccessful) {
-            _moneyRechCfgResult.postValue(response.body())
-        }
-        return response
-    }
+//    suspend fun getRechCfg(): Response<MoneyRechCfgResult> {
+//        val response = OneBoSportApi.moneyService.getRechCfg()
+//        if (response.isSuccessful) {
+//            _moneyRechCfgResult.postValue(response.body())
+//        }
+//        return response
+//    }
 
     suspend fun checkWithdrawSystem(): Response<MoneyRechCfgResult> {
         val response = OneBoSportApi.moneyService.getRechCfg()

@@ -43,6 +43,7 @@ enum class OnlineType(val type : Int) {
     PAYMAYA(206),//PayMaya
     PAYPAL(210),//Paypal
     DRAGON_PAY(211),//Grangon Pay
+    FORTUNE_PAY(212),//fortune Pay
     MOMOPAY(102),//MoMoPay
     ZALOPAY(103),//ZaloPay
     VIETTELPAY(107),//ViettelPay
