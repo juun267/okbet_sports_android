@@ -438,7 +438,7 @@ abstract class BaseOddButtonViewModel(
             Event(result).getContentIfNotHandled()?.let {
                 _betAddResult.postValue(Event(result))
                 if (it.success) {
-                    //检查是否有item注单下载失败
+                    //检查是否有item注单下注失败
                     var haveSingleItemFaild = false
                     var haveParlayItemFaild = false
                     it.receipt?.singleBets?.let {
@@ -447,6 +447,7 @@ abstract class BaseOddButtonViewModel(
                     it.receipt?.parlayBets?.let {
                         haveParlayItemFaild = it.any { it.status == 7 }
                     }
+
                     if (!haveSingleItemFaild && !haveParlayItemFaild) {
                         betInfoRepository.clear()
                         _oddChange.postValue(false)
@@ -472,38 +473,6 @@ abstract class BaseOddButtonViewModel(
                 }
             }
 
-        }
-    }
-
-    fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
-        val parlayType =
-            if (betInfoListData.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else betInfoListData.parlayOdds?.parlayType
-        val request = BetAddRequest(
-            listOf(
-                Odd(
-                    betInfoListData.matchOdd.oddsId,
-                    getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
-                    stake,
-                    getSingleBetOddsType(betInfoListData).code
-                )
-            ),
-            listOf(Stake(parlayType ?: "", stake)),
-            1,
-            2,
-            deviceId,
-            channelType = 0, //先寫死固定帶0
-        )
-
-        viewModelScope.launch {
-            val result = getBetApi(request)
-            _betAddResult.postValue(Event(result))
-            result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
-
-            Event(result).getContentIfNotHandled()?.success?.let {
-                if (it) {
-                    afterBet(betInfoListData.matchType, result)
-                }
-            }
         }
     }
 

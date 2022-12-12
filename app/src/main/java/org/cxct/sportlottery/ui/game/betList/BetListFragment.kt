@@ -169,7 +169,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         success = true
                     ) {
 //                        viewModel.navTranStatus()
-
                     }
                 }
             }
@@ -621,14 +620,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                     popupWindow.setOnDismissListener {
                         tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
-                            null,
-                            null,
-                            ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
-                            null
+                            null, null, ResourcesCompat.getDrawable(
+                                resources, R.drawable.ic_arrow_down_blue, null
+                            ), null
                         )
                     }
                     popupWindow.showUpCenter(tvTextSelect)
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -1119,8 +1117,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun addBet() {
         if (!NetworkUtil.isAvailable(requireContext())) {
             showPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.message_network_no_connect)
+                getString(R.string.prompt), getString(R.string.message_network_no_connect)
             ) {}
             return
         }

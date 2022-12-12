@@ -254,7 +254,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 interfaceStatusChangeListener = object :
                     BetReceiptDiffAdapter.InterfaceStatusChangeListener {
                     override fun onChange(cancelBy: String) {
-                        updateBetResultStatus(cancelBy.isNullOrEmpty())
+                        updateBetResultStatus(cancelBy.isEmpty())
                     }
                 }
             }
@@ -293,54 +293,6 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 //        btn_complete.setTextColor(ContextCompat.getColor(btn_complete.context,R.color.white))
     }
 
-
-    private fun addBet() {
-        var tabPosition = if (betResultData?.parlayBets.isNullOrEmpty()) 0 else 1
-        var betList = viewModel.betInfoList.value?.peekContent() ?: mutableListOf()
-        val betListFilter =
-            betList.filter { it.matchOdd.status == org.cxct.sportlottery.enum.BetStatus.ACTIVATED.code }
-
-        val parlayList =
-            if (betList.size == betListFilter.size) BetInfoRepository.parlayList.value
-                ?: mutableListOf() else mutableListOf()
-
-        val tempParlayList = mutableListOf<ParlayOdd>()
-        parlayList.forEach {
-            tempParlayList.add(it.copy())
-        }
-        betParlayList = tempParlayList
-
-        //只取得對應tab內的totalBetAmount
-        val totalBetAmount = if (tabPosition == 0) {
-            betListFilter.sumOf { it.realAmount }
-        } else {
-            parlayList.sumOf { it.betAmount * it.num }
-        }
-//        val totalBetAmount =
-//            betListFilter.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
-
-        if (totalBetAmount.toString().isEmpty()) {
-            Timber.w("totalBetAmount isEmpty")
-            return
-        }
-
-        //下注總金額大於用戶餘額，提示餘額不足
-        if (totalBetAmount > (viewModel.userMoney.value ?: 0.0)) {
-            showErrorPromptDialog(
-                getString(R.string.prompt),
-                getString(R.string.bet_info_bet_balance_insufficient)
-            ) {}
-            return
-        }
-        showLoading()
-        viewModel.addBetList(
-            betList,
-            parlayList,
-            BetInfoRepository.oddsType,
-            tabPosition,
-            oddsChangeOption = 0
-        )
-    }
 
     fun updateBetResultStatus(oddChange: Boolean) {
         lin_result_status.isVisible = true
