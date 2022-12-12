@@ -261,14 +261,14 @@
             android:background="@drawable/bg_gradient_bet_total">
 
             <TextView
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btnLastStep"
                 android:layout_width="100dp"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/bg_radius_8_bet_delete"
+                android:background="@drawable/bg_radius_8_bet_last_step"
                 android:gravity="center"
-                android:text="@string/btn_cancel"
-                android:textColor="@color/color_E23434"
+                android:text="@string/str_return_last_step"
+                android:textColor="@color/color_025BE8"
                 android:textSize="@dimen/textSize16sp"
                 android:visibility="visible"
                 tools:visibility="visible" />

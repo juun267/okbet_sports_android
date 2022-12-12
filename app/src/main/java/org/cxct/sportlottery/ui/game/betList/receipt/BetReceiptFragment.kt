@@ -208,7 +208,10 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initButton() {
         btn_complete.setOnClickListener {
             if (viewModel.oddChange.value == true) {
-                addBet()
+//                addBet()
+                //清空购物车 ， 下注其他盘口
+                BetInfoRepository.clear()
+                activity?.onBackPressed()
                 return@setOnClickListener
             }
 
@@ -217,15 +220,22 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     .beginTransaction()
                     .remove(this@BetReceiptFragment)
                     .commitAllowingStateLoss()
-                if (!(it is MainTabActivity)) {
+                if (it !is MainTabActivity) {
                     it.finish()
                 }
             }
             MainTabActivity.activityInstance?.jumpToBetInfo(1)
         }
 
-        btn_cancel.setOnClickListener { activity?.onBackPressed() }
-        cl_title.setOnClickListener { activity?.onBackPressed() }
+        btnLastStep.setOnClickListener {
+            activity?.onBackPressed()
+            if (activity is MainTabActivity){
+                (activity as MainTabActivity).showBetListPage()
+            }
+        }
+        cl_title.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     private fun initRecyclerView() {
@@ -338,7 +348,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             lin_result_status.setBackgroundResource(R.color.color_1EB65B)
             iv_result_status.setImageResource(R.drawable.ic_success_white)
             tv_result_status.text = getString(R.string.your_bet_order_success)
-            btn_cancel.text = getString(R.string.bet_others)
+            btnLastStep.text = getString(R.string.bet_others)
             btn_complete.text = getString(R.string.check_bet_detail)
             btn_complete.setTextColor(
                 ContextCompat.getColor(
@@ -347,11 +357,12 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 )
             )
         } else {
+            //赔率已经改变
             lin_result_status.setBackgroundResource(R.color.color_E23434)
             iv_result_status.setImageResource(R.drawable.ic_fail_white)
             tv_result_status.text = getString(R.string.your_bet_order_fail)
-            btn_cancel.text = getString(R.string.btn_cancel)
-            btn_complete.text = getString(R.string.accept_current_odd_to_bet)
+            btnLastStep.text = getString(R.string.str_return_last_step)
+            btn_complete.text = getString(R.string.str_bet_other_game)
             btn_complete.setTextColor(
                 ContextCompat.getColor(
                     btn_complete.context,

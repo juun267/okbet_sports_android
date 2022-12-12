@@ -84,6 +84,7 @@ import org.cxct.sportlottery.util.getOdds
 import org.cxct.sportlottery.util.observe
 import org.cxct.sportlottery.widget.OkPopupWindow
 import timber.log.Timber
+import java.lang.Exception
 
 /**
  * @app_destination 滿版注單(點擊賠率彈出)
@@ -605,27 +606,31 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
-                tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
-                    null
-                )
-                val popupWindow = OkPopupWindow(
-                    requireContext(), tvTextSelect.text.toString()
-                ) { text, position ->
-                    tvTextSelect.text = text
-                    currentBetOption = position
-                }
-                popupWindow.setOnDismissListener {
+                try {
                     tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
                         null,
                         null,
-                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                        ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
                         null
                     )
+                    val popupWindow = OkPopupWindow(
+                        requireContext(), tvTextSelect.text.toString()
+                    ) { text, position ->
+                        tvTextSelect.text = text
+                        currentBetOption = position
+                    }
+                    popupWindow.setOnDismissListener {
+                        tvTextSelect.setCompoundDrawablesWithIntrinsicBounds(
+                            null,
+                            null,
+                            ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                            null
+                        )
+                    }
+                    popupWindow.showUpCenter(tvTextSelect)
+                }catch (e:Exception){
+                    e.printStackTrace()
                 }
-                popupWindow.showUpCenter(tvTextSelect)
             }
 
             override fun onOddsChangesWarningTips(isShow: Boolean) {
