@@ -1357,4 +1357,6 @@
     <string name="optional_tips">Tùy chọn: Chỉ hỗ trợ tệp định dạng PNG hoặc JPG và dưới 2MB</string>
     <string name="no_file">Chưa chọn tập tin</string>
     <string name="error_amount_limit_less">Tiền nạp nhỏ hơn mức tối thiểu</string>
+    <string name="update_voucher">Tải lên hoá đơn</string>
+    <string name="no_select_file">Chưa chọn tệp</string>
 </resources>

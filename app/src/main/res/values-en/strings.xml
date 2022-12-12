@@ -63,6 +63,7 @@
     <string name="hint_withdrawal_pwd">4 digit password</string>
     <string name="phone_number">Phone number</string>
     <string name="hint_phone_number">Please enter the correct phone number</string>
+    <string name="hint_phone_num">Please enter phone number</string>
     <string name="error_phone_number">Phone number formatted incorrectly</string>
     <string name="qq_number">QQ Number</string>
     <string name="hint_qq_number">QQ Account</string>
@@ -1367,4 +1368,6 @@
     <string name="no_file">No file chosen</string>
     <string name="error_amount_limit_less">Deposit amount less than min limit</string>
     <string name="text_service">CS</string>
+    <string name="update_voucher">Upload receipt</string>
+    <string name="no_select_file">Unselected files</string>
 </resources>

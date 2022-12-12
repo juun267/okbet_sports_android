@@ -1388,4 +1388,6 @@
     <string name="no_file">No file chosen</string>
     <string name="error_amount_limit_less">Deposit amount less than min limit</string>
     <string name="text_service">CS</string>
+    <string name="update_voucher">Upload receipt</string>
+    <string name="no_select_file">Unselected files</string>
 </resources>

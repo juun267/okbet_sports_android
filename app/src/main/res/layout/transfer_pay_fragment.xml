@@ -564,7 +564,7 @@
             android:background="@color/color_191919_FCFCFC">
             <TextView
                 android:id="@+id/tv_upload_evidence"
-                android:text="上传凭证"
+                android:text="@string/update_voucher"
                 android:gravity="center"
                 android:textSize="@dimen/margin_14"
                 android:textColor="@color/color_D2E4FF_414655"
@@ -612,7 +612,7 @@
                 android:ellipsize="end"
                 android:textSize="@dimen/textSize14sp"
                 android:background="@null"
-                android:hint="@string/no_file"
+                android:hint="@string/no_select_file"
                 android:enabled="false"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textColorHint="@color/color_C9CFD7"
