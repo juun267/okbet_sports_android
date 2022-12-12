@@ -1347,7 +1347,7 @@
     <string name="str_ok_i_got_it">Tôi biết rồi</string>
     <string name="str_max_bet_money">Tiền cược tối đa:%1$s</string>
     <string name="str_odds_already_changed_check_please">Tỷ lệ cược thay đổi, vui lòng xác nhận tỷ lệ cược mới nhất</string>
-    <string name="str_return_last_step">Bước trước đó</string>
+    <string name="str_return_last_step">Trở về</string>
     <string name="str_bet_other_game">Cược thị trường khác</string>
     <!--投注改版-->
     <string name="pay_maya">Paymaya</string>
