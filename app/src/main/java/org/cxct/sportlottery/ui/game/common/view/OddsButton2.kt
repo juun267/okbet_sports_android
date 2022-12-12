@@ -92,6 +92,8 @@ class OddsButton2 @JvmOverloads constructor(
 
     private fun setBetStatus(status: Int) {
 
+        isEnabled = status == BetStatus.ACTIVATED.code
+
         if (status == BetStatus.LOCKED.code) {
             getOddsLockedView()
             return
@@ -104,6 +106,15 @@ class OddsButton2 @JvmOverloads constructor(
 
         recyclerLockedView()
         recyclerUnknownView()
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        // 状态发生改变时处于选中状态，执行点击事件触发上层逻辑清除去选中状态
+        if (!enabled && isSelected) {
+            isSelected = false
+            performClick()
+        }
     }
 
     fun recyclerAll() {
