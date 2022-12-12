@@ -13,6 +13,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
+import org.cxct.sportlottery.util.KvUtils
+import org.cxct.sportlottery.util.OddsModeUtil
 
 class OkPopupWindow(context: Context, var currentSelectText: String,val onItemClickListener:(String,Int)->Unit ) : PopupWindow(context) {
 
@@ -92,14 +95,9 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
             listAdapter.notifyItemChanged(position)
             //刷新上一次选中颜色
             listAdapter.notifyItemChanged(lastSelectPosition)
-            val descriptionPosition =  when(position){
-                0 -> 1
-                1 -> 2
-                2 -> 0
-                else -> 0
-            }
+            val descriptionPosition = OddsModeUtil.currentSelectModeIndex(position)
             onItemClickListener(currentSelectText,descriptionPosition)
-
+            KvUtils.put(KV_STR_SELECT_ODDS_MODE,position)
             dismiss()
         }
 

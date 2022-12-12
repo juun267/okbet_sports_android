@@ -72,9 +72,12 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
+import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.NetworkUtil
+import org.cxct.sportlottery.util.OddsModeUtil
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -454,6 +457,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         btnOddsChangeDes.setOnClickListener {
             showOddsChangeTips()
         }
+
         tvExpandOrStacked.setOnClickListener {
             if (isOpen) {
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
@@ -480,6 +484,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             isOpen = !isOpen
         }
 
+        val currentIndex = KvUtils.decodeInt(KV_STR_SELECT_ODDS_MODE)
+        val currentSelectText = OddsModeUtil.currentSelectModeText(currentIndex)
+        tvAcceptOddsChange.text = currentSelectText
+        currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(currentSelectText)
+
         tvAcceptOddsChange.setOnClickListener {
             tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
                 null,
@@ -487,6 +496,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
                 null
             )
+
             val popupWindow = OkPopupWindow(
                 requireContext(), tvAcceptOddsChange.text.toString()
             ) { text, position ->
@@ -623,6 +633,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 binding.includeOddsLayout.root.visible()
                 binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
             }
+
+            override fun onOddsChangesSetOptionListener(text: String) {
+                currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(text)
+            }
         }
 
         betListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener)
@@ -641,6 +655,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     ${getString(R.string.str_if_accept_odds_changes_des1)}
                     
                     ${getString(R.string.str_if_accept_odds_changes_des2)}
+                    
+                     ${getString(R.string.str_if_accept_odds_changes_des3)}
                 """.trimIndent()
         dialog.setMessage(message)
         dialog.setCanceledOnTouchOutside(true)
@@ -804,7 +820,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun setCurrentBetModeSingle(){
+    private fun setCurrentBetModeSingle() {
         currentBetType = SINGLE
         BetInfoRepository.setCurrentBetState(SINGLE)
         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
@@ -1096,13 +1112,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun addBet() {
-       if (!NetworkUtil.isAvailable(requireContext())){
-           showPromptDialog(
-               getString(R.string.prompt),
-               getString(R.string.message_network_no_connect)
-           ) {}
-           return
-       }
+        if (!NetworkUtil.isAvailable(requireContext())) {
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.message_network_no_connect)
+            ) {}
+            return
+        }
         //顯示betLoading
         setBetLoadingVisibility(true)
 
@@ -1144,7 +1160,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             oddsType = it
         }
         viewModel.addBetList(
-            getCurrentBetList(), parlayList, oddsType, currentBetType,currentBetOption
+            getCurrentBetList(), parlayList, oddsType, currentBetType, currentBetOption
         )
     }
 

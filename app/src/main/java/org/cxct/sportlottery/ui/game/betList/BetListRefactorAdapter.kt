@@ -511,6 +511,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupOddsChangeButton(onItemClickListener: OnItemClickListener) {
             if (itemView.tvAcceptOddsChange.isVisible) {
+                val currentIndex = KvUtils.decodeInt(KV_STR_SELECT_ODDS_MODE)
+                val currentSelectText = OddsModeUtil.currentSelectModeText(currentIndex)
+                itemView.tvAcceptOddsChange.text = currentSelectText
+                onItemClickListener.onOddsChangesSetOptionListener(currentSelectText)
                 itemView.tvAcceptOddsChange.setOnClickListener {
                     onItemClickListener.onOddsChangeAcceptSelect(itemView.tvAcceptOddsChange)
                 }
@@ -2042,6 +2046,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun onOddsChangesAcceptTips()
         fun onOddsChangeAcceptSelect(tvTextSelect: TextView)
         fun onOddsChangesWarningTips(isShow: Boolean)
+
+        fun onOddsChangesSetOptionListener(text:String)
     }
 
     interface OnSelectedPositionListener {
