@@ -769,9 +769,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.btnBet.apply {
             isParlay = currentBetType == 1
             betCounts = betCount
+            currentBetListCounts = getCurrentBetList().size
         }
 
         betAllAmount = totalBetAmount
+        Timber.d("getCurrentBetList:${getCurrentBetList().size} ${getCurrentBetList()}")
     }
 
     private fun getWinnable(betAmount: Double, odds: Double, oddsType: OddsType): Double {

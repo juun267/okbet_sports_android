@@ -86,6 +86,9 @@ class BetButton @JvmOverloads constructor(
             setUpBetContent()
         }
 
+    var currentBetListCounts : Int = 0
+
+
     init {
         init()
     }
@@ -106,6 +109,7 @@ class BetButton @JvmOverloads constructor(
                 }
                 isParlay -> {
                     val multipleBetText = context.getString(R.string.confirm_multiple_bets, betCounts)
+
                     when (betCounts) {
                         1 -> multipleBetText.removeSuffix("s")
                         else -> multipleBetText
@@ -159,7 +163,7 @@ class BetButton @JvmOverloads constructor(
     }
 
     private fun setupBetClickable() {
-        val betClickable = !(hasBetPlatClose == true || amountCanBet == false || betCounts == 0)
+        val betClickable = !(hasBetPlatClose == true || amountCanBet == false || betCounts == 0 || (isParlay && currentBetListCounts==1) )
         cl_bet.apply {
             isSelected = betClickable
             isClickable = betClickable
