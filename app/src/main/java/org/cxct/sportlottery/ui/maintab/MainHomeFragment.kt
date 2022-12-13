@@ -471,11 +471,11 @@ class MainHomeFragment :
                            }
                        }
                    }
-                   hotHandicapAdapter.data.forEach {
-                       it.matchInfos.forEach {
-                           unSubscribeChannelHall(it.gameType, it.id)
-                       }
-                   }
+//                   hotHandicapAdapter.data.forEach {
+//                       it.matchInfos.forEach {
+//                           unSubscribeChannelHall(it.gameType, it.id)
+//                       }
+//                   }
 
                    hotHandicapAdapter.setNewData(list)
                    //订阅赛事
