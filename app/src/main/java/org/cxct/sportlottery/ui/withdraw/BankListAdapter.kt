@@ -39,7 +39,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
-    var transferAddSwitch = TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false, walletTransfer = false)
+    var transferAddSwitch = TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false, walletTransfer = false,)//payMaya = false
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -81,6 +81,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     TransferType.BANK -> CardType.EDIT.ordinal
                     TransferType.CRYPTO -> CardType.CRYPTO_EDIT.ordinal
                     TransferType.E_WALLET -> CardType.EDIT.ordinal
+               //     TransferType.PAYMAYA -> CardType.EDIT.ordinal
                     TransferType.STATION -> CardType.EDIT.ordinal
                 }
             }
@@ -178,6 +179,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     if(bankTransfer) stringList.add(context.getString(R.string.bank_list_bank))
                     if(cryptoTransfer) stringList.add(context.getString(R.string.bank_list_crypto))
                     if(walletTransfer) stringList.add(context.getString(R.string.bank_list_e_wallet))
+                //    if(payMaya) stringList.add(context.getString(R.string.pay_maya))
                     context.getString(R.string.bank_list_add, stringList.joinToString("/"))
                 }
                 cv_add.setOnClickListener {

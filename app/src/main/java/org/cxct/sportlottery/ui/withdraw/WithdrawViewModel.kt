@@ -498,6 +498,11 @@ class WithdrawViewModel(
                                     TransferType.STATION.type
                                 )
                             }
+//                            UWType.PAY_MAYA.type -> {
+//                                if (withdrawConfig.find { it.type == TransferType.PAYMAYA.type }?.open.toString() == FLAG_OPEN) tabList.add(
+//                                    TransferType.PAYMAYA.type
+//                                )
+//                            }
                         }
                     }
                     _withdrawTabIsShow.postValue(tabList)
@@ -767,6 +772,12 @@ class WithdrawViewModel(
                 0,
                 RoundingMode.FLOOR
             )
+//            TransferType.PAYMAYA -> ArithUtil.div(
+//                (userMoney.value ?: 0.0),
+//                ((cardConfig?.feeRate?.plus(1) ?: 1.0)),
+//                0,
+//                RoundingMode.FLOOR
+//            )
         }
     }
 
@@ -868,6 +879,9 @@ class WithdrawViewModel(
             TransferType.STATION -> {
                 rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.STATION.type }?.detailList?.first()
             }
+//            TransferType.PAYMAYA -> {
+//                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.PAYMAYA.type }?.detailList?.first()
+//            }
         }
     }
 
@@ -907,6 +921,7 @@ class WithdrawViewModel(
         var showAddCryptoCard = false //是否顯示虛擬幣
         val showAddBankCard: Boolean // 是否顯示銀行卡
         val showAddEWalletCard: Boolean // 是否顯示eWallet
+        val showAddPayMayaCard: Boolean // 是否顯示eWallet
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen =

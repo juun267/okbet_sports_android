@@ -693,7 +693,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     media?.isCut == true -> media.cutPath
                     else -> media?.path
                 }
-
+                FileUtil.getImageType(path!!)
+                LogUtil.d(FileUtil.getImageType(path!!))
                 val file = File(path!!)
                 if (file.exists())
                     uploadImg(file)

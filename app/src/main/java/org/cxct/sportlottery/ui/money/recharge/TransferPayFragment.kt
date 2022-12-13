@@ -5,9 +5,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,10 +19,13 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
 import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
@@ -37,13 +42,18 @@ import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
+import timber.log.Timber
+import java.io.File
+import java.io.FileNotFoundException
 import java.util.*
 import kotlin.math.abs
 
@@ -65,7 +75,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private lateinit var bankCardAdapter: BtsRvAdapter
 
     private var bankPosition = 0
-
+    private var imgResultUrl: String? = null
     private lateinit var dateTimePicker: TimePickerView
     private lateinit var dateTimePickerHMS: TimePickerView
 
@@ -119,6 +129,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             dateTimePickerHMS.show()
         }
 
+        bt_check_files.setOnClickListener {
+            this.activity?.let { activity ->
+                activity.supportFragmentManager.let { fragmentManager ->
+                    RechargePicSelectorDialog(
+                        activity,
+                        mSelectMediaListener,
+                        RechargePicSelectorDialog.CropType.SQUARE
+                    ).show(
+                        fragmentManager, null
+                    )
+                }
+            }
+        }
         //複製姓名
         btn_name_copy.setOnClickListener {
             val clipboard =
@@ -212,6 +235,26 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             if (it.success) {
                 resetEvent()
                 getBankType(0)
+            }
+        }
+        viewModel.uploadPayResult.observe(viewLifecycleOwner){
+            it.getContentIfNotHandled()?.let { upload->
+                if (upload.success){
+                    var lastIndexOf = upload.imgData?.path?.lastIndexOf("/")
+                    imgResultUrl = upload.imgData?.path
+                    tv_hint_upload.setText(lastIndexOf?.let { it1 ->
+                        upload.imgData?.path?.substring(
+                            it1+1, upload.imgData?.path?.length)
+                    })
+                }else{
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.upload_fail),0) }
+                }
+            }
+        }
+        //转账充值首充提示
+        viewModel.onlinePayFirstRechargeTips.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { tipString ->
+                showPromptDialog(getString(R.string.prompt), tipString) {}
             }
         }
     }
@@ -659,7 +702,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerInfo = "",
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
-                )
+                ).apply {
+                    proofImg = imgResultUrl
+                }
             }
             MoneyType.WX_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                 MoneyAddRequest(
@@ -676,7 +721,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerInfo = null,
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
-                )
+                ).apply {
+                    proofImg = imgResultUrl
+                }
             }
             MoneyType.ALI_TYPE.code -> {
                 MoneyAddRequest(
@@ -693,7 +740,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerInfo = et_name.getText(),
                     depositDate = mCalendar.time.time,
                     appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
-                )
+                ).apply {
+                    proofImg = imgResultUrl
+                }
             }
             else -> null
         }
@@ -734,5 +783,59 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             mCalendar.set(Calendar.YEAR,despsitCal.get(Calendar.YEAR))
 
         }
+    }
+    //选择图片回调监听
+    private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
+        override fun onResult(result: MutableList<LocalMedia>?) {
+            try {
+                // 图片选择结果回调
+                // LocalMedia 里面返回三种path
+                // 1.media.getPath(); 为原图path
+                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+
+                val media = result?.firstOrNull() //這裡應當只會有一張圖片
+                val path = when {
+                    media?.isCompressed == true -> media.compressPath
+                    media?.isCut == true -> media.cutPath
+                    else -> media?.realPath
+                }
+                LogUtil.d(path)
+                val file = File(path!!)
+                val imageType = FileUtil.getImageType(path)
+                val fileSize = FileUtil.getFilesSizeByType(path,2)
+                if (imageType!="jpeg"&&imageType!="png"&&imageType!="jpg"){
+                    //弹出类型错误的弹窗
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.format_error),0) }
+                    return
+                }
+                if (fileSize>2.0){
+                    //弹出文件过大的弹窗
+                    context?.let { it1 -> SingleToast.showSingleToast(it1,false,LocalUtils.getString(R.string.over_size),0) }
+                    return
+                }
+                if (file.exists())
+                    uploadImg(file)
+                    else throw FileNotFoundException()
+
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
+            }
+        }
+
+        override fun onCancel() {
+            Timber.i("PictureSelector Cancel")
+        }
+    }
+
+    //上传凭证接口
+    private fun uploadImg(file: File) {
+        val userId = viewModel.loginRepository.userId.toString()
+        val uploadImgRequest =
+            UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.VOUCHER)
+        viewModel.uploadImage(uploadImgRequest)
     }
 }

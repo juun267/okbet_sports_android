@@ -415,9 +415,8 @@
             android:id="@+id/cv_recharge_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/color_191919_FCFCFC"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/color_191919_FCFCFC">
 
 
                 <LinearLayout
@@ -557,11 +556,81 @@
 -->
 
         </androidx.cardview.widget.CardView>
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cv_recharge_upload_evidence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:background="@color/color_191919_FCFCFC">
+            <TextView
+                android:id="@+id/tv_upload_evidence"
+                android:text="@string/update_voucher"
+                android:gravity="center"
+                android:textSize="@dimen/margin_14"
+                android:textColor="@color/color_D2E4FF_414655"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/margin_14"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"/>
+            <View
+                android:id="@+id/view_upload"
+                android:background="@color/color_eeeeee"
+                app:layout_constraintTop_toBottomOf="@+id/tv_upload_evidence"
+                android:layout_marginStart="@dimen/margin_14"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <Button
+                android:id="@+id/bt_check_files"
+                android:text="@string/select_file1"
+                android:textColor="@color/color_2b2b2b_ffffff"
+                android:textSize="@dimen/textSize14sp"
+                android:layout_marginEnd="@dimen/margin_14"
+               android:layout_marginTop="@dimen/margin_8"
+                android:textAllCaps="false"
+                android:background="@drawable/btn_send_sms"
+                app:layout_constraintTop_toBottomOf="@+id/view_upload"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="85dp"
+                android:layout_height="35dp"/>
+            <View
+                android:layout_marginTop="@dimen/margin_8"
+                android:id="@+id/view_upload2"
+                android:background="@color/color_eeeeee"
+                android:layout_marginStart="@dimen/margin_14"
+                app:layout_constraintTop_toBottomOf="@+id/bt_check_files"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <EditText
+                android:id="@+id/tv_hint_upload"
+                app:layout_constraintTop_toBottomOf="@+id/view_upload"
+                app:layout_constraintBottom_toTopOf="@+id/view_upload2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bt_check_files"
+                android:layout_width="0dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/textSize14sp"
+                android:background="@null"
+                android:hint="@string/no_select_file"
+                android:enabled="false"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textColorHint="@color/color_C9CFD7"
+                android:layout_marginStart="@dimen/margin_14"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_marginHorizontal="@dimen/margin_14"
+            android:layout_marginVertical="@dimen/margin_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional_tips"
+            android:textColor="@color/color_E44438_e44438"
+            android:textSize="@dimen/textSize12sp"/>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:cardBackgroundColor="@color/color_191919_FCFCFC"
             app:cardCornerRadius="5dp"
             app:cardElevation="0dp">
@@ -690,6 +759,7 @@
             android:layout_marginEnd="@dimen/margin_20"
             android:background="@drawable/ic_submit"
             android:gravity="center"
+            android:textAllCaps="false"
             android:text="@string/btn_submit"
             android:textColor="@color/color_FFFFFF_FFFFFF"
             android:textSize="@dimen/textSize16sp"
