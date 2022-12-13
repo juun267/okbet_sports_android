@@ -501,14 +501,14 @@ class MainHomeFragment :
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
-        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    subscribeSportChannelHall()
-                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
-                }
-            }
-        }
+//        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
+//            it.let {
+//                if (it == ServiceConnectStatus.CONNECTED) {
+////                    subscribeSportChannelHall()
+////                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+//                }
+//            }
+//        }
 
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->
