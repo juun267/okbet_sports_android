@@ -129,9 +129,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     /**
      * 当前所选赔率
-     * 0：不接受更新赔率
-     * 1：接受更新赔率
-     * 2：接受更好的赔率
+     * 0：接受任何赔率变化
+     * 1：永不接受赔率变化
+     * 2：接受更好赔率变化
      */
     private var currentBetOption = 0
 

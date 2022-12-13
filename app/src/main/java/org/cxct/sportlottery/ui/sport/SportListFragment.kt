@@ -75,13 +75,13 @@ class SportListFragment :
         (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
     }
     private var gameType: String? = null
-    set(value) {
-        if (!Objects.equals(value, field)) { // 清除赛选条件
-            leagueIdList.clear()
-            viewModel.filterLeague(mutableListOf())
+        set(value) {
+            if (!Objects.equals(value, field)) { // 清除赛选条件
+                leagueIdList.clear()
+                viewModel.filterLeague(mutableListOf())
+            }
+            field = value
         }
-        field = value
-    }
     private var mView: View? = null
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
     private var mCalendarSelected = false //紀錄日期圖示選中狀態
@@ -104,7 +104,8 @@ class SportListFragment :
                 notifyDataSetChanged()
                 viewModel.cleanGameHallResult()
                 sportLeagueAdapter.removePreloadItem()
-                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(sport_type_list,
+                (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+                    sport_type_list,
                     RecyclerView.State(),
                     dataSport.indexOfFirst { it.isSelected })
                 //切換球種後要重置位置
@@ -311,12 +312,14 @@ class SportListFragment :
                 return@setOnClickListener
             }
 
-            LeagueSelectActivity.start(requireContext(),
+            LeagueSelectActivity.start(
+                requireContext(),
                 gameType!!,
                 matchType,
                 null,
                 null,
-                leagueIdList)
+                leagueIdList
+            )
         }
         iv_arrow.isSelected = true
         iv_arrow.setOnClickListener {
@@ -379,12 +382,16 @@ class SportListFragment :
             }
 
             it.forEach { p ->
-                Log.d("[subscribe]","訂閱 ${sportLeagueAdapter.data[p.first].league.name} -> "
-                        + "${sportLeagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs "
-                        + "${sportLeagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}")
+                Log.d(
+                    "[subscribe]", "訂閱 ${sportLeagueAdapter.data[p.first].league.name} -> "
+                            + "${sportLeagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.homeName} vs "
+                            + "${sportLeagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.awayName}"
+                )
 
-                subscribeChannelHall(sportLeagueAdapter.data[p.first].gameType?.key,
-                    sportLeagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id)
+                subscribeChannelHall(
+                    sportLeagueAdapter.data[p.first].gameType?.key,
+                    sportLeagueAdapter.data[p.first].matchOdds[p.second].matchInfo?.id
+                )
             }
         })
 
@@ -531,7 +538,8 @@ class SportListFragment :
         //當前玩法無賽事
         viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
             sport_type_list.isVisible = !it && matchType != MatchType.CS
-            iv_calendar.isVisible = (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
+            iv_calendar.isVisible =
+                (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
             sportLeagueAdapter.removePreloadItem()
             hideLoading()
         }
@@ -593,7 +601,8 @@ class SportListFragment :
 
             val matchStatusChangeEvent = it!!
 
-            val isFinished = matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
+            val isFinished =
+                matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value
             val matchId = matchStatusChangeEvent.matchStatusCO?.matchId
             sportLeagueAdapter.data.toList().forEachIndexed { index, leagueOdd ->
                 if (isFinished) {
@@ -611,11 +620,14 @@ class SportListFragment :
                     }
                 } else {
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        if (SocketUpdateUtil.updateMatchStatus(leagueOdd.gameType?.key,
+                        if (SocketUpdateUtil.updateMatchStatus(
+                                leagueOdd.gameType?.key,
                                 matchOdd,
                                 matchStatusChangeEvent,
-                                context)
-                            && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                                context
+                            )
+                            && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                        ) {
                             sportLeagueAdapter.updateMatch(index, matchOdd)
                         }
                     }
@@ -635,7 +647,8 @@ class SportListFragment :
                 leagueOdd.matchOdds.forEach { matchOdd ->
 
                     if (SocketUpdateUtil.updateMatchClock(matchOdd, matchClockEvent)
-                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                    ) {
                         updateMatch(leagueIndex, matchOdd)
                     }
                 }
@@ -654,7 +667,8 @@ class SportListFragment :
             leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     if (SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
-                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                    ) {
                         updateMatch(leagueIndex, matchOdd)
                     }
                 }
@@ -671,7 +685,8 @@ class SportListFragment :
             leagueOdds.forEachIndexed { leagueIndex, leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)
-                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code) {
+                        && leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                    ) {
                         //暫時不處理 防止過多更新
                         updateMatch(leagueIndex, matchOdd)
                     }
@@ -855,17 +870,20 @@ class SportListFragment :
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
     ) {
 
-        val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        var gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
         if (gameType == null || matchInfo == null) {
             return
         }
-
+        if (gameType == GameType.ALL) {
+            gameType = GameType.getGameType(matchInfo.gameType)
+        }
         val fastBetDataBean = FastBetDataBean(
             matchType = matchType,
             gameType = gameType!!,
             playCateCode = playCateCode,
             playCateName = playCateName,
-            matchInfo = matchInfo!!,
+            matchInfo = matchInfo,
             matchOdd = null,
             odd = odd,
             subscribeChannelType = ChannelType.HALL,
@@ -944,33 +962,37 @@ class SportListFragment :
         return GameType.getGameType(gameType) ?: GameType.ALL
     }
 
-     private fun firstVisibleRange(delay: Long = 100) = game_list.postDelayed({
-         if (game_list == null) {
-             return@postDelayed
-         }
-         val adapter = game_list.adapter as SportLeagueAdapter
-        if(adapter.data.isNullOrEmpty()) {
+    private fun firstVisibleRange(delay: Long = 100) = game_list.postDelayed({
+        if (game_list == null) {
+            return@postDelayed
+        }
+        val adapter = game_list.adapter as SportLeagueAdapter
+        if (adapter.data.isNullOrEmpty()) {
             return@postDelayed
         }
 
         game_list.getVisibleRangePosition().forEach { leaguePosition ->
-            val view = game_list.layoutManager?.findViewByPosition(leaguePosition) ?: return@postDelayed
+            val view =
+                game_list.layoutManager?.findViewByPosition(leaguePosition) ?: return@postDelayed
 
             val viewHolder = game_list.getChildViewHolder(view)
             if (viewHolder is SportLeagueAdapter.ItemViewHolder) {
-                viewHolder.itemView.league_odd_list.getVisibleRangePosition().forEach { matchPosition ->
-                    if (leaguePosition < adapter.data.size) {
+                viewHolder.itemView.league_odd_list.getVisibleRangePosition()
+                    .forEach { matchPosition ->
+                        if (leaguePosition < adapter.data.size) {
 
-                        val leagueOdd = adapter.data.getOrNull(leaguePosition)
-                        val matchOdd = leagueOdd?.matchOdds?.getOrNull(matchPosition)
+                            val leagueOdd = adapter.data.getOrNull(leaguePosition)
+                            val matchOdd = leagueOdd?.matchOdds?.getOrNull(matchPosition)
 
-                        Log.d("[subscribe]", "訂閱 ${leagueOdd?.league?.name} -> " +
-                                "${matchOdd?.matchInfo?.homeName} vs " +
-                                "${matchOdd?.matchInfo?.awayName}")
+                            Log.d(
+                                "[subscribe]", "訂閱 ${leagueOdd?.league?.name} -> " +
+                                        "${matchOdd?.matchInfo?.homeName} vs " +
+                                        "${matchOdd?.matchInfo?.awayName}"
+                            )
 
-                        subscribeChannelHall(leagueOdd?.gameType?.key, matchOdd?.matchInfo?.id)
+                            subscribeChannelHall(leagueOdd?.gameType?.key, matchOdd?.matchInfo?.id)
+                        }
                     }
-                }
             }
         }
     }, delay)
