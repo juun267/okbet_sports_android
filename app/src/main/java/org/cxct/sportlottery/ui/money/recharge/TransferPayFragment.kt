@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.appsflyer.AppsFlyerLib
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
@@ -699,7 +700,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_name.getText(),
                     payerBankName = mBottomSheetList[bankPosition].bankName.toString(),
                     payerInfo = "",
-                    depositDate = mCalendar.time.time
+                    depositDate = mCalendar.time.time,
+                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -717,7 +719,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_wx_id.getText(),
                     payerBankName = null,
                     payerInfo = null,
-                    depositDate = mCalendar.time.time
+                    depositDate = mCalendar.time.time,
+                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
                 ).apply {
                     proofImg = imgResultUrl
                 }
@@ -735,7 +738,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     payerName = et_nickname.getText(),
                     payerBankName = null,
                     payerInfo = et_name.getText(),
-                    depositDate = mCalendar.time.time
+                    depositDate = mCalendar.time.time,
+                    appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
                 ).apply {
                     proofImg = imgResultUrl
                 }

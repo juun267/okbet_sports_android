@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.appsflyer.AppsFlyerLib
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -280,10 +281,15 @@ class MoneyRechViewModel(
                 "x-session-token" to (loginRepository.token ?: ""),
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "bankCode" to (bankCode ?: ""),
-                "depositMoney" to depositMoney
+                "depositMoney" to depositMoney,
+                "clientType" to "2"
             ).apply {
                 if (!payer.isNullOrEmpty())
                     put("payer", payer)
+                AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
+                    put("appsFlyerId", it)
+                }
+
             }
 
             url += toUrlParamsFormat(queryMap)
@@ -311,8 +317,13 @@ class MoneyRechViewModel(
                 "rechCfgId" to (mSelectRechCfgs?.id ?: "").toString(),
                 "payee" to (payee ?: ""),
                 "payeeName" to (payeeName ?: ""),
-                "depositMoney" to depositMoney
-            )
+                "depositMoney" to depositMoney,
+                "clientType" to "2"
+            ).apply {
+                AppsFlyerLib.getInstance().getAppsFlyerUID(context)?.let {
+                    put("appsFlyerId", it)
+                }
+            }
             url += toUrlParamsFormat(queryMap)
             toExternalWeb(context, url)
             AFInAppEventUtil.deposit(depositMoney ?: "",
@@ -415,7 +426,14 @@ class MoneyRechViewModel(
                 rechargeAmount,
                 channelMinMoney,
                 channelMaxMoney
-            ) != 0 -> {
+            )  == -1 -> {
+                LocalUtils.getString(R.string.error_amount_limit_less)
+            }
+            VerifyConstUtil.verifyRechargeAmount(
+                rechargeAmount,
+                channelMinMoney,
+                channelMaxMoney
+            ) == 1 -> {
                 LocalUtils.getString(R.string.error_amount_limit_exceeded)
             }
             else -> ""

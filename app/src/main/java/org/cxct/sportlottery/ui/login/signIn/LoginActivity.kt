@@ -9,7 +9,6 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
-import com.appsflyer.AppsFlyerLib
 import com.bumptech.glide.Glide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.view_status_bar.*
@@ -181,7 +180,6 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             validCode = validCode,
             appVersion = BuildConfig.VERSION_NAME,
             loginEnvInfo = deviceId,
-            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(this)
         )
         viewModel.login(loginRequest, password)
 

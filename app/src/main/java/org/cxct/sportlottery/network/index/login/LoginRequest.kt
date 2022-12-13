@@ -10,5 +10,4 @@ data class LoginRequest(
     var validCode: String? = null,
     var appVersion: String? = null,
     var loginEnvInfo: String? = null, //登入环境信息
-    var appsFlyerId: String? = null,
 )

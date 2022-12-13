@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.appsflyer.AppsFlyerLib
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
@@ -22,7 +21,6 @@ import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
@@ -750,7 +748,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             payerName = "",
             payerBankName = null,
             payerInfo = null,
-            depositDate = mCalendar.time.time
+            depositDate = mCalendar.time.time,
+            appsFlyerId = AppsFlyerLib.getInstance().getAppsFlyerUID(requireContext())
         ).apply {
             payee = txv_payee.text.toString()//充幣地址
             payeeName = txv_account.text.toString()//火幣網
