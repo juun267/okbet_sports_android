@@ -1104,7 +1104,7 @@
     <string name="current_balance">当前余额</string>
     <string name="select_area">选择地区</string>
     <string name="select_city">选择城市</string>
-    <string name="outlets_address">投注站地址</string>
+    <string name="outlets_address">str_press_again_to_exit_the_program</string>
     <string name="appointment_time">预约时间</string>
     <string name="select_date">请选择日期</string>
     <string name="select_time">请选择时间</string>
@@ -1362,6 +1362,7 @@
     <string name="str_return_last_step">返回上一步</string>
     <string name="str_bet_other_game">下注其他盘口</string>
     <string name="str_check_bets">查看注单</string>
+    <string name="str_press_again_to_exit_the_program">再按一次退出程序</string>
     <!--投注改版-->
     <string name="reget_phone_code_for">重新获取</string>
     <string name="pay_maya">Paymaya</string>
@@ -1373,5 +1374,4 @@
     <string name="error_amount_limit_less">充值额小于最低限额</string>
     <string name="update_voucher">上传凭证</string>
     <string name="no_select_file">未选择文件</string>
-
 </resources>

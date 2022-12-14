@@ -272,6 +272,7 @@ object BetInfoRepository {
         _betIDList.postValue(Event(oddIDArray))
         _betInfoList.postValue(Event(betList))
         betListTabPosition = 0
+        currentStateSingleOrParlay = 0
     }
 
     fun switchSingleMode() {

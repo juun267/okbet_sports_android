@@ -6,15 +6,15 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import com.bigkoo.pickerview.utils.PickerViewAnimateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
@@ -48,6 +48,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.system.exitProcess
 
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
@@ -87,6 +88,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private var betListFragment: BetListFragment? = null
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
+    private var exitTime: Long = 0
 
     companion object {
 
@@ -345,21 +347,38 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    override fun onBackPressed() {
-        //非注單詳情頁，重新顯示BottomNavBar
-        val fragment =
-            supportFragmentManager.findFragmentByTag(AccountHistoryNextFragment::class.java.simpleName)
-        if (fragment == null) setupBottomNavBarVisibility(true)
 
-        //返回鍵優先關閉投注單fragment
-        if (supportFragmentManager.backStackEntryCount != 0) {
-            for (i in 0 until supportFragmentManager.backStackEntryCount) {
-                supportFragmentManager.popBackStack()
+    //系统方法
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //非注單詳情頁，重新顯示BottomNavBar
+            val fragment =
+                supportFragmentManager.findFragmentByTag(AccountHistoryNextFragment::class.java.simpleName)
+            if (fragment == null) setupBottomNavBarVisibility(true)
+
+            //返回鍵優先關閉投注單fragment
+            if (supportFragmentManager.backStackEntryCount != 0) {
+                for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                    supportFragmentManager.popBackStack()
+                }
+                return false
             }
-            return
+            exit()
+            return false
         }
-        super.onBackPressed()
+        return super.onKeyDown(keyCode, event)
     }
+
+    private fun exit() {
+        if (System.currentTimeMillis() - exitTime > 2000) {
+            ToastUtils.s(this,"再按一次退出程序")
+            exitTime = System.currentTimeMillis()
+        } else {
+            finish()
+            exitProcess(0)
+        }
+    }
+
 
     override fun getBetListPageVisible(): Boolean {
         return betListFragment?.isVisible ?: false
@@ -378,11 +397,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      * 串关显示赔率
      */
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        if (list.size>1){
+        if (list.size > 1) {
             val multipleOdds = getMultipleOdds(list)
             cl_bet_list_bar.tvOdds.text = multipleOdds
             cl_bet_list_bar.tvOdds.visible()
-        }else{
+        } else {
             cl_bet_list_bar.tvOdds.gone()
         }
 
@@ -453,7 +472,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     override fun showBetListPage() {
-
         val ft = supportFragmentManager.beginTransaction()
         betListFragment?.let {
             if (it.isAdded) {
