@@ -1060,9 +1060,6 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             oddButtonPagerAdapter.odds = item.oddsMap ?: mutableMapOf()
         }
 
-
-
-
         override val oddStateChangeListener: OddStateChangeListener
             get() = refreshListener
     }
