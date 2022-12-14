@@ -23,6 +23,8 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.util.AesCryptoUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
+import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.toJson
 import retrofit2.Response
 
@@ -274,6 +276,7 @@ object LoginRepository {
             remove(KEY_TOKEN)
             remove(KEY_ODDS_TYPE)
             remove(KEY_LIVE_USER_INFO)
+            KvUtils.removeKey(KV_STR_SELECT_ODDS_MODE)
             apply()
         }
         clearUserInfo()
