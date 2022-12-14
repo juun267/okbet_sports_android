@@ -1377,6 +1377,7 @@
     <string name="str_odds_already_changed_check_please">The odds changed. Please confirm latest odds</string>
     <string name="str_return_last_step">Last step</string>
     <string name="str_bet_other_game">Bet other market</string>
+    <string name="str_check_bets">Bets Details</string>
     <!--投注改版-->
     <string name="reget_phone_code_for">Reacquire</string>
     <string name="online_fortune_pay">FortunePay</string>

@@ -63,7 +63,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:textSize="@dimen/textSize12sp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:drawablePadding="6dp"
                     tools:drawableStart="@drawable/ic_bet_check_tip"
                     tools:text="已确认"
