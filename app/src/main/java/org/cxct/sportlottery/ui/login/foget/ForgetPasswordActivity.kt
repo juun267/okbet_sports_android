@@ -213,6 +213,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
                     page++
                     setPage()
                 }
+                LogUtil.toJson(result)
             }
 //            page++
 //            setPage()
@@ -356,7 +357,12 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         } else {
          //   binding.tvSmsSend.visibility = View.GONE
             //做异常处理
-            binding.etSmsValidCode.setError(smsResult?.msg,false)
+            if (smsResult?.code == 2765||smsResult?.code == 2766){
+                binding.etPhone.setError(smsResult.msg,false)
+            }else{
+                binding.etSmsValidCode.setError(smsResult?.msg,false)
+            }
+           // binding.etSmsValidCode.setError(smsResult?.msg,false)
         }
     }
 
