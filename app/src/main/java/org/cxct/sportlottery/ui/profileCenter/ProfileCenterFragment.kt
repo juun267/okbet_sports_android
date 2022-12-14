@@ -705,41 +705,46 @@ class ProfileCenterFragment :
 
         //总资产锁定金额
         viewModel.lockMoney.observe(viewLifecycleOwner) {
-            if ((it?.toInt() ?: 0) > 0) {
-                iv_deposit_tip.visibility = View.VISIBLE
-                iv_deposit_tip.setOnClickListener { _ ->
-                    val depositSpannable =
-                        SpannableString(
-                            getString(
-                                R.string.text_security_money,
-                                TextUtil.formatMoneyNoDecimal(it ?: 0.0)
-                            )
-                        )
-                    val daysLeftText = getString(
-                        R.string.text_security_money2,
-                        TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-                    )
-                    val remainDaySpannable = SpannableString(daysLeftText)
-                    val remainDay = TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-                    val remainDayStartIndex = daysLeftText.indexOf(remainDay)
-                    remainDaySpannable.setSpan(
-                        ForegroundColorSpan(
-                            ContextCompat.getColor(requireContext(), R.color.color_317FFF_1053af)
-                        ),
-                        remainDayStartIndex,
-                        remainDayStartIndex + remainDay.length, 0
-                    )
-
-                    fragmentManager?.let { it1 ->
-                        SecurityDepositDialog().apply {
-                            this.depositText = depositSpannable
-                            this.daysLeftText = remainDaySpannable
-                        }.show(it1, this::class.java.simpleName)
-                    }
-                }
-            }else{
+            if (sConfigData?.enableLockBalance.isNullOrEmpty()|| sConfigData?.enableLockBalance?.equals("0")==true){
                 iv_deposit_tip.visibility = View.GONE
+            }else{
+                if ((it?.toInt() ?: 0) > 0) {
+                    iv_deposit_tip.visibility = View.VISIBLE
+                    iv_deposit_tip.setOnClickListener { _ ->
+                        val depositSpannable =
+                            SpannableString(
+                                getString(
+                                    R.string.text_security_money,
+                                    TextUtil.formatMoneyNoDecimal(it ?: 0.0)
+                                )
+                            )
+                        val daysLeftText = getString(
+                            R.string.text_security_money2,
+                            TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                        )
+                        val remainDaySpannable = SpannableString(daysLeftText)
+                        val remainDay = TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                        val remainDayStartIndex = daysLeftText.indexOf(remainDay)
+                        remainDaySpannable.setSpan(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(requireContext(), R.color.color_317FFF_1053af)
+                            ),
+                            remainDayStartIndex,
+                            remainDayStartIndex + remainDay.length, 0
+                        )
+
+                        fragmentManager?.let { it1 ->
+                            SecurityDepositDialog().apply {
+                                this.depositText = depositSpannable
+                                this.daysLeftText = remainDaySpannable
+                            }.show(it1, this::class.java.simpleName)
+                        }
+                    }
+                }else{
+                    iv_deposit_tip.visibility = View.GONE
+                }
             }
+
         }
 
         viewModel.isWithdrawShowVerifyDialog.observe(this) {
