@@ -332,26 +332,26 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             state +=1
          //   binding.tvSmsSend.visibility = View.VISIBLE
 
-            val tipsContentBuilder = SpannableStringBuilder()
-            val stringSpan = SpannableString(getString(R.string.has_send_message_to_phone))
-            val phoneNum = SpannableString(" +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}")
-            phoneNum.length.let {
-                phoneNum.setSpan(
-                    StyleSpan(Typeface.NORMAL),
-                    0,
-                    it,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                phoneNum.setSpan(//字体颜色
-                    ForegroundColorSpan(resources.getColor(R.color.color_025BE8)),
-                    0,
-                    it,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                phoneNum.setSpan( //字体大小
-                    AbsoluteSizeSpan(14, true),
-                    0,
-                    it,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
+//            val tipsContentBuilder = SpannableStringBuilder()
+//            val stringSpan = SpannableString(getString(R.string.has_send_message_to_phone))
+//            val phoneNum = SpannableString(" +63 ${TextUtil.maskPhoneNum(eet_phone_num.text.toString())}")
+//            phoneNum.length.let {
+//                phoneNum.setSpan(
+//                    StyleSpan(Typeface.NORMAL),
+//                    0,
+//                    it,
+//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//                phoneNum.setSpan(//字体颜色
+//                    ForegroundColorSpan(resources.getColor(R.color.color_025BE8)),
+//                    0,
+//                    it,
+//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//                phoneNum.setSpan( //字体大小
+//                    AbsoluteSizeSpan(14, true),
+//                    0,
+//                    it,
+//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//            }
       //      binding.tvSmsSend.text = tipsContentBuilder.append(stringSpan).append(phoneNum)
             showSmeTimer300()
         } else {

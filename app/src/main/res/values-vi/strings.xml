@@ -27,7 +27,7 @@
     <string name="btn_pass">bỏ qua</string>
     <string name="login_account">Đăng nhập tài khoản</string>
     <string name="please_input_account">Vui lòng nhập tài khoản hội viên của bạn</string>
-    <string name="login_password">Đăng nhập mật khẩu</string>
+    <string name="login_password">Mật khẩu</string>
     <string name="remember_password">Nhớ mật khẩu</string>
     <string name="forget_password_question">Quên mật khẩu?</string>
     <string name="desc_forget_password">vui lòng liên hệ chăm sóc khách hàng</string>
