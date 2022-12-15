@@ -270,7 +270,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
                 GameType.getGameTypeString(itemView.context, gameType)
             itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
             itemView.iv_sport.isSelected = true
-            itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfoldStatus != FoldState.FOLD.code
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
@@ -286,7 +286,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
                 GameType.getGameTypeString(itemView.context, gameType)
             itemView.iv_sport.setImageResource(GameType.getGameTypeMenuIcon(gameType))
             itemView.iv_sport.isSelected = true
-            itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
+            itemView.iv_arrow.isSelected = item.unfoldStatus != FoldState.FOLD.code
             updateLeagueOddList(item, oddsType)
             updateTimer(matchType, item.gameType)
         }
@@ -393,7 +393,7 @@ class FavoriteAdapter(private val matchType: MatchType) :
                         FoldState.UNFOLD.code
                     } // TODO IndexOutOfBoundsException: Index: 10, Size: 5
 
-                itemView.iv_arrow.isSelected = item.unfoldStatus == FoldState.FOLD.code
+                itemView.iv_arrow.isSelected = item.unfoldStatus != FoldState.FOLD.code
                 updateTimer(matchType, item.gameType)
                 data.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.gameType == data[adapterPosition].gameType) {

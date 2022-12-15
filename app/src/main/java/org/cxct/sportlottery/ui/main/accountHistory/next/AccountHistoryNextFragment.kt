@@ -19,6 +19,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.util.TextUtil
 
@@ -37,7 +38,10 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             startActivity(intent)
     }, BackClickListener {
 //        findNavController().navigateUp()
-        activity?.onBackPressed()
+//            if(activity is MainTabActivity){
+//                ((activity as MainTabActivity).goneBottomNavBar())
+//            }
+//            activity?.onBackPressed()
     }, SportSelectListener {
         viewModel.setSelectedSport(it)
     }, DateSelectListener {
@@ -83,7 +87,10 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             .init()
 
         iv_back.setOnClickListener {
-            activity?.onBackPressed()
+            if (activity is MainTabActivity) {
+                (activity as MainTabActivity).showBottomNavBar()
+            }
+//            activity?.onBackPressed()
         }
         initRv()
         initObserver()

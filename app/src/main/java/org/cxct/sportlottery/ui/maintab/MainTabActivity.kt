@@ -351,16 +351,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //非注單詳情頁，重新顯示BottomNavBar
-            val fragment =
-                supportFragmentManager.findFragmentByTag(AccountHistoryNextFragment::class.java.simpleName)
-            if (fragment == null) setupBottomNavBarVisibility(true)
-
-            //返回鍵優先關閉投注單fragment
-            if (supportFragmentManager.backStackEntryCount != 0) {
-                for (i in 0 until supportFragmentManager.backStackEntryCount) {
-                    supportFragmentManager.popBackStack()
-                }
+            if (!showBottomNavBar()) {
                 return false
             }
             exit()
@@ -369,9 +360,25 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         return super.onKeyDown(keyCode, event)
     }
 
+    fun showBottomNavBar(): Boolean {
+        //非注單詳情頁，重新顯示BottomNavBar
+        val fragment =
+            supportFragmentManager.findFragmentByTag(AccountHistoryNextFragment::class.java.simpleName)
+        if (fragment == null) setupBottomNavBarVisibility(true)
+
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return false
+        }
+        return true
+    }
+
     private fun exit() {
         if (System.currentTimeMillis() - exitTime > 2000) {
-            ToastUtils.s(this,"再按一次退出程序")
+            ToastUtils.s(this, getString(R.string.str_press_again_to_exit_the_program))
             exitTime = System.currentTimeMillis()
         } else {
             finish()
