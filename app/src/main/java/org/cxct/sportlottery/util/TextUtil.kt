@@ -35,7 +35,7 @@ object TextUtil : DecimalFormatUtil() {
     /**
      * numberAfterDot 保留小数点后几位
      */
-    fun formatMoney(any: Any, numAfterDot: Int = 0): String? {
+    fun  formatMoney(any: Any, numAfterDot: Int = 0): String? {
         try {
             var target = any
 

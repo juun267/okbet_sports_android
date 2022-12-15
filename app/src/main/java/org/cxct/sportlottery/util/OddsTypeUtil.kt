@@ -137,16 +137,11 @@ fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
             currentOddsType = OddsType.EU
         }
 
-        //反波膽顯示 %
-        var tvOdd = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
-        if (itemData.matchOdd.playCode == PlayCate.LCS.value) tvOdd =
-            TextUtil.formatForOddPercentage(
-                getOdds(
-                    itemData.matchOdd, currentOddsType
-                ) - 1
-            )
-        multipleOdds *= tvOdd.toDouble()
+        val tvOdd2 = getOdds(itemData.matchOdd, currentOddsType)
+        multipleOdds *= tvOdd2
     }
-    return "@"+TextUtil.formatMoney(multipleOdds,2)
+
+
+    return  "@"+TextUtil.formatMoney(multipleOdds,2)
 }
 
