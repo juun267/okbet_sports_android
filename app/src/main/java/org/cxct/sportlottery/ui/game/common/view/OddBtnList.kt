@@ -47,7 +47,6 @@ class OddBtnList @JvmOverloads constructor(
         }
 
         val odd_btn_row1_typeParam = LayoutParams(oddWidth, 30.dp)
-        odd_btn_row1_typeParam.bottomMargin = marging
         addView(oddBtnType, odd_btn_row1_typeParam)
 
         oddBtnHome = createOddBtn()
