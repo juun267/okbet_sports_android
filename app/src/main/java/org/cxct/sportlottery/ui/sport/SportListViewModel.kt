@@ -238,7 +238,7 @@ class SportListViewModel(
     }
 
     fun cleanGameHallResult() {
-        _oddsListGameHallResult.postValue(Event(null))
+        _oddsListGameHallResult.postValue(Event(null, gameType))
     }
 
     private var jobSwitchGameType: Job? = null
@@ -256,11 +256,11 @@ class SportListViewModel(
                 currentTimeRangeParams = timeRangeParams
             }
             MatchType.TODAY.postValue, MatchType.CS.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
-                _oddsListGameHallResult.value = Event(null)
+                _oddsListGameHallResult.value = Event(null, gameType)
                 currentTimeRangeParams = timeRangeParams
             }
             else -> { // 特殊賽事要給特殊代碼 Ex: matchType: "sc:QAtest"
-                _oddsListGameHallResult.value = Event(null)
+                _oddsListGameHallResult.value = Event(null, gameType)
             }
         }
 
@@ -324,6 +324,10 @@ class SportListViewModel(
                 }
             }
 
+            if (gameType != this@SportListViewModel.gameType) {
+                return@launch
+            }
+
             result?.updateMatchType()
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -371,10 +375,10 @@ class SportListViewModel(
                                     ?.contains(it.league.id) ?: false
                             }
                     }
-                    _oddsListGameHallResult.postValue(Event(result))
+                    _oddsListGameHallResult.postValue(Event(result, gameType))
                 }
                 else -> {
-                    _oddsListGameHallResult.postValue(Event(result))
+                    _oddsListGameHallResult.postValue(Event(result, gameType))
                 }
             }
 
@@ -399,6 +403,10 @@ class SportListViewModel(
                         )
                     }
                 )
+            }
+
+            if (gameType != this@SportListViewModel.gameType) {
+                return@launch
             }
 
             val outrightMatchList =
@@ -482,7 +490,7 @@ class SportListViewModel(
                 }
             }
             withContext(Dispatchers.Main) {
-                _outrightMatchList.value = Event(oddsList)
+                _outrightMatchList.value = Event(oddsList, gameType)
             }
         }
     }

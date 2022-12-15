@@ -74,7 +74,7 @@ class SportListFragment :
     private val matchType by lazy {
         (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
     }
-    private var gameType: String? = null
+    private var gameType: String = GameType.ALL.key
         set(value) {
             if (!Objects.equals(value, field)) { // 清除赛选条件
                 leagueIdList.clear()
@@ -249,8 +249,8 @@ class SportListFragment :
         EventBusUtil.targetLifecycle(this)
         //打开指定球类
         viewModel.matchType = matchType
-        gameType = arguments?.getString("gameType")
-        gameType?.let { viewModel.gameType = it }
+        arguments?.getString("gameType")?.let { gameType = it }
+        viewModel.gameType = gameType
         setupSportTypeList()
         setupToolbar()
         setupGameRow()
@@ -491,6 +491,10 @@ class SportListFragment :
         }
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
+            if (gameType != it.tag) {
+                return@observe
+            }
+
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success && !oddsListResult.oddsListData?.leagueOdds.isNullOrEmpty()) {
 //                    sportLeagueAdapter.removePreloadItem()
