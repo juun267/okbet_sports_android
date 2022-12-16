@@ -577,7 +577,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun onDestroy() {
         super.onDestroy()
         if (activityInstance == this) {
-            activityInstance == null
+            activityInstance = null
         }
         SportLeagueAdapter.clearCachePool()
     }
