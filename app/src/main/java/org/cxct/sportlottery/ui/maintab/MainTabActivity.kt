@@ -127,11 +127,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         EventBusUtil.targetLifecycle(this)
     }
 
-    var isWorldcupModel = false
+    var isWorldCupModel = false
 
     @SuppressLint("RestrictedApi")
     private fun resetBottomTheme(worldcupModel: Boolean) {
-        isWorldcupModel = worldcupModel
+        isWorldCupModel = worldcupModel
         var textColor: ColorStateList
         val iconArray = if (worldcupModel) {
             iv_home_back.setImageResource(R.drawable.icon01_arrow_back_sel)
@@ -224,7 +224,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                         }
 
                         R.id.i_home -> {
-                            wordcupModel = isWorldcupModel
+                            wordcupModel = isWorldCupModel
                         }
                     }
 
@@ -506,27 +506,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             .addToBackStack(null).commit()
     }
 
-//    private fun getInAnimation(): Animation? {
-//        val res = PickerViewAnimateUtil.getAnimationResource(this.animGravity, true)
-//        return AnimationUtils.loadAnimation(context, res)
-//    }
-//
-//    private fun getOutAnimation(): Animation? {
-//        val res = PickerViewAnimateUtil.getAnimationResource(this.animGravity, false)
-//        return AnimationUtils.loadAnimation(context, res)
-//    }
 
     fun setupBetData(fastBetDataBean: FastBetDataBean) {
         viewModel.updateMatchBetListData(fastBetDataBean)
     }
 
-    fun setupBottomNavBarVisibility(isVisible: Boolean) {
+    private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
-        if (isVisible) {
-            cl_bet_list_bar.isVisible = betListCount > 0
-        } else {
-            cl_bet_list_bar.isVisible = false
-        }
+        cl_bet_list_bar.isVisible = isVisible and (betListCount > 0)
+
     }
 
     fun goBetRecordDetails(date: String, gameType: String) {
@@ -577,7 +565,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun onDestroy() {
         super.onDestroy()
         if (activityInstance == this) {
-            activityInstance == null
+            activityInstance = null
         }
         SportLeagueAdapter.clearCachePool()
     }
