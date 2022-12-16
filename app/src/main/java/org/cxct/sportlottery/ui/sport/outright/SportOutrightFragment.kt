@@ -77,7 +77,7 @@ class SportOutrightFragment :
 
     //    private val args: GameV3FragmentArgs by navArgs()
     private val matchType = MatchType.OUTRIGHT
-    private var gameType: String? = null
+    private var gameType: String = GameType.FT.key
     private val outrightLeagueId by lazy { arguments?.getString("outrightLeagueId", null) }
     private var mView: View? = null
     private var mLeagueIsFiltered = false // 是否套用聯賽過濾
@@ -215,10 +215,8 @@ class SportOutrightFragment :
         EventBusUtil.targetLifecycle(this)
         //打开指定球类
         viewModel.matchType = matchType
-        gameType = arguments?.getString("gameType")
-        gameType?.let {
-            viewModel.gameType = it
-        }
+        arguments?.getString("gameType")?.let { gameType = it }
+        gameType?.let { viewModel.gameType = it  }
         setupSportTypeList()
         setupToolbar()
         setupGameRow()
@@ -461,6 +459,10 @@ class SportOutrightFragment :
 
         }
         viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
+            if (gameType != it.tag) {
+                return@observe
+            }
+
             it.getContentIfNotHandled()?.let { outrightMatchList ->
                 sportOutrightAdapter.data = outrightMatchList as List<OutrightItem>
                 setOutrightLeagueAdapter()

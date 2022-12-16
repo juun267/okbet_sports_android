@@ -855,6 +855,7 @@ class WithdrawViewModel(
                 }
             }
             TransferType.STATION -> {
+                getWithdrawHint()
             }
         }
     }

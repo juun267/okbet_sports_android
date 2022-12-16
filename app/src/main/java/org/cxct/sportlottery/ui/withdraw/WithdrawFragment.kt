@@ -27,7 +27,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.TransferTypeAddSwitch
 import org.cxct.sportlottery.util.*
@@ -190,7 +189,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                         dealType = TransferType.BANK
                         transferTypeAddSwitch.apply {
                             add_bank_group.visibility = if (bankTransfer)View.VISIBLE else View.GONE
-                            LogUtil.d("$bankTransfer")
                         }
                         tv_add_bank.text = context?.getString(R.string.bank_list_add, context?.getString(R.string.bank_list_bank))
                         clearEvent()
@@ -227,7 +225,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 //                    }
                     getString(R.string.Outlets_Reserve) -> {
                         selectBetStationTab(true)
-//                        viewModel.setDealType(TransferType.STATION)
+                        viewModel.setDealType(TransferType.STATION)
+                        dealType = TransferType.STATION
                         clearEvent()
                     }
                 }
@@ -373,6 +372,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
 
         viewModel.moneyCardList.observe(this.viewLifecycleOwner, Observer {
+            if (it.transferType == TransferType.STATION)
+                return@Observer
             val cardList = it.cardList
             if (cardList.isEmpty()) {
                 jumpToMoneyCardSetting(true, it.transferType)

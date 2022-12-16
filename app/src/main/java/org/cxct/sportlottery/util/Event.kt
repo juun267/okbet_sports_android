@@ -7,7 +7,7 @@ package org.cxct.sportlottery.util
  *
  *
  */
-open class Event<out T>(private val content: T) {
+open class Event<out T>(private val content: T, val tag: Any? = null) {
 
     var hasBeenHandled = false
         private set // Allow external read but not write
