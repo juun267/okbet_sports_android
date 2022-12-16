@@ -282,7 +282,7 @@
     <string name="profile_info">My Details</string>
     <string name="avatar">Profile photo</string>
     <string name="nickname">Nickname</string>
-    <string name="password_setting">Password Setting</string>
+    <string name="password_setting">Setting Password</string>
     <string name="modify_avatar">Edit profile photo</string>
     <string name="choose_a_photo_from_the_album">Select a photo from camera roll</string>
     <string name="take_a_picture">Take a photo</string>

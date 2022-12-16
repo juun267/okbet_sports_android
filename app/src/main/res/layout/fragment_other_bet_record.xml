@@ -68,7 +68,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:paddingStart="2dp"
-                android:text="@string/date"
+                android:text="@string/bet_time2"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize12sp" />
             <TextView
