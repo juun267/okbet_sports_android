@@ -383,7 +383,7 @@ open class ServiceBroadcastReceiver(
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
+                            betInfoListData.matchOdd?.oddsId == odd?.id
                         }
                 }
             }

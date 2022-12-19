@@ -605,6 +605,7 @@
                 android:layout_marginEnd="@dimen/margin_20"
                 android:layout_marginBottom="@dimen/margin_30"
                 android:background="@drawable/ic_sign_out"
+                android:textAllCaps="false"
                 android:text="@string/sign_out"
                 android:textColor="@color/color_FFFFFF" />
         </LinearLayout>
