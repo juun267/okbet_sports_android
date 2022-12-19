@@ -396,22 +396,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
 
         }
-//        viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
-//            if (gameType != it.tag) {
-//                return@observe
-//            }
-//
-//            it.getContentIfNotHandled()?.let { outrightMatchList ->
-//                sportOutrightAdapter.data = outrightMatchList as List<OutrightItem>
-//                setOutrightLeagueAdapter()
-//                hideLoading()
-//        viewModel.outrightMatchList.observe(this.viewLifecycleOwner) {
-//            it.getContentIfNotHandled()?.let { outrightMatchList ->
-//                sportOutrightAdapter.data = outrightMatchList as List<OutrightItem>
-//                setOutrightLeagueAdapter()
-//                hideLoading()
-//            }
-//        }
 
         viewModel.outrightList.observe(viewLifecycleOwner) {
             if (gameType != it.tag) {
@@ -422,25 +406,6 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             data?.forEach { it.matchOdds?.let { list.addAll(it) } }
             sportOutrightAdapter2.setNewInstance(list as MutableList<BaseNode>)
             setOutrightLeagueAdapter(120)
-//            Log.e("For Test", "=====>>>> SportOutrightAdapter2 000 ${data?.size}")
-//            data?.forEachIndexed { index, leagueOdd ->
-//                Log.e("For Test", "=====>>>> SportOutrightAdapter2 forEachIndexed $index ")
-//                leagueOdd.matchOdds?.forEach { matachOdd ->
-//
-//
-//                    Log.e("For Test", "=====>>>> SportOutrightAdapter2 forEach matchOdds matchInfo 111 ${matachOdd?.matchInfo?.name} ")
-//
-//                    matachOdd.oddsMap?.forEach {
-//
-//                        Log.e("For Test", "=====>>>> SportOutrightAdapter2 forEach matchOdds matchInfo 111 playcate ${it.key}")
-//
-//                        Log.e("For Test", "=====>>>> SportOutrightAdapter2 forEach matchOdds matchInfo oddsMap ${matachOdd?.dynamicMarkets?.get(it.key)} ${it.value?.size} ")
-//                        it.value?.forEachIndexed { index, it ->
-//                            Log.e("For Test", "=====>>>> SportOutrightAdapter2 forEach matchOdds matchInfo oddsMap oddsValue index ${index} ${it.name} ${it.odds} ")
-//                        }
-//                    }
-//                }
-//            }
         }
 
         //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種

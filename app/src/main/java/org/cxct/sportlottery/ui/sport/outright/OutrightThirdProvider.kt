@@ -29,7 +29,7 @@ class OutrightThirdProvider(val adapter: SportOutrightAdapter2,
     }
 
     override fun convert(helper: BaseViewHolder, item: BaseNode) = (helper.itemView as OddsOutrightButton).run  {
-        setupOdd(helper.bindingAdapterPosition, item as Odd, adapter.oddsType)
+        setupOdd(item as Odd, adapter.oddsType)
         oddStatus = item.oddState
         tv_spread.text = ""
         val parentNode = item.parentNode
