@@ -9,6 +9,7 @@ data class CategoryOdds(val name: String,
                         val playCate: String,
                         val oddList: MutableList<Odd>): BaseExpandNode() {
     init {
+        matchOdd.categoryOddsMap[playCate] = this
         oddList.forEach { it.parentNode = this }
     }
 

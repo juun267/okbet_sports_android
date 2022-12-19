@@ -1,23 +1,27 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_finance.view.*
 import kotlinx.android.synthetic.main.view_account_balance.*
-import kotlinx.android.synthetic.main.view_account_balance.view.btn_refresh
-import kotlinx.android.synthetic.main.view_account_balance.view.tv_currency_type
+import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.profileCenter.SecurityDepositDialog
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.observe
 
 /**
  * @app_destination 資金明細
@@ -38,6 +42,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
         return inflater.inflate(R.layout.fragment_finance, container, false).apply {
             setupRefreshBalance(this)
             setupRecordList(this)
+            viewModel.getLockMoney()
         }
     }
 
@@ -45,6 +50,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
         view.btn_refresh.setOnClickListener {
             loading()
             viewModel.getMoney()
+            viewModel.getLockMoney()
         }
     }
 
@@ -71,6 +77,53 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
                 tv_balance.text = TextUtil.format(it)
             }
         })
+        //总资产锁定金额
+        viewModel.lockMoney.observe(viewLifecycleOwner) {
+            if (sConfigData?.enableLockBalance.isNullOrEmpty() || sConfigData?.enableLockBalance?.equals(
+                    "0") == true
+            ) {
+                iv_deposit_tip.visibility = View.GONE
+            } else {
+                if ((it?.toInt() ?: 0) > 0) {
+                    iv_deposit_tip.visibility = View.VISIBLE
+                    iv_deposit_tip.setOnClickListener { _ ->
+                        val depositSpannable =
+                            SpannableString(
+                                getString(
+                                    R.string.text_security_money,
+                                    TextUtil.formatMoneyNoDecimal(it ?: 0.0)
+                                )
+                            )
+                        val daysLeftText = getString(
+                            R.string.text_security_money2,
+                            TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                        )
+                        val remainDaySpannable = SpannableString(daysLeftText)
+                        val remainDay =
+                            TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
+                        val remainDayStartIndex = daysLeftText.indexOf(remainDay)
+                        remainDaySpannable.setSpan(
+                            ForegroundColorSpan(
+                                ContextCompat.getColor(requireContext(),
+                                    R.color.color_317FFF_1053af)
+                            ),
+                            remainDayStartIndex,
+                            remainDayStartIndex + remainDay.length, 0
+                        )
+
+                        fragmentManager?.let { it1 ->
+                            SecurityDepositDialog().apply {
+                                this.depositText = depositSpannable
+                                this.daysLeftText = remainDaySpannable
+                            }.show(it1, this::class.java.simpleName)
+                        }
+                    }
+                } else {
+                    iv_deposit_tip.visibility = View.GONE
+                }
+            }
+
+        }
     }
 
     private fun getRecordList() {
@@ -122,5 +175,6 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
         super.onStart()
 
         viewModel.getMoney()
+        viewModel.getLockMoney()
     }
 }

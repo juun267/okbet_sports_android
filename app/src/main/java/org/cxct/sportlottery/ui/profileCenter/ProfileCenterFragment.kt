@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,6 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -22,7 +19,6 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
-import kotlinx.android.synthetic.main.fragment_profile_center.tv_version
 import kotlinx.android.synthetic.main.view_toolbar_main.iv_menu
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -703,49 +699,6 @@ class ProfileCenterFragment :
             updateUserIdentity(it?.testFlag)
         }
 
-        //总资产锁定金额
-        viewModel.lockMoney.observe(viewLifecycleOwner) {
-            if (sConfigData?.enableLockBalance.isNullOrEmpty()|| sConfigData?.enableLockBalance?.equals("0")==true){
-                iv_deposit_tip.visibility = View.GONE
-            }else{
-                if ((it?.toInt() ?: 0) > 0) {
-                    iv_deposit_tip.visibility = View.VISIBLE
-                    iv_deposit_tip.setOnClickListener { _ ->
-                        val depositSpannable =
-                            SpannableString(
-                                getString(
-                                    R.string.text_security_money,
-                                    TextUtil.formatMoneyNoDecimal(it ?: 0.0)
-                                )
-                            )
-                        val daysLeftText = getString(
-                            R.string.text_security_money2,
-                            TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-                        )
-                        val remainDaySpannable = SpannableString(daysLeftText)
-                        val remainDay = TimeUtil.getRemainDay(viewModel.userInfo.value?.uwEnableTime).toString()
-                        val remainDayStartIndex = daysLeftText.indexOf(remainDay)
-                        remainDaySpannable.setSpan(
-                            ForegroundColorSpan(
-                                ContextCompat.getColor(requireContext(), R.color.color_317FFF_1053af)
-                            ),
-                            remainDayStartIndex,
-                            remainDayStartIndex + remainDay.length, 0
-                        )
-
-                        fragmentManager?.let { it1 ->
-                            SecurityDepositDialog().apply {
-                                this.depositText = depositSpannable
-                                this.daysLeftText = remainDaySpannable
-                            }.show(it1, this::class.java.simpleName)
-                        }
-                    }
-                }else{
-                    iv_deposit_tip.visibility = View.GONE
-                }
-            }
-
-        }
 
         viewModel.isWithdrawShowVerifyDialog.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
@@ -783,7 +736,6 @@ class ProfileCenterFragment :
         btn_edit_nickname.visibility =
             if (userInfo?.setted == FLAG_NICKNAME_IS_SET) View.GONE else View.VISIBLE
         tv_user_id.text = userInfo?.userId?.toString()
-        viewModel.getLockMoney()
 //        if (getRemainDay(userInfo?.uwEnableTime) > 0) {
 //            ivNotice.visibility = View.VISIBLE
 //            ivNotice.setOnClickListener {

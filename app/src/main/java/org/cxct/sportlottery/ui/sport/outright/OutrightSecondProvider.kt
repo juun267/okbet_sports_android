@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.sport.outright
 
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -32,10 +31,7 @@ class OutrightSecondProvider(val adapter: SportOutrightAdapter2,
     }
 
     override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
-        //        adapter.getOnItemChildClickListener()?.let { it.onItemChildClick(adapter, view, position) }
-        Log.e("For Test", "=====>>> ServiceBroadcastReceiver insertSecondList onClick 000" +
-                " ${adapter.data.containsAll(data.childNode!!)} ${position} ${adapter.getItemPosition(data)} ${adapter.data.size}")
-        adapter.expandOrCollapse(position)
+        adapter.expandOrCollapse(data)
         onItemClick.invoke(position, view, data)
 
     }
