@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.sport.outright
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.entity.node.BaseNode
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.adapter.recyclerview.BaseNodeAdapter
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.MatchType
@@ -93,10 +95,10 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
     }
 
     private fun insertSecondList(matchOdd: MatchOdd, playCate: String, name: String, oddList: MutableList<Odd>) {
+        matchOdd.oddsMap!![playCate] = oddList
         val categoryOdds = CategoryOdds(name, matchOdd, playCate, oddList)
-        val dataList = mutableListOf<BaseNode>(categoryOdds)
-        dataList.addAll(oddList)
-        nodeAddData(matchOdd, dataList)
+        printLog("插入一级列表下新增二级列表 ${matchOdd.matchInfo?.name}  $name")
+        nodeAddData(matchOdd, mutableListOf<BaseNode>(categoryOdds))
     }
 
     // scoket推送的赔率变化，更新列表
@@ -165,9 +167,7 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
                         isNeedRefresh = updateMatchOdds(key, matchOdd, oddList, value)
                     }
                 } else { // 一级节点下面增加二级节点
-                    val oddList = value.toMutableList()
-                    oddsMap[key] = oddList
-                    insertSecondList(matchOdd, key, oddsChangeEvent.dynamicMarkets?.get(key)?.get() ?: "", oddList)
+                    insertSecondList(matchOdd, key, oddsChangeEvent.dynamicMarkets?.get(key)?.get() ?: "", value)
                 }
             }
         }
@@ -198,19 +198,13 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
         return isNeedRefresh
     }
 
-    private fun updateMatchOdds(playCate: String, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>?): Boolean {
+    private fun updateMatchOdds(playCate: String, matchOdd: MatchOdd, oddsMap: MutableList<Odd>, oddsMapSocket: List<Odd>): Boolean {
 
-        var result = !oddsMapSocket.isNullOrEmpty()
         if (oddsMap.isEmpty()) {
-            if (result) {
-                nodeReplaceChildData(matchOdd.categoryOddsMap[playCate]!!, oddsMapSocket!!)
-            }
+            nodeReplaceChildData(matchOdd.categoryOddsMap[playCate]!!, oddsMapSocket!!)
             return false
         }
 
-        if (!result) {
-            return false
-        }
         return refreshMatchOdds(playCate, matchOdd, oddsMap, oddsMapSocket!!)
     }
 
@@ -276,6 +270,12 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
         }
 
         return isNeedRefresh
+    }
+
+    private fun printLog(msg: String) {
+        if (BuildConfig.DEBUG) {
+            Log.d("SportOutrightAdapter2", "=====>>> $msg")
+        }
     }
 
 }

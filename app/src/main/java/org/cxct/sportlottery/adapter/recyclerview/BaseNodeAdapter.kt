@@ -556,6 +556,33 @@ abstract class BaseNodeAdapter(nodeList: MutableList<out BaseNode>? = null)
         return 0
     }
 
+    /**
+     * 收起或展开Node
+     * @param position Int
+     * @param animate Boolean
+     * @param notify Boolean
+     */
+    @JvmOverloads
+    fun expandOrCollapse(node: BaseNode,
+                         animate: Boolean = true,
+                         notify: Boolean = true,
+                         parentPayload: Any? = null): Int {
+
+        val position = getItemPosition(node)
+        if (position < 0) {
+            return 0
+        }
+
+        if (node is BaseExpandNode) {
+            return if (node.isExpanded) {
+               collapse(position, false, animate, notify, parentPayload)
+            } else {
+                expand(position, false, animate, notify, parentPayload)
+            }
+        }
+        return 0
+    }
+
     @JvmOverloads
     fun expandAndChild(@IntRange(from = 0) position: Int,
                        animate: Boolean = true,

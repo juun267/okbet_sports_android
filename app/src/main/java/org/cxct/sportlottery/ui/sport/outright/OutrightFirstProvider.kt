@@ -18,13 +18,13 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
                             override val layoutId: Int = R.layout.item_outright_group): BaseNodeProvider() {
 
     override fun convert(helper: BaseViewHolder, item: BaseNode)  {
-        val position = helper.bindingAdapterPosition
         val matchOdd = item as MatchOdd
         helper.setText(R.id.tv_league_name, matchOdd.matchInfo?.name)
         val ivArrow = helper.getView<ImageView>(R.id.iv_league_arrow)
         setArrowSpin(ivArrow, matchOdd, false)
         ivArrow.setOnClickListener {
-            adapter.expandOrCollapse(position)
+            val position = adapter.getItemPosition(item)
+            adapter.expandOrCollapse(item)
             setArrowSpin(ivArrow, matchOdd, true)
             onItemClick.invoke(position, it, matchOdd)
         }
