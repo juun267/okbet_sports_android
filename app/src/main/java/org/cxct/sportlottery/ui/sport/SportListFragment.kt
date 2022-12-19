@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.rotationAnimation
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
@@ -321,12 +322,18 @@ class SportListFragment :
                 leagueIdList
             )
         }
-        iv_arrow.isSelected = true
+        iv_arrow.isSelected = false
         iv_arrow.setOnClickListener {
-            iv_arrow.isSelected = !iv_arrow.isSelected
+            val selected = !iv_arrow.isSelected
+            iv_arrow.isSelected = selected
+            if (selected) {
+                iv_arrow.rotationAnimation(180f)
+            } else {
+                iv_arrow.rotationAnimation(0f)
+            }
             sportLeagueAdapter.data.forEach {
                 it.unfoldStatus =
-                    if (iv_arrow.isSelected) FoldState.UNFOLD.code else FoldState.FOLD.code
+                    if (!iv_arrow.isSelected) FoldState.UNFOLD.code else FoldState.FOLD.code
             }
             sportLeagueAdapter.notifyDataSetChanged()
         }

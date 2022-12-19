@@ -145,7 +145,7 @@ fun <T> BaseQuickAdapter<T, *>.showEmpty(@LayoutRes layoutId: Int) {
 fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
     ViewCompat.animate(this)
         .setDuration(duration)
-        .setInterpolator(DecelerateInterpolator())
+//        .setInterpolator(DecelerateInterpolator())
         .rotation(rotation)
         .start()
 }
