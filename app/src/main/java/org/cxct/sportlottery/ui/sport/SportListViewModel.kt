@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SportMenuData
@@ -113,6 +114,8 @@ class SportListViewModel(
             null
         }
     }
+
+    val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
     fun getGameHallList(
         isReloadDate: Boolean,
@@ -409,6 +412,8 @@ class SportListViewModel(
                 return@launch
             }
 
+            outrightList.postValue(Event(result, gameType))
+
             val outrightMatchList =
                 mutableListOf<org.cxct.sportlottery.network.outright.odds.MatchOdd>()
 
@@ -431,6 +436,7 @@ class SportListViewModel(
                         TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
 
                     //region 先處理頁面顯示需要的資料結構
+
                     matchOdd?.let { matchOddNotNull ->
                         //聯賽標題
 //                        oddsList.add(matchOddNotNull)
@@ -465,7 +471,7 @@ class SportListViewModel(
                                 ?.mapIndexed { index, odd ->
                                     odd.outrightCateKey = oddMap.key
                                     odd.playCateExpand = playCateExpand
-                                    odd.leagueExpanded = matchOddNotNull.isExpand
+                                    odd.leagueExpanded = matchOddNotNull.isExpanded
                                     odd.belongMatchOdd = matchOddNotNull
                                     odd.isExpand = true
                                     odd
@@ -479,7 +485,7 @@ class SportListViewModel(
                                 matchOdd = matchOddNotNull,
                                 playCateCodeList = playCateCodeList,
                                 subTitleList = subTitleList,
-                                leagueExpanded = matchOddNotNull.isExpand,
+                                leagueExpanded = matchOddNotNull.isExpanded,
                                 oddsList = odds
                             )
                         )

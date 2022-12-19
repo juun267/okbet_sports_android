@@ -75,7 +75,7 @@
             app:cardCornerRadius="@dimen/margin_8"
             android:layout_marginStart="@dimen/margin_14"
             android:layout_marginEnd="@dimen/margin_14"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="@dimen/margin_20"
             android:layout_width="match_parent"
             android:layout_height="83dp">

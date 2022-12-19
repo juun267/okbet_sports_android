@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.sport.filter
 
 import android.widget.ImageView
 import com.chad.library.adapter.base.BaseSectionQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.setLeagueLogo
 
@@ -11,11 +11,11 @@ class LeagueSelectAdapter
  * 构造方法里， super()必须设置 header layout
  * data可有可无
  */
-    (data: List<LeagueSection?>?) :
-    BaseSectionQuickAdapter<LeagueSection, BaseViewHolder>(R.layout.item_league_select,
-        R.layout.item_league_select_head,
+    (data: MutableList<LeagueSection>?) :
+    BaseSectionQuickAdapter<LeagueSection, BaseViewHolder>(R.layout.item_league_select_head,
+        R.layout.item_league_select,
         data) {
-    override fun convertHead(helper: BaseViewHolder, item: LeagueSection) {
+    override fun convertHeader(helper: BaseViewHolder, item: LeagueSection) {
         helper.setText(R.id.tv_name, item.header)
     }
 
@@ -28,4 +28,5 @@ class LeagueSelectAdapter
         }
 
     }
+
 }

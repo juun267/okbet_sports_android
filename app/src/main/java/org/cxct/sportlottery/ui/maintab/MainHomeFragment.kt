@@ -388,7 +388,7 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.VISIBLE
 
                 }
-                homeChessAdapter.setNewData(mHotChessList)
+                homeChessAdapter.setNewData(mHotChessList?.toMutableList())
 
                 //电子
                 val mHotelList = gameList.filter {data->
@@ -401,7 +401,7 @@ class MainHomeFragment :
                     hot_gaming_include.visibility = View.VISIBLE
                     view2.visibility = View.VISIBLE
                 }
-                hotElectronicAdapter.setNewData(mHotelList)
+                hotElectronicAdapter.setNewData(mHotelList?.toMutableList())
             }
         }
         viewModel.hotLiveData.observe(viewLifecycleOwner){ list->
@@ -471,7 +471,7 @@ class MainHomeFragment :
 //                       }
 //                   }
 
-                   hotHandicapAdapter.setNewData(list)
+                   hotHandicapAdapter.setNewInstance(list?.toMutableList())
                    //订阅赛事
                    subscribeQueryData(list)
                }

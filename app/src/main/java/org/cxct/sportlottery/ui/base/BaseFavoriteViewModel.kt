@@ -281,19 +281,6 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
-    /**
-     * 設置大廳所需顯示的玩法 (api未回傳的玩法需以“—”表示)
-     */
-    private fun MatchOdd.setupPlayCate() {
-        val sortOrder = this.oddsSort?.split(",")
-        this.oddsMap?.let { oddsMap ->
-            sortOrder?.forEach {
-                if (!oddsMap.keys.contains(it))
-                    oddsMap[it] = mutableListOf(null, null, null)
-            }
-        }
-    }
-
     private fun MatchOdd.sortOdd() {
         val sortOrder = this.oddsSort?.split(",")
         val oddsMap = this.oddsMap?.toSortedMap(compareBy<String> {

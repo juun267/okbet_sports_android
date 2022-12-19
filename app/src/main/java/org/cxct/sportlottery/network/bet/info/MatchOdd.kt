@@ -57,6 +57,7 @@ data class MatchOdd(
 
     ) {
     var oddState: Int = OddState.SAME.state
+    @Transient
     var runnable: Runnable? = null //賠率變更，按鈕顏色變換任務
     var betAddError: BetAddError? = null
     var oddsHasChanged = false

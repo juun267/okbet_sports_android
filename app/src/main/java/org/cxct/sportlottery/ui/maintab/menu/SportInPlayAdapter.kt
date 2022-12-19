@@ -2,7 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import androidx.appcompat.content.res.AppCompatResources
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
@@ -22,7 +22,7 @@ class SportInPlayAdapter(data: MutableList<Item>) :
 //        helper.setImageDrawable()
         helper.setImageDrawable(
             R.id.iv_sport_logo,
-            AppCompatResources.getDrawable(mContext, GameType.getInplayIcon(item.code))
+            AppCompatResources.getDrawable(context, GameType.getInplayIcon(item.code))
         )
         helper.setText(R.id.tv_name, item.name)
         helper.setText(R.id.tv_num, item.num.toString())

@@ -4,7 +4,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -14,12 +14,12 @@ class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
     BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_poker_game,data) {
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
-        var itemWith = (ScreenUtil.getScreenWidth(mContext) - 30.dp - 10.dp) / 2
+        var itemWith = (ScreenUtil.getScreenWidth(context) - 30.dp - 10.dp) / 2
         helper.itemView.layoutParams.apply {
             width = itemWith
             helper.itemView.layoutParams = this
         }
-        Glide.with(mContext)
+        Glide.with(context)
             .load(item.entryImage)
             .apply(
                 RequestOptions()

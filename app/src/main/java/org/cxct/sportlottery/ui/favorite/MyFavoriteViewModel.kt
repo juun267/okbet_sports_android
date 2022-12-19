@@ -286,7 +286,7 @@ class MyFavoriteViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds.putAll(
-                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
+                        quickOddsApi?.toMutableFormat_1() ?: mutableMapOf()
                     )
                 }
                 matchOdd.quickPlayCateNameMap = quickPlayCateNameMap
@@ -294,6 +294,7 @@ class MyFavoriteViewModel(
         }
         return this
     }
+
 
     private fun List<LeagueOdd>.clearQuickPlayCateSelected(): List<LeagueOdd> {
         this.forEach { leagueOdd ->

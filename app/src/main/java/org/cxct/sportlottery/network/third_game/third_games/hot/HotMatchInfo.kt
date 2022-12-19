@@ -64,7 +64,7 @@ data class HotMatchInfo(
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = null
     override var matchInfo: MatchInfo? = null
-    override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(
+    override var oddsMap: MutableMap<String, MutableList<Odd>?>? = mutableMapOf(
         PlayCate.HDP.value to mutableListOf(),
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()

@@ -990,7 +990,7 @@ class SportViewModel(
                                 ?.mapIndexed { index, odd ->
                                     odd.outrightCateKey = oddMap.key
                                     odd.playCateExpand = playCateExpand
-                                    odd.leagueExpanded = matchOddNotNull.isExpand
+                                    odd.leagueExpanded = matchOddNotNull.isExpanded
                                     odd.belongMatchOdd = matchOddNotNull
                                     odd.isExpand = true
                                     odd
@@ -1018,7 +1018,7 @@ class SportViewModel(
                                 matchOdd = matchOddNotNull,
                                 playCateCodeList = playCateCodeList,
                                 subTitleList = subTitleList,
-                                leagueExpanded = matchOddNotNull.isExpand,
+                                leagueExpanded = matchOddNotNull.isExpanded,
                                 oddsList = odds
                             )
                         )
@@ -2119,41 +2119,6 @@ class SportViewModel(
         )
     }
 
-    /**
-     * 設置大廳所需顯示的玩法 (api未回傳的玩法需以“—”表示)
-     */
-    private fun MatchOdd.setupPlayCate() {
-        val sortOrder = this.oddsSort?.split(",")
-        this.oddsMap?.let { oddMap ->
-            sortOrder?.forEach {
-                if (!oddMap.keys.contains(it))
-                    oddMap[it] = mutableListOf(null, null, null)
-            }
-        }
-    }
-
-    /**
-     * 有些playCateCode後面會給： 要特別做處理
-     * */
-    private fun MatchOdd.refactorPlayCode() {
-        try {
-            val oddsMap: MutableMap<String, MutableList<Odd?>?>
-
-            val rgzMap = this.oddsMap?.filter { (key, value) -> key.contains(":") }
-            rgzMap?.let {
-                if (rgzMap.isNotEmpty()) {
-                    oddsMap = this.oddsMap?.filter { !it.key.contains(":") }?.toMutableMap()
-                        ?: mutableMapOf()
-                    oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
-
-                    this.oddsMap?.clear()
-                    this.oddsMap?.putAll(oddsMap)
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     /**
      * 根據賽事的oddsSort將盤口重新排序
@@ -2204,7 +2169,7 @@ class SportViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds.putAll(
-                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
+                        quickOddsApi?.toMutableFormat_1() ?: mutableMapOf()
                     )
                 }
                 matchOdd.quickPlayCateNameMap = quickPlayCateNameMap

@@ -63,8 +63,8 @@ import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
-import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
+import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.FakeBoldSpan
@@ -1236,7 +1236,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
     }
 }
 
-fun MutableMap<String, MutableList<Odd?>?>.sortOddsMap(sizeCheck: Int = 3) {
+fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 3) {
     forEach { (_, value) ->
         when (sizeCheck) {
             3 -> {

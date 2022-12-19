@@ -531,7 +531,13 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>?> {
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd>?> {
+        return this.mapValues { map: Map.Entry<String, List<org.cxct.sportlottery.network.odds.Odd>?> ->
+            map.value?.toMutableList() ?: mutableListOf()
+        }.toMutableMap()
+    }
+
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat_1(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>?> {
         return this.mapValues { map ->
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()

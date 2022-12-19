@@ -580,7 +580,7 @@ class HomeListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 isLastPosition = index == newList.size - 1
             }
 
-            val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
+            val odds: MutableMap<String, MutableList<Odd>?> = mutableMapOf()
             it.oddsMap?.forEach { (key, value) ->
                 value?.forEach { odd ->
                     odd?.id?.let {

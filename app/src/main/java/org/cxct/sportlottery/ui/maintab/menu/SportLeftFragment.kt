@@ -159,15 +159,15 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     private fun initObserver() {
         viewModel.sportCodeList.observe(viewLifecycleOwner) {
             it?.let {
-                sportClassifyAdapter.setNewData(it)
+                sportClassifyAdapter.setNewInstance(it?.toMutableList())
             }
         }
         viewModel.inplayList.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.size > 8) {
-                    sportInPlayAdapter.setNewData(it.subList(0, 8))
+                    sportInPlayAdapter.setNewInstance(it.subList(0, 8)?.toMutableList())
                 } else {
-                    sportInPlayAdapter.setNewData(it)
+                    sportInPlayAdapter.setNewInstance(it?.toMutableList())
                 }
 
             }

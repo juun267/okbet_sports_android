@@ -1443,7 +1443,7 @@ class GameViewModel(
                                             }
                                         }
                                     } ?: "",
-                                    leagueExpanded = matchOddNotNull.isExpand))
+                                    leagueExpanded = matchOddNotNull.isExpanded))
                             //endregion
 
                             //region 玩法賠率項
@@ -1452,7 +1452,7 @@ class GameViewModel(
                                     ?.mapIndexed { index, odd ->
                                         odd.outrightCateKey = oddMap.key
                                         odd.playCateExpand = playCateExpand
-                                        odd.leagueExpanded = matchOddNotNull.isExpand
+                                        odd.leagueExpanded = matchOddNotNull.isExpanded
                                         odd.belongMatchOdd = matchOddNotNull
                                         if (index < 5) odd.isExpand = true
                                         odd
@@ -1469,7 +1469,7 @@ class GameViewModel(
                                         matchOddNotNull,
                                         playCateExpand,
                                         isExpanded = false,
-                                        leagueExpanded = matchOddNotNull.isExpand
+                                        leagueExpanded = matchOddNotNull.isExpanded
                                     )
                                 )
                             }
@@ -2619,19 +2619,6 @@ class GameViewModel(
     }
 
     /**
-     * 設置大廳所需顯示的玩法 (api未回傳的玩法需以“—”表示)
-     */
-    private fun MatchOdd.setupPlayCate() {
-        val sortOrder = this.oddsSort?.split(",")
-        this.oddsMap?.let { oddMap ->
-            sortOrder?.forEach {
-                if (!oddMap.keys.contains(it))
-                    oddMap[it] = mutableListOf(null, null, null)
-            }
-        }
-    }
-
-    /**
      * 根據賽事的oddsSort將盤口重新排序
      */
     private fun MatchOdd.sortOdds() {
@@ -2680,7 +2667,7 @@ class GameViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds.putAll(
-                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
+                        quickOddsApi?.toMutableFormat_1() ?: mutableMapOf()
                     )
                 }
                 matchOdd.quickPlayCateNameMap = quickPlayCateNameMap

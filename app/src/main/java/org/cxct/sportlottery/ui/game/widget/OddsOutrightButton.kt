@@ -2,10 +2,13 @@ package org.cxct.sportlottery.ui.game.widget
 
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -91,7 +94,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
         try {
             inflate(context, R.layout.button_odd_outright, this).apply {
-                button_odd_detail.background = mBackground
+
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -101,6 +104,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
     }
 
     fun setupOdd(
+        position: Int,
         odd: Odd?,
         oddsType: OddsType,
         gameType: String? = null,
@@ -109,34 +113,40 @@ open class OddsOutrightButton @JvmOverloads constructor(
         mOdd = odd
         mOddsType = oddsType
         tv_name.apply {
-            val extInfoStr =
-                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
-            text =
-                if (extInfoStr.isNullOrEmpty())
-                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-                else
-                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-            requestLayout()
 
-            visibility =
-                if (odd?.name.isNullOrEmpty() || gameType == "disable") View.GONE else View.VISIBLE
+            val languae = LanguageManager.getSelectLanguage(context).key
+            val extInfoStr = odd?.extInfoMap?.get(languae) ?: odd?.extInfo
+            text = "$position "+ if (extInfoStr.isNullOrEmpty()) {
+                "${(odd?.nameMap?.get(languae) ?: odd?.name)}"
+            } else {
+                "$extInfoStr ${(odd?.nameMap?.get(languae) ?: odd?.name)}"
+            }
+
+
+            visibility = if (odd?.name.isNullOrEmpty() || "disable".equals(gameType)) View.GONE else View.VISIBLE
+
+
+
         }
+
 
         tv_spread.apply {
             text = odd?.spread
-            requestLayout()
-            visibility =
-                if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
+            visibility = if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value)
+                View.GONE
+            else
+                View.VISIBLE
         }
 
         if (isOddPercentage == true) //反波膽顯示 %
             tv_odds?.text = TextUtil.formatForOddPercentage((getOdds(odd, oddsType) - 1))
         else
             tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-
 //        updateOddsTextColor()
 
-        isSelected = odd?.isSelected ?: false
+        val select = QuickListManager.getQuickSelectedList()?.contains(odd?.id) ?: false
+        isSelected = select
+        odd?.isSelected = select
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
         betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
@@ -261,10 +271,9 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
 //        updateOddsTextColor()
-
-//        isSelected = odds?.isSelected ?: false
-        isSelected = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
-
+        val select = QuickListManager.getQuickSelectedList()?.contains(odds?.id) ?: false
+        isSelected = select
+        odds?.isSelected = select
     }
 
     //主頁精選oddsButton的判斷
@@ -387,17 +396,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SAME.state -> {
-                tv_odds.setTextColor(
-                    ContextCompat.getColorStateList(
-                        context,
-                        if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                        else R.color.selector_button_odd_bottom_text
-                    )
-                )
-                iv_arrow.apply {
-                    setImageDrawable(null)
-                    visibility = View.GONE
-                }
+                resetOddsValueState()
                 isActivated = false
             }
         }
@@ -411,9 +410,29 @@ open class OddsOutrightButton @JvmOverloads constructor(
         }
 
         if (status) {
-            ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,2,0.3f)
+            ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,2,0.3f).apply {
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        resetOddsValueState()
+                    }
+                })
+            }
         }
 //        updateOddsTextColor()
+    }
+
+    private fun resetOddsValueState() {
+        tv_odds.setTextColor(
+            ContextCompat.getColorStateList(
+                context,
+                if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
+                else R.color.selector_button_odd_bottom_text
+            )
+        )
+        iv_arrow.apply {
+            setImageDrawable(null)
+            visibility = View.GONE
+        }
     }
 
     /**

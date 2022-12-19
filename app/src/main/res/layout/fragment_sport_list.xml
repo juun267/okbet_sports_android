@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:background="@color/transparent"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -102,10 +101,10 @@
                         android:id="@+id/iv_arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="7dp"
-                        android:padding="5dp"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="12dp"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/selector_arrow_blue_double" />
+                        android:src="@drawable/ic_arrow_up_double" />
 
                 </LinearLayout>
 
@@ -113,7 +112,6 @@
                     android:id="@+id/game_filter_type_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color_191919_FCFCFC"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
                     android:padding="16dp"
@@ -133,6 +131,7 @@
         android:layout_height="match_parent"
         android:overScrollMode="never"
         android:paddingTop="0dp"
+        android:background="@color/color_FFFFFF"
         tools:itemCount="1"
         tools:listitem="@layout/item_league"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

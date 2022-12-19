@@ -145,7 +145,7 @@ class HomeSlotFragment :
             } else {
                 lin_empty_game.isVisible = false
                 rv_slot.isVisible = true
-                homeSlotAdapter.setNewData(it)
+                homeSlotAdapter.setNewInstance(it.toMutableList())
             }
         }
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {

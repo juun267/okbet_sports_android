@@ -23,5 +23,5 @@ class RecommendGameEntity(
 
 class OddBean(
     val playTypeCode: String,
-    val oddList: MutableList<Odd?>,
+    val oddList: MutableList<Odd>,
 )
