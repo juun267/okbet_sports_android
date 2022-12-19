@@ -33,6 +33,7 @@ import retrofit2.Response
 import timber.log.Timber
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.abs
 
 
@@ -50,10 +51,10 @@ object BetInfoRepository {
         get() = _showBetInfoSingle
 
     //每個畫面都要觀察
-    private val _betInfoList = MutableLiveData<Event<MutableList<BetInfoListData>>>().apply {
-        value = Event(mutableListOf())
+    private val _betInfoList = MutableLiveData<Event<CopyOnWriteArrayList<BetInfoListData>>>().apply {
+        value = Event(CopyOnWriteArrayList())
     }
-    val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
+    val betInfoList: LiveData<Event<CopyOnWriteArrayList<BetInfoListData>>>
         get() = _betInfoList
 
     private val _betIDList = MutableLiveData<Event<MutableList<String>>>().apply {
@@ -218,7 +219,7 @@ object BetInfoRepository {
     }
 
     fun removeItem(oddId: String?) {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
@@ -237,7 +238,7 @@ object BetInfoRepository {
     }
 
     fun removeClosedPlatItem() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
 
         val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
@@ -259,7 +260,7 @@ object BetInfoRepository {
 
 
     fun clear() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         betList.clear()
         oddIDArray.clear()
@@ -276,10 +277,10 @@ object BetInfoRepository {
     }
 
     fun switchSingleMode() {
-        var betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        var betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         var oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         if (betList.size > 1) {
-            betList = betList.subList(0, 1)
+            betList = betList.subList(0, 1) as CopyOnWriteArrayList<BetInfoListData>
         }
         if (oddIDArray.size > 1) {
             oddIDArray = oddIDArray.subList(0, 1)
@@ -296,7 +297,7 @@ object BetInfoRepository {
     }
 
     fun switchParlayMode() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
         updateQuickListManager(betList)
@@ -325,7 +326,7 @@ object BetInfoRepository {
         betInfo: BetInfo? = null
     ) {
         Timber.v("Bill====>betInfo:${betInfo}")
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?:CopyOnWriteArrayList()
         oddsType?.let {
             this.oddsType = it
         }

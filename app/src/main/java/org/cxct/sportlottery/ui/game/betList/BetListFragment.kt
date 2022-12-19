@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.fragment_bank_card.eet_wallet
 import kotlinx.android.synthetic.main.fragment_bet_list.bg_dim_mount
 import kotlinx.android.synthetic.main.fragment_bet_list.btnParlaySingle
 import kotlinx.android.synthetic.main.fragment_bet_list.btn_bet
+import kotlinx.android.synthetic.main.fragment_bet_list.cl_parlay_list
 import kotlinx.android.synthetic.main.fragment_bet_list.ll_root
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
@@ -458,6 +459,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             showOddsChangeTips()
         }
 
+//        tvExpandOrStacked.isVisible = betParlayListRefactorAdapter?.getListSize() == 0
+//        betParlayListRefactorAdapter?.betListLiveData?.observe(viewLifecycleOwner) {
+//            tvExpandOrStacked.isVisible = (it?.size ?: 0) > 1
+//            cl_parlay_list.requestLayout()
+//        }
+
         tvExpandOrStacked.setOnClickListener {
             if (isOpen) {
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
@@ -479,6 +486,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             }
             betParlayListRefactorAdapter?.apply {
+
                 BetListRcvUtil.setFitHeight(isOpen, rv_parlay_list, this)
             }
             isOpen = !isOpen
