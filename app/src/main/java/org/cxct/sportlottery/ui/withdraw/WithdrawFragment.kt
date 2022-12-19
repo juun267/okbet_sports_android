@@ -574,13 +574,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 requireContext(),
                 bankCardList,
                 BankCardAdapterListener {
-                    val cardIcon = when (it.transferType) {
-                        TransferType.BANK -> getBankIconByBankName(it.bankName)
-                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
-                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
-                        TransferType.STATION -> getBankIconByBankName(it.bankName)
-                      //  TransferType.PAYMAYA -> getBankIconByBankName(it.bankName)
-                    }
+//                    val cardIcon = when (it.transferType) {
+//                        TransferType.BANK -> getBankIconByBankName(it.bankName)
+//                        TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+//                        TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
+//                        TransferType.STATION -> getBankIconByBankName(it.bankName)
+//                      //  TransferType.PAYMAYA -> getBankIconByBankName(it.bankName)
+//                    }
 
 
                     withdrawBankCardData = it

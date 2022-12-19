@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoard
@@ -68,6 +69,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             notifyDataSetChanged()
         }
 
+    val betListLiveData  = MutableLiveData<MutableList<BetInfoListData>?>()
+
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
             field = value
@@ -77,7 +80,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
             hasBetClosedForSingle =
                 value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code } != null
-
+            if(adapterBetType == PARLAY){
+                Timber.d("betList的长度:${field?.size}")
+                betListLiveData.value = value
+            }
             notifyDataSetChanged()
         }
     var oddsType: OddsType = OddsType.EU

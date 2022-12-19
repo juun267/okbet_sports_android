@@ -1,14 +1,15 @@
 package org.cxct.sportlottery.ui.maintab.menu
 
+import android.widget.CheckBox
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 
 class OddsPriceAdapter(data: List<String?>?) :
-    BaseQuickAdapter<String?, BaseViewHolder>(R.layout.item_odds_type, data) {
+    BaseQuickAdapter<String?, BaseViewHolder>(R.layout.item_odds_type, data?.toMutableList()) {
     private var selectPos = -1
     override fun convert(helper: BaseViewHolder, item: String?) {
-        helper.setChecked(R.id.rbtn_odds, helper.layoutPosition == selectPos)
+        helper.getView<CheckBox>(R.id.rbtn_odds).isChecked = helper.layoutPosition == selectPos
         helper.setText(R.id.rbtn_odds, item)
     }
 

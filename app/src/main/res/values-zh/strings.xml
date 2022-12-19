@@ -555,7 +555,7 @@
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
     <string name="bet_info_input_quota">输入金额</string>
     <string name="bet_info_check_maximum_limit">查看最高下注</string>
-    <string name="bet_info_bet_quota">投注额</string>
+    <string name="bet_info_bet_quota">投注金额</string>
     <string name="bet_info_win_quota">可赢额</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_odd_content_changed2">球线或赔率已变更</string>

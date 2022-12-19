@@ -1,11 +1,13 @@
 package org.cxct.sportlottery.network.odds
 
 import android.os.Parcelable
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
+import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 
 /**
@@ -62,7 +64,7 @@ data class Odd(
     @Json(name = "rowSort")
     val rowSort: Int? = null
 
-) : OddStateParams, Parcelable {
+) : OddStateParams, Parcelable, BaseNode() {
 
     var isSelected: Boolean? = false
 
@@ -89,5 +91,11 @@ data class Odd(
     var belongMatchOdd: MatchOdd? = null //紀錄所屬的MatchOdd
 
     var leagueExpanded: Boolean = true //所屬MatchOdd是否為展開
+
+    override val childNode: MutableList<BaseNode>? = null
+
+    // 列表的父节点
+    @Transient
+    lateinit var parentNode: CategoryOdds
 
 }

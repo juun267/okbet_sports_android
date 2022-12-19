@@ -130,7 +130,7 @@ class LeagueSelectActivity :
         linearLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv_league.layoutManager = linearLayoutManager
         rv_league.addItemDecoration(VerticalDecoration(this, R.drawable.divider_vertical_6))
-        leagueSelectAdapter = LeagueSelectAdapter(listOf())
+        leagueSelectAdapter = LeagueSelectAdapter(mutableListOf())
         leagueSelectAdapter.setOnItemClickListener { adapter, view, position ->
 
             var item = itemData[position]

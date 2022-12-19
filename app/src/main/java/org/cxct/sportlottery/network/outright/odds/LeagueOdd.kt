@@ -9,7 +9,7 @@ data class LeagueOdd(
     @Json(name = "league")
     val league: League?,
     @Json(name = "matchOdds")
-    val matchOdds: List<MatchOdd?> ?= listOf()
+    val matchOdds: List<MatchOdd> ?= listOf()
 ) {
     var isExpand = false
 }

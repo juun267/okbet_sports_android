@@ -171,7 +171,7 @@
     <string name="infomation_center">Trung tâm thông tin</string>
     <string name="left_menu_odds_type_setting">Cài đặt thị trường</string>
     <string name="go_back_home_page">Quay lại trang chủ</string>
-    <string name="profile_center">Trung tâm cá nhân</string>
+    <string name="profile_center">Trang cá nhân</string>
     <string name="member_level">Cấp bậc hội viên</string>
     <string name="game_settlement">Kết quả trận đấu</string>
     <string name="app_download">Tải xuống ứng dụng</string>
@@ -277,11 +277,10 @@
     <string name="choose_a_photo_from_the_album">chọn ảnh từ album</string>
     <string name="take_a_picture">Chụp ảnh</string>
     <string name="save_avatar_success">Ảnh đại diện tải lên thành công</string>
-    <string name="change_nickname">Thay đổi iBệt hiệu</string>
+    <string name="change_nickname">Thay đổi tên</string>
     <string name="hint_nickname">Độ dài tiếng Trung và tiếng Anh từ 2–6 từ</string>
     <string name="setting_password">Thiết lập mật khẩu</string>
     <string name="withdrawal_password">Mật khẩu rút tiền</string>
-    <string name="current_login_password">Hiện tạiĐăng nhập mật khẩu</string>
     <string name="current_withdrawal_password">Hiện tạiMật khẩu rút tiền</string>
     <string name="hint_current_login_password">Đăng nhập mật khẩu</string>
     <string name="hint_current_withdrawal_password">Mật khẩu rút tiền </string>
@@ -1361,4 +1360,5 @@
     <string name="error_amount_limit_less">Tiền nạp nhỏ hơn mức tối thiểu</string>
     <string name="update_voucher">Tải lên hoá đơn</string>
     <string name="no_select_file">Chưa chọn tệp</string>
+    <string name="current_login_password">Mật khẩu đăng nhập hiện tại</string>
 </resources>

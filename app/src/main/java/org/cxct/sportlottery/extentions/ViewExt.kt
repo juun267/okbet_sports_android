@@ -5,7 +5,11 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.view.View
-import org.cxct.sportlottery.R
+import androidx.annotation.LayoutRes
+import com.chad.library.adapter.base.BaseQuickAdapter
+import android.view.animation.DecelerateInterpolator
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewPropertyAnimatorListenerAdapter
 import org.cxct.sportlottery.util.BraetheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
 
@@ -106,5 +110,43 @@ fun View.flashAnimation(duration:Long = 1000,repeatCount:Int = ValueAnimator.INF
 
     alphaAnimator.start()
     return alphaAnimator
+}
+
+fun View.translationXAnimation(x: Float, endCall: (() -> Unit)? = null, duration: Long = 200) {
+    val anim = ViewCompat.animate(this)
+        .setDuration(duration)
+        .setInterpolator(DecelerateInterpolator())
+        .translationX(x)
+
+    endCall?.let {
+        anim.setListener(object : ViewPropertyAnimatorListenerAdapter() {
+            override fun onAnimationEnd(view: View) {
+                it.invoke()
+            }
+        })
+    }
+
+    anim.start()
+}
+fun <T> BaseQuickAdapter<T, *>.showLoading(@LayoutRes layoutId: Int) {
+    if (this.data.size > 0) {
+        this.setNewInstance(null)
+    }
+    this.setEmptyView(layoutId)
+}
+
+fun <T> BaseQuickAdapter<T, *>.showEmpty(@LayoutRes layoutId: Int) {
+    if (this.data.size > 0) {
+        this.setNewInstance(null)
+    }
+    this.setEmptyView(layoutId)
+}
+
+fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
+    ViewCompat.animate(this)
+        .setDuration(duration)
+        .setInterpolator(DecelerateInterpolator())
+        .rotation(rotation)
+        .start()
 }
 

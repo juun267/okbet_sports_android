@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.FastBetDataBean
@@ -26,7 +26,7 @@ import org.cxct.sportlottery.util.setLeagueLogo
 
 
 class HotHandicapAdapter(val lifecycleOwner: LifecycleOwner, data:List<HandicapData>):
-    BaseQuickAdapter<HandicapData,BaseViewHolder>(R.layout.item_hot_handicap,data) {
+    BaseQuickAdapter<HandicapData,BaseViewHolder>(R.layout.item_hot_handicap,data?.toMutableList()) {
 
     var oddsType: OddsType = MultiLanguagesApplication.mInstance.mOddsType.value ?: OddsType.EU
         set(value) {
@@ -102,7 +102,7 @@ class HotHandicapAdapter(val lifecycleOwner: LifecycleOwner, data:List<HandicapD
         var recycleView = helper.getView<RecyclerView>(R.id.rv_handicap_item)
         recycleView.apply {
             if (layoutManager == null) {
-                layoutManager = LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             }
             if (adapter == null) {
                 homeRecommendListener?.let {

@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.money.config.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil.stampToDateHMS
@@ -87,6 +88,13 @@ class BankCardListAdapter(private val mBankCardListClickListener: BankCardListCl
                 tv_bank_name.text = data.bankName //银行名字
                 tv_tail_number.text =
                     if (data.cardNo.length > 4) data.cardNo.substring(data.cardNo.length - 4) else  data.cardNo //尾號四碼
+                bank_card_type.text =  when(data.transferType.type){
+                    TransferType.BANK.type -> LocalUtils.getString(R.string.bank_card)
+                    TransferType.CRYPTO.type -> LocalUtils.getString(R.string.crypto)
+                    TransferType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
+                //    TransferType.E_WALLET.type -> LocalUtils.getString(R.string.ewallet)
+                    else -> LocalUtils.getString(R.string.bank_card)
+                }
                 when(data.transferType){
                     TransferType.CRYPTO ->
 

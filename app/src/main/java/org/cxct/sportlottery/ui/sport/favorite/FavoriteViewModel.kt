@@ -179,7 +179,7 @@ class FavoriteViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds.putAll(
-                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
+                        quickOddsApi?.toMutableFormat_1() ?: mutableMapOf()
                     )
                 }
                 matchOdd.quickPlayCateNameMap = quickPlayCateNameMap

@@ -271,7 +271,7 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
         source = this.matchInfo?.source,
         parlay = this.matchInfo?.parlay
     )
-    val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
+    val odds: MutableMap<String, MutableList<Odd>?> = mutableMapOf()
     this.oddBeans.forEach {
         odds[it.playTypeCode] = it.oddList.toMutableList()
     }

@@ -20,12 +20,14 @@ import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
@@ -35,6 +37,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.extentions.screenHeight
+import org.cxct.sportlottery.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
@@ -60,8 +63,8 @@ import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
-import org.cxct.sportlottery.ui.sport.SportOutrightAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
+import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.FakeBoldSpan
@@ -195,12 +198,109 @@ fun RecyclerView.addScrollWithItemVisibility(
     })
 }
 
+// 监听RecyclerView滑出屏幕距离(offset)显示返回顶部按钮
+fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
+
+    var targetWidth = 0f
+    targetView.setOnClickListener { smoothScrollToPosition(0) }
+    targetView.post {
+        targetWidth = targetView.measuredWidth.toFloat()
+        if (targetView.translationX != targetWidth) { targetView.translationX = targetWidth }
+    }
+
+    var animaIdle = true
+    val animEndCall: () -> Unit = { animaIdle = true }
+    addOnScrollListener(object : OnScrollListener() {
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (!animaIdle) {
+                return
+            }
+
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                if (targetView.translationX != targetWidth) {
+                    animaIdle = false
+                    targetView.translationXAnimation(targetWidth, animEndCall)
+                }
+                return
+            }
+
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (computeVerticalScrollOffset() > offset) {
+                    if (targetView.translationX != 0f) {
+                        animaIdle = false
+                        targetView.translationXAnimation(0f, animEndCall)
+                    }
+                }
+            }
+        }
+
+    })
+}
+
+// 监听RecyclerView滑出屏幕距离(offset)显示返回顶部按钮
+fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
+
+    var targetWidth = 0f
+    targetView.setOnClickListener { smoothScrollTo(0, 0) }
+    targetView.post {
+        targetWidth = targetView.measuredWidth.toFloat()
+        if (targetView.translationX != targetWidth) { targetView.translationX = targetWidth }
+    }
+
+    var lastY = 0
+    var animaIdle = true
+    val animEndCall: () -> Unit = { animaIdle = true }
+    val runnable = Runnable {
+        if (!animaIdle) {
+            return@Runnable
+        }
+
+        if (lastY > offset) {
+            if (targetView.translationX != 0f) {
+                animaIdle = false
+                targetView.translationXAnimation(0f, animEndCall)
+            }
+        }
+    }
+
+    setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+        if (!animaIdle) {
+            return@setOnScrollChangeListener
+        }
+
+        if (scrollY < oldScrollY) { // 往上回滚，根据条件立即隐藏返回顶部按钮
+            lastY = scrollY
+            if (targetView.translationX != targetWidth) {
+                animaIdle = false
+                targetView.translationXAnimation(targetWidth, animEndCall)
+            }
+
+            if (offset > scrollY) {
+                return@setOnScrollChangeListener
+            }
+        }
+
+        lastY = scrollY
+        targetView.removeCallbacks(runnable)
+        targetView.postDelayed(runnable, 80)
+    }
+
+}
+
 fun RecyclerView.addScrollListenerForBottomNavBar(
     onScrollDown: (isScrollDown: Boolean) -> Unit
 ) {
     addOnScrollListener(object : RecyclerView.OnScrollListener() {
         var needChangeBottomBar = true
         var directionIsDown = true
+
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+
+            }
+        }
+
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             if (needChangeBottomBar) {
@@ -1136,7 +1236,7 @@ fun ImageView.setLeagueLogo(icon: String?) {
     }
 }
 
-fun MutableMap<String, MutableList<Odd?>?>.sortOddsMap(sizeCheck: Int = 3) {
+fun MutableMap<String, MutableList<Odd>?>.sortOddsMap(sizeCheck: Int = 3) {
     forEach { (_, value) ->
         when (sizeCheck) {
             3 -> {

@@ -253,8 +253,8 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 },
                 onClickMatch = { matchOdd ->
                     lifecycleScope.launch(Dispatchers.IO) {
-                        val newExpanded = !(matchOdd?.isExpand ?: true)
-                        matchOdd?.isExpand = newExpanded
+                        val newExpanded = !(matchOdd?.isExpanded ?: true)
+                        matchOdd?.isExpanded = newExpanded
 
                         this@apply.data.filter { any ->
                             when (any) {

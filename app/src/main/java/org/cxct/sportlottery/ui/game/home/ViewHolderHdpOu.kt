@@ -27,7 +27,7 @@ class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
         private const val TIMER_TASK = 1580
     }
-    private var oddList: MutableList<Odd?>? = null
+    private var oddList: MutableList<Odd>? = null
 
     var onClickOddListener: OnClickOddListener? = null
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉

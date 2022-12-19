@@ -19,7 +19,7 @@ data class MatchOddsItem(
     @Json(name = "playCateNameMap")
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) : MatchOdd {
-    override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf()
+    override var oddsMap: MutableMap<String, MutableList<Odd>?>? = mutableMapOf()
 
     override var quickPlayCateList: MutableList<QuickPlayCate>? = null
 

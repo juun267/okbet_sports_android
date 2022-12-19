@@ -57,6 +57,7 @@ import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.OKVideoPlayer
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -251,14 +252,7 @@ class MainHomeFragment :
         initHotHandicap()
         initListView()
 
-        nsv_home.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            ll_come_back.visibility =
-                if (nsv_home.canScrollVertically(-1)) View.VISIBLE else View.GONE
-        }
-
-        ll_come_back.setOnClickListener {
-            nsv_home.smoothScrollTo(0,0)
-        }
+        nsv_home.setupBackTop(ll_come_back, 180.dp)
 
         view_action.setOnClickListener {
             mMatchInfo?.let { it1 ->
@@ -394,7 +388,7 @@ class MainHomeFragment :
                     hot_card_game_include.visibility = View.VISIBLE
 
                 }
-                homeChessAdapter.setNewData(mHotChessList)
+                homeChessAdapter.setNewData(mHotChessList?.toMutableList())
 
                 //电子
                 val mHotelList = gameList.filter {data->
@@ -407,7 +401,7 @@ class MainHomeFragment :
                     hot_gaming_include.visibility = View.VISIBLE
                     view2.visibility = View.VISIBLE
                 }
-                hotElectronicAdapter.setNewData(mHotelList)
+                hotElectronicAdapter.setNewData(mHotelList?.toMutableList())
             }
         }
         viewModel.hotLiveData.observe(viewLifecycleOwner){ list->
@@ -477,7 +471,7 @@ class MainHomeFragment :
 //                       }
 //                   }
 
-                   hotHandicapAdapter.setNewData(list)
+                   hotHandicapAdapter.setNewInstance(list?.toMutableList())
                    //订阅赛事
                    subscribeQueryData(list)
                }

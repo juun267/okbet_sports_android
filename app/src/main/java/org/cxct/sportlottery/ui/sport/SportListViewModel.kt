@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
+import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SearchResponse
 import org.cxct.sportlottery.network.sport.SportMenuData
@@ -66,10 +68,6 @@ class SportListViewModel(
         get() = _oddsListGameHallResult
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
 
-    val outrightMatchList: LiveData<Event<List<Any>>>
-        get() = _outrightMatchList
-    private val _outrightMatchList = MutableLiveData<Event<List<Any>>>()
-
     //ErrorDialog
     val showErrorDialogMsg: LiveData<String>
         get() = _showErrorDialogMsg
@@ -113,6 +111,8 @@ class SportListViewModel(
             null
         }
     }
+
+    val outrightList = MutableLiveData<Event<OutrightOddsListResult?>>()
 
     fun getGameHallList(
         isReloadDate: Boolean,
@@ -390,6 +390,7 @@ class SportListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightOddsList(
+
                     if (leagueIdList.isNullOrEmpty()) {
                         OutrightOddsListRequest(
                             gameType,
@@ -409,10 +410,6 @@ class SportListViewModel(
                 return@launch
             }
 
-            val outrightMatchList =
-                mutableListOf<org.cxct.sportlottery.network.outright.odds.MatchOdd>()
-
-            val oddsList = mutableListOf<Any>()
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
@@ -425,73 +422,16 @@ class SportListViewModel(
                     //20220613 冠軍的排序字串切割方式不同, 跟進iOS此處無重新排序
 //                    matchOdd?.sortOdds()
 
-                    matchOdd?.startDate =
-                        TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
-                    matchOdd?.startTime =
-                        TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
+                    matchOdd?.startDate = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd?.startTime = TimeUtil.timeFormat(matchOdd?.matchInfo?.endTime, HM_FORMAT)
 
-                    //region 先處理頁面顯示需要的資料結構
-                    matchOdd?.let { matchOddNotNull ->
-                        //聯賽標題
-//                        oddsList.add(matchOddNotNull)
-                        var playCateCodeList = mutableListOf<String>()
-                        var subTitleList = mutableListOf<String>()
-                        var odds = mutableListOf<List<Odd>>()
-                        matchOddNotNull.oddsMap?.forEach { oddMap ->
-                            val playCateExpand =
-                                matchOddNotNull.oddsExpand?.get(oddMap.key) ?: false
-                            playCateCodeList.add(oddMap.key)
-                            subTitleList.add(matchOddNotNull.dynamicMarkets[oddMap.key]?.let {
-                                when (LanguageManager.getSelectLanguage(LocalUtils.getLocalizedContext())) {
-                                    LanguageManager.Language.ZH -> {
-                                        it.zh
-                                    }
-                                    LanguageManager.Language.VI -> {
-                                        it.vi
-                                    }
-                                    LanguageManager.Language.TH -> {
-                                        it.th
-                                    }
-                                    else -> {
-                                        it.en
-                                    }
-                                }
-                            } ?: "")
-
-                            //endregion
-
-                            //region 玩法賠率項
-                            odds.add(oddMap.value?.filterNotNull()
-                                ?.mapIndexed { index, odd ->
-                                    odd.outrightCateKey = oddMap.key
-                                    odd.playCateExpand = playCateExpand
-                                    odd.leagueExpanded = matchOddNotNull.isExpand
-                                    odd.belongMatchOdd = matchOddNotNull
-                                    odd.isExpand = true
-                                    odd
-                                } ?: listOf<Odd>())
-                            //endregion
-
-                        }
-                        //region 玩法標題
-                        oddsList.add(
-                            OutrightItem(
-                                matchOdd = matchOddNotNull,
-                                playCateCodeList = playCateCodeList,
-                                subTitleList = subTitleList,
-                                leagueExpanded = matchOddNotNull.isExpand,
-                                oddsList = odds
-                            )
-                        )
-//                        matchOddNotNull.outrightOddsList = oddsList
-                        outrightMatchList.add(matchOddNotNull)
-                    }
-                    //endregion
                 }
             }
-            withContext(Dispatchers.Main) {
-                _outrightMatchList.value = Event(oddsList, gameType)
+
+            if (gameType != this@SportListViewModel.gameType) {
+                return@launch
             }
+            outrightList.postValue(Event(result, gameType))
         }
     }
 

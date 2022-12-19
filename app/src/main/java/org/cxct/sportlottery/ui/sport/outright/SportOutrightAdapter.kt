@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.sport
+package org.cxct.sportlottery.ui.sport.outright
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.synthetic.main.button_odd_outright.view.*
 import kotlinx.android.synthetic.main.item_outright_league.view.*
 import org.cxct.sportlottery.R
@@ -183,7 +184,6 @@ class SportOutrightAdapter : BaseGameAdapter() {
                         this@OutrightLeagueViewHolder,
                         outrightOddListener).apply {
                     }
-                    (adapter as OddsOutrightCatagoryAdapter).bindToRecyclerView(this)
                 } else {
                     (adapter as OddsOutrightCatagoryAdapter).update(outrightItem, oddsType)
                 }
@@ -207,12 +207,12 @@ class SportOutrightAdapter : BaseGameAdapter() {
         var oddsType: OddsType,
         val oddStateViewHolder: OddStateViewHolder,
         val outrightOddListener: OutrightOddListener?,
-    ) : BaseQuickAdapter<List<Odd>?, BaseViewHolder?>(R.layout.item_outright_catagory,
-        outrightItem.oddsList) {
-        override fun convert(helper: BaseViewHolder?, item: List<Odd>?) {
+    ) : BaseQuickAdapter<List<Odd>?, BaseViewHolder>(R.layout.item_outright_catagory,
+        outrightItem.oddsList?.toMutableList()) {
+        override fun convert(helper: BaseViewHolder, item: List<Odd>?) {
             helper?.setText(R.id.tv_match_name, outrightItem.subTitleList[helper.layoutPosition])
             helper?.setText(R.id.tv_time,
-                "${outrightItem.matchOdd?.startDate ?: ""} ${outrightItem.matchOdd?.startTime ?: ""} " + mContext.getString(
+                "${outrightItem.matchOdd?.startDate ?: ""} ${outrightItem.matchOdd?.startTime ?: ""} " + context.getString(
                     R.string.deadline))
             helper?.setGone(R.id.rv_odds,
                 !outrightItem.collsePosition.contains(helper.layoutPosition))
@@ -233,10 +233,10 @@ class SportOutrightAdapter : BaseGameAdapter() {
                         context.resources.getDimensionPixelOffset(R.dimen.recyclerview_news_item_dec_spec),
                         Color.TRANSPARENT, true))
                     adapter = OddsOutrightOddsAdapter(item, oddsType, oddStateViewHolder).apply {
-                        setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener {
+                        setOnItemClickListener(object : OnItemClickListener {
                             override fun onItemClick(
-                                adapter: BaseQuickAdapter<*, *>?,
-                                view: View?,
+                                adapter: BaseQuickAdapter<*, *>,
+                                view: View,
                                 position: Int,
                             ) {
                                 data[position]?.let {
@@ -257,16 +257,16 @@ class SportOutrightAdapter : BaseGameAdapter() {
         fun update(outrightItem: OutrightItem, oddsType: OddsType) {
             this.oddsType = oddsType
             this.outrightItem = outrightItem
-            setNewData(outrightItem.oddsList)
+            setNewInstance(outrightItem.oddsList?.toMutableList())
         }
     }
 
     class OddsOutrightOddsAdapter(
-        data: List<Odd?>?,
+        data: List<Odd>?,
         var oddsType: OddsType,
         var oddStateViewHolder: OddStateViewHolder,
-    ) : BaseQuickAdapter<Odd?, BaseViewHolder?>(R.layout.item_outright_odd, data) {
-        override fun convert(helper: BaseViewHolder?, item: Odd?) {
+    ) : BaseQuickAdapter<Odd, BaseViewHolder>(R.layout.item_outright_odd, data?.toMutableList()) {
+        override fun convert(helper: BaseViewHolder, item: Odd) {
             helper?.getView<OddsOutrightButton>(R.id.outright_odd_btn)?.apply {
                 setupOdd(item, oddsType)
                 tv_spread.text = ""
@@ -274,9 +274,9 @@ class SportOutrightAdapter : BaseGameAdapter() {
             }
         }
 
-        fun update(data: List<Odd?>?, oddsType: OddsType) {
+        fun update(data: List<Odd>?, oddsType: OddsType) {
             this.oddsType = oddsType
-            setNewData(data)
+            setNewInstance(data?.toMutableList())
         }
     }
 }

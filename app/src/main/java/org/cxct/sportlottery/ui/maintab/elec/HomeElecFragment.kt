@@ -171,7 +171,7 @@ class HomeElecFragment :
             } else {
                 lin_empty_game.isVisible = false
                 rv_elec.isVisible = true
-                homeElecAdapter.setNewData(it)
+                homeElecAdapter.setNewData(it?.toMutableList())
             }
         }
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {

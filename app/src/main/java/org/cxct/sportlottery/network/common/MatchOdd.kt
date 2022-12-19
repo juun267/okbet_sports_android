@@ -9,7 +9,7 @@ interface MatchOdd {
     var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     val matchInfo: MatchInfo?
-    var oddsMap: MutableMap<String, MutableList<Odd?>?>?
+    var oddsMap: MutableMap<String, MutableList<Odd>?>?
     val oddsSort: String?
     var quickPlayCateList: MutableList<QuickPlayCate>?
     val oddsEps: EpsOdd?

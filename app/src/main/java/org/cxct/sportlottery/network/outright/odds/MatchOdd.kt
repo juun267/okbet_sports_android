@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.network.outright.odds
 
 import android.os.Parcelable
+import com.chad.library.adapter.base.entity.node.BaseExpandNode
+import com.chad.library.adapter.base.entity.node.BaseNode
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -12,6 +14,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LocalUtils
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -19,7 +23,7 @@ data class MatchOdd(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo?,
     @Json(name = "odds")
-    override var oddsMap: MutableMap<String, MutableList<Odd?>?>? = mutableMapOf(),
+    override var oddsMap: MutableMap<String, MutableList<Odd>?>? = mutableMapOf(),
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: @RawValue Map<String, DynamicMarket>,
     @Json(name = "oddsList")
@@ -32,7 +36,9 @@ data class MatchOdd(
     override var betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
     @Json(name = "playCateNameMap")
     override var playCateNameMap: MutableMap<String?, Map<String?, String?>?>? = mutableMapOf(),
-    ) : MatchOdd,
+
+    ) : MatchOdd, BaseExpandNode(),
+
 
     Parcelable {
     @IgnoredOnParcel
@@ -53,10 +59,31 @@ data class MatchOdd(
         it.key == oddsMap?.keys?.firstOrNull()
     }?.toMutableMap()
 
-    @IgnoredOnParcel
-    var isExpand: Boolean = true
-
     //僅給冠軍重組賠率項資料結構使用
     var outrightOddsList: MutableList<Any> = mutableListOf()
+
+    override val childNode: MutableList<BaseNode>
+        get() = _nodes
+
+    @IgnoredOnParcel
+    private val _nodes by lazy {
+        val oddsNode = mutableListOf<BaseNode>()
+        oddsMap?.entries?.toMutableList()?.forEach {
+            val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
+            oddsNode.add(categoryOdds)
+            categoryOddsMap[it.key] = categoryOdds
+        }
+        oddsNode
+    }
+
+    fun plusPlayCateOdds(playCate: String, oddList: MutableList<Odd>) {
+        childNode?.add(CategoryOdds(dynamicMarkets?.get(playCate)?.get() ?: "", this, playCate,oddList))
+    }
+
+    @IgnoredOnParcel
+    var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算
+
+    @IgnoredOnParcel
+    var categoryOddsMap = mutableMapOf<String, CategoryOdds>()    //用于本地计算
 
 }

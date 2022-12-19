@@ -1,12 +1,12 @@
 package org.cxct.sportlottery.ui.maintab
 
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.StaticData
 
 class HomeTabAdapter(data: List<HomeTabItem>?, val selectPos: Int, homeFragment: HomeFragment) :
-    BaseQuickAdapter<HomeTabItem, BaseViewHolder>(R.layout.item_tab_home, data) {
+    BaseQuickAdapter<HomeTabItem, BaseViewHolder>(R.layout.item_tab_home, data?.toMutableList()) {
 
     companion object {
         fun getItems(): List<HomeTabItem> {

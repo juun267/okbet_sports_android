@@ -32,12 +32,12 @@ data class OddsChangeEvent(
     var playCateNameMap: MutableMap<String?, Map<String?, String?>?>?
 ) : ServiceEventType, ServiceChannel {
     override var channel: String? = null
-    var odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf() //key=>玩法类型code, value=>赔率列表
+    var odds: MutableMap<String, MutableList<Odd>?> = mutableMapOf() //key=>玩法类型code, value=>赔率列表
 }
 
 data class OddsList (
     @Json(name = "playCateCode")
     val playCateCode:String?,
     @Json(name = "oddsList")
-    val oddsList: MutableList<Odd?>?
+    val oddsList: MutableList<Odd>?
 )

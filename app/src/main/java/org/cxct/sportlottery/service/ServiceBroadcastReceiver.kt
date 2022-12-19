@@ -325,7 +325,7 @@ open class ServiceBroadcastReceiver(
             oddTypeSocketList.forEach { oddsList ->
                 if (oddsList.playCateCode != PlayCate.LCS.value) {
                     oddsList.oddsList?.forEach { odd ->
-                        if (odd?.playCode != PlayCate.LCS.value) {
+                        if (odd != null && odd?.playCode != PlayCate.LCS.value) {
                             val oddsDiscount = odd?.odds?.applyDiscount(discount)
                             odd?.odds = odd?.odds?.applyDiscount(discount)
 
@@ -383,7 +383,7 @@ open class ServiceBroadcastReceiver(
                 oddTypeSocketMapEntry.value?.onEach { odd ->
                     odd?.isSelected =
                         betInfoRepository.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
+                            betInfoListData.matchOdd?.oddsId == odd?.id
                         }
                 }
             }

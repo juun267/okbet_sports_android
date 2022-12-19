@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.widget.EmptyView
 import java.lang.reflect.ParameterizedType
 
 abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null) :
-    BaseQuickAdapter<T, VBViewHolder<VB>>(0, data) {
+    BaseQuickAdapter<T, BindingVH<VB>>(0, data) {
 
     constructor(mContext: Context): this() {
         enableDefaultEmptyView(mContext)
@@ -51,21 +51,21 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
         }
     }
 
-    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): VBViewHolder<VB> {
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BindingVH<VB> {
         val vbClass: Class<VB> = (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
         val inflate = vbClass.getDeclaredMethod(
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
             Boolean::class.java)
-        return VBViewHolder(inflate.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB)
+        return BindingVH(inflate.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB)
     }
 
-    override fun convert(helper: VBViewHolder<VB>, item: T) {
+    override fun convert(helper: BindingVH<VB>, item: T) {
         onBinding(positionOf(item), helper.vb, item)
     }
 
     abstract fun onBinding(position: Int, viewBinding: VB, item: T)
 }
 
-class VBViewHolder<VB : ViewBinding>(val vb: VB) : BaseViewHolder(vb.root)
+class BindingVH<VB : ViewBinding>(val vb: VB) : BaseViewHolder(vb.root)

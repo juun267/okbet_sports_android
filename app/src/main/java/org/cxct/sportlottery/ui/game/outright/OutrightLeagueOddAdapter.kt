@@ -180,7 +180,7 @@ class OutrightLeagueOddAdapter : BaseGameAdapter() {
             }
 
             //若該聯賽隱藏與下一個聯賽的間隔
-            val bottomMargin = if (matchOdd?.isExpand == true) {
+            val bottomMargin = if (matchOdd?.isExpanded == true) {
                 0
             } else {
                 endDivider

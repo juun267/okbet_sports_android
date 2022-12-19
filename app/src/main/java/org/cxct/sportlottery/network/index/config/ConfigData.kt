@@ -104,7 +104,7 @@ data class ConfigData(
     val supportLanguage: String = "",
     val wsHost: String = "",
     val creditSystem: Int? = null,
-    val firstRechLessAmountLimit: String?,
+    val firstRechLessAmountLimit: String?,//首存金额限制
     var idUploadNumber: String?,//KYC認證個數
     var customerServicveVideoUrl: String?,
     val enableBirthday: String?, //是否开启Birthday(1：开启，0：关闭)

@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.EventBus
 
 class HomeLiveFragment :
@@ -392,8 +393,6 @@ class HomeLiveFragment :
 
             if (adapter == null) {
                 adapter = homeLiveAdapter
-                addOnScrollListener(recyclerViewOnScrollListener)
-
             }
             addScrollWithItemVisibility(
                 onScrolling = {
@@ -421,9 +420,8 @@ class HomeLiveFragment :
                 }
             )
         }
-        ll_come_back.setOnClickListener {
-            rv_live.smoothScrollToPosition(0)
-        }
+
+        rv_live.setupBackTop(ll_come_back, 180.dp)
     }
 
     /**
@@ -527,12 +525,5 @@ class HomeLiveFragment :
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
     }
-    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-       //列表滑动距离
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            ll_come_back.isVisible = recyclerView.canScrollVertically(-1)
-        }
-    }
 }
