@@ -268,7 +268,7 @@ class SportOutrightAdapter : BaseGameAdapter() {
     ) : BaseQuickAdapter<Odd, BaseViewHolder>(R.layout.item_outright_odd, data?.toMutableList()) {
         override fun convert(helper: BaseViewHolder, item: Odd) {
             helper?.getView<OddsOutrightButton>(R.id.outright_odd_btn)?.apply {
-                setupOdd(helper.bindingAdapterPosition, item, oddsType)
+                setupOdd(item, oddsType)
                 tv_spread.text = ""
                 oddStateViewHolder.setupOddState(this, item)
             }
