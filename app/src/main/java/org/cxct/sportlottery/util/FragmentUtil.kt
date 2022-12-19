@@ -66,9 +66,9 @@ fun commonCheckDialog(
     }
 
     CustomAlertDialog(context).apply {
-        /*if (isError) {
+        if (isError) {
             setTextColor(R.color.color_E44438_e44438)
-        }*/
+        }
         setShowDivider(isShowDivider)
         setTitle(title)
         setMessage(errorMessage)

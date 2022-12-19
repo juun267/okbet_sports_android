@@ -981,7 +981,7 @@
     <string name="please_setting_bank_card_ewallet">โปรดตั้งค่าบัตรธนาคาร/eWallet ก่อน</string>
     <string name="connect_first">กรุณาเชื่อมต่ออินเทอร์เน็ตก่อน</string>
     <string name="get_valid_code_fail_point">ไม่สามารถขอรหัสยืนยันได้ โปรดคลิกเพื่อลองอีกครั้ง!</string>
-    <string name="message_network_no_connect">โปรดตรวจสอบการเชื่อมต่อเครือข่ายของคุณและลองอีกครั้ง</string>
+    <string name="message_network_no_connect">หมดเวลาการเชื่อมต่ออินเทอร์เน็ต โปรดเชื่อมต่อใหม่</string>
     <string name="edt_hint_nick_name">กรุณาใส่ชื่อเล่นส่วนตัว</string>
     <string name="edt_hint_check_real_name">กรุณาใส่ชื่อรับรอง</string>
     <string name="game_filter_row_search_hint">กรุณากรอกชื่อลีก</string>

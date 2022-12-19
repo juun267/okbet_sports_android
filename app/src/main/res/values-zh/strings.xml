@@ -8,7 +8,7 @@
     <string name="error_reading_file">档案读取错误</string>
     <string name="message_guest_no_permission">试玩账号无权访问，请先注册</string>
     <string name="message_socket_connect">网路连接超时,请重新连线</string>
-    <string name="message_network_no_connect">请检查网络连接，然后重试。</string>
+    <string name="message_network_no_connect">网路连接超时，请重新连线</string>
     <string name="message_network_timeout">网络连接超时。 请再试一次。</string>
     <string name="error">错误</string>
     <string name="error_input_amount">您输入的金额格式或数值错误</string>
