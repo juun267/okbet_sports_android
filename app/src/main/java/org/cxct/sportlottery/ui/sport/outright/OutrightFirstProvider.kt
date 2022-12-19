@@ -20,7 +20,7 @@ class OutrightFirstProvider(val adapter: SportOutrightAdapter2,
     override fun convert(helper: BaseViewHolder, item: BaseNode)  {
         val position = helper.bindingAdapterPosition
         val matchOdd = item as MatchOdd
-        helper.setText(R.id.tv_league_name, "${position}" + matchOdd.matchInfo?.name)
+        helper.setText(R.id.tv_league_name, matchOdd.matchInfo?.name)
         val ivArrow = helper.getView<ImageView>(R.id.iv_league_arrow)
         setArrowSpin(ivArrow, matchOdd, false)
         ivArrow.setOnClickListener {

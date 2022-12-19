@@ -104,7 +104,6 @@ open class OddsOutrightButton @JvmOverloads constructor(
     }
 
     fun setupOdd(
-        position: Int,
         odd: Odd?,
         oddsType: OddsType,
         gameType: String? = null,
@@ -116,7 +115,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
 
             val languae = LanguageManager.getSelectLanguage(context).key
             val extInfoStr = odd?.extInfoMap?.get(languae) ?: odd?.extInfo
-            text = "$position "+ if (extInfoStr.isNullOrEmpty()) {
+            text = if (extInfoStr.isNullOrEmpty()) {
                 "${(odd?.nameMap?.get(languae) ?: odd?.name)}"
             } else {
                 "$extInfoStr ${(odd?.nameMap?.get(languae) ?: odd?.name)}"
