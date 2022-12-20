@@ -76,12 +76,21 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
             return
         }
 
-        val layoutManager = recyclerViewOrNull?.layoutManager as LinearLayoutManager ?: return
+        val layoutManager = recyclerViewOrNull?.layoutManager as LinearLayoutManager? ?: return
+        val first = layoutManager.findFirstVisibleItemPosition()
+        if (first < 0) {
+            return
+        }
+
+        val last = layoutManager.findLastVisibleItemPosition()
+        if (last < 0) {
+            return
+        }
+
         val betInfoMap = mutableMapOf<String, BetInfoListData>()
         betInfoList.forEach { betInfoMap.put(it.matchOdd.oddsId, it) }
 
-        val first = layoutManager.findFirstVisibleItemPosition()
-        val last = layoutManager.findLastVisibleItemPosition()
+
         for (i in first..last) {
             val item = getItem(i)
             if(item is Odd) {
