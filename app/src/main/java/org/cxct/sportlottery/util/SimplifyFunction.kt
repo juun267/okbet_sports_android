@@ -198,18 +198,26 @@ fun RecyclerView.addScrollWithItemVisibility(
     })
 }
 
-// 监听RecyclerView滑出屏幕距离(offset)显示返回顶部按钮
 fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
 
     var targetWidth = 0f
-    targetView.setOnClickListener { smoothScrollToPosition(0) }
+    var animaIdle = true
+    val animEndCall: () -> Unit = { animaIdle = true }
+    val hideRunnable = {
+        animaIdle = false
+        targetView.translationXAnimation(targetWidth, animEndCall)
+    }
+
+    targetView.setOnClickListener {
+        hideRunnable.invoke()
+        smoothScrollToPosition(0)
+    }
+
     targetView.post {
         targetWidth = targetView.measuredWidth.toFloat()
         if (targetView.translationX != targetWidth) { targetView.translationX = targetWidth }
     }
 
-    var animaIdle = true
-    val animEndCall: () -> Unit = { animaIdle = true }
     addOnScrollListener(object : OnScrollListener() {
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -219,8 +227,7 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
 
             if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                 if (targetView.translationX != targetWidth) {
-                    animaIdle = false
-                    targetView.translationXAnimation(targetWidth, animEndCall)
+                    hideRunnable.invoke()
                 }
                 return
             }
@@ -238,7 +245,8 @@ fun RecyclerView.setupBackTop(targetView: View, offset: Int) {
     })
 }
 
-// 监听RecyclerView滑出屏幕距离(offset)显示返回顶部按钮
+
+// 监听NestedScrollView滑出屏幕距离(offset)显示返回顶部按钮
 fun NestedScrollView.setupBackTop(targetView: View, offset: Int) {
 
     var targetWidth = 0f
