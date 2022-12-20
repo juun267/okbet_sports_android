@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="gameViewModel"
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
@@ -45,18 +46,12 @@
                 android:orientation="vertical"
                 tools:context=".ui.game.betList.BetListFragment">
 
-                <FrameLayout
-                    android:id="@+id/fl_title"
+
+                <include
+                    android:id="@+id/cl_title"
+                    layout="@layout/bet_bar_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <include
-                        android:id="@+id/cl_title"
-                        layout="@layout/bet_bar_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/bet_list_bar_height" />
-
-                </FrameLayout>
+                    android:layout_height="@dimen/bet_list_bar_height" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -70,10 +65,10 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/color_202541_FFFFFF">
+                            android:background="@color/color_202541_FFFFFF"
+                            android:visibility="gone">
 
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/betTypeTabLayout"
@@ -115,8 +110,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_bet_list"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:overScrollMode="never"
                             tools:itemCount="2"
                             tools:listitem="@layout/content_bet_info_item_v3" />
@@ -143,10 +137,10 @@
                         android:id="@+id/cl_parlay_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"
                         android:clipToPadding="false"
+                        android:orientation="vertical"
                         android:paddingTop="10dp"
+                        android:visibility="gone"
                         tools:visibility="visible">
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -205,6 +199,8 @@
                         android:id="@+id/cl_total_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        tools:visibility="visible"
                         android:paddingHorizontal="15dp"
                         android:paddingVertical="2dp">
 
@@ -290,23 +286,8 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
-
-                <!--<TextView
-                    android:id="@+id/tv_warn_odds_change"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/ll_odds_close_warn"
-                    android:background="@color/color_232628_EAF4FE"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/margin_8"
-                    android:paddingTop="3dp"
-                    android:paddingEnd="@dimen/margin_8"
-                    android:paddingBottom="3dp"
-                    android:text="@string/bet_info_odd_content_changed"
-                    android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="gone"
-                    tools:visibility="gone" />-->
+                <include
+                    layout="@layout/include_bet_odds_tips_parlay_warn" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

@@ -51,9 +51,10 @@ object BetInfoRepository {
         get() = _showBetInfoSingle
 
     //每個畫面都要觀察
-    private val _betInfoList = MutableLiveData<Event<CopyOnWriteArrayList<BetInfoListData>>>().apply {
-        value = Event(CopyOnWriteArrayList())
-    }
+    private val _betInfoList =
+        MutableLiveData<Event<CopyOnWriteArrayList<BetInfoListData>>>().apply {
+            value = Event(CopyOnWriteArrayList())
+        }
     val betInfoList: LiveData<Event<CopyOnWriteArrayList<BetInfoListData>>>
         get() = _betInfoList
 
@@ -277,14 +278,22 @@ object BetInfoRepository {
     }
 
     fun switchSingleMode() {
-        var betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
+        val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         var oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
-        if (betList.size > 1) {
-            betList = betList.subList(0, 1) as CopyOnWriteArrayList<BetInfoListData>
+        betList.takeIf {
+            it.size > 1
+        }?.apply {
+            val singleList = get(0)
+            clear()
+            add(singleList)
         }
-        if (oddIDArray.size > 1) {
-            oddIDArray = oddIDArray.subList(0, 1)
+
+        oddIDArray.takeIf {
+            it.size>1
+        }?.apply {
+            oddIDArray = subList(0, 1)
         }
+
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
@@ -326,7 +335,7 @@ object BetInfoRepository {
         betInfo: BetInfo? = null
     ) {
         Timber.v("Bill====>betInfo:${betInfo}")
-        val betList = _betInfoList.value?.peekContent() ?:CopyOnWriteArrayList()
+        val betList = _betInfoList.value?.peekContent() ?: CopyOnWriteArrayList()
         oddsType?.let {
             this.oddsType = it
         }
@@ -368,14 +377,14 @@ object BetInfoRepository {
             if (currentStateSingleOrParlay == 0) {
                 //单注模式
                 Timber.d("单注模式")
-                if (oddIDArray.size!=0){
+                if (oddIDArray.size != 0) {
                     oddIDArray[0] = it.oddsId
-                }else{
+                } else {
                     oddIDArray.add(it.oddsId)
                 }
-                if (betList.size!=0){
+                if (betList.size != 0) {
                     betList[0] = data
-                }else{
+                } else {
                     betList.add(data)
                 }
             } else {
