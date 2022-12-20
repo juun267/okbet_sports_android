@@ -915,7 +915,7 @@
     <string name="hint_zalo">โปรดป้อนหมายเลขบัญชี Zalo ของคุณ</string>
     <string name="btm_navigation_hint">%1$s เป็นเครื่องหมายการค้าจดทะเบียน แบรนด์ และชื่อธุรกิจที่เป็นเจ้าของโดย Ekxinum Inc. ควบคุมและอนุญาตโดย Philippine Amusement and Gaming Corporation (PAGCOR)</string>
     <string name="credit_record_day">%s วัน</string>
-    <string name="account_hint">กรุณาใส่หมายเลขบัญชีสมาชิกของท่าน</string>
+    <string name="account_hint">กรุณาใส่บัญชีสมาชิกของคุณ</string>
     <string name="hint_pay2">2. หากไม่มีการตอบสนองเป็นเวลานาน โปรดติดต่อฝ่ายบริการลูกค้า</string>
     <string name="january">มกราคม</string>
     <string name="july">กรกฎาคม</string>
