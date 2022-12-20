@@ -272,14 +272,13 @@
     <string name="profile_info">Thông tin cá nhân</string>
     <string name="avatar">Ảnh đại diện</string>
     <string name="nickname">Tên</string>
-    <string name="password_setting">Cài đặt mật khẩu</string>
+    <string name="setting_password">Cài đặt mật khẩu</string>
     <string name="modify_avatar">Sửa đổi ảnh đại diện</string>
     <string name="choose_a_photo_from_the_album">chọn ảnh từ album</string>
     <string name="take_a_picture">Chụp ảnh</string>
     <string name="save_avatar_success">Ảnh đại diện tải lên thành công</string>
     <string name="change_nickname">Thay đổi tên</string>
     <string name="hint_nickname">Độ dài tiếng Trung và tiếng Anh từ 2–6 từ</string>
-    <string name="setting_password">Thiết lập mật khẩu</string>
     <string name="withdrawal_password">Mật khẩu rút tiền</string>
     <string name="current_withdrawal_password">Hiện tạiMật khẩu rút tiền</string>
     <string name="hint_current_login_password">Đăng nhập mật khẩu</string>
@@ -1283,7 +1282,7 @@
     <string name="expand_live">Live</string>
     <string name="home_recommend">Đề xuất</string>
     <string name="home_live">Live</string>
-    <string name="home_sports">Thể Thao</string>
+    <string name="home_sports">Thể thao</string>
     <string name="home_word_cup">WC 2022</string>
     <string name="home_slot">Slot</string>
     <string name="home_on_game">Cờ vua</string>

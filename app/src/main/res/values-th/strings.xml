@@ -28,7 +28,7 @@
     <string name="have_account">มีบัญชีอยู่แล้ว?</string>
     <string name="register_success">ลงทะเบียนสำเร็จ</string>
     <string name="register_jump">คุณจะข้ามไปที่ %1$s ใน 5 วินาที...</string>
-    1
+    <string name="register_recharge_now">ฝากเงินตอนนี้</string>
     <string name="game_result">ผลลัพธ์</string>
     <string name="promotion">โปรโมชั่น</string>
     <string name="news">ข่าวล่าสุด</string>
@@ -1238,6 +1238,7 @@
     <string name="cs_center">ศูนย์ช่วยเหลือ</string>
     <string name="home_slot">สล็อต</string>
     <string name="deadline">กำหนดสิ้นสุด</string>
+    <string name="check_all_inplay">ดูบอลทั้งหมดที่กำลังเล่นอยู่</string>
     <string name="error_phone_num">เบอร์โทรศัพท์ไม่ถูกต้อง</string>
     <string name="tips_login_password_success">เปลี่ยนแปลงรหัสผ่านสำเร็จ กรุณาทำการล็อกอินอีกครั้ง</string>
     <string name="error_tips_confirm_password">รหัสผ่านไม่เหมือนกัน กรุณากรอกใหม่อีกครั้ง</string>

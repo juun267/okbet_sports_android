@@ -269,14 +269,13 @@
     <string name="profile_info">个人设置</string>
     <string name="avatar">个人头像</string>
     <string name="nickname">昵称</string>
-    <string name="password_setting">密码设置</string>
+    <string name="setting_password">密码设置</string>
     <string name="modify_avatar">修改头像</string>
     <string name="choose_a_photo_from_the_album">从相册中选一张照片</string>
     <string name="take_a_picture">拍一张照片</string>
     <string name="save_avatar_success">头像上传成功</string>
     <string name="change_nickname">更换昵称</string>
     <string name="hint_nickname">中英文长度2–6字</string>
-    <string name="setting_password">密码设置</string>
     <string name="withdrawal_password">提款密码</string>
     <string name="current_login_password">当前登录密码</string>
     <string name="current_withdrawal_password">当前提款密码</string>

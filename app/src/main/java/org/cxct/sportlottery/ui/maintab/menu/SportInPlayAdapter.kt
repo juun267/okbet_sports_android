@@ -24,7 +24,7 @@ class SportInPlayAdapter(data: MutableList<Item>) :
             R.id.iv_sport_logo,
             AppCompatResources.getDrawable(context, GameType.getInplayIcon(item.code))
         )
-        helper.setText(R.id.tv_name, item.name)
+        helper.setText(R.id.tv_name, GameType.getGameTypeString(mContext, item.code))
         helper.setText(R.id.tv_num, item.num.toString())
         helper.itemView.isSelected = (gameType?.key == item.code)
     }

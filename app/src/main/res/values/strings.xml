@@ -283,14 +283,13 @@
     <string name="profile_info">My Details</string>
     <string name="avatar">Profile photo</string>
     <string name="nickname">Nickname</string>
-    <string name="password_setting">Password Setting</string>
+    <string name="setting_password">Setting Password</string>
     <string name="modify_avatar">Edit profile photo</string>
     <string name="choose_a_photo_from_the_album">Select a photo from camera roll</string>
     <string name="take_a_picture">Take a photo</string>
     <string name="save_avatar_success">Upload profile successfully</string>
     <string name="change_nickname">Change nickname</string>
     <string name="hint_nickname">characters</string>
-    <string name="setting_password">Password Setting</string>
     <string name="withdrawal_password">Withdrawal Password</string>
     <string name="current_login_password">Current login password</string>
     <string name="current_withdrawal_password">Current withdrawal password</string>
@@ -1310,7 +1309,7 @@
     <string name="check_all">All</string>
     <string name="worldcup">WC 2022</string>
     <string name="sport_classify">Sports Classification</string>
-    <string name="check_all_inplay">All</string>
+    <string name="check_all_inplay">All in-play</string>
     <string name="expand_live">Live</string>
     <string name="home_recommend">Popular</string>
     <string name="home_live">Live</string>
