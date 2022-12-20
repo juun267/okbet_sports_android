@@ -129,9 +129,9 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom|end"
                             android:layout_marginEnd="15dp"
-                            android:layout_marginBottom="0dp"
                             android:background="@android:color/transparent"
-                            android:gravity="center"
+                            android:layout_marginBottom="2dp"
+                            android:gravity="right|bottom"
                             android:orientation="horizontal">
 
                             <androidx.appcompat.widget.AppCompatImageButton
