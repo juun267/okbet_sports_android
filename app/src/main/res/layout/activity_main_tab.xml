@@ -37,9 +37,9 @@
 
             <View
                 android:id="@+id/space1"
-                android:background="@color/color_FFFFFF"
+                android:background="@drawable/bg_gradient_bottom_sheet_shadow"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="3dp"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view" />
 
             <include
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bet_list_bar_height"
                 android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/space1"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
                 tools:visibility="visible" />
 
             <LinearLayout
