@@ -202,15 +202,19 @@ class ItemHomeLiveHolder(
                 val odd2 = oddList[1]
                 with(oddBtn2) {
                     visibility = View.VISIBLE
-                    setupOddsButton(this, odd2)
-                    setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
-                    setButtonBetClick(
-                        data = data,
-                        odd = odd2,
-                        playCateCode = oddPlayCateCode,
-                        playCateName = playCateName,
-                        homeLiveListener = homeLiveListener
-                    )
+                    if (oddBtn1.isLocked()) {
+                        oddBtn2.lockOdds()
+                    } else {
+                        setupOddsButton(this, odd2)
+                        setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
+                        setButtonBetClick(
+                            data = data,
+                            odd = odd2,
+                            playCateCode = oddPlayCateCode,
+                            playCateName = playCateName,
+                            homeLiveListener = homeLiveListener
+                        )
+                    }
                 }
             } else {
                 oddBtn2.visibility = View.GONE
@@ -221,15 +225,19 @@ class ItemHomeLiveHolder(
                 val odd3 = oddList[2]
                 with(oddBtn3) {
                     visibility = View.VISIBLE
-                    setupOddsButton(this, odd3)
-                    setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
-                    setButtonBetClick(
-                        data = data,
-                        odd = odd3,
-                        playCateCode = oddPlayCateCode,
-                        playCateName = playCateName,
-                        homeLiveListener = homeLiveListener
-                    )
+                    if (oddBtn1.isLocked() || oddBtn2.isLocked()) {
+                        oddBtn3.lockOdds()
+                    } else {
+                        setupOddsButton(this, odd3)
+                        setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
+                        setButtonBetClick(
+                            data = data,
+                            odd = odd3,
+                            playCateCode = oddPlayCateCode,
+                            playCateName = playCateName,
+                            homeLiveListener = homeLiveListener
+                        )
+                    }
                 }
             } else {
                 oddBtn3.visibility = View.GONE

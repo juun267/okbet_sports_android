@@ -107,7 +107,13 @@ class OddsButtonHome @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd(
+    fun isLocked(): Boolean = BetStatus.LOCKED.code == betStatus
+
+    fun lockOdds() {
+        betStatus = BetStatus.LOCKED.code
+    }
+
+    private fun setupOdd(
         odd: Odd?,
         oddsType: OddsType,
         gameType: String? = null,
@@ -298,7 +304,7 @@ class OddsButtonHome @JvmOverloads constructor(
     }
 
 
-    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
+    private fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
             text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
                 ?: odd?.extInfo //低賠率會返回在extInfo
