@@ -179,19 +179,7 @@ class ItemHomeLiveHolder(
             setupMatchScore()
             //region 第1個按鈕
             if (oddList.isNotEmpty()) {
-                val odd1 = oddList[0]
-                with(oddBtn1) {
-                    visibility = View.VISIBLE
-                    setupOddsButton(this, odd1)
-                    setupOdd4hall(oddPlayCateCode, odd1, oddList, oddsType)
-                    setButtonBetClick(
-                        data = data,
-                        odd = odd1,
-                        playCateCode = oddPlayCateCode,
-                        playCateName = playCateName,
-                        homeLiveListener = homeLiveListener
-                    )
-                }
+                setOdds(oddBtn1, null, null, oddList[0], oddPlayCateCode, playCateName, oddList, oddsType)
             } else {
                 oddBtn1.visibility = View.GONE
             }
@@ -199,46 +187,14 @@ class ItemHomeLiveHolder(
 
             //region 第2個按鈕
             if (oddList.size > 1) {
-                val odd2 = oddList[1]
-                with(oddBtn2) {
-                    visibility = View.VISIBLE
-                    if (oddBtn1.isLocked()) {
-                        oddBtn2.lockOdds()
-                    } else {
-                        setupOddsButton(this, odd2)
-                        setupOdd4hall(oddPlayCateCode, odd2, oddList, oddsType)
-                        setButtonBetClick(
-                            data = data,
-                            odd = odd2,
-                            playCateCode = oddPlayCateCode,
-                            playCateName = playCateName,
-                            homeLiveListener = homeLiveListener
-                        )
-                    }
-                }
+                setOdds(oddBtn2, oddBtn1, null, oddList[1], oddPlayCateCode, playCateName, oddList, oddsType)
             } else {
                 oddBtn2.visibility = View.GONE
             }
 
             //region 第3個按鈕
             if (oddList.size > 2) {
-                val odd3 = oddList[2]
-                with(oddBtn3) {
-                    visibility = View.VISIBLE
-                    if (oddBtn1.isLocked() || oddBtn2.isLocked()) {
-                        oddBtn3.lockOdds()
-                    } else {
-                        setupOddsButton(this, odd3)
-                        setupOdd4hall(oddPlayCateCode, odd3, oddList, oddsType)
-                        setButtonBetClick(
-                            data = data,
-                            odd = odd3,
-                            playCateCode = oddPlayCateCode,
-                            playCateName = playCateName,
-                            homeLiveListener = homeLiveListener
-                        )
-                    }
-                }
+                setOdds(oddBtn3, oddBtn1, oddBtn2, oddList[2], oddPlayCateCode, playCateName, oddList, oddsType)
             } else {
                 oddBtn3.visibility = View.GONE
             }
@@ -252,6 +208,47 @@ class ItemHomeLiveHolder(
                 isTimerPause = data.matchInfo?.stopped == TimeCounting.STOP.value
             )
             //endregion
+        }
+    }
+
+    private fun setOdds(currentOddBtn: OddsButtonHome,
+                        otherBtn1: OddsButtonHome?,
+                        otherBtn2: OddsButtonHome?,
+                        odd: Odd?,
+                        oddPlayCateCode: String,
+                        playCateName: String,
+                        oddList: List<Odd?>,
+                        oddsType: OddsType) {
+
+        currentOddBtn.visibility = View.VISIBLE
+        if (otherBtn1?.isLocked() == true || otherBtn2?.isLocked()  == true) {
+            currentOddBtn.lockOdds()
+            return
+        }
+
+        if (otherBtn1?.isDeactivated() == true || otherBtn2?.isDeactivated()  == true) {
+            currentOddBtn.deactivatedOdds()
+            return
+        }
+
+        setupOddsButton(currentOddBtn, odd)
+        currentOddBtn.setupOdd4hall(oddPlayCateCode, odd, oddList, oddsType)
+        currentOddBtn.setButtonBetClick(
+            data = data,
+            odd = odd,
+            playCateCode = oddPlayCateCode,
+            playCateName = playCateName,
+            homeLiveListener = homeLiveListener
+        )
+
+        if (currentOddBtn.isLocked()) {
+            otherBtn1?.lockOdds()
+            otherBtn2?.lockOdds()
+        }
+
+        if (currentOddBtn.isDeactivated()) {
+            otherBtn1?.deactivatedOdds()
+            otherBtn2?.deactivatedOdds()
         }
     }
 
