@@ -585,10 +585,8 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
                 viewModel.switchGameType(it)
             }
         } else {
-            gameTypeList.find {
-                it.code == gameType
-            }?.let {
-                //遍历出来的球类已经是选中状态，就不继续刷新列表
+            (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
+                gameType = it.code
                 if (!it.isSelected) {
                     it.isSelected = true
                     viewModel.switchGameType(it)

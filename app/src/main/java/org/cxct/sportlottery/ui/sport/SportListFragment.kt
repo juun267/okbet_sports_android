@@ -817,7 +817,9 @@ class SportListFragment :
         }
     }
 
+
     private fun updateSportType(gameTypeList: List<Item>) {
+
         if (gameTypeList.isEmpty()) {
             sport_type_list.isVisible = matchType != MatchType.CS
             iv_calendar.isVisible = matchType == MatchType.EARLY || matchType == MatchType.CS
@@ -830,21 +832,23 @@ class SportListFragment :
             (gameTypeList.find { it.num > 0 } ?: gameTypeList.first()).let {
                 it.isSelected = true
                 gameType = it.code
+                sportLeagueAdapter.setPreloadItem()
                 viewModel.switchGameType(it)
             }
         } else {
             (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
+                gameType = it.code
                 if (!it.isSelected) {
                     it.isSelected = true
+                    sportLeagueAdapter.setPreloadItem()
                     viewModel.switchGameType(it)
                 }
             }
         }
         //全部球类tab不支持联赛筛选
         lin_filter.isVisible = gameType != GameType.ALL.key
-        gameTypeAdapter.apply {
-            dataSport = gameTypeList
-        }
+        gameTypeAdapter.dataSport = gameTypeList
+
         (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             sport_type_list,
             RecyclerView.State(),
