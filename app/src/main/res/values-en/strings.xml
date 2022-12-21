@@ -38,6 +38,7 @@
     <string name="member_account">Account</string>
     <string name="hint_member_account">4-16 characters and contain numbers and letters.</string>
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
+    <string name="error_member_nickname">Nickname must be %1$d-%2$d characters long and contain English &amp; Chinese letter</string>
     <string name="error_register_id_exist">Username already exists</string>
     <string name="hint_register_password">6-20 characters and contain numbers and letters.</string>
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>

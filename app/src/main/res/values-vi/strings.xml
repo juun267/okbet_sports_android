@@ -38,6 +38,7 @@
     <string name="member_account">Tài khoản</string>
     <string name="hint_member_account">Độ dài từ 4-16 ký tự bao gồm chữ cái và số</string>
     <string name="error_member_account">Số tài khoản từ 4 ~ 16 bao gồm chữ số và chữ cái</string>
+    <string name="error_member_nickname">Tên %1$d - %2$d kết hợp tiếng Trung và tiếng Anh</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
     <string name="hint_register_password">Độ dài từ 6-20 ký tự bao gồm chữ cái và số</string>
     <string name="error_register_password">Mật khẩu từ 6-20 ký tự bao gồm chữ cái và số</string>

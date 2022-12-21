@@ -39,6 +39,7 @@
     <string name="member_account">会员账号</string>
     <string name="hint_member_account">长度需4-16个字符含英数</string>
     <string name="error_member_account">账号为4~16位数字字母组合</string>
+    <string name="error_member_nickname">昵称为%1$d-%2$d个中英文组合</string>
     <string name="error_register_id_exist">已有此账户名</string>
     <string name="hint_register_password">长度需6–20个字符含英数</string>
     <string name="error_register_password">密码为6~20位数字字母组合</string>

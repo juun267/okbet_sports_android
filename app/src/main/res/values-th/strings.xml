@@ -8,6 +8,7 @@
     <string name="please_input_account">กรุณาใส่บัญชีสมาชิกของคุณ</string>
     <string name="password_hint">กรุณาใส่รหัสผ่านเข้าสู่ระบบของคุณ</string>
     <string name="error_member_account">หมายเลขบัญชีเป็นตัวเลขและตัวอักษรรวมกัน 4~16 หลัก</string>
+    <string name="error_member_nickname">ชื่อเล่นคือ %1$d-%2$d ชุดค่าผสมภาษาจีน - อังกฤษ</string>
     <string name="error_register_password">รหัสผ่านประกอบด้วยตัวเลขและตัวอักษร 6~20 ตัว</string>
     <string name="remember_password">จดจำรหัสผ่าน</string>
     <string name="forget_password_question">ลืมรหัสผ่าน?</string>

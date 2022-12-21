@@ -1,21 +1,21 @@
 package org.cxct.sportlottery.ui.profileCenter.nickname
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
-import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_modify_profile_info.*
-import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.filterSpecialCharacters
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.VerifyConstUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
 
@@ -81,7 +81,7 @@ class ModifyProfileInfoActivity :
 
     private fun setupInputFieldVerify() {
         //暱稱
-        setEditTextFocusChangeMethod(eet_nickname)
+        setupNickNameEditext()
         //真實姓名
         setEditTextFocusChangeMethod(eet_real_name)
         //QQ號碼
@@ -94,7 +94,32 @@ class ModifyProfileInfoActivity :
         setEditTextFocusChangeMethod(eet_we_chat)
     }
 
+    private fun setupNickNameEditext() {
+        eet_nickname.filterSpecialCharacters()
+        setEditTextFocusChangeMethod(eet_nickname)
+        eet_nickname.maxLines = 1
+        val nickNameMinLength = 2
+        val nickNameMaxLength = 6
+        eet_nickname.checkRegisterListener {
+            val msg = when {
+                it.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+                !VerifyConstUtil.verifyLengthRange(it, nickNameMinLength, nickNameMaxLength) -> {
+                    LocalUtils.getLocalizedContext().getString(R.string.error_member_nickname, nickNameMinLength, nickNameMaxLength)
+                }
+                else -> null
+            }
+
+            val isActivated = TextUtils.isEmpty(msg)
+            et_nickname.setError(msg, isActivated)
+            btn_confirm.isEnabled = isActivated
+            btn_confirm.alpha = if (isActivated) 1f else  0.5f
+        }
+
+        eet_nickname.setText("") // 设置空触发输入检查
+    }
+
     private fun setEditTextFocusChangeMethod(editText: ExtendedEditText) {
+
         editText.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus)
                 viewModel.checkInput(modifyType as ModifyType, editText.text.toString())

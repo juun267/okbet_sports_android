@@ -4,14 +4,17 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.text.InputFilter
 import android.view.View
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import android.view.animation.DecelerateInterpolator
+import android.widget.EditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListenerAdapter
 import org.cxct.sportlottery.util.BraetheInterpolator
 import org.cxct.sportlottery.util.ScreenUtil
+import java.util.regex.Pattern
 
 /**
  * 关于View的一些扩展函数
@@ -150,3 +153,18 @@ fun View.rotationAnimation(rotation: Float, duration: Long = 200) {
         .start()
 }
 
+
+fun EditText.filterSpecialCharacters() {
+    val spaceFilter = InputFilter { source, _, _, _, _, _ ->
+            if (source == " ") { "" } else {  null }
+        }
+
+    val specialFilter = InputFilter {  source, _, _, _, _, _ ->
+            val speChat = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“'。，、？]"
+            val pattern = Pattern.compile(speChat)
+            val matcher = pattern.matcher(source.toString())
+            if (matcher.find()) "" else null
+        }
+
+    filters = arrayOf(spaceFilter, specialFilter)
+}
