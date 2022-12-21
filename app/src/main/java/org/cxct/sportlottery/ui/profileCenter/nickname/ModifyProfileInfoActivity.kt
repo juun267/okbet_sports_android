@@ -56,9 +56,8 @@ class ModifyProfileInfoActivity :
                 tv_toolbar_title.text = getString(R.string.real_name)
                 ll_real_name.visibility = View.VISIBLE
             }
-            ModifyType.NickName -> {
-                tv_toolbar_title.text = getString(R.string.change_nickname)
-                ll_nickname.visibility = View.VISIBLE
+            ModifyType.NickName -> {                //暱稱
+                setupNickName()
             }
             ModifyType.QQNumber -> {
                 tv_toolbar_title.text = getString(R.string.qq_number)
@@ -80,8 +79,7 @@ class ModifyProfileInfoActivity :
     }
 
     private fun setupInputFieldVerify() {
-        //暱稱
-        setupNickNameEditext()
+
         //真實姓名
         setEditTextFocusChangeMethod(eet_real_name)
         //QQ號碼
@@ -94,12 +92,16 @@ class ModifyProfileInfoActivity :
         setEditTextFocusChangeMethod(eet_we_chat)
     }
 
-    private fun setupNickNameEditext() {
+    private fun setupNickName() {
+
+        tv_toolbar_title.text = getString(R.string.change_nickname)
+        ll_nickname.visibility = View.VISIBLE
         eet_nickname.filterSpecialCharacters()
         setEditTextFocusChangeMethod(eet_nickname)
         eet_nickname.maxLines = 1
         val nickNameMinLength = 2
         val nickNameMaxLength = 6
+
         eet_nickname.checkRegisterListener {
             val msg = when {
                 it.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
