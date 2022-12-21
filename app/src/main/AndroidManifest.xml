@@ -267,6 +267,9 @@
         <meta-data
             android:name="AF_STORE"
             android:value="${JPUSH_CHANNEL}" />
+        <meta-data
+            android:name="INVITE_CODE"
+            android:value="" />
     </application>
 
 </manifest>

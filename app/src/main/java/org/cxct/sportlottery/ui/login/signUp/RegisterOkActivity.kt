@@ -894,6 +894,7 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
 
     private fun setupRegisterButton() {
         binding.apply {
+            val defaultInviteCode = Constants.getInviteCode()
             eetRecommendCode.apply {
                 checkRegisterListener {
                     if (it != "") {
@@ -904,11 +905,16 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
                     }
                 }
             }
+            eetRecommendCode.setText(defaultInviteCode)
+            eetRecommendCode.isEnabled = defaultInviteCode.isNullOrEmpty()
             eetMemberAccount.apply {
                 checkRegisterListener { viewModel.checkMemberAccount(it) }
             }
             eetLoginPassword.apply {
-                checkRegisterListener { viewModel.checkLoginPassword(it, confirmPassword = eetConfirmPassword.text.toString()) }
+                checkRegisterListener {
+                    viewModel.checkLoginPassword(it,
+                        confirmPassword = eetConfirmPassword.text.toString())
+                }
             }
             eetConfirmPassword.apply {
                 checkRegisterListener {
