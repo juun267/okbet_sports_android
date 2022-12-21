@@ -1005,7 +1005,7 @@
     <string name="label_in_play_games">เปตอง</string>
     <string name="error_url_fail">ที่อยู่กระโดดผิด</string>
     <string name="error">ความผิดพลาด</string>
-    <string name="error_password_format">ต้องใช้รหัสผ่านตัวอักษรและตัวเลข</string>
+    <string name="error_password_format">ต้องใช้อักขระที่เป็นตัวอักษรและตัวเลขคละกัน 6 ถึง 20 ตัว</string>
     <string name="third_game_df">ตกปลาเต๋อเฟิง</string>
     <string name="third_game_ag">แพลตฟอร์ม AG</string>
     <string name="cg_lottery">CG ลอตเตอรี</string>
