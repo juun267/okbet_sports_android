@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
 import org.cxct.sportlottery.repository.sConfigData

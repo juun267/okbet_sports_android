@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.widget
 
 
 import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
@@ -9,6 +10,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -103,11 +105,25 @@ class OddsButtonHome @JvmOverloads constructor(
                 }
             }
         } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
             typedArray.recycle()
         }
     }
 
-    fun setupOdd(
+    fun isLocked(): Boolean = BetStatus.LOCKED.code == betStatus
+
+    fun isDeactivated() = BetStatus.DEACTIVATED.code == betStatus
+
+    fun deactivatedOdds() {
+        betStatus = BetStatus.DEACTIVATED.code
+    }
+
+    fun lockOdds() {
+        betStatus = BetStatus.LOCKED.code
+    }
+
+    private fun setupOdd(
         odd: Odd?,
         oddsType: OddsType,
         gameType: String? = null,
@@ -298,7 +314,7 @@ class OddsButtonHome @JvmOverloads constructor(
     }
 
 
-    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
+    private fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
             text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) }
                 ?: odd?.extInfo //低賠率會返回在extInfo
@@ -408,17 +424,7 @@ class OddsButtonHome @JvmOverloads constructor(
                 isActivated = false
             }
             OddState.SAME.state -> {
-                tv_odds.setTextColor(
-                    ContextCompat.getColorStateList(
-                        context,
-                        if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
-                        else R.color.selector_button_odd_bottom_text
-                    )
-                )
-                iv_arrow.apply {
-                    setImageDrawable(null)
-                    visibility = View.GONE
-                }
+                resetOddsValueState(tv_odds)
                 isActivated = false
             }
         }
@@ -433,9 +439,30 @@ class OddsButtonHome @JvmOverloads constructor(
         }
 
         if (status) {
-            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f)
+            lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f).apply {
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        resetOddsValueState(tv_odds)
+                    }
+                })
+            }
+
         }
 //        updateOddsTextColor()
+    }
+
+    private fun resetOddsValueState(textView: TextView) {
+        iv_arrow.apply {
+            setImageDrawable(null)
+            visibility = View.GONE
+        }
+        textView.setTextColor(
+            ContextCompat.getColorStateList(
+                context,
+                if (MultiLanguagesApplication.isNightMode) R.color.selector_button_odd_bottom_text_dark
+                else R.color.selector_button_odd_bottom_text
+            )
+        )
     }
 
     /**

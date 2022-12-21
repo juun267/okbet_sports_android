@@ -147,11 +147,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initSportInPlayView() {
         rv_sport_inplay.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        sportInPlayAdapter.setOnItemClickListener { adapter, view, position ->
-            gameType = GameType.getGameType(sportClassifyAdapter.getItem(position)?.code)
+        sportInPlayAdapter.setOnItemClickListener { _, _, position ->
+            gameType = GameType.getGameType(sportInPlayAdapter.getItem(position)?.code)
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY,
-                GameType.getGameType(sportInPlayAdapter.getItem(position)?.code) ?: GameType.ALL)
+            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, gameType ?: GameType.ALL)
         }
         rv_sport_inplay.adapter = sportInPlayAdapter
     }

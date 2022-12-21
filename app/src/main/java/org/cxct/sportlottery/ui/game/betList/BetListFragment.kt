@@ -36,7 +36,6 @@ import kotlinx.android.synthetic.main.fragment_bank_card.eet_wallet
 import kotlinx.android.synthetic.main.fragment_bet_list.bg_dim_mount
 import kotlinx.android.synthetic.main.fragment_bet_list.btnParlaySingle
 import kotlinx.android.synthetic.main.fragment_bet_list.btn_bet
-import kotlinx.android.synthetic.main.fragment_bet_list.cl_parlay_list
 import kotlinx.android.synthetic.main.fragment_bet_list.ll_root
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
 import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
@@ -46,6 +45,10 @@ import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.btnOddsChange
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.view.tvOddsChangedTips
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.llParlayWarn
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.tvParlayWarn
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.view.llParlayWarn
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.view.tvParlayWarn
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.tv_notify
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.txv_title
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -945,12 +948,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     //上方tabBar betTypeTabLayout隱藏，下方可贏金額 clTotalInfo也隱藏
 //                    binding.betTypeTabLayout.selectTab(binding.betTypeTabLayout.getTabAt(0))
 //                    binding.betTypeTabLayout.isVisible = false
-                    binding.clTotalInfo.isVisible = false
+//                    binding.clTotalInfo.isVisible = false
                 } else {
                     //多筆注單
                     binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
 //                    binding.betTypeTabLayout.isVisible = true
-                    binding.clTotalInfo.isVisible = true
+//                    binding.clTotalInfo.isVisible = true
                 }
 
 //                btn_delete_all.visibility = if (list.size == 0) View.GONE else View.VISIBLE
@@ -1302,11 +1305,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideCantParlayWarn(show: Boolean) {
         //TODO 現在只有串關投注才會顯示次提示
-        if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) {
-            betListRefactorAdapter?.showCantParlayWarn()
+        if (show && (betListRefactorAdapter?.betList?.size ?: 0) > 1) {
+            llParlayWarn.visible()
+            binding.clTotalInfo.gone()
+//            betListRefactorAdapter?.showCantParlayWarn()
         } else {
-            betListRefactorAdapter?.hideCantParlayWarn()
+             llParlayWarn.gone()
+            binding.clTotalInfo.visible()
+//            betListRefactorAdapter?.hideCantParlayWarn()
         }
+
+
 
         when (currentBetType) {
             //單項投注

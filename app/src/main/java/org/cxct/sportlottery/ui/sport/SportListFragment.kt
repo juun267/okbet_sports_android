@@ -56,7 +56,7 @@ class SportListFragment :
     companion object {
         fun newInstance(
             matchType: MatchType? = MatchType.IN_PLAY,
-            gameType: String? = GameType.ALL.key,
+            gameType: String?,
             outrightLeagueId: String? = null,
         ): SportListFragment {
             val args = Bundle()
@@ -75,7 +75,7 @@ class SportListFragment :
     private val matchType by lazy {
         (arguments?.getSerializable("matchType") as MatchType?) ?: MatchType.IN_PLAY
     }
-    private var gameType: String = GameType.ALL.key
+    private var gameType: String? = null
         set(value) {
             if (!Objects.equals(value, field)) { // 清除赛选条件
                 leagueIdList.clear()
@@ -250,8 +250,10 @@ class SportListFragment :
         EventBusUtil.targetLifecycle(this)
         //打开指定球类
         viewModel.matchType = matchType
-        arguments?.getString("gameType")?.let { gameType = it }
-        viewModel.gameType = gameType
+        arguments?.getString("gameType")?.let {
+            gameType = it
+            viewModel.gameType = it
+        }
         setupSportTypeList()
         setupToolbar()
         setupGameRow()
@@ -498,6 +500,7 @@ class SportListFragment :
         }
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner) {
+
             if (gameType != it.tag) {
                 return@observe
             }
