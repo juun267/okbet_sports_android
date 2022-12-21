@@ -1121,7 +1121,7 @@
     <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
-    <string name="bet_info_list_bet">Place Bet</string>
+    <string name="bet_info_list_bet">Stake</string>
     <!--endregion-->
 
     <string name="publicity_contact">Contact</string>
