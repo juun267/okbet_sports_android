@@ -73,7 +73,7 @@ fun commonCheckDialog(
         setTitle(title)
         setMessage(errorMessage)
         setPositiveButtonText(buttonText ?: context.getString(R.string.btn_confirm))
-        setNegativeButtonText(negativeText)
+        setNegativeButtonText(if (isError) null else negativeText)
         setPositiveClickListener {
             positiveClickListener()
             this.dismiss()

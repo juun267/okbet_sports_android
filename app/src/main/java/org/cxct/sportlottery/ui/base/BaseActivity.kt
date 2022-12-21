@@ -272,7 +272,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit?) {
-        showErrorPromptDialog(getString(R.string.error), message, positiveClickListener)
+        showErrorPromptDialog(getString(R.string.prompt), message, positiveClickListener)
     }
 
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
@@ -298,7 +298,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             errorMessageSpan = errorMessageSpan,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = if(hasCancle) getString(R.string.btn_cancel) else null,
+            negativeText = getString(R.string.btn_cancel),
             isOutsideCancelable = isOutsideCancelable
         )
     }
