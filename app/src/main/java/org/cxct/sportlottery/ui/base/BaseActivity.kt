@@ -111,21 +111,22 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         }
     }
 
+    private fun netError(errorMessage: String) {
+        hideLoading()
+        showPromptDialog(getString(R.string.prompt),
+            errorMessage,
+            buttonText = null,
+            { mOnNetworkExceptionListener?.onClick(null) },
+            isError = true,
+            hasCancle = false )
+    }
+
     private fun onNetworkException() {
-        viewModel.networkExceptionUnavailable.observe(this) {
-            hideLoading()
-            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        }
+        viewModel.networkExceptionUnavailable.observe(this) { netError(it) }
 
-        viewModel.networkExceptionTimeout.observe(this) {
-            hideLoading()
-            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        }
+        viewModel.networkExceptionTimeout.observe(this) { netError(it) }
 
-        viewModel.networkExceptionUnknown.observe(this) {
-            hideLoading()
-            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        }
+        viewModel.networkExceptionUnknown.observe(this)  { netError(it) }
 
         viewModel.isKickedOut.observe(this) {
             hideLoading()
@@ -309,7 +310,8 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         buttonText: String?,
         positiveClickListener: () -> Unit?,
         isError: Boolean,
-        isShowDivider: Boolean? = false
+        isShowDivider: Boolean? = false,
+        hasCancle: Boolean = true,
     ) {
         commonCheckDialog(
             context = this,
@@ -320,7 +322,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             errorMessage = errorMessage,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = getString(R.string.btn_cancel)
+            negativeText = if(hasCancle) getString(R.string.btn_cancel) else null,
         )
     }
 
