@@ -133,8 +133,8 @@ class SettingPasswordViewModel(
             newPwd.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             pwdPage == SettingPasswordActivity.PwdPage.LOGIN_PWD -> when {
                 !VerifyConstUtil.verifyPwdFormat(newPwd) -> LocalUtils.getString(R.string.error_password_format)
-                newPwd.length !in 6..20 -> LocalUtils.getString(R.string.error_register_password)
-                !VerifyConstUtil.verifyPwd(newPwd) -> LocalUtils.getString(R.string.error_incompatible_format)
+                newPwd.length !in 6..20 -> LocalUtils.getString(R.string.error_password_format)
+                !VerifyConstUtil.verifyPwd(newPwd) -> LocalUtils.getString(R.string.error_password_format)
                 else -> ""
             }
             pwdPage == SettingPasswordActivity.PwdPage.BANK_PWD && !VerifyConstUtil.verifyPayPwd(newPwd) -> LocalUtils.getString(R.string.error_withdraw_password_for_new)
