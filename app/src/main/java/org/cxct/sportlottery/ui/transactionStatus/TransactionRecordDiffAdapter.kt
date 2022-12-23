@@ -148,13 +148,6 @@ class TransactionRecordDiffAdapter :
 
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
-                (content_order_no.layoutParams as LinearLayout.LayoutParams).apply {
-                    weight = when (LanguageManager.getSelectLanguage(context)) {
-                        LanguageManager.Language.ZH -> 0f
-                        else -> 1f
-                    }
-                    content_order_no.layoutParams = this
-                }
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
                 when (data.gameType) {
@@ -217,13 +210,6 @@ class TransactionRecordDiffAdapter :
                 match_play_time.isVisible = data.parlayType != ParlayType.OUTRIGHT.key
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
-                (content_order_no.layoutParams as LinearLayout.LayoutParams).apply {
-                    weight = when (LanguageManager.getSelectLanguage(context)) {
-                        LanguageManager.Language.ZH -> 0f
-                        else -> 1f
-                    }
-                    content_order_no.layoutParams = this
-                }
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
 
