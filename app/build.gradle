@@ -117,7 +117,7 @@ android {
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "google", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "oppo8"
+                    INVITE_CODE: "gplay8"
             ]
         }
         huawei {
@@ -194,6 +194,21 @@ android {
                     JPUSH_CHANNEL          : "samgsung", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
                     INVITE_CODE            : "samsung8"
+            ]
+        }
+        inmobi {
+            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
+            resValue "string", "app_name", "OKbet"
+            applicationId "com.okbet.ph"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "inmobi", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "inmobi"
             ]
         }
         //okbet9测试环境
