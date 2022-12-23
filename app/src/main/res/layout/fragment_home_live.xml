@@ -30,31 +30,14 @@
         tools:itemCount="3"
         tools:listitem="@layout/item_home_live" />
 
-    <LinearLayout
-        android:id="@+id/ll_come_back"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/iv_top"
+        android:src="@drawable/icon_top_arrow_up"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:paddingHorizontal="10dp"
+        android:adjustViewBounds="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/btn_comeback"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingStart="8dp"
-        android:paddingEnd="10dp"
-        tools:visibility="visible">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_top_arrow_up" />
-
-        <TextView
-            android:id="@+id/tv_come_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="-6dp"
-            android:text="@string/go_back_top"
-            android:textColor="@color/color_181922_FFFFFF" />
-    </LinearLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp" />
 </RelativeLayout>
