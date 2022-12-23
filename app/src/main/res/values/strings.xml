@@ -560,7 +560,7 @@
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
-    <string name="bet_info_add_bet_success">Successful</string>
+    <string name="bet_info_add_bet_success">Bet Successful</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Not enough balance</string>
     <string name="bet_info_input_quota">Enter Stake</string>
