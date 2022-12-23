@@ -7,6 +7,7 @@ import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
@@ -30,8 +31,6 @@ import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
@@ -206,13 +205,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupRegisterButton() {
         binding.tvSignUp.setVisibilityByCreditSystem()
-
+        binding.linRegister.isVisible = !isUAT()
         binding.tvSignUp.setOnClickListener {
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this@LoginActivity, RegisterOkActivity::class.java))
-            } else {
-                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
-            }
+            startRegister(this@LoginActivity)
             finish()
         }
     }

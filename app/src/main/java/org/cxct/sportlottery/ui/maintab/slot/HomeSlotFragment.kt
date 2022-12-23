@@ -20,17 +20,12 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.isOKPlat
-import org.cxct.sportlottery.util.observe
+import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -103,8 +98,9 @@ class HomeSlotFragment :
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+            startRegister(requireContext())
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -193,6 +189,7 @@ class HomeSlotFragment :
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
+            btn_register.isVisible = !isUAT()
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }
@@ -212,11 +209,7 @@ class HomeSlotFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
-                Intent(
-                    context,
-                    if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
-            )
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""

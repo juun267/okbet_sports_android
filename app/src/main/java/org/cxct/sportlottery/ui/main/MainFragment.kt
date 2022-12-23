@@ -29,13 +29,13 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.startRegister
 
 
 class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -349,9 +349,11 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         hideLoading()
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(Intent(context, RegisterOkActivity::class.java))
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error),
+                result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error),
+                result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {
             }
         }

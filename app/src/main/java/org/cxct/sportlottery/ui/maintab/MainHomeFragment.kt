@@ -26,6 +26,9 @@ import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
+import kotlinx.android.synthetic.main.view_toolbar_home.btn_login
+import kotlinx.android.synthetic.main.view_toolbar_home.btn_register
+import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -36,7 +39,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -50,8 +52,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -288,8 +288,9 @@ class MainHomeFragment :
             EventBus.getDefault().post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0, 0)
         }
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+            startRegister(requireContext())
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -934,11 +935,7 @@ class MainHomeFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
-                Intent(
-                    context,
-                     if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
-            )
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""
@@ -991,6 +988,7 @@ class MainHomeFragment :
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
+            btn_register.isVisible = !isUAT()
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

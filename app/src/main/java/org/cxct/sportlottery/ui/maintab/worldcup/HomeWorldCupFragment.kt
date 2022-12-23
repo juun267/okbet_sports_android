@@ -28,13 +28,10 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.observe
+import org.cxct.sportlottery.util.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -214,8 +211,9 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+            startRegister(requireContext())
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -264,6 +262,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
+            btn_register.isVisible = !isUAT()
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

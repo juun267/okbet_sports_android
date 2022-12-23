@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -34,10 +33,8 @@ import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
-import org.cxct.sportlottery.util.HomePageStatusManager
-import org.cxct.sportlottery.util.observe
-import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.greenrobot.eventbus.EventBus
 
 
@@ -104,8 +101,9 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+            startRegister(requireContext())
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -305,6 +303,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
+            btn_register.isVisible = !isUAT()
             btn_login.isVisible = !it
             lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

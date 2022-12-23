@@ -34,7 +34,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
@@ -130,8 +129,9 @@ class HomeLiveFragment :
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            startActivity(Intent(requireActivity(), RegisterOkActivity::class.java))
+            startRegister(requireContext())
         }
         btn_login.setOnClickListener {
             startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -522,6 +522,7 @@ class HomeLiveFragment :
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
             btn_register.isVisible = !it
+            btn_register.isVisible = !isUAT()
             btn_login.isVisible = !it
 //            lin_search.visibility = if (it) View.VISIBLE else View.GONE
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
