@@ -30,7 +30,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.isOKPlat
-import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -127,9 +126,6 @@ class HomeSlotFragment :
     }
 
     private fun initObservable() {
-        if (viewModel == null) {
-            return
-        }
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let {
                 tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"

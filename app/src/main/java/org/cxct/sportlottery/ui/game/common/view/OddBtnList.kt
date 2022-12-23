@@ -87,7 +87,7 @@ class OddBtnList @JvmOverloads constructor(
     }
 
     fun setOddsInvisiable() {
-        setViewInvisiable(oddBtnType, oddBtnHome, oddBtnAway)
+        setViewInvisible(oddBtnType, oddBtnHome, oddBtnAway)
         oddBtnDraw?.inVisible()
         oddBtnOther?.gone()
     }
@@ -99,7 +99,7 @@ class OddBtnList @JvmOverloads constructor(
     }
 
     fun enableAllOddsBtn(includeDrawBtn: Boolean) {
-        setViewVisiable(oddBtnType, oddBtnHome, oddBtnAway)
+        setViewVisible(oddBtnType, oddBtnHome, oddBtnAway)
         oddBtnOther?.gone()
         if (includeDrawBtn) {
             getDrawOddsBtn().visible()

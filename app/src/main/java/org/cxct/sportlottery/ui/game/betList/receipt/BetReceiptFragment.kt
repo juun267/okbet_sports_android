@@ -22,7 +22,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
@@ -218,7 +217,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
 
         btnLastStep.setOnClickListener {
-            if (viewModel.betFailed.value == false) {
+            if (viewModel.betFailed.value?.first == false) {
                 //投注成功 ， 查看注单
                 activity?.let {
                     it.supportFragmentManager.beginTransaction().remove(this@BetReceiptFragment)
@@ -257,7 +256,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 interfaceStatusChangeListener =
                     object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
                         override fun onChange(cancelBy: String) {
-                            updateBetResultStatus(cancelBy.isEmpty())
+                            updateBetResultStatus(Pair(cancelBy.isEmpty(),""))
                         }
                     }
             }
@@ -300,7 +299,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    fun updateBetResultStatus(betFailed: Boolean) {
+    fun updateBetResultStatus(betFailed: Pair<Boolean, String?>) {
         lin_result_status.isVisible = true
         //下注其他盘口
         btn_complete.text = getString(R.string.str_bet_other_game)
@@ -309,24 +308,29 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 btn_complete.context, R.color.white
             )
         )
-        if (!betFailed) {
+        if (betFailed.first) {
+            //投注失败
+            lin_result_status.setBackgroundResource(R.color.color_E23434)
+            iv_result_status.setImageResource(R.drawable.ic_fail_white)
+            tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
+                getString(R.string.your_bet_order_fail)
+            } else {
+                betFailed.second
+            }
+            btnLastStep.text = getString(R.string.str_return_last_step)
+            btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
+            btnLastStep.background =
+                ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
+        } else {
             //投注成功
             lin_result_status.setBackgroundResource(R.color.color_1EB65B)
             iv_result_status.setImageResource(R.drawable.ic_success_white)
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btnLastStep.text = getString(R.string.str_check_bets)
-            btnLastStep.setTextColor(resources.getColor(R.color.color_414655,null))
+            btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
             btnLastStep.background =
                 ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_check_bet, null)
-        } else {
-            //投注失败
-            lin_result_status.setBackgroundResource(R.color.color_E23434)
-            iv_result_status.setImageResource(R.drawable.ic_fail_white)
-            tv_result_status.text = getString(R.string.your_bet_order_fail)
-            btnLastStep.text = getString(R.string.str_return_last_step)
-            btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8,null))
-            btnLastStep.background =
-                ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
+
         }
     }
 

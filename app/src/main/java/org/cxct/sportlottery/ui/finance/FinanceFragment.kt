@@ -21,7 +21,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.SecurityDepositDialog
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.observe
 
 /**
  * @app_destination 資金明細

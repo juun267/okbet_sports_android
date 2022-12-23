@@ -77,6 +77,9 @@ data class UserInfo(
     @ColumnInfo(name = "perBetLimit")
     val perBetLimit: Int? = null,
 
+    @ColumnInfo(name = "oddsChangeOption")
+    var oddsChangeOption:Int? = null ,
+
     val uwEnableTime: Long? = 0,
 
     val maxPayout: Double? = 0.0,

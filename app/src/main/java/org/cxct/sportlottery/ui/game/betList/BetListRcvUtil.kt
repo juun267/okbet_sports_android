@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 
 /**
@@ -58,4 +59,9 @@ object BetListRcvUtil {
         }
         return measuredHeight
     }
+
+
+
+
+
 }

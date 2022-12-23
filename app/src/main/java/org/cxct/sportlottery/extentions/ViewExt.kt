@@ -32,7 +32,7 @@ fun View.inVisible(){
     this.visibility = View.INVISIBLE
 }
 
-fun setViewVisiable(vararg views: View) {
+fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
@@ -40,7 +40,7 @@ fun setViewGone(vararg views: View) {
     views.forEach { it.visibility = View.GONE }
 }
 
-fun setViewInvisiable(vararg views: View) {
+fun setViewInvisible(vararg views: View) {
     views.forEach { it.visibility = View.INVISIBLE }
 }
 

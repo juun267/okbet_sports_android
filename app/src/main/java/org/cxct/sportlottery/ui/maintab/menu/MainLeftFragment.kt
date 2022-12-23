@@ -163,9 +163,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserver() {
-        viewModel.isLogin.observe(viewLifecycleOwner) {
-//            setLogin()
-        }
         viewModel.oddsType.observe(viewLifecycleOwner) {
             setOddsType(it)
         }
