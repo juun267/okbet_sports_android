@@ -91,6 +91,34 @@ import java.lang.Exception
  * if (size == 1) { 單一注單 } else { 多筆注單 or 空注單 }
  */
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+
+
+    companion object {
+        private const val BET_CONFIRM_TIPS = 1001
+
+        /**
+         * 投注类型
+         * PARLAY 串关投注
+         * SINGLE 单项投注
+         */
+        const val SINGLE = 0
+        const val PARLAY = 1
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @return A new instance of fragment BetListFragment.
+         */
+        @JvmStatic
+        fun newInstance(betResultListener: BetResultListener, showToolbar: Boolean = false) =
+            BetListFragment().apply {
+                this.betResultListener = betResultListener
+                this.showToolbar = showToolbar
+            }
+    }
+
+
     private lateinit var binding: FragmentBetListBinding
 
     private var oddsType: OddsType = OddsType.EU
@@ -116,8 +144,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var showPlatCloseWarn: Boolean = false //盤口是否被關閉
 
     private var showReceipt: Boolean = false
-
-//    private var tabPosition = 0 //tab的位置
 
     private var needUpdateBetLimit = false //是否需要更新投注限額
 
@@ -257,9 +283,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
 
     private fun initBtnEvent() {
         binding.btnBet.apply {
@@ -406,13 +429,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         btnOddsChangeDes.setOnClickListener {
             showOddsChangeTips()
         }
-
-//        Timber.d("listSize: ${betParlayListRefactorAdapter?.getListSize()}")
-//        if ((betParlayListRefactorAdapter?.getListSize() ?: 0) > 1){
-//            tvExpandOrStacked.visible()
-//        }else{
-//            tvExpandOrStacked.gone()
-//        }
 
         tvExpandOrStacked.setOnClickListener {
             if (isOpen) {
@@ -826,7 +842,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             when (currentBetType) {
                 //單項投注
                 0 -> {
-//                    tabPosition = 0
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     binding.apply {
                         clParlayList.visibility = View.GONE
@@ -835,7 +850,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
                 //串關投注
                 1 -> {
-//                    tabPosition = 1
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                     refreshLlMoreOption()
@@ -875,7 +889,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) {
-            //keyboard?.hideKeyboard()
             betListRefactorAdapter?.oddsType = it
             betSingleListAdapter?.oddsType = it
             betParlayListRefactorAdapter?.oddsType = it
@@ -1262,30 +1275,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListPageUnSubScribeEvent()
     }
 
-    companion object {
-        private const val BET_CONFIRM_TIPS = 1001
 
-        /**
-         * 投注类型
-         * PARLAY 串关投注
-         * SINGLE 单项投注
-         */
-        const val SINGLE = 0
-        const val PARLAY = 1
-
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment BetListFragment.
-         */
-        @JvmStatic
-        fun newInstance(betResultListener: BetResultListener, showToolbar: Boolean = false) =
-            BetListFragment().apply {
-                this.betResultListener = betResultListener
-                this.showToolbar = showToolbar
-            }
-    }
 
     interface BetResultListener {
         fun onBetResult(
