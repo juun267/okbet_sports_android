@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.rotationAnimation
 import org.cxct.sportlottery.extentions.setViewGone
-import org.cxct.sportlottery.extentions.setViewVisiable
+import org.cxct.sportlottery.extentions.setViewVisible
 import org.cxct.sportlottery.extentions.showLoading
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.FoldState
@@ -263,7 +263,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         }
         if (matchType == MatchType.EARLY) {
             mCalendarSelected = true
-            setViewVisiable(iv_calendar, game_filter_type_list)
+            setViewVisible(iv_calendar, game_filter_type_list)
         } else {
             mCalendarSelected = false
             setViewGone(iv_calendar, game_filter_type_list)
@@ -323,7 +323,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     }
 
     private fun initObserve() {
-        viewModel.notifyLogin.observe(this) {
+        viewModel.notifyLogin.observe(this.viewLifecycleOwner) {
             (activity as MainTabActivity).showLoginNotify()
         }
         viewModel.showErrorDialogMsg.observe(this.viewLifecycleOwner) {
@@ -393,9 +393,9 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             position = if (position != 0) position else it
         }
 
-        viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
-
-        }
+//        viewModel.userInfo.observe(this.viewLifecycleOwner) { userInfo ->
+//
+//        }
 
         viewModel.outrightList.observe(viewLifecycleOwner) {
             if (gameType != it.tag) {
@@ -403,7 +403,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             }
             val data = it?.getContentIfNotHandled()?.outrightOddsListData?.leagueOdds ?: return@observe
             val list = mutableListOf<MatchOdd>()
-            data?.forEach { it.matchOdds?.let { list.addAll(it) } }
+            data.forEach { it.matchOdds?.let { list.addAll(it) } }
             sportOutrightAdapter2.setNewInstance(list as MutableList<BaseNode>)
             setOutrightLeagueAdapter(120)
         }
@@ -430,23 +430,23 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            it.peekContent()?.let {
+            it.peekContent().let {
                 sportOutrightAdapter2.updateOddsSelectedStatus(it)
             }
         }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner) {
+//        viewModel.oddsType.observe(this.viewLifecycleOwner) {
+//
+//        }
 
-        }
 
-
-        viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
-
-        }
-
-        viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
-
-        }
+//        viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
+//
+//        }
+//
+//        viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
+//
+//        }
 
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
             mLeagueIsFiltered = leagueList.isNotEmpty()
@@ -483,13 +483,13 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             }
         }
 
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
-            it?.let { matchStatusChangeEvent ->
-                when (game_list.adapter) {
-
-                }
-            }
-        }
+//        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
+//            it?.let { matchStatusChangeEvent ->
+//                when (game_list.adapter) {
+//
+//                }
+//            }
+//        }
 
         receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
@@ -545,10 +545,10 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 //                //待優化: 應有個暫存leagueChangeEvent的機制，確認後續流程更新完畢，再處理下一筆leagueChangeEvent，不過目前後續操作並非都是suspend，需重構後續流程
 //            }
 //        }
-
-        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
-
-        }
+//
+//        receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
+//
+//        }
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {

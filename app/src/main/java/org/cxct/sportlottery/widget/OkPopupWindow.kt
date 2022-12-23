@@ -97,7 +97,6 @@ class OkPopupWindow(context: Context, var currentSelectText: String,val onItemCl
             listAdapter.notifyItemChanged(lastSelectPosition)
             val descriptionPosition = OddsModeUtil.currentSelectModeIndex(position)
             onItemClickListener(currentSelectText,descriptionPosition)
-            KvUtils.put(KV_STR_SELECT_ODDS_MODE,position)
             dismiss()
         }
 

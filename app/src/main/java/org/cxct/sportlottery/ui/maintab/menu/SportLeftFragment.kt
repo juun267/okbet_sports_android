@@ -21,7 +21,6 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.observe
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {

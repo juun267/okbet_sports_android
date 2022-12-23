@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.user
 
 import org.cxct.sportlottery.network.Constants.LOCK_MONEY
+import org.cxct.sportlottery.network.Constants.ODDS_CHANGE_OPTION
 import org.cxct.sportlottery.network.Constants.PASSWORD_VERIFY
 import org.cxct.sportlottery.network.Constants.USER_BET_LIMIT
 import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
@@ -20,6 +21,8 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
+import org.cxct.sportlottery.network.user.odds.OddsChangeOptionResult
 import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyRequest
 import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.selflimit.FrozeRequest
@@ -34,6 +37,8 @@ import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -78,4 +83,8 @@ interface UserService {
 
     @POST(PASSWORD_VERIFY)
     suspend fun passwordVerify(@Body passwordVerifyRequest: PasswordVerifyRequest): Response<PasswordVerifyResult>
+
+    @POST(ODDS_CHANGE_OPTION)
+    suspend fun oddsChangeOption(@Body oddsChangeOption : OddsChangeOptionRequest) : Response<OddsChangeOptionResult>
+
 }

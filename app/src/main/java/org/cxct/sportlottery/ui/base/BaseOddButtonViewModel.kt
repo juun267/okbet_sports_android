@@ -73,17 +73,16 @@ abstract class BaseOddButtonViewModel(
         get() = _betAddResult
 
 
-
     protected val mUserMoney = MutableLiveData<Double?>()
     protected val mLockMoney = MutableLiveData<Double?>()
-    protected val _betFailed = MutableLiveData<Boolean>()
+    protected val _betFailed = MutableLiveData<Pair<Boolean, String?>>()
 
     val userMoney: LiveData<Double?> //使用者餘額
         get() = mUserMoney
 
     val lockMoney: LiveData<Double?>
         get() = mLockMoney
-    val betFailed: LiveData<Boolean>
+    val betFailed: LiveData<Pair<Boolean, String?>>
         get() = _betFailed
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
@@ -294,10 +293,10 @@ abstract class BaseOddButtonViewModel(
         val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
         when (changeEvent) {
             is OddsChangeEvent -> {
-                changeEvent.odds?.forEach { map ->
+                changeEvent.odds.forEach { map ->
                     val value = map.value
                     value?.forEach { odd ->
-                        odd?.let {
+                        odd.let {
                             val newOdd = org.cxct.sportlottery.network.odds.Odd(
                                 extInfoMap = null,
                                 id = odd.id,
@@ -450,13 +449,17 @@ abstract class BaseOddButtonViewModel(
 
                     if (!haveSingleItemFaild && !haveParlayItemFaild) {
                         betInfoRepository.clear()
-                        _betFailed.postValue(false)
+                        _betFailed.postValue(Pair(false, ""))
                     } else {
+
+                        var failedReason: String? = ""
                         it.receipt?.singleBets?.forEach {
                             if (it.status != 7) {
                                 it.matchOdds?.forEach {
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
+                            } else {
+                                failedReason = it.reason
                             }
                         }
                         it.receipt?.parlayBets?.forEach {
@@ -464,10 +467,12 @@ abstract class BaseOddButtonViewModel(
                                 it.matchOdds?.forEach {
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
+                            } else {
+                                failedReason = it.reason
                             }
                         }
                         //处理赔率更新
-                        _betFailed.postValue(true)
+                        _betFailed.postValue(Pair(true, failedReason))
                     }
 
                 }

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.betList
+package org.cxct.sportlottery.ui.game.betList.holder
 
 import android.content.Context
 import android.graphics.Typeface
