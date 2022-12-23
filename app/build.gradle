@@ -1,6 +1,3 @@
-import groovy.json.JsonOutput
-import groovy.json.StringEscapeUtils
-
 import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
@@ -119,7 +116,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "google", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "oppo8"
             ]
         }
         huawei {
@@ -133,7 +131,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "huawei", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "huawei8"
             ]
         }
         xiaomi {
@@ -147,7 +146,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "xiaomi", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "xiaomi8"
             ]
         }
         oppo {
@@ -162,7 +162,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "oppo", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "oppo8"
             ]
         }
         vivo {
@@ -176,7 +177,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "vivo", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "vivo8"
             ]
         }
         samgsung {
@@ -190,7 +192,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "samgsung", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : "samsung8"
             ]
         }
         //okbet9测试环境
