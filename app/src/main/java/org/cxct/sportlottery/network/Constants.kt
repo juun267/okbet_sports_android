@@ -242,12 +242,12 @@ object Constants {
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
-        return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (getStoreName() != "google") "" else "-${getStoreName()}") + ".json"
+        return "https://download." + serverUrl + (if (BuildConfig.FLAVOR.equals("phuat")) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/version-Android" + (if (getStoreName() != "google") "" else "-${getStoreName()}") + ".json"
     }
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/${currentFilename}.apk"
+        return "https://download." + currentServerUrl + (if (BuildConfig.FLAVOR.equals("phuat")) "/platform/" else "/sportnative/platform/") + BuildConfig.CHANNEL_NAME + "/${currentFilename}.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {
