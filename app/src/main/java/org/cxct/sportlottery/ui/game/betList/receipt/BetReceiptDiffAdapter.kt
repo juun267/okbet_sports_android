@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -248,7 +247,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
                     //"status": 7 顯示賠率已改變
                     if (status == 7)
-                        interfaceStatusChangeListener?.onChange("")
+                        interfaceStatusChangeListener?.onChange(code)
 
                     tv_bet_status_single.setReceiptStatusColor(status)
 
@@ -359,7 +358,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
                     //"status": 7 顯示賠率已改變
                     if (status == 7)
-                        interfaceStatusChangeListener?.onChange("")
+                        interfaceStatusChangeListener?.onChange(code)
 
                     tv_bet_status.setReceiptStatusColor(status)
                 }
@@ -369,7 +368,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     interface InterfaceStatusChangeListener {
         //取消触发来源 0: 自动, 1: 手动
-        fun onChange(cancelBy: String)
+        fun onChange(cancelBy: String?)
     }
 }
 

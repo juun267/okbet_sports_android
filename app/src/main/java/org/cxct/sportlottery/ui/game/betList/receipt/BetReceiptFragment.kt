@@ -10,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MoneyEvent
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -19,7 +18,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.AppManager
+import org.cxct.sportlottery.util.BetsFailedReasonUtil
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.greenrobot.eventbus.EventBus
@@ -255,8 +254,11 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
                 interfaceStatusChangeListener =
                     object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
-                        override fun onChange(cancelBy: String) {
-                            updateBetResultStatus(Pair(cancelBy.isEmpty(),""))
+                        override fun onChange(cancelBy: String?) {
+                            val firstBetFailed = cancelBy?.isNotEmpty() ?: true
+                            val pair = Pair(firstBetFailed, cancelBy)
+                            Timber.d("betFirst:${firstBetFailed} betSecond:$cancelBy")
+                            updateBetResultStatus(pair)
                         }
                     }
             }
@@ -308,6 +310,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 btn_complete.context, R.color.white
             )
         )
+        Timber.d("投注成功或失败: ${betFailed.first}")
         if (betFailed.first) {
             //投注失败
             lin_result_status.setBackgroundResource(R.color.color_E23434)
@@ -315,7 +318,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
                 getString(R.string.your_bet_order_fail)
             } else {
-                betFailed.second
+                BetsFailedReasonUtil.getFailedReasonByCode(betFailed.second)
             }
             btnLastStep.text = getString(R.string.str_return_last_step)
             btnLastStep.setTextColor(resources.getColor(R.color.color_025BE8, null))
