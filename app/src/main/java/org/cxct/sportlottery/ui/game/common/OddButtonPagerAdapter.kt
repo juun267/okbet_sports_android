@@ -605,7 +605,6 @@ class OddButtonPagerViewHolder constructor(
 
         oddBtnList.oddBtnType.text = playCateName.updatePlayCateColor()
         val isDeactivated = (odds.second == null || odds.second!!.all { it == null })
-
         if (matchType == MatchType.CS && odds?.second?.size == 1) {
             val oddBtnOther = oddBtnList.getOtherOddsBtn()
             odds.second?.getOrNull(0).let {
@@ -617,21 +616,57 @@ class OddButtonPagerViewHolder constructor(
 
         odds.second?.getOrNull(0).let {
             val oddBtnHome = oddBtnList.oddBtnHome
-            bindOddBtn(oddBtnHome, isDeactivated, playCateCode, it, odds.second, oddsType)
-            bindOddClick(oddBtnHome, it, oddButtonListener, matchInfo, playCateCode, playCateName, betPlayCateName)
+            bindOddBtn(oddBtnHome,
+                isDeactivated,
+                playCateCode,
+                it,
+                odds.second,
+                oddsType,
+                isDrawBtn = it?.name == "Draw")
+            bindOddClick(oddBtnHome,
+                it,
+                oddButtonListener,
+                matchInfo,
+                playCateCode,
+                playCateName,
+                betPlayCateName)
         }
 
         odds.second?.getOrNull(1).let {
             val oddBtnAway = oddBtnList.oddBtnAway
-            bindOddBtn(oddBtnAway, isDeactivated, playCateCode, it, odds.second, oddsType)
-            bindOddClick(oddBtnAway, it, oddButtonListener, matchInfo, playCateCode, playCateName, betPlayCateName)
+            bindOddBtn(oddBtnAway,
+                isDeactivated,
+                playCateCode,
+                it,
+                odds.second,
+                oddsType,
+                isDrawBtn = it?.name == "Draw")
+            bindOddClick(oddBtnAway,
+                it,
+                oddButtonListener,
+                matchInfo,
+                playCateCode,
+                playCateName,
+                betPlayCateName)
         }
 
         val drawOdd = odds.second?.getOrNull(2)
         if (odds.second?.size?: 0 > 2 && drawOdd != null) {
             val oddBtnDraw = oddBtnList.getDrawOddsBtn()
-            bindOddBtn(oddBtnDraw, isDeactivated, playCateCode, drawOdd, odds.second, oddsType, isDrawBtn = true)
-            bindOddClick(oddBtnDraw, drawOdd, oddButtonListener, matchInfo, playCateCode, playCateName, betPlayCateName)
+            bindOddBtn(oddBtnDraw,
+                isDeactivated,
+                playCateCode,
+                drawOdd,
+                odds.second,
+                oddsType,
+                isDrawBtn = drawOdd.name == "Draw")
+            bindOddClick(oddBtnDraw,
+                drawOdd,
+                oddButtonListener,
+                matchInfo,
+                playCateCode,
+                playCateName,
+                betPlayCateName)
         } else {
             oddBtnList.disableDrawBtn()
         }
@@ -732,15 +767,39 @@ class OddButtonPagerViewHolder constructor(
 
         if (matchType == MatchType.CS && odds?.second?.size == 1) {
             val oddBtnOther = oddBtnList.getOtherOddsBtn()
-            bindOddBtn(oddBtnOther, isDeactivated, playCateCode, odds.second?.getOrNull(0), odds.second, oddsType, isOtherBtn = true)
+            bindOddBtn(oddBtnOther,
+                isDeactivated,
+                playCateCode,
+                odds.second?.getOrNull(0),
+                odds.second,
+                oddsType,
+                isOtherBtn = true)
             return
         }
 
-        bindOddBtn(oddBtnList.oddBtnHome, isDeactivated, playCateCode, odds.second?.getOrNull(0), odds.second, oddsType)
-        bindOddBtn(oddBtnList.oddBtnAway, isDeactivated, playCateCode, odds.second?.getOrNull(1), odds.second, oddsType)
+        bindOddBtn(oddBtnList.oddBtnHome,
+            isDeactivated,
+            playCateCode,
+            odds.second?.getOrNull(0),
+            odds.second,
+            oddsType,
+            isDrawBtn = odds.second?.getOrNull(0)?.name == "Draw")
+        bindOddBtn(oddBtnList.oddBtnAway,
+            isDeactivated,
+            playCateCode,
+            odds.second?.getOrNull(1),
+            odds.second,
+            oddsType,
+            isDrawBtn = odds.second?.getOrNull(1)?.name == "Draw")
 
-        if (odds.second?.size?: 0 > 2) {
-            bindOddBtn(oddBtnList.getDrawOddsBtn(), isDeactivated, playCateCode, odds.second?.getOrNull(2), odds.second, oddsType, isDrawBtn = true)
+        if (odds.second?.size ?: 0 > 2) {
+            bindOddBtn(oddBtnList.getDrawOddsBtn(),
+                isDeactivated,
+                playCateCode,
+                odds.second?.getOrNull(2),
+                odds.second,
+                oddsType,
+                isDrawBtn = odds.second?.getOrNull(2)?.name == "Draw")
         } else {
             oddBtnList.disableDrawBtn()
         }
