@@ -36,7 +36,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -252,7 +251,7 @@ class MainHomeFragment :
         initHotHandicap()
         initListView()
 
-        nsv_home.setupBackTop(ll_come_back, 180.dp)
+        nsv_home.setupBackTop(iv_top, 180.dp)
 
         view_action.setOnClickListener {
             mMatchInfo?.let { it1 ->
@@ -320,9 +319,9 @@ class MainHomeFragment :
             tv_hot_live_find_more.text = getString(R.string.see_more) + (if (it == "0") "" else it)
         }
 
-        viewModel.userMoney.observe(viewLifecycleOwner) {
-
-        }
+//        viewModel.userMoney.observe(viewLifecycleOwner) {
+//
+//        }
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 hotHandicapAdapter.oddsType = oddsType
@@ -354,19 +353,7 @@ class MainHomeFragment :
                 setupAnnouncement(titleList)
             }
         }
-//        //文字跑马灯
-//        viewModel.publicityPromotionAnnouncementList.observe(viewLifecycleOwner) {
-//            //非信用盤才顯示優惠活動跑馬燈
-//            if (!isCreditSystem())
-//                if (it.isNotEmpty()) mPublicityAdapter.addPromotionAnnouncementList(it)
-//        }
-//
 
-
-        viewModel.publicityMenuData.observe(viewLifecycleOwner) {
-            // setupType(it)
-        }
-//
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it)

@@ -40,6 +40,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_QUICK_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
+import org.cxct.sportlottery.network.Constants.ODDS_CHANGE_OPTION
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
@@ -146,6 +147,7 @@ import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
+import org.cxct.sportlottery.network.user.odds.OddsChangeOptionResult
 import org.cxct.sportlottery.network.user.passwordVerify.PasswordVerifyResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
@@ -571,6 +573,11 @@ object ErrorUtils {
                     (url.contains(QUERY_GAME_ENTRY_CONFIG)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return QueryGameEntryConfigResult(it.code, it.msg, it.success,null) as T
+                    }
+
+                    (url.contains(ODDS_CHANGE_OPTION)) ->{
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
                     }
 
                 }

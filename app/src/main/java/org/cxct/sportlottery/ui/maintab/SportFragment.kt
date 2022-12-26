@@ -36,7 +36,6 @@ import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.HomePageStatusManager
-import org.cxct.sportlottery.util.observe
 import org.cxct.sportlottery.util.phoneNumCheckDialog
 import org.greenrobot.eventbus.EventBus
 

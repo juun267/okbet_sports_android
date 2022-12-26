@@ -142,7 +142,7 @@ class BetRecordFragment :
         }
     }
 
-    fun initObservable() {
+    private fun initObservable() {
         viewModel.sportCodeList.observe(viewLifecycleOwner) {
             System.out.println("============ initObservable size ================"+it.size)
             updateSportList(it)

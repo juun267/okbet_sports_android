@@ -34,17 +34,16 @@ import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.observe
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
 class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    private val worldcupPosition = 2
+    private val worldCupPosition = 2
     private val homeTabAdapter by lazy { HomeWorldCupTabAdapter().apply {
             setOnItemClickListener { adapter, view, position ->
-                if (position == worldcupPosition) { //世界杯
+                if (position == worldCupPosition) { //世界杯
                     return@setOnItemClickListener
                 }
 
@@ -256,7 +255,7 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
                 adapter = homeTabAdapter
             }
 
-//            scrollToPosition(worldcupPosition)
+//            scrollToPosition(worldCupPosition)
         }
     }
 

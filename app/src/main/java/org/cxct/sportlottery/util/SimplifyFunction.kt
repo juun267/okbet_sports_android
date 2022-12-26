@@ -1195,16 +1195,16 @@ fun isMultipleSitePlat(): Boolean =
 fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name) == "OKbet"
 
 /**
- * 解析以下报错，不能用lamda
+ * 解析以下报错，不能用lambda
  *  Cannot add the same observer with different lifecycles
  */
-fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Unit) {
-    this.observe(owner, object : Observer<T> {
-        override fun onChanged(t: T) {
-            callback.invoke(t)
-        }
-    })
-}
+//fun <T> LiveData<T>.observe(@NonNull owner: LifecycleOwner, callback: (T) -> Unit) {
+//    this.observe(owner, object : Observer<T> {
+//        override fun onChanged(t: T) {
+//            callback.invoke(t)
+//        }
+//    })
+//}
 
 fun ImageView.setTeamLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {

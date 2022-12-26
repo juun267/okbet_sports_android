@@ -43,7 +43,7 @@
     <string name="error_register_id_exist">已有此账户名</string>
     <string name="hint_register_password">长度需6–20个字符含英数</string>
     <string name="error_register_password">密码为6~20位数字字母组合</string>
-    <string name="error_password_format">需使用英数组合的密码</string>
+    <string name="error_password_format">需为6~20个英数组合</string>
     <string name="register_please_read">请仔细阅读我们的</string>
     <string name="register_responsibilities"><u>博彩责任</u></string>
     <string name="register_privacy_policy">隐私权政策</string>
@@ -1363,6 +1363,20 @@
     <string name="str_bet_other_game">下注其他盘口</string>
     <string name="str_check_bets">查看注单</string>
     <string name="str_press_again_to_exit_the_program">再按一次退出程序</string>
+    <string name="str_odds_changed">赔率已变化</string>
+    <string name="str_bet_slip_not_confirm_for_a_long_time">注单长时间未确认</string>
+    <string name="str_exceeding_limit_for_the_event_or_market">超出赛事或盘口投注上限</string>
+    <string name="str_market_closed_please_try_later">盘口关闭，请稍后再试</string>
+    <string name="str_match_closed">赛事关闭</string>
+    <string name="str_match_be_suspended">赛事暂停中</string>
+    <string name="str_amount_wrong">金额不正确</string>
+    <string name="str_less_than_min_bet">低于最小投注额</string>
+    <string name="str_only_one_type_of_ball_can_be_used_parlay">串关只能同一种球类</string>
+    <string name="str_parlay_exceed_the_ties_limit">串关数量超出限制</string>
+    <string name="str_self_exclusion">自我禁制</string>
+    <string name="str_match_be_suspended_or_closed_please_check">某场赛事处于暂停或关闭中，请检查</string>
+    <string name="str_parlay_is_not_allowed_in_championship_matches">冠军赛事禁止串关</string>
+    <string name="str_parlay_type_wrong">串关类型错误</string>
     <!--投注改版-->
     <string name="reget_phone_code_for">重新获取</string>
     <string name="pay_maya">Paymaya</string>

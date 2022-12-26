@@ -50,8 +50,8 @@ class HomeFlipperAdapter : RecyclerView.Adapter<HomeFlipperAdapter.DetailViewHol
     fun setData(dataList: MutableList<String>?) {
         mDataList = dataList ?: mutableListOf()
 
-        if (mDataList.isEmpty())
-            mDataList.add("(${MultiLanguagesApplication.appContext.getString(R.string.no_announcement)})")
+//        if (mDataList.isEmpty())
+//            mDataList.add("(${MultiLanguagesApplication.appContext.getString(R.string.no_announcement)})")
 
         notifyDataSetChanged()//更新資料
     }

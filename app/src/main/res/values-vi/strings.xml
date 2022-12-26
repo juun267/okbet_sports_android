@@ -42,7 +42,7 @@
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
     <string name="hint_register_password">Độ dài từ 6-20 ký tự bao gồm chữ cái và số</string>
     <string name="error_register_password">Mật khẩu từ 6-20 ký tự bao gồm chữ cái và số</string>
-    <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
+    <string name="error_password_format">từ 6~20 ký tự bao gồm chữ và sô</string>
     <string name="register_please_read">Hãy đọc kỹ</string>
     <string name="register_responsibilities">&#160;Chơi có trách nhiệm</string>
     <string name="register_privacy">Gửi cho tôi thông tin cập nhật và khuyến mãi theo</string>
@@ -1292,7 +1292,7 @@
     <string name="ou_odd">Tỷ lệ cược Châu Âu</string>
     <string name="home_in_play">Trong trận</string>
     <string name="total_reward_amount">Jackpot tích luỹ</string>
-    <string name="hot_elec_game">Game thưởng khủng</string>
+    <string name="hot_elec_game">Game jackpot Hot</string>
     <string name="go_back_top">Về đầu trang</string>
     <string name="win_line">Chủ &amp; Khách</string>
     <string name="home_all_game">Tất cả game</string>
@@ -1351,6 +1351,20 @@
     <string name="str_bet_other_game">Cược thị trường khác</string>
     <string name="str_check_bets">Chi tiết</string>
     <string name="str_press_again_to_exit_the_program">Vui lòng xác nhận lại lối thoát</string>
+    <string name="str_odds_changed">Tỷ lệ cược thay đổi</string>
+    <string name="str_bet_slip_not_confirm_for_a_long_time">Đơn cược chưa xác nhận trong thời gian dài</string>
+    <string name="str_exceeding_limit_for_the_event_or_market">Vượt quá giới hạn cược trận đấu hoặc thị trường</string>
+    <string name="str_market_closed_please_try_later">Thị trường đã đóng, vui lòng thử lại sau</string>
+    <string name="str_match_closed">Trận đấu đã kết thúc</string>
+    <string name="str_match_be_suspended">Trận đấu tạm dừng</string>
+    <string name="str_amount_wrong">Số tiền không chính xác</string>
+    <string name="str_less_than_min_bet">Dưới mức đặt cược tối thiểu</string>
+    <string name="str_only_one_type_of_ball_can_be_used_parlay">Chỉ cùng một loại bóng mới được sử dụng nối tiếp</string>
+    <string name="str_parlay_exceed_the_ties_limit">Số lượng liên kết vượt quá giới hạn </string>
+    <string name="str_self_exclusion">Tự loại trừ</string>
+    <string name="str_match_be_suspended_or_closed_please_check">Trận đấu tạm dừng hoặc đóng, vui lòng kiểm tra</string>
+    <string name="str_parlay_is_not_allowed_in_championship_matches">Các trận đấu vô địch bị cấm cược xâu</string>
+    <string name="str_parlay_type_wrong">Kiểu cược xâu không chính xác</string>
     <!--投注改版-->
     <string name="format_error">Định dạng không phù hợp</string>
     <string name="over_size">Tệp quá lớn</string>

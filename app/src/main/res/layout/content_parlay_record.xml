@@ -152,17 +152,17 @@
                     android:layout_marginHorizontal="10dp"
                     android:gravity="center_vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_number_colon"
-                        android:textColor="@color/color_A5A9B3"
-                        android:textSize="@dimen/textSize10sp" />
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_ticket"/>
 
                     <LinearLayout
                         android:id="@+id/ll_copy_bet_order_parlay"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
                         android:gravity="center_vertical">
 
                         <TextView
@@ -181,14 +181,11 @@
                             android:src="@drawable/ic_copy" />
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="@string/bet_time"
-                        android:textColor="@color/color_A5A9B3"
-                        android:textSize="@dimen/textSize10sp" />
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_clock"
+                        android:layout_marginRight="4dp"/>
 
                     <TextView
                         android:id="@+id/content_parlay_time_type"

@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -329,9 +330,9 @@ class SportListFragment :
             val selected = !iv_arrow.isSelected
             iv_arrow.isSelected = selected
             if (selected) {
-                iv_arrow.rotationAnimation(180f)
+                iv_arrow.rotationAnimation(180f,0)
             } else {
-                iv_arrow.rotationAnimation(0f)
+                iv_arrow.rotationAnimation(0f,0)
             }
             sportLeagueAdapter.data.forEach {
                 it.unfoldStatus =
@@ -535,7 +536,7 @@ class SportListFragment :
 
                     sportLeagueAdapter.limitRefresh()
                     // TODO 這裡要確認是否有其他地方重複呼叫
-                    Log.d("Hewie", "observe => OddsListGameHallResult")
+                    Timber.tag("Hewie").d("observe => OddsListGameHallResult")
 
                     firstVisibleRange()
 
@@ -570,10 +571,10 @@ class SportListFragment :
             }
         }
 
-
-        viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
-
-        }
+//
+//        viewModel.favorLeagueList.observe(this.viewLifecycleOwner) {
+//
+//        }
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
             sportLeagueAdapter.data.forEach { leagueOdd ->
@@ -585,10 +586,10 @@ class SportListFragment :
             updateAllGameList()
         }
 
-        viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
+//        viewModel.leagueFilterList.observe(this.viewLifecycleOwner) { leagueList ->
 //            mLeagueIsFiltered = leagueList.isNotEmpty()
 //            sport_type_list.visibility = if (mLeagueIsFiltered) View.GONE else View.VISIBLE
-        }
+//        }
     }
 
 
@@ -721,14 +722,14 @@ class SportListFragment :
         }
 
         //distinctUntilChanged -> 短時間內收到相同leagueChangeEvent僅會執行一次
-        receiver.leagueChange.distinctUntilChanged().observe(this.viewLifecycleOwner) {
+//        receiver.leagueChange.distinctUntilChanged().observe(this.viewLifecycleOwner) {
 //            it?.let { leagueChangeEvent ->
 //                viewModel.checkGameInList(
 //                    leagueChangeEvent = leagueChangeEvent,
 //                )
 //                //待優化: 應有個暫存leagueChangeEvent的機制，確認後續流程更新完畢，再處理下一筆leagueChangeEvent，不過目前後續操作並非都是suspend，需重構後續流程
 //            }
-        }
+//        }
 
         receiver.closePlayCate.observe(this.viewLifecycleOwner) { event ->
             event?.peekContent()?.let {
@@ -817,7 +818,9 @@ class SportListFragment :
         }
     }
 
+
     private fun updateSportType(gameTypeList: List<Item>) {
+
         if (gameTypeList.isEmpty()) {
             sport_type_list.isVisible = matchType != MatchType.CS
             iv_calendar.isVisible = matchType == MatchType.EARLY || matchType == MatchType.CS
@@ -830,21 +833,23 @@ class SportListFragment :
             (gameTypeList.find { it.num > 0 } ?: gameTypeList.first()).let {
                 it.isSelected = true
                 gameType = it.code
+                sportLeagueAdapter.setPreloadItem()
                 viewModel.switchGameType(it)
             }
         } else {
             (gameTypeList.find { it.code == gameType } ?: gameTypeList.first()).let {
+                gameType = it.code
                 if (!it.isSelected) {
                     it.isSelected = true
+                    sportLeagueAdapter.setPreloadItem()
                     viewModel.switchGameType(it)
                 }
             }
         }
         //全部球类tab不支持联赛筛选
         lin_filter.isVisible = gameType != GameType.ALL.key
-        gameTypeAdapter.apply {
-            dataSport = gameTypeList
-        }
+        gameTypeAdapter.dataSport = gameTypeList
+
         (sport_type_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
             sport_type_list,
             RecyclerView.State(),

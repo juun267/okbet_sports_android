@@ -175,6 +175,13 @@ object UserInfoRepository {
         MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
     }
 
+
+    fun updateOddsChangeOption(option:Int){
+        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        userInfo?.oddsChangeOption = option
+        MultiLanguagesApplication.getInstance()?.saveUserInfo(userInfo)
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
@@ -203,6 +210,7 @@ object UserInfoRepository {
             uwEnableTime = userInfoData.uwEnableTime,
             maxPayout = userInfoData.maxPayout,
             firstRechTime = userInfoData.firstRechTime,
+            oddsChangeOption = userInfoData.oddsChangeOption
         )
 
 }

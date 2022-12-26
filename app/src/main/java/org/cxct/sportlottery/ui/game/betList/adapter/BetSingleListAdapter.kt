@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.betList
+package org.cxct.sportlottery.ui.game.betList.adapter
 
 import android.annotation.SuppressLint
 import android.text.Editable
@@ -16,6 +16,8 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.betList.holder.BetInfoChangeViewHolder
+import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.MoneyInputFilter
@@ -23,7 +25,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import kotlin.math.abs
 
-class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnItemClickListener) :
+class BetSingleListAdapter(val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class BetViewType { SINGLE, PARLAY, NULL }
@@ -173,7 +175,7 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
             itemData: ParlayOdd?,
             betList: MutableList<BetInfoListData>,
             currentOddsType: OddsType,
-            onItemClickListener: BetListRefactorAdapter.OnItemClickListener,
+            onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
             mSelectedPosition: Int,
             mBetView: BetViewType,
@@ -209,7 +211,7 @@ class BetSingleListAdapter(val onItemClickListener: BetListRefactorAdapter.OnIte
             betList: MutableList<BetInfoListData>,
             itemData: ParlayOdd,
             currentOddsType: OddsType,
-            onItemClickListener: BetListRefactorAdapter.OnItemClickListener,
+            onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
             mSelectedPosition: Int,
             mBetView: BetViewType,

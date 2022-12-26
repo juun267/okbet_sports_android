@@ -73,17 +73,16 @@ abstract class BaseOddButtonViewModel(
         get() = _betAddResult
 
 
-
     protected val mUserMoney = MutableLiveData<Double?>()
     protected val mLockMoney = MutableLiveData<Double?>()
-    protected val _betFailed = MutableLiveData<Boolean>()
+    protected val _betFailed = MutableLiveData<Pair<Boolean, String?>>()
 
     val userMoney: LiveData<Double?> //使用者餘額
         get() = mUserMoney
 
     val lockMoney: LiveData<Double?>
         get() = mLockMoney
-    val betFailed: LiveData<Boolean>
+    val betFailed: LiveData<Pair<Boolean, String?>>
         get() = _betFailed
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
@@ -294,10 +293,10 @@ abstract class BaseOddButtonViewModel(
         val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
         when (changeEvent) {
             is OddsChangeEvent -> {
-                changeEvent.odds?.forEach { map ->
+                changeEvent.odds.forEach { map ->
                     val value = map.value
                     value?.forEach { odd ->
-                        odd?.let {
+                        odd.let {
                             val newOdd = org.cxct.sportlottery.network.odds.Odd(
                                 extInfoMap = null,
                                 id = odd.id,
@@ -439,24 +438,24 @@ abstract class BaseOddButtonViewModel(
                 _betAddResult.postValue(Event(result))
                 if (it.success) {
                     //检查是否有item注单下注失败
-                    var haveSingleItemFaild = false
-                    var haveParlayItemFaild = false
-                    it.receipt?.singleBets?.let {
-                        haveSingleItemFaild = it.any { it.status == 7 }
-                    }
-                    it.receipt?.parlayBets?.let {
-                        haveParlayItemFaild = it.any { it.status == 7 }
-                    }
+                    val haveSingleItemFailed =
+                        it.receipt?.singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
+                    val haveParlayItemFailed =
+                        it.receipt?.parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
 
-                    if (!haveSingleItemFaild && !haveParlayItemFaild) {
+                    Timber.d("单注投注失败:${haveSingleItemFailed} 串关投注失败:${haveParlayItemFailed}")
+                    if (!haveSingleItemFailed && !haveParlayItemFailed) {
                         betInfoRepository.clear()
-                        _betFailed.postValue(false)
+                        _betFailed.postValue(Pair(false, ""))
                     } else {
+                        var failedReason: String? = ""
                         it.receipt?.singleBets?.forEach {
                             if (it.status != 7) {
                                 it.matchOdds?.forEach {
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
+                            } else {
+                                failedReason = it.code
                             }
                         }
                         it.receipt?.parlayBets?.forEach {
@@ -464,15 +463,15 @@ abstract class BaseOddButtonViewModel(
                                 it.matchOdds?.forEach {
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
+                            } else {
+                                failedReason = it.code
                             }
                         }
                         //处理赔率更新
-                        _betFailed.postValue(true)
+                        _betFailed.postValue(Pair(true, failedReason))
                     }
-
                 }
             }
-
         }
     }
 

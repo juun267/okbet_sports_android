@@ -42,7 +42,7 @@
     <string name="error_register_id_exist">Username already exists</string>
     <string name="hint_register_password">6-20 characters and contain numbers and letters.</string>
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
-    <string name="error_password_format">The password must be a combination of numbers, letters</string>
+    <string name="error_password_format">A combination of 6 to 20 English letters and digits is required</string>
     <string name="register_please_read">Please read our</string>
     <string name="register_responsibilities">&#160;Responsible Gaming</string>
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
@@ -562,7 +562,7 @@
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">To win：</string>
     <string name="bet_receipt_win_quota">EST winning：</string>
-    <string name="bet_info_add_bet_success">Successful</string>
+    <string name="bet_info_add_bet_success">Bet Successful</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">Not enough balance</string>
     <string name="bet_info_input_quota">Enter Stake</string>
@@ -1372,4 +1372,18 @@
     <string name="text_service">CS</string>
     <string name="update_voucher">Upload receipt</string>
     <string name="no_select_file">Unselected files</string>
+    <string name="str_odds_changed">odds changed</string>
+    <string name="str_bet_slip_not_confirm_for_a_long_time">Bet slip not confirm for a long time</string>
+    <string name="str_exceeding_limit_for_the_event_or_market">Exceeding limit for the event or market</string>
+    <string name="str_market_closed_please_try_later">Market closed, please try later</string>
+    <string name="str_match_closed">Match closed</string>
+    <string name="str_match_be_suspended">Match be suspended</string>
+    <string name="str_amount_wrong">Amount wrong</string>
+    <string name="str_less_than_min_bet">Less than min bet</string>
+    <string name="str_only_one_type_of_ball_can_be_used_parlay">Only one type of ball can be used parlay</string>
+    <string name="str_parlay_exceed_the_ties_limit">parlay exceed the ties limit </string>
+    <string name="str_self_exclusion">Self-exclusion</string>
+    <string name="str_match_be_suspended_or_closed_please_check">Match be suspended or closed, please check</string>
+    <string name="str_parlay_is_not_allowed_in_championship_matches">Parlay is not allowed in championship matches</string>
+    <string name="str_parlay_type_wrong">Parlay type wrong</string>
 </resources>

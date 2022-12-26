@@ -10,7 +10,6 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gyf.immersionbar.ImmersionBar
@@ -421,7 +420,7 @@ class HomeLiveFragment :
             )
         }
 
-        rv_live.setupBackTop(ll_come_back, 180.dp)
+        rv_live.setupBackTop(iv_top, 180.dp)
     }
 
     /**

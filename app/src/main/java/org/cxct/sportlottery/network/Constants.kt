@@ -357,6 +357,7 @@ object Constants {
     const val USER_FROZE = "/api/front/user/setFroze"
     const val LOCK_MONEY = "/api/front/user/lockMoney"
     const val PASSWORD_VERIFY = "/api/front/user/passwordVerify"
+    const val ODDS_CHANGE_OPTION = "/api/front/user/oddsChangeOption" //设置用户赔率变化
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
