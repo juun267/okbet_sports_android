@@ -19,13 +19,11 @@ object OddsModeUtil {
     private const val never_accept_odds_change = 1
 
 
-
-
     val currentSelectModeIndex: (Int) -> Int = {
         when (it) {
             0 -> accept_any_odds
-            1 -> never_accept_odds_change
-            2 -> accept_better_odds
+            1 -> accept_better_odds
+            2 -> never_accept_odds_change
             else -> accept_any_odds  //接受任何赔率变化
         }
     }
