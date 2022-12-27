@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -20,8 +21,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
@@ -134,14 +133,9 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         btn_login.setOnClickListener {
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         }
-
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this@MainActivity, RegisterOkActivity::class.java))
-            }else{
-                startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
-            }
-
+            startRegister(this@MainActivity)
         }
 
         iv_language.setOnClickListener {
