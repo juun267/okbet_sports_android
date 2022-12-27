@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_left.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.StaticData
@@ -21,6 +21,7 @@ import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.EventBusUtil
+import org.cxct.sportlottery.util.JumpUtil
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {
@@ -130,6 +131,11 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         }
         iv_setting.setOnClickListener {
             startActivity(Intent(requireActivity(), SettingCenterActivity::class.java))
+        }
+        lin_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getGameRuleUrl(requireContext()),
+                getString(R.string.game_rule))
         }
     }
 

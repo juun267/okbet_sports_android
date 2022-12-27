@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_main_left.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
@@ -140,6 +141,20 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             lin_language.isSelected = isSelected
             rv_language.isVisible = isSelected
         }
+        lin_aboutus.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAboutUsUrl(requireContext()),
+                getString(R.string.about_us))
+        }
+        lin_term.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(),
+                Constants.getAgreementRuleUrl(requireContext()),
+                getString(R.string.terms_conditions))
+        }
+        lin_version.setOnClickListener {
+            JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
+        }
+        tv_version.text = "V${BuildConfig.VERSION_NAME}"
 
     }
 
