@@ -173,7 +173,7 @@ class OddsButton2 @JvmOverloads constructor(
         if (status) {
             tv_odds.tag = tv_odds.flashAnimation(1000,2,0.3f).apply {
                 addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         resetOddsValueState(tv_odds)
                     }
                 })

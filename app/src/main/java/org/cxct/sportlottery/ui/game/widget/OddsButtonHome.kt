@@ -441,7 +441,7 @@ class OddsButtonHome @JvmOverloads constructor(
         if (status) {
             lin_odd.tag = lin_odd.flashAnimation(1000,2,0.3f).apply {
                 addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
+                    override fun onAnimationEnd(animation: Animator) {
                         resetOddsValueState(tv_odds)
                     }
                 })
