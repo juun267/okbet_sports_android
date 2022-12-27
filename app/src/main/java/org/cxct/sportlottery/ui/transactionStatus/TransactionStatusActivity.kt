@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.transactionStatus
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -10,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.activity_transaction_status.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -27,8 +28,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
@@ -36,9 +35,7 @@ import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.getMultipleOdds
+import org.cxct.sportlottery.util.*
 
 class TransactionStatusActivity :
     BaseBottomNavActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
@@ -94,14 +91,9 @@ class TransactionStatusActivity :
         btn_login.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-
+        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this, RegisterOkActivity::class.java))
-            } else {
-                startActivity(Intent(this, RegisterActivity::class.java))
-            }
-
+            startRegister(this)
         }
 
         tv_odds_type.setOnClickListener {
@@ -314,6 +306,7 @@ class TransactionStatusActivity :
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
+            btn_register.isVisible = !isUAT()
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE

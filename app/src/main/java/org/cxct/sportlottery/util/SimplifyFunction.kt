@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -14,17 +15,12 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.webkit.WebView
 import android.widget.*
-import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -33,6 +29,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -59,13 +56,14 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
@@ -1194,6 +1192,8 @@ fun isMultipleSitePlat(): Boolean =
  */
 fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name) == "OKbet"
 
+fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
+
 /**
  * 解析以下报错，不能用lambda
  *  Cannot add the same observer with different lifecycles
@@ -1276,4 +1276,15 @@ fun Context.copyToClipboard(copyText: String) {
     val clipData = ClipData.newPlainText(null, copyText)
     clipboard?.setPrimaryClip(clipData)
     ToastUtil.showToastInCenter(this, this.getString(R.string.bet_slip_id_is_copied))
+}
+
+fun startRegister(context: Context) {
+    if (isUAT()) {
+        return
+    }
+    context?.startActivity(
+        Intent(
+            context,
+            if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
+    )
 }
