@@ -105,7 +105,7 @@ fun View.flashAnimation(duration:Long = 1000,repeatCount:Int = ValueAnimator.INF
     alphaAnimator.repeatCount = repeatCount
     alphaAnimator.addListener(object : AnimatorListenerAdapter() {
 
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
             this@flashAnimation.alpha = 1f
         }
 

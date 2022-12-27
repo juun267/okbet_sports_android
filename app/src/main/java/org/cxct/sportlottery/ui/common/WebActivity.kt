@@ -114,7 +114,8 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.defaultTextEncodingName = "utf-8"
         settings.cacheMode = WebSettings.LOAD_NO_CACHE
         settings.databaseEnabled = false
-        settings.setAppCacheEnabled(false)
+//        settings.setAppCacheEnabled(false)
+
         settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
         settings.allowFileAccess = true
         settings.allowContentAccess = true
@@ -225,7 +226,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun openImageChooserActivity() {
         registerForActivityResult(ActivityResultContracts.OpenDocument()) {
             if (mUploadCallbackAboveL != null) {
-                mUploadCallbackAboveL?.onReceiveValue(arrayOf(it))
+                mUploadCallbackAboveL?.onReceiveValue(arrayOf(it!!))
                 mUploadCallbackAboveL = null
             } else {
                 mUploadMessage?.onReceiveValue(it)

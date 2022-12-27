@@ -102,17 +102,17 @@ class DragFloatActionButton : LinearLayout {
                             .setDuration(DURATION)
                             .xBy(parentWidth - width - x - defaultPositionX)
                             .setListener(object : Animator.AnimatorListener {
-                                override fun onAnimationStart(animation: Animator?) {
+                                override fun onAnimationStart(animation: Animator) {
                                 }
 
-                                override fun onAnimationEnd(animation: Animator?) {
+                                override fun onAnimationEnd(animation: Animator) {
                                     actionUpListener?.getPosition()
                                 }
 
-                                override fun onAnimationCancel(animation: Animator?) {
+                                override fun onAnimationCancel(animation: Animator) {
                                 }
 
-                                override fun onAnimationRepeat(animation: Animator?) {
+                                override fun onAnimationRepeat(animation: Animator) {
                                 }
                             })
                             .start()
@@ -120,17 +120,17 @@ class DragFloatActionButton : LinearLayout {
                         val oa = ObjectAnimator.ofFloat(this, "x", x, defaultPositionX)
                         oa.interpolator = DecelerateInterpolator()
                         oa.addListener(object : Animator.AnimatorListener {
-                            override fun onAnimationStart(animation: Animator?) {
+                            override fun onAnimationStart(animation: Animator) {
                             }
 
-                            override fun onAnimationEnd(animation: Animator?) {
+                            override fun onAnimationEnd(animation: Animator) {
                                 actionUpListener?.getPosition()
                             }
 
-                            override fun onAnimationCancel(animation: Animator?) {
+                            override fun onAnimationCancel(animation: Animator) {
                             }
 
-                            override fun onAnimationRepeat(animation: Animator?) {
+                            override fun onAnimationRepeat(animation: Animator) {
                             }
                         })
                         oa.duration = DURATION

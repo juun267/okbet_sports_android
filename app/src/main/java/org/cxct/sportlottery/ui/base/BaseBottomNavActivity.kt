@@ -154,7 +154,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                 translationY = 0f
                 animate().translationY(bottomNavBarHeight).setDuration(duration)
                     .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                        override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                             translationY = bottomNavBarHeight
                         }
                     })
@@ -163,7 +163,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                 translationY = bottomNavBarHeight
                 animate().translationY(0f).setDuration(duration)
                     .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                        override fun onAnimationEnd(animation: Animator, isReverse: Boolean) {
                             translationY = 0f
                         }
                     })
