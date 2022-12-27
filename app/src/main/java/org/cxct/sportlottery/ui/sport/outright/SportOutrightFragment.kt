@@ -178,7 +178,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
             if (item is Odd) {  // 赔率
                 addOutRightOddsDialog(item.parentNode.matchOdd, item, item.outrightCateKey ?: "")
             } else { // 展开或收起
-                setOutrightLeagueAdapter(400)
+                setOutrightLeagueAdapter(200)
             }
         }
     }
