@@ -1,11 +1,12 @@
 import java.text.SimpleDateFormat
-
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'multi-languages'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions") //kotlin-parcelize
+    id("multi-languages")
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
+}
 
 android {
     compileSdk 33
