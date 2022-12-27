@@ -438,20 +438,16 @@ abstract class BaseOddButtonViewModel(
                 _betAddResult.postValue(Event(result))
                 if (it.success) {
                     //检查是否有item注单下注失败
-                    var haveSingleItemFaild = false
-                    var haveParlayItemFaild = false
-                    it.receipt?.singleBets?.let {
-                        haveSingleItemFaild = it.any { it.status == 7 }
-                    }
-                    it.receipt?.parlayBets?.let {
-                        haveParlayItemFaild = it.any { it.status == 7 }
-                    }
+                    val haveSingleItemFailed =
+                        it.receipt?.singleBets?.any { singleIt -> singleIt.status == 7 } ?: false
+                    val haveParlayItemFailed =
+                        it.receipt?.parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
 
-                    if (!haveSingleItemFaild && !haveParlayItemFaild) {
+                    Timber.d("单注投注失败:${haveSingleItemFailed} 串关投注失败:${haveParlayItemFailed}")
+                    if (!haveSingleItemFailed && !haveParlayItemFailed) {
                         betInfoRepository.clear()
                         _betFailed.postValue(Pair(false, ""))
                     } else {
-
                         var failedReason: String? = ""
                         it.receipt?.singleBets?.forEach {
                             if (it.status != 7) {
@@ -459,7 +455,7 @@ abstract class BaseOddButtonViewModel(
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
                             } else {
-                                failedReason = it.reason
+                                failedReason = it.code
                             }
                         }
                         it.receipt?.parlayBets?.forEach {
@@ -468,16 +464,14 @@ abstract class BaseOddButtonViewModel(
                                     betInfoRepository.removeItem(it.oddsId)
                                 }
                             } else {
-                                failedReason = it.reason
+                                failedReason = it.code
                             }
                         }
                         //处理赔率更新
                         _betFailed.postValue(Pair(true, failedReason))
                     }
-
                 }
             }
-
         }
     }
 

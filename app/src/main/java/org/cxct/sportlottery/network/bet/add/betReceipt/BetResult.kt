@@ -24,11 +24,13 @@ data class BetResult(
     @Json(name = "stake")
     val stake: Double?,
     @Json(name = "status")
-    var status: Int?,
+    var status: Int?, //投注失败后台返回status == 7
     @Json(name = "winnable")
     val winnable: Double?,
     @Json(name = "reason")
-    val reason: String? = ""
+    val reason: String? = "",
+    @Json(name = "code")
+    val code :String? = ""
     ) {
     var matchType: MatchType? = null
     var oddsType: OddsType? = null

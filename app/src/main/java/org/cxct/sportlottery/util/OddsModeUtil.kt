@@ -21,7 +21,7 @@ object OddsModeUtil {
 
 
 
-    var currentSelectModeIndex: (Int) -> Int = {
+    val currentSelectModeIndex: (Int) -> Int = {
         when (it) {
             0 -> accept_any_odds
             1 -> never_accept_odds_change
@@ -31,21 +31,21 @@ object OddsModeUtil {
     }
 
 
-    var currentSelectModeText: (Int) -> String = {
+    val currentSelectModeText: (Int) -> String = {
         when (it) {
             0 -> LocalUtils.getString(R.string.accept_any_change_in_odds)
-            1 -> LocalUtils.getString(R.string.accept_better_change_in_odds)
-            2 -> LocalUtils.getString(R.string.accept_never_change_in_odds)
+            1 -> LocalUtils.getString(R.string.accept_never_change_in_odds)
+            2 -> LocalUtils.getString(R.string.accept_better_change_in_odds)
             else -> LocalUtils.getString(R.string.accept_any_change_in_odds)
         }
     }
 
-    var currentSelectModeIndexWithText: (String) -> Int = {
+    val currentSelectModeIndexWithText: (String) -> Int = {
         when (it) {
             LocalUtils.getString(R.string.accept_any_change_in_odds) -> accept_any_odds
             LocalUtils.getString(R.string.accept_better_change_in_odds) -> accept_better_odds
             LocalUtils.getString(R.string.accept_never_change_in_odds) -> never_accept_odds_change
-            else -> 1
+            else -> accept_any_odds
         }
     }
 }
