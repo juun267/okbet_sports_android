@@ -49,6 +49,10 @@ object Constants {
         return getMetaDataDefValue(MultiLanguagesApplication.appContext, "JPUSH_CHANNEL", "default")
     }
 
+    fun getInviteCode(): String {
+        return getMetaDataDefValue(MultiLanguagesApplication.appContext, "INVITE_CODE", "")
+    }
+
     /**
      * 获取MetaData信息
      *
