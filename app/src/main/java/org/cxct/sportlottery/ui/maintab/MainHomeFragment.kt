@@ -282,7 +282,6 @@ class MainHomeFragment :
             EventBus.getDefault().post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0, 0)
         }
-        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
             startRegister(requireContext())
         }
@@ -969,8 +968,7 @@ class MainHomeFragment :
 
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it
-            btn_register.isVisible = !isUAT()
+            btn_register.isVisible = !it && !isUAT()
             btn_login.isVisible = !it
             ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

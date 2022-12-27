@@ -104,7 +104,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         iv_logo.setOnClickListener {
             (activity as MainTabActivity).jumpToHome(0)
         }
-        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
             startRegister(requireContext())
         }
@@ -305,8 +304,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     private fun setupLogin() {
         viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it
-            btn_register.isVisible = !isUAT()
+            btn_register.isVisible = !it && !isUAT()
             btn_login.isVisible = !it
             lin_search.visibility = if (it) View.VISIBLE else View.INVISIBLE
         }

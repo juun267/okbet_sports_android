@@ -91,7 +91,6 @@ class TransactionStatusActivity :
         btn_login.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-        btn_register.isVisible = !isUAT()
         btn_register.setOnClickListener {
             startRegister(this)
         }
@@ -299,14 +298,14 @@ class TransactionStatusActivity :
             btn_login.visibility = View.GONE
             iv_menu.visibility = View.VISIBLE
             iv_notice.visibility = View.VISIBLE
-            btn_register.visibility = View.GONE
+            btn_register.isVisible = !isLogin && !isUAT()
             toolbar_divider.visibility = View.GONE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
         } else {
             btn_login.visibility = View.VISIBLE
             btn_register.visibility = View.VISIBLE
-            btn_register.isVisible = !isUAT()
+            btn_register.isVisible = !isLogin && !isUAT()
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
