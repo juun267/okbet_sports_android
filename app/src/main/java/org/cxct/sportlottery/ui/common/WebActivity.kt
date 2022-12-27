@@ -226,7 +226,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private fun openImageChooserActivity() {
         registerForActivityResult(ActivityResultContracts.OpenDocument()) {
             if (mUploadCallbackAboveL != null) {
-                mUploadCallbackAboveL?.onReceiveValue(arrayOf(it))
+                mUploadCallbackAboveL?.onReceiveValue(arrayOf(it!!))
                 mUploadCallbackAboveL = null
             } else {
                 mUploadMessage?.onReceiveValue(it)

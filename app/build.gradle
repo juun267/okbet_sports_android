@@ -301,11 +301,6 @@ android {
 
 }
 
-ext {
-    version_retrofit = "2.9.0"
-    version_room = "2.4.0-alpha03"
-}
-
 dependencies {
 
 //    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
@@ -466,9 +461,16 @@ dependencies {
     implementation 'com.appsflyer:af-android-sdk:6.9.0'
     implementation "com.miui.referrer:homereferrer:1.0.0.6"
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'
-
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
+    //compose
+//    implementation 'androidx.activity:activity-compose:1.6.1'
+//    implementation "androidx.compose.ui:ui:$compose_version"
+//    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+//    implementation 'androidx.compose.material3:material3:1.0.1'
+//    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+//    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+//    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
 repositories {
     mavenCentral()
