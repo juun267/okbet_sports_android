@@ -151,9 +151,6 @@ class MainLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 Constants.getAgreementRuleUrl(requireContext()),
                 getString(R.string.terms_conditions))
         }
-        lin_version.setOnClickListener {
-            JumpUtil.toExternalWeb(requireActivity(), sConfigData?.mobileAppDownUrl)
-        }
         tv_version.text = "V${BuildConfig.VERSION_NAME}"
 
     }

@@ -719,11 +719,6 @@
                         android:layout_marginHorizontal="@dimen/margin_12"
                         android:textColor="@color/color_A7B2C4"
                         android:textSize="@dimen/textSize12sp" />
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/ic_arrow_gray_right" />
                 </LinearLayout>
 
                 <View
