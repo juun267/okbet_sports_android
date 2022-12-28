@@ -37,6 +37,14 @@ object BetPlayCateFunction {
     }
 
     /**
+     * 板球玩法特殊处理
+     */
+    fun String.isW_METHOD_1ST(): Boolean {
+        return (this.contains(PlayCate.W_METHOD_1ST.value))
+    }
+
+
+    /**
      * 判斷是否為网球的特定第几局的玩法(1X2_SEG?_GAMES:#), 其中 ?=1~5, #=1~6
      */
     private fun String.isNumPlatType(): Boolean {

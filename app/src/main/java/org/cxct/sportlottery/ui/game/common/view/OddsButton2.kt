@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.isCombination
 import org.cxct.sportlottery.util.BetPlayCateFunction.isNOGALType
+import org.cxct.sportlottery.util.BetPlayCateFunction.isW_METHOD_1ST
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class OddsButton2 @JvmOverloads constructor(
@@ -398,7 +399,6 @@ class OddsButton2 @JvmOverloads constructor(
     }
 
     fun setupOdd4hall(playCateCode: String, odds: Odd?, status: Int?, oddsType: OddsType, isDrawBtn: Boolean = false) {
-
         betStatus = status
         if (betStatus == BetStatus.DEACTIVATED.code || betStatus == BetStatus.LOCKED.code) {
             return
@@ -421,40 +421,36 @@ class OddsButton2 @JvmOverloads constructor(
             }
         } else {
 
-            nameText = if (playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() || playCateCode.isCSType()) {
-                 when {
-                    playCateCode.isCSType() -> {
-                        odds?.nameMap?.get(language) ?: odds?.name
-                    }
-
-                    playCateCode.isOUType() -> {
-                        //越南語大小顯示又要特殊處理(用O/U)
-                        val language = if (LanguageManager.Language.VI.key.equals(language)) {
-                            LanguageManager.Language.EN.key
-                        } else {
-                            language
-                        }
-                        (odds?.nameMap?.get(language) ?: odds?.name)?.abridgeOddsName()
-                    }
-
-                    playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                        (odds?.nameMap?.get(language) ?: odds?.name)?.abridgeOddsName()
-                    }
-
-                    playCateCode.isNOGALType() -> {
-                        when (language) {
-                            LanguageManager.Language.ZH.key, LanguageManager.Language.ZHT.key -> {
-                                "第" + odds?.nextScore.toString()
-                            }
-                            else -> {
-                                getOrdinalNumbers(odds?.nextScore.toString())
-                            }
-                        }
-                    }
-                    else -> ""
+            nameText = when {
+                playCateCode.isCSType() -> {
+                    odds?.nameMap?.get(language) ?: odds?.name
                 }
-            } else {
-                ""
+
+                playCateCode.isOUType() -> {
+                    //越南語大小顯示又要特殊處理(用O/U)
+                    val language = if (LanguageManager.Language.VI.key.equals(language)) {
+                        LanguageManager.Language.EN.key
+                    } else {
+                        language
+                    }
+                    (odds?.nameMap?.get(language) ?: odds?.name)?.abridgeOddsName()
+                }
+
+                playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isW_METHOD_1ST() -> {
+                    (odds?.nameMap?.get(language) ?: odds?.name)?.abridgeOddsName()
+                }
+
+                playCateCode.isNOGALType() -> {
+                    when (language) {
+                        LanguageManager.Language.ZH.key, LanguageManager.Language.ZHT.key -> {
+                            "第" + odds?.nextScore.toString()
+                        }
+                        else -> {
+                            getOrdinalNumbers(odds?.nextScore.toString())
+                        }
+                    }
+                }
+                else -> ""
             }
         }
 
