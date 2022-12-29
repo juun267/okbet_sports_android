@@ -456,34 +456,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             isOpen = !isOpen
         }
 
-        betListRefactorAdapter?.isNotifyAdapterLiveData?.observe(viewLifecycleOwner) {
-            if (it) {
-                val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
-                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                if ((firstVisibleItem == -1) and (lastVisibleItem == -1)) {
-                    return@observe
-                }
-                betListRefactorAdapter?.notifyItemRangeChanged(
-                    firstVisibleItem,
-                    lastVisibleItem
-                )
-            }
-        }
-
-        betParlayListRefactorAdapter?.isNotifyAdapterLiveData?.observe(viewLifecycleOwner) {
-            if (it) {
-                val firstVisibleItem = parlayLayoutManager.findFirstVisibleItemPosition()
-                val lastVisibleItem = parlayLayoutManager.findLastVisibleItemPosition()
-                if ((firstVisibleItem == -1) and (lastVisibleItem == -1)) {
-                    return@observe
-                }
-                betParlayListRefactorAdapter?.notifyItemRangeChanged(
-                    firstVisibleItem,
-                    lastVisibleItem
-                )
-            }
-        }
-
         //串关赔率的接受任何赔率变化
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
