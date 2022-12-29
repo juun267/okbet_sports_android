@@ -33,7 +33,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     private val attachedViewSet = HashSet<RecyclerView.ViewHolder>()
 
-    val isNotifyAdapterLiveData = MutableLiveData(false)
 
     /**
      * @property SINGLE 单注
@@ -45,7 +44,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var adapterBetType: BetRvType = SINGLE
         set(value) {
             field = value
-            isNotifyAdapterLiveData.value = true
+            notifyDataSetChanged()
         }
 
 
@@ -58,12 +57,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
             hasBetClosedForSingle =
                 value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code } != null
-            isNotifyAdapterLiveData.value = true
+            notifyDataSetChanged()
         }
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
-            isNotifyAdapterLiveData.value = true
+            notifyDataSetChanged()
         }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -84,7 +83,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (mSelectedPosition != position || mBetView != single) {
                     mSelectedPosition = position
                     mBetView = single
-                    isNotifyAdapterLiveData.value = true
+                    notifyDataSetChanged()
                 }
             }
         }
@@ -92,7 +91,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var userLogin: Boolean = false
         set(value) {
             field = value
-            isNotifyAdapterLiveData.value = true
+            notifyDataSetChanged()
         }
 
     var userMoney: Double = 0.0
@@ -110,7 +109,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         set(value) {
             //若無法組合串關時, 給予空物件用來紀錄”單注填充所有單注“的輸入金額
             field = value
-            isNotifyAdapterLiveData.value = true
+            notifyDataSetChanged()
         }
 
 
@@ -196,7 +195,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     betList ?: mutableListOf(),
                     currentOddsType,
                     onItemClickListener,
-                    { isNotifyAdapterLiveData.value = true },
+                    {          notifyDataSetChanged() },
                     mSelectedPosition,
                     mBetView,
                     onSelectedPositionListener,
