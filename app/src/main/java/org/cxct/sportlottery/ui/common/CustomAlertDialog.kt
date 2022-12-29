@@ -8,11 +8,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * 常用提示對話框
@@ -52,14 +54,22 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initView(view)
     }
 
-    private fun initView() {
+    private fun initView(view: View) {
         when (mTitle) {
             null -> tv_title.visibility = View.GONE
             else -> tv_title.text = mTitle
         }
+
+        val params = (view.layoutParams as MarginLayoutParams?) ?: MarginLayoutParams(-2, -2)
+        val margin = 26.dp
+        params.leftMargin = margin
+        params.topMargin = margin
+        params.rightMargin = margin
+        params.bottomMargin = margin
+        view.layoutParams = params
 
         tv_message.gravity = mGravity
         when {
