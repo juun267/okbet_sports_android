@@ -269,7 +269,7 @@
             android:value="${JPUSH_CHANNEL}" />
         <meta-data
             android:name="INVITE_CODE"
-            android:value="" />
+            android:value="${INVITE_CODE}" />
     </application>
 
 </manifest>

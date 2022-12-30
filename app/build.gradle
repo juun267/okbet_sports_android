@@ -77,7 +77,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : ""
             ]
         }
         OkbetPH {
@@ -91,7 +92,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : ""
             ]
         }
         //okbet预发环境 app-phuat.abaoooiap.com
@@ -106,7 +108,8 @@ android {
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                    INVITE_CODE            : ""
             ]
         }
         google {
@@ -121,7 +124,7 @@ android {
                     JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "google", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE: "gplay8"
+                    INVITE_CODE: ""
             ]
         }
         huawei {
