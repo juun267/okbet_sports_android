@@ -43,8 +43,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
     private val mToolbarVisibility: Boolean by lazy {
         intent?.getBooleanExtra(
-            KEY_TOOLBAR_VISIBILITY,
-            true
+            KEY_TOOLBAR_VISIBILITY, true
         ) ?: true
     }
     private val mBackEvent: Boolean by lazy {
@@ -60,7 +59,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     open fun init() {
-        setStatusbar(R.color.color_232C4F_FFFFFF,true)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_web)
         if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()
         setCookie()
@@ -86,7 +85,9 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             val oldCookie = cookieManager.getCookie(mUrl)
             Timber.i("Cookie:oldCookie:$oldCookie")
 
-            cookieManager.setCookie(mUrl, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")) //cookies是在HttpClient中获得的cookie
+            cookieManager.setCookie(
+                mUrl, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")
+            ) //cookies是在HttpClient中获得的cookie
             cookieManager.flush()
 
             val newCookie = cookieManager.getCookie(mUrl)
@@ -98,8 +99,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
     @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: WebView) {
-        if (BuildConfig.DEBUG)
-            WebView.setWebContentsDebuggingEnabled(true)
+        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
 
         webView.setWebViewCommonBackgroundColor()
 
@@ -122,7 +122,9 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.allowFileAccessFromFileURLs = true
         settings.allowUniversalAccessFromFileURLs = true
         webView.webChromeClient = object : WebChromeClient() {
-            override fun onCreateWindow(view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
+            override fun onCreateWindow(
+                view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message
+            ): Boolean {
                 val newWebView = WebView(view.context)
                 newWebView.webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -131,7 +133,8 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                         try {
                             //使用系統默認外部瀏覽器跳轉
                             val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            i.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             startActivity(i)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -146,7 +149,11 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
 
             // For Android 5.0+
-            override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: FileChooserParams): Boolean {
+            override fun onShowFileChooser(
+                webView: WebView,
+                filePathCallback: ValueCallback<Array<Uri>>,
+                fileChooserParams: FileChooserParams
+            ): Boolean {
                 mUploadCallbackAboveL = filePathCallback
                 openImageChooserActivity()
                 return true
@@ -157,8 +164,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 val permissionCheck = checkSelfPermission(Manifest.permission.RECORD_AUDIO)
                 if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(
-                        arrayOf(Manifest.permission.RECORD_AUDIO),
-                        PERMISSIONS_AT_WEBVIEW
+                        arrayOf(Manifest.permission.RECORD_AUDIO), PERMISSIONS_AT_WEBVIEW
                     )
                 } else {
                     request?.grant(request.resources)
@@ -178,6 +184,12 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 hideLoading()
             }
 
+            override fun shouldInterceptRequest(
+                view: WebView?, url: String?
+            ): WebResourceResponse? {
+                return super.shouldInterceptRequest(view, url)
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (!url.startsWith("http")) {
                     try {
@@ -194,7 +206,9 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 return true
             }
 
-            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+            override fun onReceivedSslError(
+                view: WebView, handler: SslErrorHandler, error: SslError
+            ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 //handler.proceed()
                 val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
@@ -236,9 +250,10 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onBackPressed() {
-        when (mBackEvent) {
-            true -> super.onBackPressed()
-            else -> return
+        if (web_view.canGoBack()) {
+            web_view.goBack()
+        } else {
+            super.onBackPressed()
         }
     }
 
