@@ -238,7 +238,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
                     }
 
-                    tv_bet_amount.text = TextUtil.formatForOdd(itemData.stake ?: 0.0)
+                    tv_bet_amount.text = "$currencySign ${TextUtil.formatForOdd(itemData.stake ?: 0.0)}"
                     tv_winnable_amount.text = TextUtil.formatForOdd(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
 
