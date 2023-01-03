@@ -118,11 +118,7 @@ class BetButton @JvmOverloads constructor(
                     }
                 }
                 else -> {
-                    val singleBetText = context.getString(R.string.confirm_single_bets, betCounts)
-                    when (betCounts) {
-                        1 -> singleBetText.removeSuffix("s")
-                        else -> singleBetText
-                    }
+                    context.getString(R.string.betting)
                 }
             }
         tv_bet.text = betContent

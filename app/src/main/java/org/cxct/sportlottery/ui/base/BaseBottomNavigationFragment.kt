@@ -22,12 +22,11 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         receiver.dataSourceChange.observe(viewLifecycleOwner) {
-            this.run {
                 showErrorPromptDialog(
                     title = getString(R.string.prompt),
-                    message = getString(R.string.message_source_change)
+                    message = getString(R.string.message_source_change),
+                    hasCancel = false
                 ) { dataSourceChangeEven() }
-            }
         }
     }
 

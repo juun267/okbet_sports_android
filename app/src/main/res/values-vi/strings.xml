@@ -1196,8 +1196,8 @@
     <string name="correct">Cược tỷ số</string>
     <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Đơn cược đang gửi</string>
-    <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
-    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng(%s)：</string>
+    <string name="bet_receipt_bet_quota_with_sign">Tiền Cược：</string>
+    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng：%s</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1341,10 +1341,10 @@
     <string name="str_if_accept_odds_changes_title">Có nhận thay đổi tỷ lệ cược không?</string>
     <string name="str_if_accept_odds_changes_des_subtitle">Vì tỷ lệ cược của sự kiện có thể thay đổi bất cứ lúc nào (đặc biệt trong giai đoạn đang diễn ra). Để có trải nghiệm cược tốt hơn. Bạn có thể chọn một trong ba loại cược sau.</string>
     <string name="str_if_accept_odds_changes_des1">1. Nhận mọi tỷ lệ cược - khi bạn chọn tùy chọn này, chúng tôi sẽ tạo đơn cược cho bạn theo tỷ lệ cược mới nhất.</string>
-    <string name="str_if_accept_odds_changes_des2">2. Nhận tỷ lệ cược tốt nhất - khi bạn chọn tùy chọn này, nếu tỷ lệ cược mới nhất tốt hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ tạo đơn cược. Nếu tỷ lệ cược mới nhất thấp hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về sự thay đổi tỷ lệ cược
+    <string name="str_if_accept_odds_changes_des2">2. Nhận tỷ lệ cược tốt nhất - khi bạn chọn tùy chọn này, nếu tỷ lệ cược mới nhất tốt hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ tạo đơn cược. Nếu tỷ lệ cược mới nhất thấp hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về sự thay đổi tỷ lệ cược.
 </string>
-    <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược</string>
-    <string name="str_ok_i_got_it">Tôi biết rồi</string>
+    <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược.</string>
+    <string name="str_ok_i_got_it">Tôi biết rồi.</string>
     <string name="str_max_bet_money">Tiền cược tối đa:%1$s</string>
     <string name="str_odds_already_changed_check_please">Tỷ lệ cược thay đổi, vui lòng xác nhận tỷ lệ cược mới nhất</string>
     <string name="str_return_last_step">Trở về</string>

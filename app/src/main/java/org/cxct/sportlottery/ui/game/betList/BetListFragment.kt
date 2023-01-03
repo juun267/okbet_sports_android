@@ -649,6 +649,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         dialog.isCancelable = true
         dialog.setNegativeButtonText(null)
         dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
+        dialog.setGravity(Gravity.START)
         dialog.setPositiveClickListener {
             dialog.dismiss()
         }

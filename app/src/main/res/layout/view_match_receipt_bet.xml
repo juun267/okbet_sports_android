@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingVertical="2dp">
+        android:paddingTop="4dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/total_info_guide_line"
@@ -22,11 +22,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
+            android:gravity="end"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/total_info_guide_line"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="@+id/total_info_guide_line"
+            app:layout_constraintEnd_toEndOf="parent">
             <TextView
                 android:id="@+id/tv_winnable_amount_title"
                 android:layout_width="wrap_content"
@@ -34,7 +34,6 @@
                 android:text="@string/bet_receipt_win_quota_with_sign"
                 android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />
@@ -44,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:textColor="@color/color_DB6372"
+                android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/din_regular"
@@ -58,11 +57,11 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="end"
+            android:gravity="start"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/total_info_guide_line"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="@+id/total_info_guide_line"
+            app:layout_constraintStart_toStartOf="parent">
             <TextView
                 android:id="@+id/tv_bet_amount_title"
                 android:layout_width="wrap_content"
@@ -70,7 +69,6 @@
                 android:text="@string/bet_receipt_bet_quota_with_sign"
                 android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:textColor="@color/color_FFFFFF_414655"
+                android:textColor="@color/color_DB6372"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/din_regular"
