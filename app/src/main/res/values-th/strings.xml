@@ -1248,5 +1248,6 @@
     <string name="error_verification_code_forget">รหัสยืนยันไม่ถูกต้อง</string>
     <string name="pay_maya">Paymaya</string>
     <string name="no_file">ไม่ได้เลือกไฟล์</string>
+    <string name="new_games">เกมใหม่เบต้า</string>
     <!--F005-->
 </resources>

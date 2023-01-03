@@ -1386,4 +1386,5 @@
     <string name="str_match_be_suspended_or_closed_please_check">Match be suspended or closed, please check</string>
     <string name="str_parlay_is_not_allowed_in_championship_matches">Parlay is not allowed in championship matches</string>
     <string name="str_parlay_type_wrong">Parlay type wrong</string>
+    <string name="new_games">New Games</string>
 </resources>

@@ -1375,4 +1375,5 @@
     <string name="update_voucher">Tải lên hoá đơn</string>
     <string name="no_select_file">Chưa chọn tệp</string>
     <string name="current_login_password">Mật khẩu đăng nhập hiện tại</string>
+    <string name="new_games">New Games</string>
 </resources>

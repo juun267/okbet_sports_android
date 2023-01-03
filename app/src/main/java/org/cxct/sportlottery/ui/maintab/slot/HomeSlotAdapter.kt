@@ -10,36 +10,29 @@ import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 
 class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
     BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(
-        R.layout.item_home_slot, data) {
+        R.layout.item_home_slot, data
+    ) {
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
-        Glide.with(context)
-            .load(item.entryImage)
-            .apply(RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .dontTransform())
-            .into(helper.getView(R.id.iv_people))
-//        helper.setImageResource(R.id.iv_people, when (helper.layoutPosition) {
-//            0 -> R.drawable.ic_game_01
-//            1 -> R.drawable.ic_game_02
-//            2 -> R.drawable.ic_game_03
-//            else -> R.drawable.ic_game_01
-//        })
-        helper.setText(R.id.tv_firm_name, item.firmName)
-//        helper.setText(R.id.tv_game_name, item.firmCode)
-//        helper.setText(R.id.tv_game_name, when (LanguageManager.getSelectLanguage(mContext)) {
-//            LanguageManager.Language.ZH -> item.chineseName
-//            else -> item.englishName
-//        })
-//        if (item.status == 1) {
-        helper.setText(R.id.tv_status, R.string.new_games_beta)
-        helper.setGone(R.id.tv_game_name, true)
-//            helper.setGone(R.id.iv_repair, false)
-//        } else {
-//            helper.setText(R.id.tv_status, R.string.comingsoon)
-//            helper.setGone(R.id.tv_game_name, false)
-//            helper.setGone(R.id.iv_repair, true)
-//        }
-    }
+        if (context!=null ){
+            Glide.with(context)
+                .load(item.entryImage)
+                .apply(
+                    RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontTransform()
+                )
+                .into(helper.getView(R.id.iv_people))
+        }
 
+        helper.setText(R.id.tv_firm_name, item.firmName)
+            .setText(
+                R.id.tv_status,
+                if (item.gameCode == "TGP") {
+                    R.string.new_games
+                } else {
+                    R.string.new_games_beta
+                }
+            )?.setGone(R.id.tv_game_name, true)
+    }
 }

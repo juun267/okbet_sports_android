@@ -1406,6 +1406,7 @@
     <string name="update_voucher">Upload receipt</string>
     <string name="no_select_file">Unselected files</string>
     <string name="str_press_again_to_exit_the_program">"Please confirm to exit again  "</string>
+    <string name="new_games">New Games</string>
 
 
 </resources>
