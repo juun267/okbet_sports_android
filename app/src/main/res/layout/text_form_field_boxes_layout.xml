@@ -128,9 +128,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom|end"
-                            android:layout_marginEnd="15dp"
                             android:background="@android:color/transparent"
-                            android:layout_marginBottom="2dp"
+                            android:layout_marginBottom="5dp"
                             android:gravity="right|bottom"
                             android:orientation="horizontal">
 
@@ -145,8 +144,8 @@
 
                             <androidx.appcompat.widget.AppCompatImageButton
                                 android:id="@+id/text_field_boxes_end_icon_button"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
                                 android:background="?selectableItemBackgroundBorderless"
                                 android:minWidth="@dimen/end_icon_min_width"
                                 android:minHeight="@dimen/end_icon_min_height"
