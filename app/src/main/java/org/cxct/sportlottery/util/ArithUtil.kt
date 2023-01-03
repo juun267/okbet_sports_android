@@ -53,9 +53,9 @@ object ArithUtil : DecimalFormatUtil() {
     /**
      * 20201015賠率、手續費率等，保留小數點後三位
      */
-    fun toOddFormat(value: Double?): String {
+    fun toOddFormat(value: Double?, scale: Int= 3): String {
         val rounded = round(value ?: 0.0, 4, RoundingMode.HALF_UP)
-        return round(rounded.toDouble(), 3, RoundingMode.HALF_UP)
+        return round(rounded.toDouble(), scale, RoundingMode.HALF_UP)
     }
 
     /**
