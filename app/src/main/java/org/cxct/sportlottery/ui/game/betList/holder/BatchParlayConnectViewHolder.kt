@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.betList.holder
 
 import android.view.View
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
@@ -19,7 +20,8 @@ class BatchParlayConnectViewHolder(itemView: View) : BatchParlayViewHolder(itemV
         onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
-        userLogin: Boolean
+        userLogin: Boolean,
+        betList: MutableList<BetInfoListData>?
     ) {
         setupParlayItem(
             itemData,
@@ -32,7 +34,8 @@ class BatchParlayConnectViewHolder(itemView: View) : BatchParlayViewHolder(itemV
             onSelectedPositionListener,
             position,
             userMoney,
-            userLogin
+            userLogin,
+            betList
         )
     }
 }
