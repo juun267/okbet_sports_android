@@ -754,13 +754,12 @@ class ProfileCenterFragment :
     }
 
     private fun updateThirdOpenUI() {
+        // 三方游戏开启并且自动转换关闭的情况下才先额度转换的开关
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
-        // 暫時隱藏入口 by Bee
-        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || requireContext().getString(R.string.app_name) != "OKbet") {
-            btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
-        } else {
-            btn_account_transfer.visibility = /*if (!thirdOpen)*/ View.GONE /*else View.VISIBLE*/
-        }
+        val thirdTransferOpen = sConfigData?.thirdTransferOpen == FLAG_OPEN
+        btn_account_transfer.visibility =
+            if (thirdOpen && !thirdTransferOpen) View.VISIBLE else View.GONE
+
         //   btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
         btn_member_level.visibility = View.GONE //if (!thirdOpen) View.GONE else View.VISIBLE
     }

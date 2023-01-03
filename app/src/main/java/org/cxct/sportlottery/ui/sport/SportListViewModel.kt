@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.ui.sport
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.*
@@ -17,7 +15,6 @@ import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.*
-import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.sport.Item
@@ -352,6 +349,9 @@ class SportListViewModel(
 
                     matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
+                    matchOdd.oddsSort =
+                        PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType,
+                            MenuCode.MAIN.code)
                     matchOdd.filterQuickPlayCate(matchType)
                     //波胆的数据获取方式
                     if (matchType == MatchType.CS.postValue) {
