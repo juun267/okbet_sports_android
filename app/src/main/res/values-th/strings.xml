@@ -646,7 +646,7 @@
     <string name="platform_account_money">ยอดบัญชีแพลตฟอร์ม</string>
     <string name="one_key_recovery">การรีไซเคิลด้วยคลิกเดียว</string>
     <string name="confirm_transform">ยืนยันการแปลง</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">‧การกู้คืนในคลิกเดียวจะโอนยอดคงเหลือในบัญชีอื่นทั้งหมดไปยังบัญชีแพลตฟอร์ม</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">*การกู้คืนในคลิกเดียวจะโอนยอดคงเหลือในบัญชีอื่นทั้งหมดไปยังบัญชีแพลตฟอร์ม</string>
     <string name="money">จำนวน</string>
     <string name="transfer_platform">แพลตฟอร์มการแปลง</string>
     <string name="out_account">โอนออกบัญชี</string>

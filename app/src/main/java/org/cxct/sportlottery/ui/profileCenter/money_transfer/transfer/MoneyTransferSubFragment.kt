@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
@@ -49,6 +51,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
         btn_transfer.setTitleLetterSpacing()
+        et_transfer_money.apply {
+            tv_title.textSize = resources.getDimension(R.dimen.textSize15sp)
+            tv_title.setTextColor(resources.getColor(R.color.color_535D76))
+            tv_title.setTypeface(Typeface.DEFAULT)
+        }
         et_transfer_money.afterTextChanged {
             et_transfer_money.setError("")
         }

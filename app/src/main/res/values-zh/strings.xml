@@ -623,7 +623,7 @@
     <string name="feedback_not_reply_yet">待反馈</string>
     <string name="one_key_recovery">一键回收</string>
     <string name="platform_account_money">平台账户余额</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">・一键回收将所有其他账户余额转入平台账户。</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">*一键回收将所有其他账户余额转入平台账户。</string>
     <string name="out_account">转出账户</string>
     <string name="in_account">转入账户</string>
     <string name="transfer_money">转换金额</string>
