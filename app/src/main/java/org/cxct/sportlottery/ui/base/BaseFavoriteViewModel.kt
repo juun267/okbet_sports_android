@@ -146,6 +146,9 @@ abstract class BaseFavoriteViewModel(
                         }
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
+                            matchOdd.oddsSort =
+                                PlayCateMenuFilterUtils.filterOddsSort(matchOdd.matchInfo?.gameType,
+                                    MenuCode.MAIN.code)
                             playCateCode?.let {
                                 val oddsMap = matchOdd.oddsMap
                                     ?.filter { odds -> odds.key == it }
