@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
+import android.text.SpannableStringBuilder
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -60,9 +61,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         receiver.sysMaintenance.observe(this, Observer {
             if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
                 when (this) {
-                    !is MaintenanceActivity -> startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    })
+                    !is MaintenanceActivity -> startActivity(
+                        Intent(
+                            this,
+                            MaintenanceActivity::class.java
+                        ).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        })
                 }
             }
         })
@@ -71,12 +76,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    showPromptDialog(getString(R.string.prompt),
+                    showPromptDialog(
+                        getString(R.string.prompt),
                         getString(R.string.message_socket_connect),
                         buttonText = null,
                         { backService?.doReconnect() },
                         isError = true,
-                        hasCancle = false )
+                        hasCancle = false
+                    )
                 }
                 ServiceConnectStatus.CONNECTING -> {
 //                    loading()
@@ -114,12 +121,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.dataSourceChange.observe(this) {
-            this.run {
-                showErrorPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = getString(R.string.message_source_change)
-                ) { dataSourceChangeEven() }
-            }
+            showErrorPromptDialog(
+                title = getString(R.string.prompt),
+                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+                hasCancel = false
+            ) { dataSourceChangeEven() }
         }
 
         receiver.userInfoChange.observe(this) {
@@ -150,7 +156,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         this.dataSourceChangeEven = dataSourceChangeEven
     }
 
-    fun subscribeSportChannelHall(){
+    fun subscribeSportChannelHall() {
         backService?.subscribeSportChannelHall()
     }
 
@@ -192,7 +198,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService?.unsubscribeAllHallChannel()
     }
 
-    fun unSubscribeChannelHallSport(){
+    fun unSubscribeChannelHallSport() {
         backService?.unsubscribeSportHallChannel()
     }
 
