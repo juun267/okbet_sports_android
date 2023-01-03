@@ -55,6 +55,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             tv_title.textSize = resources.getDimension(R.dimen.textSize15sp)
             tv_title.setTextColor(resources.getColor(R.color.color_535D76))
             tv_title.setTypeface(Typeface.DEFAULT)
+            et_input.minHeight = 50.dp
         }
         et_transfer_money.afterTextChanged {
             et_transfer_money.setError("")

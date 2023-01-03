@@ -107,6 +107,7 @@
         app:cvTextColor="@color/color_414655"
         app:cvHint="@string/transfer_money_minimum"
         app:cvInputType="number"
+        app:cvBottomLine="false"
         app:layout_constraintTop_toBottomOf="@id/constraint_layout" />
 
 
