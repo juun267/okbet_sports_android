@@ -138,7 +138,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_match_type"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
                     tools:text="奥林匹克运动会2020男子足球(在日本)D组特别投注" />
 
                 <!--homeName v awayName 字串過長需換行顯示，故合併為1個textView-->
@@ -152,7 +152,7 @@
                     android:layout_marginStart="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_league"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_match_type"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     tools:text="日本奥运队 v 纽西兰奥运队" />
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_team_names" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_league" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
