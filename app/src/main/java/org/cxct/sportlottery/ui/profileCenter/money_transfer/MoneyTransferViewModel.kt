@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
@@ -130,30 +131,22 @@ class MoneyTransferViewModel(
                 OneBoSportApi.thirdGameService.getThirdGames()
             }?.let { result ->
                 hideLoading()
-
+                val resultList = mutableListOf<GameData>()
                 for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
-                    thirdGameMap[value.firmType] = value.firmName
+                    thirdGameMap[value.firmType] = value.firmShowName
+                    if (value.open == 1) {
+                        resultList.add(GameData(null, null, null).apply {
+                            code = key
+                            showName = value.firmShowName ?: key
+                        })
+                    }
                 }
-
+                LogUtil.toJson(resultList)
+                setRecordInSheetDataList(resultList)
+                setRecordOutSheetDataList(resultList)
             }
         }
     }
-
-    fun getThirdGamesPlat() {
-        val resultList = mutableListOf<GameData>()
-        ThirdGameRepository.thirdGameData.value?.gameFirmMap?.forEach { (key, value) ->
-            if (value.open == 1) {
-                resultList.add(GameData(null, null, null).apply {
-                    code = key
-                    showName = value.firmName ?: key
-                })
-            }
-        }
-
-        setRecordInSheetDataList(resultList)
-        setRecordOutSheetDataList(resultList)
-    }
-
     fun getAllBalance() {
         loading()
         viewModelScope.launch {

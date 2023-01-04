@@ -94,12 +94,12 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             et_input.minHeight = 50.dp
             v_bottom_line.isVisible = false
             v_bottom_line2.isVisible = false
+            btn_clear.setImageResource(R.drawable.ic_clear_gray)
+            btn_clear.setPadding(2, 2, 2, 2)
+            clearIsShow = false
         }
         et_transfer_money.afterTextChanged {
             et_transfer_money.setError("")
-        }
-        et_transfer_money.apply {
-            clearIsShow = true
         }
     }
 
@@ -161,7 +161,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             viewModel.inCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
         }
-
     }
 
     private fun initObserver() {

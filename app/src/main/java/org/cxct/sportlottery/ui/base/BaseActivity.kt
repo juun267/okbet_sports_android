@@ -303,7 +303,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             errorMessageSpan = errorMessageSpan,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = getString(R.string.btn_cancel),
+            negativeText = null,
             isOutsideCancelable = isOutsideCancelable
         )
     }
