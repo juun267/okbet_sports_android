@@ -624,9 +624,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        betListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener)
+        betListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }
         betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener)
-        betParlayListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener).apply {
+        betParlayListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }.apply {
             adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
         }
     }
@@ -838,6 +838,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             checkSingleAndParlayBetLayoutVisible()
             activity?.supportFragmentManager?.popBackStack()
         }
+    }
+
+    private fun getUserBalance(): Double {
+        if (!viewModel.getLoginBoolean()) {
+            return -1.0
+        }
+        return viewModel.userMoney.value ?: 0.0
     }
 
     @SuppressLint("NotifyDataSetChanged")
