@@ -17,44 +17,18 @@
         tools:visibility="visible" />
 
         <FrameLayout
+            android:id="@+id/flBetOrder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingVertical="9dp"
             android:paddingHorizontal="10dp"
             android:layout_marginBottom="14dp"
-            android:background="@drawable/bg_shape_8dp_blue_stroke"
             android:layout_marginHorizontal="@dimen/margin_14">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="@dimen/margin_24"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:id="@+id/layoutTitle"-->
-<!--                    app:layout_constraintTop_toTopOf="parent"-->
-<!--                    android:background="@drawable/bg_gradient_0066d1_0079fa">-->
-<!--                    <ImageView-->
-<!--                        android:layout_width="@dimen/margin_12"-->
-<!--                        android:layout_height="@dimen/margin_12"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:src="@drawable/icon_recept"-->
-<!--                        app:tint="@color/white"-->
-<!--                        android:layout_marginStart="@dimen/margin_8"-->
-<!--                        />-->
-<!--                    <TextView-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="@string/home_tab_parlay"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="@dimen/textSize12sp"-->
-<!--                        android:layout_marginStart="@dimen/margin_4"/>-->
-<!--                </LinearLayout>-->
 
                 <TextView
                     android:id="@+id/tv_bet_status"
@@ -82,6 +56,41 @@
                     tools:text="3串1" />
 
                 <TextView
+                    android:id="@+id/tv_winnable_amount_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bet_receipt_win_quota_with_sign"
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize12sp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_play_name_parlay"
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_winnable_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textColor="@color/color_DB6372"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/din_regular"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_winnable_amount_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    tools:text="43.00" />
+
+                <TextView
+                    android:id="@+id/tvBetResutStatu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="6dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textSize="12sp"
+                    tools:text="投注成功"/>
+
+                <TextView
                     android:id="@+id/tv_multiplier"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,6 +100,31 @@
                     app:layout_constraintStart_toEndOf="@+id/tv_play_name_parlay"
                     app:layout_constraintTop_toTopOf="@+id/tv_play_name_parlay"
                     tools:text=" x 1"/>
+
+                <TextView
+                    android:id="@+id/tv_bet_amount_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bet_receipt_bet_quota_with_sign"
+                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textSize="@dimen/textSize12sp"
+                    android:layout_marginTop="7dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBetResutStatu" />
+
+                <TextView
+                    android:id="@+id/tv_bet_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:textColor="@color/color_414655"
+                    android:textSize="@dimen/textSize12sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/din_regular"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_bet_amount_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:text="50.00" />
 
                 <TextView
                     android:id="@+id/tv_match_at"
@@ -119,13 +153,10 @@
                     app:layout_constraintTop_toTopOf="@id/tv_play_name_parlay"
                     tools:text="0.89" />
 
-                <include
-                    layout="@layout/view_match_receipt_bet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_play_name_parlay" />
+
+
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>

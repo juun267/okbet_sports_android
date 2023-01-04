@@ -570,7 +570,7 @@
     <string name="commission_detail_desc_22">สรุปได้ว่ายังคงต้องใช้ 1,500 รหัสก่อนจึงจะสามารถถอนเงินได้</string>
     <string name="avatar">รูปโปรไฟล์</string>
     <string name="nickname">ชื่อเล่น</string>
-    <string name="password_setting">ตั้งรหัสผ่าน</string>
+    <string name="setting_password">ตั้งรหัสผ่าน</string>
     <string name="real_name">ชื่อจริง</string>
     <string name="need_improve">ต้องปรับปรุง</string>
     <string name="identity">การตรวจสอบชื่อจริง</string>
@@ -589,7 +589,6 @@
     <string name="hint_phone_number">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="hint_phone_num">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="error_phone_number">รูปแบบหมายเลขโทรศัพท์ไม่ถูกต้อง</string>
-    <string name="setting_password">ตั้งรหัสผ่าน</string>
     <string name="login_password">รหัสผ่านในการเข้าสู่ระบบ</string>
     <string name="new_password">รหัสผ่านใหม่</string>
     <string name="error_password_cannot_be_same">รหัสผ่านใหม่ต้องไม่เหมือนกับรหัสผ่านเก่า</string>
@@ -1249,5 +1248,6 @@
     <string name="pay_maya">Paymaya</string>
     <string name="no_file">ไม่ได้เลือกไฟล์</string>
     <string name="new_games">เกมใหม่เบต้า</string>
+    <string name="bet_info_add_bet_failed">แพ้พนัน</string>
     <!--F005-->
 </resources>
