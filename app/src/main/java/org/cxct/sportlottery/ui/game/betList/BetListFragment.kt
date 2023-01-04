@@ -1120,6 +1120,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         )
     }
 
+    override fun onResume() {
+        super.onResume()
+        refreshAllAmount()
+        checkAllAmountCanBet()
+    }
+
     /**
      * 是否顯示 betLoading
      */
