@@ -45,10 +45,11 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.getOdds
 import timber.log.Timber
 
-class BetInfoItemViewHolder(private
-                               val contentView:
-                               ContentBetInfoItemV3Binding)
-    : BetInfoChangeViewHolder(contentView.root) {
+class BetInfoItemViewHolder(
+    private
+    val contentView:
+    ContentBetInfoItemV3Binding
+) : BetInfoChangeViewHolder(contentView.root) {
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
     private var inputWinMaxMoney: Double = 0.0
@@ -128,7 +129,7 @@ class BetInfoItemViewHolder(private
         if (contentView.includeOddsLayout.tvAcceptOddsChange.isVisible) {
 
             val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
-            val currentOddsChangeOp = userInfo?.oddsChangeOption?:0
+            val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
             val currentSelectText = OddsModeUtil.currentSelectModeText(currentOddsChangeOp)
             contentView.includeOddsLayout.tvAcceptOddsChange.text = currentSelectText
 
@@ -565,15 +566,15 @@ class BetInfoItemViewHolder(private
             }
 
             //設定playCateCode為OU時, container背景, 文字大小和顏色
-            if (itemData.matchOdd.playCode == PlayCate.OU.value) {
-                oddsContentContainer.setBackgroundResource(R.drawable.bg_gradient_bet_ou)
-                tvOddsContent.setOUStyle(true)
-                tvContent.setOUStyle(true)
-            } else {
-                oddsContentContainer.setBackgroundResource(R.color.transparent)
-                tvOddsContent.setOUStyle(false)
-                tvContent.setOUStyle(false)
-            }
+//            if (itemData.matchOdd.playCode == PlayCate.OU.value) {
+//                oddsContentContainer.setBackgroundResource(R.drawable.transparent)
+//                tvOddsContent.setOUStyle(false)
+//                tvContent.setOUStyle(false)
+//            } else {
+            oddsContentContainer.setBackgroundResource(R.color.transparent)
+            tvOddsContent.setOUStyle(false)
+            tvContent.setOUStyle(false)
+//            }
 
             //設定隊伍名稱, 聯賽名稱, 開賽時間
             when (itemData.matchType) {
