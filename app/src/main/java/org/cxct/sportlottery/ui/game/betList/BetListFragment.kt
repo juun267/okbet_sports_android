@@ -276,7 +276,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.apply {
             titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
             titleWinnableAmount.text =
-                getString(R.string.total_win_amount, sConfigData?.systemCurrencySign)
+                getString(R.string.total_win_amount)
         }
     }
 
@@ -726,7 +726,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-            tvTotalWinnableAmount.text = TextUtil.formatForOdd(winnableAmount)
+            tvTotalWinnableAmount.text =  "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
         }
 
         val betCount = if (currentBetType == 0) {
