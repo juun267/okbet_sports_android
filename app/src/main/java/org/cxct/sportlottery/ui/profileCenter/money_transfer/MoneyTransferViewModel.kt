@@ -12,14 +12,13 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
-import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.finance.df.Status
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.TimeUtil
 
 class MoneyTransferViewModel(
     androidContext: Application,
@@ -47,6 +46,9 @@ class MoneyTransferViewModel(
 
     private val allPlat = "ALL_PLAT"
     val platCode = "CG"
+
+    var inCode: String? = null
+    var outCode: String? = null
 
     val statusList = LocalUtils.getStringArray(R.array.transfer_state_array).map {
         when (it) {
@@ -129,18 +131,27 @@ class MoneyTransferViewModel(
             }?.let { result ->
                 hideLoading()
 
-                val thirdGameList = mutableListOf<GameFirmValues>()
-
-                for ((_, value) in result.t?.gameFirmMap ?: mapOf()) {
-                    if (value.open == 1) {
-                        thirdGameList.add(value)
-                    }
+                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
+                    thirdGameMap[value.firmType] = value.firmShowName
                 }
-                setRecordInSheetDataList(thirdGameList)
-                setRecordOutSheetDataList(thirdGameList)
 
             }
         }
+    }
+
+    fun getThirdGamesPlat() {
+        val resultList = mutableListOf<GameData>()
+        ThirdGameRepository.thirdGameData.value?.gameFirmMap?.forEach { (key, value) ->
+            if (value.open == 1) {
+                resultList.add(GameData(null, null, null).apply {
+                    code = key
+                    showName = value.firmShowName ?: key
+                })
+            }
+        }
+
+        setRecordInSheetDataList(resultList)
+        setRecordOutSheetDataList(resultList)
     }
 
     fun getAllBalance() {
@@ -156,16 +167,19 @@ class MoneyTransferViewModel(
                         value?.apply {
                             val gameData = GameData(money, remark, transRemaining).apply {
                                 code = key
-                                showName = ThirdGameRepository.thirdGameData.value?.gameFirmMap?.get(key)?.firmShowName ?: key
+                                showName =
+                                    ThirdGameRepository.thirdGameData.value?.gameFirmMap?.get(key)?.firmShowName
+                                        ?: key
                             }
                             resultList.add(gameData)
                         }
                     }
                     _allBalanceResultList.postValue(resultList)
 
-                    setSubInSheetDataList(resultList)
-                    setSubOutSheetDataList(resultList)
-
+                    if (success) {
+                        setSubInSheetDataList(resultList)
+                        setSubOutSheetDataList(resultList)
+                    }
                 }
             }
         }
@@ -195,25 +209,25 @@ class MoneyTransferViewModel(
         defaultSubOutList = list
         _subOutPlatSheetList.value = list
     }
-    //转入选项
-    private fun setRecordInSheetDataList(resultList: List<GameFirmValues>) {
+
+    private fun setRecordInSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
         list.add(StatusSheetData(allPlat, LocalUtils.getString(R.string.all_in_plat)))
         list.add(StatusSheetData(platCode, LocalUtils.getString(R.string.plat_money)))
         resultList.forEach {
-            list.add(StatusSheetData(it.firmType, it.firmShowName))
+            list.add(StatusSheetData(it.code, it.showName))
         }
         defaultRecordInList = list
         _recordInPlatSheetList.value = list
     }
 
-    //转出选项
-    private fun setRecordOutSheetDataList(resultList: List<GameFirmValues>) {
+
+    private fun setRecordOutSheetDataList(resultList: List<GameData>) {
         val list = mutableListOf<StatusSheetData>()
         list.add(StatusSheetData(allPlat, LocalUtils.getString(R.string.all_out_plat)))
         list.add(StatusSheetData(platCode, LocalUtils.getString(R.string.plat_money)))
         resultList.forEach {
-            list.add(StatusSheetData(it.firmType, it.firmShowName))
+            list.add(StatusSheetData(it.code, it.showName))
         }
         defaultRecordOutList = list
         _recordOutPlatSheetList.value = list
@@ -330,4 +344,8 @@ class MoneyTransferViewModel(
         _loading.postValue(false)
     }
 
+    fun initCode() {
+        inCode = null
+        outCode = null
+    }
 }

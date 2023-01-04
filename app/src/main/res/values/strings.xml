@@ -638,7 +638,7 @@
     <string name="out_account">Transfer out of account</string>
     <string name="in_account">Transfer into the account</string>
     <string name="transfer_money">Transfer amount</string>
-    <string name="transfer_money_minimum">Limit up to 1.000</string>
+    <string name="transfer_money_minimum">Limit up to %s</string>
     <string name="confirm_transform">Confirm transfer</string>
     <string name="plat_money">Platform balance</string>
     <string name="money">Balanced</string>

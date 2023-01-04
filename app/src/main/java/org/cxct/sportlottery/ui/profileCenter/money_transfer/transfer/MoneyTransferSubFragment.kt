@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,18 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import timber.log.Timber
 
 
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -28,7 +33,15 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private var isPlatReversed = false
     private var gameMoney = 0.0 //第三方遊戲餘額
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private var useDefaultUnit = true
+    private val defaultUnit = 1.0 //預設unit
+    private val thirdTransferUnit = sConfigData?.thirdTransferUnit
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
@@ -44,6 +57,13 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     private fun initView() {
         moveAnim(isPlatReversed)
+        viewModel.initCode()
+        //region 靠左置中＆移除padding
+        out_account.tv_selected.gravity = Gravity.START or Gravity.CENTER
+        out_account.tv_selected.setPadding(0, 0, 0, 0)
+        in_account.tv_selected.gravity = Gravity.START or Gravity.CENTER
+        in_account.tv_selected.setPadding(0, 0, 0, 0)
+        //endregion
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
         gameMoney = gameDataArg.gameData.money ?: 0.0
@@ -51,6 +71,18 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
         btn_transfer.setTitleLetterSpacing()
+        val hint =
+            if (thirdTransferUnit == null) {
+                useDefaultUnit = true
+                getString(R.string.transfer_money_minimum,
+                    ArithUtil.toMoneyFormatForHint(defaultUnit))
+            } else {
+                useDefaultUnit = false
+                getString(R.string.transfer_money_minimum,
+                    ArithUtil.toMoneyFormatForHint(thirdTransferUnit))
+            }
+        Timber.d("thirdTransferUnit: $thirdTransferUnit, hint: $hint")
+        et_transfer_money.setHint(hint)
         et_transfer_money.apply {
             tv_title.textSize = resources.getDimension(R.dimen.textSize15sp)
             tv_title.setTextColor(resources.getColor(R.color.color_535D76))
@@ -60,6 +92,22 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         et_transfer_money.afterTextChanged {
             et_transfer_money.setError("")
         }
+        et_transfer_money.apply {
+            clearIsShow = true
+        }
+    }
+
+    private fun setupSelectedTag() {
+        if (viewModel.outCode == null) {
+            viewModel.outCode = viewModel.platCode
+        }
+        if (viewModel.inCode == null) {
+            viewModel.inCode = gameDataArg.gameData.code
+        }
+        out_account.selectedTag = viewModel.outCode
+        in_account.selectedTag = viewModel.inCode
+//        Timber.e("out_account.selectedTag: ${out_account.selectedTag}")
+//        Timber.e("in_account.selectedTag: ${in_account.selectedTag}")
     }
 
     private fun initOnclick() {
@@ -69,6 +117,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         iv_spin.setOnClickListener {
             iv_spin.startAnimation(rotateAnimation)
             isPlatReversed = !isPlatReversed
+            setupSelectedTag()
             moveAnim(isPlatReversed)
         }
 
@@ -98,10 +147,12 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         out_account.setOnItemSelectedListener {
+            viewModel.outCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
         }
 
         in_account.setOnItemSelectedListener {
+            viewModel.inCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
         }
 
@@ -121,30 +172,29 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.subInPlatSheetList.observe(viewLifecycleOwner) {
             in_account.dataList = it
-            in_account.selectedTag = gameDataArg.gameData.code
+            setupSelectedTag()
         }
 
         viewModel.subOutPlatSheetList.observe(viewLifecycleOwner) {
             out_account.dataList = it
-            out_account.selectedTag = viewModel.platCode
+            setupSelectedTag()
         }
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let { it ->
-                if (it.success) {
-                    context?.let { context ->
-                        val dialog = CustomAlertDialog(context).apply {
-                            setTitle(context.getString(R.string.prompt))
-                            setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
-                            setPositiveClickListener {
-                                this@MoneyTransferSubFragment.view?.findNavController()
-                                    ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
-                            }
-                            setNegativeButtonText(null)
-                            setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
+                LogUtil.toJson(it)
+                context?.let { context ->
+                    val dialog = CustomAlertDialog(context).apply {
+                        setTitle(context.getString(R.string.prompt))
+                        setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
+                        setPositiveClickListener {
+                            this@MoneyTransferSubFragment.view?.findNavController()
+                                ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                         }
-                        dialog.show(childFragmentManager, null)
+                        setNegativeButtonText(null)
+                        setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
                     }
+                    dialog.show(childFragmentManager, null)
                 }
             }
         }

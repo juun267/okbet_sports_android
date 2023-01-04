@@ -627,7 +627,7 @@
     <string name="out_account">转出账户</string>
     <string name="in_account">转入账户</string>
     <string name="transfer_money">转换金额</string>
-    <string name="transfer_money_minimum">限额1.000以上</string>
+    <string name="transfer_money_minimum">限额 %s 以上</string>
     <string name="confirm_transform">确认转换</string>
     <string name="plat_money">平台余额</string>
     <string name="money">转换金额</string>
