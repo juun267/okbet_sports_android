@@ -641,7 +641,7 @@ fun <T : RecyclerView> T.removeItemDecorations() {
 fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?) {
     text =
         if (homeName?.length ?: 0 > countCheck) "$homeName  v\n$awayName"
-        else "$homeName  V  $awayName"
+        else "$homeName  VS  $awayName"
 }
 
 /**

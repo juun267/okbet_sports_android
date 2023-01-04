@@ -72,9 +72,10 @@ class BetInfoItemViewHolder(private
         mUserLogin = userLogin
         //設置投注限額
         setupInputLimit(itemData)
+        val odds = getOddsAndSaveRealAmount(itemData, currentOddsType)
         //設置可贏限額
-        inputWinMaxMoney = inputMaxMoney * getOddsAndSaveRealAmount(itemData, currentOddsType)
-        inputWinMinMoney = inputMinMoney * getOddsAndSaveRealAmount(itemData, currentOddsType)
+        inputWinMaxMoney = inputMaxMoney * odds
+        inputWinMinMoney = inputMinMoney * odds
 //            Timber.e("inputMaxMoney: $inputMaxMoney")
 //            Timber.e("inputWinMaxMoney: $inputWinMaxMoney")
 
@@ -663,14 +664,11 @@ class BetInfoItemViewHolder(private
     ): Double {
         var odds = 0.0
         var realAmount = itemData.betAmount
+        val tempOdds = getOdds(itemData.matchOdd, currentOddsType)
         when (currentOddsType) {
             OddsType.MYS -> {
-                if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
-                    realAmount = itemData.betAmount * Math.abs(
-                        getOdds(
-                            itemData.matchOdd, currentOddsType
-                        )
-                    )
+                if (tempOdds < 0) {
+                    realAmount = itemData.betAmount * Math.abs(tempOdds)
 //                        win = itemData.betAmount
                     odds = 1.0
                 } else {
@@ -678,20 +676,14 @@ class BetInfoItemViewHolder(private
 //                            itemData.matchOdd,
 //                            currentOddsType
 //                        )
-                    odds = getOdds(
-                        itemData.matchOdd, currentOddsType
-                    )
+                    odds = tempOdds
                 }
 
             }
 
             OddsType.IDN -> {
-                if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
-                    realAmount = itemData.betAmount * Math.abs(
-                        getOdds(
-                            itemData.matchOdd, currentOddsType
-                        )
-                    )
+                if (tempOdds < 0) {
+                    realAmount = itemData.betAmount * Math.abs(tempOdds)
 //                        win = itemData.betAmount
                     odds = 1.0
                 } else {
@@ -699,9 +691,7 @@ class BetInfoItemViewHolder(private
 //                            itemData.matchOdd,
 //                            currentOddsType
 //                        )
-                    odds = getOdds(
-                        itemData.matchOdd, currentOddsType
-                    )
+                    odds = tempOdds
                 }
             }
 
@@ -710,9 +700,7 @@ class BetInfoItemViewHolder(private
 //                        itemData.matchOdd,
 //                        currentOddsType
 //                    ) - 1)
-                odds = (getOdds(
-                    itemData.matchOdd, currentOddsType
-                ) - 1)
+                odds = (tempOdds - 1)
             }
 
             else -> {
@@ -720,14 +708,12 @@ class BetInfoItemViewHolder(private
 //                        itemData.matchOdd,
 //                        currentOddsType
 //                    )
-                odds = getOdds(
-                    itemData.matchOdd, currentOddsType
-                )
+                odds = tempOdds
             }
         }
 
         itemData.realAmount = realAmount
-        odds = ArithUtil.toOddFormat(odds).toDouble()
+        odds = ArithUtil.toOddFormat(odds, 2).toDouble()
 //            Timber.e("odds: $odds")
         return odds
     }
