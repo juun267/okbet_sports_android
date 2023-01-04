@@ -28,7 +28,7 @@ class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
         helper.setText(R.id.tv_firm_name, item.firmName)
             .setText(
                 R.id.tv_status,
-                if (item.gameCode == "TGP") {
+                if (item.gameCode == "TPG") {
                     R.string.new_games
                 } else {
                     R.string.new_games_beta

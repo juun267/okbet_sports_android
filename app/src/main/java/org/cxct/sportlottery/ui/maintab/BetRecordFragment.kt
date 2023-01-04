@@ -102,7 +102,7 @@ class BetRecordFragment :
     private var dataSport = mutableListOf<Item>()
     private lateinit var mListPop: ListPopupWindow
 
-    private fun initPopwindow(){
+    private fun initPopwindow() {
         mListPop = ListPopupWindow(requireContext())
         mListPop.width = FrameLayout.LayoutParams.WRAP_CONTENT
         mListPop.height = FrameLayout.LayoutParams.WRAP_CONTENT
@@ -144,7 +144,7 @@ class BetRecordFragment :
 
     private fun initObservable() {
         viewModel.sportCodeList.observe(viewLifecycleOwner) {
-            System.out.println("============ initObservable size ================"+it.size)
+            System.out.println("============ initObservable size ================" + it.size)
             updateSportList(it)
         }
         viewModel.betListData.observe(viewLifecycleOwner) {
@@ -272,44 +272,46 @@ class BetRecordFragment :
         }
     }
 
-    private val settledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val visibleItemCount: Int = it.childCount
-                val totalItemCount: Int = it.itemCount
-                val firstVisibleItemPosition: Int =
-                    (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                if (firstVisibleItemPosition > 0) {
-                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount &&
-                        firstVisibleItemPosition >= 0 &&
-                        totalItemCount >= PAGE_SIZE
-                    ) {
-                        viewModel.getBetList()
+    private val settledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                recyclerView.layoutManager?.let {
+                    val visibleItemCount: Int = it.childCount
+                    val totalItemCount: Int = it.itemCount
+                    val firstVisibleItemPosition: Int =
+                        (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (firstVisibleItemPosition > 0) {
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount &&
+                            firstVisibleItemPosition >= 0 &&
+                            totalItemCount >= PAGE_SIZE
+                        ) {
+                            viewModel.getBetList()
+                        }
                     }
                 }
             }
         }
-    }
 
-    private val unsettledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val visibleItemCount: Int = it.childCount
-                val totalItemCount: Int = it.itemCount
-                val firstVisibleItemPosition: Int =
-                    (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                if (firstVisibleItemPosition > 0) {
-                    viewModel.getNextPage(
-                        visibleItemCount,
-                        firstVisibleItemPosition,
-                        totalItemCount
-                    )
+    private val unsettledRecyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                recyclerView.layoutManager?.let {
+                    val visibleItemCount: Int = it.childCount
+                    val totalItemCount: Int = it.itemCount
+                    val firstVisibleItemPosition: Int =
+                        (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (firstVisibleItemPosition > 0) {
+                        viewModel.getNextPage(
+                            visibleItemCount,
+                            firstVisibleItemPosition,
+                            totalItemCount
+                        )
+                    }
                 }
             }
         }
-    }
 
     fun selectTab(tabPosition: Int) {
         this.startTabPosition = tabPosition
