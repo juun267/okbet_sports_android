@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -95,6 +96,7 @@ class TransactionRecordDiffAdapter :
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view = layoutInflater.inflate(R.layout.content_match_record, viewGroup, false)
+                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(null, null, null, null)
                 return MatchRecordViewHolder(view)
             }
         }
@@ -178,6 +180,7 @@ class TransactionRecordDiffAdapter :
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view =
                     layoutInflater.inflate(R.layout.content_match_record, viewGroup, false)
+                view.findViewById<TextView>(R.id.content_play).setCompoundDrawablesRelative(null, null, null, null)
                 return OutrightRecordViewHolder(view)
             }
         }
