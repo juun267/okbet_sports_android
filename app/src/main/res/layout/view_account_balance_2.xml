@@ -12,13 +12,29 @@
     android:orientation="vertical"
     tools:context=".ui.profileCenter.money_transfer.transfer.MoneyTransferSubFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/platform_account_money"
-        android:textColor="@color/color_FFFFFF"
-        android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/platform_account_money"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold" />
+
+        <androidx.legacy.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_group_7130" />
+    </RelativeLayout>
 
 
     <LinearLayout

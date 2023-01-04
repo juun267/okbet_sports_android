@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
@@ -70,6 +71,9 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
+        et_transfer_money.afterTextChanged {
+            btn_transfer.isEnabled = it.isNotEmpty()
+        }
         btn_transfer.setTitleLetterSpacing()
         val hint =
             if (thirdTransferUnit == null) {
@@ -88,6 +92,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             tv_title.setTextColor(resources.getColor(R.color.color_535D76))
             tv_title.setTypeface(Typeface.DEFAULT)
             et_input.minHeight = 50.dp
+            v_bottom_line.isVisible = false
+            v_bottom_line2.isVisible = false
         }
         et_transfer_money.afterTextChanged {
             et_transfer_money.setError("")

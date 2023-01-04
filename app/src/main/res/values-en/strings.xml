@@ -272,7 +272,7 @@
     <string name="account_balance">Total Balance</string>
     <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposit</string>
-    <string name="account_transfer">Transfer Limit</string>
+    <string name="account_transfer">Transfer Balance</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Messages</string>
     <string name="help_center">Help</string>

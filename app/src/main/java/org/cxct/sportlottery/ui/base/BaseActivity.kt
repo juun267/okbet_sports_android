@@ -315,7 +315,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         positiveClickListener: () -> Unit?,
         isError: Boolean,
         isShowDivider: Boolean? = false,
-        hasCancle: Boolean = true,
+        hasCancle: Boolean = false,
     ) {
         commonCheckDialog(
             context = this,

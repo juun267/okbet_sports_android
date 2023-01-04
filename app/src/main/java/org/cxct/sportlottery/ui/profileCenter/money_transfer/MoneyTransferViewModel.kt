@@ -132,7 +132,7 @@ class MoneyTransferViewModel(
                 hideLoading()
 
                 for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
-                    thirdGameMap[value.firmType] = value.firmShowName
+                    thirdGameMap[value.firmType] = value.firmName
                 }
 
             }
@@ -145,7 +145,7 @@ class MoneyTransferViewModel(
             if (value.open == 1) {
                 resultList.add(GameData(null, null, null).apply {
                     code = key
-                    showName = value.firmShowName ?: key
+                    showName = value.firmName ?: key
                 })
             }
         }
@@ -167,9 +167,7 @@ class MoneyTransferViewModel(
                         value?.apply {
                             val gameData = GameData(money, remark, transRemaining).apply {
                                 code = key
-                                showName =
-                                    ThirdGameRepository.thirdGameData.value?.gameFirmMap?.get(key)?.firmShowName
-                                        ?: key
+                                showName = thirdGameMap[key] ?: key
                             }
                             resultList.add(gameData)
                         }
