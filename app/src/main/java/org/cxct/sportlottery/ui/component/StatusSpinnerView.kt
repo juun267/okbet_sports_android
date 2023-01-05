@@ -25,7 +25,7 @@ class StatusSpinnerView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
 
-    private var dataList = mutableListOf<StatusSheetData>()
+    open var dataList = mutableListOf<StatusSheetData>()
     private var spinnerAdapter: StatusSpinnerAdapter? = null
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(

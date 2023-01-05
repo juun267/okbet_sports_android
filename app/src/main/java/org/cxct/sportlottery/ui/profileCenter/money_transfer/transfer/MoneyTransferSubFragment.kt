@@ -55,6 +55,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         initView()
         initOnclick()
         initObserver()
+        viewModel.getAllBalance()
     }
 
     private fun initView() {
@@ -142,14 +143,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 et_transfer_money.setError(getString(R.string.error_input_amount))
                 return@setOnClickListener
             }
-            val outAccountBalance = if (isPlatReversed) gameMoney else (viewModel.userMoney.value ?: 0.0)
-            if (transferMoneyText.toDouble() > outAccountBalance) {
-                showErrorPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.bet_info_bet_balance_insufficient)
-                ) {}
-                return@setOnClickListener
-            }
             viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
         }
 
@@ -193,9 +186,12 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     val dialog = CustomAlertDialog(context).apply {
                         setTitle(context.getString(R.string.prompt))
                         setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
-                        setPositiveClickListener {
-                            this@MoneyTransferSubFragment.view?.findNavController()
-                                ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                        setPositiveClickListener { view ->
+                            dismiss()
+                            if (it.success) {
+                                this@MoneyTransferSubFragment.view?.findNavController()
+                                    ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                            }
                         }
                         setNegativeButtonText(null)
                         setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
@@ -214,19 +210,27 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             if (isReversed) {
                 tv_title_in.text = getString(R.string.out_account)
                 tv_title_out.text = getString(R.string.in_account)
-                in_account.bottomSheetTitleText = getString(R.string.out_account)
-                out_account.bottomSheetTitleText = getString(R.string.in_account)
+                in_account.bottomSheetTitleText = getString(R.string.select_plat)
+                out_account.bottomSheetTitleText = getString(R.string.select_plat)
                 clone(constraint_layout)
-                connect(R.id.ll_in, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.ll_in,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    10.dp)
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_out, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             } else {
                 tv_title_in.text = getString(R.string.in_account)
                 tv_title_out.text = getString(R.string.out_account)
-                in_account.bottomSheetTitleText = getString(R.string.in_account)
-                out_account.bottomSheetTitleText = getString(R.string.out_account)
+                in_account.bottomSheetTitleText = getString(R.string.select_plat)
+                out_account.bottomSheetTitleText = getString(R.string.select_plat)
                 clone(constraint_layout)
-                connect(R.id.ll_out, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.ll_out,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    10.dp)
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_out, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_in, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             }

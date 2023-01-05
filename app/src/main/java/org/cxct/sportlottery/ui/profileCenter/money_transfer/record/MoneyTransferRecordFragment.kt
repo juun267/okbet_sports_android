@@ -107,13 +107,24 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         selector_out_plat.setOnItemSelectedListener {
-            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+//            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+            selector_out_plat.setSelectCode(it.code)
+            if (selector_in_plat?.selectedCode == it.code) {
+                selector_in_plat.dataList.first { item -> it.code != item.code }.let {
+                    selector_in_plat.setSelectCode(it.code)
+                }
+            }
         }
 
         selector_in_plat.setOnItemSelectedListener {
-            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+//            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+            selector_in_plat.setSelectCode(it.code)
+            if (selector_out_plat?.selectedCode == it.code) {
+                selector_out_plat.dataList.first { item -> it.code != item.code }.let {
+                    selector_out_plat.setSelectCode(it.code)
+                }
+            }
         }
-
     }
 
     private fun initObserver() {
