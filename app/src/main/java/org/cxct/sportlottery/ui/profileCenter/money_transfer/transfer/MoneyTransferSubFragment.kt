@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
@@ -185,10 +186,12 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     val dialog = CustomAlertDialog(context).apply {
                         setTitle(context.getString(R.string.prompt))
                         setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
-                        setPositiveClickListener {
+                        setPositiveClickListener { view ->
                             dismiss()
-//                            this@MoneyTransferSubFragment.view?.findNavController()
-//                                ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                            if (it.success) {
+                                this@MoneyTransferSubFragment.view?.findNavController()
+                                    ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                            }
                         }
                         setNegativeButtonText(null)
                         setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
