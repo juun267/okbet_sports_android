@@ -547,9 +547,10 @@
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
     <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="bet_receipt_bet_quota">投注金额：</string>
-    <string name="bet_info_list_win_quota">可赢金额：</string>
-    <string name="bet_receipt_win_quota">可赢金额：</string>
+    <string name="bet_info_list_win_quota">可赢金额</string>
+    <string name="bet_receipt_win_quota">可赢金额</string>
 
+    <string name="bet_info_add_bet_failed">投注失败</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
@@ -1218,8 +1219,8 @@
 
     <string name="hint_bet_limit_range">限额%1$s-%2$s</string>
     <string name="submitting">注单提交中</string>
-    <string name="bet_receipt_bet_quota_with_sign">投注金额：</string>
-    <string name="bet_receipt_win_quota_with_sign">最高可赢：%s</string>
+    <string name="bet_receipt_bet_quota_with_sign">投注金额</string>
+    <string name="bet_receipt_win_quota_with_sign">最高可赢</string>
     <string name="bet_record_single">单串</string>
     <string name="bet_record_parlay">复式</string>
     <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>

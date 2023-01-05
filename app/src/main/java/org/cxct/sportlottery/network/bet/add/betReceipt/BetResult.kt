@@ -34,4 +34,6 @@ data class BetResult(
     ) {
     var matchType: MatchType? = null
     var oddsType: OddsType? = null
+
+    fun isFailed() = 7 == status
 }
