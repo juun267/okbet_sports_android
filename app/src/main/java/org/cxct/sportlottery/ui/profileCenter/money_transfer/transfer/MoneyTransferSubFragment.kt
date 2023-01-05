@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
@@ -55,6 +54,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         initView()
         initOnclick()
         initObserver()
+        viewModel.getAllBalance()
     }
 
     private fun initView() {
@@ -142,14 +142,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 et_transfer_money.setError(getString(R.string.error_input_amount))
                 return@setOnClickListener
             }
-            val outAccountBalance = if (isPlatReversed) gameMoney else (viewModel.userMoney.value ?: 0.0)
-            if (transferMoneyText.toDouble() > outAccountBalance) {
-                showErrorPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.bet_info_bet_balance_insufficient)
-                ) {}
-                return@setOnClickListener
-            }
             viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
         }
 
@@ -194,8 +186,9 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                         setTitle(context.getString(R.string.prompt))
                         setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
                         setPositiveClickListener {
-                            this@MoneyTransferSubFragment.view?.findNavController()
-                                ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
+                            dismiss()
+//                            this@MoneyTransferSubFragment.view?.findNavController()
+//                                ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                         }
                         setNegativeButtonText(null)
                         setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)

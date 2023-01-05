@@ -635,9 +635,9 @@
     <string name="one_key_recovery">One-click withdraw</string>
     <string name="platform_account_money">Account Balance</string>
     <string name="one_button_click_will_recycle_all_money_into_account">*One-click withdraw transfers the balance of all other accounts to the platform account.</string>
-    <string name="out_account">Transfer out of account</string>
-    <string name="in_account">Transfer into the account</string>
-    <string name="transfer_money">Transfer amount</string>
+    <string name="out_account">Transfer Out</string>
+    <string name="in_account">Transfer In</string>
+    <string name="transfer_money">Amount</string>
     <string name="transfer_money_minimum">Limit up to %s</string>
     <string name="confirm_transform">Confirm transfer</string>
     <string name="plat_money">Platform balance</string>

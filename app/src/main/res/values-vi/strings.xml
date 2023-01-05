@@ -625,9 +625,9 @@
     <string name="one_key_recovery">Thu hồi bằng một cú nhấp chuột</string>
     <string name="platform_account_money">Số dư tài khoản trang</string>
     <string name="one_button_click_will_recycle_all_money_into_account">*Thu hồi bằng một cú nhấp chuột đồng thời chuyển tất cả số dư tài khoản khác sang tài khoản kênh</string>
-    <string name="out_account">Chuyển ra tài khoản</string>
-    <string name="in_account">Chuyển vào tài khoản</string>
-    <string name="transfer_money">số tiền chuyển đổi</string>
+    <string name="out_account">Tài khoản chuyển tiền</string>
+    <string name="in_account">Tài khoản nhận tiền</string>
+    <string name="transfer_money">Số tiền chuyển đổi</string>
     <string name="transfer_money_minimum">hạn mức %s trở lên</string>
     <string name="confirm_transform">xác nhận chuyển đổi</string>
     <string name="plat_money">Số dư kênh</string>
