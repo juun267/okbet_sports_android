@@ -14,7 +14,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
-import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
@@ -73,7 +72,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
-        tv_balance.text = getString(R.string.title_current_money)
         et_transfer_money.afterTextChanged {
             btn_transfer.isEnabled = it.isNotEmpty()
         }
