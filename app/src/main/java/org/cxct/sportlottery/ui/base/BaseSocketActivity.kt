@@ -121,11 +121,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.dataSourceChange.observe(this) {
-            showErrorPromptDialog(
-                title = getString(R.string.prompt),
-                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
-                hasCancel = false
-            ) { dataSourceChangeEven() }
+            dataSourceChangeEven?.let {
+                showErrorPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+                    hasCancel = false
+                ) { it.invoke() }
+            }
         }
 
         receiver.userInfoChange.observe(this) {
@@ -150,7 +152,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
     }
 
-    var dataSourceChangeEven = {}
+    var dataSourceChangeEven: (() -> Unit)? = null
 
     fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
         this.dataSourceChangeEven = dataSourceChangeEven
