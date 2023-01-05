@@ -100,7 +100,7 @@
         android:id="@+id/et_transfer_money"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:paddingLeft="5dp"
         android:layout_marginTop="10dp"
         android:background="@color/color_FFFFFF"
         app:cvTitle="@string/transfer_money"

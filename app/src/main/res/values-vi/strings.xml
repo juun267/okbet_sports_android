@@ -623,7 +623,7 @@
     <string name="feedback_replied">Đã phản hồi</string>
     <string name="feedback_not_reply_yet">Đang phản hồi</string>
     <string name="one_key_recovery">Thu hồi bằng một cú nhấp chuột</string>
-    <string name="platform_account_money">Số dư tài khoản kênh</string>
+    <string name="platform_account_money">Số dư tài khoản trang</string>
     <string name="one_button_click_will_recycle_all_money_into_account">*Thu hồi bằng một cú nhấp chuột đồng thời chuyển tất cả số dư tài khoản khác sang tài khoản kênh</string>
     <string name="out_account">Chuyển ra tài khoản</string>
     <string name="in_account">Chuyển vào tài khoản</string>

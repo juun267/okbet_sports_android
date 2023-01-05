@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
+import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
@@ -71,6 +73,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
+        tv_balance.text = getString(R.string.title_current_money)
         et_transfer_money.afterTextChanged {
             btn_transfer.isEnabled = it.isNotEmpty()
         }
@@ -88,7 +91,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         Timber.d("thirdTransferUnit: $thirdTransferUnit, hint: $hint")
         et_transfer_money.setHint(hint)
         et_transfer_money.apply {
-            tv_title.textSize = resources.getDimension(R.dimen.textSize15sp)
+            tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             tv_title.setTextColor(resources.getColor(R.color.color_535D76))
             tv_title.setTypeface(Typeface.DEFAULT)
             et_input.minHeight = 50.dp
