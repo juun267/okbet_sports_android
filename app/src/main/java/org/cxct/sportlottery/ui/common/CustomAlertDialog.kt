@@ -197,14 +197,14 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
 
     companion object {
 
-        val dialogs = mutableMapOf<LifecycleOwner, MutableSet<String>>()
+        val dialogs = mutableMapOf<String, MutableSet<String>>()
 
         fun checkDialogIsShowing(context: Context, tag: String): Boolean {
             if (context !is LifecycleOwner) {
                 return false
             }
 
-            return dialogs[context]?.contains(tag) ?: false
+            return dialogs[context.toString()]?.contains(tag) ?: false
         }
 
         private fun removeDialogTag(mContext: Context, messageTag: String?) {
@@ -212,16 +212,17 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
                 return
             }
 
-            val tags = dialogs[mContext]
+            val owner = mContext.toString()
+            val tags = dialogs[owner]
             if (tags.isNullOrEmpty()) {
-                dialogs.remove(mContext)
+                dialogs.remove(owner)
                 return
             }
 
             tags.remove(messageTag)
 
             if (tags.isNullOrEmpty()) {
-                dialogs.remove(mContext)
+                dialogs.remove(owner)
                 return
             }
         }
@@ -231,20 +232,21 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
                 return
             }
 
+            val owner = mContext.toString()
             val lifecycle = (mContext as LifecycleOwner).lifecycle
             if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
-                dialogs.remove(mContext)
+                dialogs.remove(owner)
                 return
             }
 
-            var tags = dialogs[mContext]
+            var tags = dialogs[owner]
             if (tags == null) {
                 tags = mutableSetOf()
-                dialogs[mContext] = tags
+                dialogs[owner] = tags
                 lifecycle.addObserver(object : LifecycleEventObserver {
                     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
                         if (event.targetState == Lifecycle.State.DESTROYED) {
-                            dialogs.remove(mContext)
+                            dialogs.remove(owner)
                         }
                     }
                 })
