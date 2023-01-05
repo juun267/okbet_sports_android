@@ -210,19 +210,27 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             if (isReversed) {
                 tv_title_in.text = getString(R.string.out_account)
                 tv_title_out.text = getString(R.string.in_account)
-                in_account.bottomSheetTitleText = getString(R.string.out_account)
-                out_account.bottomSheetTitleText = getString(R.string.in_account)
+                in_account.bottomSheetTitleText = getString(R.string.select_plat)
+                out_account.bottomSheetTitleText = getString(R.string.select_plat)
                 clone(constraint_layout)
-                connect(R.id.ll_in, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.ll_in,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    10.dp)
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_out, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             } else {
                 tv_title_in.text = getString(R.string.in_account)
                 tv_title_out.text = getString(R.string.out_account)
-                in_account.bottomSheetTitleText = getString(R.string.in_account)
-                out_account.bottomSheetTitleText = getString(R.string.out_account)
+                in_account.bottomSheetTitleText = getString(R.string.select_plat)
+                out_account.bottomSheetTitleText = getString(R.string.select_plat)
                 clone(constraint_layout)
-                connect(R.id.ll_out, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.ll_out,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    10.dp)
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_out, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_in, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             }

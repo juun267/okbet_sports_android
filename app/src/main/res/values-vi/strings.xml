@@ -263,7 +263,7 @@
     <string name="user_id_colon">ID người dùng：</string>
     <string name="recharge">Gửi tiền</string>
     <string name="account_transfer">Chuyển đổi hạn mức</string>
-    <string name="money_recycle_succeed">Số tiền thu hồi thành công</string>
+    <string name="money_recycle_succeed">Thu hồi hạn mức thành công</string>
     <string name="news_center">Trung tâm tin nhắn</string>
     <string name="help_center">Trung tâm hỗ trợ</string>
     <string name="fund_detail">Chi tiết quỹ</string>
@@ -628,7 +628,7 @@
     <string name="out_account">Tài khoản chuyển tiền</string>
     <string name="in_account">Tài khoản nhận tiền</string>
     <string name="transfer_money">Số tiền chuyển đổi</string>
-    <string name="transfer_money_minimum">hạn mức %s trở lên</string>
+    <string name="transfer_money_minimum">số tiền giới hạn %s trở lên</string>
     <string name="confirm_transform">xác nhận chuyển đổi</string>
     <string name="plat_money">Số dư kênh</string>
     <string name="money">Số tiền</string>
