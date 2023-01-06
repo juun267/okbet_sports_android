@@ -14,8 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
-import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.flIncludeBetTipsSingle
+import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
@@ -32,17 +31,8 @@ import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
-import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
-import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.MoneyInputFilter
-import org.cxct.sportlottery.util.OddsModeUtil
-import org.cxct.sportlottery.util.ScreenUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.getOdds
 import timber.log.Timber
 
 class BetInfoItemViewHolder(
@@ -545,11 +535,15 @@ class BetInfoItemViewHolder(
         }
         //反波膽顯示 %
         var tvOdd =
-            "@ " + TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
+            "@ " + TextUtil.formatForOdd(getOdds(itemData.matchOdd,
+                currentOddsType,
+                adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE))
         if (itemData.matchOdd.playCode == PlayCate.LCS.value) tvOdd =
             "@ " + TextUtil.formatForOddPercentage(
                 getOdds(
-                    itemData.matchOdd, currentOddsType
+                    itemData.matchOdd,
+                    currentOddsType,
+                    adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
                 ) - 1
             )
 
@@ -639,9 +633,9 @@ class BetInfoItemViewHolder(
                 }
             }
         }
-        //加上OddsType名稱
+        //加上OddsType名稱,如果是串关显示欧盘
         val tvNamePlusOddsTypeName =
-            "${tvName.text} [${root.context.getString(currentOddsType.res)}]"
+            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"
         tvName.text = tvNamePlusOddsTypeName
 
         //前面加上MatchType名稱
