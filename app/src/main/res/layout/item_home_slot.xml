@@ -31,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:layout_marginBottom="15dp"
             android:text="E-GAME"
             android:textColor="@color/color_6C7BA8"
             android:textSize="18sp"
@@ -42,21 +41,21 @@
             android:id="@+id/iv_repair"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="13dp"
+            android:layout_marginTop="15dp"
             android:src="@drawable/ic_game_repair"
             android:visibility="gone" />
 
         <View
             android:layout_width="@dimen/margin_30"
             android:layout_height="2dp"
+            android:layout_marginTop="12dp"
             android:background="@color/color_6C7BA8" />
 
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_8"
             android:fontFamily="@font/din_regular"
             android:text="@string/comingsoon"
             android:textColor="@color/color_6C7BA8"

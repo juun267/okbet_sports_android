@@ -272,7 +272,7 @@
     <string name="account_balance">Total Balance</string>
     <string name="user_id_colon">User ID：</string>
     <string name="recharge">Deposit</string>
-    <string name="account_transfer">Transfer Limit</string>
+    <string name="account_transfer">Transfer Balance</string>
     <string name="money_recycle_succeed">Recovery limit successfully</string>
     <string name="news_center">My Messages</string>
     <string name="help_center">Help</string>
@@ -633,11 +633,11 @@
     <string name="feedback_not_reply_yet">Wait for feedback</string>
     <string name="one_key_recovery">One-click withdraw</string>
     <string name="platform_account_money">Account Balance</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">· One-click withdraw transfers the balance of all other accounts to the platform account.</string>
-    <string name="out_account">Transfer out of account</string>
-    <string name="in_account">Transfer into the account</string>
-    <string name="transfer_money">Transfer amount</string>
-    <string name="transfer_money_minimum">Limit up to 1.000</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">*One-click withdraw transfers the balance of all other accounts to the platform account.</string>
+    <string name="out_account">Transfer Out</string>
+    <string name="in_account">Transfer In</string>
+    <string name="transfer_money">Amount</string>
+    <string name="transfer_money_minimum">Limit up to %s</string>
     <string name="confirm_transform">Confirm transfer</string>
     <string name="plat_money">Platform balance</string>
     <string name="money">Balanced</string>
@@ -1113,8 +1113,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">To Win</string>
     <string name="bet_stake">Stake</string>
-    <string name="total_capital">Total Stake(%s)：</string>
-    <string name="total_win_amount">EST Winning(%s)：</string>
+    <string name="total_capital">Total Stake：%s</string>
+    <string name="total_win_amount">EST Winning：</string>
     <string name="delete_bet">Delete</string>
     <string name="btn_login_bet">Log in before betting</string>
     <string name="confirm_single_bets">Confirm %d Single Bets</string>
@@ -1215,8 +1215,8 @@
 
     <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
     <string name="submitting">Submitting</string>
-    <string name="bet_receipt_bet_quota_with_sign">Stake(%s)：</string>
-    <string name="bet_receipt_win_quota_with_sign">To Win(%s)：</string>
+    <string name="bet_receipt_bet_quota_with_sign">Stake</string>
+    <string name="bet_receipt_win_quota_with_sign">To Win</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1352,9 +1352,9 @@
     <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
     <string name="str_if_accept_odds_changes_des_subtitle">Match odds can change at any time (especially during in-play). In order to give you a better betting experience. You can choose the following three betting methods.</string>
     <string name="str_if_accept_odds_changes_des1">1. Accept any odds -- when this option is selected. We\'ll give you a slip based on the latest odds.</string>
-    <string name="str_if_accept_odds_changes_des2">2. Accept best odds - When selecting this option, if the latest odds are better than your chosen odds, we will generate a slip. If the latest odds are lower than the odds you have chosen, we do not generate a slip and remind you of the odds change
+    <string name="str_if_accept_odds_changes_des2">2. Accept best odds - When selecting this option, if the latest odds are better than your chosen odds, we will generate a slip. If the latest odds are lower than the odds you have chosen, we do not generate a slip and remind you of the odds change.
 </string>
-    <string name="str_if_accept_odds_changes_des3">3. Not accept odds changes - if the latest odds are different from the odds you selected, we will not generate a slip and and remind you of the odds change</string>
+    <string name="str_if_accept_odds_changes_des3">3. Not accept odds changes - if the latest odds are different from the odds you selected, we will not generate a slip and and remind you of the odds change.</string>
     <string name="str_ok_i_got_it">Ok, I see</string>
     <string name="str_max_bet_money">Max bet limit:%1$s</string>
     <string name="str_odds_already_changed_check_please">The odds changed. Please confirm latest odds</string>
@@ -1386,4 +1386,6 @@
     <string name="str_match_be_suspended_or_closed_please_check">Match be suspended or closed, please check</string>
     <string name="str_parlay_is_not_allowed_in_championship_matches">Parlay is not allowed in championship matches</string>
     <string name="str_parlay_type_wrong">Parlay type wrong</string>
+    <string name="new_games">New Games</string>
+    <string name="bet_info_add_bet_failed">Bet Failed</string>
 </resources>

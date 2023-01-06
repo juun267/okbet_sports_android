@@ -577,9 +577,9 @@ class MainHomeFragment :
                 }
             }
         }
-        receiver.matchOddsChange.observe(viewLifecycleOwner) {
-
-        }
+//        receiver.matchOddsChange.observe(viewLifecycleOwner) {
+//
+//        }
         setupOddsChangeListener()
 
         receiver.matchOddsLock.observe(viewLifecycleOwner) {

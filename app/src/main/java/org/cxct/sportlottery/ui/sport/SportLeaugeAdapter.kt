@@ -375,7 +375,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         ) {
             itemView.league_odd_list.apply {
                 //league_odd_list.itemAnimator = null
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
                 adapter = sportOddAdapter.apply {
                     setData(item.searchMatchOdds.ifEmpty {
                         item.matchOdds
@@ -386,17 +386,7 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
 
                     this.leagueOddListener = leagueOddListener
                 }
-                try {
-                    addItemDecoration(
-                        DividerItemDecorator(
-                            ContextCompat.getDrawable(
-                                context,
-                                R.drawable.bg_sport_divide_line
-                            )
-                        )
-                    ) // TODO IllegalStateException: Cannot add item decoration during a scroll  or layout
-                } catch (e: Exception) {
-                }
+
             }
         }
 
@@ -430,16 +420,19 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ItemType.ITEM.ordinal -> {
-                val itemHolder = ItemViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
-                itemHolder.itemView.league_odd_list.setRecycledViewPool(getOddListCache())
-                itemHolder
-            }
-
-            else -> initBaseViewHolders(parent, viewType)
+        if (viewType != ItemType.ITEM.ordinal) {
+            return initBaseViewHolders(parent, viewType)
         }
+
+        val itemHolder = ItemViewHolder(LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_league, parent, false)) //itemview_league_v5
+        itemHolder.itemView.league_odd_list.apply {
+            setRecycledViewPool(getOddListCache())
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.bg_sport_divide_line)))
+        }
+
+        return itemHolder
     }
 
 

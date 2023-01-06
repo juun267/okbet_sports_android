@@ -1,16 +1,12 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_money_transfer.*
-import kotlinx.android.synthetic.main.activity_money_transfer.tab_layout
-import kotlinx.android.synthetic.main.fragment_withdraw.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
@@ -24,7 +20,7 @@ class MoneyTransferActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_transfer)
-
+        setStatusbar(R.color.color_FFFFFF, true)
         viewModel.getMoney()
         viewModel.getAllBalance()
         viewModel.getThirdGames()

@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
+import android.text.SpannableStringBuilder
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -60,9 +61,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         receiver.sysMaintenance.observe(this, Observer {
             if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
                 when (this) {
-                    !is MaintenanceActivity -> startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    })
+                    !is MaintenanceActivity -> startActivity(
+                        Intent(
+                            this,
+                            MaintenanceActivity::class.java
+                        ).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        })
                 }
             }
         })
@@ -71,12 +76,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             when (status) {
                 ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
                     hideLoading()
-                    showPromptDialog(getString(R.string.prompt),
+                    showPromptDialog(
+                        getString(R.string.prompt),
                         getString(R.string.message_socket_connect),
                         buttonText = null,
                         { backService?.doReconnect() },
                         isError = true,
-                        hasCancle = false )
+                        hasCancle = false
+                    )
                 }
                 ServiceConnectStatus.CONNECTING -> {
 //                    loading()
@@ -114,11 +121,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.dataSourceChange.observe(this) {
-            this.run {
+            dataSourceChangeEven?.let {
                 showErrorPromptDialog(
                     title = getString(R.string.prompt),
-                    message = getString(R.string.message_source_change)
-                ) { dataSourceChangeEven() }
+                    message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+                    hasCancel = false
+                ) { it.invoke() }
             }
         }
 
@@ -144,13 +152,19 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
     }
 
-    var dataSourceChangeEven = {}
+    private var dataSourceChangeEven: (() -> Unit)? = null
 
+    /**
+     * 设置有新赛事数据监听回调。
+     *  重点!!!
+     *  页面加载完成后再调用该方法就行设置回调，
+     *  不然由于LiveData粘性事件的原因，在页面初始化的时候就有可能弹窗
+      */
     fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
         this.dataSourceChangeEven = dataSourceChangeEven
     }
 
-    fun subscribeSportChannelHall(){
+    fun subscribeSportChannelHall() {
         backService?.subscribeSportChannelHall()
     }
 
@@ -192,7 +206,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService?.unsubscribeAllHallChannel()
     }
 
-    fun unSubscribeChannelHallSport(){
+    fun unSubscribeChannelHallSport() {
         backService?.unsubscribeSportHallChannel()
     }
 

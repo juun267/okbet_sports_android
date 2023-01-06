@@ -1,28 +1,18 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_recharge_log.*
-import kotlinx.android.synthetic.main.activity_recharge_log.view.*
-import kotlinx.android.synthetic.main.component_date_range_new_selector.*
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_record.*
-import kotlinx.android.synthetic.main.fragment_money_transfer_record.date_range_selector
-
-
-import kotlinx.android.synthetic.main.fragment_money_transfer_record.rv_record
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.util.LogUtil
 
 /**
  * @app_destination 转换记录
@@ -81,7 +71,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel.getAllBalance()
+        viewModel.getThirdGames()
         viewModel.queryTransfers()
         viewModel.setToolbarName(getString(R.string.account_transfer))
 
@@ -90,7 +80,7 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getThirdGames()
+
         initView()
         initOnclick()
         initObserver()
@@ -117,13 +107,24 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         selector_out_plat.setOnItemSelectedListener {
-            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+//            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+            selector_out_plat.setSelectCode(it.code)
+            if (selector_in_plat?.selectedCode == it.code) {
+                selector_in_plat.dataList.first { item -> it.code != item.code }.let {
+                    selector_in_plat.setSelectCode(it.code)
+                }
+            }
         }
 
         selector_in_plat.setOnItemSelectedListener {
-            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+//            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+            selector_in_plat.setSelectCode(it.code)
+            if (selector_out_plat?.selectedCode == it.code) {
+                selector_out_plat.dataList.first { item -> it.code != item.code }.let {
+                    selector_out_plat.setSelectCode(it.code)
+                }
+            }
         }
-
     }
 
     private fun initObserver() {

@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/tvAcceptOddsChange"
             android:layout_width="142dp"
-            android:layout_height="32dp"
+            android:layout_height="30dp"
             android:layout_marginStart="14dp"
             android:background="@drawable/bg_bet_list_accept_odds"
             android:drawableEnd="@drawable/ic_arrow_down_blue"

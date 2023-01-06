@@ -570,7 +570,7 @@
     <string name="commission_detail_desc_22">สรุปได้ว่ายังคงต้องใช้ 1,500 รหัสก่อนจึงจะสามารถถอนเงินได้</string>
     <string name="avatar">รูปโปรไฟล์</string>
     <string name="nickname">ชื่อเล่น</string>
-    <string name="password_setting">ตั้งรหัสผ่าน</string>
+    <string name="setting_password">ตั้งรหัสผ่าน</string>
     <string name="real_name">ชื่อจริง</string>
     <string name="need_improve">ต้องปรับปรุง</string>
     <string name="identity">การตรวจสอบชื่อจริง</string>
@@ -589,7 +589,6 @@
     <string name="hint_phone_number">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="hint_phone_num">กรุณากรอกหมายเลขโทรศัพท์</string>
     <string name="error_phone_number">รูปแบบหมายเลขโทรศัพท์ไม่ถูกต้อง</string>
-    <string name="setting_password">ตั้งรหัสผ่าน</string>
     <string name="login_password">รหัสผ่านในการเข้าสู่ระบบ</string>
     <string name="new_password">รหัสผ่านใหม่</string>
     <string name="error_password_cannot_be_same">รหัสผ่านใหม่ต้องไม่เหมือนกับรหัสผ่านเก่า</string>
@@ -646,7 +645,7 @@
     <string name="platform_account_money">ยอดบัญชีแพลตฟอร์ม</string>
     <string name="one_key_recovery">การรีไซเคิลด้วยคลิกเดียว</string>
     <string name="confirm_transform">ยืนยันการแปลง</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">‧การกู้คืนในคลิกเดียวจะโอนยอดคงเหลือในบัญชีอื่นทั้งหมดไปยังบัญชีแพลตฟอร์ม</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">*การกู้คืนในคลิกเดียวจะโอนยอดคงเหลือในบัญชีอื่นทั้งหมดไปยังบัญชีแพลตฟอร์ม</string>
     <string name="money">จำนวน</string>
     <string name="transfer_platform">แพลตฟอร์มการแปลง</string>
     <string name="out_account">โอนออกบัญชี</string>
@@ -1127,10 +1126,10 @@
     <string name="confirm_multiple_bets">ยืนยัน %d เดิมพันหลายรายการ</string>
     <string name="text_account_history_bet">เดิมพัน</string>
     <string name="error_amount_limit_exceeded">เกินขีดจำกัดจำนวนเงินฝาก</string>
-    <string name="total_win_amount">จำนวนที่ชนะได้(%s)：</string> <!--F005-->
+    <string name="total_win_amount">จำนวนที่ชนะได้：</string> <!--F005-->
     <string name="next_step">ขั้นตอนต่อไป</string>
 
-    <string name="total_capital">เดิมพันทั้งหมด(%s)：</string> <!--F008-->
+    <string name="total_capital">เดิมพันทั้งหมด：%s</string> <!--F008-->
     <string name="delete_bet">ลบ</string>
     <string name="btn_login_bet">เข้าสูระบบแล้วเดิมพันได้</string>
     <string name="btn_remove_closed_selections">ลบตัวเลือกที่ปิดอยู่</string>
@@ -1248,5 +1247,7 @@
     <string name="error_verification_code_forget">รหัสยืนยันไม่ถูกต้อง</string>
     <string name="pay_maya">Paymaya</string>
     <string name="no_file">ไม่ได้เลือกไฟล์</string>
+    <string name="new_games">เกมใหม่เบต้า</string>
+    <string name="bet_info_add_bet_failed">แพ้พนัน</string>
     <!--F005-->
 </resources>

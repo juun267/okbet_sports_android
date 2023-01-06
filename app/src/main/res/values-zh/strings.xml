@@ -547,9 +547,10 @@
     <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
     <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="bet_receipt_bet_quota">投注金额：</string>
-    <string name="bet_info_list_win_quota">可赢金额：</string>
-    <string name="bet_receipt_win_quota">可赢金额：</string>
+    <string name="bet_info_list_win_quota">可赢金额</string>
+    <string name="bet_receipt_win_quota">可赢金额</string>
 
+    <string name="bet_info_add_bet_failed">投注失败</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_in_play_score">%1$s (%2$s-%3$s)</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
@@ -623,11 +624,11 @@
     <string name="feedback_not_reply_yet">待反馈</string>
     <string name="one_key_recovery">一键回收</string>
     <string name="platform_account_money">平台账户余额</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">・一键回收将所有其他账户余额转入平台账户。</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">*一键回收将所有其他账户余额转入平台账户。</string>
     <string name="out_account">转出账户</string>
     <string name="in_account">转入账户</string>
     <string name="transfer_money">转换金额</string>
-    <string name="transfer_money_minimum">限额1.000以上</string>
+    <string name="transfer_money_minimum">限额 %s 以上</string>
     <string name="confirm_transform">确认转换</string>
     <string name="plat_money">平台余额</string>
     <string name="money">转换金额</string>
@@ -1113,8 +1114,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">可赢</string>
     <string name="bet_stake">投注</string>
-    <string name="total_capital">本金(%s)：</string>
-    <string name="total_win_amount">可赢(%s)：</string>
+    <string name="total_capital">本金：%s</string>
+    <string name="total_win_amount">可赢：</string>
     <string name="delete_bet">删除</string>
     <string name="btn_login_bet">登录后可投注</string>
     <string name="confirm_single_bets">确认%d单注投注</string>
@@ -1129,6 +1130,7 @@
     <string name="more_info">更多信息</string>
     <string name="e_game">棋牌</string>
     <string name="new_games_beta">新游戏，测试版</string>
+    <string name="new_games">新游戏</string>
 
     <string name="work_time_">营业时间：</string>
     <string name="phone_">电话：</string>
@@ -1217,8 +1219,8 @@
 
     <string name="hint_bet_limit_range">限额%1$s-%2$s</string>
     <string name="submitting">注单提交中</string>
-    <string name="bet_receipt_bet_quota_with_sign">投注金额(%s)：</string>
-    <string name="bet_receipt_win_quota_with_sign">最高可赢(%s)：</string>
+    <string name="bet_receipt_bet_quota_with_sign">投注金额</string>
+    <string name="bet_receipt_win_quota_with_sign">最高可赢</string>
     <string name="bet_record_single">单串</string>
     <string name="bet_record_parlay">复式</string>
     <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
@@ -1353,9 +1355,9 @@
     <string name="str_if_accept_odds_changes_title">是否接受赔率变化说明</string>
     <string name="str_if_accept_odds_changes_des_subtitle">因为赛事赔率可能随时会产生变化（特别是滚球阶段）。为了让您有能更好的下注体验。您可以选择以下三种投注方式。</string>
     <string name="str_if_accept_odds_changes_des1">1.接受任何赔率变化—选择该选项时.我们会按照最新的赔率给您生成注单。</string>
-    <string name="str_if_accept_odds_changes_des2">2.接受最优赔率变化—选择该选项时 如果最新的赔率优于您选择的赔率，我们会生成注单。如果最新的赔率低于您选择的赔率，我们不会生成注单，并提醒您赔率变化
+    <string name="str_if_accept_odds_changes_des2">2.接受最优赔率变化—选择该选项时 如果最新的赔率优于您选择的赔率，我们会生成注单。如果最新的赔率低于您选择的赔率，我们不会生成注单，并提醒您赔率变化。
 </string>
-    <string name="str_if_accept_odds_changes_des3">3.不接受赔率变化--选择该选项时：如果最新的赔率和您选择的赔率不同，我们不会生成注单，并提醒您赔率变化</string>
+    <string name="str_if_accept_odds_changes_des3">3.不接受赔率变化—选择该选项时：如果最新的赔率和您选择的赔率不同，我们不会生成注单，并提醒您赔率变化。</string>
     <string name="str_ok_i_got_it">好的,我知道了</string>
     <string name="str_max_bet_money">最大投注额度:%1$s</string>
     <string name="str_odds_already_changed_check_please">赔率已变化,请确认最新赔率</string>

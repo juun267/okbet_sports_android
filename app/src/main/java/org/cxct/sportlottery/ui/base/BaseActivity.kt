@@ -280,6 +280,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, true)
     }
 
+    fun showErrorPromptDialog(title: String, message: Spanned,hasCancel: Boolean, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, null, positiveClickListener, true,hasCancel)
+    }
+
     fun showPromptDialog(
         title: String?,
         errorMessageSpan: Spanned,
@@ -299,7 +303,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
             errorMessageSpan = errorMessageSpan,
             buttonText = buttonText,
             positiveClickListener = positiveClickListener,
-            negativeText = getString(R.string.btn_cancel),
+            negativeText = null,
             isOutsideCancelable = isOutsideCancelable
         )
     }
@@ -311,7 +315,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         positiveClickListener: () -> Unit?,
         isError: Boolean,
         isShowDivider: Boolean? = false,
-        hasCancle: Boolean = true,
+        hasCancle: Boolean = false,
     ) {
         commonCheckDialog(
             context = this,

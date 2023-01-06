@@ -1,23 +1,32 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
+import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setTitleLetterSpacing
+import timber.log.Timber
 
 
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -26,7 +35,15 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     private var isPlatReversed = false
     private var gameMoney = 0.0 //第三方遊戲餘額
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private var useDefaultUnit = true
+    private val defaultUnit = 1.0 //預設unit
+    private val thirdTransferUnit = sConfigData?.thirdTransferUnit
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         viewModel.setToolbarName(getString(R.string.transfer_info))
         viewModel.showTitleBar(false)
         return inflater.inflate(R.layout.fragment_money_transfer_sub, container, false)
@@ -38,20 +55,67 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         initView()
         initOnclick()
         initObserver()
+        viewModel.getAllBalance()
     }
 
     private fun initView() {
         moveAnim(isPlatReversed)
+        viewModel.initCode()
+        //region 靠左置中＆移除padding
+        out_account.tv_selected.gravity = Gravity.START or Gravity.CENTER
+        out_account.tv_selected.setPadding(0, 0, 0, 0)
+        in_account.tv_selected.gravity = Gravity.START or Gravity.CENTER
+        in_account.tv_selected.setPadding(0, 0, 0, 0)
+        //endregion
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
         gameMoney = gameDataArg.gameData.money ?: 0.0
         layout_balance.tv_currency_type.text = sConfigData?.systemCurrencySign
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
+        et_transfer_money.afterTextChanged {
+            btn_transfer.isEnabled = it.isNotEmpty()
+        }
         btn_transfer.setTitleLetterSpacing()
+        val hint =
+            if (thirdTransferUnit == null) {
+                useDefaultUnit = true
+                getString(R.string.transfer_money_minimum,
+                    ArithUtil.toMoneyFormatForHint(defaultUnit))
+            } else {
+                useDefaultUnit = false
+                getString(R.string.transfer_money_minimum,
+                    ArithUtil.toMoneyFormatForHint(thirdTransferUnit))
+            }
+        Timber.d("thirdTransferUnit: $thirdTransferUnit, hint: $hint")
+        et_transfer_money.setHint(hint)
+        et_transfer_money.apply {
+            tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            tv_title.setTextColor(resources.getColor(R.color.color_535D76))
+            tv_title.setTypeface(Typeface.DEFAULT)
+            et_input.minHeight = 50.dp
+            v_bottom_line.isVisible = false
+            v_bottom_line2.isVisible = false
+            btn_clear.setImageResource(R.drawable.ic_clear_gray)
+            btn_clear.setPadding(2, 2, 2, 2)
+            clearIsShow = false
+        }
         et_transfer_money.afterTextChanged {
             et_transfer_money.setError("")
         }
+    }
+
+    private fun setupSelectedTag() {
+        if (viewModel.outCode == null) {
+            viewModel.outCode = viewModel.platCode
+        }
+        if (viewModel.inCode == null) {
+            viewModel.inCode = gameDataArg.gameData.code
+        }
+        out_account.selectedTag = viewModel.outCode
+        in_account.selectedTag = viewModel.inCode
+//        Timber.e("out_account.selectedTag: ${out_account.selectedTag}")
+//        Timber.e("in_account.selectedTag: ${in_account.selectedTag}")
     }
 
     private fun initOnclick() {
@@ -61,6 +125,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         iv_spin.setOnClickListener {
             iv_spin.startAnimation(rotateAnimation)
             isPlatReversed = !isPlatReversed
+            setupSelectedTag()
             moveAnim(isPlatReversed)
         }
 
@@ -78,25 +143,18 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                 et_transfer_money.setError(getString(R.string.error_input_amount))
                 return@setOnClickListener
             }
-            val outAccountBalance = if (isPlatReversed) gameMoney else (viewModel.userMoney.value ?: 0.0)
-            if (transferMoneyText.toDouble() > outAccountBalance) {
-                showErrorPromptDialog(
-                    getString(R.string.prompt),
-                    getString(R.string.bet_info_bet_balance_insufficient)
-                ) {}
-                return@setOnClickListener
-            }
             viewModel.transfer(isPlatReversed, out_account.selectedTag, in_account.selectedTag, et_transfer_money.getText().toLongOrNull())
         }
 
         out_account.setOnItemSelectedListener {
+            viewModel.outCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
         }
 
         in_account.setOnItemSelectedListener {
+            viewModel.inCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
         }
-
     }
 
     private fun initObserver() {
@@ -113,30 +171,32 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
         viewModel.subInPlatSheetList.observe(viewLifecycleOwner) {
             in_account.dataList = it
-            in_account.selectedTag = gameDataArg.gameData.code
+            setupSelectedTag()
         }
 
         viewModel.subOutPlatSheetList.observe(viewLifecycleOwner) {
             out_account.dataList = it
-            out_account.selectedTag = viewModel.platCode
+            setupSelectedTag()
         }
 
         viewModel.transferResult.observe(viewLifecycleOwner) { result ->
             result?.getContentIfNotHandled()?.let { it ->
-                if (it.success) {
-                    context?.let { context ->
-                        val dialog = CustomAlertDialog(context).apply {
-                            setTitle(context.getString(R.string.prompt))
-                            setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
-                            setPositiveClickListener {
+                LogUtil.toJson(it)
+                context?.let { context ->
+                    val dialog = CustomAlertDialog(context).apply {
+                        setTitle(context.getString(R.string.prompt))
+                        setMessage(if (it.success) context.getString(R.string.transfer_money_succeed) else it.msg)
+                        setPositiveClickListener { view ->
+                            dismiss()
+                            if (it.success) {
                                 this@MoneyTransferSubFragment.view?.findNavController()
                                     ?.navigate(MoneyTransferSubFragmentDirections.actionMoneyTransferSubFragmentToMoneyTransferFragment())
                             }
-                            setNegativeButtonText(null)
-                            setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
                         }
-                        dialog.show(childFragmentManager, null)
+                        setNegativeButtonText(null)
+                        setTextColor(if (it.success) R.color.color_909090_666666 else R.color.color_F75452_E23434)
                     }
+                    dialog.show(childFragmentManager, null)
                 }
             }
         }
@@ -150,19 +210,27 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             if (isReversed) {
                 tv_title_in.text = getString(R.string.out_account)
                 tv_title_out.text = getString(R.string.in_account)
-                in_account.bottomSheetTitleText = getString(R.string.out_account)
-                out_account.bottomSheetTitleText = getString(R.string.in_account)
+                in_account.bottomSheetTitleText = getString(R.string.select_plat)
+                out_account.bottomSheetTitleText = getString(R.string.select_plat)
                 clone(constraint_layout)
-                connect(R.id.ll_in, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.ll_in,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    10.dp)
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_in, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_out, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             } else {
                 tv_title_in.text = getString(R.string.in_account)
                 tv_title_out.text = getString(R.string.out_account)
-                in_account.bottomSheetTitleText = getString(R.string.in_account)
-                out_account.bottomSheetTitleText = getString(R.string.out_account)
+                in_account.bottomSheetTitleText = getString(R.string.select_plat)
+                out_account.bottomSheetTitleText = getString(R.string.select_plat)
                 clone(constraint_layout)
-                connect(R.id.ll_out, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 10.dp)
+                connect(R.id.ll_out,
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    10.dp)
                 connect(R.id.iv_spin, ConstraintSet.TOP, R.id.ll_out, ConstraintSet.BOTTOM, 10.dp)
                 connect(R.id.ll_in, ConstraintSet.TOP, R.id.iv_spin, ConstraintSet.BOTTOM, 10.dp)
             }

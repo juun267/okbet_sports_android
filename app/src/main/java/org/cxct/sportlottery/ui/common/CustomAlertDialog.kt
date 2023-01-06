@@ -8,11 +8,19 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.DisplayUtil.dp
 
 /**
  * 常用提示對話框
@@ -22,13 +30,13 @@ import org.cxct.sportlottery.R
  * this.setCanceledOnTouchOutside(false) //disable 點擊外部關閉 dialog
  * this.setCancelable(false) //disable 按實體鍵 BACK 關閉 dialog
  */
-class CustomAlertDialog(context: Context) : DialogFragment() {
+class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
 
     private var mTitle: String? = null
     private var mMessage: String? = null
     private var mSpannedMessage: Spanned? = null
-    private var mPositiveText: String? = context.getString(R.string.btn_confirm)
-    private var mNegativeText: String? = context.getString(R.string.btn_cancel)
+    private var mPositiveText: String? = mContext.getString(R.string.btn_confirm)
+    private var mNegativeText: String? = mContext.getString(R.string.btn_cancel)
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
@@ -52,14 +60,22 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+        initView(view)
     }
 
-    private fun initView() {
+    private fun initView(view: View) {
         when (mTitle) {
             null -> tv_title.visibility = View.GONE
             else -> tv_title.text = mTitle
         }
+
+        val params = (view.layoutParams as MarginLayoutParams?) ?: MarginLayoutParams(-2, -2)
+        val margin = 26.dp
+        params.leftMargin = margin
+        params.topMargin = margin
+        params.rightMargin = margin
+        params.bottomMargin = margin
+        view.layoutParams = params
 
         tv_message.gravity = mGravity
         when {
@@ -156,8 +172,87 @@ class CustomAlertDialog(context: Context) : DialogFragment() {
         dialog?.setCanceledOnTouchOutside(boolean)
     }
 
+    private fun getMessageTag(): String {
+        if (mSpannedMessage != null) {
+            return mSpannedMessage.toString()
+        }
+
+        if (TextUtils.isEmpty(mMessage)) {
+            return "$mTitle"
+        }
+
+        return "$mMessage"
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         dissmisCallback?.invoke(this)
+        removeDialogTag(mContext, getMessageTag())
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
+        addDialogTag(mContext, getMessageTag())
+    }
+
+    companion object {
+
+        val dialogs = mutableMapOf<String, MutableSet<String>>()
+
+        fun checkDialogIsShowing(context: Context, tag: String): Boolean {
+            if (context !is LifecycleOwner) {
+                return false
+            }
+
+            return dialogs[context.toString()]?.contains(tag) ?: false
+        }
+
+        private fun removeDialogTag(mContext: Context, messageTag: String?) {
+            if (mContext !is LifecycleOwner || TextUtils.isEmpty(messageTag)) {
+                return
+            }
+
+            val owner = mContext.toString()
+            val tags = dialogs[owner]
+            if (tags.isNullOrEmpty()) {
+                dialogs.remove(owner)
+                return
+            }
+
+            tags.remove(messageTag)
+
+            if (tags.isNullOrEmpty()) {
+                dialogs.remove(owner)
+                return
+            }
+        }
+
+        private fun addDialogTag(mContext: Context, messageTag: String?) {
+            if (mContext !is LifecycleOwner || TextUtils.isEmpty(messageTag)) {
+                return
+            }
+
+            val owner = mContext.toString()
+            val lifecycle = (mContext as LifecycleOwner).lifecycle
+            if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+                dialogs.remove(owner)
+                return
+            }
+
+            var tags = dialogs[owner]
+            if (tags == null) {
+                tags = mutableSetOf()
+                dialogs[owner] = tags
+                lifecycle.addObserver(object : LifecycleEventObserver {
+                    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                        if (event.targetState == Lifecycle.State.DESTROYED) {
+                            dialogs.remove(owner)
+                        }
+                    }
+                })
+            }
+
+            tags.add(messageTag!!)
+        }
     }
 }

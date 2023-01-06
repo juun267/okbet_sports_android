@@ -477,8 +477,10 @@ class OddButtonPagerAdapter :RecyclerView.Adapter<OddButtonPagerViewHolder>() {
         this.forEach { oddsMap ->
 
             when {
-                oddsMap.key.contains(PlayCate.SINGLE.value) || oddsMap.key.contains(PlayCate.MOST_SIX.value) || oddsMap.key.contains(
-                    PlayCate.MOST_FOUR.value) -> {
+                oddsMap.key.contains(PlayCate.SINGLE.value)
+                        || oddsMap.key.contains(PlayCate.MOST_SIX.value)
+                        || oddsMap.key.contains(PlayCate.MOST_FOUR.value)
+                        || oddsMap.key.contains(PlayCate.HOP.value) -> {
                     val oddList = oddsMap.value?.toMutableList()
                     oddList?.indexOf(oddList.find {
                         it?.nameMap?.get(LanguageManager.Language.EN.key)

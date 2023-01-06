@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:background="@color/colorBackground"
+    android:background="@color/color_FFFFFF"
     tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity">
 
     <include
@@ -18,19 +18,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_E3E8EE" />
+
         <com.google.android.material.tabs.TabLayout
-            app:tabTextAppearance="@style/NoUppercaseTab"
+            app:tabTextAppearance="@style/NoCaseTab"
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/margin_50"
             app:tabIndicator="@drawable/custom_tab_indicator"
             app:tabIndicatorFullWidth="false"
             app:tabMode="fixed"
             app:tabPaddingEnd="25dp"
             app:tabPaddingStart="25dp"
             app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@color/color_BBBBBB_333333"
-            app:tabTextColor="@color/color_909090_666666">
+            app:tabSelectedTextColor="@color/color_414655"
+            app:tabTextColor="@color/color_A7B2C4">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -44,11 +49,11 @@
 
 
         </com.google.android.material.tabs.TabLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="0dp"
-            android:background="@color/color_191919_EEEFF0" />
+            android:layout_height="1px"
+            android:background="@color/color_E3E8EE" />
 
     </LinearLayout>
 

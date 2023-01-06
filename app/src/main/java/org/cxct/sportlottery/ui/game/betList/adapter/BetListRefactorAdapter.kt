@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.betList.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoard
 import org.cxct.sportlottery.R
@@ -25,7 +24,8 @@ import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyboardView
 
-class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
+class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener,
+                             private val userBalance: ()-> Double) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { Bet, Parlay, Warn, Single, OddsWarn }
@@ -119,7 +119,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ViewType.Bet.ordinal -> BiVh(
-                ContentBetInfoItemV3Binding.inflate(layoutInflater)
+                ContentBetInfoItemV3Binding.inflate(layoutInflater), userBalance
             )
 
             ViewType.Single.ordinal -> bsiMoVh(
@@ -185,7 +185,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onSelectedPositionListener,
                     position,
                     userMoney,
-                    userLogin
+                    userLogin,
+                    betList
                 )
             }
 

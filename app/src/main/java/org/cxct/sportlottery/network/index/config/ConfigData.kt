@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.network.index.config
 
-import org.cxct.sportlottery.BuildConfig
-
 data class ConfigData(
     val platformId: Long?,
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级
@@ -75,6 +73,7 @@ data class ConfigData(
     val telegramQR: String?,
     val thirdOpen: String?, //第三方游戏开关
     val thirdTransferOpen: String?, //第三方自动转账开关
+    val thirdTransferUnit: Double?, //第三方額度
     val weixinQR: String?,
     val whatsApp: String?,
     val whatsAppLink: String?,

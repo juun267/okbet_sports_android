@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -125,10 +126,16 @@ fun getOddTypeRes(
 }
 
 
+// 如果不支持串关或者盘口关闭直接返回： ""
 fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
     var currentOddsType = OddsType.EU
     var multipleOdds = 1.00
     list.forEach { itemData ->
+
+        if (itemData.pointMarked || itemData.matchOdd.status != BetStatus.ACTIVATED.code) {
+            return ""
+        }
+
         if (itemData.matchOdd.isOnlyEUType
             || itemData.matchOdd.odds == itemData.matchOdd.malayOdds
             || itemData.matchType == MatchType.OUTRIGHT

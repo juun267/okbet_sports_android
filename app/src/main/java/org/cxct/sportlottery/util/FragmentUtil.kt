@@ -26,7 +26,7 @@ fun commonCheckDialog(
     positiveClickListener: () -> Unit?,
     isOutsideCancelable: Boolean = false,
 ) {
-    if (checkDialogIsShowing(fm, errorMessageSpan.toString())) {
+    if (checkDialogIsShowing(context, errorMessageSpan.toString())) {
         return
     }
 
@@ -61,7 +61,7 @@ fun commonCheckDialog(
     negativeText: String?,
     positiveClickListener: () -> Unit?,
 ) {
-    if (checkDialogIsShowing(fm, errorMessage ?: "")) {
+    if (checkDialogIsShowing(context, errorMessage ?: "")) {
         return
     }
 
@@ -97,7 +97,7 @@ fun commonTwoButtonDialog(
     negativeClickListener: () -> Unit?
 ): CustomAlertDialog? {
     var dialog: CustomAlertDialog? = null
-    if (checkDialogIsShowing(fm, errorMessage ?: "")) {
+    if (checkDialogIsShowing(context, errorMessage ?: "")) {
         return dialog
     }
 
@@ -129,7 +129,7 @@ fun commonTwoButtonDialog(
 
 fun phoneNumCheckDialog(context: Context, fm: FragmentManager) {
     val errorMsg = context.getString(R.string.dialog_security_need_phone)
-    if (checkDialogIsShowing(fm, errorMsg)) {
+    if (checkDialogIsShowing(context, errorMsg)) {
         return
     }
     CustomAlertDialog(context).apply {
@@ -142,8 +142,6 @@ fun phoneNumCheckDialog(context: Context, fm: FragmentManager) {
 }
 
 
-private fun checkDialogIsShowing(fm: FragmentManager, tag: String): Boolean {
-    with(fm.findFragmentByTag(tag) as DialogFragment?) {
-        return this != null && dialog?.isShowing == true
-    }
+private fun checkDialogIsShowing(context: Context, tag: String): Boolean {
+    return CustomAlertDialog.checkDialogIsShowing(context, tag)
 }

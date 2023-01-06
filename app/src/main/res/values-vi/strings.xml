@@ -217,7 +217,7 @@
     <string name="ice_hockey">Ice Hockey</string>
     <string name="boxing">Quyền anh</string> <!--C029-->
     <string name="snooker">Bida</string>
-    <string name="cricket">Bóng gậy</string>
+    <string name="cricket">Cricket</string>
     <string name="baseball">Bóng chày</string>
     <string name="rugby_football">Bóng bầu dục</string>
     <string name="america_football">Bóng đá Mỹ</string>
@@ -263,7 +263,7 @@
     <string name="user_id_colon">ID người dùng：</string>
     <string name="recharge">Gửi tiền</string>
     <string name="account_transfer">Chuyển đổi hạn mức</string>
-    <string name="money_recycle_succeed">Số tiền thu hồi thành công</string>
+    <string name="money_recycle_succeed">Thu hồi hạn mức thành công</string>
     <string name="news_center">Trung tâm tin nhắn</string>
     <string name="help_center">Trung tâm hỗ trợ</string>
     <string name="fund_detail">Chi tiết quỹ</string>
@@ -623,17 +623,17 @@
     <string name="feedback_replied">Đã phản hồi</string>
     <string name="feedback_not_reply_yet">Đang phản hồi</string>
     <string name="one_key_recovery">Thu hồi bằng một cú nhấp chuột</string>
-    <string name="platform_account_money">Số dư tài khoản kênh</string>
-    <string name="one_button_click_will_recycle_all_money_into_account">・Thu hồi bằng một cú nhấp chuột đồng thời chuyển tất cả số dư tài khoản khác sang tài khoản kênh</string>
-    <string name="out_account">Chuyển ra tài khoản</string>
-    <string name="in_account">Chuyển vào tài khoản</string>
-    <string name="transfer_money">số tiền chuyển đổi</string>
-    <string name="transfer_money_minimum">hạn mức 1.000 trở lên</string>
+    <string name="platform_account_money">Số dư tài khoản trang</string>
+    <string name="one_button_click_will_recycle_all_money_into_account">*Thu hồi bằng một cú nhấp chuột đồng thời chuyển tất cả số dư tài khoản khác sang tài khoản kênh</string>
+    <string name="out_account">Tài khoản chuyển tiền</string>
+    <string name="in_account">Tài khoản nhận tiền</string>
+    <string name="transfer_money">Số tiền chuyển đổi</string>
+    <string name="transfer_money_minimum">số tiền giới hạn %s trở lên</string>
     <string name="confirm_transform">xác nhận chuyển đổi</string>
     <string name="plat_money">Số dư kênh</string>
     <string name="money">Số tiền</string>
     <string name="transfer_platform">Kênh chuyển đổi</string>
-    <string name="transfer_money_succeed">Số tiền chuyển đổi thành công</string>
+    <string name="transfer_money_succeed">Chuyển đổi hạn mức thành công</string>
     <string name="third_game_df">bắn cá Đức Phong</string>
     <string name="third_game_sbty">Sabah sports</string>
     <string name="third_game_ag">Kênh AG</string>
@@ -710,7 +710,7 @@
     <string name="credit_bet_amount_all">Tổng hạn mức tín dụng</string>
     <string name="credit_bet_amount_remain">Hạn mức tín dụng còn lại</string>
     <string name="credit_bet_settle">Kết thúc</string>
-    <string name="credit_bet_remark">ghi chú</string>
+    <string name="credit_bet_remark">Ghi chú</string>
     <string name="credit_record_remain">Thời tian thanh toán đếm ngược</string>
     <string name="credit_record_quota">Tổng quyết toán:</string>
     <string name="credit_record_day">%s ngày</string>
@@ -1100,8 +1100,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Thắng</string>
     <string name="bet_stake">Tiền Cược</string>
-    <string name="total_capital">Tổng tiền đặt cược(%s)：</string> <!--F008-->
-    <string name="total_win_amount">Ước tính thắng(%s)：</string> <!--F005-->
+    <string name="total_capital">Tổng tiền đặt cược：%s</string> <!--F008-->
+    <string name="total_win_amount">Ước tính thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
     <string name="btn_login_bet">Đăng nhập để đặt cược</string>
     <string name="confirm_single_bets">Xác nhận %d Cược đơn</string>
@@ -1196,8 +1196,8 @@
     <string name="correct">Cược tỷ số</string>
     <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
     <string name="submitting">Đơn cược đang gửi</string>
-    <string name="bet_receipt_bet_quota_with_sign">Tiền Cược(%s)：</string>
-    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng(%s)：</string>
+    <string name="bet_receipt_bet_quota_with_sign">Tiền Cược</string>
+    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1341,10 +1341,10 @@
     <string name="str_if_accept_odds_changes_title">Có nhận thay đổi tỷ lệ cược không?</string>
     <string name="str_if_accept_odds_changes_des_subtitle">Vì tỷ lệ cược của sự kiện có thể thay đổi bất cứ lúc nào (đặc biệt trong giai đoạn đang diễn ra). Để có trải nghiệm cược tốt hơn. Bạn có thể chọn một trong ba loại cược sau.</string>
     <string name="str_if_accept_odds_changes_des1">1. Nhận mọi tỷ lệ cược - khi bạn chọn tùy chọn này, chúng tôi sẽ tạo đơn cược cho bạn theo tỷ lệ cược mới nhất.</string>
-    <string name="str_if_accept_odds_changes_des2">2. Nhận tỷ lệ cược tốt nhất - khi bạn chọn tùy chọn này, nếu tỷ lệ cược mới nhất tốt hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ tạo đơn cược. Nếu tỷ lệ cược mới nhất thấp hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về sự thay đổi tỷ lệ cược
+    <string name="str_if_accept_odds_changes_des2">2. Nhận tỷ lệ cược tốt nhất - khi bạn chọn tùy chọn này, nếu tỷ lệ cược mới nhất tốt hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ tạo đơn cược. Nếu tỷ lệ cược mới nhất thấp hơn tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về sự thay đổi tỷ lệ cược.
 </string>
-    <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược</string>
-    <string name="str_ok_i_got_it">Tôi biết rồi</string>
+    <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược.</string>
+    <string name="str_ok_i_got_it">Tôi biết rồi.</string>
     <string name="str_max_bet_money">Tiền cược tối đa:%1$s</string>
     <string name="str_odds_already_changed_check_please">Tỷ lệ cược thay đổi, vui lòng xác nhận tỷ lệ cược mới nhất</string>
     <string name="str_return_last_step">Trở về</string>
@@ -1375,4 +1375,6 @@
     <string name="update_voucher">Tải lên hoá đơn</string>
     <string name="no_select_file">Chưa chọn tệp</string>
     <string name="current_login_password">Mật khẩu đăng nhập hiện tại</string>
+    <string name="new_games">New Games</string>
+    <string name="bet_info_add_bet_failed">Đặt cược thất bại</string>
 </resources>

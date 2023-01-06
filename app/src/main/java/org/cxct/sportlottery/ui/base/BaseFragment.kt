@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
@@ -101,11 +103,12 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         }
     }
 
-    fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
+    fun showErrorPromptDialog(title: String, message: String, hasCancel:Boolean = true,positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showErrorPromptDialog(
                 title,
-                message,
+                SpannableStringBuilder().append(message),
+                hasCancel,
                 positiveClickListener
             )
         }

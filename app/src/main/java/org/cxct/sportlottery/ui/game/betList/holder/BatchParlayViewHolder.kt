@@ -19,12 +19,14 @@ import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.vie
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getMultipleOdds
 
 abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var mUserMoney: Double = 0.0
@@ -43,7 +45,8 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
         onSelectedPositionListener: OnSelectedPositionListener,
         position: Int,
         userMoney: Double,
-        userLogin: Boolean
+        userLogin: Boolean,
+        betList: MutableList<BetInfoListData>?
     ) {
         mUserMoney = userMoney
         mUserLogin = userLogin
@@ -52,11 +55,14 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
         setupInputMoney(itemData)
         setupItemEnable(hasBetClosed)
         if (itemData != null) {
-            itemView.tv_parlay_type?.text = if (itemData.num == 1) {
-                getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())
-            } else {
-                getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())
-            }
+            val multipleOdds = betList?.let { getMultipleOdds(it) }
+
+            itemView.tv_parlay_type?.text =
+                if (position==0){
+                    getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())+multipleOdds
+                }else{
+                    getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())
+                }
             setupBetAmountInput(
                 itemData,
                 OddsType.EU,
