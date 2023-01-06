@@ -121,11 +121,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
 
         receiver.dataSourceChange.observe(this) {
-            showErrorPromptDialog(
-                title = getString(R.string.prompt),
-                message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
-                hasCancel = false
-            ) { dataSourceChangeEven() }
+            dataSourceChangeEven?.let {
+                showErrorPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = SpannableStringBuilder().append(getString(R.string.message_source_change)),
+                    hasCancel = false
+                ) { it.invoke() }
+            }
         }
 
         receiver.userInfoChange.observe(this) {
@@ -150,8 +152,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         }
     }
 
-    var dataSourceChangeEven = {}
+    private var dataSourceChangeEven: (() -> Unit)? = null
 
+    /**
+     * 设置有新赛事数据监听回调。
+     *  重点!!!
+     *  页面加载完成后再调用该方法就行设置回调，
+     *  不然由于LiveData粘性事件的原因，在页面初始化的时候就有可能弹窗
+      */
     fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
         this.dataSourceChangeEven = dataSourceChangeEven
     }

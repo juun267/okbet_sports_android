@@ -22,11 +22,13 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         receiver.dataSourceChange.observe(viewLifecycleOwner) {
+            dataSourceChangeEven?.let {
                 showErrorPromptDialog(
                     title = getString(R.string.prompt),
                     message = getString(R.string.message_source_change),
                     hasCancel = false
-                ) { dataSourceChangeEven() }
+                ) { it.invoke() }
+            }
         }
     }
 
@@ -200,8 +202,14 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
         }
     }
 
-    var dataSourceChangeEven = {}
+    private var dataSourceChangeEven: (() -> Unit)? = null
 
+    /**
+     * 设置有新赛事数据监听回调。
+     *  重点!!!
+     *  页面加载完成后再调用该方法就行设置回调，
+     *  不然由于LiveData粘性事件的原因，在页面初始化的时候就有可能弹窗
+     */
     fun setDataSourceChangeEvent(dataSourceChangeEven: () -> Unit) {
         this.dataSourceChangeEven = dataSourceChangeEven
     }
