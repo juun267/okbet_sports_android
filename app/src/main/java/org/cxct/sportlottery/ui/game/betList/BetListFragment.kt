@@ -431,7 +431,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         refreshAllAmount()
         checkSingleAndParlayBetLayoutVisible()
         btnOddsChangeDes.setOnClickListener {
-            showOddsChangeTips()
+//            showOddsChangeTips()
         }
 
         tvExpandOrStacked.setOnClickListener {
@@ -581,7 +581,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onOddsChangesAcceptTips() {
-                showOddsChangeTips()
+//                showOddsChangeTips()
             }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
@@ -634,30 +634,30 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
 
-    private fun showOddsChangeTips() {
-        val dialog = CustomAlertDialog(requireContext())
-        dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
-        val message = """
-                    ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
-                    
-                    ${getString(R.string.str_if_accept_odds_changes_des1)}
-                    
-                    ${getString(R.string.str_if_accept_odds_changes_des2)}
-                    
-                     ${getString(R.string.str_if_accept_odds_changes_des3)}
-                """.trimIndent()
-        dialog.setMessage(message)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.isCancelable = true
-        dialog.setNegativeButtonText(null)
-        dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
-        dialog.setGravity(Gravity.START)
-        dialog.mScrollViewMarginHorizon = 20
-        dialog.setPositiveClickListener {
-            dialog.dismiss()
-        }
-        dialog.show(childFragmentManager, null)
-    }
+//    private fun showOddsChangeTips() {
+//        val dialog = CustomAlertDialog(requireContext())
+//        dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
+//        val message = """
+//                    ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
+//
+//                    ${getString(R.string.str_if_accept_odds_changes_des1)}
+//
+//                    ${getString(R.string.str_if_accept_odds_changes_des2)}
+//
+//                     ${getString(R.string.str_if_accept_odds_changes_des3)}
+//                """.trimIndent()
+//        dialog.setMessage(message)
+//        dialog.setCanceledOnTouchOutside(true)
+//        dialog.isCancelable = true
+//        dialog.setNegativeButtonText(null)
+//        dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
+//        dialog.setGravity(Gravity.START)
+//        dialog.mScrollViewMarginHorizon = 20
+//        dialog.setPositiveClickListener {
+//            dialog.dismiss()
+//        }
+//        dialog.show(childFragmentManager, null)
+//    }
 
     private fun checkAllAmountCanBet() {
         val betList = getCurrentBetList()

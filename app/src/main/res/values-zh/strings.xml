@@ -1390,4 +1390,5 @@
     <string name="error_amount_limit_less">充值额小于最低限额</string>
     <string name="update_voucher">上传凭证</string>
     <string name="no_select_file">未选择文件</string>
+    <string name="str_bet_way">投注方式</string>
 </resources>

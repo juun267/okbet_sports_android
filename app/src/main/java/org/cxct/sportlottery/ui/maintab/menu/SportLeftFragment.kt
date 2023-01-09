@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.menu
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +17,14 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
+import kotlin.math.exp
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     companion object {
@@ -41,6 +44,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private var expandSportClassify = true
+    private var expandBetsWay = false
     var matchType: MatchType = MatchType.MAIN
         set(value) {
             field = value
@@ -96,7 +100,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     lin_inplay.isVisible = true
                     viewModel.getInPlayList()
                     if (!worldcupSelected) {
-                        (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+                        (activity as MainTabActivity).jumpToTheSport(
+                            MatchType.IN_PLAY,
+                            GameType.ALL
+                        )
                     }
                 }
             }
@@ -122,6 +129,11 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             rv_sport_classify.isVisible = expandSportClassify
             lin_sport_classify.isSelected = expandSportClassify
         }
+        llBetWay.setOnClickListener {
+            expandBetsWay = !expandBetsWay
+            rgBetWays.isVisible = expandBetsWay
+            llBetWay.isSelected  = expandBetsWay
+        }
         lin_all_inplay.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
@@ -133,10 +145,40 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             startActivity(Intent(requireActivity(), SettingCenterActivity::class.java))
         }
         lin_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(),
+            JumpUtil.toInternalWeb(
+                requireContext(),
                 Constants.getGameRuleUrl(requireContext()),
-                getString(R.string.game_rule))
+                getString(R.string.game_rule)
+            )
         }
+        tvOddsChangedTips.setOnClickListener {
+                showOddsChangeTips()
+        }
+    }
+
+    private fun showOddsChangeTips() {
+        val dialog = CustomAlertDialog(requireContext())
+        dialog.setTitle(getString(R.string.str_if_accept_odds_changes_title))
+        val message = """
+                    ${getString(R.string.str_if_accept_odds_changes_des_subtitle)}
+                    
+                    ${getString(R.string.str_if_accept_odds_changes_des1)}
+                    
+                    ${getString(R.string.str_if_accept_odds_changes_des2)}
+                    
+                     ${getString(R.string.str_if_accept_odds_changes_des3)}
+                """.trimIndent()
+        dialog.setMessage(message)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.isCancelable = true
+        dialog.setNegativeButtonText(null)
+        dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
+        dialog.setGravity(Gravity.START)
+        dialog.mScrollViewMarginHorizon = 20
+        dialog.setPositiveClickListener {
+            dialog.dismiss()
+        }
+        dialog.show(childFragmentManager, null)
     }
 
     private fun initSportClassifyView() {
@@ -144,8 +186,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         sportClassifyAdapter.setOnItemClickListener { adapter, view, position ->
             gameType = GameType.getGameType(sportClassifyAdapter.getItem(position)?.code)
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.EARLY,
-                GameType.getGameType(sportClassifyAdapter.getItem(position)?.code) ?: GameType.FT)
+            (activity as MainTabActivity).jumpToTheSport(
+                MatchType.EARLY,
+                GameType.getGameType(sportClassifyAdapter.getItem(position)?.code) ?: GameType.FT
+            )
         }
         rv_sport_classify.adapter = sportClassifyAdapter
     }
@@ -155,7 +199,10 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         sportInPlayAdapter.setOnItemClickListener { _, _, position ->
             gameType = GameType.getGameType(sportInPlayAdapter.getItem(position)?.code)
             EventBusUtil.post(MenuEvent(false))
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, gameType ?: GameType.ALL)
+            (activity as MainTabActivity).jumpToTheSport(
+                MatchType.IN_PLAY,
+                gameType ?: GameType.ALL
+            )
         }
         rv_sport_inplay.adapter = sportInPlayAdapter
     }
