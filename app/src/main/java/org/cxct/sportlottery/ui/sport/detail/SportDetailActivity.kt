@@ -1095,6 +1095,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             GameType.TT.key -> setVbScoreText(matchInfo)
             GameType.BM.key -> setBmScoreText(matchInfo)
             GameType.BB.key -> setBbScoreText(matchInfo)
+            GameType.CK.key -> setCkScoreText(matchInfo)
             else -> setBkScoreText(matchInfo)
         }
     }
@@ -1143,6 +1144,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setCurrentPeroid(matchInfo)
         } else
             setBkScoreText(matchInfo)
+    }
+
+    private fun setCkScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAllScoreTextAtBottom(matchInfo)
+        setAttack(matchInfo)
     }
 
     /**
@@ -1257,6 +1264,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 GameType.VB.key,
                 GameType.TT.key,
                 GameType.BM.key,
+                GameType.CK.key,
                 GameType.TN.key,
                 -> {
                     if (matchInfo.attack.equals("H")) {

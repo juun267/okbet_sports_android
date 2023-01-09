@@ -517,6 +517,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                         GameType.TT.key -> setVbScoreText(item.matchInfo)
                         GameType.BM.key -> setBmScoreText(item.matchInfo)
                         GameType.BB.key -> setBbScoreText(item.matchInfo)
+                        GameType.CK.key -> setCkScoreText(item.matchInfo)
                         else -> item.matchInfo?.let { setBkScoreText(it) }
                     }
                 }
@@ -564,6 +565,11 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                 setBBStatus(matchInfo)
             } else
                 setBkScoreText(matchInfo)
+        }
+
+        private fun setCkScoreText(matchInfo: MatchInfo) {
+            setScoreTextAtFront(matchInfo)
+            setAttack(matchInfo)
         }
 
         /**
@@ -677,6 +683,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                         GameType.VB.key,
                         GameType.TT.key,
                         GameType.BM.key,
+                        GameType.CK.key,
                         -> {
                             if (matchInfo.attack.equals("H")) {
                                 ic_attack_h.visibility = View.VISIBLE

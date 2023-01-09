@@ -380,7 +380,16 @@ abstract class BaseOddButtonViewModel(
             } else {
                 currentOddsTypes = oddsType
             }
-            val betAmount = if (tabPosition == 0) it.betAmount else 0.0
+            //马来和印尼盘，如果赔率为负数，则用可赢额去下注
+            val betAmount = if (tabPosition == 0) {
+                if (oddsType == OddsType.MYS && it.matchOdd.malayOdds < 0) {
+                    it.betWin
+                } else if (oddsType == OddsType.IDN && it.matchOdd.indoOdds < 0) {
+                    it.betWin
+                } else {
+                    it.betAmount
+                }
+            } else 0.0
             matchList.add(
                 Odd(
                     it.matchOdd.oddsId,

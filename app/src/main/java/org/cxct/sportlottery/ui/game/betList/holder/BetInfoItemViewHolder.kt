@@ -247,7 +247,6 @@ class BetInfoItemViewHolder(
                             return@afterTextChanged
                         }
                     }
-
                     val win = itemData.betAmount * getOddsAndSaveRealAmount(
                         itemData, currentOddsType
                     )
@@ -664,7 +663,7 @@ class BetInfoItemViewHolder(
         when (currentOddsType) {
             OddsType.MYS -> {
                 if (tempOdds < 0) {
-                    odds = ArithUtil.div(1.0, Math.abs(tempOdds))
+                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
 //                    realAmount = itemData.betAmount * Math.abs(tempOdds)
 //                        win = itemData.betAmount
 //                    odds = 1.0
@@ -680,7 +679,7 @@ class BetInfoItemViewHolder(
 
             OddsType.IDN -> {
                 if (tempOdds < 0) {
-                    odds = ArithUtil.div(1.0, Math.abs(tempOdds))
+                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
 //                    realAmount = itemData.betAmount * Math.abs(tempOdds)
 //                        win = itemData.betAmount
 //                    odds = 1.0
@@ -709,7 +708,6 @@ class BetInfoItemViewHolder(
                 odds = tempOdds
             }
         }
-
         itemData.realAmount = realAmount
         odds = ArithUtil.toOddFormat(odds, 2).toDouble()
 //            Timber.e("odds: $odds")

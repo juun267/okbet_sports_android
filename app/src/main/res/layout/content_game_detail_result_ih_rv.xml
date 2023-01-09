@@ -80,10 +80,18 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/total_score_over_time"
+                android:text="@string/overtime_score"
                 android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize12sp" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/regular_score"
+                android:textColor="@color/color_9BB3D9_535D76"
+                android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
 
@@ -179,7 +187,22 @@
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_80334266_E3E8EE" />
 
+            <TextView
+                android:id="@+id/tv_home_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text=""
+                android:textColor="@color/color_6C7BA8_6C7BA8"
+                android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
 
         <View
@@ -274,6 +297,22 @@
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_80334266_E3E8EE" />
+
+            <TextView
+                android:id="@+id/tv_away_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text=""
+                android:textColor="@color/color_6C7BA8_6C7BA8"
+                android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
 
         <View

@@ -11,15 +11,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
-import kotlinx.android.synthetic.main.button_odd_detail.view.button_odd_detail
-import kotlinx.android.synthetic.main.button_odd_detail.view.img_odd_lock
-import kotlinx.android.synthetic.main.button_odd_detail.view.img_odd_unknown
-import kotlinx.android.synthetic.main.button_odd_detail.view.iv_arrow
-import kotlinx.android.synthetic.main.button_odd_detail.view.tv_name
-import kotlinx.android.synthetic.main.button_odd_detail.view.tv_odds
-import kotlinx.android.synthetic.main.button_odd_detail.view.tv_spread
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -118,13 +110,13 @@ class OddsButtonDetail @JvmOverloads constructor(
             odd?.name) || TextUtils.equals(matchInfo?.awayName, odd?.name) || TextUtils.equals(
             getString(R.string.draw), odd?.name)
         tv_name.apply {
-            val extInfoStr =
-                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
+//            val extInfoStr =
+//                odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
             text =
-                if (extInfoStr.isNullOrEmpty())
-                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-                else
-                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+//                if (extInfoStr.isNullOrEmpty())
+                "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+//                else
+//                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 
             //篮球末尾比分，只显示最后空格后面的比分
             if (mOdd?.playCode?.isFS_LD_CS_Type() == true) {

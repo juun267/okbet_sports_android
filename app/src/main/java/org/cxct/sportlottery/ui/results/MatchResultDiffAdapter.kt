@@ -12,14 +12,17 @@ import kotlinx.android.synthetic.main.content_game_detail_result_bb_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_first
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_fourth
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_over_time
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_second
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_third
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_first
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_fourth
+import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_over_time
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_second
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_third
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.ll_game_detail_first_item
+import kotlinx.android.synthetic.main.content_game_detail_result_ih_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tn_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tt_rv.view.*
@@ -458,7 +461,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION.code }
             val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION.code }
             val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME.code }
-                ?: matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val endSection = matchStatus?.find { it.status == StatusType.END_GAME.code }
 
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
@@ -486,10 +489,15 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     tv_away_third.text = it.awayScore?.toString() ?: ""
                 }
 
-                //完場
+                //加时比分
                 overSection?.let {
                     tv_home_over_time.text = it.homeScore?.toString() ?: ""
                     tv_away_over_time.text = it.awayScore?.toString() ?: ""
+                }
+                //常规比分
+                endSection?.let {
+                    tv_home_end.text = it.homeScore?.toString() ?: ""
+                    tv_away_end.text = it.awayScore?.toString() ?: ""
                 }
             }
         }

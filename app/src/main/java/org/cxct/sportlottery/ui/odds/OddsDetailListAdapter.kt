@@ -414,25 +414,24 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             GameType.CK -> {
                 when (viewType) {
-                    PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
+                    PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
                     PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
                     PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal,
-                    PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal, PlayCate.T_BATSMAN_H.ordinal, PlayCate.T_BATSMAN_C.ordinal,
-                    PlayCate.T_BOWLER_H.ordinal, PlayCate.T_BOWLER_C.ordinal, PlayCate.RAFO_1ST_W_H.ordinal, PlayCate.RAFO_1ST_W_C.ordinal, PlayCate.W_METHOD_1ST.ordinal,
+                    PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal,
+                    PlayCate.RAFO_1ST_W_H.ordinal, PlayCate.RAFO_1ST_W_C.ordinal, PlayCate.W_METHOD_1ST.ordinal,
                     PlayCate.W_METHOD_H_1ST.ordinal, PlayCate.W_METHOD_C_1ST.ordinal, PlayCate.O_R_2_WAY_H_1ST.ordinal, PlayCate.O_R_2_WAY_C_1ST.ordinal,
                     PlayCate.NMO_1ST_H.ordinal, PlayCate.NMO_1ST_C.ordinal, PlayCate.NMO_2ND_H.ordinal, PlayCate.NMO_2ND_C.ordinal, PlayCate.MODW_1ST_H.ordinal,
                     PlayCate.MODW_1ST_C.ordinal, PlayCate.MODW_2ND_H.ordinal,
                     PlayCate.MODW_2ND_C.ordinal, PlayCate.S_RAFO_1ST_W_H.ordinal, PlayCate.S_RAFO_1ST_W_C.ordinal,
                     PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
-                    PlayCate.S_MR_1ST_H.ordinal, PlayCate.S_MR_1ST_C.ordinal, PlayCate.S_MR_2ND_H.ordinal, PlayCate.S_MR_2ND_C.ordinal, PlayCate.NMO_H.ordinal, PlayCate.NMO_C.ordinal,
-                    PlayCate.S_MR_H.ordinal, PlayCate.S_MR_C.ordinal, PlayCate.MOD_W_H.ordinal, PlayCate.MOD_W_C.ordinal, PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
+                    PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
-                    PlayCate.HOP.ordinal, PlayCate.FIL.ordinal
+                    PlayCate.SINGLE.ordinal, PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
+                    PlayCate.HOP.ordinal, PlayCate.FIL.ordinal,
                     -> LayoutType.SINGLE.layout
 
-                    PlayCate.EPS.ordinal
+                    PlayCate.EPS.ordinal,
                     -> LayoutType.EPS.layout
 
                     else -> LayoutType.ONE_LIST.layout
@@ -688,6 +687,24 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             )
                         }
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                    }
+                }
+                GameType.CK -> {
+                    val odd = oddsDetail.oddArrayList.first()
+                    val extInfoStr =
+                        odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvGameName?.context).key)
+                            ?: odd?.extInfo
+                    tvGameName?.text = when {
+                        oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let {
+                            getTitle(
+                                it,
+                                oddsDetail
+                            )
+                        }
+                        else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                    }
+                    if (!extInfoStr.isNullOrEmpty()) {
+                        tvGameName?.text = tvGameName?.text.toString().replace("{E}", extInfoStr)
                     }
                 }
                 else -> {
@@ -988,16 +1005,24 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.CK -> {
                     when (viewType) {
-                        PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
+                        PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
                         PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
-                        PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal
+                        PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal,
+                        PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal,
+                        PlayCate.RAFO_1ST_W_H.ordinal, PlayCate.RAFO_1ST_W_C.ordinal, PlayCate.W_METHOD_1ST.ordinal,
+                        PlayCate.W_METHOD_H_1ST.ordinal, PlayCate.W_METHOD_C_1ST.ordinal, PlayCate.O_R_2_WAY_H_1ST.ordinal, PlayCate.O_R_2_WAY_C_1ST.ordinal,
+                        PlayCate.NMO_1ST_H.ordinal, PlayCate.NMO_1ST_C.ordinal, PlayCate.NMO_2ND_H.ordinal, PlayCate.NMO_2ND_C.ordinal, PlayCate.MODW_1ST_H.ordinal,
+                        PlayCate.MODW_1ST_C.ordinal, PlayCate.MODW_2ND_H.ordinal,
+                        PlayCate.MODW_2ND_C.ordinal, PlayCate.S_RAFO_1ST_W_H.ordinal, PlayCate.S_RAFO_1ST_W_C.ordinal,
+                        PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
+                        PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
                         -> forSingle(oddsDetail, 2)
 
-                        PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
-                        PlayCate.HOP.ordinal, PlayCate.FIL.ordinal
+                        PlayCate.SINGLE.ordinal, PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
+                        PlayCate.HOP.ordinal, PlayCate.FIL.ordinal,
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.EPS.ordinal
+                        PlayCate.EPS.ordinal,
                         -> forEPS(oddsDetail)
 
                         else -> oneList(oddsDetail)
@@ -1440,6 +1465,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
                 //如果赔率odd里面有队名，赔率按钮就不显示队名，否则就要在头部显示队名
                 if (spanCount == 3) {
+                    //如果第三个标题不等于客队名，那么判断第三个为和局，迁移到第二个位置
+                    if (!TextUtils.equals(oddsDetail.matchInfo?.awayName,
+                            oddsDetail.oddArrayList[2]?.name)
+                    ) {
+                        oddsDetail.oddArrayList.add(1, oddsDetail.oddArrayList.removeAt(2))
+                    }
                     TextUtils.equals(oddsDetail.matchInfo?.homeName,
                         oddsDetail.oddArrayList[0]?.name).let {
                         itemView.tv_draw?.isVisible = true

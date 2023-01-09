@@ -940,10 +940,10 @@
     <string name="btm_navigation_affiliate">代理加盟</string>
     <string name="expire_date">证件过期时间</string>
     <string name="self_limit_froze_impotent_1">自我禁制设定后立即生效</string>
-    <string name="self_limit_froze_impotent_2">在自我禁制设定期间内，我们将保管您的余额。</string>
+    <string name="self_limit_froze_impotent_2">我们将在您设定的自我排除期限内保留您的全部余额。 但是如果自上次登录时间起超过6个月的话，OKBET将保留收和您收取月度管理费的权利，直至账户余额为零。</string>
     <string name="self_limit_froze_impotent_3">若您在其他的博弈游戏中申请自我禁制，并不会自动适用于本游戏中。</string>
     <string name="self_limit_froze_impotent_4">在自我禁制期间内，若您尝试开设新账号，在系统检测后属实，该账号可能被冻结。</string>
-    <string name="self_limit_froze_impotent_5">在自我禁制期间内，您可以联系客服解除自我禁制功能。</string>
+    <string name="self_limit_froze_impotent_5">在自我排除期间内，您将无法停用这项功能，直到最短的排除时间期限届满。</string>
     <string name="self_limit_froze_impotent_6">在自我禁制到期后，您的账号将自动恢复激活。</string>
     <string name="text_chose_language">请选择您的语言</string>
     <!-- 複式串關詳情 -->
@@ -1390,4 +1390,8 @@
     <string name="error_amount_limit_less">充值额小于最低限额</string>
     <string name="update_voucher">上传凭证</string>
     <string name="no_select_file">未选择文件</string>
+    <string name="pls_enter_days_format">请输入天数 (≥%d 天)</string>
+    <string name="more_than_days_format">必须多于%d天</string>
+    <string name="overtime_score">加时比分</string>
+    <string name="regular_score">常规比分</string>
 </resources>
