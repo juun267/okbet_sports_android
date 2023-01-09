@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.FrameLayout
 import androidx.annotation.ColorRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -46,6 +48,7 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
     var dissmisCallback: ((CustomAlertDialog)-> Unit)? = null
 
     var isShowing = dialog?.isShowing
+    var mScrollViewMarginHorizon:Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,6 +102,12 @@ class CustomAlertDialog(private val mContext: Context) : DialogFragment() {
 
         if(mPositiveText == null && mNegativeText == null){
             block_bottom_bar.visibility = View.GONE
+        }
+
+        val contentParams = sv_block_content.layoutParams as ConstraintLayout.LayoutParams
+        if (mScrollViewMarginHorizon!=0){
+            contentParams.leftMargin= mScrollViewMarginHorizon.dp
+            contentParams.rightMargin = mScrollViewMarginHorizon.dp
         }
 
         tv_message.setTextColor(ContextCompat.getColor(context?:requireContext(), mTextColor))

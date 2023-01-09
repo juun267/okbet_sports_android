@@ -71,6 +71,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -275,8 +276,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
             titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
-            titleWinnableAmount.text =
-                getString(R.string.total_win_amount)
+            titleWinnableAmount.text = getString(R.string.total_win_amount)
         }
     }
 
@@ -624,11 +624,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        betListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }
+        betListRefactorAdapter =
+            BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }
         betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener)
-        betParlayListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }.apply {
-            adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
-        }
+        betParlayListRefactorAdapter =
+            BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }.apply {
+                adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
+            }
     }
 
 
@@ -650,6 +652,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         dialog.setNegativeButtonText(null)
         dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
         dialog.setGravity(Gravity.START)
+        dialog.mScrollViewMarginHorizon = 20
         dialog.setPositiveClickListener {
             dialog.dismiss()
         }
@@ -726,7 +729,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-            tvTotalWinnableAmount.text =  "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+            tvTotalWinnableAmount.text =
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
         }
 
         val betCount = if (currentBetType == 0) {
