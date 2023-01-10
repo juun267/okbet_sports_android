@@ -1148,7 +1148,6 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     private fun setCkScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
-        setAllScoreTextAtBottom(matchInfo)
         setAttack(matchInfo)
     }
 
