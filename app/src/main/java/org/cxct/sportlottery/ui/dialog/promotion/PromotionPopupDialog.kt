@@ -40,7 +40,7 @@ class PromotionPopupDialog(val activity: FragmentActivity, private val promotion
         val promotionList = mutableListOf<PromotionData>()
         sConfigData?.imageList?.map { imageData ->
             //最多顯示9筆
-            if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION.code) {
+            if (promotionList.size < 9 && imageData.imageType == ImageType.PROMOTION.code && !imageData.imageName3.isNullOrEmpty()) {
                 promotionList.add(
                     PromotionData(
                         imgUrl = "${sConfigData?.resServerHost}${imageData.imageName3}",

@@ -17,7 +17,6 @@ import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
@@ -125,7 +124,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initObserve()
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
-        MultiLanguagesApplication.showPromotionPopupDialog(this)
     }
 
     var isWorldCupModel = false
