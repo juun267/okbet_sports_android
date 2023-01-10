@@ -1390,6 +1390,6 @@
     <string name="bet_info_add_bet_failed">Bet Failed</string>
     <string name="pls_enter_days_format">Please enter days (≥%d days)</string>
     <string name="more_than_days_format">Must be more than %d days</string>
-    <string name="overtime_score">Overtime score</string>
-    <string name="regular_score">Regular score</string>
+    <string name="overtime_score">Overtime</string>
+    <string name="regular_score">Regular</string>
 </resources>
