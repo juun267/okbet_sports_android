@@ -27,7 +27,7 @@ class SingleViewHolder private constructor(itemView: View) :
         }
     }
 
-    fun bind(itemData: BetResult, oddsType: OddsType, interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?, position: Int) {
+    fun bind(betConfirmTime: Long? = 0,itemData: BetResult, oddsType: OddsType, interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?, position: Int) {
         itemView.apply {
             top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
@@ -57,7 +57,10 @@ class SingleViewHolder private constructor(itemView: View) :
 
                 tv_bet_amount.text = "$currencySign${TextUtil.formatForOdd(itemData.stake ?: 0.0)}"
                 tv_winnable_amount.text = "$currencySign${TextUtil.formatForOdd(winnable ?: 0.0)}"
-                tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+//                tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+
+                tvBetOrder.text = if (orderNo.isNullOrEmpty()) "-" else "${LocalUtils.getString(R.string.text_account_history_number)}:${orderNo}"
+                tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
 
                 if (status != 0)
                     tv_bet_status_single.setBetReceiptStatus(status)

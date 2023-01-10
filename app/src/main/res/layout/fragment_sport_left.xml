@@ -390,6 +390,8 @@
                     android:paddingEnd="18dp">
 
                     <RadioButton
+                        android:id="@+id/rbAcceptAny"
+                        android:checked="true"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:padding="5dp"
@@ -398,9 +400,10 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_C9CFD7" />
+                        android:background="@color/color_80C9CFD7" />
 
                     <RadioButton
+                        android:id="@+id/rbAcceptBetter"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:padding="5dp"
@@ -409,9 +412,10 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_C9CFD7" />
+                        android:background="@color/color_80C9CFD7" />
 
                     <RadioButton
+                        android:id="@+id/rbNeverAccept"
                         android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -419,7 +423,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/color_C9CFD7" />
+                        android:background="@color/color_80C9CFD7" />
                     <TextView
                         android:id="@+id/tvOddsChangedTips"
                         android:drawableEnd="@drawable/ic_arrow_right_blue"

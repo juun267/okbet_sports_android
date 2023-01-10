@@ -180,10 +180,11 @@
                     android:id="@+id/tv_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_8"
-                    android:background="@drawable/ic_bet_list_delete"
+                    android:layout_marginEnd="@dimen/margin_15"
+                    android:background="@drawable/bg_delete_button"
                     android:paddingHorizontal="7dp"
                     android:paddingVertical="1dp"
+                    android:text="@string/delete_bet"
                     android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
@@ -213,8 +214,8 @@
                         android:text="@string/bet_win"
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
-                        app:layout_constraintStart_toEndOf="@id/guideline_input"
                         app:layout_constraintBottom_toBottomOf="@+id/et_win"
+                        app:layout_constraintStart_toEndOf="@id/guideline_input"
                         app:layout_constraintTop_toTopOf="@+id/et_win"
                         tools:layout_editor_absoluteX="8dp" />
 
@@ -225,16 +226,16 @@
                         android:layout_marginHorizontal="5dp"
                         android:background="@drawable/bg_radius_2_edittext_unfocus"
                         android:gravity="end|center_vertical"
+                        android:hint="@string/hint_bet_limit_range"
                         android:inputType="numberDecimal"
-                        android:textColorHint="@color/color_455074_C9CFD7"
                         android:letterSpacing="0.05"
                         android:maxLength="14"
                         android:paddingHorizontal="10dp"
-                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textColor="@color/color_025BE8"
+                        android:textColorHint="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         android:visibility="visible"
-                        android:hint="@string/hint_bet_limit_range"
                         app:layout_constraintBottom_toBottomOf="@id/et_bet"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tv_win"
@@ -256,19 +257,19 @@
                     <EditText
                         android:id="@+id/et_bet"
                         android:layout_width="0dp"
-                        android:hint="@string/hint_bet_limit_range"
-                        android:textColorHint="@color/color_455074_C9CFD7"
                         android:layout_height="@dimen/et_bet_height"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/bg_radius_2_edittext_unfocus"
                         android:gravity="end|center_vertical"
+                        android:hint="@string/hint_bet_limit_range"
                         android:inputType="numberDecimal"
                         android:letterSpacing="0.05"
                         android:maxLength="14"
-                        android:layout_marginEnd="10dp"
                         android:paddingHorizontal="10dp"
-                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textColor="@color/color_025BE8"
+                        android:textColorHint="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         android:visibility="visible"
@@ -279,13 +280,13 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <!--region 提示文字 -->
                 <LinearLayout
-                    tools:visibility="gone"
                     android:id="@+id/ll_single_tips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginBottom="6dp"
-                    app:layout_constraintBottom_toTopOf="@id/includeOddsLayout">
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
+                    tools:visibility="gone">
 
                     <TextView
                         android:id="@+id/tvBalanceInsufficientMessage"
@@ -330,25 +331,36 @@
                         tools:visibility="visible" />
 
                 </LinearLayout>
-                <!-- 单关赔率变化提示框-->
-                <include
-                    android:id="@+id/includeOddsLayout"
-                    layout="@layout/include_bet_odds_tips_single"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
 
+                <!--                &lt;!&ndash; 单关赔率变化提示框&ndash;&gt;-->
+                <!--                <include-->
+                <!--                    android:id="@+id/includeOddsLayout"-->
+                <!--                    layout="@layout/include_bet_odds_tips_single"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="50dp"-->
+                <!--                    app:layout_constraintBottom_toTopOf="@+id/llKeyboardContainer"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent" />-->
                 <!--endregion 提示文字 -->
-                <org.cxct.sportlottery.util.KeyboardView
-                    android:id="@+id/layoutKeyBoard"
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llKeyboardContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/keyboard_height"
-                    android:layout_marginHorizontal="@dimen/margin_8"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView"
-                    tools:visibility="visible" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/color_F9F9F9"
+                    app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView">
+
+                    <org.cxct.sportlottery.util.KeyboardView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/layoutKeyBoard"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/keyboard_height"
+                        android:layout_marginHorizontal="@dimen/margin_12"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <View
                     android:id="@+id/bottomPaddingView"

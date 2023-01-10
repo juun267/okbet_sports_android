@@ -173,7 +173,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         when (holder) {
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
-                holder.bind(itemData.result,
+                holder.bind(betConfirmTime,itemData.result,
                     currentOddsType,
                     interfaceStatusChangeListener,
                     position)

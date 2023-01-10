@@ -10,6 +10,9 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_left.*
+import kotlinx.android.synthetic.main.fragment_sport_left.tvOddsChangedTips
+import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.network.Constants
@@ -24,6 +27,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.OddsModeUtil
 import kotlin.math.exp
 
 class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
@@ -44,7 +48,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private var expandSportClassify = true
-    private var expandBetsWay = false
+    private var expandBetsWay = true
     var matchType: MatchType = MatchType.MAIN
         set(value) {
             field = value
@@ -101,8 +105,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     viewModel.getInPlayList()
                     if (!worldcupSelected) {
                         (activity as MainTabActivity).jumpToTheSport(
-                            MatchType.IN_PLAY,
-                            GameType.ALL
+                            MatchType.IN_PLAY, GameType.ALL
                         )
                     }
                 }
@@ -132,8 +135,32 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         llBetWay.setOnClickListener {
             expandBetsWay = !expandBetsWay
             rgBetWays.isVisible = expandBetsWay
-            llBetWay.isSelected  = expandBetsWay
+            llBetWay.isSelected = expandBetsWay
         }
+
+        val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
+        when (userInfo?.oddsChangeOption ?: 0) {
+            OddsModeUtil.accept_any_odds -> rbAcceptAny.isChecked = true
+            OddsModeUtil.accept_better_odds -> rbAcceptBetter.isChecked = true
+            OddsModeUtil.never_accept_odds_change -> rbNeverAccept.isChecked = true
+        }
+
+        rgBetWays.setOnCheckedChangeListener { group, checkedId ->
+            val option: Int = when (checkedId) {
+                R.id.rbAcceptAny -> {
+                    OddsModeUtil.accept_any_odds
+                }
+                R.id.rbAcceptBetter -> {
+                    OddsModeUtil.accept_better_odds
+                }
+                else -> {
+                    OddsModeUtil.never_accept_odds_change
+                }
+            }
+            viewModel.updateOddsChangeOption(option)
+        }
+
+
         lin_all_inplay.setOnClickListener {
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
@@ -152,7 +179,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             )
         }
         tvOddsChangedTips.setOnClickListener {
-                showOddsChangeTips()
+            showOddsChangeTips()
         }
     }
 
@@ -200,8 +227,7 @@ class SportLeftFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             gameType = GameType.getGameType(sportInPlayAdapter.getItem(position)?.code)
             EventBusUtil.post(MenuEvent(false))
             (activity as MainTabActivity).jumpToTheSport(
-                MatchType.IN_PLAY,
-                gameType ?: GameType.ALL
+                MatchType.IN_PLAY, gameType ?: GameType.ALL
             )
         }
         rv_sport_inplay.adapter = sportInPlayAdapter

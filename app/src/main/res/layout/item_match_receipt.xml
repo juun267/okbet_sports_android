@@ -161,13 +161,47 @@
                     android:id="@+id/match_receipt_bet_layout"
                     layout="@layout/view_match_receipt_bet"
                     android:visibility="visible"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_width="match_parent"
+                    android:layout_marginBottom="5dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/llcOrder"
                     app:layout_constraintTop_toBottomOf="@+id/tv_league" />
 
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llcOrder"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvBetOrder"
+                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textSize="@dimen/textSize12sp"
+                        android:gravity="center_vertical"
+                        android:text="订单号：xxxxxx"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/tvBetTime"
+                        android:textColor="@color/color_9BB3D9_535D76"
+                        android:textSize="@dimen/textSize12sp"
+                        android:layout_width="0dp"
+                        android:gravity="end|center_vertical"
+                        android:layout_weight="1"
+                        android:text="2023-01-12 10:59:45"
+                        android:layout_height="match_parent"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

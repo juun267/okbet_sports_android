@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -314,8 +315,10 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         Timber.d("投注成功或失败: ${betFailed.first}")
         if (betFailed.first) {
             //投注失败
-            lin_result_status.setBackgroundResource(R.color.color_E23434)
-            iv_result_status.setImageResource(R.drawable.ic_fail_white)
+//            lin_result_status.setBackgroundResource(R.color.color_E23434)
+            lin_result_status.background = AppCompatResources.getDrawable(requireContext(),R.drawable.drawable_bet_failure)
+            iv_result_status.setImageResource(R.drawable.ic_bet_failure)
+            tv_result_status.setTextColor(requireContext().getColor(R.color.color_E23434))
             tv_result_status.text = if (betFailed.second.isNullOrEmpty()) {
                 getString(R.string.your_bet_order_fail)
             } else {
@@ -327,8 +330,11 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 ResourcesCompat.getDrawable(resources, R.drawable.bg_radius_8_bet_last_step, null)
         } else {
             //投注成功
-            lin_result_status.setBackgroundResource(R.color.color_1EB65B)
-            iv_result_status.setImageResource(R.drawable.ic_success_white)
+            lin_result_status.background = AppCompatResources.getDrawable(requireContext(),R.drawable.drawable_bet_successful)
+
+            iv_result_status.setImageResource(R.drawable.ic_bet_successful)
+            tv_result_status.setTextColor(requireContext().getColor(R.color.color_1EB65B))
+
             tv_result_status.text = getString(R.string.your_bet_order_success)
             btnLastStep.text = getString(R.string.str_check_bets)
             btnLastStep.setTextColor(resources.getColor(R.color.color_414655, null))
