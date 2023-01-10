@@ -473,31 +473,31 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
                 //第一節
                 firstSection?.let {
-                    tv_home_first.text = it.homeScore?.toString() ?: ""
-                    tv_away_first.text = it.awayScore?.toString() ?: ""
+                    tv_home_first.text = it.homeScore?.toString() ?: "-"
+                    tv_away_first.text = it.awayScore?.toString() ?: "-"
                 }
 
                 //第二節
                 secondSection?.let {
-                    tv_home_second.text = it.homeScore?.toString() ?: ""
-                    tv_away_second.text = it.awayScore?.toString() ?: ""
+                    tv_home_second.text = it.homeScore?.toString() ?: "-"
+                    tv_away_second.text = it.awayScore?.toString() ?: "-"
                 }
 
                 //第三節
                 thirdSection?.let {
-                    tv_home_third.text = it.homeScore?.toString() ?: ""
-                    tv_away_third.text = it.awayScore?.toString() ?: ""
+                    tv_home_third.text = it.homeScore?.toString() ?: "-"
+                    tv_away_third.text = it.awayScore?.toString() ?: "-"
                 }
 
                 //加时比分
                 overSection?.let {
-                    tv_home_over_time.text = it.homeScore?.toString() ?: ""
-                    tv_away_over_time.text = it.awayScore?.toString() ?: ""
+                    tv_home_over_time.text = it.homeScore?.toString() ?: "-"
+                    tv_away_over_time.text = it.awayScore?.toString() ?: "-"
                 }
                 //常规比分
                 endSection?.let {
-                    tv_home_end.text = it.homeScore?.toString() ?: ""
-                    tv_away_end.text = it.awayScore?.toString() ?: ""
+                    tv_home_end.text = it.homeScore?.toString() ?: "-"
+                    tv_away_end.text = it.awayScore?.toString() ?: "-"
                 }
             }
         }
