@@ -328,11 +328,11 @@
     <string name="no_data">Không có thêm dữ liệu</string>
     <string name="uncheck">Chưa xác nhận</string>
     <string name="undone">Chưa thanh toán</string>
-    <string name="not_settled">chưa thanh toán</string> <!--I045-->
+    <string name="not_settled">Chưa thanh toán</string> <!--I045-->
     <string name="settled">đặt cược đã được thanh toán</string>
     <string name="win">Thắng</string>
     <string name="win_half">Thắng nửa</string>
-    <string name="lose">Thắng</string>
+    <string name="lose">Nhập</string>
     <string name="lose_half">Thua nửa</string>
     <string name="draw">hòa</string>
     <string name="canceled">đã hủy</string>
@@ -698,7 +698,7 @@
     <string name="win_lose_mark">Thắng hay thua : </string>
     <string name="all_sport">Tất cả các môn thể thao</string>
     <string name="back_to_top">Quay lại đầu trang</string>
-    <string name="total">Tổng cộng</string>
+    <string name="total">Tổng</string>
     <string name="verse">v</string>
     <string name="keyboard_max">Tối đa</string>
     <string name="odds_button_name_first">Thứ nhất</string>

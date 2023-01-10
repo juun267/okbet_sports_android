@@ -351,7 +351,7 @@
     <string name="odds_change">Odds had changed</string>
     <string name="pending">Waiting %1$s s</string>
     <string name="confirmed">Confirmed</string>
-    <string name="bet_detail">Bets details</string>
+    <string name="bet_detail">Bet Slip details</string>
     <string name="bet_time">Betting time</string>
     <string name="bet_time2">Betting time</string>
     <string name="league_name">League Name:</string>
