@@ -11,8 +11,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
@@ -35,15 +36,19 @@ class RedEnvelopeReceiveDialog(
         BitmapFactory.decodeResource(context?.resources, R.drawable.packet_one),
         BitmapFactory.decodeResource(context?.resources, R.drawable.packet_two),
         BitmapFactory.decodeResource(context?.resources, R.drawable.packet_three),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.luck_packet),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_star),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_streamer1),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_streamer2),
     )
     val map by lazy {
         mapOf<Bitmap, Long>(
-        bitmap[0] to 7060,
-        bitmap[1] to 6003,
-        bitmap[2] to 5200,
-        bitmap[3] to 7140,
-    )
+            bitmap[0] to 7060,
+            bitmap[1] to 6003,
+            bitmap[2] to 5200,
+            bitmap[3] to 3000,
+            bitmap[4] to 8000,
+            bitmap[5] to 8000,
+        )
     }
 //    按照 UI 動畫高度 896 換算，
 //    紅包51x66(大)速率:126.9/s
@@ -157,7 +162,7 @@ class RedEnvelopeReceiveDialog(
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             wDialogFragment.get()?.run {
-                for (i in 0..2) {
+                for (i in 0..5) {
                     bitmap1 = bitmap[mRandom.nextInt(bitmap.size)]
                     image = ImageView(activity)
                     image!!.setImageBitmap(bitmap1)
@@ -175,10 +180,12 @@ class RedEnvelopeReceiveDialog(
                         (Random().nextInt((p!!.y * (0.2 + 0.05 * i)).toInt()) + image!!.height * 1.3).toInt()
                     layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
                     relative_layout.addView(image, layoutParams1)
-                    var duration = map[ bitmap1]
+                    var duration = map[bitmap1]
                     startAnimation(image, 0f, duration)
-                    image!!.setOnClickListener {
-                        viewModel.getRedEnvelopePrize(redenpId)
+                    if (i < 3) {
+                        image!!.setOnClickListener {
+                            viewModel.getRedEnvelopePrize(redenpId)
+                        }
                     }
                     image = null
                 }
