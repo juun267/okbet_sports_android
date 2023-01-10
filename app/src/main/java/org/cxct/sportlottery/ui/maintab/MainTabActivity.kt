@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -512,6 +513,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
+        space1.isVisible = isVisible
         cl_bet_list_bar.isVisible = isVisible and (betListCount > 0)
 
     }
