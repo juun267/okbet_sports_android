@@ -663,10 +663,10 @@ class BetInfoItemViewHolder(
         when (currentOddsType) {
             OddsType.MYS -> {
                 if (tempOdds < 0) {
-                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
-//                    realAmount = itemData.betAmount * Math.abs(tempOdds)
+//                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
+                    realAmount = itemData.betAmount * Math.abs(tempOdds)
 //                        win = itemData.betAmount
-//                    odds = 1.0
+                    odds = 1.0
                 } else {
 //                        win = itemData.betAmount * getOdds(
 //                            itemData.matchOdd,
@@ -679,10 +679,10 @@ class BetInfoItemViewHolder(
 
             OddsType.IDN -> {
                 if (tempOdds < 0) {
-                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
-//                    realAmount = itemData.betAmount * Math.abs(tempOdds)
+//                    odds = ArithUtil.div(1.0, Math.abs(tempOdds), 2)
+                    realAmount = itemData.betAmount * Math.abs(tempOdds)
 //                        win = itemData.betAmount
-//                    odds = 1.0
+                    odds = 1.0
                 } else {
 //                        win = itemData.betAmount * getOdds(
 //                            itemData.matchOdd,
