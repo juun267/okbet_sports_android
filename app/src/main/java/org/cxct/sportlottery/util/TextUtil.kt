@@ -82,7 +82,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatForOdd(any: Any): String {
-        return doNumberFormat(any, "###,###,###,##0.00") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+        return doNumberFormat(any, "###,###,###,##0.00") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.DOWN }
     }
 
     fun formatBetQuota(any: Any): String {
@@ -94,11 +94,11 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatForVipRebates(any: Any): String {
-        return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+        return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.DOWN }
     }
 
     fun formatForOddPercentage(any: Any): String {
-        return doNumberFormat(any, "###,###,###,#0.00##%") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
+        return doNumberFormat(any, "###,###,###,#0.00##%") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.DOWN }
     }
 
     fun formatForBetHint(any: Any): String {
