@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/bet_info_list_bet"
+            android:text="@string/bet_info_bet"
             android:textColor="@color/color_9BB3D9_535D76"
             android:textSize="@dimen/textSize14sp" />
 

@@ -1109,6 +1109,7 @@
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="please_enter_correct_amount">Vui lòng nhập số tiền đặt cược chính xác</string>
     <string name="bet_info_list_bet">Đặt cược</string>
+    <string name="bet_info_bet">Tiền Cược</string>
     <!--endregion-->
 
     <string name="publicity_contact">lLiên hệ</string>

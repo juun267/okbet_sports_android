@@ -1123,6 +1123,7 @@
     <string name="btn_remove_closed_selections">移除已关闭的选项</string>
     <string name="please_enter_correct_amount">请输入正确投注额</string>
     <string name="bet_info_list_bet">投注</string>
+    <string name="bet_info_bet">投注</string>
     <!--endregion-->
 
     <string name="publicity_contact">联络</string>
