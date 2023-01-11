@@ -1249,5 +1249,6 @@
     <string name="no_file">ไม่ได้เลือกไฟล์</string>
     <string name="new_games">เกมใหม่เบต้า</string>
     <string name="bet_info_add_bet_failed">แพ้พนัน</string>
+    <string name="cancel_manual">คืนเงิน</string>
     <!--F005-->
 </resources>
