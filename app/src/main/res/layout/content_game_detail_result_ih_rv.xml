@@ -18,6 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <View
@@ -77,21 +78,23 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingVertical="5dp"
                 android:gravity="center"
                 android:text="@string/regular_score"
                 android:textColor="@color/color_9BB3D9_535D76"
-                android:textSize="@dimen/textSize12sp" />
+                android:textSize="@dimen/textSize10sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingVertical="5dp"
                 android:gravity="center"
                 android:text="@string/score_with_overtime"
                 android:textColor="@color/color_9BB3D9_535D76"
-                android:textSize="@dimen/textSize12sp" />
+                android:textSize="@dimen/textSize10sp" />
 
         </LinearLayout>
 
