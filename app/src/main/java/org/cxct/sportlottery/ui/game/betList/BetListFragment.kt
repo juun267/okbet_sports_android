@@ -18,6 +18,7 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -414,11 +415,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
             binding.apply {
                 clParlayList.visibility = View.GONE
+                clTitle.ivArrow.background = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_single_bet_delete)
             }
+
         } else {
             currentBetType = 1
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
             refreshLlMoreOption()
+            binding.clTitle.ivArrow.background = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_arrow_up_double)
         }
         checkAllAmountCanBet()
         refreshAllAmount()
