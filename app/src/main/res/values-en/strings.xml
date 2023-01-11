@@ -1388,4 +1388,5 @@
     <string name="str_parlay_type_wrong">Parlay type wrong</string>
     <string name="new_games">New Games</string>
     <string name="bet_info_add_bet_failed">Bet Failed</string>
+    <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
 </resources>

@@ -162,36 +162,36 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 BET_CONFIRM_TIPS -> {
-                    val spannableStringBuilder = SpannableStringBuilder()
-                    val text1 = SpannableString(LocalUtils.getString(R.string.text_bet_not_success))
-                    val text2 = SpannableString(getString(R.string.waiting))
-                    val foregroundSpan = ForegroundColorSpan(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.color_F75452_E23434
-                        )
-                    )
-                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    val text3 = SpannableString(getString(R.string.text_bet_not_success3))
-                    val text4 = SpannableString(getString(R.string.label_transaction_status))
-                    val foregroundSpan2 = ForegroundColorSpan(
-                        ContextCompat.getColor(
-                            requireContext(), R.color.color_F75452_E23434
-                        )
-                    )
-                    text4.setSpan(
-                        foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    spannableStringBuilder.append(text1)
-                    spannableStringBuilder.append(text2)
-                    spannableStringBuilder.append(text3)
-                    spannableStringBuilder.append(text4)
-                    showPromptDialog(
-                        title = getString(R.string.prompt),
-                        message = spannableStringBuilder,
-                        success = true
-                    ) {
-//                        viewModel.navTranStatus()
-                    }
+//                    val spannableStringBuilder = SpannableStringBuilder()
+//                    val text1 = SpannableString(LocalUtils.getString(R.string.text_bet_not_success))
+//                    val text2 = SpannableString(getString(R.string.waiting))
+//                    val foregroundSpan = ForegroundColorSpan(
+//                        ContextCompat.getColor(
+//                            requireContext(), R.color.color_F75452_E23434
+//                        )
+//                    )
+//                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//                    val text3 = SpannableString(getString(R.string.text_bet_not_success3))
+//                    val text4 = SpannableString(getString(R.string.label_transaction_status))
+//                    val foregroundSpan2 = ForegroundColorSpan(
+//                        ContextCompat.getColor(
+//                            requireContext(), R.color.color_F75452_E23434
+//                        )
+//                    )
+//                    text4.setSpan(
+//                        foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+//                    )
+//                    spannableStringBuilder.append(text1)
+//                    spannableStringBuilder.append(text2)
+//                    spannableStringBuilder.append(text3)
+//                    spannableStringBuilder.append(text4)
+//                    showPromptDialog(
+//                        title = getString(R.string.prompt),
+//                        message = spannableStringBuilder,
+//                        success = true
+//                    ) {
+////                        viewModel.navTranStatus()
+//                    }
                 }
             }
         }

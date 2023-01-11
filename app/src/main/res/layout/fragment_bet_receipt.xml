@@ -229,7 +229,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <FrameLayout
             android:background="@color/color_202541_FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -260,7 +260,35 @@
                     android:textSize="16sp"
                     android:text="@string/your_bet_order_success" />
             </LinearLayout>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            <LinearLayout
+                android:id="@+id/lin_result_status_processing"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginHorizontal="14dp"
+                android:paddingHorizontal="15dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                tools:visibility="visible"
+                android:background="@drawable/drawable_bet_processing">
+
+                <TextView
+                    android:id="@+id/tvBetProcessingStatus"
+                    android:textColor="@color/color_E38902"
+                    android:text="滚球注单确认中（9S）"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ProgressBar
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+
+                    android:indeterminateDrawable="@drawable/rotate_bet_loading_view_yellow" />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
 
 
         <LinearLayout

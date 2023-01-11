@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MoneyEvent
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.BetsFailedReasonUtil
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.greenrobot.eventbus.EventBus
@@ -263,6 +266,16 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             updateBetResultStatus(pair)
                         }
                     }
+            }
+            betReceiptDiffAdapter?.refreshBetStatus = { time->
+                lin_result_status_processing?.visible()
+                lin_result_status?.gone()
+                tvBetProcessingStatus?.text = LocalUtils.getString(R.string.str_in_play_bet_confirmed) + "（${time}S）"
+            }
+
+            betReceiptDiffAdapter?.refreshBetStatusFinish = {
+                lin_result_status_processing?.gone()
+                lin_result_status?.visible()
             }
 
             adapter = betReceiptDiffAdapter
