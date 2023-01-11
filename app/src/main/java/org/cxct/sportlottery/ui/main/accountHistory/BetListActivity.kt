@@ -163,7 +163,6 @@ class BetListActivity :
                 ) {
                     showBetReceiptDialog(betResultData, betParlayList, isMultiBet, R.id.fl_bet_list)
                 }
-
             })
 
 //        supportFragmentManager.beginTransaction()

@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.didichuxing.doraemonkit.util.ToastUtils
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
@@ -178,8 +179,7 @@ abstract class BaseOddButtonViewModel(
                 doNetwork(androidContext) {
                     OneBoSportApi.betService.getBetInfo(
                         BetInfoRequest(
-                            matchInfo.id,
-                            odd.id.toString()
+                            matchInfo.id, odd.id.toString()
                         )
                     )
                 }?.let { result ->
@@ -243,8 +243,7 @@ abstract class BaseOddButtonViewModel(
                 doNetwork(androidContext) {
                     OneBoSportApi.betService.getBetInfo(
                         BetInfoRequest(
-                            matchOdd.matchInfo?.id.toString(),
-                            odd.id.toString()
+                            matchOdd.matchInfo?.id.toString(), odd.id.toString()
                         )
                     )
                 }?.let { result ->
@@ -257,14 +256,12 @@ abstract class BaseOddButtonViewModel(
                                 matchType = matchType,
                                 gameType = gameType,
                                 playCateCode = playCateCode,
-                                playCateName = outrightCateName
-                                    ?: "",
+                                playCateName = outrightCateName ?: "",
                                 playName = odd.nameMap?.get(
                                     LanguageManager.getSelectLanguage(
                                         androidContext
                                     ).key
-                                )
-                                    ?: odd.name ?: "",
+                                ) ?: odd.name ?: "",
                                 matchInfo = it,
                                 odd = odd,
                                 subscribeChannelType = ChannelType.HALL,
@@ -403,8 +400,7 @@ abstract class BaseOddButtonViewModel(
                 val betAmount = if (tabPosition == 1) it.betAmount else 0.0
                 parlayList.add(
                     Stake(
-                        TextUtil.replaceCByParlay(androidContext, it.parlayType),
-                        betAmount
+                        TextUtil.replaceCByParlay(androidContext, it.parlayType), betAmount
                     )
                 )
             }
@@ -467,8 +463,9 @@ abstract class BaseOddButtonViewModel(
                                 failedReason = it.code
                             }
                         }
+                        ToastUtils.showShort(BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
                         //处理赔率更新
-                        _betFailed.postValue(Pair(true, failedReason))
+                        //_betFailed.postValue(Pair(true, failedReason))
                     }
                 }
             }
@@ -485,8 +482,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun removeBetInfoSingle() {
-        if (betInfoRepository.showBetInfoSingle.value?.peekContent() == true)
-            betInfoRepository.clear()
+        if (betInfoRepository.showBetInfoSingle.value?.peekContent() == true) betInfoRepository.clear()
     }
 
     fun removeClosedPlatBetInfo() {
@@ -498,8 +494,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     protected fun getOddState(
-        oldItemOdds: Double,
-        newOdd: org.cxct.sportlottery.network.odds.Odd
+        oldItemOdds: Double, newOdd: org.cxct.sportlottery.network.odds.Odd
     ): Int {
         //馬來盤、印尼盤為null時自行計算
         var newMalayOdds = 0.0
@@ -509,9 +504,8 @@ abstract class BaseOddButtonViewModel(
             newMalayOdds =
                 if (newOdd.hkOdds ?: 0.0 > 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
                     .toDouble() else newOdd.hkOdds ?: 0.0
-            newIndoOdds =
-                if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
-                    .toDouble() else newOdd.hkOdds ?: 0.0
+            newIndoOdds = if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                .toDouble() else newOdd.hkOdds ?: 0.0
         }
 
         val odds = when (MultiLanguagesApplication.mInstance.mOddsType.value) {
@@ -546,10 +540,8 @@ abstract class BaseOddButtonViewModel(
         val discount = userInfo.value?.discount ?: 1F
         this.oddsMap?.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
-                if (it.key == PlayCate.EPS.value)
-                    odd.setupEPSDiscount(discount)
-                else
-                    odd.setupDiscount(discount)
+                if (it.key == PlayCate.EPS.value) odd.setupEPSDiscount(discount)
+                else odd.setupDiscount(discount)
             }
         }
 
@@ -560,10 +552,8 @@ abstract class BaseOddButtonViewModel(
         this.quickPlayCateList?.forEach { quickPlayCate ->
             quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
-                    if (it.key == PlayCate.EPS.value)
-                        odd.setupEPSDiscount(discount)
-                    else
-                        odd.setupDiscount(discount)
+                    if (it.key == PlayCate.EPS.value) odd.setupEPSDiscount(discount)
+                    else odd.setupDiscount(discount)
                 }
             }
         }
@@ -667,11 +657,10 @@ abstract class BaseOddButtonViewModel(
         this.putAll(sorted)
     }
 
-    private fun getSpreadState(oldSpread: String, newSpread: String): Int =
-        when {
-            newSpread != oldSpread -> SpreadState.DIFFERENT.state
-            else -> SpreadState.SAME.state
-        }
+    private fun getSpreadState(oldSpread: String, newSpread: String): Int = when {
+        newSpread != oldSpread -> SpreadState.DIFFERENT.state
+        else -> SpreadState.SAME.state
+    }
 
     private fun updateItem(
         oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
@@ -691,13 +680,12 @@ abstract class BaseOddButtonViewModel(
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.oddState = getOddState(
                                 getOdds(
-                                    oldItem,
-                                    currentOddsType
+                                    oldItem, currentOddsType
                                 ), newItem
                             )
 
-                            if (oldItem.oddState != OddState.SAME.state)
-                                oldItem.oddsHasChanged = true
+                            if (oldItem.oddState != OddState.SAME.state) oldItem.oddsHasChanged =
+                                true
                         }
 
                         oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
@@ -713,9 +701,7 @@ abstract class BaseOddButtonViewModel(
                         }
 
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                        if (oldItem.oddState != OddState.SAME.state &&
-                            oldItem.status == BetStatus.ACTIVATED.code
-                        ) {
+                        if (oldItem.oddState != OddState.SAME.state && oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.betAddError = null
                         }
 
@@ -747,8 +733,7 @@ abstract class BaseOddButtonViewModel(
                         if (betAddError == BetAddError.ODDS_HAVE_CHANGED) {
                             oldItem.oddState = getOddState(
                                 getOdds(
-                                    oldItem,
-                                    currentOddsType ?: OddsType.HK
+                                    oldItem, currentOddsType ?: OddsType.HK
                                 ), newItem
                             )
 
@@ -776,8 +761,7 @@ abstract class BaseOddButtonViewModel(
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.betService.getBetInfo(
                         BetInfoRequest(
-                            betInfoListData.matchOdd.matchId,
-                            betInfoListData.matchOdd.oddsId
+                            betInfoListData.matchOdd.matchId, betInfoListData.matchOdd.oddsId
                         )
                     )
                 }
