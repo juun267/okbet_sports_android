@@ -274,7 +274,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         ) {
             setupView(itemView, item)
             setupViewType(itemView, gameType)
-            setupResultItem(itemView, item)
+            setupResultItem(itemView, item, gameType)
             setupEvent(itemView, matchItemClickListener)
         }
 
@@ -332,7 +332,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
-        private fun setupResultItem(itemView: View, item: MatchResultData) {
+        private fun setupResultItem(itemView: View, item: MatchResultData, gameType: String) {
             itemView.apply {
 
                 val matchStatusList = item.matchData?.matchStatusList
@@ -349,8 +349,18 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     val secondHalf =
                         it.find { it.status == StatusType.SECOND_HALF.code }
                     //110: 加時, 有加時先取加時
-                    val endGame = it.find { it.status == StatusType.OVER_TIME.code }
-                        ?: it.find { it.status == StatusType.END_GAME.code }
+                    // 冰球需要显示完场比分
+                    val endGame =
+                        when (gameType) {
+                            GameType.IH.key ->
+                                it.find { it.status == StatusType.END_GAME.code }
+                                    ?: it.find { it.status == StatusType.OVER_TIME.code }
+                            else ->
+                                it.find { it.status == StatusType.OVER_TIME.code }
+                                    ?: it.find { it.status == StatusType.END_GAME.code }
+                        }
+//                    val endGame = it.find { it.status == StatusType.OVER_TIME.code }
+//                        ?: it.find { it.status == StatusType.END_GAME.code }
                     val fullGame = it.find { it.status == StatusType.OVER_TIME.code }
                         ?: it.find { it.status == StatusType.END_GAME.code }
                     tv_first_half_score.text =
