@@ -3,31 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="12dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="12dp">
 
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
-        android:layout_height="251dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scaleType="centerCrop"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:background="@color/color_191919_FCFCFC"
         android:ellipsize="end"
         android:gravity="center"
-        android:includeFontPadding="false"
         android:maxLines="2"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:lines="2"
+        android:paddingHorizontal="8dp"
         android:textColor="@color/color_317FFF_0760D4"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
         tools:ignore="SpUsage"
-        tools:text="Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up.Put up or shut up." />
+        tools:text="Put up or shut up.Put up or shut up.Put " />
 
 </LinearLayout>

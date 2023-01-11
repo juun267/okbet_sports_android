@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.dialog.promotion
 
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,8 +9,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.adapter.BannerAdapter
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemPromotionBinding
-import org.cxct.sportlottery.util.LanguageManager
-import java.util.*
 
 class PromotionAdapter(private val promotionList: List<PromotionData>) :
     BannerAdapter<PromotionData, RecyclerView.ViewHolder>(promotionList) {
@@ -43,19 +40,6 @@ class PromotionAdapter(private val promotionList: List<PromotionData>) :
     inner class PromotionViewHolder(val binding: ItemPromotionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(itemData: PromotionData) {
             binding.tvTitle.text = itemData.title
-
-            //判斷若是中文、越南語系的話行高縮減, 因為套用字型後行高變高
-            binding.tvTitle.setLineSpacing(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    when (LanguageManager.getSetLanguageLocale(binding.root.context)) {
-                        Locale.ENGLISH -> 0f
-                        else -> -6.0f
-                    },
-                    binding.root.resources.displayMetrics
-                ), 1.0f
-            )
-
             Glide.with(binding.ivImage)
                 .load(itemData.imgUrl)
                 .apply(requestOptions)

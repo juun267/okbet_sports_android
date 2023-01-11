@@ -64,7 +64,6 @@ class HomeElecFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.fitsSystemStatus()
-        viewModel.getConfigData()
         initView()
         initObservable()
         viewModel.getTotalRewardAmount()
