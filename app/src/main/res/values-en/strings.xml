@@ -1011,7 +1011,7 @@
 
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
-    <string name="cancel_manual">Void</string>
+    <string name="cancel_manual">Refund</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1122,6 +1122,7 @@
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
     <string name="bet_info_list_bet">Stake</string>
+    <string name="bet_info_bet">Stake</string>
     <!--endregion-->
 
     <string name="publicity_contact">Contact</string>

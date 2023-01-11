@@ -49,22 +49,13 @@ class BetRecordFragment :
 //                    AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
 //                findNavController().navigate(action)
                 if (activity is MainTabActivity) {
-                    (activity as MainTabActivity).goBetRecordDetails(
-                        data.statDate.orEmpty(),
+                    (activity as MainTabActivity).goBetRecordDetails(data,
+                    data.statDate.orEmpty(),
                         viewModel.gameTypeCode
                     )
                 }
             }
         })
-    }
-
-    companion object {
-        fun newInstance(): BetRecordFragment {
-            val args = Bundle()
-            val fragment = BetRecordFragment()
-            fragment.arguments = args
-            return fragment
-        }
     }
 
     override fun onCreateView(

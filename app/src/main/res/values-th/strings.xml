@@ -127,6 +127,7 @@
     <string name="bet_info_list_win_quota">จำนวนที่ชนะได้：</string>
     <string name="keyboard_max">ใหญ่สุด</string>
     <string name="bet_info_list_bet">เดิมพัน</string>
+    <string name="bet_info_bet">อาจารย์ใหญ่</string>
     <string name="edt_hint_deposit_money">จำกัด%1$s%2$s～%3$s</string>
     <string name="conspire">พาร์เลย์</string>
     <string name="bet_info_content_has_been_changed">อัตราต่อรองหรือสถานะของเกมที่คุณเลือกมีการเปลี่ยนแปลง โปรดเดิมพันใหม่</string>
@@ -1249,5 +1250,6 @@
     <string name="no_file">ไม่ได้เลือกไฟล์</string>
     <string name="new_games">เกมใหม่เบต้า</string>
     <string name="bet_info_add_bet_failed">แพ้พนัน</string>
+    <string name="cancel_manual">คืนเงิน</string>
     <!--F005-->
 </resources>

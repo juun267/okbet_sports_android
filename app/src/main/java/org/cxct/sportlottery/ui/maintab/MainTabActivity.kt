@@ -27,6 +27,7 @@ import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
@@ -518,10 +519,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     }
 
-    fun goBetRecordDetails(date: String, gameType: String) {
+    fun goBetRecordDetails(bean: Row, date: String, gameType: String) {
         setupBottomNavBarVisibility(false)
         supportFragmentManager.beginTransaction()
-            .add(R.id.fl_content, AccountHistoryNextFragment.newInstance(date, gameType))
+            .add(R.id.fl_content, AccountHistoryNextFragment.newInstance(bean, date, gameType))
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 

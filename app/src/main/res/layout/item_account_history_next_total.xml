@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/bet_info_list_bet"
+            android:text="@string/bet_info_bet"
             android:textColor="@color/color_9BB3D9_535D76"
             android:textSize="@dimen/textSize14sp" />
 
@@ -57,7 +57,6 @@
             android:textColor="@color/color_9BB3D9_535D76"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
-            app:moneyFormat="@{other.totalAmount}"
             tools:text="519,050,9.000" />
 
         <TextView
@@ -83,8 +82,6 @@
             android:layout_marginStart="4dp"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
-            app:moneyColorWhite="@{other.win}"
-            app:moneyFormat="@{other.win}"
             tools:text="-550,9.000"
             tools:textColor="@color/color_E23434_E23434" />
 

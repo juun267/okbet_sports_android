@@ -1040,7 +1040,7 @@
 
     <string name="current_corner">Tổng Số Hiện Tại:</string>
     <string name="cancel_auto">Từ chối</string>
-    <string name="cancel_manual">Vô hiệu</string>
+    <string name="cancel_manual">Hoàn tiền</string>
     <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng Anh, không nhập khoảng trắng liên tục.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1109,6 +1109,7 @@
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="please_enter_correct_amount">Vui lòng nhập số tiền đặt cược chính xác</string>
     <string name="bet_info_list_bet">Đặt cược</string>
+    <string name="bet_info_bet">Tiền Cược</string>
     <!--endregion-->
 
     <string name="publicity_contact">lLiên hệ</string>
