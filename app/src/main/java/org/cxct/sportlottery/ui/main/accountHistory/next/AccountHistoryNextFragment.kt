@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.view_account_history_next_title_bar.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
+import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -26,6 +27,7 @@ import org.cxct.sportlottery.util.TextUtil
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private var needScrollToTop = true //用來記錄是否需要滾動至最上方
+    private val bean by lazy { arguments?.getParcelable<Row>("bean")!! }
     private var date = ""
     private var gameType = ""
 
@@ -64,8 +66,9 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     }
 
     companion object {
-        fun newInstance(date: String, gameType: String): AccountHistoryNextFragment {
+        fun newInstance(bean: Row, date: String, gameType: String): AccountHistoryNextFragment {
             val args = bundleOf("date" to date, "gameType" to gameType)
+            args.putParcelable("bean", bean)
             val fragment = AccountHistoryNextFragment()
             fragment.arguments = args
             return fragment
@@ -109,7 +112,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
         viewModel.betDetailResult.observe(viewLifecycleOwner) {
             if (it.success) {
-                setupTotalView(it.other)
+//                setupTotalView(it.other)
                 rvAdapter.addFooterAndSubmitList(
                     it.other,
                     viewModel.detailDataList,
@@ -193,31 +196,55 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             }
             viewModel.searchDetail(gameType, date)
         }
+
+        setupTotalViewNew(bean.settledBetMoney ?: 0.0, bean.vipRewardMoneyWithRebate ?: 0.0)
+    }
+
+    private fun setupTotalViewNew(betMoney: Double, win: Double) {
+        tv_bet_total_money.text = TextUtil.format(betMoney)
+        val textColor: Int
+        when {
+            win  > 0 -> {
+                tv_win_or_Lose.text = getString(R.string.win)
+                textColor = R.color.color_1D9F51_1D9F51
+            }
+            win < 0 -> {
+                tv_win_or_Lose.text = getString(R.string.lose)
+                textColor = R.color.color_E23434_E23434
+            }
+            else -> {
+                tv_win_or_Lose.text = getString(R.string.win) //沒輸沒贏也顯示贏
+                textColor = R.color.color_9BB3D9_535D76
+            }
+        }
+
+        tv_status_money.setTextColor(ContextCompat.getColor(requireContext(), textColor))
+        tv_status_money.text = TextUtil.format(win)
     }
 
     private fun setupTotalView(other: Other?) {
-        other?.apply {
-            tv_bet_total_money.text = TextUtil.format(totalAmount as Double)
-            val textColor: Int
-            when {
-                win as Double > 0 -> {
-                    tv_win_or_Lose.text = getString(R.string.win)
-                    textColor = R.color.color_1D9F51_1D9F51
-                }
-                win < 0 -> {
-                    tv_win_or_Lose.text = getString(R.string.lose)
-                    textColor = R.color.color_E23434_E23434
-                }
-                else -> {
-                    tv_win_or_Lose.text = getString(R.string.win) //沒輸沒贏也顯示贏
-                    textColor = R.color.color_9BB3D9_535D76
-                }
-            }
-            tv_status_money.setTextColor(
-                ContextCompat.getColor(requireContext(), textColor)
-            )
-            tv_status_money.text = TextUtil.format(win)
-        }
+//        other?.apply {
+//            tv_bet_total_money.text = TextUtil.format(totalAmount as Double)
+//            val textColor: Int
+//            when {
+//                win as Double > 0 -> {
+//                    tv_win_or_Lose.text = getString(R.string.win)
+//                    textColor = R.color.color_1D9F51_1D9F51
+//                }
+//                win < 0 -> {
+//                    tv_win_or_Lose.text = getString(R.string.lose)
+//                    textColor = R.color.color_E23434_E23434
+//                }
+//                else -> {
+//                    tv_win_or_Lose.text = getString(R.string.win) //沒輸沒贏也顯示贏
+//                    textColor = R.color.color_9BB3D9_535D76
+//                }
+//            }
+//            tv_status_money.setTextColor(
+//                ContextCompat.getColor(requireContext(), textColor)
+//            )
+//            tv_status_money.text = TextUtil.format(win)
+//        }
     }
 }
 
