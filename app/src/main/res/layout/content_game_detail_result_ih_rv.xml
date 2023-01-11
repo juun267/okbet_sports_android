@@ -80,7 +80,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/overtime_score"
+                android:text="@string/regular_score"
                 android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -89,7 +89,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/regular_score"
+                android:text="@string/score_with_overtime"
                 android:textColor="@color/color_9BB3D9_535D76"
                 android:textSize="@dimen/textSize12sp" />
 

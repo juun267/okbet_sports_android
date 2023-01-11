@@ -1393,5 +1393,6 @@
     <string name="pls_enter_days_format">请输入天数 (≥%d 天)</string>
     <string name="more_than_days_format">必须多于%d天</string>
     <string name="overtime_score">加时比分</string>
-    <string name="regular_score">"总分含加时  "</string>
+    <string name="regular_score">常规比分</string>
+    <string name="score_with_overtime">总分（含加时）</string>
 </resources>
