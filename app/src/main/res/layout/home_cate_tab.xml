@@ -16,7 +16,7 @@
         android:maxLines="1"
         android:textAllCaps="true"
         android:textColor="@color/color_select_blue_black"
-        android:textSize="@dimen/textSize15sp"
+        android:textSize="12sp"
         tools:text="全部" />
 
     <TextView
@@ -27,7 +27,7 @@
         android:layout_marginLeft="@dimen/margin_4"
         android:maxLines="1"
         android:textColor="@color/color_select_white_gray"
-        android:textSize="@dimen/textSize12sp"
+        android:textSize="12sp"
         android:fontFamily="@font/din_bold"
         tools:text="643" />
 

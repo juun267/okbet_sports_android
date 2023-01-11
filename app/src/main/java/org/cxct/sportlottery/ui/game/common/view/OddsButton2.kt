@@ -44,7 +44,11 @@ class OddsButton2 @JvmOverloads constructor(
         private val oddsValueCaches = mutableListOf<TextView>()
         private val oddsLockedCaches = mutableListOf<ImageView>()
         private val oddsUnknownCaches = mutableListOf<TextView>()
-        private val params1 = LayoutParams(-2, -2).apply { gravity = Gravity.CENTER_HORIZONTAL }
+        private val params1 = LayoutParams(-2, -2).apply {
+            gravity = Gravity.CENTER_HORIZONTAL
+            topMargin = 1.dp
+            bottomMargin = 1.dp
+        }
         private val params2 = LayoutParams(-1, -1)
 
 
@@ -302,7 +306,7 @@ class OddsButton2 @JvmOverloads constructor(
         }
         oddsLocked = AppCompatImageView(context).apply {
             setImageResource(R.drawable.ic_lock)
-            setPadding(11.dp)
+            setPadding(14.dp)
         }
         addOddView(oddsLocked!!, params2)
         return oddsLocked!!
