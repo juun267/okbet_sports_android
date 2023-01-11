@@ -186,7 +186,7 @@
                         android:textColor="@color/color_9BB3D9_535D76"
                         android:textSize="@dimen/textSize12sp"
                         android:gravity="center_vertical"
-                        android:text="订单号：xxxxxx"
+                        tools:text = "订单号：xxxxxx"
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
                         android:layout_height="match_parent"/>

@@ -152,24 +152,62 @@
                             tools:itemCount="1"
                             tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
 
-                        <TextView
-                            android:id="@+id/tvExpandOrStacked"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableEnd="@drawable/ic_arrow_down_blue"
-                            android:drawablePadding="4dp"
-                            android:gravity="center"
-                            android:paddingHorizontal="100dp"
-                            android:paddingVertical="10dp"
-                            android:text="@string/expand_more_combinations"
-                            android:textColor="@color/color_025BE8"
-                            android:textSize="11sp" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:id="@+id/clExpandOrStacked"
+                            android:orientation="horizontal"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvExpandOrStacked"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableEnd="@drawable/ic_arrow_down_blue"
+                                android:drawablePadding="4dp"
+                                android:gravity="center"
+                                android:paddingVertical="15dp"
+                                android:text="@string/expand_more_combinations"
+                                android:textColor="@color/color_025BE8"
+                                android:textSize="11sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_close"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/margin_15"
+                                android:background="@drawable/bg_delete_button"
+                                android:paddingHorizontal="7dp"
+                                android:paddingVertical="1dp"
+                                android:text="@string/delete_bet_all"
+                                android:textColor="@color/color_9BB3D9_535D76"
+                                android:textSize="@dimen/textSize12sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.988"
+                                app:layout_constraintStart_toEndOf="@+id/tvExpandOrStacked"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginHorizontal="14dp"
+                                android:background="@color/color_E3E8EE"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                               app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                        <include
-                            android:id="@+id/includeOddsLayout"
-                            layout="@layout/include_bet_odds_tips_parlay" />
+<!--                        <include-->
+<!--                            android:id="@+id/includeOddsLayout"-->
+<!--                            layout="@layout/include_bet_odds_tips_parlay" />-->
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <!--单项投注-->
@@ -199,10 +237,10 @@
                         android:id="@+id/cl_total_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        tools:visibility="visible"
                         android:paddingHorizontal="15dp"
-                        android:paddingVertical="2dp">
+                        android:paddingTop="8dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/total_info_guide_line"
@@ -286,8 +324,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
-                <include
-                    layout="@layout/include_bet_odds_tips_parlay_warn" />
+<!--                <include layout="@layout/include_bet_odds_tips_parlay_warn" />-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

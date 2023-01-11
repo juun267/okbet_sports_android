@@ -1117,6 +1117,7 @@
     <string name="total_capital">本金：%s</string>
     <string name="total_win_amount">可赢：</string>
     <string name="delete_bet">删除</string>
+    <string name="delete_bet_all">删除全部</string>
     <string name="btn_login_bet">登录后可投注</string>
     <string name="confirm_single_bets">确认%d单注投注</string>
     <string name="confirm_multiple_bets">确认%d串关投注</string>
@@ -1348,8 +1349,8 @@
     <string name="accept_any_change_in_odds">接受任何赔率变化</string>
     <string name="accept_better_change_in_odds">接受更好赔率变化</string>
     <string name="accept_never_change_in_odds">永不接受赔率变化</string>
-    <string name="expand_more_combinations">展开更多组合</string>
-    <string name="stacked_combination">叠起组合</string>
+    <string name="expand_more_combinations">展开组合</string>
+    <string name="stacked_combination">收起组合</string>
     <string name="bet_parlay">+串关</string>
     <string name="bet_single">单注</string>
     <string name="str_if_accept_odds_changes_title">是否接受赔率变化说明</string>

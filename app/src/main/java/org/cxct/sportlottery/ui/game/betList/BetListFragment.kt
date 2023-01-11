@@ -33,14 +33,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_
 import kotlinx.android.synthetic.main.button_bet.view.cl_bet
 import kotlinx.android.synthetic.main.button_bet.view.tv_login
 import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
-import kotlinx.android.synthetic.main.fragment_bet_list.bg_dim_mount
-import kotlinx.android.synthetic.main.fragment_bet_list.btnParlaySingle
-import kotlinx.android.synthetic.main.fragment_bet_list.btn_bet
-import kotlinx.android.synthetic.main.fragment_bet_list.ll_root
-import kotlinx.android.synthetic.main.fragment_bet_list.rv_bet_list
-import kotlinx.android.synthetic.main.fragment_bet_list.rv_parlay_list
-import kotlinx.android.synthetic.main.fragment_bet_list.rv_single_list
-import kotlinx.android.synthetic.main.fragment_bet_list.tvExpandOrStacked
+import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.btnOddsChangeDes
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
@@ -430,11 +423,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         checkAllAmountCanBet()
         refreshAllAmount()
         checkSingleAndParlayBetLayoutVisible()
-        btnOddsChangeDes.setOnClickListener {
-//            showOddsChangeTips()
-        }
+//        btnOddsChangeDes.setOnClickListener {
+////            showOddsChangeTips()
+//        }
 
-        tvExpandOrStacked.setOnClickListener {
+        clExpandOrStacked.setOnClickListener {
             if (isOpen) {
                 tvExpandOrStacked.text = getString(R.string.expand_more_combinations)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
@@ -463,39 +456,39 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //串关赔率的接受任何赔率变化
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
-        val currentSelectText = OddsModeUtil.currentSelectModeText(currentOddsChangeOp)
-        tvAcceptOddsChange.text = currentSelectText
+//        val currentSelectText = OddsModeUtil.currentSelectModeText(currentOddsChangeOp)
+//        tvAcceptOddsChange.text = currentSelectText
 
-        currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(currentSelectText)
+        currentBetOption = currentOddsChangeOp
 
-        tvAcceptOddsChange.setOnClickListener {
-            tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
-                null,
-                null,
-                ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
-                null
-            )
+//        tvAcceptOddsChange.setOnClickListener {
+//            tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
+//                null,
+//                null,
+//                ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+//                null
+//            )
+//
+//            val popupWindow = OkPopupWindow(
+//                requireContext(), tvAcceptOddsChange.text.toString()
+//            ) { text, position ->
+//                tvAcceptOddsChange.text = text
+//                currentBetOption = position
+//                viewModel.updateOddsChangeOption(currentBetOption)
+//            }
+//            popupWindow.setOnDismissListener {
+//                tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
+//                    null,
+//                    null,
+//                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+//                    null
+//                )
+//            }
+//            popupWindow.showUpCenter(it)
+//        }
 
-            val popupWindow = OkPopupWindow(
-                requireContext(), tvAcceptOddsChange.text.toString()
-            ) { text, position ->
-                tvAcceptOddsChange.text = text
-                currentBetOption = position
-                viewModel.updateOddsChangeOption(currentBetOption)
-            }
-            popupWindow.setOnDismissListener {
-                tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
-                    null,
-                    null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
-                    null
-                )
-            }
-            popupWindow.showUpCenter(it)
-        }
 
-
-        ivClearCarts.setOnClickListener {
+        tv_close.setOnClickListener {
             clearCarts()
         }
 
@@ -615,8 +608,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             override fun onOddsChangesWarningTips(isShow: Boolean) {
                 Timber.d("isShow:$isShow")
-                binding.includeOddsLayout.root.visible()
-                binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
+//                binding.includeOddsLayout.root.visible()
+//                binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
             }
 
             override fun onOddsChangesSetOptionListener(text: String) {
@@ -936,16 +929,16 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner) {
             if (it.size == 0) {
-                tvExpandOrStacked.gone()
+                clExpandOrStacked.gone()
                 betListRefactorAdapter?.hasParlayList = false
                 betListRefactorAdapter?.parlayList = singleParlayList
                 betSingleListAdapter?.parlayList = singleParlayList
                 betParlayListRefactorAdapter?.hasParlayList = false
             } else {
                 if (it.size > 1) {
-                    tvExpandOrStacked.visible()
+                    clExpandOrStacked.visible()
                 } else {
-                    tvExpandOrStacked.gone()
+                    clExpandOrStacked.gone()
                 }
                 betListRefactorAdapter?.hasParlayList = true
                 betListRefactorAdapter?.parlayList = it
@@ -1206,11 +1199,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideCantParlayWarn(show: Boolean) {
         //TODO 現在只有串關投注才會顯示次提示
-        if (show && (betListRefactorAdapter?.betList?.size ?: 0) > 1) {
-            llParlayWarn.visible()
-        } else {
-            llParlayWarn.gone()
-        }
+//        if (show && (betListRefactorAdapter?.betList?.size ?: 0) > 1) {
+//            llParlayWarn.visible()
+//        } else {
+//            llParlayWarn.gone()
+//        }
 
         when (currentBetType) {
             //單項投注

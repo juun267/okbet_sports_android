@@ -46,6 +46,7 @@
     <color name="color_404040">#404040</color>
     <color name="color_cccccc">#cccccc</color>
     <color name="color_666666">#666666</color>
+    <color name="color_5E6D78">#5E6D78</color>
     <color name="color_bcbcbc">#bcbcbc</color>
     <color name="color_616161">#616161</color>
     <color name="color_b4b4b4">#b4b4b4</color>
@@ -278,17 +279,17 @@
     <!-- ========== color guideline ========== -->
     <color name="colorBackground">@color/color_141414_F3F4F5</color>
 
-<!--    <color name="colorBlueLight">#1463CF</color>-->
-<!--    <color name="colorBlue">#0760D4</color>-->
+    <!--    <color name="colorBlueLight">#1463CF</color>-->
+    <!--    <color name="colorBlue">#0760D4</color>-->
     <color name="colorBlue5">#0066D1</color>
     <color name="colorBlue6">#0079FA</color>
     <color name="colorBlue7">#1053AF</color>
     <color name="colorBlue8">#3B78FF</color>
     <color name="colorBlue9">#0065E9</color>
-<!--    <color name="colorBlueDark">#1F4780</color>-->
-<!--    <color name="colorSilverBlue">#A9BEDF</color>-->
+    <!--    <color name="colorBlueDark">#1F4780</color>-->
+    <!--    <color name="colorSilverBlue">#A9BEDF</color>-->
 
-<!--    <color name="colorOrangeLight">#FF9200</color>-->
+    <!--    <color name="colorOrangeLight">#FF9200</color>-->
     <color name="colorOrange">#FF8000</color>
     <color name="colorOrange2">#ff9e3c</color>
     <color name="colorOrange3">#FFAF5C</color>
@@ -296,54 +297,54 @@
     <color name="colorOrange5">#F56E00</color>
 
     <color name="colorRedLight">#e7837c</color>
-<!--    <color name="colorRed">#E44438</color>-->
-<!--    <color name="colorRedDark">#B73A20</color>-->
-<!--    <color name="colorRedPersian">#CE3636</color>-->
+    <!--    <color name="colorRed">#E44438</color>-->
+    <!--    <color name="colorRedDark">#B73A20</color>-->
+    <!--    <color name="colorRedPersian">#CE3636</color>-->
 
     <color name="colorGreenLight">#08ab75</color>
-<!--    <color name="colorGreen">#08DC6E</color>-->
+    <!--    <color name="colorGreen">#08DC6E</color>-->
     <color name="colorGreenSea">#08AB74</color>
-<!--    <color name="colorGreenKeppel">#3DB893</color>-->
+    <!--    <color name="colorGreenKeppel">#3DB893</color>-->
 
-<!--    <color name="white">#FFFFFF</color>-->
-<!--    <color name="colorWhite">#FCFCFC</color>-->
-<!--    <color name="colorWhite1">#F3F4F5</color>-->
-<!--    <color name="colorWhite2">#F2F2F2</color>-->
-<!--    <color name="colorWhite3">#EDF4FF</color>-->
-<!--    <color name="colorWhite4">#EDEDED</color>-->
-<!--    <color name="colorWhite5">#EBEBEB</color>-->
+    <!--    <color name="white">#FFFFFF</color>-->
+    <!--    <color name="colorWhite">#FCFCFC</color>-->
+    <!--    <color name="colorWhite1">#F3F4F5</color>-->
+    <!--    <color name="colorWhite2">#F2F2F2</color>-->
+    <!--    <color name="colorWhite3">#EDF4FF</color>-->
+    <!--    <color name="colorWhite4">#EDEDED</color>-->
+    <!--    <color name="colorWhite5">#EBEBEB</color>-->
     <!--根據需求，大底色調整為 #EEEFF0-->
-<!--    <color name="colorWhite6">#EEEFF0</color>-->
-<!--    <color name="colorWhite7">#DFEAF8</color>-->
-<!--    <color name="colorWhite8">#E6E6E6</color>-->
-<!--    <color name="colorWhite9">#F3F3F3</color>-->
+    <!--    <color name="colorWhite6">#EEEFF0</color>-->
+    <!--    <color name="colorWhite7">#DFEAF8</color>-->
+    <!--    <color name="colorWhite8">#E6E6E6</color>-->
+    <!--    <color name="colorWhite9">#F3F3F3</color>-->
 
 
     <!--    <color name="colorSilverLight">#CCCCCC</color>-->
-<!--    <color name="colorSilver">#BCBCBC</color>-->
-<!--    <color name="colorSilver2">#DCDCDC</color>-->
-<!--    <color name="colorSilver3">#efeff4</color>-->
-<!--    <color name="colorSilverDirk">#B4B4B4</color>-->
+    <!--    <color name="colorSilver">#BCBCBC</color>-->
+    <!--    <color name="colorSilver2">#DCDCDC</color>-->
+    <!--    <color name="colorSilver3">#efeff4</color>-->
+    <!--    <color name="colorSilverDirk">#B4B4B4</color>-->
 
-<!--    <color name="colorGrayLight">#999999</color>-->
-<!--    <color name="colorGrayLight2">#E4E4E4</color>-->
-<!--    <color name="colorGrayLight3">#EFEFEF</color>-->
-<!--    <color name="colorGray">#666666</color> &lt;!&ndash;106 106 106&ndash;&gt;-->
-<!--    <color name="colorGrayDark">#404040</color>-->
-<!--    <color name="colorGrayDark2">#444444</color>-->
-<!--    <color name="colorGrayDark3">#E1E1E1</color>-->
-<!--    <color name="colorGrayGallery">#EEEEEE</color>-->
-<!--    <color name="colorGrayText">#888888</color>-->
-<!--    <color name="colorBlackLight">#333333</color>-->
-<!--    <color name="colorBlack">#000000</color>-->
-<!--    <color name="colorEEEFF0">#EEEFF0</color>-->
+    <!--    <color name="colorGrayLight">#999999</color>-->
+    <!--    <color name="colorGrayLight2">#E4E4E4</color>-->
+    <!--    <color name="colorGrayLight3">#EFEFEF</color>-->
+    <!--    <color name="colorGray">#666666</color> &lt;!&ndash;106 106 106&ndash;&gt;-->
+    <!--    <color name="colorGrayDark">#404040</color>-->
+    <!--    <color name="colorGrayDark2">#444444</color>-->
+    <!--    <color name="colorGrayDark3">#E1E1E1</color>-->
+    <!--    <color name="colorGrayGallery">#EEEEEE</color>-->
+    <!--    <color name="colorGrayText">#888888</color>-->
+    <!--    <color name="colorBlackLight">#333333</color>-->
+    <!--    <color name="colorBlack">#000000</color>-->
+    <!--    <color name="colorEEEFF0">#EEEFF0</color>-->
 
 
     <!-- //== 以下不在 v3 color guideline 定義內，但有使用==//-->
-<!--    <color name="blueLight">#a9bedf</color>-->
+    <!--    <color name="blueLight">#a9bedf</color>-->
     <color name="blueDeep">#35485C</color>
 
-<!--    <color name="colorBronze">#CB7C2E</color>-->
+    <!--    <color name="colorBronze">#CB7C2E</color>-->
     <color name="color_F75452_B73A20">@color/color_B73A20</color>
     <color name="transparent">#00000000</color>
     <color name="transparent_black_0">#00000000</color>
@@ -357,10 +358,10 @@
 
     <color name="transparent_white_70">#B3FFFFFF</color>
 
-<!--    <color name="color_fff3f3f3">#fff3f3f3</color>-->
-<!--    <color name="color_ffededed">#ffededed</color>-->
-<!--    <color name="color_999999">#999999</color>-->
-<!--    <color name="color_AAAAAA">#AAAAAA</color>-->
+    <!--    <color name="color_fff3f3f3">#fff3f3f3</color>-->
+    <!--    <color name="color_ffededed">#ffededed</color>-->
+    <!--    <color name="color_999999">#999999</color>-->
+    <!--    <color name="color_AAAAAA">#AAAAAA</color>-->
     <color name="color_FDFDFD">#FDFDFD</color>
     <color name="color_F08E29">#ffF08E29</color>
     <color name="color_060F20">#060F20</color>
@@ -382,6 +383,8 @@
     <color name="color_6C7BA8">#6C7BA8</color>
     <color name="color_336C7BA8">#336C7BA8</color>
     <color name="color_A5AABF">#A5AABF</color>
+    <color name="color_A5ADC0">#A5ADC0</color>
+    <color name="color_DFE2E9">#77D7D9DF</color>
     <color name="color_C4D0DE">#C4D0DE</color>
     <color name="color_DAE7F6">#DAE7F6</color>
     <color name="color_E23434">#E23434</color>
@@ -445,6 +448,7 @@
     <color name="color_0D838383">#0D838383</color>
     <color name="color_EAEAEA">#EAEAEA</color>
     <color name="color_26E23434">#26E23434</color>
+    <color name="color_FCEBEB">#FCEBEB</color>
     <color name="color_28BA78">#28BA78</color>
     <color name="color_F0A536">#F0A536</color>
     <color name="color_F2F5FA">#F2F5FA</color>
@@ -534,7 +538,7 @@
     <!--反馈详情输入框背景色-->
     <color name="color_79839F_F7F8FC">@color/color_F7F8FC</color>
     <color name="color_272F41_E3E8EE">@color/color_E3E8EE</color>
-   <!-- 存款页面文字标题-->
+    <!-- 存款页面文字标题-->
     <color name="color_D2E4FF_414655">@color/color_414655</color>
     <!--扫描模块文字标题颜色-->
     <color name="color_9FADC6_A5A9B3">@color/color_A5A9B3</color>

@@ -125,7 +125,7 @@
 
     <dimen name="et_bet_height">30dp</dimen>
 
-    <dimen name="bet_info_hint_view_height">25dp</dimen>
+    <dimen name="bet_info_hint_view_height">28dp</dimen>
 
     <dimen name="keyboard_radius">2dp</dimen>
     <dimen name="keyboard_height">123dp</dimen>
