@@ -369,8 +369,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         if (num > 0) viewModel.getMoney()
     }
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        val multipleOdds = getMultipleOdds(list)
-        cl_bet_list_bar.tvOdds.text = multipleOdds
+        if (list.size > 1) {
+            val multipleOdds = getMultipleOdds(list)
+            cl_bet_list_bar.tvOdds.text = multipleOdds
+        }
     }
 
     override fun showLoginNotify() {

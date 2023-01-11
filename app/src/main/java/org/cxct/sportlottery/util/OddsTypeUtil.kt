@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.util
 
 
-import android.util.Log
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -136,7 +135,6 @@ fun getOddTypeRes(
 fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
     var currentOddsType = OddsType.EU
     var multipleOdds = BigDecimal(1.0)
-    var mulOdds = 1.00
     list.forEach { itemData ->
 
         if (itemData.pointMarked || itemData.matchOdd.status != BetStatus.ACTIVATED.code) {

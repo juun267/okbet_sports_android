@@ -167,6 +167,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
+            if (isDetached || context == null) {
+                return
+            }
+
             when (msg.what) {
                 BET_CONFIRM_TIPS -> {
                     val spannableStringBuilder = SpannableStringBuilder()
@@ -624,13 +628,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        betListRefactorAdapter =
-            BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }
+        betListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }
         betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener)
-        betParlayListRefactorAdapter =
-            BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }.apply {
-                adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
-            }
+        betParlayListRefactorAdapter = BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }.apply {
+            adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
+        }
     }
 
 
@@ -652,7 +654,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         dialog.setNegativeButtonText(null)
         dialog.setPositiveButtonText(getString(R.string.str_ok_i_got_it))
         dialog.setGravity(Gravity.START)
-        dialog.mScrollViewMarginHorizon = 20
         dialog.setPositiveClickListener {
             dialog.dismiss()
         }
@@ -749,41 +750,43 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun getWinnable(betAmount: Double, odds: Double, oddsType: OddsType): Double {
-        var winnable = 0.0
-        when (oddsType) {
+
+        return when (oddsType) {
+
             OddsType.MYS -> {
-                winnable = if (odds < 0) {
+                if (odds < 0) {
                     betAmount
                 } else {
-                    betAmount * odds
+                    multiplyOdds(betAmount, odds)
                 }
             }
 
             OddsType.IDN -> {
-                winnable = if (odds < 0) {
+                if (odds < 0) {
                     betAmount
                 } else {
-                    betAmount * odds
+                    multiplyOdds(betAmount, odds)
                 }
             }
 
             OddsType.EU -> {
-                winnable = betAmount * (odds - 1)
+                multiplyOdds(betAmount, odds - 1)
             }
 
             else -> {
-                winnable = betAmount * odds
+                multiplyOdds(betAmount, odds)
             }
         }
 
-        return winnable
+    }
+
+    private fun multiplyOdds(betAmount: Double, odds: Double): Double {
+        return betAmount.toBigDecimal().multiply(odds.toBigDecimal()).toDouble()
     }
 
     private fun getComboWinnable(betAmount: Double, odds: Double, num: Int): Double {
-        var winnable = 0.0
-        winnable = betAmount * odds
-        winnable -= (betAmount * num)
-        return winnable
+        var winnable = betAmount.toBigDecimal().multiply(odds.toBigDecimal())
+        return winnable.subtract(betAmount.toBigDecimal().multiply(num.toBigDecimal())).toDouble()
     }
 
 
