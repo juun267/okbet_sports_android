@@ -179,7 +179,7 @@
                 android:background="@color/color_80334266_E3E8EE" />
 
             <TextView
-                android:id="@+id/tv_home_over_time"
+                android:id="@+id/tv_home_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -196,7 +196,7 @@
                 android:background="@color/color_80334266_E3E8EE" />
 
             <TextView
-                android:id="@+id/tv_home_end"
+                android:id="@+id/tv_home_score_with_overtime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -289,7 +289,7 @@
                 android:background="@color/color_80334266_E3E8EE" />
 
             <TextView
-                android:id="@+id/tv_away_over_time"
+                android:id="@+id/tv_away_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -306,7 +306,7 @@
                 android:background="@color/color_80334266_E3E8EE" />
 
             <TextView
-                android:id="@+id/tv_away_end"
+                android:id="@+id/tv_away_score_with_overtime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
