@@ -309,33 +309,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initTabLayout() {
-//        with(binding.betTypeTabLayout) {
-//            for (index in 0 until tabCount) {
-//                val tab = getTabAt(index)
-//                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
-//                val divider = tab?.customView?.findViewById<View>(R.id.divider)
-//                when (index) {
-//                    0 -> {
-//                        tvType?.text = getString(R.string.bet_list_single_type)
-//                    }
-//
-//                    1 -> {
-//                        tvType?.text = getString(R.string.bet_list_parlay_type)
-//                    }
-//                }
-//
-//                //隱藏最後一個Tab後的divider
-//                divider?.visibility = when (index) {
-//                    tabCount - 1 -> {
-//                        View.GONE
-//                    }
-//
-//                    else -> {
-//                        View.VISIBLE
-//                    }
-//                }
-//            }
-//        }
         val type = BetInfoRepository.currentStateSingleOrParlay
         Timber.d("currentStateSingleOrParlay:${type}")
         btnParlaySingle.text = if (type == 0) {
@@ -344,10 +317,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             refreshLlMoreOption()
             getString(R.string.bet_single)
         }
-
-//        val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
-//        val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
-//        tabDivider?.visibility = View.GONE
     }
 
     /**
@@ -468,19 +437,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
         currentBetOption = currentOddsChangeOp
 
-//        /**
-//         * 动态调整constraintLayout高度
-//         */
-////        binding.rvBetList.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-//            binding.clContainer.post {
-//                binding.clContainer.layoutParams = LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.MATCH_PARENT,
-//                    binding.rvBetList.height + 1.dp
-//                )
-//            }
-////        }
-
-
         binding.tvDeleteAll.setOnClickListener {
             clearCarts()
         }
@@ -541,6 +497,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betListRefactorAdapter?.closeAllKeyboard()
                 betSingleListAdapter?.closeAllKeyboard()
                 betParlayListRefactorAdapter?.closeAllKeyboard()
+                Timber.d("关闭键盘")
             }
 
             override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -566,9 +523,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
 
-            override fun onOddsChangesAcceptTips() {
-//                showOddsChangeTips()
-            }
 
             override fun onOddsChangeAcceptSelect(tvTextSelect: TextView) {
                 try {
@@ -599,11 +553,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
 
-            override fun onOddsChangesWarningTips(isShow: Boolean) {
-                Timber.d("isShow:$isShow")
-//                binding.includeOddsLayout.root.visible()
-//                binding.includeOddsLayout.tvOddsChangedTips.isVisible = isShow
-            }
+
 
             override fun onOddsChangesSetOptionListener(text: String) {
                 currentBetOption = OddsModeUtil.currentSelectModeIndexWithText(text)
