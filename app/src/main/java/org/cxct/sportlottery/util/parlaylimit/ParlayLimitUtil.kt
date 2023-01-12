@@ -83,7 +83,7 @@ object ParlayLimitUtil {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
                 //  賠率相乘
-                odd = odd.multiply(oddsList[index].first)
+                odd = odd.multiply(ArithUtil.toOddFormat(oddsList[index].first?.toDouble() ?: 1.0, 2).toBigDecimal())
             }
             maxOdds = maxOdds.max(odd)
             totalOdds = totalOdds.add(odd)

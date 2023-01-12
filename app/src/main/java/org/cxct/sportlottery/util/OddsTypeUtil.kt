@@ -5,10 +5,10 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import java.math.BigDecimal
 
 
 fun getOdds(odd: Odd?, oddsType: OddsType): Double {
@@ -25,8 +25,13 @@ fun getOdds(odd: Odd?, oddsType: OddsType): Double {
     }
 }
 
-
-fun getOdds(matchOdd: MatchOdd?, oddsType: OddsType): Double {
+/**
+ * 串关的时候，显示的赔率为欧洲盘赔率
+ */
+fun getOdds(matchOdd: MatchOdd?, oddsType: OddsType, isSingle: Boolean = true): Double {
+    if (!isSingle) {
+        return matchOdd?.odds ?: 0.0
+    }
     return if (matchOdd?.isOnlyEUType == true) {
         matchOdd.odds
     } else {
@@ -129,7 +134,7 @@ fun getOddTypeRes(
 // 如果不支持串关或者盘口关闭直接返回： ""
 fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
     var currentOddsType = OddsType.EU
-    var multipleOdds = 1.00
+    var multipleOdds = BigDecimal(1.0)
     list.forEach { itemData ->
 
         if (itemData.pointMarked || itemData.matchOdd.status != BetStatus.ACTIVATED.code) {
@@ -145,9 +150,9 @@ fun getMultipleOdds(list: MutableList<BetInfoListData>): String {
         }
 
         val tvOdd2 = getOdds(itemData.matchOdd, currentOddsType)
-        multipleOdds *= tvOdd2
-    }
+        multipleOdds = multipleOdds.multiply(TextUtil.formatForOdd(tvOdd2).toBigDecimal())
 
+    }
 
     return  "@"+TextUtil.formatMoney(multipleOdds,2)
 }

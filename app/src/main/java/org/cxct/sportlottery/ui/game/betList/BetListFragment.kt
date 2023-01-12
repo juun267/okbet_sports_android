@@ -71,6 +71,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
 import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
@@ -166,6 +167,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private val mHandler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
+            if (isDetached || context == null) {
+                return
+            }
+
             when (msg.what) {
                 BET_CONFIRM_TIPS -> {
                     val spannableStringBuilder = SpannableStringBuilder()
@@ -275,8 +280,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //設定本金, 可贏的systemCurrencySign
         binding.apply {
             titleAllBet.text = getString(R.string.total_capital, sConfigData?.systemCurrencySign)
-            titleWinnableAmount.text =
-                getString(R.string.total_win_amount)
+            titleWinnableAmount.text = getString(R.string.total_win_amount)
         }
     }
 
@@ -726,7 +730,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-            tvTotalWinnableAmount.text =  "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+            tvTotalWinnableAmount.text =
+                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
         }
 
         val betCount = if (currentBetType == 0) {
@@ -745,41 +750,43 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun getWinnable(betAmount: Double, odds: Double, oddsType: OddsType): Double {
-        var winnable = 0.0
-        when (oddsType) {
+
+        return when (oddsType) {
+
             OddsType.MYS -> {
-                winnable = if (odds < 0) {
+                if (odds < 0) {
                     betAmount
                 } else {
-                    betAmount * odds
+                    multiplyOdds(betAmount, odds)
                 }
             }
 
             OddsType.IDN -> {
-                winnable = if (odds < 0) {
+                if (odds < 0) {
                     betAmount
                 } else {
-                    betAmount * odds
+                    multiplyOdds(betAmount, odds)
                 }
             }
 
             OddsType.EU -> {
-                winnable = betAmount * (odds - 1)
+                multiplyOdds(betAmount, odds - 1)
             }
 
             else -> {
-                winnable = betAmount * odds
+                multiplyOdds(betAmount, odds)
             }
         }
 
-        return winnable
+    }
+
+    private fun multiplyOdds(betAmount: Double, odds: Double): Double {
+        return betAmount.toBigDecimal().multiply(odds.toBigDecimal()).toDouble()
     }
 
     private fun getComboWinnable(betAmount: Double, odds: Double, num: Int): Double {
-        var winnable = 0.0
-        winnable = betAmount * odds
-        winnable -= (betAmount * num)
-        return winnable
+        var winnable = betAmount.toBigDecimal().multiply(odds.toBigDecimal())
+        return winnable.subtract(betAmount.toBigDecimal().multiply(num.toBigDecimal())).toDouble()
     }
 
 

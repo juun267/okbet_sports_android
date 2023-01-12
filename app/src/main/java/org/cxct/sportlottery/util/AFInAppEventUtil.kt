@@ -21,18 +21,18 @@ object AFInAppEventUtil {
     }
 
     fun deposit(revenue: String, currency: String) {
-        val eventValues = HashMap<String, Any>()
-        eventValues.put(AFInAppEventParameterName.REVENUE, revenue)
-        eventValues.put(AFInAppEventParameterName.CURRENCY, currency)
-        AppsFlyerLib.getInstance()
-            .logEvent(MultiLanguagesApplication.getInstance(), "deposit", eventValues)
+//        val eventValues = HashMap<String, Any>()
+//        eventValues.put(AFInAppEventParameterName.REVENUE, revenue)
+//        eventValues.put(AFInAppEventParameterName.CURRENCY, currency)
+//        AppsFlyerLib.getInstance()
+//            .logEvent(MultiLanguagesApplication.getInstance(), "deposit", eventValues)
     }
 
     fun withdrawal(revenue: String, currency: String) {
-        val eventValues = HashMap<String, Any>()
-        eventValues.put(AFInAppEventParameterName.REVENUE, revenue)
-        eventValues.put(AFInAppEventParameterName.CURRENCY, currency)
-        AppsFlyerLib.getInstance().logEvent(MultiLanguagesApplication.getInstance(),
-            "withdrawal", eventValues)
+//        val eventValues = HashMap<String, Any>()
+//        eventValues.put(AFInAppEventParameterName.REVENUE, revenue)
+//        eventValues.put(AFInAppEventParameterName.CURRENCY, currency)
+//        AppsFlyerLib.getInstance().logEvent(MultiLanguagesApplication.getInstance(),
+//            "withdrawal", eventValues)
     }
 }

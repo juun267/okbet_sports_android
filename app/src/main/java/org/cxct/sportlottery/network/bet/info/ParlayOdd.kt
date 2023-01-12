@@ -7,19 +7,19 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ParlayOdd(
     @Json(name = "max")
-    var max: Long,
+    val max: Long,
     @Json(name = "min")
     val min: Long,
     @Json(name = "num")
     val num: Int,
     @Json(name = "odds")
-    var odds: Double,
+    val odds: Double,
     @Json(name = "hkOdds")
-    var hkOdds: Double?,
+    val hkOdds: Double?,
     @Json(name = "malayOdds")
-    var malayOdds: Double,
+    val malayOdds: Double,
     @Json(name = "indoOdds")
-    var indoOdds: Double,
+    val indoOdds: Double,
     @Json(name = "parlayType")
     val parlayType: String,
 ) {

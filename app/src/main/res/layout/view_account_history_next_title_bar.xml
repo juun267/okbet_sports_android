@@ -22,11 +22,10 @@
         android:padding="17dp"
         android:layout_height="50dp"
         android:paddingVertical="4dp"
-        android:src="@drawable/ic_arrow_white"
+        android:src="@drawable/ic_union"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/color_FFFFFF_414655" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_title"

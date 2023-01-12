@@ -350,7 +350,7 @@
     <string name="odds_change">Odds had changed</string>
     <string name="pending">Waiting %1$s s</string>
     <string name="confirmed">Confirmed</string>
-    <string name="bet_detail">Bets details</string>
+    <string name="bet_detail">Bet Slip details</string>
     <string name="bet_time">Betting time</string>
     <string name="bet_time2">Betting time</string>
     <string name="league_name">League Name:</string>
@@ -923,7 +923,7 @@
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
     <string name="btm_navigation_hint">%s is a Registered Trade Mark, brand and registered business name.</string>
-    <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
+    <string name="btm_navigation_copyright">Copyright © 2023 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
@@ -941,10 +941,10 @@
     <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
-    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
+    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.However, if more than 6 months since the last login time, OKBET reserves the right to charge a monthly administrative fee until the account balance reaches zero.</string>
     <string name="self_limit_froze_impotent_3">If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.</string>
     <string name="self_limit_froze_impotent_4">During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.</string>
-    <string name="self_limit_froze_impotent_5">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
+    <string name="self_limit_froze_impotent_5">During the self-exclusion time, you will be unable to deactivate your self-exclusion until the expiration of the minimum exclusion time frame.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="text_chose_language">Select your language</string>
     <!-- 複式串關詳情 -->
@@ -1011,7 +1011,7 @@
 
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
-    <string name="cancel_manual">Void</string>
+    <string name="cancel_manual">Refund</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1122,6 +1122,7 @@
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
     <string name="bet_info_list_bet">Stake</string>
+    <string name="bet_info_bet">Stake</string>
     <!--endregion-->
 
     <string name="publicity_contact">Contact</string>
@@ -1388,4 +1389,9 @@
     <string name="str_parlay_type_wrong">Parlay type wrong</string>
     <string name="new_games">New Games</string>
     <string name="bet_info_add_bet_failed">Bet Failed</string>
+    <string name="pls_enter_days_format">Please enter days (≥%d days)</string>
+    <string name="more_than_days_format">Must be more than %d days</string>
+    <string name="overtime_score">Overtime</string>
+    <string name="regular_score">Regular</string>
+    <string name="score_with_overtime">score (with overtime)</string>
 </resources>

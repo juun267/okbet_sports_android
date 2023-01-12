@@ -64,7 +64,6 @@ class HomeSlotFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.fitsSystemStatus()
-        viewModel.getConfigData()
         initView()
         initObservable()
         viewModel.getGameEntryConfig(2, 1)

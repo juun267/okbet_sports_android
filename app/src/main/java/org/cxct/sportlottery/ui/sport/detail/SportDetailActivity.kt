@@ -369,8 +369,10 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         if (num > 0) viewModel.getMoney()
     }
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        val multipleOdds = getMultipleOdds(list)
-        cl_bet_list_bar.tvOdds.text = multipleOdds
+        if (list.size > 1) {
+            val multipleOdds = getMultipleOdds(list)
+            cl_bet_list_bar.tvOdds.text = multipleOdds
+        }
     }
 
     override fun showLoginNotify() {
@@ -1095,6 +1097,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             GameType.TT.key -> setVbScoreText(matchInfo)
             GameType.BM.key -> setBmScoreText(matchInfo)
             GameType.BB.key -> setBbScoreText(matchInfo)
+            GameType.CK.key -> setCkScoreText(matchInfo)
             else -> setBkScoreText(matchInfo)
         }
     }
@@ -1143,6 +1146,11 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             setCurrentPeroid(matchInfo)
         } else
             setBkScoreText(matchInfo)
+    }
+
+    private fun setCkScoreText(matchInfo: MatchInfo) {
+        setScoreTextAtFront(matchInfo)
+        setAttack(matchInfo)
     }
 
     /**
@@ -1257,6 +1265,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 GameType.VB.key,
                 GameType.TT.key,
                 GameType.BM.key,
+                GameType.CK.key,
                 GameType.TN.key,
                 -> {
                     if (matchInfo.attack.equals("H")) {

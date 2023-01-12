@@ -441,10 +441,10 @@ class MultiLanguagesApplication : Application() {
                 }).show()
         }
 
-        private fun showPromotionPopupDialog(activity: FragmentActivity) {
+        open fun showPromotionPopupDialog(activity: FragmentActivity) {
             val token = loginSharedPref.getString(KEY_TOKEN, "")
 
-            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code } == true)
+            if (!isCreditSystem() && sConfigData?.imageList?.any { it.imageType == ImageType.PROMOTION.code && !it.imageName3.isNullOrEmpty() } == true)
                 PromotionPopupDialog(
                     activity,
                     PromotionPopupDialog.PromotionPopupListener(onClickImageListener = {

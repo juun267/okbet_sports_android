@@ -9,6 +9,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitFrozeBinding
 import org.cxct.sportlottery.enum.PassVerifyEnum
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
@@ -23,6 +24,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     View.OnClickListener {
 
     private lateinit var binding: FragmentSelfLimitFrozeBinding
+    private var minFrozeDay = sConfigData?.minFrozeDay ?: 0
 
     override fun onClick(v: View?) {
         when (v) {
@@ -68,7 +70,7 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
             afterTextChanged {
                 when {
                     it.isNullOrEmpty() -> viewModel.setFrozeEditTextError(true)
-                    it.toLong() in 1..999 -> viewModel.setFrozeEditTextError(false)
+                    it.toLong() in minFrozeDay..999 -> viewModel.setFrozeEditTextError(false)
                     else -> viewModel.setFrozeEditTextError(true)
                 }
             }
@@ -81,7 +83,10 @@ class SelfLimitFrozeFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewMod
     private fun initView() {
         binding.llImportant.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
-        binding.tvUsTime.text =  getString(R.string.text_us_east_time)
+        binding.tvUsTime.text = getString(R.string.text_us_east_time)
+        if (minFrozeDay > 0)
+            binding.etFrozeDay.hint = getString(R.string.pls_enter_days_format, minFrozeDay)
+        binding.tvError.text = getString(R.string.more_than_days_format, minFrozeDay)
     }
 
     private fun initObserve() {

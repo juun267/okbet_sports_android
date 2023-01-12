@@ -188,7 +188,6 @@ class MainHomeFragment :
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getConfigData()
         viewModel.getGameEntryConfig(1, null)
 
         viewModel.getHotLiveList()
@@ -341,6 +340,7 @@ class MainHomeFragment :
                     viewModel.getPublicityPromotion()
                 }
                 viewModel.getSportMenuFilter()
+                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
             }
         }
 //

@@ -27,6 +27,7 @@ import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
@@ -351,6 +352,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawerLayout?.isOpen == true) {
+                drawerLayout?.close()
+                return false
+            }
             if (!showBottomNavBar()) {
                 return false
             }
@@ -513,14 +518,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
+        space1.isVisible = isVisible
         cl_bet_list_bar.isVisible = isVisible and (betListCount > 0)
 
     }
 
-    fun goBetRecordDetails(date: String, gameType: String) {
+    fun goBetRecordDetails(bean: Row, date: String, gameType: String) {
         setupBottomNavBarVisibility(false)
         supportFragmentManager.beginTransaction()
-            .add(R.id.fl_content, AccountHistoryNextFragment.newInstance(date, gameType))
+            .add(R.id.fl_content, AccountHistoryNextFragment.newInstance(bean, date, gameType))
             .addToBackStack(AccountHistoryNextFragment::class.java.simpleName).commit()
     }
 

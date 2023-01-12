@@ -18,6 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <View
@@ -77,13 +78,23 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingVertical="5dp"
                 android:gravity="center"
-                android:text="@string/total_score_over_time"
+                android:text="@string/regular_score"
                 android:textColor="@color/color_9BB3D9_535D76"
-                android:textSize="@dimen/textSize12sp" />
+                android:textSize="@dimen/textSize10sp" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingVertical="5dp"
+                android:gravity="center"
+                android:text="@string/score_with_overtime"
+                android:textColor="@color/color_9BB3D9_535D76"
+                android:textSize="@dimen/textSize10sp" />
 
         </LinearLayout>
 
@@ -124,7 +135,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                tools:text="0"
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -141,7 +152,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                tools:text="0"
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -158,7 +169,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                tools:text="0"
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -168,18 +179,33 @@
                 android:background="@color/color_80334266_E3E8EE" />
 
             <TextView
-                android:id="@+id/tv_home_over_time"
+                android:id="@+id/tv_home_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:text=""
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_80334266_E3E8EE" />
 
+            <TextView
+                android:id="@+id/tv_home_score_with_overtime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="-"
+                android:textColor="@color/color_6C7BA8_6C7BA8"
+                android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
 
         <View
@@ -219,7 +245,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                tools:text="0"
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -236,7 +262,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                tools:text="0"
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -253,7 +279,7 @@
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                tools:text="0"
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
@@ -263,17 +289,33 @@
                 android:background="@color/color_80334266_E3E8EE" />
 
             <TextView
-                android:id="@+id/tv_away_over_time"
+                android:id="@+id/tv_away_regular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:text=""
+                android:text="-"
                 android:textColor="@color/color_6C7BA8_6C7BA8"
                 android:textSize="@dimen/textSize14sp" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_80334266_E3E8EE" />
+
+            <TextView
+                android:id="@+id/tv_away_score_with_overtime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="-"
+                android:textColor="@color/color_6C7BA8_6C7BA8"
+                android:textSize="@dimen/textSize14sp" />
         </LinearLayout>
 
         <View

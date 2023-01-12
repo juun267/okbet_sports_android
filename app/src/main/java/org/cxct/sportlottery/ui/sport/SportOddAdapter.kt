@@ -216,7 +216,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>,
         ) {
-
+            resetStatusView()
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             item.matchInfo?.let {
@@ -517,9 +517,34 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                         GameType.TT.key -> setVbScoreText(item.matchInfo)
                         GameType.BM.key -> setBmScoreText(item.matchInfo)
                         GameType.BB.key -> setBbScoreText(item.matchInfo)
+                        GameType.CK.key -> setCkScoreText(item.matchInfo)
                         else -> item.matchInfo?.let { setBkScoreText(it) }
                     }
                 }
+            }
+        }
+
+        private fun resetStatusView() {
+            itemView.apply {
+                league_neutral.isVisible = false
+                league_corner_kicks.isVisible = false
+                league_spt.isVisible = false
+                tv_peroid.isVisible = false
+                content_baseball_status.isVisible = false
+                ic_attack_h.isVisible = false
+                ic_attack_c.isVisible = false
+                ic_attack_tn_h.isVisible = false
+                ic_attack_tn_c.isVisible = false
+                lin_home_round_score.isVisible = false
+                lin_away_round_score.isVisible = false
+                league_odd_yellow_cards_home.isVisible = false
+                league_odd_yellow_cards_away.isVisible = false
+                league_odd_match_cards_home.isVisible = false
+                league_odd_match_cards_away.isVisible = false
+                tv_peroids_score.isVisible = false
+                iv_live.isVisible = false
+                iv_play.isVisible = false
+                iv_animation.isVisible = false
             }
         }
 
@@ -564,6 +589,11 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                 setBBStatus(matchInfo)
             } else
                 setBkScoreText(matchInfo)
+        }
+
+        private fun setCkScoreText(matchInfo: MatchInfo) {
+            setScoreTextAtFront(matchInfo)
+            setAttack(matchInfo)
         }
 
         /**
@@ -677,6 +707,7 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
                         GameType.VB.key,
                         GameType.TT.key,
                         GameType.BM.key,
+                        GameType.CK.key,
                         -> {
                             if (matchInfo.attack.equals("H")) {
                                 ic_attack_h.visibility = View.VISIBLE

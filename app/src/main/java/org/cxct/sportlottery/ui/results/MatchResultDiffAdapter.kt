@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_h
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_home_third
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.ll_game_detail_first_item
+import kotlinx.android.synthetic.main.content_game_detail_result_ih_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tn_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tt_rv.view.*
@@ -458,7 +459,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION.code }
             val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION.code }
             val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME.code }
-                ?: matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val regularSection = matchStatus?.find { it.status == StatusType.END_GAME.code }
 
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
@@ -469,28 +470,24 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 }
 
                 //第一節
-                firstSection?.let {
-                    tv_home_first.text = it.homeScore?.toString() ?: ""
-                    tv_away_first.text = it.awayScore?.toString() ?: ""
-                }
+                tv_home_first.text = firstSection?.homeScore?.toString() ?: "-"
+                tv_away_first.text = firstSection?.awayScore?.toString() ?: "-"
 
                 //第二節
-                secondSection?.let {
-                    tv_home_second.text = it.homeScore?.toString() ?: ""
-                    tv_away_second.text = it.awayScore?.toString() ?: ""
-                }
+                tv_home_second.text = secondSection?.homeScore?.toString() ?: "-"
+                tv_away_second.text = secondSection?.awayScore?.toString() ?: "-"
 
                 //第三節
-                thirdSection?.let {
-                    tv_home_third.text = it.homeScore?.toString() ?: ""
-                    tv_away_third.text = it.awayScore?.toString() ?: ""
-                }
+                tv_home_third.text = thirdSection?.homeScore?.toString() ?: "-"
+                tv_away_third.text = thirdSection?.awayScore?.toString() ?: "-"
 
-                //完場
-                overSection?.let {
-                    tv_home_over_time.text = it.homeScore?.toString() ?: ""
-                    tv_away_over_time.text = it.awayScore?.toString() ?: ""
-                }
+                //常规比分
+                tv_home_regular.text = regularSection?.homeScore?.toString() ?: "-"
+                tv_away_regular.text = regularSection?.awayScore?.toString() ?: "-"
+
+                //总分含加时
+                tv_home_score_with_overtime.text = overSection?.homeScore?.toString() ?: "-"
+                tv_away_score_with_overtime.text = overSection?.awayScore?.toString() ?: "-"
             }
         }
     }
