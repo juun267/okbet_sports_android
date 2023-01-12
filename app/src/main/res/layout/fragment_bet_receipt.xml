@@ -248,8 +248,7 @@
                     android:id="@+id/iv_result_status"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    app:tint="@color/color_1EB65B"
-                    android:src="@drawable/ic_success_white" />
+                    android:src="@drawable/ic_bet_successful" />
 
                 <TextView
                     android:id="@+id/tv_result_status"
@@ -269,7 +268,7 @@
                 android:gravity="center"
                 android:visibility="gone"
                 android:orientation="horizontal"
-                tools:visibility="visible"
+                tools:visibility="gone"
                 android:background="@drawable/drawable_bet_processing">
 
                 <TextView
@@ -282,7 +281,6 @@
                 <ProgressBar
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-
                     android:indeterminateDrawable="@drawable/rotate_bet_loading_view_yellow" />
 
             </LinearLayout>

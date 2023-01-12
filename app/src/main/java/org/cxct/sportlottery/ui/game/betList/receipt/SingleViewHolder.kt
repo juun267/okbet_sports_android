@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -59,8 +61,13 @@ class SingleViewHolder private constructor(itemView: View) :
                 tv_winnable_amount.text = "$currencySign${TextUtil.formatForOdd(winnable ?: 0.0)}"
 //                tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
 
-                tvBetOrder.text = if (orderNo.isNullOrEmpty()) "-" else "${LocalUtils.getString(R.string.text_account_history_number)}:${orderNo}"
-                tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
+                if(orderNo.isNullOrEmpty()){
+                    tvBetTime.gone()
+                }else{
+                    tvBetTime.visible()
+                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else "${LocalUtils.getString(R.string.text_account_history_number)}:${orderNo}"
+                    tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
+                }
 
                 if (status != 0)
                     tv_bet_status_single.setBetReceiptStatus(status)
