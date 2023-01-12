@@ -17,8 +17,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
@@ -217,10 +219,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)
-        binding.apply {
-            gameViewModel = this@BetListFragment.viewModel
-        }
+        binding =/*DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)*/
+            FragmentBetListBinding.inflate(layoutInflater)
+//        binding.apply {
+////            gameViewModel = this@BetListFragment.viewModel
+//        }
 
         return binding.root
     }
@@ -306,33 +309,33 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initTabLayout() {
-        with(binding.betTypeTabLayout) {
-            for (index in 0 until tabCount) {
-                val tab = getTabAt(index)
-                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
-                val divider = tab?.customView?.findViewById<View>(R.id.divider)
-                when (index) {
-                    0 -> {
-                        tvType?.text = getString(R.string.bet_list_single_type)
-                    }
-
-                    1 -> {
-                        tvType?.text = getString(R.string.bet_list_parlay_type)
-                    }
-                }
-
-                //隱藏最後一個Tab後的divider
-                divider?.visibility = when (index) {
-                    tabCount - 1 -> {
-                        View.GONE
-                    }
-
-                    else -> {
-                        View.VISIBLE
-                    }
-                }
-            }
-        }
+//        with(binding.betTypeTabLayout) {
+//            for (index in 0 until tabCount) {
+//                val tab = getTabAt(index)
+//                val tvType = tab?.customView?.findViewById<TextView>(R.id.tvType)
+//                val divider = tab?.customView?.findViewById<View>(R.id.divider)
+//                when (index) {
+//                    0 -> {
+//                        tvType?.text = getString(R.string.bet_list_single_type)
+//                    }
+//
+//                    1 -> {
+//                        tvType?.text = getString(R.string.bet_list_parlay_type)
+//                    }
+//                }
+//
+//                //隱藏最後一個Tab後的divider
+//                divider?.visibility = when (index) {
+//                    tabCount - 1 -> {
+//                        View.GONE
+//                    }
+//
+//                    else -> {
+//                        View.VISIBLE
+//                    }
+//                }
+//            }
+//        }
         val type = BetInfoRepository.currentStateSingleOrParlay
         Timber.d("currentStateSingleOrParlay:${type}")
         btnParlaySingle.text = if (type == 0) {
@@ -342,10 +345,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             getString(R.string.bet_single)
         }
 
-        val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
-        val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
-        tabDivider?.visibility = View.GONE
-
+//        val lastTab = binding.betTypeTabLayout.getTabAt(binding.betTypeTabLayout.tabCount - 1)
+//        val tabDivider = lastTab?.customView?.findViewById<View>(R.id.divider)
+//        tabDivider?.visibility = View.GONE
     }
 
     /**
@@ -415,14 +417,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
             binding.apply {
                 clParlayList.visibility = View.GONE
-                clTitle.ivArrow.background = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_single_bet_delete)
+                clTitle.ivArrow.background = AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_single_bet_delete
+                )
             }
 
         } else {
             currentBetType = 1
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
             refreshLlMoreOption()
-            binding.clTitle.ivArrow.background = AppCompatResources.getDrawable(requireContext(),R.drawable.ic_arrow_up_double)
+            binding.clTitle.ivArrow.background =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_up_double)
         }
         checkAllAmountCanBet()
         refreshAllAmount()
@@ -460,39 +466,22 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //串关赔率的接受任何赔率变化
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
-//        val currentSelectText = OddsModeUtil.currentSelectModeText(currentOddsChangeOp)
-//        tvAcceptOddsChange.text = currentSelectText
-
         currentBetOption = currentOddsChangeOp
 
-//        tvAcceptOddsChange.setOnClickListener {
-//            tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
-//                null,
-//                null,
-//                ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
-//                null
-//            )
-//
-//            val popupWindow = OkPopupWindow(
-//                requireContext(), tvAcceptOddsChange.text.toString()
-//            ) { text, position ->
-//                tvAcceptOddsChange.text = text
-//                currentBetOption = position
-//                viewModel.updateOddsChangeOption(currentBetOption)
-//            }
-//            popupWindow.setOnDismissListener {
-//                tvAcceptOddsChange.setCompoundDrawablesWithIntrinsicBounds(
-//                    null,
-//                    null,
-//                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
-//                    null
+//        /**
+//         * 动态调整constraintLayout高度
+//         */
+////        binding.rvBetList.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+//            binding.clContainer.post {
+//                binding.clContainer.layoutParams = LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.MATCH_PARENT,
+//                    binding.rvBetList.height + 1.dp
 //                )
 //            }
-//            popupWindow.showUpCenter(it)
-//        }
+////        }
 
 
-        tv_close.setOnClickListener {
+        binding.tvDeleteAll.setOnClickListener {
             clearCarts()
         }
 

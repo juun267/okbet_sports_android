@@ -1117,7 +1117,7 @@
     <string name="total_capital">本金：%s</string>
     <string name="total_win_amount">可赢：</string>
     <string name="delete_bet">删除</string>
-    <string name="delete_bet_all">删除全部</string>
+    <string name="delete_bet_all">全部删除</string>
     <string name="btn_login_bet">登录后可投注</string>
     <string name="confirm_single_bets">确认%d单注投注</string>
     <string name="confirm_multiple_bets">确认%d串关投注</string>

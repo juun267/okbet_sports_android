@@ -125,7 +125,8 @@ class BetInfoItemViewHolder(
             tvNoParlay.isVisible = cannotParlay
             //盤口關閉的提示
             if (isLock) layoutKeyBoard.hideKeyboard()
-            tvBetLock.isVisible = isLock
+//            tvBetLock.isVisible = isLock
+            tvBetLock.isVisible = false
             tvBetLock.text =
                 if (cannotParlay) root.context.getString(R.string.bet_info_no_parlay_hint)
                 else root.context.getString(R.string.bet_info_bet_lock_hint)
