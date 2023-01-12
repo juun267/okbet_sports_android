@@ -352,6 +352,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (drawerLayout?.isOpen == true) {
+                drawerLayout?.close()
+                return false
+            }
             if (!showBottomNavBar()) {
                 return false
             }
