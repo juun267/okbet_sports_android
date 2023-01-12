@@ -2,6 +2,7 @@ package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -83,7 +84,7 @@ object ParlayLimitUtil {
             var odd = BigDecimal.ONE
             for (index in oddsIndexArray) {
                 //  賠率相乘
-                odd = odd.multiply(oddsList[index].first)
+                odd = odd.multiply(ArithUtil.toOddFormat(oddsList[index].first?.toDouble() ?: 1.0).toBigDecimal())
             }
             maxOdds = maxOdds.max(odd)
             totalOdds = totalOdds.add(odd)
