@@ -7,12 +7,10 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.dialog_redenvelope_success.*
-import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 
 class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
@@ -49,7 +47,7 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
         iv_shinne.startAnimation(operatingAnim)
         val amount = arguments?.getString(AMOUNT) ?: "0"
         tv_amount.text = BuildConfig.SYSTEM_CURREMCY_SIGN + " " + TextUtil.format(amount)
-        iv_close.setOnClickListener {
+        btn_ok.setOnClickListener {
             dismiss()
         }
     }

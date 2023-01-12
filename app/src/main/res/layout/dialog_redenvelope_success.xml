@@ -9,28 +9,41 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="60dp">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="70dp"
+            android:clipChildren="false"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="60dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/bg_redpacket_success" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="60dp"
+                android:layout_marginTop="130dp"
+                android:text="@string/red_envelope_congratulations"
+                android:textAlignment="center"
+                android:textColor="#7F3B0C"
+                android:textSize="@dimen/textSize20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="180dp"
                 android:fontFamily="@font/din_regular"
                 android:text="₱ 1,000.000"
                 android:textColor="#E48D00"
@@ -40,31 +53,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="60dp"
-                android:layout_marginTop="60dp"
-                android:text="@string/red_envelope_congratulations"
-                android:textAlignment="center"
-                android:textColor="#7F3B0C"
-                android:textSize="@dimen/textSize20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginHorizontal="@dimen/margin_42"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="160dp"
                 android:text="@string/pls_check_amount"
                 android:textAlignment="center"
                 android:textColor="#BA6D38"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
+                android:id="@+id/btn_ok"
                 android:layout_width="140dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal|bottom"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="100dp"
                 android:gravity="center"
                 android:background="@drawable/bg_btn_yellow"
                 android:textColor="@color/color_FFFFFF"
@@ -78,8 +80,66 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="@dimen/margin_50"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginTop="90dp"
                     android:src="@drawable/ic_pop_chest" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="200dp"
+                    android:src="@drawable/ic_pop_basketball" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/ic_pop_gold" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginTop="180dp"
+                    android:src="@drawable/ic_pop_football" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/ic_streamer1" />
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginTop="160dp"
+                    android:src="@drawable/ic_streamer1" />
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginRight="70dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_streamer2" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="300dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_streamer2" />
             </RelativeLayout>
         </FrameLayout>
 
@@ -92,6 +152,7 @@
                 android:id="@+id/iv_shinne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-20dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_circular" />
 
