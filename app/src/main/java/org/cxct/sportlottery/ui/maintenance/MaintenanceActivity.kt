@@ -1,8 +1,11 @@
 package org.cxct.sportlottery.ui.maintenance
 
 import android.os.Bundle
+import android.text.TextUtils
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_maintenance.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.index.config.ConfigData
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -23,12 +26,13 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         viewModel.getConfig()
         initObserver()
         initSocketObserver()
-        initServiceButton()
+        initServiceButton(sConfigData)
     }
 
     private fun initObserver() {
         viewModel.configResult.observe(this) {
             //確認當前平台是否維護中
+            it?.configData?.let { initServiceButton(it) }
             when (it?.configData?.maintainStatus) {
                 FLAG_OPEN -> {
                     //仍然維護中則更新該平台目前的維護資訊
@@ -50,21 +54,23 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
         }
     }
 
-    private fun initServiceButton() {
+    private fun initServiceButton(configData: ConfigData?) {
 //        btn_floating_service.setView4Maintenance(this)
+
+        val serviceUrl = configData?.customerServiceUrl
+        val serviceUrl2 = configData?.customerServiceUrl2
+
+        btn_service.isVisible = !TextUtils.isEmpty(serviceUrl) || !TextUtils.isEmpty(serviceUrl2)
         btn_service.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)
-                }
+
+            if (!TextUtils.isEmpty(serviceUrl)) {
+                JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl)
+                return@setOnClickListener
+            }
+
+            if (!TextUtils.isEmpty(serviceUrl2)) {
+                JumpUtil.toExternalWeb(this@MaintenanceActivity, serviceUrl2)
+                return@setOnClickListener
             }
         }
     }
