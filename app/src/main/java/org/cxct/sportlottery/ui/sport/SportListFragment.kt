@@ -1,12 +1,18 @@
 package org.cxct.sportlottery.ui.sport
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.PathMeasure
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +34,6 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -146,19 +151,19 @@ class SportListFragment :
                 //目前無法監聽收合動畫
                 firstVisibleRange(400)
             }
-            leagueOddListener =
-                LeagueOddListener(clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
+            leagueOddListener = LeagueOddListener(
+                    clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
                     matchInfoList.find {
                         TextUtils.equals(matchId, it.id)
                     }?.let {
                         navMatchDetailPage(it)
                     }
                 },
-                    clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    clickListenerBet = { view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                         if (mIsEnabled) {
                             avoidFastDoubleClick()
                             addOddsDialog(
-                                matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
+                                view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
                             )
                         }
                     },
@@ -882,6 +887,7 @@ class SportListFragment :
     }
 
     private fun addOddsDialog(
+        view:View,
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
@@ -908,8 +914,10 @@ class SportListFragment :
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as MainTabActivity).setupBetData(fastBetDataBean)
+        (activity as MainTabActivity).setupBetData(fastBetDataBean,view)
     }
+
+
 
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {

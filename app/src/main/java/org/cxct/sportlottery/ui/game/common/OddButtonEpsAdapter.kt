@@ -78,7 +78,7 @@ class OddButtonEpsViewHolder private constructor(
 
             setOnClickListener {
                 it.isSelected = !it.isSelected
-                oddButtonListener?.onClickBet(matchInfo, odd, PlayCate.EPS.value)
+                oddButtonListener?.onClickBet(this,matchInfo, odd, PlayCate.EPS.value)
             }
 
             isSelected = QuickListManager.getQuickSelectedList()?.contains(odd.id) ?: false

@@ -293,8 +293,9 @@ class QuickListView @JvmOverloads constructor(
 
         rv_home.apply {
             mLCSHomeAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, homeList, oddsType = oddsType, isOddPercentage = true).apply {
-                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                listener = OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, _ ->
                     leagueOddListener?.onClickBet(
+                        view,
                         matchInfo,
                         odd,
                         playCateCode,
@@ -309,8 +310,9 @@ class QuickListView @JvmOverloads constructor(
 
         rv_draw.apply {
             mLCSDrawAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, drawList, oddsType = oddsType, isOddPercentage = true).apply {
-                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                listener = OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, _ ->
                     leagueOddListener?.onClickBet(
+                        view,
                         matchInfo,
                         odd,
                         playCateCode,
@@ -325,8 +327,9 @@ class QuickListView @JvmOverloads constructor(
 
         rv_away.apply {
             mLCSAwayAdapter = TypeLCSAdapter(mMatchOdd?.matchInfo, awayList, oddsType = oddsType, isOddPercentage = true).apply {
-                listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, _ ->
+                listener = OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, _ ->
                     leagueOddListener?.onClickBet(
+                        view,
                         matchInfo,
                         odd,
                         playCateCode,
@@ -350,8 +353,9 @@ class QuickListView @JvmOverloads constructor(
         mOddButtonPairAdapter = OddButtonPairAdapter(mMatchOdd?.matchInfo).apply {
             this.oddsType = oddsType
             listener =
-                OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                     leagueOddListener?.onClickBet(
+                        view,
                         matchInfo,
                         odd,
                         getQuickPairPlayCateCode(playCateCode),
@@ -482,8 +486,9 @@ class QuickListView @JvmOverloads constructor(
                 this.odds = quickOdds
                 this.oddsType = oddsType
                 this.listener =
-                    OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                    OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                         leagueOddListener?.onClickBet(
+                            view,
                             matchInfo,
                             odd,
                             playCateCode,
@@ -505,8 +510,9 @@ class QuickListView @JvmOverloads constructor(
             OddButtonEpsAdapter(mMatchOdd?.matchInfo).apply {
                 this.oddsType = oddsType
                 listener =
-                    OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                    OddButtonListener {view,matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                         leagueOddListener?.onClickBet(
+                            view,
                             matchInfo,
                             odd,
                             playCateCode,

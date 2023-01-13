@@ -25,6 +25,8 @@
     <TextView
         android:id="@+id/sport_type_text"
         android:layout_width="wrap_content"
+        android:gravity="center"
+        android:maxWidth="60dp"
         android:layout_height="wrap_content"
         android:text="@string/soccer"
         android:textColor="@color/color_select_blue_black"
@@ -38,8 +40,10 @@
     <TextView
         android:id="@+id/sport_count_text"
         android:layout_width="wrap_content"
+        android:maxWidth="60dp"
         android:layout_height="wrap_content"
         android:maxLines="1"
+        android:gravity="center"
         android:textColor="@color/color_select_blue_black"
         android:textSize="@dimen/textSize12sp"
         android:fontFamily="@font/din_bold"

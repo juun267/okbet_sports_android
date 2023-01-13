@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.didichuxing.doraemonkit.util.ToastUtils
+import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
@@ -463,7 +463,8 @@ abstract class BaseOddButtonViewModel(
                                 failedReason = it.code
                             }
                         }
-                        ToastUtils.showShort(BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+                        ToastUtils.s(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+//                        ToastUtils.showShort(BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
                         //处理赔率更新
                         //_betFailed.postValue(Pair(true, failedReason))
                     }

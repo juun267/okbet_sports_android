@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.view.View
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -17,7 +18,7 @@ class LeagueOddListener(
      * matchType 專給串關使用, 主要辨別是否為滾球, 從串關跳轉至滾球賽事詳情
      */
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>, gameMatchType: MatchType, liveVideo: Int) -> Unit,
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
+    val clickListenerBet: (view: View, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?) -> Unit,
     val clickListenerQuickCateTab: (matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
@@ -33,6 +34,7 @@ class LeagueOddListener(
     var clickOdd: Odd? = null
 
     fun onClickBet(
+        view:View,
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
@@ -40,7 +42,7 @@ class LeagueOddListener(
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?
     ) {
         clickOdd = odd
-        clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
+        clickListenerBet(view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
     }
 
     fun onClickQuickCateTab(matchOdd: MatchOdd, quickPlayCate: QuickPlayCate) = clickListenerQuickCateTab(matchOdd, quickPlayCate)

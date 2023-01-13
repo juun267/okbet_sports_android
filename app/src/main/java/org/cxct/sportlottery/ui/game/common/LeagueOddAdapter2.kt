@@ -931,8 +931,9 @@ class LeagueOddAdapter2(private val matchType: MatchType) : RecyclerView.Adapter
                     //this.oddsType = oddsType
                     this.matchType = matchType
                     this.listener =
-                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                        OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                             leagueOddListener?.onClickBet(
+                                view,
                                 matchInfo,
                                 odd,
                                 playCateCode,

@@ -224,7 +224,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //        binding.apply {
 ////            gameViewModel = this@BetListFragment.viewModel
 //        }
-
         return binding.root
     }
 
@@ -302,10 +301,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             tv_remove_closed_selections.setOnClickListener { removeClosedPlat() }
         }
-
-        /*ll_odds_close_warn.setOnClickListener {
-            removeClosedPlat()
-        }*/
     }
 
     private fun initTabLayout() {

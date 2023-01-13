@@ -122,7 +122,7 @@ class GameLeagueFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewM
                 clickListenerPlayType = { matchId, matchInfoList, gameMatchType, liveVideo ->
                     navMatchDetailPage(matchId, matchInfoList, gameMatchType)
                 },
-                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     mSelectedMatchInfo = matchInfo
                     if (mIsEnabled) {
                         avoidFastDoubleClick()

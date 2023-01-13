@@ -1020,8 +1020,9 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             leagueOddListener: LeagueOddListener?) = oddButtonPagerAdapter.run {
 
             this.matchType = matchType
-            this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+            this.listener = OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                 leagueOddListener?.onClickBet(
+                    view,
                     matchInfo,
                     odd,
                     playCateCode,

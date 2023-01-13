@@ -55,7 +55,7 @@ class TypeLCSAdapter(
                 setOnClickListener {
                     odd?.let { o ->
                         it.isSelected = !it.isSelected
-                        listener?.onClickBet(matchInfo, o, PlayCate.LCS.value)
+                        listener?.onClickBet(this,matchInfo, o, PlayCate.LCS.value)
                     }
                 }
                 isSelected = QuickListManager.getQuickSelectedList()?.contains(odd?.id) ?: false

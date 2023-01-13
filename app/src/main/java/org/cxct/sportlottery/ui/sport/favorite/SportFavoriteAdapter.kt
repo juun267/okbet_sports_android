@@ -1076,8 +1076,9 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                     //this.oddsType = oddsType
                     this.matchType = matchType
                     this.listener =
-                        OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
+                        OddButtonListener { view,matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                             leagueOddListener?.onClickBet(
+                                view,
                                 matchInfo,
                                 odd,
                                 playCateCode,
