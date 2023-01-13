@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="150dp"
                 android:text="@string/redenvelope_fail_desp"
                 android:textAlignment="center"
                 android:textColor="#737D8D"
