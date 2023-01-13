@@ -8,17 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_self_limit_bet.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentSelfLimitBetBinding
 import org.cxct.sportlottery.enum.PassVerifyEnum
-import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomPasswordVerifyDialog
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.TextUtil
 
 /**
@@ -28,6 +24,12 @@ import org.cxct.sportlottery.util.TextUtil
 class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel::class),
     View.OnClickListener {
 
+    val perBetMinAmount =
+        if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMinAmount?.toInt()
+            ?: 0
+    val perBetMaxAmount =
+        if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0 else sConfigData?.perBetMaxAmount?.toInt()
+            ?: 0
     private lateinit var binding: FragmentSelfLimitBetBinding
     private var textWatch: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -39,14 +41,14 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
         override fun afterTextChanged(s: Editable?) {
             s.toString().let {
                 try {
-                    val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
-                    val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
+
                     when {
                         it.isEmpty() -> viewModel.setBetEditTextError(true)
 //                        it.toDouble()<=0 -> return@let
-                        it.toDouble() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(false)
-                        it.toDouble() > perBetMaxAmount -> etMount.
-                        setText(perBetMaxAmount.toString().toCharArray(),0,perBetMaxAmount.toString().length)
+                        it.toInt() in (perBetMinAmount)..(perBetMaxAmount) -> viewModel.setBetEditTextError(
+                            false)
+                        it.toInt() > perBetMaxAmount -> etMount.setText(perBetMaxAmount.toString()
+                            .toCharArray(), 0, perBetMaxAmount.toString().length)
                         else -> viewModel.setBetEditTextError(true)
                     }
                 }catch (e:Exception){
@@ -108,6 +110,8 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
     }
 
     private fun initView() {
+        binding.tvError.text =
+            getString(R.string.self_limit_error_format, perBetMinAmount, perBetMaxAmount)
         binding.llImportant.setOnClickListener(this)
         binding.btnConfirm.setOnClickListener(this)
         if (viewModel.userInfo.value?.perBetLimit == null) {
@@ -132,13 +136,10 @@ class SelfLimitBetFragment : BaseFragment<SelfLimitViewModel>(SelfLimitViewModel
             }
         }
 
-        val perBetMinAmount = if (sConfigData?.perBetMinAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMinAmount?.toDouble() ?: 0.0
-        val perBetMaxAmount = if (sConfigData?.perBetMaxAmount.isNullOrEmpty()) 0.0 else sConfigData?.perBetMaxAmount?.toDouble() ?: 0.0
         binding.tvLimit.text = String.format(
             getString(R.string.self_limit_per_bet_limit_user_limit),  sConfigData?.systemCurrencySign ?: " ",
             TextUtil.formatMoney(perBetMinAmount),
             TextUtil.formatMoney(perBetMaxAmount)
-
         )
     }
 

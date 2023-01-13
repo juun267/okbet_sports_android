@@ -58,14 +58,14 @@ object SocketUpdateUtil {
 
                 val homeTotal = matchStatusCO.homeTotalScore ?: 0
                 val homeOut = matchStatusCO.homeOut ?: 0
-                if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
+                if (matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
                     matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
                     isNeedRefresh = true
                 }
 
                 val awayTotal = matchStatusCO.awayTotalScore ?: 0
                 val awayOut = matchStatusCO.awayOut ?: 0
-                if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
+                if (matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
                     matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
                     isNeedRefresh = true
                 }
@@ -206,17 +206,16 @@ object SocketUpdateUtil {
         matchOdd.matchInfo?.matchStatusList =
             matchStatusChangeEvent.matchStatusList ?: matchStatusCO.periods
         if (matchStatusCO.gameType == GameType.CK.key) {
-
             val homeTotal = matchStatusCO.homeTotalScore ?: 0
             val homeOut = matchStatusCO.homeOut ?: 0
-            if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
+            if (matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
                 matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
                 isNeedRefresh = true
             }
 
             val awayTotal = matchStatusCO.awayTotalScore ?: 0
             val awayOut = matchStatusCO.awayOut ?: 0
-            if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
+            if (matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
                 matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
                 isNeedRefresh = true
             }
@@ -345,7 +344,7 @@ object SocketUpdateUtil {
 
                     val homeTotal = matchStatusCO.homeTotalScore ?: 0
                     val homeOut = matchStatusCO.homeOut ?: 0
-                    if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
+                    if (matchStatusCO.homeScore.toString() != "${homeTotal}/${homeOut}") {
                         matchOdd.matchInfo?.homeScore = "${homeTotal}/${homeOut}"
                         isNeedRefresh = true
                     }
@@ -353,7 +352,7 @@ object SocketUpdateUtil {
 
                     val awayTotal = matchStatusCO.awayTotalScore ?: 0
                     val awayOut = matchStatusCO.awayOut ?: 0
-                    if (matchStatusCO.awayScore != null && matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
+                    if (matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
                         matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
                         isNeedRefresh = true
                     }
@@ -455,7 +454,7 @@ object SocketUpdateUtil {
     }
 
     private fun needUpdateTotalScore(gameType: String?) = when (gameType) {
-        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key -> true
+        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.CK.key -> true
         else -> false
     }
 
@@ -465,7 +464,7 @@ object SocketUpdateUtil {
     }
 
     private fun needAttack(gameType: String?) = when (gameType) {
-        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key -> true
+        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key, GameType.BB.key, GameType.CK.key -> true
         else -> false
     }
 

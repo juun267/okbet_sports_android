@@ -1414,6 +1414,7 @@
     <string name="overtime_score">Overtime</string>
     <string name="regular_score">Regular</string>
     <string name="score_with_overtime">score (with overtime)</string>
+    <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
 
 
 </resources>
