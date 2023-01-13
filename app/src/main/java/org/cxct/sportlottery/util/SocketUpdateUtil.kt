@@ -69,6 +69,14 @@ object SocketUpdateUtil {
                     matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
                     isNeedRefresh = true
                 }
+                if (matchStatusCO.homeOver != null && matchStatusCO.homeOver != matchOdd.matchInfo?.homeOver) {
+                    matchOdd.matchInfo?.homeOver = matchStatusCO.homeOver
+                    isNeedRefresh = true
+                }
+                if (matchStatusCO.awayOver != null && matchStatusCO.awayOver != matchOdd.matchInfo?.awayOver) {
+                    matchOdd.matchInfo?.awayOver = matchStatusCO.awayOver
+                    isNeedRefresh = true
+                }
             } else {
                 if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
                     matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
@@ -219,6 +227,14 @@ object SocketUpdateUtil {
                 matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
                 isNeedRefresh = true
             }
+            if (matchStatusCO.homeOver != null && matchStatusCO.homeOver != matchOdd.matchInfo?.homeOver) {
+                matchOdd.matchInfo?.homeOver = matchStatusCO.homeOver
+                isNeedRefresh = true
+            }
+            if (matchStatusCO.awayOver != null && matchStatusCO.awayOver != matchOdd.matchInfo?.awayOver) {
+                matchOdd.matchInfo?.awayOver = matchStatusCO.awayOver
+                isNeedRefresh = true
+            }
         } else {
             if (matchStatusCO.homeScore != null && matchStatusCO.homeScore.toString() != matchOdd.matchInfo?.homeScore) {
                 matchOdd.matchInfo?.homeScore = "${matchStatusCO.homeScore}"
@@ -349,11 +365,18 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-
                     val awayTotal = matchStatusCO.awayTotalScore ?: 0
                     val awayOut = matchStatusCO.awayOut ?: 0
                     if (matchStatusCO.awayScore.toString() != "${awayTotal}/${awayOut}") {
                         matchOdd.matchInfo?.awayScore = "${awayTotal}/${awayOut}"
+                        isNeedRefresh = true
+                    }
+                    if (matchStatusCO.homeOver != null && matchStatusCO.homeOver != matchOdd.matchInfo?.homeOver) {
+                        matchOdd.matchInfo?.homeOver = matchStatusCO.homeOver
+                        isNeedRefresh = true
+                    }
+                    if (matchStatusCO.awayOver != null && matchStatusCO.awayOver != matchOdd.matchInfo?.awayOver) {
+                        matchOdd.matchInfo?.awayOver = matchStatusCO.awayOver
                         isNeedRefresh = true
                     }
                 } else {

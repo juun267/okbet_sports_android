@@ -38,6 +38,10 @@ interface MatchInfo {
     var thirdBaseBag: Int?
     var outNumber: Int?
 
+    //CK
+    var homeOver: String?
+    var awayOver: String?
+
     var stopped: Int? //是否计时停止 1:是 ，0：否
     var matchStatusList: List<MatchStatus>?
 }

@@ -43,7 +43,8 @@ data class MatchInfo(
     @Json(name = "source")
     val source: Int?,
     @Json(name = "parlay")
-    val parlay: Int? //parlay (是否可以参加过关，0：否，1：是)
+    val parlay: Int?, //parlay (是否可以参加过关，0：否，1：是)
+    override var homeOver: String?, override var awayOver: String?,
 ) : MatchInfo {
 
     override val gameType: String? = null

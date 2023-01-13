@@ -18,6 +18,51 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_favorite.view.*
+import kotlinx.android.synthetic.main.item_sport_favorite.view.content_baseball_status
+import kotlinx.android.synthetic.main.item_sport_favorite.view.hIndicator
+import kotlinx.android.synthetic.main.item_sport_favorite.view.ic_attack_c
+import kotlinx.android.synthetic.main.item_sport_favorite.view.ic_attack_h
+import kotlinx.android.synthetic.main.item_sport_favorite.view.ic_attack_tn_c
+import kotlinx.android.synthetic.main.item_sport_favorite.view.ic_attack_tn_h
+import kotlinx.android.synthetic.main.item_sport_favorite.view.iv_animation
+import kotlinx.android.synthetic.main.item_sport_favorite.view.iv_away_team_logo
+import kotlinx.android.synthetic.main.item_sport_favorite.view.iv_home_team_logo
+import kotlinx.android.synthetic.main.item_sport_favorite.view.iv_live
+import kotlinx.android.synthetic.main.item_sport_favorite.view.iv_play
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_corner_kicks
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_neutral
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_cards_away
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_cards_home
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_chart
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_favorite
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_name_away
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_name_home
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_play_count
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_point_away_bottom
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_point_home_bottom
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_score_away
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_score_away_bottom
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_score_home
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_score_home_bottom
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_status
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_time
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_total_score_away_bottom
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_match_total_score_home_bottom
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_yellow_cards_away
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_odd_yellow_cards_home
+import kotlinx.android.synthetic.main.item_sport_favorite.view.league_spt
+import kotlinx.android.synthetic.main.item_sport_favorite.view.lin_away_round_score
+import kotlinx.android.synthetic.main.item_sport_favorite.view.lin_home_round_score
+import kotlinx.android.synthetic.main.item_sport_favorite.view.lin_match
+import kotlinx.android.synthetic.main.item_sport_favorite.view.linear_layout
+import kotlinx.android.synthetic.main.item_sport_favorite.view.ll_cs_text_layout
+import kotlinx.android.synthetic.main.item_sport_favorite.view.rv_league_odd_btn_pager_main
+import kotlinx.android.synthetic.main.item_sport_favorite.view.tv_correct_1
+import kotlinx.android.synthetic.main.item_sport_favorite.view.tv_correct_2
+import kotlinx.android.synthetic.main.item_sport_favorite.view.tv_correct_3
+import kotlinx.android.synthetic.main.item_sport_favorite.view.tv_peroid
+import kotlinx.android.synthetic.main.item_sport_favorite.view.tv_peroids_score
+import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.MatchSource
@@ -603,6 +648,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
         private fun setCkScoreText(matchInfo: MatchInfo) {
             setScoreTextAtFront(matchInfo)
             setAttack(matchInfo)
+            setSptText(matchInfo)
         }
 
         /**
@@ -611,6 +657,17 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
          */
         @SuppressLint("SetTextI18n")
         private fun setSptText(matchInfo: MatchInfo) {
+            if (matchInfo.gameType == GameType.CK.key) {
+                itemView.league_spt.visibility = View.VISIBLE
+                val homeOver = (matchInfo.homeOver ?: "0").toFloat()
+                val awayOver = (matchInfo.awayOver ?: "0").toFloat()
+                itemView.league_spt.text = when {
+                    homeOver > 0 -> homeOver.toString()
+                    awayOver > 0 -> awayOver.toString()
+                    else -> ""
+                }
+                return
+            }
             matchInfo.spt?.let {
                 if (it == 3 || it == 5 || it == 7) {
                     itemView.league_spt.visibility = View.VISIBLE
@@ -950,7 +1007,7 @@ class SportFavoriteAdapter(private val matchType: MatchType) :
                 }
                 else -> {
                     itemView.league_odd_match_time.visibility = View.GONE
-                    TimeUtil.timeFormat(matchInfo?.startTime,
+                    itemView.league_odd_match_time.text = TimeUtil.timeFormat(matchInfo?.startTime,
                         if (TimeUtil.isTimeToday(matchInfo?.startTime)) TimeUtil.HM_FORMAT else TimeUtil.DM_HM_FORMAT)
 //                    itemView.league_odd_match_remain_time_icon.visibility = if (TimeUtil.isTimeToday(matchInfo.startTime)) View.VISIBLE else View.GONE
                 }
