@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_bet_amount
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_bet_amount_title
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_winnable_amount
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_winnable_amount_title
-import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
