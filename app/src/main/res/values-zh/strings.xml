@@ -1222,6 +1222,9 @@
     <string name="submitting">注单提交中</string>
     <string name="bet_receipt_bet_quota_with_sign">投注</string>
     <string name="bet_receipt_win_quota_with_sign">可赢</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">投注金额：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">最高可赢：</string>
+
     <string name="bet_record_single">单串</string>
     <string name="bet_record_parlay">复式</string>
     <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
@@ -1352,7 +1355,7 @@
     <string name="expand_more_combinations">展开组合</string>
     <string name="stacked_combination">收起组合</string>
     <string name="bet_parlay">+串关</string>
-    <string name="str_bet_parlay">串关</string>
+    <string name="str_bet_parlay">串</string>
     <string name="bet_single">单注</string>
     <string name="str_if_accept_odds_changes_title">是否接受赔率变化说明</string>
     <string name="str_if_accept_odds_changes_des_subtitle">因为赛事赔率可能随时会产生变化（特别是滚球阶段）。为了让您有能更好的下注体验。您可以选择以下三种投注方式。</string>

@@ -7,12 +7,18 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_bet_amount
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_bet_amount_title
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_winnable_amount
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_winnable_amount_title
+import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setBetReceiptStatus
 import org.cxct.sportlottery.util.setReceiptStatusColor
@@ -50,6 +56,12 @@ class ParlayViewHolder private constructor(itemView: View) :
 
         val currencySign = showCurrencySign
         itemData.apply {
+
+            tv_winnable_amount_title.text =
+                LocalUtils.getString(R.string.bet_receipt_win_quota_with_sign_max)
+            tv_bet_amount_title.text =
+                LocalUtils.getString(R.string.bet_receipt_bet_quota_with_sign_money)
+
             matchOdds?.firstOrNull()?.apply {
                 parlayType?.let { parlayTypeCode ->
                     tv_play_name_parlay.text =

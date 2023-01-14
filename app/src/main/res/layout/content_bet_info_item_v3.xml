@@ -116,6 +116,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="6dp"
+                    android:textStyle="bold"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:textColor="@color/color_9BB3D9_535D76"
@@ -142,7 +143,7 @@
                     android:layout_marginStart="21dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textColor="@color/color_6C7BA8_6C7BA8"
+                    android:textColor="@color/color_535D76"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintBottom_toTopOf="@+id/tv_league_name"
                     app:layout_constraintEnd_toEndOf="@+id/guideline"
@@ -156,7 +157,7 @@
                     android:layout_marginStart="21dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textColor="@color/color_6C7BA8_6C7BA8"
+                    android:textColor="@color/color_A7B2C4"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintBottom_toTopOf="@+id/tv_start_time"
                     app:layout_constraintEnd_toEndOf="@+id/guideline"
@@ -410,7 +411,7 @@
                         app:drawableStartCompat="@drawable/ic_bet_lock_tip"
                         app:drawableTint="@color/color_5E6D78"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:visibility="gone" />
+                        tools:visibility="visible" />
 
                     <FrameLayout
                         android:id="@+id/odds_change_layout"

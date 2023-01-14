@@ -159,7 +159,7 @@
 
                 <include
                     android:id="@+id/match_receipt_bet_layout"
-                    layout="@layout/view_match_receipt_bet"
+                    layout="@layout/view_match_receipt_bet_parlay"
                     android:visibility="visible"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp"

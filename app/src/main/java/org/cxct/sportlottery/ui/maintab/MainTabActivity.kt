@@ -195,11 +195,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun initObserve() {
-        viewModel.userMoney.observe(this) {
-            it?.let { money ->
-//                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
-            }
-        }
+//        viewModel.userMoney.observe(this) {
+//            it?.let { money ->
+////                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
+//            }
+//        }
         viewModel.showBetInfoSingle.observe(this) {
             it.getContentIfNotHandled()?.let {
                 showBetListPage()
@@ -207,7 +207,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
         viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true) snackBarBetUpperLimitNotify.apply {
-                setAnchorView(R.id.cl_bet_list_bar)
+                setAnchorView(R.id.parlayFloatWindow)
                 show()
             }
         }

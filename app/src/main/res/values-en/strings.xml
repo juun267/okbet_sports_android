@@ -1217,6 +1217,8 @@
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake</string>
     <string name="bet_receipt_win_quota_with_sign">Win</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">Stake：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">Win：</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
