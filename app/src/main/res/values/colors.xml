@@ -422,6 +422,7 @@
     <color name="color_33131932">#33131932</color>
     <color name="color_00070707">#00070707</color>
     <color name="color_FF000000">#FF000000</color>
+    <color name="color_FF0000">#FF0000</color>
     <color name="color_F7FAFE">#F7FAFE</color>
 
     <color name="color_E8EFFD">#E8EFFD</color>
@@ -547,5 +548,7 @@
     <color name="color_181922_F0F5FA">@color/color_F0F5FA</color>
     <color name="color_79839F_6C7BA8">@color/color_6C7BA8</color>
     <color name="okb1_app_text_color_gray01">#6C7BA8</color>
+    <color name="color_1A025BE8">#1A025BE8
+    </color>
 
 </resources>

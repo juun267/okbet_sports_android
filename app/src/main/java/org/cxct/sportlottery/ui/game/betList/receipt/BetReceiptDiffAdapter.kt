@@ -126,7 +126,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         position: Int,
         tvTime: TextView
     ) {
-        if (startTime.minus(System.currentTimeMillis()).div(1000L) < 0) {
+        if (startTime.minus(System.currentTimeMillis()).div(1000L) < 1) {
             if (this::refreshBetStatusFinish.isInitialized){
                 refreshBetStatusFinish()
             }

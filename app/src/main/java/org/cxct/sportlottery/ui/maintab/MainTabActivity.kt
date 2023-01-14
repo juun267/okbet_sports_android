@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.R.attr.startX
+import android.R.attr.startY
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -9,8 +11,10 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.PathMeasure
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.LinearInterpolator
@@ -23,8 +27,9 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.*
+import kotlinx.android.synthetic.main.bet_bar_layout.tv_bet_list_count
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
+import kotlinx.android.synthetic.main.bet_bar_layout2.*
 import kotlinx.android.synthetic.main.dialog_pop_image.*
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
@@ -32,8 +37,6 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
-import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -122,7 +125,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         }
     }
 
-    private lateinit var binding:ActivityMainTabBinding
+    private lateinit var binding: ActivityMainTabBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         SportLeagueAdapter.clearCachePool()
@@ -194,7 +197,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun initObserve() {
         viewModel.userMoney.observe(this) {
             it?.let { money ->
-                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
+//                cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(money)
             }
         }
         viewModel.showBetInfoSingle.observe(this) {
@@ -409,7 +412,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun updateBetListCount(num: Int) {
         betListCount = num
         setupBetBarVisiblity(bottom_navigation_view.currentItem)
-        cl_bet_list_bar.tv_bet_list_count.text = betListCount.toString()
+        parlayFloatWindow.tv_bet_list_count.text = betListCount.toString()
         if (num > 0) viewModel.getMoney()
     }
 
@@ -418,22 +421,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      * 串关显示赔率
      */
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-        if (list.size > 1) {
-            val multipleOdds = getMultipleOdds(list)
-            cl_bet_list_bar.tvOdds.text = multipleOdds
-            cl_bet_list_bar.tvOdds.visible()
-        } else {
-            cl_bet_list_bar.tvOdds.gone()
-        }
-
+//        if (list.size > 1) {
+//            val multipleOdds = getMultipleOdds(list)
+//            cl_bet_list_bar.tvOdds.text = multipleOdds
+//            cl_bet_list_bar.tvOdds.visible()
+//        } else {
+//            cl_bet_list_bar.tvOdds.gone()
+//        }
     }
 
     fun setupBetBarVisiblity(position: Int) {
-        var needShowBetBar = when (position) {
+        val needShowBetBar = when (position) {
             0, 1, 3 -> true
             else -> false
         }
-        cl_bet_list_bar.isVisible = needShowBetBar && betListCount > 0
+        parlayFloatWindow.isVisible = needShowBetBar && betListCount > 0
     }
 
     override fun showLoginNotify() {
@@ -484,12 +486,15 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun clickMenuEvent() {
     }
 
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun initBottomNavigation() {
-        cl_bet_list_bar.tv_balance_currency.text = sConfigData?.systemCurrencySign
-        cl_bet_list_bar.tv_balance.text = TextUtil.formatMoney(0.0)
-        cl_bet_list_bar.setOnClickListener {
+//        parlayFloatWindow.tv_balance_currency.text = sConfigData?.systemCurrencySign
+//        parlayFloatWindow.tv_balance.text = TextUtil.formatMoney(0.0)
+        binding.parlayFloatWindow.onViewClick= {
             showBetListPage()
         }
+
     }
 
     override fun showBetListPage() {
@@ -516,12 +521,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 //            R.anim.pickerview_slide_in_bottom,
 //            R.anim.pickerview_slide_out_bottom
 //        )
-            .add(R.id.fl_bet_list, betListFragment!!)
-            .addToBackStack(null).commit()
+            .add(R.id.fl_bet_list, betListFragment!!).addToBackStack(null).commit()
     }
 
 
-    fun setupBetData(fastBetDataBean: FastBetDataBean,view: View? = null) {
+    fun setupBetData(fastBetDataBean: FastBetDataBean, view: View? = null) {
         viewModel.updateMatchBetListData(fastBetDataBean)
         if (view != null) {
 //            addAction(view)
@@ -530,7 +534,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
-        cl_bet_list_bar.isVisible = isVisible and (betListCount > 0)
+        parlayFloatWindow.isVisible = isVisible and (betListCount > 0)
 
     }
 
@@ -587,9 +591,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 // ★★★★★获取当前点坐标封装到mCurrentPosition
                 // 离的坐标点和切线，pos会自动填充上坐标，这个方法很重要。
                 mPathMeasure.getPosTan(
-                    value,
-                    mCurrentPosition,
-                    null
+                    value, mCurrentPosition, null
                 ) //mCurrentPosition此时就是中间距离点的坐标值
                 // 移动的商品图片（动画图片）的坐标设置为该中间点的坐标
                 imageView.setTranslationX(mCurrentPosition.get(0))
@@ -609,7 +611,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 //                tvGoodNum.setText(count + "")
                 // 把移动的图片imageview从父布局里移除
                 llRootView.removeView(imageView)
-                cl_bet_list_bar.tv_bet_list_count.text = betListCount.toString()
+//                cl_bet_list_bar.tv_bet_list_count.text = betListCount.toString()
                 // 开始一个放大动画
 //                val scaleAnim: Animation =
 //                    AnimationUtils.loadAnimation(this@FoodActivity2, R.anim.shop_scale)

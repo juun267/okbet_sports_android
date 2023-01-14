@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Single
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.btn_close
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_rule
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_type
@@ -41,6 +42,7 @@ import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.btnOddsChange
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
 import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.llParlayWarn
+import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
@@ -161,45 +163,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var currentBetOption = 0
 
 
-    private val mHandler = object : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                BET_CONFIRM_TIPS -> {
-//                    val spannableStringBuilder = SpannableStringBuilder()
-//                    val text1 = SpannableString(LocalUtils.getString(R.string.text_bet_not_success))
-//                    val text2 = SpannableString(getString(R.string.waiting))
-//                    val foregroundSpan = ForegroundColorSpan(
-//                        ContextCompat.getColor(
-//                            requireContext(), R.color.color_F75452_E23434
-//                        )
-//                    )
-//                    text2.setSpan(foregroundSpan, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-//                    val text3 = SpannableString(getString(R.string.text_bet_not_success3))
-//                    val text4 = SpannableString(getString(R.string.label_transaction_status))
-//                    val foregroundSpan2 = ForegroundColorSpan(
-//                        ContextCompat.getColor(
-//                            requireContext(), R.color.color_F75452_E23434
-//                        )
-//                    )
-//                    text4.setSpan(
-//                        foregroundSpan2, 0, text4.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-//                    )
-//                    spannableStringBuilder.append(text1)
-//                    spannableStringBuilder.append(text2)
-//                    spannableStringBuilder.append(text3)
-//                    spannableStringBuilder.append(text4)
-//                    showPromptDialog(
-//                        title = getString(R.string.prompt),
-//                        message = spannableStringBuilder,
-//                        success = true
-//                    ) {
-////                        viewModel.navTranStatus()
-//                    }
-                }
-            }
-        }
-    }
-
     private var singleParlayList = mutableListOf(
         ParlayOdd(
             max = -1,
@@ -279,10 +242,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnView() {
         //點背景dismiss
         binding.bgDimMount.setOnClickListener {
-            activity?.onBackPressed()
+            onBackPressed()
         }
     }
 
+
+    private fun onBackPressed() {
+        if (currentBetType == SINGLE) {
+            clearCarts()
+        } else {
+            activity?.onBackPressed()
+        }
+    }
 
     private fun initBtnEvent() {
         binding.btnBet.apply {
@@ -444,11 +415,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initToolBar() {
         binding.clTitle.root.setOnClickListener {
-            activity?.onBackPressed()
+            //只有串关的情况下才会触发点击事件
+            if (currentBetType == PARLAY) {
+                onBackPressed()
+            }
         }
 
         binding.clTitle.ivArrow.setOnClickListener {
-            activity?.onBackPressed()
+            onBackPressed()
         }
         binding.clTitle.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
     }
@@ -547,7 +521,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     e.printStackTrace()
                 }
             }
-
 
 
             override fun onOddsChangesSetOptionListener(text: String) {
@@ -757,6 +730,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     binding.clParlayList.gone()
                     binding.clTotalInfo.gone()
+                    binding.clTitle.ivArrow.background = AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_single_bet_delete
+                        )
+
                     BetInfoRepository.switchSingleMode()
                 }
                 //串關投注
@@ -764,6 +742,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                     binding.clTotalInfo.visible()
+                    binding.clTitle.ivArrow.background =
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_up_double)
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
                 }
@@ -771,7 +751,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             checkAllAmountCanBet()
             refreshAllAmount()
             checkSingleAndParlayBetLayoutVisible()
-            activity?.supportFragmentManager?.popBackStack()
+//            activity?.supportFragmentManager?.popBackStack()
         }
     }
 
@@ -913,12 +893,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         refreshAllAmount()
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
-                        if (result.receipt?.singleBets?.any { singleBet -> singleBet.status == 0 } == true || result.receipt?.parlayBets?.any { parlayBet -> parlayBet.status == 0 } == true) {
-                            mHandler.removeMessages(BET_CONFIRM_TIPS)
-                            mHandler.sendMessage(Message().apply {
-                                what = BET_CONFIRM_TIPS
-                            })
-                        }
                     } else {
                         setBetLoadingVisibility(false)
                         showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}

@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.Spanned
+import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,20 +32,30 @@ class SingleViewHolder private constructor(itemView: View) :
         }
     }
 
-    fun bind(betConfirmTime: Long? = 0,itemData: BetResult, oddsType: OddsType, interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?, position: Int) {
+    fun bind(
+        betConfirmTime: Long? = 0,
+        itemData: BetResult,
+        oddsType: OddsType,
+        interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?,
+        position: Int
+    ) {
         itemView.apply {
             top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
             val currencySign = sConfigData?.systemCurrencySign
-            tv_winnable_amount_title.text = context.getString(R.string.bet_receipt_win_quota_with_sign) + "："
-            tv_bet_amount_title.text = context.getString(R.string.bet_receipt_bet_quota_with_sign)  + "："
+            tv_winnable_amount_title.text =
+                context.getString(R.string.bet_receipt_win_quota_with_sign) + "："
+            tv_bet_amount_title.text =
+                context.getString(R.string.bet_receipt_bet_quota_with_sign) + "："
 
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
-                    val formatForOdd = if(this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
-                        getOdds(this, oddsType ?: OddsType.EU) - 1) else TextUtil.formatForOdd(
-                        getOdds(this, oddsType)
-                    )
+                    val formatForOdd =
+                        if (this.playCateCode == PlayCate.LCS.value) TextUtil.formatForOddPercentage(
+                            getOdds(this, oddsType ?: OddsType.EU) - 1
+                        ) else TextUtil.formatForOdd(
+                            getOdds(this, oddsType)
+                        )
                     tv_play_content.text = setSpannedString(
                         PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
                         playName,
@@ -61,11 +74,11 @@ class SingleViewHolder private constructor(itemView: View) :
                 tv_winnable_amount.text = "$currencySign${TextUtil.formatForOdd(winnable ?: 0.0)}"
 //                tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
 
-                if(orderNo.isNullOrEmpty()){
-                    tvBetTime.gone()
-                }else{
-                    tvBetTime.visible()
-                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else "${LocalUtils.getString(R.string.text_account_history_number)}:${orderNo}"
+                if (orderNo.isNullOrEmpty()) {
+                    llcOrder.gone()
+                } else {
+                    llcOrder.visible()
+                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else ":${orderNo}"
                     tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
@@ -92,12 +105,15 @@ class SingleViewHolder private constructor(itemView: View) :
         formatForOdd: String,
         oddsType: String
     ): Spanned {
-        val color_FFFFFF_414655 = MultiLanguagesApplication.getChangeModeColorCode("#414655", "#FFFFFF")
+        val color_FFFFFF_414655 =
+            MultiLanguagesApplication.getChangeModeColorCode("#414655", "#FFFFFF")
 //            val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
 //            val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
 
-        val playNameStr = if (!playName.isNullOrEmpty()) "<font color=$color_FFFFFF_414655>$playName</font> " else ""
-        val spreadStr = if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_FFFFFF_414655>$spread</font> " else ""
+        val playNameStr =
+            if (!playName.isNullOrEmpty()) "<font color=$color_FFFFFF_414655>$playName</font> " else ""
+        val spreadStr =
+            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_FFFFFF_414655>$spread</font> " else ""
 
 //            return HtmlCompat.fromHtml(
 //                playNameStr +

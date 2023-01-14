@@ -473,14 +473,16 @@
                         tools:visibility="visible" />
 
                     <TextView
+                        android:background="@drawable/bg_drawable_shape_more"
                         android:id="@+id/league_odd_match_play_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:fontFamily="@font/din_regular"
+                        android:fontFamily="@font/din_bold"
                         android:gravity="center"
-                        android:textColor="@color/color_6C7BA8"
-                        android:textSize="@dimen/textSize12sp"
+                        android:padding="2dp"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize10sp"
                         tools:text="120+>" />
 
                     <androidx.legacy.widget.Space

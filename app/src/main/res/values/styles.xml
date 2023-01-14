@@ -109,4 +109,12 @@
     <style name="StyleOddButtonItem">
 <!--        <item name="android:paddingBottom">10dp</item>-->
     </style>
+
+    <style name="TextBoldStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextNormalStyle">
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

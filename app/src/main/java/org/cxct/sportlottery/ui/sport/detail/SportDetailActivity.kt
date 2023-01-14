@@ -24,7 +24,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
-import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds

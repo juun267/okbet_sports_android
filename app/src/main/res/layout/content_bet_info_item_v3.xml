@@ -199,7 +199,7 @@
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_input"

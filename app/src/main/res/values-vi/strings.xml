@@ -1099,7 +1099,7 @@
 
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Thắng</string>
-    <string name="bet_stake">Tiền Cược</string>
+    <string name="bet_stake">Cược</string>
     <string name="total_capital">Tổng tiền đặt cược：%s</string> <!--F008-->
     <string name="total_win_amount">Ước tính thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
@@ -1198,7 +1198,7 @@
     <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Đơn cược đang gửi</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược</string>
-    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng</string>
+    <string name="bet_receipt_win_quota_with_sign">Thắng</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1379,4 +1379,6 @@
     <string name="new_games">New Games</string>
     <string name="bet_info_add_bet_failed">Đặt cược thất bại</string>
     <string name="str_in_play_bet_confirmed">Đang xác nhận cược trong trận</string>
+    <string name="str_odds_description">Mô tả tỷ lệ cược</string>
+    <string name="str_bet_parlay">CƯỢC XÂU</string>
 </resources>

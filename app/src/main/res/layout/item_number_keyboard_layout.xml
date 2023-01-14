@@ -23,6 +23,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="+25"
             android:textColor="@color/color_141931_F9F9F9"
             android:textSize="@dimen/textSize14sp"
@@ -35,6 +36,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium_12"
             android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
             android:text="+50"
@@ -48,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
+            android:fontFamily="@font/roboto_medium_12"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
@@ -62,6 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
+            android:fontFamily="@font/roboto_medium_12"
             android:layout_weight="1"
             android:background="@drawable/bg_radius_2_keyboard_gradient_green"
             android:gravity="center"
@@ -106,23 +110,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium_12"
             android:gravity="center"
             android:text="1"
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
+            android:fontFamily="@font/roboto_medium_12"
             android:layout_weight="1"
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
             android:text="2"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum3"
@@ -133,8 +139,9 @@
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="3"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum4"
@@ -145,8 +152,9 @@
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="4"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum5"
@@ -157,8 +165,9 @@
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="5"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum6"
@@ -169,8 +178,9 @@
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="6"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
 
 
@@ -191,8 +201,9 @@
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="7"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum8"
@@ -200,11 +211,12 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium_12"
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
             android:text="8"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
         <TextView
             android:id="@+id/tvNum9"
@@ -212,11 +224,12 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium_12"
             android:background="@drawable/bg_button_keyboard"
             android:gravity="center"
             android:text="9"
             android:textColor="@color/color_FFFFFF_414655"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
 
 
@@ -227,14 +240,15 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium_12"
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
             android:text="0"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize18sp" />
 
-        <TextView
-            android:id="@+id/tvDot"
+        <FrameLayout
+            android:id="@+id/flDot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/margin_3"
@@ -242,8 +256,18 @@
             android:background="@drawable/bg_button_keyboard"
             android:textColor="@color/color_FFFFFF_414655"
             android:gravity="center"
+            android:fontFamily="@font/roboto_medium_12"
             android:text="."
-            android:textSize="@dimen/textSize14sp" />
+            android:textStyle="bold"
+            android:textSize="@dimen/textSize18sp" >
+
+            <TextView
+                android:layout_gravity="center"
+                android:background="@drawable/bg_circle_gray6_f414655"
+                android:layout_width="8dp"
+                android:layout_height="8dp"/>
+
+        </FrameLayout>
 
 
 
