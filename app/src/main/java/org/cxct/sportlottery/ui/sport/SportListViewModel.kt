@@ -467,27 +467,15 @@ class SportListViewModel(
             Date(
                 LocalUtils.getString(R.string.date_row_all),
                 TimeUtil.getParlayAllTimeRangeParams()
-            ), Date(
-                androidContext.getString(R.string.date_row_live),
-                object : TimeRangeParams {
-                    override val startTime: String?
-                        get() = null
-                    override val endTime: String?
-                        get() = null
-                },
-                MatchType.IN_PLAY.postValue
-            ), Date(
-                androidContext.getString(R.string.date_row_today),
-                TimeUtil.getParlayTodayTimeRangeParams(),
-                MatchType.TODAY.postValue
-            ), Date(
+            ),
+            Date(
                 LocalUtils.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams(),
                 MatchType.EARLY.postValue
             )
         )
 
-        dateRow.addAll(3, TimeUtil.getFutureDate(
+        dateRow.addAll(1, TimeUtil.getFutureDate(
             6,
             when (LanguageManager.getSelectLanguage(androidContext)) {
                 LanguageManager.Language.ZH -> {

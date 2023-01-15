@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.didichuxing.doraemonkit.util.ToastUtils.showShort
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -431,7 +432,7 @@ abstract class BaseOddButtonViewModel(
             }
 
             Event(result).getContentIfNotHandled()?.let {
-                _betAddResult.postValue(Event(result))
+
                 if (it.success) {
                     //检查是否有item注单下注失败
                     val haveSingleItemFailed =
@@ -443,6 +444,7 @@ abstract class BaseOddButtonViewModel(
                     if (!haveSingleItemFailed && !haveParlayItemFailed) {
                         betInfoRepository.clear()
                         _betFailed.postValue(Pair(false, ""))
+                        _betAddResult.postValue(Event(result))
                     } else {
                         var failedReason: String? = ""
                         it.receipt?.singleBets?.forEach {
@@ -463,10 +465,12 @@ abstract class BaseOddButtonViewModel(
                                 failedReason = it.code
                             }
                         }
-                        ToastUtils.s(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
-//                        ToastUtils.showShort(BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
-                        //处理赔率更新
-                        //_betFailed.postValue(Pair(true, failedReason))
+//                        _betAddResult.postValue(Event(result))
+                        ToastUtil.showToast(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+                        result?.success = false
+                        _betAddResult.postValue(Event(result))
+//                        //处理赔率更新
+//                        _betFailed.postValue(Pair(true, failedReason))
                     }
                 }
             }

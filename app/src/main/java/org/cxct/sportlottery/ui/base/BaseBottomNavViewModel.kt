@@ -105,12 +105,6 @@ abstract class BaseBottomNavViewModel(
 //        setIntentClassLiveData(ProfileCenterFragment::class.java)
     }
 
-    fun navShoppingCart() {
-        _showShoppingCart.postValue(
-//            betInfoRepository.betInfoList.value?.peekContent()?.isNotEmpty() //注單為0時，不可以打開投注單
-            Event(true) //2022/1/11新需求，注單為0時可以開啟投注單，並且顯示特定UI by Bill
-        )
-    }
 
     private fun setIntentClassLiveData(clazz: Class<*>) {
         _intentClass.postValue(Event(clazz))

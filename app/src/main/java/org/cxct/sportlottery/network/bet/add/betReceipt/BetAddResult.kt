@@ -12,7 +12,7 @@ data class BetAddResult(
     @Json(name = "msg")
     override val msg: String,
     @Json(name = "success")
-    override val success: Boolean,
+    override var success: Boolean,
     @Json(name = "t")
     val receipt: Receipt?
 ): BaseResult()

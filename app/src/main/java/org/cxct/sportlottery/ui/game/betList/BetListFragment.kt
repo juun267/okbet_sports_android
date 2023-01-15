@@ -731,9 +731,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     binding.clParlayList.gone()
                     binding.clTotalInfo.gone()
                     binding.clTitle.ivArrow.background = AppCompatResources.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_single_bet_delete
-                        )
+                        requireContext(),
+                        R.drawable.ic_single_bet_delete
+                    )
 
                     BetInfoRepository.switchSingleMode()
                 }
@@ -743,7 +743,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                     binding.clTotalInfo.visible()
                     binding.clTitle.ivArrow.background =
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_up_double)
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_arrow_up_double
+                        )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
                 }
@@ -877,9 +880,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betAddResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled().let { result ->
                 showReceipt = result != null
-                result?.let { resultNotNull ->
-                    if (resultNotNull.success) {
-                        setBetLoadingVisibility(false, keepShowingBetLoading = true)
+                if (result != null) {
+                    if (result.success) {
+                        setBetLoadingVisibility(false)
                         //多筆和單筆投注單，下注成功後的行為不同
 //                        if (isMultiBet) {
                         //多筆的是直接 replace fragment
@@ -888,14 +891,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //                            //單筆的要關掉再顯示 dialog
 //                        }
                         betResultListener?.onBetResult(
-                            resultNotNull.receipt, betParlayList ?: listOf(), true
+                            result.receipt, betParlayList ?: listOf(), true
                         )
                         refreshAllAmount()
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
                     } else {
                         setBetLoadingVisibility(false)
-                        showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
+//                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
             }
