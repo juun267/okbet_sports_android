@@ -18,13 +18,14 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.ui.menu.OddsType
+import timber.log.Timber
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    lateinit var refreshBetStatus: (Long) -> Unit
-    lateinit var refreshBetStatusFinish: () -> Unit
+    lateinit var refreshBetStatusFunction: (Long) -> Unit
+    lateinit var refreshBetStatusFinishFunction: () -> Unit
 
     var interfaceStatusChangeListener: InterfaceStatusChangeListener? = null
 
@@ -115,19 +116,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         startTime: Long, position: Int, tvTime: TextView
     ) {
         if (startTime.minus(System.currentTimeMillis()).div(1000L) < 1) {
-            if (this::refreshBetStatusFinish.isInitialized) {
-                refreshBetStatusFinish()
+            if (this::refreshBetStatusFinishFunction.isInitialized) {
+                refreshBetStatusFinishFunction()
             }
-            tvTime.text = String.format(tvTime.context.getString(R.string.pending), 0)
-            stopRunnable(position)
-            notifyItemChanged(position)
         } else {
             val time = startTime.minus(System.currentTimeMillis()).div(1000L)
-            tvTime.text = String.format(
-                tvTime.context.getString(R.string.pending), time
-            )
-            if (this::refreshBetStatus.isInitialized) {
-                refreshBetStatus(time)
+            if (this::refreshBetStatusFunction.isInitialized) {
+                refreshBetStatusFunction(time)
             }
         }
     }

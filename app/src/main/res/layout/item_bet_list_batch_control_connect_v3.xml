@@ -95,7 +95,7 @@
                     android:letterSpacing="0.05"
                     android:maxLength="14"
                     android:paddingHorizontal="10dp"
-                    android:textColor="@color/color_9BB3D9_535D76"
+                    android:textColor="@color/color_025BE8"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
                     android:gravity="end|center_vertical"

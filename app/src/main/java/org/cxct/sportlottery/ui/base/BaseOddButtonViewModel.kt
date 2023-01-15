@@ -5,8 +5,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.didichuxing.doraemonkit.util.ToastUtils.showShort
-import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
@@ -41,6 +39,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
@@ -465,8 +464,7 @@ abstract class BaseOddButtonViewModel(
                                 failedReason = it.code
                             }
                         }
-//                        _betAddResult.postValue(Event(result))
-                        ToastUtil.showToast(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+                        SingleToast.showSingleToastNoImage(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
                         result?.success = false
                         _betAddResult.postValue(Event(result))
 //                        //处理赔率更新

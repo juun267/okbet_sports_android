@@ -37,6 +37,8 @@ import org.cxct.sportlottery.databinding.ActivityMainTabBinding
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -61,6 +63,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import kotlin.system.exitProcess
 
 
@@ -421,12 +424,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
      * 串关显示赔率
      */
     override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-//        if (list.size > 1) {
-//            val multipleOdds = getMultipleOdds(list)
-//            cl_bet_list_bar.tvOdds.text = multipleOdds
-//            cl_bet_list_bar.tvOdds.visible()
+//        if (list.size >= 1 && list[0].matchType == MatchType.PARLAY) {
+//            parlayFloatWindow.visible()
 //        } else {
-//            cl_bet_list_bar.tvOdds.gone()
+//            parlayFloatWindow.gone()
 //        }
     }
 
@@ -491,7 +492,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     override fun initBottomNavigation() {
 //        parlayFloatWindow.tv_balance_currency.text = sConfigData?.systemCurrencySign
 //        parlayFloatWindow.tv_balance.text = TextUtil.formatMoney(0.0)
-        binding.parlayFloatWindow.onViewClick= {
+        binding.parlayFloatWindow.onViewClick = {
             showBetListPage()
         }
 

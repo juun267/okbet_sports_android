@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:textSize="@dimen/textSize12sp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:drawableStart="@drawable/ic_bet_check_tip"

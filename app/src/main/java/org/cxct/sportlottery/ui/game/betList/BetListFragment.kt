@@ -734,7 +734,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         requireContext(),
                         R.drawable.ic_single_bet_delete
                     )
-
                     BetInfoRepository.switchSingleMode()
                 }
                 //串關投注
@@ -749,12 +748,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
+                    //从单关切换成串关会收起购物车，反之不会
+                    activity?.supportFragmentManager?.popBackStack()
                 }
             }
             checkAllAmountCanBet()
             refreshAllAmount()
             checkSingleAndParlayBetLayoutVisible()
-//            activity?.supportFragmentManager?.popBackStack()
         }
     }
 

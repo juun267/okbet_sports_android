@@ -132,32 +132,6 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 )
                             }
                         }
-
-//                       var oddsChange=betResultData?.singleBets?.any { it.status==7 } == true || betResultData?.parlayBets?.any { it.status==7 } == true
-//                        updateBetResultStatus(oddsChange)
-//                        setBetLoadingVisibility(false, keepShowingBetLoading = true)
-                        //多筆和單筆投注單，下注成功後的行為不同
-//                        if (isMultiBet) {
-                        //多筆的是直接 replace fragment
-//                        viewModel.betInfoList.removeObservers(this.viewLifecycleOwner)
-////                        } else {
-////                            //單筆的要關掉再顯示 dialog
-////                        }
-//                        betResultListener?.onBetResult(
-//                            resultNotNull.receipt,
-//                            betParlayList ?: listOf(),
-//                            true
-//                        )
-//                        refreshAllAmount()
-//                        showOddChangeWarn = false
-//                        btn_bet.isOddsChanged = false
-//                        showHideWarn()
-//                        if (result.receipt?.singleBets?.any { singleBet -> singleBet.status == 0 } == true || result.receipt?.parlayBets?.any { parlayBet -> parlayBet.status == 0 } == true) {
-//                            mHandler.removeMessages(BetListFragment.BET_CONFIRM_TIPS)
-//                            mHandler.sendMessage(Message().apply {
-//                                what = BetListFragment.BET_CONFIRM_TIPS
-//                            })
-//                        }
                     } else {
 //                        setBetLoadingVisibility(false)
                         showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
@@ -267,13 +241,13 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
             }
-            betReceiptDiffAdapter?.refreshBetStatus = { time->
+            betReceiptDiffAdapter?.refreshBetStatusFunction = { time->
                 lin_result_status_processing?.visible()
                 lin_result_status?.gone()
                 tvBetProcessingStatus?.text = LocalUtils.getString(R.string.str_in_play_bet_confirmed) + "（${time}S）"
             }
 
-            betReceiptDiffAdapter?.refreshBetStatusFinish = {
+            betReceiptDiffAdapter?.refreshBetStatusFinishFunction = {
                 lin_result_status_processing?.gone()
                 lin_result_status?.visible()
             }
