@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
@@ -356,11 +356,13 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.notifyBetInfoChanged()
     }
 
+
     /**
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
      * 依照 tabPosition 區分單注or串關 (0:單注, 1:串關)
      * @date 20220607
      */
+
     fun addBetList(
         normalBetList: List<BetInfoListData>,
         parlayBetList: List<ParlayOdd>,
@@ -406,7 +408,6 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
-
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.betService.addBet(
@@ -420,7 +421,6 @@ abstract class BaseOddButtonViewModel(
                     )
                 )
             }
-
             result?.receipt?.singleBets?.forEach { s ->
                 s.matchOdds?.forEach { m ->
                     s.matchType = normalBetList.find { betInfoListData ->
@@ -429,9 +429,7 @@ abstract class BaseOddButtonViewModel(
 //                    s.oddsType = oddsType
                 }
             }
-
             Event(result).getContentIfNotHandled()?.let {
-
                 if (it.success) {
                     //检查是否有item注单下注失败
                     val haveSingleItemFailed =
@@ -439,7 +437,6 @@ abstract class BaseOddButtonViewModel(
                     val haveParlayItemFailed =
                         it.receipt?.parlayBets?.any { parlayIt -> parlayIt.status == 7 } ?: false
 
-                    Timber.d("单注投注失败:${haveSingleItemFailed} 串关投注失败:${haveParlayItemFailed}")
                     if (!haveSingleItemFailed && !haveParlayItemFailed) {
                         betInfoRepository.clear()
                         _betFailed.postValue(Pair(false, ""))
@@ -464,12 +461,18 @@ abstract class BaseOddButtonViewModel(
                                 failedReason = it.code
                             }
                         }
-                        SingleToast.showSingleToastNoImage(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+                        withContext(Dispatchers.Main){
+                            SingleToast.showSingleToastNoImage(androidContext,BetsFailedReasonUtil.getFailedReasonByCode(failedReason))
+                        }
                         result?.success = false
+
                         _betAddResult.postValue(Event(result))
 //                        //处理赔率更新
-//                        _betFailed.postValue(Pair(true, failedReason))
+                        _betFailed.postValue(Pair(true, failedReason))
                     }
+                }else{
+                    result?.success = false
+                    _betAddResult.postValue(Event(result))
                 }
             }
         }

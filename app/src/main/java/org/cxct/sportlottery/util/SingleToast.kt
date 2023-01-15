@@ -16,14 +16,12 @@ import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 object SingleToast {
+
     private var mToast: Toast? = null
+
     fun getInstance(context: Context): Toast {
         if (mToast == null) {
-            synchronized(SingleToast::class.java) {
-                if (mToast == null) {
-                    mToast = Toast(context)
-                }
-            }
+            mToast = Toast(context)
         }
         return mToast!!
     }

@@ -881,6 +881,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.getContentIfNotHandled().let { result ->
                 showReceipt = result != null
                 if (result != null) {
+                    Timber.d("失败了进来了：${result.success}")
                     if (result.success) {
                         setBetLoadingVisibility(false)
                         //多筆和單筆投注單，下注成功後的行為不同
@@ -897,7 +898,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
                     } else {
-                        setBetLoadingVisibility(false)
+                        btn_bet?.postDelayed({
+                            setBetLoadingVisibility(false)
+                        },800)
 //                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
