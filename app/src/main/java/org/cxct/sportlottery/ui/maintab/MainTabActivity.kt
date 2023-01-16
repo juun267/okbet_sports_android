@@ -557,7 +557,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun setupBetData(fastBetDataBean: FastBetDataBean, view: View? = null) {
         viewModel.updateMatchBetListData(fastBetDataBean)
         if (view != null) {
-            addAction(view)
+//            addAction(view)
         }
     }
 
