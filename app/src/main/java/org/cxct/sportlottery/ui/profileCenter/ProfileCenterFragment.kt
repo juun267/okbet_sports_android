@@ -33,7 +33,6 @@ import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.dialog.RedEnvelopeReceiveDialog
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
@@ -249,9 +248,7 @@ class ProfileCenterFragment :
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
             avoidFastDoubleClick()
-            RedEnvelopeReceiveDialog(activity, 0x23).show(activity!!.supportFragmentManager,
-                activity!!::class.java.simpleName)
-//            viewModel.checkRechargeKYCVerify()
+            viewModel.checkRechargeKYCVerify()
         }
     }
 
