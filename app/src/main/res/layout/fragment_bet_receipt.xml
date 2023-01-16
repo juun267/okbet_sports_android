@@ -23,6 +23,7 @@
         tools:ignore="SpUsage, ContentDescription">
 
     <LinearLayout
+        android:background="@color/color_FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/bet_list_top_padding_height"
@@ -143,6 +144,14 @@
 <!--                app:layout_constraintBottom_toBottomOf="parent" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+        <View
+            android:id="@+id/line_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/bg_gradient_bottom_sheet_shadow"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
             android:layout_width="match_parent"
@@ -230,6 +239,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
+            android:paddingTop="10dp"
             android:background="@color/color_202541_FFFFFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
