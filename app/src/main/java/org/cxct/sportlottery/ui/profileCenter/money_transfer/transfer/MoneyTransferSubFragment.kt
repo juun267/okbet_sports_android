@@ -7,16 +7,13 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.view.animation.RotateAnimation
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
-import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
@@ -24,11 +21,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 
 
@@ -133,7 +127,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         layout_balance.btn_refresh.setOnClickListener {
-            refreshMoneyLoading()
+            it.refreshMoneyLoading()
             viewModel.getMoney()
         }
         btn_transfer.setOnClickListener {
@@ -240,17 +234,5 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             }
         }
         constraintSet.applyTo(constraint_layout)
-
-    }
-
-    private fun refreshMoneyLoading() {
-        btn_refresh.startAnimation(RotateAnimation(0f,
-            720f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f).apply {
-            duration = 1000
-        })
     }
 }

@@ -6,8 +6,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +21,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.SecurityDepositDialog
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.refreshMoneyLoading
 
 /**
  * @app_destination 資金明細
@@ -49,7 +48,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
     private fun setupRefreshBalance(view: View) {
         view.btn_refresh.setOnClickListener {
-            refreshMoneyLoading()
+            it.refreshMoneyLoading()
             viewModel.getMoney()
             viewModel.getLockMoney()
         }
@@ -177,16 +176,5 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
         viewModel.getMoney()
         viewModel.getLockMoney()
-    }
-
-    private fun refreshMoneyLoading() {
-        btn_refresh.startAnimation(RotateAnimation(0f,
-            720f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f).apply {
-            duration = 1000
-        })
     }
 }
