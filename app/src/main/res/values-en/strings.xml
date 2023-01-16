@@ -1116,6 +1116,7 @@
     <string name="total_capital">Total Stake：%s</string>
     <string name="total_win_amount">EST Winning：</string>
     <string name="delete_bet">Delete</string>
+    <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Log in before betting</string>
     <string name="confirm_single_bets">Confirm %d Single Bets</string>
     <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
