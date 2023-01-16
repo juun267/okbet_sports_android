@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.dialog_pop_image.*
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityMainTabBinding
+import org.cxct.sportlottery.event.BetModeChangeEvent
 import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.event.MainTabEvent
 import org.cxct.sportlottery.event.MenuEvent
@@ -105,6 +106,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     private var exitTime: Long = 0
+    private var currentBetMode:Int = BetListFragment.SINGLE
 
     companion object {
 
@@ -367,6 +369,20 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
 
+    @Subscribe
+    fun onBetModeChangeEvent(event: BetModeChangeEvent) {
+        if (event.currentMode == BetListFragment.SINGLE) {
+            currentBetMode = BetListFragment.SINGLE
+            parlayFloatWindow.gone()
+        } else {
+            currentBetMode = BetListFragment.PARLAY
+            if (betListCount !=0){
+                parlayFloatWindow.visible()
+            }
+        }
+    }
+
+
     //系统方法
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -436,7 +452,18 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             0, 1, 3 -> true
             else -> false
         }
-        parlayFloatWindow.isVisible = needShowBetBar && betListCount > 0
+//        parlayFloatWindow.isVisible = needShowBetBar && betListCount > 0
+
+        if (betListCount == 0 || !needShowBetBar || currentBetMode == BetListFragment.SINGLE) {
+            currentBetMode = BetListFragment.SINGLE
+            Timber.d("459 parlayFloatWindow.gone() = currentBetMode:${currentBetMode}")
+            parlayFloatWindow.gone()
+        }else{
+            if(currentBetMode == BetListFragment.PARLAY){
+                Timber.d("464 parlayFloatWindow.visible() = currentBetMode:${currentBetMode}")
+                parlayFloatWindow.visible()
+            }
+        }
     }
 
     override fun showLoginNotify() {
@@ -535,7 +562,11 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
 
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
-        parlayFloatWindow.isVisible = isVisible and (betListCount > 0)
+//        parlayFloatWindow.isVisible = isVisible and (betListCount > 0)
+        if (betListCount == 0) {
+            parlayFloatWindow.gone()
+            currentBetMode = BetListFragment.SINGLE
+        }
 
     }
 

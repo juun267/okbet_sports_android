@@ -47,6 +47,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.event.BetModeChangeEvent
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
@@ -69,16 +70,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
-import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.NetworkUtil
-import org.cxct.sportlottery.util.OddsModeUtil
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
 import org.cxct.sportlottery.widget.OkPopupWindow
 import timber.log.Timber
 import java.lang.Exception
@@ -735,6 +728,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         R.drawable.ic_single_bet_delete
                     )
                     BetInfoRepository.switchSingleMode()
+                    EventBusUtil.post(BetModeChangeEvent(SINGLE))
                 }
                 //串關投注
                 PARLAY -> {
@@ -750,6 +744,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     BetInfoRepository.switchParlayMode()
                     //从单关切换成串关会收起购物车，反之不会
                     activity?.supportFragmentManager?.popBackStack()
+                    EventBusUtil.post(BetModeChangeEvent(PARLAY))
                 }
             }
             checkAllAmountCanBet()

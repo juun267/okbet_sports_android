@@ -97,6 +97,8 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/color_025BE8_025BE8"
                         android:textSize="@dimen/textSize16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="din"
                         tools:text="\@ 0.89" />
 
                     <ImageView
