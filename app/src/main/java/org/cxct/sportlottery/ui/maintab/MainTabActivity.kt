@@ -107,7 +107,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     private var exitTime: Long = 0
-    private var currentBetMode:Int = BetListFragment.SINGLE
+    private var currentBetMode: Int = BetListFragment.SINGLE
 
     companion object {
 
@@ -377,7 +377,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             parlayFloatWindow.gone()
         } else {
             currentBetMode = BetListFragment.PARLAY
-            if (betListCount !=0){
+            if (betListCount != 0) {
                 parlayFloatWindow.visible()
             }
         }
@@ -457,13 +457,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             0, 1, 3 -> true
             else -> false
         }
-//        parlayFloatWindow.isVisible = needShowBetBar && betListCount > 0
-
         if (betListCount == 0 || !needShowBetBar || currentBetMode == BetListFragment.SINGLE) {
-            currentBetMode = BetListFragment.SINGLE
             parlayFloatWindow.gone()
-        }else{
-            if(currentBetMode == BetListFragment.PARLAY){
+        } else {
+            if (currentBetMode == BetListFragment.PARLAY) {
                 parlayFloatWindow.visible()
             }
         }
@@ -566,10 +563,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun setupBottomNavBarVisibility(isVisible: Boolean) {
         bottom_navigation_view.isVisible = isVisible
         space1.isVisible = isVisible
-//        parlayFloatWindow.isVisible = isVisible and (betListCount > 0)
         if (betListCount == 0) {
             parlayFloatWindow.gone()
-            currentBetMode = BetListFragment.SINGLE
         }
 
     }
@@ -585,8 +580,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private fun addAction(view: View) {
         // 一 、创建购物的ImageView 添加到父布局中
         val imageView = ImageView(this)
-        imageView.setImageBitmap(getViewsScreenShot(view))
-//        imageView.setImageResource(R.drawable.ic_home_football_sel)
+//        imageView.setImageBitmap(getViewsScreenShot(view))
+        imageView.setImageResource(R.drawable.ic_home_football_sel)
         val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(60, 60)
         llRootView.addView(imageView, params)
         // 二 、起点位置\终点的坐标\父布局控制点坐标
@@ -594,7 +589,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         view.getLocationInWindow(startA)
         // 获取终点的坐标
         val endB = IntArray(2)
-        tv_bet_list_count.getLocationInWindow(endB)
+        binding.parlayFloatWindow.tv_bet_list_count.getLocationInWindow(endB)
         // 父布局控制点坐标
         val parentC = IntArray(2)
         llRootView.getLocationInWindow(parentC)

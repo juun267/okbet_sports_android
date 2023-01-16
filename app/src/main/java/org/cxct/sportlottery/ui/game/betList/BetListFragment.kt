@@ -692,6 +692,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             viewModel.betInfoList.removeObservers(viewLifecycleOwner)
             viewModel.removeBetInfoAll()
             setCurrentBetModeSingle()
+            EventBusUtil.post(BetModeChangeEvent(SINGLE))
             activity?.supportFragmentManager?.popBackStack()
         }
     }
@@ -725,21 +726,33 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     binding.clParlayList.gone()
                     binding.clTotalInfo.gone()
+                    binding.clTitle.ivArrow.background = AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_single_bet_delete
+                    )
                     BetInfoRepository.switchSingleMode()
+                    EventBusUtil.post(BetModeChangeEvent(SINGLE))
                 }
                 //串關投注
                 PARLAY -> {
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                     binding.clTotalInfo.visible()
+                    binding.clTitle.ivArrow.background =
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_arrow_up_double
+                        )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
+                    //从单关切换成串关会收起购物车，反之不会
+                    activity?.supportFragmentManager?.popBackStack()
+                    EventBusUtil.post(BetModeChangeEvent(PARLAY))
                 }
             }
             checkAllAmountCanBet()
             refreshAllAmount()
             checkSingleAndParlayBetLayoutVisible()
-            activity?.supportFragmentManager?.popBackStack()
         }
     }
 
