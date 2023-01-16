@@ -6,6 +6,8 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,7 +49,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
     private fun setupRefreshBalance(view: View) {
         view.btn_refresh.setOnClickListener {
-            loading()
+            refreshMoneyLoading()
             viewModel.getMoney()
             viewModel.getLockMoney()
         }
@@ -175,5 +177,16 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
         viewModel.getMoney()
         viewModel.getLockMoney()
+    }
+
+    private fun refreshMoneyLoading() {
+        btn_refresh.startAnimation(RotateAnimation(0f,
+            720f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f).apply {
+            duration = 1000
+        })
     }
 }

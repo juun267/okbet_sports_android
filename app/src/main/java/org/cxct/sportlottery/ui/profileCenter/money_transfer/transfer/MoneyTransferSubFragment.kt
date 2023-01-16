@@ -7,13 +7,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.RotateAnimation
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
+import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
@@ -130,6 +133,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         }
 
         layout_balance.btn_refresh.setOnClickListener {
+            refreshMoneyLoading()
             viewModel.getMoney()
         }
         btn_transfer.setOnClickListener {
@@ -239,4 +243,14 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
 
     }
 
+    private fun refreshMoneyLoading() {
+        btn_refresh.startAnimation(RotateAnimation(0f,
+            720f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f).apply {
+            duration = 1000
+        })
+    }
 }

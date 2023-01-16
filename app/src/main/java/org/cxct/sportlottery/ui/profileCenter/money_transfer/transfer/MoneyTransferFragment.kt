@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_money_transfer.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -52,6 +54,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         }
 
         layout_balance.btn_refresh.setOnClickListener {
+            refreshMoneyLoading()
             viewModel.getMoney()
         }
     }
@@ -90,5 +93,16 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
 
         }
 
+    }
+
+    private fun refreshMoneyLoading() {
+        btn_refresh.startAnimation(RotateAnimation(0f,
+            720f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f).apply {
+            duration = 1000
+        })
     }
 }

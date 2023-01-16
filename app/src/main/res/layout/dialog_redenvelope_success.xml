@@ -78,6 +78,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/iv_buble_1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="60dp"
@@ -85,6 +86,7 @@
                     android:src="@drawable/ic_pop_chest" />
 
                 <ImageView
+                    android:id="@+id/iv_buble_2"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="40dp"
@@ -92,6 +94,7 @@
                     android:src="@drawable/ic_pop_basketball" />
 
                 <ImageView
+                    android:id="@+id/iv_buble_3"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
@@ -100,6 +103,7 @@
                     android:src="@drawable/ic_pop_gold" />
 
                 <ImageView
+                    android:id="@+id/iv_buble_4"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
