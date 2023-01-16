@@ -11,11 +11,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
-import android.view.*
-import android.view.animation.AnimationUtils
-import android.view.animation.Interpolator
-import android.view.animation.LinearInterpolator
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
@@ -23,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.RedEnveLopeModel
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.ScreenUtil
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -32,18 +33,18 @@ class RedEnvelopeReceiveDialog(
 ) : BaseDialog<RedEnveLopeModel>(RedEnveLopeModel::class) {
     private val mHandler = MyHandler(WeakReference(this))
     var bitmap = listOf(
-        BitmapFactory.decodeResource(context?.resources, R.drawable.packet_one),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.packet_two),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.packet_three),
-        BitmapFactory.decodeResource(context?.resources, R.drawable.luck_packet),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin),
+        BitmapFactory.decodeResource(context?.resources, R.drawable.ic_redpacket_coin_small),
     )
     val map by lazy {
         mapOf<Bitmap, Long>(
-        bitmap[0] to 7060,
-        bitmap[1] to 6003,
-        bitmap[2] to 5200,
-        bitmap[3] to 7140,
-    )
+            bitmap[0] to 7060,
+            bitmap[1] to 6003,
+            bitmap[2] to 5200,
+            bitmap[3] to 7140,
+        )
     }
 //    按照 UI 動畫高度 896 換算，
 //    紅包51x66(大)速率:126.9/s
@@ -139,12 +140,27 @@ class RedEnvelopeReceiveDialog(
 
     private fun setContentView() {
         mHandler.sendEmptyMessageDelayed(0, BARRAGE_GAP_START_DURATION)
-        val operatingAnim = AnimationUtils.loadAnimation(
-            activity, R.anim.red_envelope_rotate
-        )
-        val lin = LinearInterpolator()
-        operatingAnim.interpolator = lin
-        iv_radiance.startAnimation(operatingAnim)
+        context?.let { it ->
+            TranslateAnimation(-60.dp.toFloat(),
+                (ScreenUtil.getScreenWidth(it) - 60.dp).toFloat(),
+                0f,
+                0f).apply {
+                duration = 2000
+                interpolator = LinearInterpolator()
+                repeatMode = Animation.REVERSE
+                repeatCount = Animation.INFINITE
+            }.let {
+                iv_light_ball.startAnimation(it)
+            }
+            AlphaAnimation(0.3f, 1f).apply {
+                duration = 1500
+                repeatMode = Animation.REVERSE
+                repeatCount = Animation.INFINITE
+            }.let {
+                iv_bg_top.startAnimation(it)
+            }
+        }
+
         iv_red_close.setOnClickListener {
             iv_radiance.clearAnimation()
             dismiss()
@@ -157,7 +173,7 @@ class RedEnvelopeReceiveDialog(
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             wDialogFragment.get()?.run {
-                for (i in 0..2) {
+                for (i in 0..3) {
                     bitmap1 = bitmap[mRandom.nextInt(bitmap.size)]
                     image = ImageView(activity)
                     image!!.setImageBitmap(bitmap1)
@@ -165,17 +181,19 @@ class RedEnvelopeReceiveDialog(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                     )
-                    randomX = if (i == 0) {
-                        Random().nextInt((p!!.x * 0.15).toInt())
-                    } else {
-                        Random().nextInt((p!!.x * 0.1).toInt()) + (p!!.x * (0.15 + 0.25 * i)).toInt()
-                    }
+                    val totalX = p!!.x - bitmap1!!.width
+                    randomX = Random().nextInt(totalX)
+//                    randomX = if (i == 0) {
+//                        Random().nextInt((p!!.x * 0.15).toInt())
+//                    } else {
+//                        Random().nextInt((p!!.x * 0.1).toInt()) + (p!!.x * (0.15 + 0.25 * i)).toInt()
+//                    }
 
                     randomY =
                         (Random().nextInt((p!!.y * (0.2 + 0.05 * i)).toInt()) + image!!.height * 1.3).toInt()
                     layoutParams1!!.setMargins(randomX, -randomY, 0, 0)
                     relative_layout.addView(image, layoutParams1)
-                    var duration = map[ bitmap1]
+                    var duration = map[bitmap1]
                     startAnimation(image, 0f, duration)
                     image!!.setOnClickListener {
                         viewModel.getRedEnvelopePrize(redenpId)

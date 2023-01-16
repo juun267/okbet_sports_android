@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
-import android.view.animation.LinearInterpolator
 import kotlinx.android.synthetic.main.dialog_redenvelope_fail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
@@ -34,7 +32,7 @@ class RedEnvelopeFailDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        iv_close.setOnClickListener {
+        btn_ok.setOnClickListener {
             dismiss()
         }
         val errorDesc = arguments?.getString(ERROR_DESC).orEmpty()
