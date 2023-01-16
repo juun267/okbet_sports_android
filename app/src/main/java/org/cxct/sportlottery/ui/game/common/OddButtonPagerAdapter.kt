@@ -5,6 +5,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -686,6 +687,7 @@ class OddButtonPagerViewHolder constructor(
             itemOdd?.let { odd ->
                 //it.isSelected = !it.isSelected
                 oddButtonListener?.onClickBet(
+                    oddsButton,
                     matchInfo,
                     odd,
                     playCateCode,
@@ -891,14 +893,15 @@ class OddButtonPagerViewHolder constructor(
 }
 
 class OddButtonListener(
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateName: String) -> Unit
+    val clickListenerBet: (view: View, matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateName: String) -> Unit
 ) {
 
     fun onClickBet(
+        view:View,
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
         playCateName: String = "",
         betPlayCateName: String = "",
-    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateName)
+    ) = clickListenerBet(view,matchInfo, odd, playCateCode, playCateName, betPlayCateName)
 }

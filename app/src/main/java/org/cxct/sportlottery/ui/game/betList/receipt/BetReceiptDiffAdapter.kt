@@ -2,42 +2,32 @@ package org.cxct.sportlottery.ui.game.betList.receipt
 
 import android.os.Handler
 import android.os.Looper
-import android.text.Spanned
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.text.HtmlCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
-import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
-import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    var interfaceStatusChangeListener:InterfaceStatusChangeListener? = null
+    lateinit var refreshBetStatusFunction: (Long) -> Unit
+    lateinit var refreshBetStatusFinishFunction: () -> Unit
+
+    var interfaceStatusChangeListener: InterfaceStatusChangeListener? = null
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -74,16 +64,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             this@BetReceiptDiffAdapter.betParlayList = betParlayList
             this@BetReceiptDiffAdapter.betConfirmTime = betConfirmTime
 
-            val parlayItem =
-                if (parlayList.isNotEmpty())
-                    parlayList.map {
-                        //標記串關第一項(NC1), 第一項需顯示賠率, 以parlayType做比對, 有投注的第一項不一定是NC1
-                        if (betParlayList.first().parlayType == it.parlayType) DataItem.ParlayData(
-                            it,
-                            true
-                        ) else DataItem.ParlayData(it)
-                    }
-                else listOf()
+            val parlayItem = if (parlayList.isNotEmpty()) parlayList.map {
+                //標記串關第一項(NC1), 第一項需顯示賠率, 以parlayType做比對, 有投注的第一項不一定是NC1
+                if (betParlayList.first().parlayType == it.parlayType) DataItem.ParlayData(
+                    it, true
+                ) else DataItem.ParlayData(it)
+            }
+            else listOf()
 
             items = singleList.map { DataItem.SingleData(it) } + parlayItem
 
@@ -95,13 +82,15 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     fun updateListStatus(sportBet: SportBet) {
         items.forEach { dataItem ->
-            if(dataItem.orderNo == sportBet.orderNo)
-                (dataItem as DataItem.SingleData).result.status = sportBet.status
+            if (dataItem.orderNo == sportBet.orderNo) (dataItem as DataItem.SingleData).result.status =
+                sportBet.status
         }
         submitList(items)
     }
 
-    private fun starRunnable(startTime: Long, adapterPosition: Int, tvTime: TextView) {
+    private fun starRunnable(
+        startTime: Long, adapterPosition: Int, tvTime: TextView
+    ) {
         try {
             if (mRunnableList[adapterPosition] == null) {
                 mRunnableList[adapterPosition] = getRunnable(startTime, adapterPosition, tvTime)
@@ -112,23 +101,29 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         }
     }
 
-    private fun getRunnable(startTime: Long, position: Int, tvTime: TextView): Runnable {
+    private fun getRunnable(
+        startTime: Long,
+        position: Int,
+        tvTime: TextView,
+    ): Runnable {
         return Runnable {
             refreshTime(startTime, position, tvTime)//可以直接倒數了
             mRunnableList[position]?.let { mHandler.postDelayed(it, 1000) }
         }
     }
 
-    private fun refreshTime(startTime: Long, position: Int, tvTime: TextView) {
-        if (startTime.minus(System.currentTimeMillis()).div(1000L) < 0) {
-            tvTime.text = String.format(tvTime.context.getString(R.string.pending), 0)
-            stopRunnable(position)
-            notifyItemChanged(position)
+    private fun refreshTime(
+        startTime: Long, position: Int, tvTime: TextView
+    ) {
+        if (startTime.minus(System.currentTimeMillis()).div(1000L) < 1) {
+            if (this::refreshBetStatusFinishFunction.isInitialized) {
+                refreshBetStatusFinishFunction()
+            }
         } else {
-            tvTime.text = String.format(
-                tvTime.context.getString(R.string.pending),
-                startTime.minus(System.currentTimeMillis()).div(1000L)
-            )
+            val time = startTime.minus(System.currentTimeMillis()).div(1000L)
+            if (this::refreshBetStatusFunction.isInitialized) {
+                refreshBetStatusFunction(time)
+            }
         }
     }
 
@@ -173,36 +168,46 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         when (holder) {
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
-                holder.bind(itemData.result,
+                holder.bind(
+                    betConfirmTime,
+                    itemData.result,
                     currentOddsType,
                     interfaceStatusChangeListener,
-                    position)
+                    position
+                )
                 if (itemData.result.status == 0 && (System.currentTimeMillis() < (betConfirmTime
                         ?: 0L))
                 ) {
-                    starRunnable(betConfirmTime ?: 0,
+                    starRunnable(
+                        betConfirmTime ?: 0,
                         position,
-                        holder.itemView.tv_bet_status_single)
+                        holder.itemView.tv_bet_status_single,
+                    )
                 }
             }
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result,
+                holder.bind(
+                    itemData.result,
                     itemData.firstItem,
                     currentOddsType,
                     betParlayList,
                     interfaceStatusChangeListener,
-                    position)
+                    position
+                )
                 if (itemData.result.status == 0 && (System.currentTimeMillis() < (betConfirmTime
                         ?: 0L))
                 ) {
-                    starRunnable(betConfirmTime ?: 0, position, holder.itemView.tv_bet_status)
+                    starRunnable(
+                        betConfirmTime ?: 0,
+                        position,
+                        holder.itemView.tv_bet_status,
+                    )
                 }
             }
         }
     }
-
 
 
     interface InterfaceStatusChangeListener {

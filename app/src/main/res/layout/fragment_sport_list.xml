@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rootView"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:srlDragRate="0.3"
     app:srlEnableLoadMore="true"
@@ -33,7 +34,8 @@
                 <LinearLayout
                     android:id="@+id/ll_sport_type"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="78dp"
+                    android:paddingTop="7dp"
                     android:elevation="4dp"
                     android:background="@drawable/bg_white_radius_10_bottom"
                     android:gravity="center_horizontal"
@@ -44,6 +46,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:nestedScrollingEnabled="false"
+                        android:paddingLeft="5.5dp"
+                        android:clipToPadding="false"
                         tools:itemCount="1"
                         tools:listitem="@layout/itemview_sport_type_v6" />
                 </LinearLayout>

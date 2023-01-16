@@ -7,18 +7,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llRootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/fl_content"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            app:layout_constraintBottom_toTopOf="@+id/cLBottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <org.cxct.sportlottery.widget.ParlayFloatingWindow
+            android:id="@+id/parlayFloatWindow"
+            android:visibility="gone"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/cLBottom"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cLBottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="-8dp">
@@ -42,14 +62,7 @@
                 android:layout_height="3dp"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view" />
 
-            <include
-                android:id="@+id/cl_bet_list_bar"
-                layout="@layout/bet_bar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/bet_list_bar_height"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
-                tools:visibility="visible" />
+
 
             <LinearLayout
                 android:id="@+id/ll_home_back"
@@ -79,7 +92,7 @@
                     android:textSize="@dimen/textSize10sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- 投注單列表 & 快捷投注單 -->
     <FrameLayout
         android:id="@+id/fl_bet_list"

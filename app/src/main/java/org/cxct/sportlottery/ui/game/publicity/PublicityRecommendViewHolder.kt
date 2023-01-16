@@ -41,7 +41,7 @@ class PublicityRecommendViewHolder(
                         matchInfoList = matchInfoList
                     )
                 },
-                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     publicityAdapterListener.onClickBetListener(
                         data.gameType,
                         data.matchType ?: MatchType.EARLY,

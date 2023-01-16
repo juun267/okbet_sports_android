@@ -970,10 +970,10 @@
     <string name="btm_navigation_affiliate">Đại lý</string>
     <string name="expire_date">Thời gian hết hạn chứng chỉ</string>
     <string name="self_limit_froze_impotent_1">Tự loại trừ có hiệu lực ngay sau khi thiết lập</string>
-    <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ toàn bộ số dư của bạn trong khoảng thời gian tự loại trừ mà bạn đã đặt. Tuy nhiên, nếu đã hơn 6 tháng kể từ lần đăng nhập cuối cùng, OKBET sẽ có quyền tính phí quản lý hàng tháng cho bạn cho đến khi số dư tài khoản bằng không.</string>
+    <string name="self_limit_froze_impotent_2">Chúng tôi sẽ giữ số dư của bạn trong khoảng thời gian tự loại trừ đã định.</string>
     <string name="self_limit_froze_impotent_3">Nếu bạn đăng ký tự loại trừ trong các trò chơi trò chơi khác, nó sẽ không tự động áp dụng cho trò chơi này.</string>
     <string name="self_limit_froze_impotent_4">Trong thời gian tự loại trừ, nếu bạn cố gắng mở một tài khoản mới, tài khoản có thể bị đóng băng sau khi hệ thống phát hiện ra.</string>
-    <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn sẽ không thể tắt tính năng này cho đến khi hết thời gian loại trừ tối thiểu.</string>
+    <string name="self_limit_froze_impotent_5">Trong thời gian tự loại trừ, bạn có thể liên hệ với bộ phận dịch vụ khách hàng để hủy chức năng tự loại trừ.</string>
     <string name="self_limit_froze_impotent_6">Sau khi quá trình tự loại trừ hết hạn, tài khoản của bạn sẽ tự động được kích hoạt lại.</string>
     <string name="text_chose_language">Chọn ngôn ngữ của bạn</string>
     <!-- 複式串關詳情 -->
@@ -1040,7 +1040,7 @@
 
     <string name="current_corner">Tổng Số Hiện Tại:</string>
     <string name="cancel_auto">Từ chối</string>
-    <string name="cancel_manual">Hoàn tiền</string>
+    <string name="cancel_manual">Vô hiệu</string>
     <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng Anh, không nhập khoảng trắng liên tục.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1109,7 +1109,6 @@
     <string name="btn_remove_closed_selections">Xóa cược đã đóng</string>
     <string name="please_enter_correct_amount">Vui lòng nhập số tiền đặt cược chính xác</string>
     <string name="bet_info_list_bet">Đặt cược</string>
-    <string name="bet_info_bet">Tiền Cược</string>
     <!--endregion-->
 
     <string name="publicity_contact">lLiên hệ</string>
@@ -1195,10 +1194,13 @@
     <string name="hint_file_selected">Đã chọn tập tin</string>
 
     <string name="correct">Cược tỷ số</string>
-    <string name="hint_bet_limit_range">Giới hạn %1$s-%2$s</string>
+    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Đơn cược đang gửi</string>
     <string name="bet_receipt_bet_quota_with_sign">Tiền Cược</string>
-    <string name="bet_receipt_win_quota_with_sign">Ước tính thắng</string>
+    <string name="bet_receipt_win_quota_with_sign">Thắng</string>
+
+    <string name="bet_receipt_bet_quota_with_sign_money">Tiền Cược：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">Thắng：</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1378,6 +1380,9 @@
     <string name="current_login_password">Mật khẩu đăng nhập hiện tại</string>
     <string name="new_games">New Games</string>
     <string name="bet_info_add_bet_failed">Đặt cược thất bại</string>
+    <string name="str_in_play_bet_confirmed">Đang xác nhận cược trong trận</string>
+    <string name="str_odds_description">Mô tả tỷ lệ cược</string>
+    <string name="str_bet_parlay">CƯỢC XÂU</string>
     <string name="pls_enter_days_format">Mời nhập số ngày (≥%d ngày)</string>
     <string name="more_than_days_format">Phải hơn %d ngày</string>
     <string name="overtime_score">Bù giờ</string>

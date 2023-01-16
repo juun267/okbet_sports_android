@@ -1,12 +1,18 @@
 package org.cxct.sportlottery.ui.sport
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.PathMeasure
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +34,6 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
@@ -146,81 +151,81 @@ class SportListFragment :
                 //目前無法監聽收合動畫
                 firstVisibleRange(400)
             }
-            leagueOddListener =
-                LeagueOddListener(clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
+            leagueOddListener = LeagueOddListener(
+                clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
                     matchInfoList.find {
                         TextUtils.equals(matchId, it.id)
                     }?.let {
                         navMatchDetailPage(it)
                     }
                 },
-                    clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
-                        if (mIsEnabled) {
-                            avoidFastDoubleClick()
-                            addOddsDialog(
-                                matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
-                            )
-                        }
-                    },
-                    clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
+                clickListenerBet = { view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    if (mIsEnabled) {
+                        avoidFastDoubleClick()
+                        addOddsDialog(
+                            view, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap
+                        )
+                    }
+                },
+                clickListenerQuickCateTab = { matchOdd, quickPlayCate ->
 
-                    },
-                    clickListenerQuickCateClose = {
+                },
+                clickListenerQuickCateClose = {
 
-                    },
-                    clickListenerFavorite = { matchId ->
-                        matchId?.let {
-                            viewModel.pinFavorite(FavoriteType.MATCH, it)
-                        }
-                    },
-                    clickListenerStatistics = { matchId ->
-                        if (viewModel.checkLoginStatus()) {
-                            data.forEach {
-                                it.matchOdds.forEach {
-                                    if (TextUtils.equals(matchId, it.matchInfo?.id)) {
-                                        navMatchDetailPage(it.matchInfo)
-                                        return@forEach
-                                    }
+                },
+                clickListenerFavorite = { matchId ->
+                    matchId?.let {
+                        viewModel.pinFavorite(FavoriteType.MATCH, it)
+                    }
+                },
+                clickListenerStatistics = { matchId ->
+                    if (viewModel.checkLoginStatus()) {
+                        data.forEach {
+                            it.matchOdds.forEach {
+                                if (TextUtils.equals(matchId, it.matchInfo?.id)) {
+                                    navMatchDetailPage(it.matchInfo)
+                                    return@forEach
                                 }
                             }
                         }
-                    },
-                    refreshListener = { matchId ->
-                        loading()
+                    }
+                },
+                refreshListener = { matchId ->
+                    loading()
 //                    viewModel.refreshGame(
 //                        matchType,
 //                        listOf(),
 //                        listOf(matchId)
 //                    )
-                    },
-                    clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
-                        if (viewModel.checkLoginStatus()) {
-                            matchInfoList.find {
-                                TextUtils.equals(matchId, it.id)
-                            }?.let {
-                                navMatchDetailPage(it)
-                            }
+                },
+                clickLiveIconListener = { matchId, matchInfoList, _, liveVideo ->
+                    if (viewModel.checkLoginStatus()) {
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navMatchDetailPage(it)
                         }
-                    },
-                    clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
-                        if (viewModel.checkLoginStatus()) {
-                            matchInfoList.find {
-                                TextUtils.equals(matchId, it.id)
-                            }?.let {
-                                navMatchDetailPage(it)
-                            }
+                    }
+                },
+                clickAnimationIconListener = { matchId, matchInfoList, _, liveVideo ->
+                    if (viewModel.checkLoginStatus()) {
+                        matchInfoList.find {
+                            TextUtils.equals(matchId, it.id)
+                        }?.let {
+                            navMatchDetailPage(it)
                         }
-                    },
-                    clickCsTabListener = { playCate, matchOdd ->
-                        data.forEachIndexed { index, l ->
-                            l.matchOdds.find { m ->
-                                m == matchOdd
-                            }?.let {
-                                it.csTabSelected = playCate
-                                updateLeagueBySelectCsTab(index, matchOdd)
-                            }
+                    }
+                },
+                clickCsTabListener = { playCate, matchOdd ->
+                    data.forEachIndexed { index, l ->
+                        l.matchOdds.find { m ->
+                            m == matchOdd
+                        }?.let {
+                            it.csTabSelected = playCate
+                            updateLeagueBySelectCsTab(index, matchOdd)
                         }
-                    })
+                    }
+                })
         }
     }
 
@@ -330,9 +335,9 @@ class SportListFragment :
             val selected = !iv_arrow.isSelected
             iv_arrow.isSelected = selected
             if (selected) {
-                iv_arrow.rotationAnimation(180f,0)
+                iv_arrow.rotationAnimation(180f, 0)
             } else {
-                iv_arrow.rotationAnimation(0f,0)
+                iv_arrow.rotationAnimation(0f, 0)
             }
             sportLeagueAdapter.data.forEach {
                 it.unfoldStatus =
@@ -552,7 +557,9 @@ class SportListFragment :
 
         //當前玩法無賽事
         viewModel.isNoEvents.distinctUntilChanged().observe(this.viewLifecycleOwner) {
-            sport_type_list.isVisible = !it && matchType != MatchType.CS
+//            sport_type_list.isVisible = !it && matchType != MatchType.CS
+            //无赛事或者为波胆的时候不显示
+            ll_sport_type.isVisible = !(it || matchType == MatchType.CS)
             iv_calendar.isVisible =
                 (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
             sportLeagueAdapter.removePreloadItem()
@@ -882,6 +889,7 @@ class SportListFragment :
     }
 
     private fun addOddsDialog(
+        view: View,
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
@@ -908,7 +916,7 @@ class SportListFragment :
             subscribeChannelType = ChannelType.HALL,
             betPlayCateNameMap = betPlayCateNameMap,
         )
-        (activity as MainTabActivity).setupBetData(fastBetDataBean)
+        (activity as MainTabActivity).setupBetData(fastBetDataBean, view)
     }
 
 

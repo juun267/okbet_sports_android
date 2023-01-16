@@ -336,7 +336,7 @@ class GameV3Fragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel
                 clickListenerPlayType = { matchId, matchInfoList, _, liveVideo ->
                     navMatchDetailPage(matchId, matchInfoList, liveVideo)
                 },
-                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
                         addOddsDialog(

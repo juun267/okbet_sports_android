@@ -7,15 +7,23 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_bet_amount
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_bet_amount_title
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_winnable_amount
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_winnable_amount_title
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.setBetReceiptStatus
 import org.cxct.sportlottery.util.setReceiptStatusColor
+import timber.log.Timber
 
 class ParlayViewHolder private constructor(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
@@ -45,11 +53,17 @@ class ParlayViewHolder private constructor(itemView: View) :
             tvBetResutStatu.setTextColor(context.getColor(R.color.color_1EB65B))
             tvBetResutStatu.setText(R.string.bet_info_add_bet_success)
             tvBetResutStatu.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_bet_success, 0, 0, 0)
-            flBetOrder.setBackgroundResource(R.drawable.bg_parlay_bet_sucessful)
+            flBetOrder.setBackgroundResource(R.drawable.bg_parlay_bet_successful)
         }
 
         val currencySign = showCurrencySign
         itemData.apply {
+
+            tv_winnable_amount_title.text =
+                LocalUtils.getString(R.string.bet_receipt_win_quota_with_sign_max)
+            tv_bet_amount_title.text =
+                LocalUtils.getString(R.string.bet_receipt_bet_quota_with_sign_money)
+
             matchOdds?.firstOrNull()?.apply {
                 parlayType?.let { parlayTypeCode ->
                     tv_play_name_parlay.text =
@@ -94,14 +108,22 @@ class ParlayViewHolder private constructor(itemView: View) :
             val number = betParlay?.find { parlayType == it.parlayType }?.num ?: 0
             tv_bet_amount.text = "$currencySign ${itemData.stake?.let { TextUtil.formatForOdd(it * number) }}"
             tv_winnable_amount.text = "$currencySign ${TextUtil.formatForOdd(winnable ?: 0.0)}"
-            if (status != 0)
+
+            if (status != 0){
                 tv_bet_status.setBetReceiptStatus(status)
+                tv_bet_status.setReceiptStatusColor(status)
+                tv_bet_status.visible()
+            }else{
+                tv_bet_status.gone()
+            }
+
 
             //"status": 7 顯示賠率已改變
+            Timber.d("parlayViewHolderCurrentStatus: $status")
             if (status == 7)
                 interfaceStatusChangeListener?.onChange(code)
 
-            tv_bet_status.setReceiptStatusColor(status)
+
         }
     }
 }

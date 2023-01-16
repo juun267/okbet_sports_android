@@ -27,9 +27,8 @@ class OddBtnList @JvmOverloads constructor(
     private var oddBtnOther: OddsButton2? = null
 
     val oddWidth = 64.dp
-    val marging = 3.dp
-    val oddBtnParams = LayoutParams(oddWidth, 38.dp).apply {
-        bottomMargin = marging
+    val marging = 5.dp
+    val oddBtnParams = LayoutParams(oddWidth, 44.dp).apply {
         topMargin = marging
     }
 
@@ -52,11 +51,9 @@ class OddBtnList @JvmOverloads constructor(
         oddBtnHome = createOddBtn()
         oddBtnAway = createOddBtn()
 
-        addView(oddBtnHome, LayoutParams(oddWidth, 38.dp).apply {
+        addView(oddBtnHome, LayoutParams(oddWidth, 44.dp).apply {
             topMargin = 6.dp
-            bottomMargin = marging
         })
-
         addView(oddBtnAway, oddBtnParams)
 
     }

@@ -977,7 +977,7 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_time">Transaction time</string>
-    <string name="text_account_history_number">Order no.</string>
+    <string name="text_account_history_number">Order no</string>
     <string name="text_account_history_amount">Transaction amount</string>
     <string name="text_account_history_balance">Balance</string>
 
@@ -1011,7 +1011,7 @@
 
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
-    <string name="cancel_manual">Refund</string>
+    <string name="cancel_manual">Void</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1122,7 +1122,6 @@
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
     <string name="bet_info_list_bet">Stake</string>
-    <string name="bet_info_bet">Stake</string>
     <!--endregion-->
 
     <string name="publicity_contact">Contact</string>
@@ -1395,4 +1394,7 @@
     <string name="regular_score">Regular</string>
     <string name="score_with_overtime">score (with overtime)</string>
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
+    <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
+    <string name="str_odds_description">Odds Description</string>
+    <string name="str_bet_parlay">Parlay</string>
 </resources>

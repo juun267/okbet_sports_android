@@ -18,7 +18,7 @@
     <include
         layout="@layout/view_game_tab_match_type_v4"
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
+        android:layout_height="40dp" />
 
     <View
         android:layout_width="match_parent"

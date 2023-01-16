@@ -99,7 +99,7 @@ class KeyboardView @JvmOverloads constructor(
         tvDel.setOnClickListener {
             delete()
         }
-        tvDot.setOnClickListener {
+        flDot.setOnClickListener {
             insertDot()
         }
         tvClear.setOnClickListener {

@@ -6,17 +6,17 @@ object OddsModeUtil {
     /**
      * 接受任何赔率变化
      */
-    private const val accept_any_odds = 0
+     const val accept_any_odds = 0
 
     /**
      * 接受更好赔率变化
      */
-    private const val accept_better_odds = 2
+     const val accept_better_odds = 2
 
     /**
      * 永不接受赔率变化
      */
-    private const val never_accept_odds_change = 1
+     const val never_accept_odds_change = 1
 
 
     val currentSelectModeIndex: (Int) -> Int = {
