@@ -20,6 +20,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -556,7 +557,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     fun setupBetData(fastBetDataBean: FastBetDataBean, view: View? = null) {
         viewModel.updateMatchBetListData(fastBetDataBean)
         if (view != null) {
-//            addAction(view)
+            addAction(view)
         }
     }
 
@@ -578,6 +579,9 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun addAction(view: View) {
+        if (binding.parlayFloatWindow.isGone){
+            return
+        }
         // 一 、创建购物的ImageView 添加到父布局中
         val imageView = ImageView(this)
 //        imageView.setImageBitmap(getViewsScreenShot(view))
@@ -612,7 +616,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         val mPathMeasure = PathMeasure(path, false)
         //★★★属性动画实现（从0到贝塞尔曲线的长度之间进行插值计算，获取中间过程的距离值）
         val valueAnimator: ValueAnimator = ValueAnimator.ofFloat(0f, mPathMeasure.length)
-        valueAnimator.duration = 1000
+        valueAnimator.duration = 500
         // 匀速线性插值器
         valueAnimator.setInterpolator(LinearInterpolator())
         valueAnimator.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
@@ -625,8 +629,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                     value, mCurrentPosition, null
                 ) //mCurrentPosition此时就是中间距离点的坐标值
                 // 移动的商品图片（动画图片）的坐标设置为该中间点的坐标
-                imageView.setTranslationX(mCurrentPosition.get(0))
-                imageView.setTranslationY(mCurrentPosition.get(1))
+                imageView.translationX = mCurrentPosition[0]
+                imageView.translationY = mCurrentPosition[1]
             }
         })
         //五、 开始执行动画
