@@ -7,6 +7,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import kotlinx.android.synthetic.main.motion_view_red_envelope_floating.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.RedEnvelopeManager
+import org.cxct.sportlottery.util.TimeUtil
 
 class RedEnvelopeFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -30,6 +31,6 @@ class RedEnvelopeFloatingButton @JvmOverloads constructor(
         }
     }
     fun setCountdown(countdown: Long) {
-        tv_countdown.text = countdown.toString()
+        tv_countdown.text = TimeUtil.timeFormat(countdown * 1000, TimeUtil.HM_FORMAT_MS)
     }
 }

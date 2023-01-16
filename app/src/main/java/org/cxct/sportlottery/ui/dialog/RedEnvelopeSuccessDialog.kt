@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import kotlinx.android.synthetic.main.dialog_redenvelope_success.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -50,6 +52,26 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
         btn_ok.setOnClickListener {
             dismiss()
         }
+        startAnimation()
+    }
+
+    fun startAnimation() {
+        RotateAnimation(-30f,
+            30f,
+            Animation.RELATIVE_TO_SELF,
+            0.65f,
+            Animation.RELATIVE_TO_SELF,
+            0.65f)
+            .apply {
+                repeatCount = Animation.INFINITE
+                repeatMode = Animation.REVERSE
+                duration = 2000
+            }.let {
+                iv_buble_1.startAnimation(it)
+                iv_buble_2.startAnimation(it)
+                iv_buble_3.startAnimation(it)
+                iv_buble_4.startAnimation(it)
+            }
     }
 
 
