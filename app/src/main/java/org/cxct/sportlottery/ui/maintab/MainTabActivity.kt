@@ -1,5 +1,9 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.R.attr.startX
+import android.R.attr.startY
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -103,6 +107,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     private var exitTime: Long = 0
+    private var currentBetMode:Int = BetListFragment.SINGLE
 
     companion object {
 
