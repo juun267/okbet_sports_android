@@ -1350,7 +1350,7 @@
     <string name="accept_better_change_in_odds">Accept better odds</string>
     <string name="accept_never_change_in_odds">Never accept odds change</string>
     <string name="expand_more_combinations">More combinations</string>
-    <string name="stacked_combination">Stack up combination</string>
+    <string name="stacked_combination">Hide combination</string>
     <string name="bet_parlay">+Parlay</string>
     <string name="bet_single">Single</string>
     <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
