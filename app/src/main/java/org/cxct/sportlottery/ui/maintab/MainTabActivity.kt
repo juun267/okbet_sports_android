@@ -24,7 +24,6 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.android.synthetic.main.activity_main_tab.*
 import kotlinx.android.synthetic.main.bet_bar_layout.*
-import kotlinx.android.synthetic.main.bet_bar_layout.tv_bet_list_count
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.bet_bar_layout2.*
 import kotlinx.android.synthetic.main.dialog_pop_image.*

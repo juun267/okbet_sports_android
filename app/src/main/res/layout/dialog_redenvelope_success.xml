@@ -78,6 +78,13 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="110dp"
+                    android:layout_marginTop="70dp"
+                    android:src="@drawable/ic_pop_gold" />
+
+                <ImageView
                     android:id="@+id/iv_buble_1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
