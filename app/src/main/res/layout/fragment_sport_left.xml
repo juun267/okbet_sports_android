@@ -372,7 +372,7 @@
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@drawable/ic_arrow_gray_right" />
+                        android:src="@drawable/selector_arrow_right_up" />
                 </LinearLayout>
 
                 <View

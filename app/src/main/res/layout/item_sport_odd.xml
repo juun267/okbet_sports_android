@@ -175,10 +175,9 @@
                             android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:ellipsize="end"
-                            android:fontFamily="@font/din_regular"
                             android:gravity="center_vertical"
                             android:singleLine="true"
-                            android:textColor="@color/color_535D76"
+                            android:textColor="@color/color_111216"
                             android:textSize="@dimen/textSize12sp"
                             tools:text="俄罗斯" />
 
@@ -319,10 +318,8 @@
                             android:layout_weight="1"
                             android:ellipsize="end"
                             android:gravity="center_vertical"
-                            android:fontFamily="@font/din_regular"
                             android:singleLine="true"
-                            android:textColor="@color/color_535D76"
-                            android:textSize="@dimen/textSize12sp"
+                            android:textColor="@color/color_111216"                            android:textSize="@dimen/textSize12sp"
                             tools:text="芬兰" />
 
                         <TextView
