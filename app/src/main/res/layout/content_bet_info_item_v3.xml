@@ -264,6 +264,7 @@
                         android:layout_height="@dimen/et_bet_height"
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginStart="5dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/bg_radius_2_edittext_unfocus"
                         android:gravity="end|center_vertical"
@@ -272,12 +273,14 @@
                         android:letterSpacing="0.05"
                         android:maxLength="14"
                         android:paddingHorizontal="10dp"
+                        android:fontFamily="@font/din_alternate_bold"
                         android:textColor="@color/color_025BE8"
                         android:textColorHint="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="@id/guideline_input"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/tv_bet"
                         app:layout_constraintTop_toTopOf="parent" />
 
