@@ -1339,8 +1339,8 @@
     <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
     <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
     <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
-    <string name="expand_more_combinations">Thêm các tổ hợp</string>
-    <string name="stacked_combination">Xếp chồng tổ hợp</string>
+    <string name="expand_more_combinations">Hiện tổ hợp</string>
+    <string name="stacked_combination">Ẩn tổ hợp</string>
     <string name="bet_parlay">+Xâu</string>
     <string name="bet_single">Đơn</string>
     <string name="str_if_accept_odds_changes_title">Có nhận thay đổi tỷ lệ cược không?</string>
