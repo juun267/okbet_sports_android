@@ -1412,7 +1412,7 @@
     <string name="str_press_again_to_exit_the_program">"Please confirm to exit again  "</string>
     <string name="bet_info_add_bet_failed">Bet Failed</string>
     <string name="new_games">New Games</string>
-    <string name="str_bet_way">bet way</string>
+    <string name="str_bet_way">Betting method</string>
     <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
     <string name="str_odds_description">Odds Description</string>
     <string name="str_bet_parlay">Parlay</string>
