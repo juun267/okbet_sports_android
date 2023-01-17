@@ -51,6 +51,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -225,7 +226,6 @@ class MainHomeFragment :
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
                 iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
-                LogUtil.d(mMatchInfo?.pullRtmpUrl)
             iv_publicity.startPlayLogic()
         } else {
             iv_publicity.onVideoPause()
@@ -341,7 +341,20 @@ class MainHomeFragment :
                     viewModel.getPublicityPromotion()
                 }
                 viewModel.getSportMenuFilter()
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                if (ThirdGameDialog.firstShow) {
+                    ThirdGameDialog().apply {
+                        onClick = {
+                            (this@MainHomeFragment.parentFragment as HomeFragment).onTabClickByPosition(
+                                HomeTabAdapter.getItems()
+                                    .indexOfFirst { it.name == R.string.home_on_game })
+                        }
+                        onDismiss = {
+                            MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                        }
+                    }.show(childFragmentManager, ThirdGameDialog::class.simpleName)
+                } else {
+                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                }
             }
         }
 //
