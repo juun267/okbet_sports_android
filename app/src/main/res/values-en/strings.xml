@@ -1401,4 +1401,5 @@
     <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
     <string name="str_odds_description">Odds Description</string>
     <string name="str_bet_parlay">Parlay</string>
+    <string name="str_bet_way">Betting method</string>
 </resources>
