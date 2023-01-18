@@ -4,29 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent_black_50"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/transparent_black_0"
     tools:context=".ui.game.betList.receipt.BetReceiptFragment">
 
-    <View
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent_black_50" />
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        tools:ignore="SpUsage, ContentDescription">
-
-    <LinearLayout
-        android:background="@color/color_FFFFFF"
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/bet_list_top_padding_height"
+        android:layout_gravity="bottom"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,9 +71,9 @@
                 android:id="@+id/tv_bet_list_count"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:minWidth="20dp"
                 android:layout_marginStart="4dp"
                 android:gravity="center"
+                android:minWidth="20dp"
                 android:textColor="@color/color_FFFFFF_FFFFFF"
                 android:textSize="@dimen/textSize14sp"
                 app:autoSizeMaxTextSize="@dimen/textSize14sp"
@@ -125,8 +112,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/color_202541_FFFFFF"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/color_202541_FFFFFF">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_bet_receipt"
@@ -136,21 +123,26 @@
                 tools:itemCount="2"
                 tools:listitem="@layout/item_match_receipt" />
 
-<!--            <View-->
-<!--                android:id="@+id/line_shadow"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="4dp"-->
-<!--                android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent" />-->
+            <!--            <View-->
+            <!--                android:id="@+id/line_shadow"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="4dp"-->
+            <!--                android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <View
-            android:id="@+id/line_shadow"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="@drawable/bg_gradient_bottom_sheet_shadow"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:background="@android:color/white">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/bg_gradient_bottom_sheet_shadow"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
@@ -239,20 +231,21 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
-            android:paddingTop="10dp"
-            android:background="@color/color_202541_FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/color_202541_FFFFFF"
+            android:paddingTop="10dp">
+
             <LinearLayout
                 android:id="@+id/lin_result_status"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginHorizontal="14dp"
-                android:paddingHorizontal="15dp"
+                android:background="@drawable/drawable_bet_successful"
                 android:gravity="center_vertical"
+                android:paddingHorizontal="15dp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:background="@drawable/drawable_bet_successful">
+                tools:visibility="visible">
 
                 <ImageView
                     android:id="@+id/iv_result_status"
@@ -265,29 +258,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:text="@string/your_bet_order_success"
                     android:textColor="@color/color_1EB65B"
-                    android:textSize="16sp"
-                    android:text="@string/your_bet_order_success" />
+                    android:textSize="16sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lin_result_status_processing"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginHorizontal="14dp"
-                android:paddingHorizontal="15dp"
+                android:background="@drawable/drawable_bet_processing"
                 android:gravity="center"
-                android:visibility="gone"
                 android:orientation="horizontal"
-                tools:visibility="gone"
-                android:background="@drawable/drawable_bet_processing">
+                android:paddingHorizontal="15dp"
+                android:visibility="gone"
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvBetProcessingStatus"
-                    android:textColor="@color/color_E38902"
-                    android:text="滚球注单确认中（9S）"
-                    android:textSize="16sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="滚球注单确认中（9S）"
+                    android:textColor="@color/color_E38902"
+                    android:textSize="16sp" />
+
                 <ProgressBar
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -302,8 +297,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_14"
-            android:background="@color/color_202541_FFFFFF">
+            android:background="@color/color_202541_FFFFFF"
+            android:padding="@dimen/margin_14">
 
             <TextView
                 android:id="@+id/btnLastStep"
@@ -323,21 +318,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_weight="1"
-                android:visibility="visible"
                 android:background="@drawable/button_radius_8_bet_button"
                 android:gravity="center"
                 android:text="@string/btn_sure"
                 android:textColor="@color/color_E8EFFD"
-                android:textSize="@dimen/textSize16sp" />
+                android:textSize="@dimen/textSize16sp"
+                android:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/lin_loading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:visibility="gone"
+                android:background="@drawable/button_radius_8_bet_button"
                 android:gravity="center"
-                android:background="@drawable/button_radius_8_bet_button">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -358,6 +353,5 @@
             </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
     </LinearLayout>
 </FrameLayout>

@@ -123,17 +123,20 @@ class BetInfoItemViewHolder(
 //            llSingleTips.isVisible = isVisible
             //不支援串關的提示
             if (cannotParlay) {
-                tvNoParlay.isVisible = true
+//                tvNoParlay.isVisible = true
+                llNoParlay.isVisible = true
                 tvBetLock.isVisible = false
             } else {
-                tvNoParlay.isVisible = false
+//                tvNoParlay.isVisible = false
+                llNoParlay.isVisible = false
             }
 
             //盤口關閉的提示
             if (isLock) {
                 layoutKeyBoard.hideKeyboard()
                 tvBetLock.isVisible = true
-                tvNoParlay.gone()
+//                tvNoParlay.gone()
+                llNoParlay.gone()
             } else {
                 tvBetLock.isVisible = false
             }

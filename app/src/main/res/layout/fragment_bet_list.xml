@@ -76,7 +76,7 @@
                 <View
                     android:id="@+id/line_shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="4dp"
+                    android:layout_height="6dp"
                     android:background="@drawable/bg_gradient_bottom_sheet_shadow"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -208,10 +208,9 @@
 
                     <LinearLayout
                         android:id="@+id/ll_total_stake"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/total_info_guide_line"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -224,7 +223,7 @@
                             android:textSize="@dimen/textSize12sp"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"/>
 
                         <TextView
                             android:id="@+id/tv_total_bet_amount"
@@ -238,14 +237,14 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/title_all_bet"
                             app:layout_constraintTop_toTopOf="@+id/title_all_bet"
-                            tools:text="0.000" />
+                            tools:text="0.000"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_est_winning"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
+                        android:gravity="right"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/total_info_guide_line"

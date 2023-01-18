@@ -133,11 +133,11 @@
         android:id="@+id/game_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_FFFFFF"
         android:overScrollMode="never"
         android:paddingTop="0dp"
-        android:background="@color/color_FFFFFF"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:itemCount="1"
-        tools:listitem="@layout/item_league"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        tools:listitem="@layout/item_league" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -26,11 +26,10 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginLeft="@dimen/margin_4"
-        android:textStyle="bold"
         android:maxLines="1"
+        android:textStyle="bold"
         android:textColor="@color/color_select_white_gray"
         android:textSize="12sp"
-        android:fontFamily="@font/din_bold"
         tools:text="643" />
 
 </LinearLayout>

@@ -36,7 +36,7 @@
             android:maxLines="1"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="@dimen/margin_10"
-            android:textColor="@color/color_535D76"
+            android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize12sp"
             tools:text="欧洲足球锦标赛2020" />
 

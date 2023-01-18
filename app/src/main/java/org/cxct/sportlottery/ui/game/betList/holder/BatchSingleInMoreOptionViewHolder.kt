@@ -98,7 +98,7 @@ class BatchSingleInMoreOptionViewHolder(private val contentView: ItemBetListBatc
 
             etBetSingle.apply {
                 if (!initValue.isNullOrEmpty()) setText(initValue) else text.clear()
-                setSelection(text.length)
+//                setSelection(text.length)
                 setEtBetSingleBackground(itemData)
 
                 /* set listener */
