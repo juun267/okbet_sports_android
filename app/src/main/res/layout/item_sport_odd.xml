@@ -52,9 +52,9 @@
                 <LinearLayout
                     android:id="@+id/linear_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:visibility="visible"
+                    android:paddingTop="@dimen/margin_0.5"
                     tools:visibility="visible">
 
                     <TextView
