@@ -123,6 +123,8 @@
                         android:textColor="@color/color_025BE8_025BE8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/din_regular"
+                        android:textStyle="bold"
                         tools:text="\@ 0.89"/>
 
                 </LinearLayout>
@@ -133,6 +135,9 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_A7B2C4"
                     android:textSize="@dimen/textSize12sp"
+                    android:layout_marginEnd="10dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_marginTop="2dp"
                     android:layout_marginStart="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -149,6 +154,9 @@
                     android:textColor="@color/color_535D76"
                     android:textSize="@dimen/textSize12sp"
                     android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
                     android:layout_marginStart="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -202,11 +210,12 @@
                             android:textColor="@color/color_9BB3D9_535D76"
                             android:textSize="@dimen/textSize12sp"
                             android:gravity="center_vertical"
-                            tools:text = ":fdsfdsfdsfdsfdsdfdsfdsfdsfdsx"
+                            tools:text = ":488754564545487"
                             android:layout_width="0dp"
                             android:ellipsize="end"
+                            android:textStyle="bold"
                             android:layout_weight="1"
-                            android:fontFamily="@font/din_alternate_bold"
+                            android:fontFamily="@font/din_regular"
                             android:maxLines="1"
                             android:layout_height="match_parent"/>
                     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -219,6 +228,7 @@
                         android:layout_width="0dp"
                         android:gravity="end|center_vertical"
                         android:textStyle="bold"
+                        android:fontFamily="@font/din_regular"
                         android:layout_weight="1"
                         android:text="2023-01-12 10:59:45"
                         android:layout_height="match_parent"/>
