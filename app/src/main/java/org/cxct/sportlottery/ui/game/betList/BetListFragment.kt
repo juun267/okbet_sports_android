@@ -614,16 +614,16 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val totalBetString = TextUtil.formatForOdd(totalBetAmount)
             val winnableString = TextUtil.formatForOdd(winnableAmount)
             //region 依照語系or長度自動換行
-            val needChangeLineLength = 7
-            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.VI) {
-                llTotalStake.orientation = LinearLayout.VERTICAL
-                llEstWinning.orientation = LinearLayout.VERTICAL
-                llEstWinning.gravity = Gravity.START
-            } else {
-                llTotalStake.orientation = LinearLayout.HORIZONTAL
-                llEstWinning.orientation = LinearLayout.HORIZONTAL
-                llEstWinning.gravity = Gravity.END
-            }
+//            val needChangeLineLength = 7
+//            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.VI) {
+//                llTotalStake.orientation = LinearLayout.VERTICAL
+//                llEstWinning.orientation = LinearLayout.VERTICAL
+//                llEstWinning.gravity = Gravity.START
+//            } else {
+//                llTotalStake.orientation = LinearLayout.HORIZONTAL
+//                llEstWinning.orientation = LinearLayout.HORIZONTAL
+//                llEstWinning.gravity = Gravity.END
+//            }
             //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
             tvTotalWinnableAmount.text =
