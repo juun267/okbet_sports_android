@@ -16,7 +16,6 @@
     app:tabPaddingEnd="9dp"
     app:tabPaddingStart="9dp"
     app:tabRippleColor="@null"
-
     tools:layout="@layout/home_cate_tab">
 
     <!--<com.google.android.material.tabs.TabItem

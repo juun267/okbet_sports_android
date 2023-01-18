@@ -135,7 +135,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
 
     var sportTabLayout: TabLayout? = null
     private fun initTabLayout() {
-        tabLayout.setBackgroundResource(R.color.color_F7FAFE)
+        tabLayout.setBackgroundColor(requireContext().getColor(R.color.color_F7FAFE))
         sportTabLayout = tabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
