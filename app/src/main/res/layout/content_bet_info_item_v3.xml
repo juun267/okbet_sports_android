@@ -410,7 +410,7 @@
                             android:text="@string/bet_list_cant_parlay_warn"
                             android:textColor="@color/color_E23434"
                             android:textSize="@dimen/textSize14sp"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             tools:visibility="visible" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
