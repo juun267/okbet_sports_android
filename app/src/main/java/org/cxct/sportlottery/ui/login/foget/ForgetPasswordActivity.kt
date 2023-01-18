@@ -61,10 +61,6 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     }
 
     fun initView(){
-        binding.tvTitleForgetPassword.text = getString(R.string.find_back_password)
-        binding.tvTitleForgetPassword.setGradientSpan(getColor(R.color.color_71ADFF),
-            getColor(R.color.color_1971FD),
-            true)
         binding.eetAccountForget.checkRegisterListener { viewModel.checkAccount(it) }
         binding.eetVerificationCodeForget.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetPhoneNum.checkRegisterListener{viewModel.checkPhone(it)}
