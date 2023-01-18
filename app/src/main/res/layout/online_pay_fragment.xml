@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_F0F5FA"
     android:overScrollMode="never"
+    android:fillViewport="true"
     tools:context=".ui.money.recharge.OnlinePayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_14"
-        android:background="@color/color_141414_F3F4F5"
+        android:background="@color/color_F0F5FA"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -97,7 +98,7 @@
                     android:layout_height="45dp"
                     android:contentDescription="@null"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_arrow_gray" />
+                    android:src="@drawable/icon_arrow_down" />
 
             </LinearLayout>
 
@@ -159,7 +160,7 @@
                     android:layout_height="45dp"
                     android:contentDescription="@null"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_arrow_gray" />
+                    android:src="@drawable/icon_arrow_down" />
 
             </LinearLayout>
 
@@ -293,10 +294,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/btn_service"
                 android:textColor="@color/color_025BE8"
-                android:textSize="@dimen/textSize14sp"/>
+                android:textSize="@dimen/textSize14sp" />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <androidx.legacy.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
+        <ImageView
+            android:id="@+id/iv_btn_service"
+            android:src="@drawable/icon_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="@dimen/margin_14"
+            android:layout_marginBottom="55dp" />
+    </LinearLayout>
 </ScrollView>

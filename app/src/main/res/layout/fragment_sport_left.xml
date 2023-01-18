@@ -116,14 +116,14 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/ic_menu_saiguo" />
+                        android:src="@drawable/selector_menu_result" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
                         android:text="@string/game_result"
-                        android:textColor="@color/color_FFFFFF_414655"
+                        android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_141414_F3F4F5"
+    android:background="@color/color_F0F5FA"
     android:overScrollMode="never"
     android:paddingBottom="15dp"
     tools:context=".ui.money.recharge.TransferPayFragment">
@@ -33,11 +33,11 @@
                     android:id="@+id/tv_pay_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="14dp"
                     android:text="@string/title_bank"
                     android:textColor="@color/color_9FADC6_535D76"
-                    android:textSize="@dimen/textSize13sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="normal" />
 
                 <View
                     android:layout_width="1dp"
@@ -71,7 +71,7 @@
                     android:layout_height="45dp"
                     android:contentDescription="@null"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_arrow_gray" />
+                    android:src="@drawable/icon_arrow_down" />
 
             </LinearLayout>
 
@@ -107,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/title_name"
                         android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <TextView
                         android:id="@+id/tv_name"
@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/title_account"
                         android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <TextView
                         android:id="@+id/tv_account"
@@ -194,7 +194,7 @@
                         android:layout_height="match_parent"
                         android:text="@string/title_address"
                         android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <TextView
                         android:id="@+id/tv_address"
@@ -221,7 +221,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/title_qr_pay"
                         android:textColor="@color/color_9FADC6_A5A9B3"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -274,8 +274,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/log_detail_reason"
-                        android:textColor="@color/color_CCCCCC_000000"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textColor="@color/color_A5A9B3"
+                        android:textSize="@dimen/textSize14sp" />
 
                     <TextView
                         android:id="@+id/tv_remark"
@@ -365,9 +365,11 @@
             android:id="@+id/et_recharge_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             app:cvHint="@string/edt_hint_deposit_money"
             app:cvInputType="number"
             app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvTitleTextStyle="normal"
             app:cvTitle="@string/title_deposit_money" />
 
         <!-- 微信 -->
@@ -375,9 +377,11 @@
             android:id="@+id/et_wx_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             app:cvHint="@string/edt_hint_wx_id"
             app:cvInputType="text"
             app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvTitleTextStyle="normal"
             app:cvTitle="@string/title_wx_id" />
 
         <!-- 認證姓名 -->
@@ -385,9 +389,11 @@
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             app:cvHint="@string/edt_hint_check_real_name"
             app:cvInputType="text"
             app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvTitleTextStyle="normal"
             app:cvTitle="@string/title_real_name" />
 
         <!-- 銀行卡號 -->
@@ -395,8 +401,10 @@
             android:id="@+id/et_bank_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             app:cvHint="@string/please_enter_bank_card_rule"
             app:cvInputType="number"
+            app:cvTitleTextStyle="normal"
             app:cvTextColor="@color/color_9BB3D9_535D76"
             app:cvTitle="@string/title_bank_account" />
 
@@ -405,9 +413,11 @@
             android:id="@+id/et_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             app:cvHint="@string/edt_hint_nick_name"
             app:cvInputType="text"
             app:cvTextColor="@color/color_9BB3D9_535D76"
+            app:cvTitleTextStyle="normal"
             app:cvTitle="@string/title_nick_name" />
 
 
@@ -433,7 +443,7 @@
                         android:maxLines="1"
                         android:text="@string/title_recharge_time"
                         android:textColor="@color/color_D2E4FF_414655"
-                        android:textSize="@dimen/textSize13sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                     <LinearLayout
                         android:id="@+id/ll_transfer_time"
@@ -488,12 +498,13 @@
                             app:autoSizeMaxTextSize="@dimen/textSize12sp"
                             app:autoSizeMinTextSize="@dimen/textSize8sp"
                             tools:text="19:35:35 (GMT+8)" />
+
                         <ImageView
                             android:layout_width="35dp"
                             android:layout_height="45dp"
                             android:contentDescription="@null"
                             android:scaleType="centerInside"
-                            android:src="@drawable/ic_arrow_gray" />
+                            android:src="@drawable/icon_arrow_down" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -516,7 +527,7 @@
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
                     android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize13sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
@@ -582,11 +593,12 @@
                 android:layout_height="1dp"/>
             <Button
                 android:id="@+id/bt_check_files"
+                style="?android:attr/borderlessButtonStyle"
                 android:text="@string/select_file1"
                 android:textColor="@color/color_2b2b2b_ffffff"
                 android:textSize="@dimen/textSize14sp"
                 android:layout_marginEnd="@dimen/margin_14"
-               android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginTop="@dimen/margin_8"
                 android:textAllCaps="false"
                 android:background="@drawable/btn_send_sms"
                 app:layout_constraintTop_toBottomOf="@+id/view_upload"
@@ -644,7 +656,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_marginStart="14dp"
                     android:autoSizeMaxTextSize="13dp"
                     android:autoSizeMinTextSize="6dp"
                     android:autoSizeTextType="uniform"
@@ -652,7 +664,7 @@
                     android:maxLines="1"
                     android:text="@string/title_current_money"
                     android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize13sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
