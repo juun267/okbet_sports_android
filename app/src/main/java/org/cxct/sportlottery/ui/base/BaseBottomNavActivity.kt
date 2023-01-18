@@ -82,7 +82,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.betInfoList.observe(this) {
             updateBetListCount(it.peekContent().size)
-            updateBetListOdds(it.peekContent())
         }
 
         viewModel.notifyLogin.observe(this) {

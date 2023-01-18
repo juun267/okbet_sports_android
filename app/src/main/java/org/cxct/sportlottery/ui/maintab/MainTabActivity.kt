@@ -42,6 +42,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
@@ -60,6 +61,7 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 import kotlin.system.exitProcess
 
 
@@ -101,7 +103,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     private val homeLeftFragment by lazy { MainLeftFragment() }
     private val sportLeftFragment by lazy { SportLeftFragment() }
     private var exitTime: Long = 0
-    private var currentBetMode: Int = BetListFragment.SINGLE
 
     companion object {
 
@@ -367,10 +368,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     @Subscribe
     fun onBetModeChangeEvent(event: BetModeChangeEvent) {
         if (event.currentMode == BetListFragment.SINGLE) {
-            currentBetMode = BetListFragment.SINGLE
+            BetInfoRepository.currentBetType = BetListFragment.SINGLE
             parlayFloatWindow.gone()
         } else {
-            currentBetMode = BetListFragment.PARLAY
+            BetInfoRepository.currentBetType = BetListFragment.PARLAY
             if (betListCount != 0) {
                 parlayFloatWindow.visible()
             }
@@ -434,27 +435,21 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         if (num > 0) viewModel.getMoney()
     }
 
-    /**
-     * 单关不显示赔率
-     * 串关显示赔率
-     */
-    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
-//        if (list.size >= 1 && list[0].matchType == MatchType.PARLAY) {
-//            parlayFloatWindow.visible()
-//        } else {
-//            parlayFloatWindow.gone()
-//        }
-    }
 
     fun setupBetBarVisiblity(position: Int) {
         val needShowBetBar = when (position) {
             0, 1, 3 -> true
             else -> false
         }
-        if (betListCount == 0 || !needShowBetBar || currentBetMode == BetListFragment.SINGLE) {
+
+        if (betListCount == 0 ||
+            !needShowBetBar ||
+            BetInfoRepository.currentBetType == BetListFragment.SINGLE) {
+//            Timber.d("ParlayFloatWindow隐藏：betListCount:${betListCount} !needShowBetBar:${!needShowBetBar} currentBetMode:${BetInfoRepository.currentBetType}")
             parlayFloatWindow.gone()
         } else {
-            if (currentBetMode == BetListFragment.PARLAY) {
+            if (BetInfoRepository.currentBetType == BetListFragment.PARLAY) {
+//                Timber.d("ParlayFloatWindow显示")
                 parlayFloatWindow.visible()
             }
         }
@@ -572,7 +567,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
     }
 
     private fun addAction(view: View) {
-        if (binding.parlayFloatWindow.isGone){
+        if (binding.parlayFloatWindow.isGone) {
             return
         }
         // 一 、创建购物的ImageView 添加到父布局中
@@ -702,5 +697,8 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
             activityInstance = null
         }
         SportLeagueAdapter.clearCachePool()
+    }
+
+    override fun updateBetListOdds(list: MutableList<BetInfoListData>) {
     }
 }
