@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.activity_setting_center.*
 import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.fragment_bet_station.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
 import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
+import kotlinx.android.synthetic.main.online_pay_fragment.iv_btn_service
 import kotlinx.android.synthetic.main.online_pay_fragment.tv_currency_type
 import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import org.cxct.sportlottery.R
@@ -408,7 +410,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     //联系客服
     private fun setupServiceButton() {
-        tv_service.setOnClickListener {
+        View.OnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
@@ -427,6 +429,9 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     context?.let { it1 -> JumpUtil.toExternalWeb(it1, serviceUrl) }
                 }
             }
+        }.let {
+            iv_btn_service.setOnClickListener(it)
+            tv_service.setOnClickListener(it)
         }
     }
 }

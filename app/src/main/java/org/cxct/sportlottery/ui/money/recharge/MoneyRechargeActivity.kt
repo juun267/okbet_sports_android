@@ -4,10 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration
 import kotlinx.android.synthetic.main.activity_money_recharge.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.GridItemDecoration
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
@@ -319,14 +318,15 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 4)
         rv_pay_type.adapter = bankTypeAdapter
-        rv_pay_type.addItemDecoration(
-            GridItemDecoration(
-                8.dp,
-                8.dp,
-                ContextCompat.getColor(this, R.color.color_191919_FCFCFC),
-                false
+        if (rv_pay_type.itemDecorationCount == 0) {
+            rv_pay_type.addItemDecoration(
+                GridSpacingItemDecoration(
+                    4,
+                    10.dp,
+                    false
+                )
             )
-        )
+        }
     }
 
     /**

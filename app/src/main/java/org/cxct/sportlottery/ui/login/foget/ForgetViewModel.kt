@@ -9,13 +9,13 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
-import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.util.LocalUtils
-import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 
@@ -29,15 +29,16 @@ class ForgetViewModel(
     val phoneMsg: LiveData<Pair<String?, Boolean>>
         get() = _phoneMsg
     private val _phoneMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     //验证码异常提示
     val accountCodeMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountCodeMsg
-    private val _accountCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
+    val _accountCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
 
     //密码异常提示
     val passwordMsg: LiveData<Pair<String?, Boolean>>
         get() = _passwordMsg
-    private val _passwordMsg = MutableLiveData<Pair<String?, Boolean>>()
+    val _passwordMsg = MutableLiveData<Pair<String?, Boolean>>()
 
     //确认密码异常提示
     val confirmPasswordMsg: LiveData<Pair<String?, Boolean>>
@@ -77,10 +78,11 @@ class ForgetViewModel(
     val resetPasswordResult: LiveData<ResetPasswordResult?>
         get() = _resetPasswordResult
     private val _resetPasswordResult = MutableLiveData<ResetPasswordResult?>()
+
     //用户
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
-    private val _accountMsg = MutableLiveData<Pair<String?, Boolean>>()
+    val _accountMsg = MutableLiveData<Pair<String?, Boolean>>()
 
     val checkAccountMsg: LiveData<CheckAccountResult>
         get() = _checkAccountMsg
