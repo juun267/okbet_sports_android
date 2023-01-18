@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.main.accountHistory.first.ItemClickListener
 import org.cxct.sportlottery.ui.sport.favorite.SportTypeTextAdapter
 import org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 
 class BetRecordFragment :
     BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
@@ -49,8 +50,9 @@ class BetRecordFragment :
 //                    AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
 //                findNavController().navigate(action)
                 if (activity is MainTabActivity) {
-                    (activity as MainTabActivity).goBetRecordDetails(data,
-                    data.statDate.orEmpty(),
+                    (activity as MainTabActivity).goBetRecordDetails(
+                        data,
+                        data.statDate.orEmpty(),
                         viewModel.gameTypeCode
                     )
                 }
@@ -140,9 +142,11 @@ class BetRecordFragment :
         }
         viewModel.betListData.observe(viewLifecycleOwner) {
             recordDiffAdapter.setupBetList(it)
-            rv_record_unsettled.smoothScrollToPosition(0)
-//            btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
-//            divider.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
+            Timber.d("  rv_record_unsettled.scrollTo(0,0)")
+            val layoutManager = rv_record_unsettled.layoutManager  as LinearLayoutManager
+            if ( layoutManager.findFirstVisibleItemPosition()!=0){
+                rv_record_unsettled.smoothScrollToPosition(0)
+            }
         }
 
         viewModel.betRecordResult.observe(viewLifecycleOwner) {
