@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
 import org.cxct.sportlottery.ui.sport.search.SportSearchtActivity
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ExpandCheckListManager.expandCheckList
 import org.cxct.sportlottery.util.HomePageStatusManager
 import org.cxct.sportlottery.util.isUAT
@@ -132,8 +133,10 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
+    var sportTabLayout: TabLayout? = null
     private fun initTabLayout() {
         tabLayout.setBackgroundResource(R.color.color_F7FAFE)
+        sportTabLayout = tabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 selectTab(tab?.position)
@@ -311,14 +314,19 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
+    private val maxElevation = 5.dp
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
         showFragment = when (matchType) {
             MatchType.OUTRIGHT ->
-                SportOutrightFragment.newInstance(gameType = gameType)
+                SportOutrightFragment.newInstance(gameType = gameType).apply {
+                    offsetScrollListener = { sportTabLayout?.elevation = (it * it * maxElevation).toFloat()  }
+                }
 
             else ->
-                SportListFragment.newInstance(matchType = matchType, gameType = gameType)
+                SportListFragment.newInstance(matchType = matchType, gameType = gameType).apply {
+                    offsetScrollListener = { sportTabLayout?.elevation = (it * it * maxElevation).toFloat()  }
+                }
         }
         childFragmentManager.beginTransaction()
             .replace(R.id.fl_content, showFragment!!)

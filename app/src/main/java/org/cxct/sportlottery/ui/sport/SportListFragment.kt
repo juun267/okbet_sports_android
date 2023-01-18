@@ -21,6 +21,7 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
@@ -54,6 +55,7 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
@@ -300,7 +302,14 @@ class SportListFragment :
         removeItemDecorations()
     }
 
+    var offsetScrollListener: ((Double) -> Unit)? = null
+
     private fun setupToolbar() {
+
+        appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
+        })
+
         iv_calendar.apply {
             visibility = when (matchType) {
                 MatchType.EARLY, MatchType.CS -> View.VISIBLE
@@ -928,6 +937,7 @@ class SportListFragment :
     override fun onDestroyView() {
         super.onDestroyView()
         game_list.adapter = null
+        offsetScrollListener = null
         stopTimer()
         clearSubscribeChannels()
         unSubscribeChannelHallSport()
