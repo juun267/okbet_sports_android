@@ -102,11 +102,10 @@
                         android:id="@+id/tvOdds"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/din_alternate_bold"
+                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_025BE8_025BE8"
                         android:textSize="@dimen/textSize16sp"
                         tools:text="\@ 0.89" />
-
 
                 </LinearLayout>
 
@@ -238,7 +237,7 @@
                         android:textColor="@color/color_025BE8"
                         android:textColorHint="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
-                        android:fontFamily="@font/din_bold"
+                        android:fontFamily="@font/din_regular"
                         android:textStyle="bold"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@id/et_bet"
@@ -274,7 +273,7 @@
                         android:letterSpacing="0.05"
                         android:maxLength="14"
                         android:paddingHorizontal="10dp"
-                        android:fontFamily="@font/din_bold"
+                        android:fontFamily="@font/din_regular"
                         android:textColor="@color/color_025BE8"
                         android:textColorHint="@color/color_455074_C9CFD7"
                         android:textSize="@dimen/textSize12sp"
