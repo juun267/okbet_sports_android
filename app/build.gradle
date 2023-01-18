@@ -467,6 +467,7 @@ dependencies {
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.3.4-release-jitpack'
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
+    implementation 'com.github.FlyJingFish:GradientTextView:1.0.7'
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"

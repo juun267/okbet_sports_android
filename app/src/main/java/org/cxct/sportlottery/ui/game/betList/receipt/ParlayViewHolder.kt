@@ -48,12 +48,12 @@ class ParlayViewHolder private constructor(itemView: View) :
             tvBetResutStatu.setTextColor(context.getColor(R.color.color_E23434))
             tvBetResutStatu.setText(R.string.bet_info_add_bet_failed)
             tvBetResutStatu.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_bet_failed, 0, 0, 0)
-            flBetOrder.setBackgroundResource(R.drawable.bg_parlay_bet_failed)
+            flBetOrder.setBackgroundResource(R.drawable.bg_fail)
         } else {
             tvBetResutStatu.setTextColor(context.getColor(R.color.color_1EB65B))
             tvBetResutStatu.setText(R.string.bet_info_add_bet_success)
             tvBetResutStatu.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_bet_success, 0, 0, 0)
-            flBetOrder.setBackgroundResource(R.drawable.bg_parlay_bet_successful)
+            flBetOrder.setBackgroundResource(R.drawable.bg_sucessful)
         }
 
         val currencySign = showCurrencySign
