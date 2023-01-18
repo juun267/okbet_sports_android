@@ -394,7 +394,12 @@
                         android:checked="true"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:drawableLeft="@drawable/selector_radio_blue"
+                        android:button="@null"
+                        android:drawablePadding="10dp"
                         android:padding="5dp"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_414655"
                         android:text="@string/accept_any_change_in_odds" />
 
                     <View
@@ -406,7 +411,12 @@
                         android:id="@+id/rbAcceptBetter"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:drawableLeft="@drawable/selector_radio_blue"
+                        android:button="@null"
+                        android:drawablePadding="10dp"
                         android:padding="5dp"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_414655"
                         android:text="@string/accept_better_change_in_odds" />
 
                     <View
@@ -419,6 +429,11 @@
                         android:padding="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:drawableLeft="@drawable/selector_radio_blue"
+                        android:button="@null"
+                        android:drawablePadding="10dp"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_414655"
                         android:text="@string/accept_never_change_in_odds" />
                     <View
                         android:layout_width="match_parent"
