@@ -111,7 +111,7 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
 
                 //第2步：移除TextWatcher之後，設置EditText的value
                 if (data.input != null) setText(data.inputBetAmountStr) else text.clear()
-                setSelection(text.length)
+//                setSelection(text.length)
             }
             onFocusChangeListener = null
 
@@ -139,7 +139,7 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
                                 if (quota > max) {
                                     et_bet_parlay.apply {
                                         setText(TextUtil.formatInputMoney(max))
-                                        setSelection(text.length)
+//                                        setSelection(text.length)
                                     }
                                     return@afterTextChanged
                                 }
