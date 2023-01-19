@@ -103,6 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/din_regular"
+                        android:textStyle="bold"
                         android:textColor="@color/color_025BE8_025BE8"
                         android:textSize="@dimen/textSize16sp"
                         tools:text="\@ 0.89" />
@@ -115,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="6dp"
+                    android:layout_marginBottom="5dp"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:textColor="@color/color_9BB3D9_535D76"
@@ -148,6 +149,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/tv_league_name"
                     app:layout_constraintEnd_toEndOf="@+id/guideline"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="4dp"
                     tools:text="Manchester United FC (Mad) vs. SS Lazio(Dasko)" />
 
                 <TextView
@@ -171,6 +173,7 @@
                     android:layout_marginStart="21dp"
                     android:ellipsize="end"
                     android:maxLines="2"
+                    tools:visibility="gone"
                     android:textColor="@color/color_6C7BA8_6C7BA8"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintBottom_toTopOf="@+id/cl_editText_container"
@@ -189,7 +192,7 @@
                     android:text="@string/delete_bet"
                     android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_league_name"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -197,8 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/margin_8"
-                    android:paddingTop="9dp"
-                    android:paddingBottom="9dp"
+                    android:paddingBottom="5dp"
                     app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
                     tools:visibility="visible">
 
@@ -292,7 +294,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="1dp"
                     android:background="@color/color_F9F9F9"
-
                     app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView">
 
                     <org.cxct.sportlottery.util.KeyboardView
@@ -300,9 +301,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/keyboard_height"
                         android:layout_marginHorizontal="@dimen/margin_12"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="8dp"
                         android:visibility="gone"
-                        tools:visibility="gone" />
+                        tools:visibility="visible" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 

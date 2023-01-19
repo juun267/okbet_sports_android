@@ -47,7 +47,6 @@
                     layout="@layout/bet_bar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:layout_above="@+id/clContainer"
                     />
 
                 <View
@@ -69,7 +68,7 @@
                 <View
                     android:id="@+id/line_shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="6dp"
+                    android:layout_height="8dp"
                     android:background="@drawable/bg_gradient_bottom_sheet_shadow"
                     android:layout_gravity="bottom" />
 
@@ -273,8 +272,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-
-            <!--                <include layout="@layout/include_bet_odds_tips_parlay_warn" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/parlayLayout"
