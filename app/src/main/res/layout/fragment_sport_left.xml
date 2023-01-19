@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
     <LinearLayout
@@ -344,7 +345,6 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:background="@drawable/selector_tran_blue"
                     android:id="@+id/llBetWay"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -354,14 +354,14 @@
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/selector_menu_odds_change" />
+                        android:src="@drawable/ic_menu_odds_change_unselected" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
                         android:text="@string/str_bet_way"
-                        android:textColor="@color/color_black_white"
+                        android:textColor="@color/color_FFFFFF_414655"
                         android:textSize="@dimen/textSize14sp" />
 
                     <androidx.legacy.widget.Space
@@ -372,7 +372,8 @@
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@drawable/selector_arrow_right_up" />
+                        android:src="@drawable/selector_arrow_right_up"
+                        app:tint="@color/color_A7B2C4" />
                 </LinearLayout>
 
                 <View
