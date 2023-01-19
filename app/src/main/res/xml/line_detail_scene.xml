@@ -71,7 +71,7 @@
 
     </Transition>
 
-    <ConstraintSet>
+    <ConstraintSet android:id="@+id/close">
 
         <Constraint
             android:id="@id/mask"
