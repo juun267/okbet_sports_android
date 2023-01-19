@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="60dp"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="140dp"
                 android:text="@string/red_envelope_congratulations"
                 android:textAlignment="center"
                 android:textColor="#7F3B0C"
@@ -68,7 +68,7 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="100dp"
                 android:gravity="center"
-                android:background="@drawable/bg_btn_yellow"
+                android:background="@drawable/selector_btn_yellow"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="@dimen/sp_14"
                 android:text="OK" />
@@ -163,7 +163,7 @@
                 android:id="@+id/iv_shinne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp"
+                android:layout_marginTop="-10dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_circular" />
 
