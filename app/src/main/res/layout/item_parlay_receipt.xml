@@ -16,149 +16,145 @@
         tools:listitem="@layout/item_match_receipt"
         tools:visibility="visible" />
 
-        <FrameLayout
-            android:id="@+id/flBetOrder"
+    <FrameLayout
+        android:id="@+id/flBetOrder"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/bg_sucessful"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="9dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="9dp"
-            android:paddingHorizontal="10dp"
-            android:layout_marginBottom="14dp"
-            android:layout_marginHorizontal="@dimen/margin_14">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_height="match_parent">
 
 
-                <TextView
-                    android:id="@+id/tv_bet_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="@dimen/textSize12sp"
-                    android:visibility="gone"
-                    android:drawablePadding="6dp"
-                    tools:drawableStart="@drawable/ic_bet_check_tip"
-                    tools:text="已确认"
-                    tools:textColor="@color/color_1D9F51_1D9F51" />
+            <TextView
+                android:id="@+id/tv_bet_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="6dp"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:drawableStart="@drawable/ic_bet_check_tip"
+                tools:text="已确认"
+                tools:textColor="@color/color_1D9F51_1D9F51" />
 
-                <TextView
-                    android:id="@+id/tv_play_name_parlay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_FFFFFF_414655"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/tv_match_at"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="3串1" />
+            <TextView
+                android:id="@+id/tv_play_name_parlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/tv_match_at"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="3串1" />
 
-                <TextView
-                    android:id="@+id/tv_winnable_amount_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_receipt_win_quota_with_sign"
-                    android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize12sp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_play_name_parlay"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+            <TextView
+                android:id="@+id/tv_winnable_amount_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bet_receipt_win_quota_with_sign"
+                android:textColor="@color/color_9BB3D9_535D76"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_winnable_amount"
+                app:layout_constraintEnd_toStartOf="@+id/tv_winnable_amount"
+                app:layout_constraintTop_toTopOf="@+id/tv_winnable_amount" />
 
-                <TextView
-                    android:id="@+id/tv_winnable_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:textColor="@color/color_DB6372"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/din_regular"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_winnable_amount_title"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    tools:text="43.00" />
+            <TextView
+                android:id="@+id/tv_winnable_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/din_regular"
+                android:gravity="end"
+                android:textColor="@color/color_DB6372"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="43.00" />
 
-                <TextView
-                    android:id="@+id/tvBetResutStatu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="6dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:textSize="12sp"
-                    tools:text="投注成功"/>
+            <TextView
+                android:id="@+id/tvBetResutStatu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="6dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="投注成功" />
 
-                <TextView
-                    android:id="@+id/tv_multiplier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_FFFFFF_414655"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/tv_play_name_parlay"
-                    app:layout_constraintTop_toTopOf="@+id/tv_play_name_parlay"
-                    tools:text=" x 1"/>
+            <TextView
+                android:id="@+id/tv_multiplier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_FFFFFF_414655"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/tv_play_name_parlay"
+                app:layout_constraintTop_toTopOf="@+id/tv_play_name_parlay"
+                tools:text=" x 1" />
 
-                <TextView
-                    android:id="@+id/tv_bet_amount_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_receipt_bet_quota_with_sign"
-                    android:textColor="@color/color_9BB3D9_535D76"
-                    android:textSize="@dimen/textSize12sp"
-                    android:layout_marginTop="7dp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvBetResutStatu" />
+            <TextView
+                android:id="@+id/tv_bet_amount_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bet_receipt_bet_quota_with_sign"
+                android:textColor="@color/color_9BB3D9_535D76"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_bet_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="@color/color_414655"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="@font/din_regular"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_bet_amount_title"
-                    app:layout_constraintRight_toRightOf="parent"
-                    tools:text="50.00" />
+            <TextView
+                android:id="@+id/tv_bet_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/din_regular"
+                android:gravity="start"
+                android:textColor="@color/color_414655"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_bet_amount_title"
+                app:layout_constraintStart_toEndOf="@+id/tv_bet_amount_title"
+                app:layout_constraintTop_toTopOf="@+id/tv_bet_amount_title"
+                tools:text="50.00" />
 
-                <TextView
-                    android:id="@+id/tv_match_at"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="\@"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize15sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@id/tv_match_odd_parlay"
-                    app:layout_constraintStart_toEndOf="@+id/tv_play_name_parlay"
-                    app:layout_constraintTop_toTopOf="@id/tv_play_name_parlay" />
+            <TextView
+                android:id="@+id/tv_match_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="\@"
+                android:textColor="@color/color_BBBBBB_333333"
+                android:textSize="@dimen/textSize15sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/tv_match_odd_parlay"
+                app:layout_constraintStart_toEndOf="@+id/tv_play_name_parlay"
+                app:layout_constraintTop_toTopOf="@id/tv_play_name_parlay" />
 
-                <TextView
-                    android:id="@+id/tv_match_odd_parlay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/color_BBBBBB_333333"
-                    android:textSize="@dimen/textSize15sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toEndOf="@+id/tv_match_at"
-                    app:layout_constraintTop_toTopOf="@id/tv_play_name_parlay"
-                    tools:text="0.89" />
-
+            <TextView
+                android:id="@+id/tv_match_odd_parlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/color_BBBBBB_333333"
+                android:textSize="@dimen/textSize15sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/tv_match_at"
+                app:layout_constraintTop_toTopOf="@id/tv_play_name_parlay"
+                tools:text="0.89" />
 
 
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
 </LinearLayout>

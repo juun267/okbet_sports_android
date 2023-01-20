@@ -275,17 +275,6 @@
         <attr name="highlightTextColor" format="color|reference" />
     </declare-styleable>
 
-    <!-- 渐变色TextView -->
-    <declare-styleable name="GradientTextView">
-        <attr name="gt_color_list" format="reference" />
-        <attr name="gt_gradient_direction" format="enum">
-            <enum name="left" value="0" />
-            <enum name="up" value="1" />
-            <enum name="right" value="2" />
-            <enum name="bottom" value="3" />
-        </attr>
-        <attr name="gt_gradient_angle" format="integer" />
-    </declare-styleable>
     <declare-styleable name="RadiusCardView">
         <!--        左上圆角大小-->
         <attr name="rcv_topLeftRadiu" format="dimension" />

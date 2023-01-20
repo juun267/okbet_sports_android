@@ -10,10 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.et_bet_parlay
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.ll_control_connect
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.ll_hint_container
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tvBalanceInsufficientMessageParlay
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tvErrorMessageParlay
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tvPleaseEnterCorrectAmountParlay
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tv_hint_parlay_default
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tv_parlay_type
 import org.cxct.sportlottery.R
@@ -91,9 +87,9 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
     }
 
     private fun setupItemEnable(hasBetClosed: Boolean) {
-        itemView.apply {
-            ll_hint_container.isVisible = !hasBetClosed
-        }
+//        itemView.apply {
+//            ll_hint_container.isVisible = !hasBetClosed
+//        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -115,7 +111,7 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
 
                 //第2步：移除TextWatcher之後，設置EditText的value
                 if (data.input != null) setText(data.inputBetAmountStr) else text.clear()
-                setSelection(text.length)
+//                setSelection(text.length)
             }
             onFocusChangeListener = null
 
@@ -143,7 +139,7 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
                                 if (quota > max) {
                                     et_bet_parlay.apply {
                                         setText(TextUtil.formatInputMoney(max))
-                                        setSelection(text.length)
+//                                        setSelection(text.length)
                                     }
                                     return@afterTextChanged
                                 }
@@ -235,52 +231,18 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
         itemData: ParlayOdd, betAmount: Double = itemData.betAmount
     ) {
         itemView.apply {
-            var amountError: Boolean
-            val balanceError: Boolean
-            if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                tvErrorMessageParlay.isVisible = false
+            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
                 //請輸入正確投注額
-                tvPleaseEnterCorrectAmountParlay.visibility =
-                    if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                        amountError = true
-                        View.VISIBLE
-                    } else {
-                        amountError = false
-                        View.GONE
-                    }
+                !itemData.input.isNullOrEmpty()
             } else {
-                tvPleaseEnterCorrectAmountParlay.isVisible = false
                 if (betAmount > inputMaxMoney) {
                     //超過最大限額
-                    amountError = true
-                    tvErrorMessageParlay.apply {
-                        text = context.getString(R.string.bet_info_list_maximum_limit_amount)
-                        isVisible = true
-                    }
+                    true
                 } else {
-                    tvErrorMessageParlay.apply {
-                        isVisible = false
-                        if (betAmount != 0.0 && betAmount < inputMinMoney) {
-                            //低於最小限額
-                            amountError = true
-                            text = context.getString(R.string.bet_info_list_minimum_limit_amount)
-                            isVisible = true
-                        } else {
-                            amountError = false
-                            isVisible = false
-                        }
-                    }
+                    betAmount != 0.0 && betAmount < inputMinMoney
                 }
             }
-            tvBalanceInsufficientMessageParlay.visibility =
-                if (betAmount != 0.0 && betAmount > mUserMoney) {
-                    tvErrorMessageParlay.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
-                    balanceError = true
-                    View.VISIBLE
-                } else {
-                    balanceError = false
-                    View.GONE
-                }
+            val balanceError: Boolean = betAmount != 0.0 && betAmount > mUserMoney
             itemData.amountError = if (balanceError) true else amountError
         }
         setEtBetParlayBackground(itemData)

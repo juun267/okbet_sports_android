@@ -39,6 +39,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
@@ -50,6 +51,7 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -224,7 +226,6 @@ class MainHomeFragment :
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
                 iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
-                LogUtil.d(mMatchInfo?.pullRtmpUrl)
             iv_publicity.startPlayLogic()
         } else {
             iv_publicity.onVideoPause()
@@ -340,7 +341,20 @@ class MainHomeFragment :
                     viewModel.getPublicityPromotion()
                 }
                 viewModel.getSportMenuFilter()
-                MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                if (ThirdGameDialog.firstShow) {
+                    ThirdGameDialog().apply {
+                        onClick = {
+                            (this@MainHomeFragment.parentFragment as HomeFragment).onTabClickByPosition(
+                                HomeTabAdapter.getItems()
+                                    .indexOfFirst { it.name == R.string.home_on_game })
+                        }
+                        onDismiss = {
+                            MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                        }
+                    }.show(childFragmentManager, ThirdGameDialog::class.simpleName)
+                } else {
+                    MultiLanguagesApplication.showPromotionPopupDialog(requireActivity())
+                }
             }
         }
 //
@@ -453,11 +467,11 @@ class MainHomeFragment :
                            }
                        }
                    }
-//                   hotHandicapAdapter.data.forEach {
-//                       it.matchInfos.forEach {
-//                           unSubscribeChannelHall(it.gameType, it.id)
-//                       }
-//                   }
+                   hotHandicapAdapter.data.forEach {
+                       it.matchInfos.forEach {
+                           unSubscribeChannelHall(it.gameType, it.id)
+                       }
+                   }
 
                    hotHandicapAdapter.setNewInstance(list?.toMutableList())
                    //订阅赛事
@@ -483,14 +497,14 @@ class MainHomeFragment :
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
-//        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-//            it.let {
-//                if (it == ServiceConnectStatus.CONNECTED) {
-////                    subscribeSportChannelHall()
-////                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
-//                }
-//            }
-//        }
+        receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
+            it.let {
+                if (it == ServiceConnectStatus.CONNECTED) {
+                    subscribeSportChannelHall()
+                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+                }
+            }
+        }
 
         //观察比赛状态改变
         receiver.matchStatusChange.observe(viewLifecycleOwner) { event ->

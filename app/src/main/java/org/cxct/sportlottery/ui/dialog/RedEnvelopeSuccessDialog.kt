@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import kotlinx.android.synthetic.main.dialog_redenvelope_success.*
-import kotlinx.android.synthetic.main.fragment_red_envelope_receive.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 
 class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class) {
@@ -49,9 +49,29 @@ class RedEnvelopeSuccessDialog : BaseDialog<BaseViewModel>(BaseViewModel::class)
         iv_shinne.startAnimation(operatingAnim)
         val amount = arguments?.getString(AMOUNT) ?: "0"
         tv_amount.text = BuildConfig.SYSTEM_CURREMCY_SIGN + " " + TextUtil.format(amount)
-        iv_close.setOnClickListener {
+        btn_ok.setOnClickListener {
             dismiss()
         }
+        startAnimation()
+    }
+
+    fun startAnimation() {
+        RotateAnimation(-30f,
+            30f,
+            Animation.RELATIVE_TO_SELF,
+            0.65f,
+            Animation.RELATIVE_TO_SELF,
+            0.65f)
+            .apply {
+                repeatCount = Animation.INFINITE
+                repeatMode = Animation.REVERSE
+                duration = 2000
+            }.let {
+                iv_buble_1.startAnimation(it)
+                iv_buble_2.startAnimation(it)
+                iv_buble_3.startAnimation(it)
+                iv_buble_4.startAnimation(it)
+            }
     }
 
 

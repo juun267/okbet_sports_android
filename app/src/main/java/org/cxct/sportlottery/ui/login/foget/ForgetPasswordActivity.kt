@@ -1,19 +1,11 @@
 package org.cxct.sportlottery.ui.login.foget
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
 import android.text.method.HideReturnsTransformationMethod
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -22,7 +14,6 @@ import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_forget_password.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.eet_confirm_password
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
@@ -30,13 +21,10 @@ import org.cxct.sportlottery.databinding.ActivityForgetPasswordBinding
 import org.cxct.sportlottery.network.index.forgetPassword.SendSmsResult
 import org.cxct.sportlottery.network.index.forgetPassword.ValidateUserResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
-
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.AsteriskPasswordTransformationMethod
 import java.util.*
@@ -73,10 +61,6 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
     }
 
     fun initView(){
-        binding.tvTitleForgetPassword.text = getString(R.string.find_back_password)
-        binding.tvTitleForgetPassword.setGradientSpan(getColor(R.color.color_71ADFF),
-            getColor(R.color.color_1971FD),
-            true)
         binding.eetAccountForget.checkRegisterListener { viewModel.checkAccount(it) }
         binding.eetVerificationCodeForget.checkRegisterListener { viewModel.checkValidCode(it) }
         binding.eetPhoneNum.checkRegisterListener{viewModel.checkPhone(it)}
@@ -185,14 +169,17 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             if (it.first == null) {
                 viewModel.checkAccountExist(binding.eetAccountForget.text.toString())
                 return@observe
-            }else{
+            } else {
                 binding.etAccount.setError(
                     it.first,
                     false
                 )
             }
         }
-        viewModel.validDateResult.observe(this){
+        viewModel.accountCodeMsg.observe(this) {
+            binding.etVerificationCode.setError(it.first, false)
+        }
+        viewModel.validDateResult.observe(this) {
             updateUiWithResult(it)
         }
         viewModel.smsResult.observe(this) {
@@ -201,7 +188,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         viewModel.validCodeResult.observe(this) {
             updateUiWithResult(it)
         }
-        viewModel.smsCodeResult.observe(this){
+        viewModel.smsCodeResult.observe(this) {
             it?.let { result->
                 if (!result.success){
                     if (result.code == 2765||result.code == 2766){
@@ -401,11 +388,13 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
             }
         }else{
             if (validateUserResult?.code==2751){
+                viewModel._accountMsg.value = Pair(validateUserResult?.msg, false)
                 binding.etAccount.setError(validateUserResult?.msg,false)
             }else{
+                viewModel._accountCodeMsg.value = Pair(validateUserResult?.msg, false)
                 binding.etVerificationCode.setError(validateUserResult?.msg,false)
             }
-
+            viewModel.focusChangeCheckAllInputComplete(page)
         }
     }
     //发送验证码开始倒计时

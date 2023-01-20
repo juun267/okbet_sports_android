@@ -15,8 +15,9 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:textAllCaps="true"
+        android:textStyle="bold"
         android:textColor="@color/color_select_blue_black"
-        android:textSize="@dimen/textSize15sp"
+        android:textSize="12sp"
         tools:text="全部" />
 
     <TextView
@@ -26,9 +27,9 @@
         android:gravity="center_horizontal"
         android:layout_marginLeft="@dimen/margin_4"
         android:maxLines="1"
+        android:textStyle="bold"
         android:textColor="@color/color_select_white_gray"
-        android:textSize="@dimen/textSize12sp"
-        android:fontFamily="@font/din_bold"
+        android:textSize="12sp"
         tools:text="643" />
 
 </LinearLayout>

@@ -39,12 +39,16 @@ class OddsButton2 @JvmOverloads constructor(
 
     companion object {
 
-        private val textStyle by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.din_regular) }
+        private val textStyle by lazy { ResourcesCompat.getFont(MultiLanguagesApplication.appContext, R.font.din_pro_medium) }
         private val oddsNameCaches = mutableListOf<TextView>()
         private val oddsValueCaches = mutableListOf<TextView>()
         private val oddsLockedCaches = mutableListOf<ImageView>()
         private val oddsUnknownCaches = mutableListOf<TextView>()
-        private val params1 = LayoutParams(-2, -2).apply { gravity = Gravity.CENTER_HORIZONTAL }
+        private val params1 = LayoutParams(-2, -2).apply {
+            gravity = Gravity.CENTER_HORIZONTAL
+            topMargin = 1.dp
+            bottomMargin = 1.dp
+        }
         private val params2 = LayoutParams(-1, -1)
 
 
@@ -281,8 +285,8 @@ class OddsButton2 @JvmOverloads constructor(
             gravity = Gravity.CENTER
             setTextColor(context.getColor(R.color.selector_button_odd_top_text))
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f)
-            paint.setStyle(Paint.Style.FILL_AND_STROKE)
-            paint.setStrokeWidth(0.75f)
+            paint.style = Paint.Style.FILL_AND_STROKE
+            paint.strokeWidth = 0.75f
         }
 
         addOddView(oddsValue!!, params1)
@@ -302,7 +306,7 @@ class OddsButton2 @JvmOverloads constructor(
         }
         oddsLocked = AppCompatImageView(context).apply {
             setImageResource(R.drawable.ic_lock)
-            setPadding(11.dp)
+            setPadding(14.dp)
         }
         addOddView(oddsLocked!!, params2)
         return oddsLocked!!

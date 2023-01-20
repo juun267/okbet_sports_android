@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
@@ -260,24 +258,9 @@ class ProfileCenterFragment :
     }
 
     private fun getMoney() {
-        refreshMoneyLoading()
+        btn_refresh_money.refreshMoneyLoading()
         viewModel.allTransferOut()
         viewModel.getMoney()
-    }
-
-    private fun refreshMoneyLoading() {
-        btn_refresh_money.startAnimation(RotateAnimation(0f,
-            720f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f).apply {
-            duration = 1000
-        })
-    }
-
-    private fun refreshMoneyHideLoading() {
-
     }
 
     private fun setupLogout() {
@@ -480,7 +463,6 @@ class ProfileCenterFragment :
     private fun initObserve() {
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let {
-                refreshMoneyHideLoading()
                 tv_account_balance.text = TextUtil.format(it)
             }
         }

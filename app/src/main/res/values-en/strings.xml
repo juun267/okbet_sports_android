@@ -977,7 +977,7 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_time">Transaction time</string>
-    <string name="text_account_history_number">Order no.</string>
+    <string name="text_account_history_number">Order no</string>
     <string name="text_account_history_amount">Transaction amount</string>
     <string name="text_account_history_balance">Balance</string>
 
@@ -1011,7 +1011,7 @@
 
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
-    <string name="cancel_manual">Refund</string>
+    <string name="cancel_manual">Void</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1111,11 +1111,12 @@
     <string name="current_time">Time</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">To Win</string>
+    <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Total Stake：%s</string>
     <string name="total_win_amount">EST Winning：</string>
     <string name="delete_bet">Delete</string>
+    <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Log in before betting</string>
     <string name="confirm_single_bets">Confirm %d Single Bets</string>
     <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
@@ -1214,10 +1215,12 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
+    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake</string>
-    <string name="bet_receipt_win_quota_with_sign">To Win</string>
+    <string name="bet_receipt_win_quota_with_sign">Win</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">Stake：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">Win：</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1347,7 +1350,7 @@
     <string name="accept_better_change_in_odds">Accept better odds</string>
     <string name="accept_never_change_in_odds">Never accept odds change</string>
     <string name="expand_more_combinations">More combinations</string>
-    <string name="stacked_combination">Stack up combination</string>
+    <string name="stacked_combination">Hide combination</string>
     <string name="bet_parlay">+Parlay</string>
     <string name="bet_single">Single</string>
     <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
@@ -1394,4 +1397,9 @@
     <string name="overtime_score">Overtime</string>
     <string name="regular_score">Regular</string>
     <string name="score_with_overtime">score (with overtime)</string>
+    <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
+    <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
+    <string name="str_odds_description">Odds Description</string>
+    <string name="str_bet_parlay">Parlay</string>
+    <string name="str_bet_way">Betting method</string>
 </resources>

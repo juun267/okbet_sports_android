@@ -311,7 +311,7 @@ class DetailLiveViewToolbar @JvmOverloads constructor(
                 } else if (curType == LiveType.ANIMATION) {
                     web_view.loadUrl(animeUrl!!)
                 }
-                return true
+                return false
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {

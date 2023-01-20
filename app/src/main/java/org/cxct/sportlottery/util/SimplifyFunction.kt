@@ -16,6 +16,8 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -29,6 +31,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
+import kotlinx.android.synthetic.main.view_account_balance_2.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -640,8 +643,9 @@ fun <T : RecyclerView> T.removeItemDecorations() {
  */
 fun TextView.setTeamNames(countCheck: Int, homeName: String?, awayName: String?) {
     text =
-        if (homeName?.length ?: 0 > countCheck) "$homeName  v\n$awayName"
-        else "$homeName  VS  $awayName"
+//        if ((homeName?.length ?: 0) > countCheck) "$homeName  v$awayName"
+//        else
+            "$homeName  VS  $awayName"
 }
 
 /**
@@ -1287,4 +1291,15 @@ fun startRegister(context: Context) {
             context,
             if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
     )
+}
+
+fun View.refreshMoneyLoading() {
+    this.startAnimation(RotateAnimation(0f,
+        720f,
+        Animation.RELATIVE_TO_SELF,
+        0.5f,
+        Animation.RELATIVE_TO_SELF,
+        0.5f).apply {
+        duration = 1000
+    })
 }

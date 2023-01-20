@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.sport.outright
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -191,7 +190,6 @@ class SportOutrightAdapter : BaseGameAdapter() {
         }
 
         fun update(firstPosition: Int, secondPos: Int) {
-            Log.d("hjq", "update=" + firstPosition + "," + secondPos)
             (itemView.rv_catagory.adapter as OddsOutrightCatagoryAdapter)
                 .apply {
                     ((getViewByPosition(firstPosition, R.id.rv_odds) as RecyclerView)

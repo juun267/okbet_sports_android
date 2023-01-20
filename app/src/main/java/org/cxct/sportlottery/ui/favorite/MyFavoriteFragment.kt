@@ -114,7 +114,7 @@ class MyFavoriteFragment : BaseBottomNavigationFragment<MyFavoriteViewModel>(MyF
                 clickListenerPlayType = { matchId, _, gameMatchType, _ ->
                     navMatchDetailPage(matchId, gameMatchType)
                 },
-                clickListenerBet = { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                clickListenerBet = { view,matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     if (mIsEnabled) {
                         avoidFastDoubleClick()
                         addOddsDialog(

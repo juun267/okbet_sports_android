@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
+import timber.log.Timber
 import kotlin.reflect.KClass
 
 
@@ -81,7 +82,6 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.betInfoList.observe(this) {
             updateBetListCount(it.peekContent().size)
-            updateBetListOdds(it.peekContent())
         }
 
         viewModel.notifyLogin.observe(this) {

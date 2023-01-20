@@ -18,16 +18,10 @@
         android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_piece_blue"
-            android:adjustViewBounds="true" />
-
-        <ImageView
             android:id="@+id/iv_country"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="9dp"
+            android:layout_marginLeft="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_earth" />
 
@@ -38,10 +32,11 @@
             android:layout_weight="1"
             android:singleLine="true"
             android:ellipsize="end"
+            android:textFontWeight="500"
             android:maxLines="1"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="@dimen/margin_10"
-            android:textColor="@color/color_535D76"
+            android:textColor="@color/color_414655"
             android:textSize="@dimen/textSize12sp"
             tools:text="欧洲足球锦标赛2020" />
 

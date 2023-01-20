@@ -924,7 +924,7 @@
     <string name="live_chat">Live Chat</string>
     <string name="contact">Contact Us</string>
     <string name="btm_navigation_hint">%s is a Registered Trade Mark, brand and registered business name.</string>
-    <string name="btm_navigation_copyright">Copyright © 2023 %1$s ALL RIGHTS RESERVED</string>
+    <string name="btm_navigation_copyright">Copyright © 2022 %1$s ALL RIGHTS RESERVED</string>
     <string name="e_address">Address</string>
     <string name="online_paypal">Paypal</string>
     <string name="online_gragon_pay">DragonPay</string>
@@ -942,10 +942,10 @@
     <string name="btm_navigation_affiliate">Affiliate</string>
     <string name="expire_date">ID expiration date</string>
     <string name="self_limit_froze_impotent_1">Self-exclusion takes effect immediately after setting</string>
-    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.However, if more than 6 months since the last login time, OKBET reserves the right to charge a monthly administrative fee until the account balance reaches zero.</string>
+    <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
     <string name="self_limit_froze_impotent_3">If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.</string>
     <string name="self_limit_froze_impotent_4">During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.</string>
-    <string name="self_limit_froze_impotent_5">During the self-exclusion time, you will be unable to deactivate your self-exclusion until the expiration of the minimum exclusion time frame.</string>
+    <string name="self_limit_froze_impotent_5">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="text_chose_language">Select your language</string>
     <!-- 複式串關詳情 -->
@@ -1115,17 +1115,18 @@
     <string name="current_time">Time</string>
 
     <!--region 20220714 新版投注單-->
-    <string name="bet_win">To Win</string>
+    <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
     <string name="total_capital">Total Stake：%s</string>
     <string name="total_win_amount">EST Winning：</string>
     <string name="delete_bet">Delete</string>
+    <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Log in before betting</string>
     <string name="confirm_single_bets">Confirm %d Single Bets</string>
     <string name="confirm_multiple_bets">Confirm %d Multiple Bets</string>
     <string name="btn_remove_closed_selections">Remove closed selections</string>
     <string name="please_enter_correct_amount">Please enter the correct bet amount</string>
-    <string name="bet_info_list_bet">Stake</string>
+    <string name="bet_info_list_bet">Betting</string>
     <string name="bet_info_bet">Stake</string>
     <!--endregion-->
 
@@ -1239,10 +1240,12 @@
     <string name="video">Video</string>
     <string name="anime">Animation</string>
 
-    <string name="hint_bet_limit_range">Limit %1$s-%2$s</string>
+    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">Submitting</string>
     <string name="bet_receipt_bet_quota_with_sign">Stake</string>
-    <string name="bet_receipt_win_quota_with_sign">To Win</string>
+    <string name="bet_receipt_win_quota_with_sign">Win</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">Stake：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">Win：</string>
     <string name="bet_record_single">Singles</string>
     <string name="bet_record_parlay">Parlay</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
@@ -1364,7 +1367,7 @@
     <string name="accept_better_change_in_odds">Accept better odds</string>
     <string name="accept_never_change_in_odds">Never accept odds change</string>
     <string name="expand_more_combinations">More combinations</string>
-    <string name="stacked_combination">Stack up combination</string>
+    <string name="stacked_combination">Hide combination</string>
     <string name="bet_parlay">+Parlay</string>
     <string name="bet_single">Single</string>
     <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
@@ -1409,11 +1412,16 @@
     <string name="str_press_again_to_exit_the_program">"Please confirm to exit again  "</string>
     <string name="bet_info_add_bet_failed">Bet Failed</string>
     <string name="new_games">New Games</string>
+    <string name="str_bet_way">Betting method</string>
+    <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
+    <string name="str_odds_description">Odds Description</string>
+    <string name="str_bet_parlay">Parlay</string>
     <string name="pls_enter_days_format">Please enter days (≥%d days)</string>
     <string name="more_than_days_format">Must be more than %d days</string>
     <string name="overtime_score">Overtime</string>
     <string name="regular_score">Regular</string>
     <string name="score_with_overtime">score (with overtime)</string>
+    <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
 
 
 </resources>

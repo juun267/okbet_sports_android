@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game_publicity.*
-import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import org.cxct.sportlottery.MultiLanguagesApplication

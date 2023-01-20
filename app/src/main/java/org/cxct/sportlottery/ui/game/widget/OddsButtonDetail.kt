@@ -132,7 +132,7 @@ class OddsButtonDetail @JvmOverloads constructor(
             text = odd?.spread
             requestLayout()
             visibility =
-                if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
+                if (odd?.spread.isNullOrEmpty() || odd?.name == odd?.spread || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
 
         if(isOddPercentage == true) //反波膽顯示 %

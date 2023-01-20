@@ -419,10 +419,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal,
                     PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal,
                     PlayCate.W_METHOD_1ST.ordinal,
-                    PlayCate.W_METHOD_H_1ST.ordinal, PlayCate.W_METHOD_C_1ST.ordinal, PlayCate.O_R_2_WAY_H_1ST.ordinal, PlayCate.O_R_2_WAY_C_1ST.ordinal,
                     PlayCate.NMO_1ST_H.ordinal, PlayCate.NMO_1ST_C.ordinal, PlayCate.NMO_2ND_H.ordinal, PlayCate.NMO_2ND_C.ordinal, PlayCate.MODW_1ST_H.ordinal,
                     PlayCate.MODW_1ST_C.ordinal, PlayCate.MODW_2ND_H.ordinal,
-                    PlayCate.MODW_2ND_C.ordinal, PlayCate.S_RAFO_1ST_W_H.ordinal, PlayCate.S_RAFO_1ST_W_C.ordinal,
+                    PlayCate.MODW_2ND_C.ordinal,
                     PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
                     PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
@@ -1010,10 +1009,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal,
                         PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal,
                         PlayCate.W_METHOD_1ST.ordinal,
-                        PlayCate.W_METHOD_H_1ST.ordinal, PlayCate.W_METHOD_C_1ST.ordinal, PlayCate.O_R_2_WAY_H_1ST.ordinal, PlayCate.O_R_2_WAY_C_1ST.ordinal,
                         PlayCate.NMO_1ST_H.ordinal, PlayCate.NMO_1ST_C.ordinal, PlayCate.NMO_2ND_H.ordinal, PlayCate.NMO_2ND_C.ordinal, PlayCate.MODW_1ST_H.ordinal,
                         PlayCate.MODW_1ST_C.ordinal, PlayCate.MODW_2ND_H.ordinal,
-                        PlayCate.MODW_2ND_C.ordinal, PlayCate.S_RAFO_1ST_W_H.ordinal, PlayCate.S_RAFO_1ST_W_C.ordinal,
+                        PlayCate.MODW_2ND_C.ordinal,
                         PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
                         PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
                         -> forSingle(oddsDetail, 2)

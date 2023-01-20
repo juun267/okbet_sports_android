@@ -597,9 +597,9 @@
     <string name="withdraw_log_type_bank_trans">银行提款</string>
     <string name="withdraw_log_type_admin">后台扣款</string>
     <string name="withdraw_log_crypto_transfer">虚拟币提款</string>
-    <string name="betting_station_reserve" >网点预约</string>
-    <string name="betting_station_withdraw" >网点提款</string>
-    <string name="betting_station_deposit" >网点存款</string>
+    <string name="betting_station_reserve">网点预约</string>
+    <string name="betting_station_withdraw">网点提款</string>
+    <string name="betting_station_deposit">网点存款</string>
     <string name="log_detail_title">查看详情</string>
     <string name="log_detail_trans_num_sub">交易编号：</string>
     <string name="log_detail_trans_num_sub2">交易编号</string>
@@ -1117,6 +1117,7 @@
     <string name="total_capital">本金：%s</string>
     <string name="total_win_amount">可赢：</string>
     <string name="delete_bet">删除</string>
+    <string name="delete_bet_all">全部删除</string>
     <string name="btn_login_bet">登录后可投注</string>
     <string name="confirm_single_bets">确认%d单注投注</string>
     <string name="confirm_multiple_bets">确认%d串关投注</string>
@@ -1218,10 +1219,13 @@
     <string name="video">视频</string>
     <string name="anime">动画</string>
 
-    <string name="hint_bet_limit_range">限额%1$s-%2$s</string>
+    <string name="hint_bet_limit_range">%1$s-%2$s</string>
     <string name="submitting">注单提交中</string>
-    <string name="bet_receipt_bet_quota_with_sign">投注金额</string>
-    <string name="bet_receipt_win_quota_with_sign">最高可赢</string>
+    <string name="bet_receipt_bet_quota_with_sign">投注</string>
+    <string name="bet_receipt_win_quota_with_sign">可赢</string>
+    <string name="bet_receipt_bet_quota_with_sign_money">投注金额：</string>
+    <string name="bet_receipt_win_quota_with_sign_max">最高可赢：</string>
+
     <string name="bet_record_single">单串</string>
     <string name="bet_record_parlay">复式</string>
     <string name="bet_slip_id_is_copied">下注单ID已经复制到剪贴板</string>
@@ -1349,9 +1353,10 @@
     <string name="accept_any_change_in_odds">接受任何赔率变化</string>
     <string name="accept_better_change_in_odds">接受更好赔率变化</string>
     <string name="accept_never_change_in_odds">永不接受赔率变化</string>
-    <string name="expand_more_combinations">展开更多组合</string>
-    <string name="stacked_combination">叠起组合</string>
+    <string name="expand_more_combinations">展开组合</string>
+    <string name="stacked_combination">收起组合</string>
     <string name="bet_parlay">+串关</string>
+    <string name="str_bet_parlay">串</string>
     <string name="bet_single">单注</string>
     <string name="str_if_accept_odds_changes_title">是否接受赔率变化说明</string>
     <string name="str_if_accept_odds_changes_des_subtitle">因为赛事赔率可能随时会产生变化（特别是滚球阶段）。为了让您有能更好的下注体验。您可以选择以下三种投注方式。</string>
@@ -1396,4 +1401,8 @@
     <string name="overtime_score">加时比分</string>
     <string name="regular_score">常规比分</string>
     <string name="score_with_overtime">总分（含加时）</string>
+    <string name="self_limit_error_format">资料格式不符，请输入 %d~%d 整数</string>
+    <string name="str_bet_way">投注方式</string>
+    <string name="str_in_play_bet_confirmed">滚球注单确认中</string>
+    <string name="str_odds_description">赔率说明</string>
 </resources>

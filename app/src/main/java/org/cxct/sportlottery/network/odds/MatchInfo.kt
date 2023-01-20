@@ -112,6 +112,9 @@ data class MatchInfo(
     override var thirdBaseBag: Int? = null
     override var outNumber: Int? = null
 
+    override var awayOver: String? = null //客队分数
+    override var homeOver: String? = null //主队分数
+
     override var matchStatusList: List<MatchStatus>? = null
 
     //999

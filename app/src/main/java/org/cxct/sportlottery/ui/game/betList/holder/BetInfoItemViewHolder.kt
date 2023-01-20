@@ -37,7 +37,7 @@ import timber.log.Timber
 
 class BetInfoItemViewHolder(
     val contentView: ContentBetInfoItemV3Binding,
-    val userBalance: ()-> Double,
+    val userBalance: () -> Double,
 ) : BetInfoChangeViewHolder(contentView.root) {
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
@@ -108,50 +108,38 @@ class BetInfoItemViewHolder(
             //endregion
 
             setupDeleteButton(itemData, itemCount, onItemClickListener)
-            setupOddsChangeButton(onItemClickListener)
             topSpace.visibility = if (position == 0) View.VISIBLE else View.GONE
 //                bottom_view.visibility = if(position == betListSize -1) View.GONE else View.VISIBLE
         }
     }
 
-    private fun setupOddsChangeButton(onItemClickListener: OnItemClickListener) {
-        if (contentView.includeOddsLayout.tvAcceptOddsChange.isVisible) {
-
-            val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
-            val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
-            val currentSelectText = OddsModeUtil.currentSelectModeText(currentOddsChangeOp)
-            contentView.includeOddsLayout.tvAcceptOddsChange.text = currentSelectText
-
-
-            onItemClickListener.onOddsChangesSetOptionListener(currentSelectText)
-            contentView.includeOddsLayout.tvAcceptOddsChange.setOnClickListener {
-                onItemClickListener.onOddsChangeAcceptSelect(contentView.includeOddsLayout.tvAcceptOddsChange)
-            }
-
-            contentView.includeOddsLayout.btnOddsChangeDes.setOnClickListener {
-                onItemClickListener.onOddsChangesAcceptTips()
-            }
-
-            contentView.includeOddsLayout.tvMaxBetMoney.text = String.format(
-                contentView.root.context.getString(R.string.str_max_bet_money),
-                TextUtil.formatInputMoney(inputMaxMoney)
-            )
-
-        }
-    }
 
     private fun setupContainerUI(isVisible: Boolean, isLock: Boolean, cannotParlay: Boolean) {
         contentView.apply {
             //editText container
             clEditTextContainer.isVisible = isVisible
-            includeOddsLayout.flIncludeBetTipsSingle.isVisible = isVisible
+//            includeOddsLayout.flIncludeBetTipsSingle.isVisible = isVisible
             //提示文字Container
-            llSingleTips.isVisible = isVisible
+//            llSingleTips.isVisible = isVisible
             //不支援串關的提示
-            tvNoParlay.isVisible = cannotParlay
+            if (cannotParlay) {
+//                tvNoParlay.isVisible = true
+                llNoParlay.isVisible = true
+                tvBetLock.isVisible = false
+            } else {
+//                tvNoParlay.isVisible = false
+                llNoParlay.isVisible = false
+            }
+
             //盤口關閉的提示
-            if (isLock) layoutKeyBoard.hideKeyboard()
-            tvBetLock.isVisible = isLock
+            if (isLock) {
+                layoutKeyBoard.hideKeyboard()
+                tvBetLock.isVisible = true
+//                tvNoParlay.gone()
+                llNoParlay.gone()
+            } else {
+                tvBetLock.isVisible = false
+            }
             tvBetLock.text =
                 if (cannotParlay) root.context.getString(R.string.bet_info_no_parlay_hint)
                 else root.context.getString(R.string.bet_info_bet_lock_hint)
@@ -202,8 +190,7 @@ class BetInfoItemViewHolder(
         }
         etWin.apply {
             if (itemData.input != null) {
-                val win =
-                    itemData.betAmount * getOddsAndSaveRealAmount(itemData, currentOddsType)
+                val win = itemData.betAmount * getOddsAndSaveRealAmount(itemData, currentOddsType)
                 setText(TextUtil.formatInputMoney(win))
             } else text.clear()
             setSelection(text.length)
@@ -289,7 +276,10 @@ class BetInfoItemViewHolder(
                     if (itemData.isInputWin) {
                         val balance = userBalance()
                         val maxWin = if (balance > 0) {
-                            Math.min(inputWinMaxMoney, balance * getOddsAndSaveRealAmount(itemData, currentOddsType))
+                            Math.min(
+                                inputWinMaxMoney,
+                                balance * getOddsAndSaveRealAmount(itemData, currentOddsType)
+                            )
                         } else {
                             inputWinMaxMoney
                         }
@@ -483,40 +473,13 @@ class BetInfoItemViewHolder(
             } else if (itemData.matchOdd.oddState == OddState.SMALLER.state) {
                 setAnimation(ivOddsArrow, tvOdds, false)
             }
-            oddsChangeLayout.visibility = if (handler != null) {
-                Timber.d("Ray===> 显示赔率变化")
-                if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) {
-                    includeOddsLayout.tvOddsChangedTips.visible()
-                    handler?.postDelayed({
-                        includeOddsLayout.tvOddsChangedTips.gone()
-                    }, totalAnimationTipsDur)
-                } else {
-                    onItemClickListener.onOddsChangesWarningTips(true)
-                    handler?.postDelayed({
-                        onItemClickListener.onOddsChangesWarningTips(false)
-                    }, totalAnimationTipsDur)
-                }
-                View.GONE
 
-            } else {
-                Timber.d("Ray===> 隐藏赔率变化")
-                if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) {
-                    includeOddsLayout.flIncludeBetTipsSingle.gone()
-                    includeOddsLayout.tvOddsChangedTips.gone()
-                } else {
-                    onItemClickListener.onOddsChangesWarningTips(false)
-                }
-                View.GONE
-
-            }
-
-            handler?.postDelayed({
+            handler.postDelayed({
                 Timber.d("odds_change_layout隐藏 postDelay")
                 oddsChangeLayout.flIncludeBetTipsSingle?.visibility = View.GONE
             }, totalAnimationDuration)
         }
-        var spread = ""
-        spread =
+        val spread: String =
             if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT) {
                 ""
             } else {
@@ -533,10 +496,13 @@ class BetInfoItemViewHolder(
             oldOdds = TextUtil.formatForOdd(getOdds(itemData.matchOdd, currentOddsType))
         }
         //反波膽顯示 %
-        var tvOdd =
-            "@ " + TextUtil.formatForOdd(getOdds(itemData.matchOdd,
+        var tvOdd = "@ " + TextUtil.formatForOdd(
+            getOdds(
+                itemData.matchOdd,
                 currentOddsType,
-                adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE))
+                adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE
+            )
+        )
         if (itemData.matchOdd.playCode == PlayCate.LCS.value) tvOdd =
             "@ " + TextUtil.formatForOddPercentage(
                 getOdds(
@@ -761,55 +727,27 @@ class BetInfoItemViewHolder(
     ) {
         contentView.apply {
             val betAmount = itemData.betAmount
-            var amountError: Boolean
             val balanceError: Boolean
-            if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                tvErrorMessage.isVisible = false
-                //請輸入正確投注額
-                tvPleaseEnterCorrectAmount.visibility =
-                    if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
-                        amountError = true
-                        View.VISIBLE
-                    } else {
-                        amountError = false
-                        View.GONE
-                    }
+            val amountError: Boolean = if (!itemData.input.isNullOrEmpty() && betAmount == 0.000) {
+                !itemData.input.isNullOrEmpty()
             } else {
-                tvPleaseEnterCorrectAmount.isVisible = false
                 if (betAmount > inputMaxMoney) {
                     //超過最大限額
-                    amountError = true
-                    tvErrorMessage.apply {
-                        text = context.getString(R.string.bet_info_list_maximum_limit_amount)
-                        isVisible = true
-                    }
+                    true
                 } else {
-                    tvErrorMessage.apply {
-                        isVisible = false
-                        if (betAmount != 0.0 && betAmount < inputMinMoney) {
-                            //低於最小限額
-                            amountError = true
-                            text =
-                                context.getString(R.string.bet_info_list_minimum_limit_amount)
-                            isVisible = true
-                        } else {
-                            amountError = false
-                            isVisible = false
-                        }
-                    }
+                    betAmount != 0.0 && betAmount < inputMinMoney
                 }
             }
 
             Timber.d("用户余额:$mUserMoney")
-            tvBalanceInsufficientMessage.visibility =
-                if (betAmount != 0.0 && betAmount > mUserMoney) {
-                    tvErrorMessage.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
-                    balanceError = true
-                    View.VISIBLE
-                } else {
-                    balanceError = false
-                    View.GONE
-                }
+            if (betAmount != 0.0 && betAmount > mUserMoney) {
+//                    tvErrorMessage.isVisible = false //同時滿足限額和餘額不足提示條件，優先顯示餘額不足
+                balanceError = true
+                View.VISIBLE
+            } else {
+                balanceError = false
+                View.GONE
+            }
             itemData.amountError = balanceError || amountError
         }
         setEtBackground(itemData)

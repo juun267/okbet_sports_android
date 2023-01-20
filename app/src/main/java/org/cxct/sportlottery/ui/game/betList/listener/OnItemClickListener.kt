@@ -12,9 +12,6 @@ interface OnItemClickListener {
         fun refreshBetInfoTotal(isSingleAdapter: Boolean = false)
         fun showParlayRule(parlayType: String, parlayRule: String)
         fun onMoreOptionClick()
-        fun onOddsChangesAcceptTips()
         fun onOddsChangeAcceptSelect(tvTextSelect: TextView)
-        fun onOddsChangesWarningTips(isShow: Boolean)
-
         fun onOddsChangesSetOptionListener(text: String)
     }

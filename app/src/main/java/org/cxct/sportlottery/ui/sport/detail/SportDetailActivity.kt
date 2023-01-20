@@ -24,11 +24,11 @@ import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.BarHide
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_detail_sport.*
-import kotlinx.android.synthetic.main.activity_main_tab.cl_bet_list_bar
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
 import kotlinx.android.synthetic.main.edittext_form.*
+import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
 import kotlinx.android.synthetic.main.view_toolbar_detail_collaps.*
@@ -1151,6 +1151,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     private fun setCkScoreText(matchInfo: MatchInfo) {
         setScoreTextAtFront(matchInfo)
         setAttack(matchInfo)
+        setSptText(matchInfo)
     }
 
     /**
@@ -1158,38 +1159,17 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
      * 只有网球，排球，乒乓球，羽毛球
      */
     @SuppressLint("SetTextI18n")
-    private fun setSptText(matchInfo: MatchInfo) {
-//        matchInfo.spt?.let {
-//            if (it == 3 || it == 5|| it == 7) {
-//                league_spt.visibility = View.VISIBLE
-//                league_spt.text = when (it) {
-//                    3 -> {
-//                        when(matchInfo.gameType){
-//                            ////排球，乒乓球显示3局2胜
-//                            GameType.BM.key-> getString(R.string.spt_number_3_2_bm)
-//                            else-> getString(R.string.spt_number_3_2)
-//                        }
-//                    }
-//                    5 -> {
-//                        when(matchInfo.gameType){
-//                            //排球，乒乓球显示5局3胜
-//                            GameType.VB.key,GameType.TT.key-> getString(R.string.spt_number_5_3_vb)
-//                            else-> getString(R.string.spt_number_5_3)
-//                        }
-//                    }
-//                    7 -> {
-//                        //部分乒乓球会采用七局四胜制
-//                        when(matchInfo.gameType){
-//                            GameType.TT.key-> getString(R.string.spt_number_7_4_tt)
-//                            else-> ""
-//                        }
-//                    }
-//                    else -> ""
-//                }
-//            } else {
-////                league_spt.visibility = View.GONE
-//            }
-//        }
+    private fun setSptText(matchInfo: MatchInfo): String {
+        if (matchInfo.gameType == GameType.CK.key) {
+            val homeOver = (matchInfo.homeOver ?: "0").toFloat()
+            val awayOver = (matchInfo.awayOver ?: "0").toFloat()
+            return when {
+                homeOver > 0 -> " $homeOver"
+                awayOver > 0 -> " $awayOver"
+                else -> ""
+            }
+        }
+        return ""
     }
 
     /**
@@ -1205,9 +1185,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             matchInfo.matchStatusList?.let { it ->
                 tv_match_status.visibility = View.VISIBLE
                 it.last()?.let {
-                    tv_match_status.text = it.statusNameI18n?.get(
+                    tv_match_status.text = (it.statusNameI18n?.get(
                         LanguageManager.getSelectLanguage(context = this).key
-                    ) ?: it.statusName
+                    ) ?: it.statusName) + setSptText(matchInfo)
                 }
             }
             tv_toolbar_match_status.isVisible = tv_match_status.isVisible
@@ -1388,7 +1368,7 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             (TimeUtil.isTimeInPlay(matchInfo.startTime)
                     && matchInfo.status == GameStatus.POSTPONED.code
                     && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) -> {
-                getString(R.string.game_postponed)
+                getString(R.string.game_postponed) + setSptText(matchInfo)
             }
             TimeUtil.isTimeInPlay(matchInfo.startTime) -> {
                 if (matchInfo.statusName18n != null) {
@@ -1398,9 +1378,9 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                         || matchInfo.gameType == GameType.TT.name
                         || matchInfo.gameType == GameType.BM.name
                     ) {
-                        ""
+                        "" + setSptText(matchInfo)
                     } else {
-                        matchInfo.statusName18n
+                        matchInfo.statusName18n + (setSptText(matchInfo))
                     }
 
                 } else {

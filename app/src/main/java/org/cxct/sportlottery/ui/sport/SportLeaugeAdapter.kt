@@ -29,7 +29,6 @@ import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.setLeagueLogo
 import java.lang.ref.WeakReference
-import java.util.*
 
 @SuppressLint("NotifyDataSetChanged")
 class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: MatchType) :
@@ -122,9 +121,6 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         ITEM, NO_DATA
     }
 
-    var isLock = true
-    var mTimer = Timer()
-
     var data = mutableListOf<LeagueOdd>()
         set(value) {
             field = value
@@ -200,17 +196,15 @@ class SportLeagueAdapter(val lifecycle: LifecycleOwner, private val matchType: M
         notifyItemChanged(position, PayLoadEnum.EXPAND)
     }
 
+    private var refreshTime = 0L
+
     // 限制全列表更新頻率
     fun limitRefresh() {
-        if (isLock) {
+        val time = System.currentTimeMillis()
+        if (time - refreshTime > 1000) {
+            refreshTime = time
             Log.d("Hewie", "UpdateAll...")
-            isLock = false
             notifyDataSetChanged()
-            mTimer.schedule(object : TimerTask() {
-                override fun run() {
-                    isLock = true
-                }
-            }, 1000)
         }
     }
 

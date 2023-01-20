@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.refreshMoneyLoading
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 
 class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -52,6 +52,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         }
 
         layout_balance.btn_refresh.setOnClickListener {
+            it.refreshMoneyLoading()
             viewModel.getMoney()
         }
     }
@@ -85,10 +86,8 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
         viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
             if (it == null) return@observe
             rvAdapter.addFooterAndSubmitList(it)
-            Log.d("hjq", "btn_recycle=" + btn_recycle.isEnabled)
             btn_recycle.isEnabled = it.any { data -> data.money != 0.0 }
 
         }
-
     }
 }

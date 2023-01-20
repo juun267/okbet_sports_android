@@ -9,11 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_account_history_log.*
-import kotlinx.android.synthetic.main.activity_account_history_log.date_range_selector
-import kotlinx.android.synthetic.main.activity_account_history_log.selector_order_status
 import kotlinx.android.synthetic.main.activity_account_history_log.view.*
-import kotlinx.android.synthetic.main.activity_account_history_log.view_no_record
-import kotlinx.android.synthetic.main.activity_recharge_log.*
 import kotlinx.android.synthetic.main.view_no_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
@@ -127,7 +123,7 @@ class AccountHistoryLogFragment : BaseFragment<FinanceViewModel>(FinanceViewMode
         viewModel.userSportBillListResult.observe(this.viewLifecycleOwner, {
             it?.apply {
                 tv_total_number.text = it.total.toString()
-                setupNoRecordView(it.rows.isEmpty())
+                setupNoRecordView(accountHistoryAdapter.data.isEmpty())
             }
         })
 

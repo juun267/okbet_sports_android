@@ -3,34 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_131932_F0F5FA"
         android:fitsSystemWindows="false"
-        android:orientation="vertical"
-        android:background="@color/color_131932_F0F5FA">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_sport_left_top">
+            android:background="@drawable/bg_sport_left_top"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="50dp"
-                android:layout_marginBottom="35dp">
+                android:layout_marginBottom="35dp"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/logo_okbet_color"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/logo_okbet_color" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -38,66 +39,67 @@
                     android:layout_weight="1" />
 
                 <ImageView
-                android:id="@+id/iv_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginRight="@dimen/margin_25"
-                android:src="@drawable/ic_menu_search"
-                android:adjustViewBounds="true" />
+                    android:id="@+id/iv_search"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="@dimen/margin_25"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_menu_search" />
 
-            <ImageView
-                android:id="@+id/iv_setting"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_menu_setting"
-                android:adjustViewBounds="true" />
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_menu_setting" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/rg_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbtn_sport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/selector_bg_home_tab_menu"
+                    android:button="@null"
+                    android:checked="false"
+                    android:elevation="2dp"
+                    android:gravity="center"
+                    android:minWidth="90dp"
+                    android:text="@string/sport"
+                    android:textColor="@color/selector_blue_white"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <RadioButton
+                    android:id="@+id/rbtn_inplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginLeft="@dimen/margin_15"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/selector_bg_home_tab_menu"
+                    android:button="@null"
+                    android:elevation="2dp"
+                    android:gravity="center"
+                    android:minWidth="90dp"
+                    android:text="@string/home_in_play"
+                    android:textColor="@color/selector_blue_white"
+                    android:textSize="@dimen/textSize14sp" />
+            </RadioGroup>
         </LinearLayout>
 
-        <RadioGroup
-            android:id="@+id/rg_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbtn_sport"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:minWidth="90dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:button="@null"
-                android:checked="false"
-                android:elevation="2dp"
-                android:background="@drawable/selector_bg_home_tab_menu"
-                android:textColor="@color/selector_blue_white"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/sport" />
-
-            <RadioButton
-                android:id="@+id/rbtn_inplay"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:minWidth="90dp"
-                android:layout_marginLeft="@dimen/margin_15"
-                android:elevation="2dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center"
-                android:button="@null"
-                android:background="@drawable/selector_bg_home_tab_menu"
-                android:textColor="@color/selector_blue_white"
-                android:textSize="@dimen/textSize14sp"
-                android:text="@string/home_in_play" />
-        </RadioGroup>
-        </LinearLayout>
         <LinearLayout
             android:id="@+id/lin_sport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/lin_game_result"
@@ -108,21 +110,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:background="@drawable/selector_tran_blue"
                     android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp"
-                    android:background="@drawable/selector_tran_blue">
+                    android:paddingHorizontal="20dp">
 
                     <ImageView
                         android:layout_width="@dimen/margin_20"
                         android:layout_height="@dimen/margin_20"
-                        android:src="@drawable/ic_menu_saiguo" />
+                        android:src="@drawable/selector_menu_result" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_12"
                         android:text="@string/game_result"
-                        android:textColor="@color/color_FFFFFF_414655"
+                        android:textColor="@color/color_black_white"
                         android:textSize="@dimen/textSize14sp" />
 
 
@@ -153,9 +155,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:background="@drawable/selector_tran_blue"
                     android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp"
-                    android:background="@drawable/selector_tran_blue">
+                    android:paddingHorizontal="20dp">
 
                     <ImageView
                         android:id="@+id/ivWorldCup"
@@ -194,8 +196,8 @@
                 android:id="@+id/lin_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/selector_tran_blue">
+                android:background="@drawable/selector_tran_blue"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -222,9 +224,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_4"
                         android:fontFamily="@font/din_bold"
-                        tools:text="122"
                         android:textColor="@color/selector_blue_white"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textSize="@dimen/textSize14sp"
+                        tools:text="122" />
 
                     <androidx.legacy.widget.Space
                         android:layout_width="0dp"
@@ -254,8 +256,8 @@
                     android:id="@+id/lin_sport_classify"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:gravity="center_vertical"
                     android:background="@drawable/selector_tran_blue"
+                    android:gravity="center_vertical"
                     android:paddingHorizontal="20dp">
 
                     <ImageView
@@ -297,8 +299,8 @@
                 android:id="@+id/lin_game_rule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/selector_tran_blue">
+                android:background="@drawable/selector_tran_blue"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -337,6 +339,122 @@
                     android:background="@color/color_80C9CFD7" />
             </LinearLayout>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llBetWay"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin_20"
+                        android:layout_height="@dimen/margin_20"
+                        android:src="@drawable/ic_menu_odds_change_unselected" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_12"
+                        android:text="@string/str_bet_way"
+                        android:textColor="@color/color_FFFFFF_414655"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <androidx.legacy.widget.Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/selector_arrow_right_up"
+                        app:tint="@color/color_A7B2C4" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:background="@color/color_80C9CFD7" />
+
+                <RadioGroup
+                    android:id="@+id/rgBetWays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_FFFFFF"
+                    android:paddingStart="45dp"
+                    android:paddingEnd="18dp">
+
+                    <RadioButton
+                        android:id="@+id/rbAcceptAny"
+                        android:checked="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:drawableLeft="@drawable/selector_radio_blue"
+                        android:button="@null"
+                        android:drawablePadding="10dp"
+                        android:padding="5dp"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_414655"
+                        android:text="@string/accept_any_change_in_odds" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_80C9CFD7" />
+
+                    <RadioButton
+                        android:id="@+id/rbAcceptBetter"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:drawableLeft="@drawable/selector_radio_blue"
+                        android:button="@null"
+                        android:drawablePadding="10dp"
+                        android:padding="5dp"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_414655"
+                        android:text="@string/accept_better_change_in_odds" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_80C9CFD7" />
+
+                    <RadioButton
+                        android:id="@+id/rbNeverAccept"
+                        android:padding="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:drawableLeft="@drawable/selector_radio_blue"
+                        android:button="@null"
+                        android:drawablePadding="10dp"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textColor="@color/color_414655"
+                        android:text="@string/accept_never_change_in_odds" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/color_80C9CFD7" />
+                    <TextView
+                        android:id="@+id/tvOddsChangedTips"
+                        android:drawableEnd="@drawable/ic_arrow_right_blue"
+                        android:text="@string/str_odds_description"
+                        android:drawablePadding="5dp"
+                        android:textColor="@color/color_025BE8"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="13dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RadioGroup>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </LinearLayout>
 
         <LinearLayout
@@ -345,7 +463,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_sport_inplay"
@@ -359,16 +477,16 @@
                 android:id="@+id/lin_all_inplay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_20"
                 android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/margin_20">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/check_all_inplay"
                     android:textColor="@color/color_025BE8_025BE8"
-                    android:textSize="@dimen/sp_14"
-                    android:text="@string/check_all_inplay" />
+                    android:textSize="@dimen/sp_14" />
 
                 <ImageView
                     android:layout_width="14dp"

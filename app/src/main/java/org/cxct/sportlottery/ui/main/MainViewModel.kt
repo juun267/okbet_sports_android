@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.third_game.ThirdLoginResult
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
+import org.cxct.sportlottery.network.user.odds.OddsChangeOptionRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -129,6 +130,19 @@ class MainViewModel(
             }
         }
     }
+
+    fun updateOddsChangeOption(option: Int) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.userService.oddsChangeOption(
+                    OddsChangeOptionRequest(option)
+                )
+            }?.let { result ->
+                userInfoRepository.updateOddsChangeOption(option)
+            }
+        }
+    }
+
 
     fun goToLottery() {
         val lotteryData =

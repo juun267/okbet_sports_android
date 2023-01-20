@@ -13,6 +13,13 @@
         android:background="@color/color_E8EFFD"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="0.5dp"
+        android:background="@drawable/bg_linear_gradient_withe"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <LinearLayout
         android:id="@+id/lin_match"
         android:layout_width="match_parent"
@@ -45,9 +52,9 @@
                 <LinearLayout
                     android:id="@+id/linear_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:visibility="visible"
+                    android:paddingTop="@dimen/margin_0.5"
                     tools:visibility="visible">
 
                     <TextView
@@ -144,7 +151,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/margin_4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -169,8 +177,8 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:singleLine="true"
-                            android:textColor="@color/color_535D76"
-                            android:textSize="@dimen/textSize14sp"
+                            android:textColor="@color/color_111216"
+                            android:textSize="@dimen/textSize12sp"
                             tools:text="俄罗斯" />
 
                         <TextView
@@ -222,7 +230,7 @@
                             android:fontFamily="@font/din_regular"
                             android:textColor="@color/color_414655"
                             android:textFontWeight="700"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="0" />
                     </LinearLayout>
 
@@ -311,8 +319,7 @@
                             android:ellipsize="end"
                             android:gravity="center_vertical"
                             android:singleLine="true"
-                            android:textColor="@color/color_535D76"
-                            android:textSize="@dimen/textSize14sp"
+                            android:textColor="@color/color_111216"                            android:textSize="@dimen/textSize12sp"
                             tools:text="芬兰" />
 
                         <TextView
@@ -363,7 +370,7 @@
                             android:fontFamily="@font/din_regular"
                             android:textColor="@color/color_414655"
                             android:textFontWeight="700"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/textSize14sp"
                             tools:text="1" />
 
                     </LinearLayout>
@@ -427,6 +434,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
+                    android:layout_marginTop="1dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="12dp"
                     android:paddingRight="7dp">
@@ -464,14 +472,16 @@
                         tools:visibility="visible" />
 
                     <TextView
+                        android:background="@drawable/bg_drawable_shape_more"
                         android:id="@+id/league_odd_match_play_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:fontFamily="@font/din_regular"
+                        android:fontFamily="@font/din_bold"
                         android:gravity="center"
-                        android:textColor="@color/color_6C7BA8"
-                        android:textSize="@dimen/textSize12sp"
+                        android:padding="2dp"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize10sp"
                         tools:text="120+>" />
 
                     <androidx.legacy.widget.Space
@@ -598,7 +608,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_D3DEF5"
+        android:background="@color/color_D4E1F1"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <View

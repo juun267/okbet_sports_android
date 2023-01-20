@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.chad.library.adapter.base.entity.node.BaseNode
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_sport_list.*
 import kotlinx.android.synthetic.main.fragment_sport_list.view.*
 import org.cxct.sportlottery.R
@@ -208,7 +209,14 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
         }
     }
 
+    var offsetScrollListener: ((Double) -> Unit)? = null
+
     private fun setupToolbar() {
+
+        appbar_layout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            offsetScrollListener?.invoke((-verticalOffset) / Math.max(1.0, appbar_layout.measuredHeight.toDouble()))
+        })
+
         iv_calendar.apply {
             visibility = when (matchType) {
                 MatchType.EARLY -> View.VISIBLE
@@ -737,6 +745,7 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
 
     override fun onDestroyView() {
         super.onDestroyView()
+        offsetScrollListener = null
         game_list.adapter = null
         game_list?.removeCallbacks(subscribeVisibleRange)
         stopTimer()
