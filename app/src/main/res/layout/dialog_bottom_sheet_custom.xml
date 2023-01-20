@@ -51,7 +51,7 @@
         android:paddingEnd="20dp"
         android:text="@string/bottom_sheet_close"
         android:textAllCaps="true"
-        android:textColor="@color/color_7F7F7F_999999"
+        android:textColor="@color/color_025BE8"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

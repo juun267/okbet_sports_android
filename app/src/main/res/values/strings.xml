@@ -652,7 +652,7 @@
     <string name="third_game_cgcp">CX lottery</string>
     <string name="third_game_ogplus">OG+live</string>
     <string name="third_game_cr">Crown E-sports</string>
-    <string name="transfer_state">Transfer status：</string>
+    <string name="transfer_state">Status：</string>
     <string name="transfer_info">Transfer information</string>
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>

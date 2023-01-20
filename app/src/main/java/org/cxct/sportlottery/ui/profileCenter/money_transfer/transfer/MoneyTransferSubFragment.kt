@@ -9,21 +9,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
+import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import kotlinx.android.synthetic.main.view_status_selector.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
+import java.math.BigDecimal
 
 
 class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
@@ -56,6 +61,8 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initView() {
+
+        tv_balance.setText(R.string.current_balance)
         moveAnim(isPlatReversed)
         viewModel.initCode()
         //region 靠左置中＆移除padding
@@ -71,7 +78,18 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
         et_transfer_money.afterTextChanged {
-            btn_transfer.isEnabled = it.isNotEmpty()
+            if (it.isEmptyStr()) {
+                et_transfer_money.setError("")
+                return@afterTextChanged
+            }
+
+            val enable = it.toBigDecimal() > BigDecimal(0)
+            btn_transfer.isEnabled = enable
+            if (enable) {
+                et_transfer_money.setError("")
+            } else {
+                et_transfer_money.setError(getString(R.string.error_input_amount))
+            }
         }
         btn_transfer.setTitleLetterSpacing()
         val hint =
@@ -85,6 +103,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
                     ArithUtil.toMoneyFormatForHint(thirdTransferUnit))
             }
         Timber.d("thirdTransferUnit: $thirdTransferUnit, hint: $hint")
+        et_transfer_money.setMaxLength(20)
         et_transfer_money.setHint(hint)
         et_transfer_money.apply {
             tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
@@ -92,14 +111,11 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             tv_title.setTypeface(Typeface.DEFAULT)
             et_input.minHeight = 50.dp
             v_bottom_line.visibility = View.INVISIBLE
-            v_bottom_line2.isVisible = false
             btn_clear.setImageResource(R.drawable.ic_clear_gray)
             btn_clear.setPadding(2, 2, 2, 2)
             clearIsShow = false
         }
-        et_transfer_money.afterTextChanged {
-            et_transfer_money.setError("")
-        }
+
     }
 
     private fun setupSelectedTag() {
@@ -147,11 +163,13 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         out_account.setOnItemSelectedListener {
             viewModel.outCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+            in_account.excludeSelected("${it.code}")
         }
 
         in_account.setOnItemSelectedListener {
             viewModel.inCode = it.code
             viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+            out_account.excludeSelected("${it.code}")
         }
     }
 
