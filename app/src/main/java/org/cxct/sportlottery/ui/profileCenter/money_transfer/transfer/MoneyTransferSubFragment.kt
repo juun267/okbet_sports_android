@@ -91,7 +91,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
             tv_title.setTextColor(resources.getColor(R.color.color_535D76))
             tv_title.setTypeface(Typeface.DEFAULT)
             et_input.minHeight = 50.dp
-            v_bottom_line.isVisible = false
+            v_bottom_line.visibility = View.INVISIBLE
             v_bottom_line2.isVisible = false
             btn_clear.setImageResource(R.drawable.ic_clear_gray)
             btn_clear.setPadding(2, 2, 2, 2)
