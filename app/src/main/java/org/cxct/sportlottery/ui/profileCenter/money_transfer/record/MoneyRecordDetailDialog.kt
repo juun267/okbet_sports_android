@@ -33,7 +33,7 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
         super.onViewCreated(view, savedInstanceState)
 
         data?.apply {
-            log_detail_status_subtitle.text = "${getString(R.string.transfer_money)}${showCurrencySign}："
+            log_detail_status_subtitle.text = "${getString(R.string.transfer_money)}：${showCurrencySign}"
             log_detail_amount_subtitle.text = "${getString(R.string.in_account)}："
             log_detail_type_subtitle.text = "${getString(R.string.out_account)}："
             tv_order_number.text = orderNo
