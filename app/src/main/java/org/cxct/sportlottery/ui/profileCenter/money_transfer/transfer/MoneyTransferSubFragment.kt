@@ -22,11 +22,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 import java.math.BigDecimal
 

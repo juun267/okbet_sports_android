@@ -589,7 +589,7 @@
     <string name="recharge_log_order_time">Thời gian đơn cược</string>
     <string name="recharge_log_recharge_amount">Số tiền đặt cọc</string>
     <string name="recharge_log_channel_type">Loại kênh</string>
-    <string name="recharge_log_order_state">Trạng thái đơn cược</string>
+    <string name="recharge_log_order_state">Trạng thái của đơn</string>
     <string name="betting_station_reserve">Trang web đặt hẹn</string>
     <string name="betting_station_withdraw">Trang web rút tiền</string>
     <string name="betting_station_deposit" >Trang web gửi tiền</string>

@@ -177,7 +177,18 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         itemSelectedListener = listener
     }
 
+    fun excludeSelected(code: String) {
+        if (sheetAdapter == null || selectedTag != code) {
+            return
+        }
 
+        sheetAdapter!!.dataList.find{ it.code != code }?.let {
+            selectedText = it.showName
+            selectedTag = it.code
+            itemSelectedListener?.invoke(it)
+            dismiss()
+        }
+    }
 
     private fun setBottomSheet(typedArray: TypedArray) {
 
