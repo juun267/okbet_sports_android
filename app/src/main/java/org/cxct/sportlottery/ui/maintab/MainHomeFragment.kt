@@ -717,37 +717,32 @@ class MainHomeFragment :
     }
 
     private fun setupBanner() {
+
+        var imageList = sConfigData?.imageList?.filter { it.imageType == 2 }
+
+        if (imageList.isNullOrEmpty()) {
+            banner.setBackgroundResource(R.drawable.img_banner01)
+        }
+
+        imageList?.let { list->
+            val enable = list.size > 1
+            rll_left_right.isVisible = enable
+            banner.isAutoLoop(enable)
+        }
+
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.img_banner01)
             .error(R.drawable.img_banner01)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
 
-        var imageList = sConfigData?.imageList?.filter {
-            it.imageType == 2
-        }
-        if (imageList.isNullOrEmpty()){
-            banner.setBackgroundResource(R.drawable.img_banner01)
-        }
-        imageList?.let { list->
-            if (list.size<=1){
-                rll_left_right.isVisible = false
-                banner.isAutoLoop(false)
-            }else{
-                rll_left_right.isVisible = true
-                banner.isAutoLoop(true)
-            }
-        }
         (banner as Banner<ImageData, BannerImageAdapter<ImageData>>)
             .setAdapter(object : BannerImageAdapter<ImageData>(imageList) {
                 override fun onBindView(
                     holder: BannerImageHolder,
                     data: ImageData?,
                     position: Int,
-                    size: Int,
-                ) {
-
-
+                    size: Int) {
 
                     val url = sConfigData?.resServerHost + data?.imageName1
                     Glide.with(holder.itemView)
@@ -825,8 +820,6 @@ class MainHomeFragment :
         }
     }
 
-
-
     private fun addOddsDialog(
         gameTypeCode: String,
         matchType: MatchType,
@@ -835,75 +828,44 @@ class MainHomeFragment :
         playCateCode: String,
         playCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        playCateMenuCode: String?,
-    ) {
+        playCateMenuCode: String?) {
+
         val gameType = GameType.getGameType(gameTypeCode)
-        gameType?.let {
-            matchInfo?.let { matchInfo ->
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-                when (val fragmentActivity = activity) {
-                    is MainTabActivity -> fragmentActivity.setupBetData(fastBetDataBean)
-                }
-            }
+        if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
+            return
         }
-    }
 
-
-    private fun navOddsDetailFragment(
-        matchType: MatchType,
-        matchInfo: MatchInfo,
-    ) {
-        SportDetailActivity.startActivity(requireContext(),
+        getMainTabActivity().setupBetData(FastBetDataBean(
+            matchType = matchType,
+            gameType = gameType,
+            playCateCode = playCateCode,
+            playCateName = playCateName,
             matchInfo = matchInfo,
-            matchType = matchType)
+            matchOdd = null,
+            odd = odd,
+            subscribeChannelType = ChannelType.HALL,
+            betPlayCateNameMap = betPlayCateNameMap,
+            playCateMenuCode
+        ))
     }
 
-    /**
-     * 根據menuList的PlayCate排序賠率玩法
-     */
-    //TODO 20220323 等新版socket更新方式調整完畢後再確認一次此處是否需要移動至別處進行
-    private fun Recommend.sortOddsByMenu() {
-        val sortOrder = this.menuList.firstOrNull()?.playCateList?.map { it.code }
-
-        oddsMap?.let { map ->
-            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
-            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
-                sortOrder?.indexOf(it)
-            }.thenBy { it })
-
-            map.clear()
-            map.putAll(sortedMap)
-        }
+    private fun navOddsDetailFragment(matchType: MatchType, matchInfo: MatchInfo) {
+        SportDetailActivity.startActivity(requireContext(),  matchInfo, matchType)
     }
 
     private fun subscribeQueryData(recommendList: List<HandicapData>) {
         recommendList.forEach { subscribeChannelHall(it) }
     }
+
     //热门盘口订阅
     private fun subscribeChannelHall(recommend: HandicapData) {
-        recommend.matchInfos.forEach {
-            subscribeChannelHall(it.gameType, it.id)
-        }
+        recommend.matchInfos.forEach { subscribeChannelHall(it.gameType, it.id) }
     }
 
     //直播订阅
     private fun  subScribeLiveData(liveDataList: List<HotMatchLiveData> ){
-        liveDataList.forEach { hotMatchLiveData ->
-            subscribeChannelHall(hotMatchLiveData.matchInfo.gameType, hotMatchLiveData.matchInfo.id)
-        }
+        liveDataList.forEach { subscribeChannelHall(it.matchInfo.gameType, it.matchInfo.id) }
     }
-
 
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
@@ -919,7 +881,10 @@ class MainHomeFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
+                Intent(context,
+                     if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
+            )
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""
