@@ -56,6 +56,8 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel

@@ -1,38 +1,21 @@
 package org.cxct.sportlottery.ui.maintab.slot
 
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.adapter.recyclerview.BindingAdapter
+import org.cxct.sportlottery.databinding.ItemHomeSlotBinding
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.load
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 
-class HomeSlotAdapter(data: MutableList<QueryGameEntryData>) :
-    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(
-        R.layout.item_home_slot, data
-    ) {
+class HomeSlotAdapter: BindingAdapter<QueryGameEntryData, ItemHomeSlotBinding>() {
 
-    override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
-        if (context!=null ){
-            Glide.with(context)
-                .load(item.entryImage)
-                .apply(
-                    RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .dontTransform()
-                )
-                .into(helper.getView(R.id.iv_people))
-        }
+    override fun onBinding(position: Int,
+                           vb: ItemHomeSlotBinding,
+                           item: QueryGameEntryData) = vb.run {
 
-        helper.setText(R.id.tv_firm_name, item.firmName)
-            .setText(
-                R.id.tv_status,
-                if (item.gameCode == "TPG") {
-                    R.string.new_games
-                } else {
-                    R.string.new_games_beta
-                }
-            )?.setGone(R.id.tv_game_name, true)
+        ivPeople.load(item.entryImage)
+        tvFirmName.text = item.firmName
+        tvStatus.setText(if (item.gameCode == "TGP") R.string.new_games else R.string.new_games_beta)
+        tvGameName.gone()
     }
 }

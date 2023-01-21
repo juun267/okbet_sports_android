@@ -67,19 +67,19 @@ import kotlin.system.exitProcess
 
 class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel::class) {
 
-    val fragmentHelper: FragmentHelper by lazy {
+    private val fragmentHelper: FragmentHelper by lazy {
         FragmentHelper(
             supportFragmentManager, R.id.fl_content, arrayOf(
-                HomeFragment::class.java,
-                SportFragment::class.java,
-                BetRecordFragment::class.java,
-                FavoriteFragment::class.java,
-                ProfileCenterFragment::class.java
+                Pair(HomeFragment::class.java, null),
+                Pair(SportFragment::class.java, null),
+                Pair(BetRecordFragment::class.java, null),
+                Pair(FavoriteFragment::class.java, null),
+                Pair(ProfileCenterFragment::class.java, null)
             )
         )
     }
 
-    val norTabIcons by lazy {
+    private val norTabIcons by lazy {
         arrayOf(
             R.drawable.selector_tab_home,
             R.drawable.selector_tab_sport,
