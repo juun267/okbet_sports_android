@@ -1405,4 +1405,5 @@
     <string name="str_bet_way">投注方式</string>
     <string name="str_in_play_bet_confirmed">滚球注单确认中</string>
     <string name="str_odds_description">赔率说明</string>
+    <string name="new_games_new_discovery">新游戏，新发现</string>
 </resources>

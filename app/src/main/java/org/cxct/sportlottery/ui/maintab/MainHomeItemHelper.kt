@@ -54,11 +54,11 @@ object MainHomeItemHelper {
         val iconParams = LinearLayout.LayoutParams(30.dp, 23.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
         val nameParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = 6.dp }
 
-        if (isCreditSystem()) {
-            items1.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
-        } else {
+//        if (isCreditSystem()) {
+//            items1.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
+//        } else {
             items.forEach { addItem(parent, it, itemParams, iconParams, nameParams, itemClick) }
-        }
+//        }
     }
 
     private fun addItem(parent: LinearLayout,

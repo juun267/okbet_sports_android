@@ -17,4 +17,9 @@ data class GameFirmValues(
     val sort: Double?, //排序
     val open: Int?, //平台开关状态,0-关闭，1-开启
     val platformId: Long? //平台ID
-)
+) {
+
+    fun isMaintenance() = 0 == sysOpen //是否维护中
+    fun isEnable() = 1 == open // 该游戏可游玩
+
+}

@@ -1249,7 +1249,6 @@
     <string name="half_first_short">Hiệp 1</string>
     <string name="half_second_short">Hiệp 2</string>
     <string name="unbound_bank_card">Bạn chưa mặc định %1$s</string>
-    <string name="str_bet_way">Kiểu cược</string>
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
     <string name="customer_service">Nếu cần trợ giúp, vui lòng&#160;</string>
     <string name="not_sign_up">Chưa có tài khoản</string>
@@ -1386,6 +1385,8 @@
     <string name="str_in_play_bet_confirmed">Đang xác nhận cược trong trận</string>
     <string name="str_odds_description">Mô tả tỷ lệ cược</string>
     <string name="str_bet_parlay">CƯỢC XÂU</string>
+    <string name="str_bet_way">Kiểu cược</string>
+    <string name="new_games_new_discovery">Game mới, khám phá mới</string>
     <string name="pls_enter_days_format">Mời nhập số ngày (≥%d ngày)</string>
     <string name="more_than_days_format">Phải hơn %d ngày</string>
     <string name="overtime_score">Bù giờ</string>

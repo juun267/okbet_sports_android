@@ -1251,5 +1251,6 @@
     <string name="new_games">เกมใหม่เบต้า</string>
     <string name="bet_info_add_bet_failed">แพ้พนัน</string>
     <string name="cancel_manual">คืนเงิน</string>
+    <string name="new_games_new_discovery">เกมส์ใหม่, การค้นพบใหม่</string>
     <!--F005-->
 </resources>

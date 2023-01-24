@@ -1117,8 +1117,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
-    <string name="total_capital">Total Stake：%s</string>
-    <string name="total_win_amount">EST Winning：</string>
+    <string name="total_capital">Stake：%s</string>
+    <string name="total_win_amount">Winning：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Log in before betting</string>
@@ -1412,10 +1412,10 @@
     <string name="str_press_again_to_exit_the_program">"Please confirm to exit again  "</string>
     <string name="bet_info_add_bet_failed">Bet Failed</string>
     <string name="new_games">New Games</string>
-    <string name="str_bet_way">Betting method</string>
     <string name="regular_score">Regular</string>
-    <string name="score_with_overtime">score (with overtime)</string>
+    <string name="score_with_overtime">score\n (with overtime)</string>
 
+    <string name="str_bet_way">Betting method</string>
     <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
     <string name="str_odds_description">Odds Description</string>
     <string name="str_bet_parlay">Parlay</string>
@@ -1424,5 +1424,6 @@
     <string name="overtime_score">Overtime</string>
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
 
+    <string name="new_games_new_discovery">New Game, New discovery</string>
 
 </resources>

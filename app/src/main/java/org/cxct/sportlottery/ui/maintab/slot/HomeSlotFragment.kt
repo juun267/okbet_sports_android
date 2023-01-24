@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.maintab.slot
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,13 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.bottom_navigation_item.*
 import kotlinx.android.synthetic.main.fragment_home_slot.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.extentions.fitsSystemStatus
+import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
@@ -115,12 +118,32 @@ class HomeSlotFragment :
             if (it.isNullOrEmpty()) {
                 lin_empty_game.isVisible = true
                 rv_slot.isVisible = false
-            } else {
-                lin_empty_game.isVisible = false
-                rv_slot.isVisible = true
-                homeSlotAdapter.setNewInstance(it.toMutableList())
+                return@observe
             }
+            lin_empty_game.isVisible = false
+            rv_slot.isVisible = true
+
+//            if (!isCreditSystem()) {
+                homeSlotAdapter.setNewInstance(it.toMutableList())
+//                return@observe
+//            }
+//
+//            val list = mutableListOf<QueryGameEntryData>()
+//            it.forEach { item ->
+//                if ("CGQP" == item.firmCode || "KY" == item.firmCode) {
+//                    list.add(item)
+//                }
+//            }
+//
+//            if (list.isEmpty()) {
+//                lin_empty_game.isVisible = true
+//                rv_slot.isVisible = false
+//                return@observe
+//            }
+//
+//            homeSlotAdapter.setNewInstance(list)
         }
+
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {
             if (isVisible)
                 enterThirdGame(it)
