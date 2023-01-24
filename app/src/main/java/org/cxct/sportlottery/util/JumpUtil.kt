@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.common.WebActivity
+import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
 import timber.log.Timber
 
@@ -81,5 +82,20 @@ object JumpUtil {
             e.printStackTrace()
             ToastUtil.showToastInCenter(context, context.getString(R.string.error_url_fail))
         }
+    }
+
+    fun toLottery(
+        context: Context,
+        href: String?,
+    ) {
+        LogUtil.d(href)
+        context.startActivity(
+            Intent(context, LotteryActivity::class.java).apply {
+                putExtra(WebActivity.KEY_URL, Constants.appendMode(href))
+                putExtra(WebActivity.KEY_TITLE, "")
+                putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, false)
+                putExtra(WebActivity.KEY_BACK_EVENT, true)
+            }
+        )
     }
 }

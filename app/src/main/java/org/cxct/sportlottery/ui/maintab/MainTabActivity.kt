@@ -43,7 +43,9 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -61,7 +63,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 import kotlin.system.exitProcess
 
 
@@ -142,6 +143,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initObserve()
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
+        viewModel.getLotteryInfo()
     }
 
     var isWorldCupModel = false
@@ -211,6 +213,10 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 setAnchorView(R.id.parlayFloatWindow)
                 show()
             }
+        }
+        viewModel.lotteryInfo.observe(this) {
+            LotteryManager.instance.lotteryInfo = it
+            LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
         }
     }
 

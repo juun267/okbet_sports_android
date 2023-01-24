@@ -11,17 +11,18 @@ import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.PlayQuotaComService
 import org.cxct.sportlottery.network.infoCenter.InfoCenterService
 import org.cxct.sportlottery.network.league.LeagueService
+import org.cxct.sportlottery.network.lottery.LotteryService
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchService
 import org.cxct.sportlottery.network.matchCategory.MatchCategoryService
 import org.cxct.sportlottery.network.matchresult.MatchResultService
 import org.cxct.sportlottery.network.message.MessageService
 import org.cxct.sportlottery.network.money.MoneyService
+import org.cxct.sportlottery.network.myfavorite.FavoriteService
+import org.cxct.sportlottery.network.news.NewsService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
-import org.cxct.sportlottery.network.myfavorite.FavoriteService
-import org.cxct.sportlottery.network.news.NewsService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
@@ -190,4 +191,8 @@ object OneBoSportApi {
             .retrofit
             .create(BettingStationService::class.java)
 
+    val lotteryService: LotteryService
+        get() = RequestManager.instance
+            .retrofit
+            .create(LotteryService::class.java)
 }

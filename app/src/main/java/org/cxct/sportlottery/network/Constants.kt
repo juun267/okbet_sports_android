@@ -237,6 +237,13 @@ object Constants {
         return base + "sports-rule/#/${language}worldcup?platform=${context.getString(R.string.app_name)}&d=android&noBg=1"
     }
 
+    //抽奖活动H5地址
+    fun getLotteryH5Url(context: Context, token: String? = ""): String {
+        val language = getLanguageTag(context)
+        val base = getH5BaseUrl()
+        return base + "${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
+    }
+
     //web页面增加夜间模式参数
     fun appendMode(url: String?): String? {
         if (url.isNullOrEmpty() || url.contains("mode=")) {
@@ -451,11 +458,16 @@ object Constants {
 
     //首页热门盘口推荐
     const val HOT_HANDICAP_LIST = "/api/front/match/odds/mobile/hot/handicap/{handicapType}/list"
+
     //首页热门直播
     const val HOT_LIVE_LIST = "/api/front/liveRound/mobile/hotMatch/list"
 
     //获取累计头奖金额
     const val QUERY_TOTAL_REWARD_AMOUNT =
         "/api/front/gameEntryConfig/queryTotalRewardAmount" //电子，棋牌接口（首页和二级页面使用同一个接口）
+
+    //全局抽奖活动
+    const val LOTTERY_GET = "/api/front/lottery/get"
+
 
 }

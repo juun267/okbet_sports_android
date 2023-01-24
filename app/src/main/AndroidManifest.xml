@@ -216,6 +216,10 @@
         <activity
             android:name=".ui.aboutMe.AboutMeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.maintab.lottery.LotteryActivity"
+            android:screenOrientation="portrait" />
+
         <service android:name=".service.BackService" /> <!-- broadCast -->
         <receiver
             android:name=".service.ServiceBroadcastReceiver"
