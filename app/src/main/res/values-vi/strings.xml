@@ -630,7 +630,7 @@
     <string name="transfer_money">Số tiền chuyển đổi</string>
     <string name="transfer_money_minimum">số tiền giới hạn %s trở lên</string>
     <string name="confirm_transform">xác nhận chuyển đổi</string>
-    <string name="plat_money">Số dư kênh</string>
+    <string name="plat_money">Số dư trang</string>
     <string name="money">Số tiền</string>
     <string name="transfer_platform">Kênh chuyển đổi</string>
     <string name="transfer_money_succeed">Chuyển đổi hạn mức thành công</string>
@@ -643,7 +643,7 @@
     <string name="third_game_ogplus">OG+Casino</string>
     <string name="third_game_cr">Crown Sports</string>
     <string name="transfer_state">Trạng thái chuyển đổi：</string>
-    <string name="transfer_info">chuyển đổi thông tin</string>
+    <string name="transfer_info">Thông tin chuyển đổi</string>
     <string name="sorry_website_is_now_maintenance">Trang web hiện đang được bảo trì</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn%1$s</string>
     <string name="bottom_nav_home">Trang chủ</string>
@@ -1040,7 +1040,7 @@
 
     <string name="current_corner">Tổng Số Hiện Tại:</string>
     <string name="cancel_auto">Từ chối</string>
-    <string name="cancel_manual">Vô hiệu</string>
+    <string name="cancel_manual">Hoàn tiền</string>
     <string name="error_input_has_blank"> Đầu vào không chính xác. Chỉ sử dụng tiếng Anh, không nhập khoảng trắng liên tục.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1088,7 +1088,7 @@
     <string name="redenvelope_amount_sub">Số tiền nhận thực tế：</string>
     <string name="btn_sure">Xác nhận</string>
     <string name="Outlets_Reserve">Trang web đặt hẹn</string>
-    <string name="current_balance">Sự cân bằng</string>
+    <string name="current_balance">Số dư hiện tại</string>
     <string name="select_area">Chọn vùng</string>
     <string name="select_city">Chọn thành phố</string>
     <string name="outlets_address">Địa chỉ</string>
