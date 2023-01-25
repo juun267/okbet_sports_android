@@ -131,16 +131,33 @@ class MoneyTransferViewModel(
                 OneBoSportApi.thirdGameService.getThirdGames()
             }?.let { result ->
                 hideLoading()
+
                 val resultList = mutableListOf<GameData>()
-                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
-                    thirdGameMap[value.firmType] = value.firmShowName
-                    if (value.open == 1) {
-                        resultList.add(GameData(null, null, null).apply {
-                            code = key
-                            showName = value.firmShowName ?: key
-                        })
+                var gameFirmList = result.t?.gameFirmMap?.entries?.toList()
+
+                if (!gameFirmList.isNullOrEmpty()) {
+
+                    gameFirmList = gameFirmList.sortedBy { it.value.sort }
+                    gameFirmList.forEach {
+                        val value = it.value
+                        thirdGameMap[value.firmType] = value.firmShowName
+                        if (value.open == 1) {
+                            resultList.add(GameData(null, null, null).apply {
+                                code = it.key
+                                showName = value.firmShowName ?: it.key
+                            })
+                        }
                     }
                 }
+//                for ((key, value) in result.t?.gameFirmMap ?: mapOf()) {
+//                    thirdGameMap[value.firmType] = value.firmShowName
+//                    if (value.open == 1) {
+//                        resultList.add(GameData(null, null, null).apply {
+//                            code = key
+//                            showName = value.firmShowName ?: key
+//                        })
+//                    }
+//                }
                 LogUtil.toJson(resultList)
                 setRecordInSheetDataList(resultList)
                 setRecordOutSheetDataList(resultList)
