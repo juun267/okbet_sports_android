@@ -17,10 +17,10 @@ class ThirdGamesAdapter2: BindingAdapter<ThirdGames, ItemHomeThirdGameBinding>()
         val holder = super.onCreateDefViewHolder(parent, viewType)
         holder.itemView.apply {
             val params = layoutParams as MarginLayoutParams
-            params.leftMargin = 10.dp
-            params.height = ((ScreenUtil.getScreenWidth(parent.context) - 20.dp) * 160f / 362).toInt()
+            params.leftMargin = 13.dp
+            params.height = ((ScreenUtil.getScreenWidth(parent.context) - 26.dp) * 160f / 362).toInt()
             params.rightMargin = params.leftMargin
-            params.topMargin = 5.dp
+            params.topMargin = 10.dp
         }
 
         (holder.itemView as ViewGroup).getChildAt(0).gone()

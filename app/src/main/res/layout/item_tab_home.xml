@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="38dp"
+    android:layout_height="36dp"
     android:gravity="center"
     android:paddingLeft="10dp"
     android:paddingRight="12dp"
@@ -11,16 +12,16 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:src="@drawable/selector_home_tab_recommend" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        tools:src="@drawable/selector_home_tab_recommend" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:textColor="@color/selector_white_gray"
         android:textSize="14sp"
-        android:text="@string/sport" />
+        tools:text="@string/sport" />
 </LinearLayout>

@@ -51,7 +51,7 @@ object MainHomeItemHelper {
     fun fillingItems(parent: LinearLayout, itemClick: (Int) -> Unit) {
 
         val itemParams = LinearLayout.LayoutParams(0, 60.dp, 1.0f)
-        val iconParams = LinearLayout.LayoutParams(30.dp, 23.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
+        val iconParams = LinearLayout.LayoutParams(30.dp, 30.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
         val nameParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = 6.dp }
 
         if (isCreditSystem()) {
