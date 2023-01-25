@@ -23,22 +23,26 @@ import org.cxct.sportlottery.util.isCreditSystem
 class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
     private val fragmentHelper by lazy {
-//        if (isCreditSystem()) {
-//            FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-//                Pair(MainHomeFragment::class.java, null),
-//                Pair(HomeLiveFragment::class.java, null),
-//                Pair(HomeWorldCupFragment::class.java, null),
-//                Pair(ThirdGamesFragment::class.java, Bundle().apply {
-//                    putInt("position", 4)
-//                    putString("GAME_CODE", "LIVE")
-//                }),
+        if (isCreditSystem()) {
+            FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
+                Pair(MainHomeFragment::class.java, null),
+                Pair(HomeLiveFragment::class.java, null),
+                Pair(HomeWorldCupFragment::class.java, null),
+                Pair(ThirdGamesFragment::class.java, Bundle().apply {
+                    putInt("position", 4)
+                    putString("GAME_CODE", "LIVE")
+                }),
 //                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
-//                Pair(ThirdGamesFragment::class.java, Bundle().apply {
-//                    putInt("position", 6)
-//                    putString("GAME_CODE", "CGCP")
-//                })
-//            ))
-//        } else {
+                Pair(ThirdGamesFragment::class.java, Bundle().apply {
+                    putInt("position", 5)
+                    putString("GAME_CODE", "QP")
+                }),
+                Pair(ThirdGamesFragment::class.java, Bundle().apply {
+                    putInt("position", 6)
+                    putString("GAME_CODE", "CGCP")
+                })
+            ))
+        } else {
             FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
                 Pair(MainHomeFragment::class.java, null),
                 Pair(HomeLiveFragment::class.java, null),
@@ -46,7 +50,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
                 Pair(HomeElecFragment::class.java, null),
                 Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
             ))
-//        }
+        }
 
     }
 

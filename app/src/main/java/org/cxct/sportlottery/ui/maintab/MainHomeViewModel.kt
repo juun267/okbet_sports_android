@@ -497,11 +497,11 @@ class MainHomeViewModel(
         requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}")
     }
 
+
     //避免多次请求游戏
     var jumpingGame = false
     fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String) {
 //        Timber.e("gameData: $gameData")
-        Log.e("For Test", "=====>>> requestEnterThirdGame firmType = $firmType gameCode = $gameCode  gameCategory = $gameCategory ")
         when {
             loginRepository.isLogin.value != true -> {
                 _enterThirdGameResult.postValue(

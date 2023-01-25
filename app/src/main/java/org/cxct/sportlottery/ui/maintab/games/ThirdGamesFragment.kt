@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.games
 
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
@@ -9,8 +8,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.fragment_home_slot.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
@@ -26,6 +23,7 @@ import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.repository.ThirdGameRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -36,20 +34,27 @@ import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.isOKPlat
-import org.cxct.sportlottery.util.toJson
+import org.cxct.sportlottery.util.*
 
 class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
     private val GAME_CODE by lazy { requireArguments().getString("GAME_CODE")!! }
     private val CODE_LIVE = "LIVE"
-    private val LIVE_OPEN_FILTER = arrayOf("CGLIVE", "AGIN", "AWC")  // 如果是'真人'游戏则进行本地过滤
+    private val CODE_POKER = "QP"
+    private val LIVE_OPEN_FILTER = mutableListOf<String>()  // 如果是'真人'游戏则进行本地过滤
 
     override fun layoutId() = R.layout.fragment_home_slot
 
-    private val gamesAdapter by lazy { ThirdGamesAdapter(GAME_CODE == CODE_LIVE) }
+    private val gamesAdapter by lazy { ThirdGamesAdapter2().apply {
+        val datas = when(GAME_CODE) {
+            CODE_LIVE -> ThirdGames.live
+            CODE_POKER -> ThirdGames.qipai
+            else -> ThirdGames.caipiao
+        }
+
+        datas.forEach { LIVE_OPEN_FILTER.add(it.playCode) }
+        setNewInstance(datas)
+    } }
 
     private val homeTabAdapter by lazy {
         HomeTabAdapter(HomeTabAdapter.getItems(),
@@ -63,6 +68,7 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
         initTab()
         initGamesList()
         initObserver()
+        viewModel.getThirdGame()
     }
 
     fun initToolBar() {
@@ -92,9 +98,7 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
             })
             viewModel.getMoney()
         }
-//        lin_search.setOnClickListener {
-//            startActivity(Intent(requireActivity(), SportSearchtActivity::class.java))
-//        }
+
         setupLogin()
     }
 
@@ -107,6 +111,9 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
     }
 
     private fun initGamesList() {
+        rv_slot.visible()
+        lin_empty_game.gone()
+
         rv_slot.layoutManager = LinearLayoutManager(context)
         rv_slot.adapter = gamesAdapter
         gamesAdapter.setOnItemClickListener { _, _, position ->
@@ -126,7 +133,15 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
     }
 
     private fun initObserver() {
-        viewModel.getThirdGame()
+
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            it?.let {
+                tv_home_money.text = "${sConfigData?.systemCurrencySign} ${TextUtil.format(it)}"
+            }
+        }
+        viewModel.isLogin.observe(viewLifecycleOwner) {
+            setupLogin()
+        }
         ThirdGameRepository.thirdGameData.observe(this) {
             if (it == null || it.gameCategories.isNullOrEmpty() || it.gameFirmMap.isNullOrEmpty()) {
                 return@observe
@@ -155,26 +170,27 @@ class ThirdGamesFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHo
             }
 
             val liveGames = mutableListOf<GameFirmValues>()
-            val isLiveGame = CODE_LIVE == GAME_CODE
 
             gameFirmMap.values.forEach {
-                Log.e("For Test", "=====>>> filterData ${it.toJson()}")
-                if(liveIds.contains("${it.id}") &&
-                    (isLiveGame && LIVE_OPEN_FILTER.contains("${it.playCode}") || (!isLiveGame && "${it.playCode}" == "CGCP"))) {
+                if(liveIds.contains("${it.id}") && LIVE_OPEN_FILTER.contains("${it.playCode}")) {
                     liveGames.add(it)
                 }
             }
 
             withContext(Dispatchers.Main) {
-                if (liveGames.isNotEmpty()) {
-                    gamesAdapter.setNewInstance(liveGames)
-                    rv_slot.visible()
-                    lin_empty_game.gone()
-                } else {
-                    lin_empty_game.visible()
-                    rv_slot.gone()
-                }
+                gamesAdapter.update(liveGames)
             }
+
+//            withContext(Dispatchers.Main) {
+//                if (liveGames.isNotEmpty()) {
+//                    gamesAdapter.setNewInstance(liveGames)
+//                    rv_slot.visible()
+//                    lin_empty_game.gone()
+//                } else {
+//                    lin_empty_game.visible()
+//                    rv_slot.gone()
+//                }
+//            }
         }
     }
 

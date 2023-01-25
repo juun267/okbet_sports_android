@@ -123,25 +123,25 @@ class HomeSlotFragment :
             lin_empty_game.isVisible = false
             rv_slot.isVisible = true
 
-//            if (!isCreditSystem()) {
+            if (!isCreditSystem()) {
                 homeSlotAdapter.setNewInstance(it.toMutableList())
-//                return@observe
-//            }
-//
-//            val list = mutableListOf<QueryGameEntryData>()
-//            it.forEach { item ->
-//                if ("CGQP" == item.firmCode || "KY" == item.firmCode) {
-//                    list.add(item)
-//                }
-//            }
-//
-//            if (list.isEmpty()) {
-//                lin_empty_game.isVisible = true
-//                rv_slot.isVisible = false
-//                return@observe
-//            }
-//
-//            homeSlotAdapter.setNewInstance(list)
+                return@observe
+            }
+
+            val list = mutableListOf<QueryGameEntryData>()
+            it.forEach { item ->
+                if ("CGQP" == item.firmCode || "KY" == item.firmCode) {
+                    list.add(item)
+                }
+            }
+
+            if (list.isEmpty()) {
+                lin_empty_game.isVisible = true
+                rv_slot.isVisible = false
+                return@observe
+            }
+
+            homeSlotAdapter.setNewInstance(list)
         }
 
         viewModel.enterThirdGameResult.observe(viewLifecycleOwner) {

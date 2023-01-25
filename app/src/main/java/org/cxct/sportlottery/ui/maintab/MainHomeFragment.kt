@@ -243,6 +243,7 @@ class MainHomeFragment :
         }
 
         MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
+
         initHotHandicap()
         initListView()
 
@@ -1006,7 +1007,15 @@ class MainHomeFragment :
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment
 
-    private fun onTabClick(tabName: Int) = when(tabName)  {
+    private fun onTabClick(tabName: Int) {
+        if (isCreditSystem()) {
+            loginedRun(requireContext()) { changeFragment(tabName) }
+        } else {
+            changeFragment(tabName)
+        }
+    }
+
+    private fun changeFragment(tabName: Int) = when(tabName)  {
         //点击直播跳转
         R.string.home_live -> getHomeFragment().onTabClickByPosition(1)
         //点击滚球跳转
