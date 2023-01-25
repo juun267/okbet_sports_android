@@ -37,7 +37,6 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         const val KEY_BACK_EVENT = "key-back-event"
         const val GAME_CATEGORY_CODE = "game-category-code"
         const val BET_STATION = "betstation"
-        const val HIDE_TOOLBAR = "hide_toolbar"
     }
 
     private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
@@ -51,9 +50,6 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true
     }
     private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as? BettingStation }
-    private val hideToolbar: Boolean by lazy {
-        intent?.getBooleanExtra(HIDE_TOOLBAR, false) ?: false
-    }
     private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
     private var mUploadMessage: ValueCallback<Uri?>? = null
 
@@ -76,14 +72,10 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initToolBar() {
-        if (hideToolbar) {
-
-        } else {
-            custom_tool_bar.setOnBackPressListener {
-                onBackPressed()
-            }
-            custom_tool_bar.titleText = mTitle
+        custom_tool_bar.setOnBackPressListener {
+            onBackPressed()
         }
+        custom_tool_bar.titleText = mTitle
         bettingStation?.let {
             addBetStationInfo()
         }

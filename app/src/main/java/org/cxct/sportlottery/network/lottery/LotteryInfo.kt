@@ -13,14 +13,14 @@ data class LotteryInfo(
     val activityRule: String,
     @Json(name = "allWins")
     val allWins: List<AllWin>? = null,
-    @Json(name = "banner")
-    val banner: String,
+    @Json(name = "pcBanner")
+    val pcBanner: String,
+    @Json(name = "h5Banner")
+    val h5Banner: String,
     @Json(name = "endTime")
     val endTime: Long?,
     @Json(name = "id")
     val id: Int,
-    @Json(name = "image")
-    val image: String,
     @Json(name = "lastDrawTime")
     val lastDrawTime: Long?,
     @Json(name = "nexDrawTime")

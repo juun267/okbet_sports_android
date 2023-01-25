@@ -91,7 +91,7 @@ object JumpUtil {
         LogUtil.d(href)
         context.startActivity(
             Intent(context, LotteryActivity::class.java).apply {
-                putExtra(WebActivity.KEY_URL, Constants.appendMode(href))
+                putExtra(WebActivity.KEY_URL, href)
                 putExtra(WebActivity.KEY_TITLE, "")
                 putExtra(WebActivity.KEY_TOOLBAR_VISIBILITY, false)
                 putExtra(WebActivity.KEY_BACK_EVENT, true)

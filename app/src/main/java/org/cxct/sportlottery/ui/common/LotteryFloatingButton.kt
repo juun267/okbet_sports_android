@@ -26,7 +26,7 @@ class LotteryFloatingButton @JvmOverloads constructor(
     }
 
     private fun initClickEvent() {
-        rl_float_view.setOnClickListener {
+        movable_layout.setOnClickListener {
             LotteryManager.instance.clickOpenFloatBtn()
         }
         iv_close.setOnClickListener {

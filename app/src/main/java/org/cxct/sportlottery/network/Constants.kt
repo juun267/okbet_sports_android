@@ -239,9 +239,9 @@ object Constants {
 
     //抽奖活动H5地址
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
-        val language = getLanguageTag(context)
+        val language = getSelectLanguage(context).key
         val base = getH5BaseUrl()
-        return base + "${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
+        return base + "mobile/${language}/sweepstakes?token=${token}"
     }
 
     //web页面增加夜间模式参数

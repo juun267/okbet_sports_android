@@ -1,22 +1,199 @@
 package org.cxct.sportlottery.ui.maintab.lottery
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.net.http.SslError
 import android.os.Bundle
-import android.webkit.JavascriptInterface
-import org.cxct.sportlottery.ui.common.WebActivity
+import android.os.Message
+import android.view.View
+import android.webkit.*
+import kotlinx.android.synthetic.main.activity_web.*
+import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
+import timber.log.Timber
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 
 /**
  * Create by Simon Chang
  */
-open class LotteryActivity : WebActivity() {
+open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+    companion object {
+        const val KEY_URL = "key-url"
+    }
+
+    private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
     }
 
-    override fun init() {
-        super.init()
-        getWebView().addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
+    open fun init() {
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
+        setContentView(R.layout.activity_web)
+        custom_tool_bar.visibility = View.GONE
+        web_view.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
+        setCookie()
+        setupWebView(web_view)
+        loadUrl(web_view)
+    }
+
+    fun setCookie() {
+        try {
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.setAcceptCookie(true)
+
+            val oldCookie = cookieManager.getCookie(mUrl)
+            Timber.i("Cookie:oldCookie:$oldCookie")
+
+            cookieManager.setCookie(
+                mUrl, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")
+            ) //cookies是在HttpClient中获得的cookie
+            cookieManager.flush()
+
+            val newCookie = cookieManager.getCookie(mUrl)
+            Timber.i("Cookie:newCookie:$newCookie")
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+    }
+
+    @SuppressLint("WebViewApiAvailability")
+    fun setupWebView(webView: WebView) {
+        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
+
+        webView.setWebViewCommonBackgroundColor()
+
+        val settings: WebSettings = webView.settings
+        settings.javaScriptEnabled = true
+        settings.blockNetworkImage = false
+        settings.domStorageEnabled = true //对H5支持
+        settings.useWideViewPort = true //将图片调整到适合webview的大小
+        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
+        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        settings.javaScriptCanOpenWindowsAutomatically = true
+        settings.defaultTextEncodingName = "utf-8"
+        settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        settings.databaseEnabled = false
+//        settings.setAppCacheEnabled(false)
+
+        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+        settings.allowFileAccess = true
+        settings.allowContentAccess = true
+        settings.allowFileAccessFromFileURLs = true
+        settings.allowUniversalAccessFromFileURLs = true
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onCreateWindow(
+                view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message,
+            ): Boolean {
+                val newWebView = WebView(view.context)
+                newWebView.webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                        //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+                        //在此处进行跳转URL的处理, 一般情况下_black需要重新打开一个页面
+                        try {
+                            //使用系統默認外部瀏覽器跳轉
+                            val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            i.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(i)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        return true
+                    }
+                }
+                val transport = resultMsg.obj as WebView.WebViewTransport
+                transport.webView = newWebView
+                resultMsg.sendToTarget()
+                return true
+            }
+
+            override fun onPermissionRequest(request: PermissionRequest?) {
+                val PERMISSIONS_AT_WEBVIEW = 0
+                val permissionCheck = checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(
+                        arrayOf(Manifest.permission.RECORD_AUDIO), PERMISSIONS_AT_WEBVIEW
+                    )
+                } else {
+                    request?.grant(request.resources)
+                }
+            }
+        }
+
+        webView.webViewClient = object : WebViewClient() {
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                loading()
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                hideLoading()
+            }
+
+            override fun shouldInterceptRequest(
+                view: WebView?, url: String?,
+            ): WebResourceResponse? {
+                return super.shouldInterceptRequest(view, url)
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                if (!url.startsWith("http")) {
+                    try {
+                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        startActivity(i)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    return true
+                }
+
+                view.loadUrl(url)
+                return true
+            }
+
+            override fun onReceivedSslError(
+                view: WebView, handler: SslErrorHandler, error: SslError,
+            ) {
+                //此方法是为了处理在5.0以上Https的问题，必须加上
+                //handler.proceed()
+                val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
+                builder.setMessage(android.R.string.httpErrorUnsupportedScheme)
+                builder.setPositiveButton(
+                    "continue"
+                ) { dialog, which -> handler.proceed() }
+                builder.setNegativeButton(
+                    "cancel"
+                ) { dialog, which -> handler.cancel() }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+
+            }
+        }
+
+        //H5调用系统下载
+        webView.setDownloadListener { url, _, _, _, _ ->
+            val uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
+    }
+
+    fun loadUrl(webView: WebView) {
+        webView.loadUrl(mUrl)
     }
 
     class LotteryJsInterface(val activity: LotteryActivity) {
@@ -25,7 +202,7 @@ open class LotteryActivity : WebActivity() {
         }
 
         @JavascriptInterface
-        fun backClick(infoString: String) {
+        fun backClick() {
             activity.onBackPressed()
         }
 

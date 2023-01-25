@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.view.View
 import android.view.ViewGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -10,6 +11,8 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.common.LotteryFloatingButton
 import org.cxct.sportlottery.ui.maintab.lottery.LotteryActivity
+import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.ui.splash.SplashActivity
 
 class LotteryManager {
     companion object {
@@ -47,8 +50,8 @@ class LotteryManager {
      * 限定指定页面不能显示
      */
     fun allowdShowRedEnvelope(): Boolean = when (activity!!::class) {
-//        SplashActivity::class -> false
-//        MaintenanceActivity::class -> false
+        SplashActivity::class -> false
+        MaintenanceActivity::class -> false
         LotteryActivity::class -> false
         else -> true
     }
@@ -75,7 +78,13 @@ class LotteryManager {
 
     fun showFloatBtn(date: String) {
         var viewGroup = activity!!.findViewById<ViewGroup>(android.R.id.content)
-        val targetView = viewGroup.getChildAt(viewGroup.childCount - 1)
+        var targetView: View? = null
+        for (index in 0..viewGroup.childCount) {
+            if (viewGroup.getChildAt(index) is LotteryFloatingButton) {
+                targetView = viewGroup.getChildAt(index)
+                break
+            }
+        }
         if (targetView is LotteryFloatingButton) {
             floatRootView = targetView
             floatRootView?.setTime(date)
