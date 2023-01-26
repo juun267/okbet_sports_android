@@ -25,12 +25,7 @@ import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.EventBusUtil
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.isUAT
-import org.cxct.sportlottery.util.startRegister
-import org.greenrobot.eventbus.EventBus
+import org.cxct.sportlottery.util.*
 
 /**
  * 首页棋牌
@@ -57,7 +52,6 @@ class HomeSlotFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.fitsSystemStatus()
-        viewModel.getConfigData()
         initView()
         initObservable()
         viewModel.getGameEntryConfig(2, 1)
