@@ -56,7 +56,6 @@ class HomeWorldCupFragment: BaseBottomNavigationFragment<MainHomeViewModel>(Main
     override fun layoutId() = R.layout.fragment_home_worldcup
 
     override fun onBindView(view: View) {
-        viewModel.getConfigData()
         initToolBar()
         setTheme()
         initTabView()
