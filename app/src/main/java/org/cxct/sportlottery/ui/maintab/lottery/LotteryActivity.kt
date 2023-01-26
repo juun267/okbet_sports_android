@@ -196,6 +196,14 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         webView.loadUrl(mUrl)
     }
 
+    override fun onBackPressed() {
+        if (web_view.canGoBack()) {
+            web_view.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     class LotteryJsInterface(val activity: LotteryActivity) {
         companion object {
             const val name = "LotteryJsInterface"
@@ -203,8 +211,9 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
 
         @JavascriptInterface
         fun backClick() {
-            activity.onBackPressed()
+            activity.runOnUiThread {
+                activity.onBackPressed()
+            }
         }
-
     }
 }
