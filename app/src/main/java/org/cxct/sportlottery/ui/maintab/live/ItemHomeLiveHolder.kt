@@ -12,6 +12,7 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemHomeLiveBinding
+import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
@@ -295,7 +296,9 @@ class ItemHomeLiveHolder(
             ivAwayIcon.setTeamLogo(data.matchInfo?.awayIcon)
             //endregion
             tvLeagueName.text = data.league.name
-
+            if (data.matchInfo != null && data.matchInfo.leagueName.isEmptyStr()) {
+                data.matchInfo.leagueName = data.league.name
+            }
 
             //region 點擊進入賽事詳情
             val matchOddList = transferMatchOddList(data)
