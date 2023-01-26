@@ -49,17 +49,28 @@
             tools:visibility="visible" />
 
 
-        <Button
+        <LinearLayout
             android:id="@+id/btn_kyc_verify"
             android:layout_width="200dp"
             android:layout_height="42dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/ic_button01"
-            android:gravity="center"
             android:paddingHorizontal="20dp"
-            android:textColor="@color/home_card_text_color"
-            android:textSize="@dimen/textSize14sp"
-          />
+            android:gravity="center"
+            android:background="@drawable/bg_theme_radius_22">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_customer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/home_card_text_color"
+                android:textSize="@dimen/textSize14sp"
+                android:text="@string/live_chat" />
+        </LinearLayout>
 
         <include
             android:id="@+id/btn_service"
