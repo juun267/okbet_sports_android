@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import java.lang.ref.WeakReference
@@ -7,7 +8,7 @@ import java.lang.ref.WeakReference
 class FragmentHelper(
     var fragmentManager: FragmentManager,
     private val viewId: Int,
-    private val fragmentClasses: Array<Class<out Fragment>>
+    private val fragmentClasses: Array<Pair<Class<out Fragment>, Bundle?>>
 ) {
 
     private var curPos = -1
@@ -16,7 +17,9 @@ class FragmentHelper(
     fun getFragment(index: Int): Fragment {
         var fragment = fragments[index]?.get()
         if (fragment == null) {
-            fragment = fragmentClasses[index].newInstance()
+            val fClass = fragmentClasses[index]
+            fragment = fClass.first.newInstance()
+            fClass.second?.let { fragment!!.arguments = it }
             fragments[index] = WeakReference(fragment)
         }
         return fragment!!

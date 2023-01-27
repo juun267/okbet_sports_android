@@ -20,27 +20,27 @@ import java.util.regex.Pattern
  * 关于View的一些扩展函数
  */
 
-fun View.visible(){
+inline fun View.visible(){
     this.visibility = View.VISIBLE
 }
 
-fun View.gone(){
+inline fun View.gone(){
     this.visibility = View.GONE
 }
 
-fun View.inVisible(){
+inline fun View.inVisible(){
     this.visibility = View.INVISIBLE
 }
 
-fun setViewVisible(vararg views: View) {
+inline fun setViewVisible(vararg views: View) {
     views.forEach { it.visibility = View.VISIBLE }
 }
 
-fun setViewGone(vararg views: View) {
+inline fun setViewGone(vararg views: View) {
     views.forEach { it.visibility = View.GONE }
 }
 
-fun setViewInvisible(vararg views: View) {
+inline fun setViewInvisible(vararg views: View) {
     views.forEach { it.visibility = View.INVISIBLE }
 }
 
@@ -80,7 +80,7 @@ fun <T : View> T.clickWithDuration(time: Long = 300, block: (T) -> Unit) {
 }
 
 //顶部偏移状态栏高度
-fun View.fitsSystemStatus() {
+inline fun View.fitsSystemStatus() {
 
     val statuHeight = ScreenUtil.getStatusBarHeight(context)
     if (layoutParams.height > 0) {

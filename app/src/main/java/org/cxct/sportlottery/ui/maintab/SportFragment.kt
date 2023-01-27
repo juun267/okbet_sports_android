@@ -133,10 +133,8 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    var sportTabLayout: TabLayout? = null
     private fun initTabLayout() {
         tabLayout.setBackgroundColor(requireContext().getColor(R.color.color_F7FAFE))
-        sportTabLayout = tabLayout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 selectTab(tab?.position)
@@ -314,18 +312,18 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
         }
     }
 
-    private val maxElevation = 5.dp
+
     private fun navGameFragment(matchType: MatchType) {
         var gameType = jumpGameType?.key
         showFragment = when (matchType) {
             MatchType.OUTRIGHT ->
                 SportOutrightFragment.newInstance(gameType = gameType).apply {
-                    offsetScrollListener = { sportTabLayout?.elevation = (it * it * maxElevation).toFloat()  }
+                    offsetScrollListener = ::setTabElevation
                 }
 
             else ->
                 SportListFragment.newInstance(matchType = matchType, gameType = gameType).apply {
-                    offsetScrollListener = { sportTabLayout?.elevation = (it * it * maxElevation).toFloat()  }
+                    offsetScrollListener = ::setTabElevation
                 }
         }
         childFragmentManager.beginTransaction()
@@ -333,6 +331,15 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             .commit()
         jumpMatchType = null
         jumpGameType = null
+    }
+
+    private val maxElevation = 5.dp
+    private fun setTabElevation(elevation: Double) {
+        val elevation = (elevation * elevation * maxElevation).toFloat()
+        tabLayout.elevation = elevation
+        lin_toolbar.elevation = elevation
+        vDivider1.elevation = elevation
+        vDivider2.elevation = elevation
     }
 
     fun setJumpSport(matchType: MatchType, gameType: GameType) {

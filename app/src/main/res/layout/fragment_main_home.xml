@@ -126,8 +126,16 @@
                     android:src="@drawable/ic_customer_service" />
 
             </LinearLayout>
-           <include
-               layout="@layout/tab_item_home_open"/>
+
+        <LinearLayout
+            android:id="@+id/tabLinearLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginHorizontal="@dimen/margin_10"/>
+
             <include
                 android:id="@+id/hot_live_match"
                 layout="@layout/hot_live_match_include"/>

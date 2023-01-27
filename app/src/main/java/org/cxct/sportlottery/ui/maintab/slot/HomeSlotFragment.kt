@@ -25,11 +25,7 @@ import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
 import org.cxct.sportlottery.ui.maintab.MainHomeViewModel
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.isUAT
-import org.cxct.sportlottery.util.startRegister
-import org.greenrobot.eventbus.EventBus
+import org.cxct.sportlottery.util.*
 
 /**
  * 首页棋牌
@@ -37,21 +33,13 @@ import org.greenrobot.eventbus.EventBus
 class HomeSlotFragment :
     BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    companion object {
-        fun newInstance(): HomeSlotFragment {
-            val args = Bundle()
-            val fragment = HomeSlotFragment()
-            fragment.arguments = args
-            return fragment
-        }
+    private val homeTabAdapter by lazy {
+        HomeTabAdapter(HomeTabAdapter.getItems(),
+            requireArguments().getInt("position"),
+            (parentFragment as HomeFragment))
     }
 
-    private val homeTabAdapter by lazy {
-        HomeTabAdapter(HomeTabAdapter.getItems(), 5, (parentFragment as HomeFragment))
-    }
-    private val homeSlotAdapter by lazy {
-        HomeSlotAdapter(mutableListOf())
-    }
+    private val homeSlotAdapter by lazy { HomeSlotAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,20 +57,11 @@ class HomeSlotFragment :
         viewModel.getGameEntryConfig(2, 1)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (!hidden) {
             viewModel.getGameEntryConfig(2, 1)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     private fun initView() {
@@ -94,7 +73,7 @@ class HomeSlotFragment :
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
-            EventBus.getDefault().post(MenuEvent(true))
+            EventBusUtil.post(MenuEvent(true))
             (activity as MainTabActivity).showLeftFrament(0, 5)
         }
         iv_logo.setOnClickListener {

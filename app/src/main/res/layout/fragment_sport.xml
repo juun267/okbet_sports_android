@@ -11,6 +11,7 @@
         layout="@layout/view_toolbar_home" />
 
     <View
+        android:id="@+id/vDivider1"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/color_E3E8EE" />
@@ -21,6 +22,7 @@
         android:layout_height="40dp" />
 
     <View
+        android:id="@+id/vDivider2"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/color_E3E8EE" />

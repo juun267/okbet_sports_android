@@ -4,13 +4,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.text.Editable
 import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -23,6 +23,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.util.DisplayUtil.dp
 
 class LoginEditText @JvmOverloads constructor(
@@ -35,7 +36,6 @@ class LoginEditText @JvmOverloads constructor(
     private var mOnFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
         v_bottom_line.isSelected = hasFocus
         block_editText.isSelected = hasFocus
-        v_bottom_line2.isVisible = false
         setError(null)
     }
 
@@ -175,6 +175,13 @@ class LoginEditText @JvmOverloads constructor(
         }
     }
 
+    fun setMaxLength(length: Int) {
+        val filters = mutableListOf<InputFilter>()
+        filters.addAll(et_input.filters)
+        filters.add(LengthFilter(length))
+        et_input.filters = filters.toTypedArray()
+    }
+
     fun setupEditTextClearListener(listener: (() -> Unit)? = null) {
         listener?.let {
             clearListener = OnClickListener {
@@ -226,12 +233,14 @@ class LoginEditText @JvmOverloads constructor(
 
     fun setError(value: String?) {
         tv_error.text = value
-        if (tv_error.text.isNullOrEmpty()) {
+        if (value.isEmptyStr()) {
             tv_error.visibility = View.GONE
             block_editText.isActivated = false
+            v_bottom_line.visibility = View.INVISIBLE
             v_bottom_line.isActivated = false
         } else {
             tv_error.visibility = View.VISIBLE
+            v_bottom_line.visibility = View.VISIBLE
             block_editText.isActivated = true
             v_bottom_line.isActivated = true
         }

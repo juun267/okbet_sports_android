@@ -651,7 +651,7 @@
     <string name="third_game_cgcp">CX lottery</string>
     <string name="third_game_ogplus">OG+live</string>
     <string name="third_game_cr">Crown E-sports</string>
-    <string name="transfer_state">Transfer status：</string>
+    <string name="transfer_state">Status：</string>
     <string name="transfer_info">Transfer information</string>
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
@@ -1113,8 +1113,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Win</string>
     <string name="bet_stake">Stake</string>
-    <string name="total_capital">Total Stake：%s</string>
-    <string name="total_win_amount">EST Winning：</string>
+    <string name="total_capital">Stake：%s</string>
+    <string name="total_win_amount">Win：</string>
     <string name="delete_bet">Delete</string>
     <string name="delete_bet_all">Delete All</string>
     <string name="btn_login_bet">Log in before betting</string>

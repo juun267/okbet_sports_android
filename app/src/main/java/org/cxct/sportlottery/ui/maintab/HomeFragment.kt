@@ -10,7 +10,6 @@ import org.cxct.sportlottery.event.HomeTabEvent
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.StaticData
-import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
@@ -18,17 +17,30 @@ import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.HomeWorldCupFragment
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.FragmentHelper
+import org.cxct.sportlottery.util.isCreditSystem
 
 class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeViewModel::class) {
 
-    val fragmentHelper by lazy {
-        FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
-            MainHomeFragment::class.java,
-            HomeLiveFragment::class.java,
-            HomeWorldCupFragment::class.java,
-            HomeElecFragment::class.java,
-            HomeSlotFragment::class.java
-        ))
+    private val fragmentHelper by lazy {
+        if (isCreditSystem()) {
+            FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
+                Pair(MainHomeFragment::class.java, null),
+                Pair(HomeLiveFragment::class.java, null),
+                Pair(HomeWorldCupFragment::class.java, null),
+                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 4) }),
+                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
+                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 6) })
+            ))
+        } else {
+            FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(
+                Pair(MainHomeFragment::class.java, null),
+                Pair(HomeLiveFragment::class.java, null),
+                Pair(HomeWorldCupFragment::class.java, null),
+                Pair(HomeElecFragment::class.java, null),
+                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
+            ))
+        }
+
     }
 
     override fun onCreateView(
@@ -75,6 +87,7 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
             }
             4 -> switchTabByPosition(3)
             5 -> switchTabByPosition(4)
+            6 -> switchTabByPosition(5)
         }
     }
 

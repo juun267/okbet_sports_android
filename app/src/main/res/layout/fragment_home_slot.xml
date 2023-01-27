@@ -27,7 +27,6 @@
         android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_12"
         android:visibility="gone"
         tools:itemCount="3"
         tools:listitem="@layout/item_home_slot" />

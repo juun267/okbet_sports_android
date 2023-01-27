@@ -236,6 +236,7 @@
                 android:layout_marginTop="@dimen/margin_20"
                 android:background="@drawable/ic_submit"
                 android:text="@string/btn_login"
+                android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize17sp"
                 android:alpha="0.5"

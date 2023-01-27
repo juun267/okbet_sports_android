@@ -335,7 +335,7 @@
     <string name="all_order">All bets</string>
     <string name="not_settled_order">Unsettled</string>
     <string name="settled_order">Settled bets</string>
-    <string name="start_date">Start date</string>
+    <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
@@ -611,7 +611,7 @@
     <string name="betting_station_withdraw">Outlets Withdraw</string>
     <string name="betting_station_deposit">Outlets Deposit</string>
     <string name="log_detail_title">Check details</string>
-    <string name="log_detail_trans_num_sub">Order ID：</string>
+    <string name="log_detail_trans_num_sub">Transaction No.：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
     <string name="log_detail_time_sub">Time：</string>
     <string name="log_detail_status_sub">Status：</string>
@@ -652,7 +652,7 @@
     <string name="third_game_cgcp">CX lottery</string>
     <string name="third_game_ogplus">OG+live</string>
     <string name="third_game_cr">Crown E-sports</string>
-    <string name="transfer_state">Transfer status：</string>
+    <string name="transfer_state">Status：</string>
     <string name="transfer_info">Transfer information</string>
     <string name="sorry_website_is_now_maintenance">The website is under maintenance</string>
     <string name="if_there_is_any_question_please_consult">If you have any questions, please contact%1$s</string>
@@ -978,7 +978,7 @@
 
     <!--歷史紀錄start-->
     <string name="text_account_history_time">Transaction time</string>
-    <string name="text_account_history_number">Order no.</string>
+    <string name="text_account_history_number">Order no</string>
     <string name="text_account_history_amount">Transaction amount</string>
     <string name="text_account_history_balance">Balance</string>
 
@@ -1105,7 +1105,7 @@
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
     <string name="Outlets_Reserve">Outlets  Reserve</string>
-    <string name="current_balance">Balance</string>
+    <string name="current_balance">Current balance</string>
     <string name="select_area">Select Region</string>
     <string name="select_city">Select City</string>
     <string name="outlets_address">Outlets Address</string>
@@ -1413,14 +1413,15 @@
     <string name="bet_info_add_bet_failed">Bet Failed</string>
     <string name="new_games">New Games</string>
     <string name="str_bet_way">Betting method</string>
+    <string name="regular_score">Regular</string>
+    <string name="score_with_overtime">score (with overtime)</string>
+
     <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
     <string name="str_odds_description">Odds Description</string>
     <string name="str_bet_parlay">Parlay</string>
     <string name="pls_enter_days_format">Please enter days (≥%d days)</string>
     <string name="more_than_days_format">Must be more than %d days</string>
     <string name="overtime_score">Overtime</string>
-    <string name="regular_score">Regular</string>
-    <string name="score_with_overtime">score (with overtime)</string>
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
 
 

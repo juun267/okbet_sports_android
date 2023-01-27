@@ -1,10 +1,7 @@
 package org.cxct.sportlottery.extentions
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -58,4 +55,33 @@ fun <T : BaseResult> callApiWithNoCancel(apiCall: suspend() -> Response<T>, bloc
         val result = safeApi(apiCall)
         GlobalScope.launch(Dispatchers.Main) { block(result) }
     }
+}
+
+fun LifecycleOwner.doOnResume(block: () -> Unit, interval: Int = 30_000) {
+    doWhenLife(Lifecycle.Event.ON_RESUME, interval, block)
+}
+
+fun LifecycleOwner.doOnPause(block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+}
+
+fun LifecycleOwner.doOnStop(block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+}
+
+fun LifecycleOwner.doOnDestory(block: () -> Unit) {
+    doWhenLife(Lifecycle.Event.ON_RESUME, 0, block)
+}
+
+fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, block: () -> Unit, ) {
+    lifecycle.addObserver(object : LifecycleEventObserver {
+
+        var time = 0L
+        override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+            if (event == lifeEvent && System.currentTimeMillis() - time > interval) {
+                time = System.currentTimeMillis()
+                block.invoke()
+            }
+        }
+    })
 }

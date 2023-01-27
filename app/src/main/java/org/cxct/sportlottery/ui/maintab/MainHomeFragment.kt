@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.hot_card_game_include.*
 import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
-import kotlinx.android.synthetic.main.tab_item_home_open.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import kotlinx.android.synthetic.main.view_toolbar_home.btn_login
 import kotlinx.android.synthetic.main.view_toolbar_home.btn_register
@@ -34,6 +33,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.event.MenuEvent
 import org.cxct.sportlottery.event.MoneyEvent
+import org.cxct.sportlottery.extentions.isEmptyStr
+import org.cxct.sportlottery.extentions.load
+import org.cxct.sportlottery.extentions.toIntS
 import org.cxct.sportlottery.network.bet.FastBetDataBean
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.index.config.ImageData
@@ -54,6 +56,8 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -79,36 +83,29 @@ class MainHomeFragment :
 
     companion object {
         fun newInstance(): MainHomeFragment {
-            val args = Bundle()
             val fragment = MainHomeFragment()
-            fragment.arguments = args
+            fragment.arguments = Bundle()
             return fragment
         }
     }
     private val homeHotLiveAdapter by lazy {//热门直播
-        HotLiveAdapter(HotLiveAdapter.ItemClickListener{ data ->
 
-            if (!data.matchInfo.statusName18n.isNullOrEmpty()){
+        HotLiveAdapter(HotLiveAdapter.ItemClickListener { data ->
+
+            if (!data.matchInfo.statusName18n.isNullOrEmpty()) {
                 tv_first_half_game.text = data.matchInfo.statusName18n
                 tv_first_half_game.setBackgroundResource(R.drawable.bg_radius_100_text)
-            }else{
+            } else {
                 tv_first_half_game.setBackgroundResource(0)
             }
+
             tv_match_name.text = data.league.name
             tv_match_type_name.text = data.sportName
-            context?.let {
+            tv_introduction.text =  data.matchInfo.streamerName ?: getString(R.string.okbet_live_name)
 
-                Glide.with(it)
-                    .load(data.matchInfo.frontCoverUrl)
-                    .apply(RequestOptions().placeholder(R.drawable.icon_novideodata))
-                    .into(iv_live_type)
-                Glide.with(it)
-                    .load(data.matchInfo.streamerIcon)
-                    .apply(RequestOptions().placeholder(R.drawable.icon_avatar))
-                    .into(iv_avatar_live)
-            }
-            tv_introduction.text =
-                data.matchInfo.streamerName ?: getString(R.string.okbet_live_name)
+            iv_live_type.load("${data.matchInfo.frontCoverUrl}", R.drawable.icon_novideodata)
+            iv_live_type.load("${data.matchInfo.streamerIcon}", R.drawable.icon_avatar)
+
             mMatchInfo = data.matchInfo
             if (data.matchInfo.pullRtmpUrl.isNullOrEmpty()) {
                 data.matchInfo.roundNo?.let { viewModel.getLiveInfo(it, 0) }
@@ -116,78 +113,82 @@ class MainHomeFragment :
                 playMatchVideo(data.matchInfo)
             }
         })
-
     }
 
     private val hotHandicapAdapter by lazy {
         HotHandicapAdapter(this, mutableListOf()).apply {
             homeRecommendListener = HomeRecommendListener(
-                onItemClickListener = {matchInfo ->
-                    matchInfo?.let {
-                        navOddsDetailFragment(MatchType.IN_PLAY, it)
+
+                onItemClickListener = { matchInfo ->
+                    if (viewModel.isLogin.value != true) {
+                        getMainTabActivity().showLoginNotify()
+                    }else{
+                        matchInfo?.let {
+                            navOddsDetailFragment(MatchType.IN_PLAY, it)
+                        }
                     }
                 },
                 onGoHomePageListener = {
 
                 },
                 onClickBetListener = { gameType, matchType, matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap, playCateMenuCode ->
-                    if (mIsEnabled) {
-                        avoidFastDoubleClick()
-                        addOddsDialog(
-                            gameType,
-                            matchType,
-                            matchInfo,
-                            odd,
-                            playCateCode,
-                            playCateName,
-                            betPlayCateNameMap,
-                            playCateMenuCode
-                        )
-
+                    if (!mIsEnabled) {
+                        return@HomeRecommendListener
                     }
+
+                    avoidFastDoubleClick()
+                    if (viewModel.isLogin.value != true) {
+                        getMainTabActivity().showLoginNotify()
+                        return@HomeRecommendListener
+                    }
+
+                    addOddsDialog(gameType,
+                        matchType,
+                        matchInfo,
+                        odd,
+                        playCateCode,
+                        playCateName,
+                        betPlayCateNameMap,
+                        playCateMenuCode
+                    )
 
                 },
                 onClickFavoriteListener = {
 
                 },
-                onClickStatisticsListener = { matchId ->
+                onClickStatisticsListener = { _ ->
 
-                }, onClickPlayTypeListener = { gameType, matchType, matchId, matchInfoList ->
+                }, onClickPlayTypeListener = { _, _, _, _ ->
 
-                }, onClickLiveIconListener = { gameType, matchType, matchId, matchInfoList ->
+                }, onClickLiveIconListener = { _, _, _, _ ->
 
                 }
-            ) { gameType, matchType, matchId, matchInfoList ->
+            ) { _, _, _, _ ->
 
             }
         }
     }
-    private val hotElectronicAdapter by lazy{//电子
+    private val hotElectronicAdapter by lazy {//电子
         HomeElectronicAdapter(mutableListOf())
     }
-    private val homeChessAdapter by lazy{//棋牌
+    private val homeChessAdapter by lazy {//棋牌
         HomeChessAdapter(mutableListOf())
     }
     private val mPublicityVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     private val mHandicapCodeList by lazy {
-        resources.getStringArray(R.array.handicap_type_list)
-            .mapIndexed { index, data ->
-                StatusSheetData((index + 1).toString(), data)
-            }
-    }
-    private val mHandicapCodeValue by lazy {
-        mutableListOf(PlayCate.SINGLE.value,
-            PlayCate.PK_HDP.value,
-            PlayCate.OU.value)
+        resources.getStringArray(R.array.handicap_type_list).mapIndexed { index, data ->
+            StatusSheetData((index + 1).toString(), data)
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
+        savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_main_home, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getGameEntryConfig(1, null)
@@ -225,62 +226,51 @@ class MainHomeFragment :
             viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             viewModel.getGameEntryConfig(1, null)
             setupOddsChangeListener()
-                iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
+            iv_publicity.setUp(mMatchInfo?.pullRtmpUrl, true, "");
             iv_publicity.startPlayLogic()
         } else {
             iv_publicity.onVideoPause()
         }
     }
 
-
-
-
     private fun initView() {
+
         initToolBar()
         initPlayView()
-        if (sConfigData?.worldCupOpen ==1){
-            include_layout3.visibility = View.VISIBLE
-            include_layout4.visibility = View.GONE
-        }else{
-            include_layout3.visibility = View.GONE
-            include_layout4.visibility = View.VISIBLE
-        }
+
         iv_customer_service.setOnClickListener {
             clickCustomService(requireContext(), childFragmentManager)
         }
-        showChangeFragment()
+
+        MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
         initHotHandicap()
         initListView()
 
         nsv_home.setupBackTop(iv_top, 180.dp)
 
         view_action.setOnClickListener {
-            mMatchInfo?.let { it1 ->
-                SportDetailActivity.startActivity(requireContext(),
-                    matchInfo = it1,
-                    matchType = MatchType.IN_PLAY,
-                    true)
-            }
+            if (mMatchInfo == null) return@setOnClickListener
+
+            SportDetailActivity.startActivity(requireContext(),
+                matchInfo = mMatchInfo!!,
+                matchType = MatchType.IN_PLAY,
+                true)
         }
-        ll_hot_live_more.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(1)
-        }
+
+        ll_hot_live_more.setOnClickListener { getHomeFragment().onTabClickByPosition(1)}
+
         ll_hot_handicap_more.setOnClickListener {
-            (activity as MainTabActivity).jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
+            getMainTabActivity().jumpToTheSport(MatchType.IN_PLAY, GameType.ALL)
         }
-        ll_hot_elect.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(4)
-        }
-        ll_poker_more.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(5)
-        }
+        ll_hot_elect.setOnClickListener { getHomeFragment().onTabClickByPosition(4) }
+        ll_poker_more.setOnClickListener { getHomeFragment().onTabClickByPosition(5)}
     }
 
     fun initToolBar() {
         view?.setPadding(0, ImmersionBar.getStatusBarHeight(this), 0, 0)
         iv_menu_left.setOnClickListener {
             EventBus.getDefault().post(MenuEvent(true))
-            (activity as MainTabActivity).showLeftFrament(0, 0)
+            getMainTabActivity().showLeftFrament(0, 0)
         }
         btn_register.setOnClickListener {
             startRegister(requireContext())
@@ -729,43 +719,39 @@ class MainHomeFragment :
     }
 
     private fun setupBanner() {
+
+        var imageList = sConfigData?.imageList?.filter { it.imageType == 2 }
+
+        if (imageList.isNullOrEmpty()) {
+            banner.setBackgroundResource(R.drawable.img_banner01)
+        }
+
+        imageList?.let { list->
+            val enable = list.size > 1
+            rll_left_right.isVisible = enable
+            banner.isAutoLoop(enable)
+        }
+
         val requestOptions = RequestOptions()
             .placeholder(R.drawable.img_banner01)
             .error(R.drawable.img_banner01)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .dontTransform()
 
-        var imageList = sConfigData?.imageList?.filter {
-            it.imageType == 2
-        }
-        if (imageList.isNullOrEmpty()){
-            banner.setBackgroundResource(R.drawable.img_banner01)
-        }
-        imageList?.let { list->
-            if (list.size<=1){
-                rll_left_right.isVisible = false
-                banner.isAutoLoop(false)
-            }else{
-                rll_left_right.isVisible = true
-                banner.isAutoLoop(true)
-            }
-        }
         (banner as Banner<ImageData, BannerImageAdapter<ImageData>>)
             .setAdapter(object : BannerImageAdapter<ImageData>(imageList) {
                 override fun onBindView(
                     holder: BannerImageHolder,
                     data: ImageData?,
                     position: Int,
-                    size: Int,
-                ) {
-
-
+                    size: Int) {
 
                     val url = sConfigData?.resServerHost + data?.imageName1
                     Glide.with(holder.itemView)
                         .load(url)
                         .apply(requestOptions)
                         .into(holder.imageView)
+
                     holder.imageView.setOnClickListener {
                         data?.imageLink?.let {
                             JumpUtil.toExternalWeb(requireContext(), it)
@@ -836,8 +822,6 @@ class MainHomeFragment :
         }
     }
 
-
-
     private fun addOddsDialog(
         gameTypeCode: String,
         matchType: MatchType,
@@ -846,75 +830,44 @@ class MainHomeFragment :
         playCateCode: String,
         playCateName: String,
         betPlayCateNameMap: MutableMap<String?, Map<String?, String?>?>?,
-        playCateMenuCode: String?,
-    ) {
+        playCateMenuCode: String?) {
+
         val gameType = GameType.getGameType(gameTypeCode)
-        gameType?.let {
-            matchInfo?.let { matchInfo ->
-                val fastBetDataBean = FastBetDataBean(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateCode = playCateCode,
-                    playCateName = playCateName,
-                    matchInfo = matchInfo,
-                    matchOdd = null,
-                    odd = odd,
-                    subscribeChannelType = ChannelType.HALL,
-                    betPlayCateNameMap = betPlayCateNameMap,
-                    playCateMenuCode
-                )
-                when (val fragmentActivity = activity) {
-                    is MainTabActivity -> fragmentActivity.setupBetData(fastBetDataBean)
-                }
-            }
+        if (gameType == null || matchInfo == null || activity !is MainTabActivity) {
+            return
         }
-    }
 
-
-    private fun navOddsDetailFragment(
-        matchType: MatchType,
-        matchInfo: MatchInfo,
-    ) {
-        SportDetailActivity.startActivity(requireContext(),
+        getMainTabActivity().setupBetData(FastBetDataBean(
+            matchType = matchType,
+            gameType = gameType,
+            playCateCode = playCateCode,
+            playCateName = playCateName,
             matchInfo = matchInfo,
-            matchType = matchType)
+            matchOdd = null,
+            odd = odd,
+            subscribeChannelType = ChannelType.HALL,
+            betPlayCateNameMap = betPlayCateNameMap,
+            playCateMenuCode
+        ))
     }
 
-    /**
-     * 根據menuList的PlayCate排序賠率玩法
-     */
-    //TODO 20220323 等新版socket更新方式調整完畢後再確認一次此處是否需要移動至別處進行
-    private fun Recommend.sortOddsByMenu() {
-        val sortOrder = this.menuList.firstOrNull()?.playCateList?.map { it.code }
-
-        oddsMap?.let { map ->
-            val filterPlayCateMap = map.filter { sortOrder?.contains(it.key) == true }
-            val sortedMap = filterPlayCateMap.toSortedMap(compareBy<String> {
-                sortOrder?.indexOf(it)
-            }.thenBy { it })
-
-            map.clear()
-            map.putAll(sortedMap)
-        }
+    private fun navOddsDetailFragment(matchType: MatchType, matchInfo: MatchInfo) {
+        SportDetailActivity.startActivity(requireContext(),  matchInfo, matchType)
     }
 
     private fun subscribeQueryData(recommendList: List<HandicapData>) {
         recommendList.forEach { subscribeChannelHall(it) }
     }
+
     //热门盘口订阅
     private fun subscribeChannelHall(recommend: HandicapData) {
-        recommend.matchInfos.forEach {
-            subscribeChannelHall(it.gameType, it.id)
-        }
+        recommend.matchInfos.forEach { subscribeChannelHall(it.gameType, it.id) }
     }
 
     //直播订阅
     private fun  subScribeLiveData(liveDataList: List<HotMatchLiveData> ){
-        liveDataList.forEach { hotMatchLiveData ->
-            subscribeChannelHall(hotMatchLiveData.matchInfo.gameType, hotMatchLiveData.matchInfo.id)
-        }
+        liveDataList.forEach { subscribeChannelHall(it.matchInfo.gameType, it.matchInfo.id) }
     }
-
 
     private fun enterThirdGame(result: EnterThirdGameResult) {
         hideLoading()
@@ -930,7 +883,10 @@ class MainHomeFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.startActivity(
+                Intent(context,
+                     if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
+            )
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""
@@ -960,49 +916,46 @@ class MainHomeFragment :
      * 點擊準備進入指定球種
      */
     private fun enterTheSport(sportMenu: SportMenu) {
+
         if (sportMenu.entranceType != null) {
-            sportMenu.entranceType?.let {
-                jumpToTheSport(it, sportMenu.gameType)
-            }
-        } else {
-            viewModel.setSportClosePromptMessage(
-                MultiLanguagesApplication.appContext.getString(
-                    sportMenu.gameType.string
-                )
-            )
+            jumpToTheSport(sportMenu.entranceType!!, sportMenu.gameType)
+            return
         }
+
+        viewModel.setSportClosePromptMessage(
+            MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string)
+        )
     }
 
     /**
      * 跳轉至體育指定球種
      */
     private fun jumpToTheSport(matchType: MatchType, gameType: GameType) {
-        (activity as MainTabActivity).jumpToTheSport(matchType, gameType)
+        getMainTabActivity().jumpToTheSport(matchType, gameType)
     }
 
-    private fun setupLogin() {
-        viewModel.isLogin.value?.let {
-            btn_register.isVisible = !it && !isUAT()
-            btn_login.isVisible = !it
-            ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
-        }
+    private fun setupLogin() = viewModel.isLogin.value?.let {
+        btn_register.isVisible = !it
+        btn_login.isVisible = !it
+        ll_user_money.visibility = if (it) View.VISIBLE else View.INVISIBLE
     }
 
     private fun initHotHandicap() {
+        selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
         selector_order_status.setOnItemSelectedListener { statusSheetData ->
-            statusSheetData.code?.let {
-                viewModel.getHandicapConfig(it.toInt())
+            if (statusSheetData.code.isEmptyStr()) {
+                return@setOnItemSelectedListener
             }
+
+            viewModel.getHandicapConfig(statusSheetData.code.toIntS())
             hotHandicapAdapter.playType = statusSheetData.code!!
         }
-        selector_order_status.setItemData(mHandicapCodeList as MutableList<StatusSheetData>)
     }
 
+    private fun initListView(){
 
-    fun initListView(){
-
-            //热门电子游戏
-        with(rv_egame){
+        //热门电子游戏
+        with(rv_egame) {
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             }
@@ -1013,32 +966,33 @@ class MainHomeFragment :
             hotElectronicAdapter.setOnItemClickListener{adapter, view, position ->
                 //点击跳转到哪里
                 if (viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
+                    getMainTabActivity().showLoginNotify()
                 } else {
                     viewModel.requestEnterThirdGame(hotElectronicAdapter.data[position])
                 }
             }
         }
+
         //棋牌
         with(rv_chess){
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
             if (adapter == null) {
-                addItemDecoration(SpaceItemDecoration(context,
-                    R.dimen.recyclerview_news_item_dec_spec))
+                addItemDecoration(SpaceItemDecoration(context, R.dimen.recyclerview_news_item_dec_spec))
                 adapter = homeChessAdapter
             }
 
-            homeChessAdapter.setOnItemClickListener { adapter, view, position ->
+            homeChessAdapter.setOnItemClickListener { _, _, position ->
                 //点击跳转到哪里
                 if (viewModel.isLogin.value != true) {
-                    (activity as MainTabActivity).showLoginNotify()
+                    getMainTabActivity().showLoginNotify()
                 } else {
                     viewModel.requestEnterThirdGame(homeChessAdapter.data[position])
                 }
             }
         }
+
         with(rv_hot_handicap){
             if (layoutManager == null) {
                 layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -1046,62 +1000,57 @@ class MainHomeFragment :
             if (adapter == null) {
                 adapter = hotHandicapAdapter
             }
-
         }
     }
 
-    //切换fragment
-    fun showChangeFragment() {
+    private inline fun getMainTabActivity() = activity as MainTabActivity
+    private inline fun getHomeFragment() = parentFragment as HomeFragment
+
+    private fun onTabClick(tabName: Int) = when(tabName)  {
         //点击直播跳转
-        include_layout1.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(1)
-        }
-        //点击体育跳转
-        include_layout2.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(3)
-        }
-        //点击世界杯跳转
-        include_layout3.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(2)
-        }
+        R.string.home_live -> getHomeFragment().onTabClickByPosition(1)
         //点击滚球跳转
-        include_layout4.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(2)
-        }
-        //点击电子跳转
-        include_layout5.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(4)
-        }
+        R.string.home_in_play -> getHomeFragment().onTabClickByPosition(2)
+        //点击体育跳转
+        R.string.home_sports -> getHomeFragment().onTabClickByPosition(3)
+        // 点击真人跳转
+        R.string.live -> getHomeFragment().onTabClickByPosition(4)
+        // 点击老虎机跳转
+        R.string.tiger_machine -> getHomeFragment().onTabClickByPosition(4)
         //点击棋牌跳转
-        include_layout6.setOnClickListener {
-            (parentFragment as HomeFragment).onTabClickByPosition(5)
-        }
+        R.string.home_on_game -> getHomeFragment().onTabClickByPosition(5)
+        //点击彩票跳转
+//        R.string.lottery -> getHomeFragment().onTabClickByPosition(5)
+
+        else -> { }
     }
 
-
-    fun initPlayView() {
+    private fun initPlayView() {
         iv_publicity.setOnOkListener(this)
         iv_publicity.setIsTouchWigetFull(false)
 
     }
+
     private fun playMatchVideo(matchInfo: MatchInfo?){
         iv_live_type.visibility = View.VISIBLE
-        matchInfo?.let {
-            if (!it.pullRtmpUrl.isNullOrEmpty()) {
-                iv_publicity.setUp(it.pullRtmpUrl, false, "");
-            } else if (!it.pullFlvUrl.isNullOrEmpty()) {
-                iv_publicity.setUp(it.pullFlvUrl, false, "");
-            }
-            if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
-                iv_publicity.startPlayLogic()
-            }
+        if (matchInfo == null) {
+            return
+        }
+
+        val it = matchInfo
+        if (!it.pullRtmpUrl.isNullOrEmpty()) {
+            iv_publicity.setUp(it.pullRtmpUrl, false, "");
+        } else if (!it.pullFlvUrl.isNullOrEmpty()) {
+            iv_publicity.setUp(it.pullFlvUrl, false, "");
+        }
+        if (!it.pullRtmpUrl.isNullOrEmpty()||!it.pullFlvUrl.isNullOrEmpty()) {
+            iv_publicity.startPlayLogic()
         }
     }
 
-
      @Subscribe(threadMode = ThreadMode.MAIN)
      fun refreshMoney(moneyEvent: MoneyEvent){
-         if (moneyEvent.refresh){
+         if (moneyEvent.refresh) {
              viewModel.getMoney()
          }
      }
@@ -1116,21 +1065,21 @@ class MainHomeFragment :
         })
         viewModel.getMoney()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         iv_publicity.release()
     }
 
-        override fun onStartPrepared() {
-            iv_live_type.visibility = View.VISIBLE
-        }
-        override fun onPrepared() {
-            iv_live_type.visibility = View.INVISIBLE
-        }
-
-        override fun onError() {
-            iv_live_type.visibility = View.VISIBLE
-        }
-
-
+    override fun onStartPrepared() {
+        iv_live_type.visibility = View.VISIBLE
     }
+    override fun onPrepared() {
+        iv_live_type.visibility = View.INVISIBLE
+    }
+
+    override fun onError() {
+        iv_live_type.visibility = View.VISIBLE
+    }
+
+}

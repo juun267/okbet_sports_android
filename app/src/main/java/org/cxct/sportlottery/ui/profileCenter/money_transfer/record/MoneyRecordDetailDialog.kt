@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_money_transfer_record_detail.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
+import org.cxct.sportlottery.repository.showCurrencySign
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
 import org.cxct.sportlottery.util.*
@@ -32,7 +33,7 @@ class MoneyRecordDetailDialog : BaseDialog<MoneyTransferViewModel>(MoneyTransfer
         super.onViewCreated(view, savedInstanceState)
 
         data?.apply {
-            log_detail_status_subtitle.text = "${getString(R.string.transfer_money)}："
+            log_detail_status_subtitle.text = "${getString(R.string.transfer_money)}：${showCurrencySign}"
             log_detail_amount_subtitle.text = "${getString(R.string.in_account)}："
             log_detail_type_subtitle.text = "${getString(R.string.out_account)}："
             tv_order_number.text = orderNo

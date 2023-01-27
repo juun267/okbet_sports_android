@@ -114,7 +114,7 @@
         android:textColor="@color/color_FFFFFF_FFFFFF"
         android:gravity="center"
         android:textSize="@dimen/textSize14sp"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ll_end_date"
         app:layout_constraintTop_toTopOf="parent"
