@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.maintab
 
 import android.app.Application
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -103,9 +102,9 @@ class MainHomeViewModel(
         get() = _hotLiveData
     private val _hotLiveData = MutableLiveData<List<HotMatchLiveData>?>()
 
-    val hotHandicap: LiveData<List<HandicapData>?>
+    val hotHandicap: LiveData<Event<List<HandicapData>?>>
         get() = _hotHandicap
-    private val _hotHandicap = MutableLiveData<List<HandicapData>?>()
+    private val _hotHandicap = MutableLiveData<Event<List<HandicapData>?>>()
 
     //賽事列表直播網址
     private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
@@ -711,7 +710,7 @@ class MainHomeViewModel(
                             if (TextUtils.isEmpty(it.leagueName)) hotHandicap.league.name else it.leagueName
                     }
                 }
-                _hotHandicap.postValue(handicapList)
+                _hotHandicap.postValue(Event(handicapList))
             }
         }
     }
