@@ -43,9 +43,7 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.base.BaseViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
@@ -143,7 +141,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initObserve()
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
-        viewModel.getLotteryInfo()
+        LotteryManager.instance.getLotteryInfo()
     }
 
     var isWorldCupModel = false
@@ -213,10 +211,6 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
                 setAnchorView(R.id.parlayFloatWindow)
                 show()
             }
-        }
-        viewModel.lotteryInfo.observe(this) {
-            LotteryManager.instance.lotteryInfo = it
-            LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
         }
     }
 

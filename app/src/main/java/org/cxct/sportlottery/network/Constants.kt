@@ -242,7 +242,7 @@ object Constants {
         val language = getSelectLanguage(context).key
         val base = getH5BaseUrl()
         return base + "mobile/${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
-//        return "http://10.199.199.60:3000/" + "${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
+//        return "http://192.168.2.87:3000/" + "${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
 
     //web页面增加夜间模式参数

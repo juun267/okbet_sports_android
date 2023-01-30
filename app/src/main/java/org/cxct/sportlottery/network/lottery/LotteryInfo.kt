@@ -23,8 +23,8 @@ data class LotteryInfo(
     val id: Int,
     @Json(name = "lastDrawTime")
     val lastDrawTime: Long?,
-    @Json(name = "nexDrawTime")
-    val nexDrawTime: Long?,
+    @Json(name = "nextDrawTime")
+    val nextDrawTime: Long?,
     @Json(name = "showEndTime")
     val showEndTime: Long?,
     @Json(name = "showStartTime")

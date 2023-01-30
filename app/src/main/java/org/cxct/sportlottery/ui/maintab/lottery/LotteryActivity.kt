@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_web.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
@@ -213,6 +214,13 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         fun backClick() {
             activity.runOnUiThread {
                 activity.onBackPressed()
+            }
+        }
+
+        @JavascriptInterface
+        fun login() {
+            activity.runOnUiThread {
+                activity.startActivity(Intent(activity, LoginActivity::class.java))
             }
         }
     }
