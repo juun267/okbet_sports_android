@@ -156,6 +156,18 @@ object Constants {
         }
     }
 
+    /**
+     * 英文为空
+     */
+    fun getLanguageTag1(context: Context): String {
+        return when (getSelectLanguage(context)) {
+            LanguageManager.Language.ZH -> "zh/"
+            LanguageManager.Language.VI -> "vi/"
+            LanguageManager.Language.TH -> "th/"
+            else -> ""
+        }
+    }
+
     //遊戲規則 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getGameRuleUrl(context: Context): String? {
 
@@ -239,10 +251,9 @@ object Constants {
 
     //抽奖活动H5地址
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
-        val language = getSelectLanguage(context).key
+        val language = getLanguageTag1(context)
         val base = getH5BaseUrl()
         return base + "mobile/${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
-//        return "http://192.168.2.87:3000/" + "${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
 
     //web页面增加夜间模式参数

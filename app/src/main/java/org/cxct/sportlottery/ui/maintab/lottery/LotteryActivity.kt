@@ -84,7 +84,7 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.javaScriptCanOpenWindowsAutomatically = true
         settings.defaultTextEncodingName = "utf-8"
         settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = false
+        settings.databaseEnabled = true
 //        settings.setAppCacheEnabled(false)
 
         settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理

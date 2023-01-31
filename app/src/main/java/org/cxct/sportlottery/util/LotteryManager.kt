@@ -57,7 +57,6 @@ class LotteryManager {
         LotteryActivity::class -> false
         else -> true
     }
-
     private fun startTimer() {
         if (countdownTimer != null) {
             return
@@ -78,7 +77,6 @@ class LotteryManager {
             }
         }, 1000, 1000)
     }
-
     private fun startShow() {
         if (!allowdShowRedEnvelope() || lotteryInfo == null) {
             GlobalScope.launch(Dispatchers.Main) {
@@ -89,9 +87,8 @@ class LotteryManager {
         if (System.currentTimeMillis() in showStartTime..showEndTime) {
             GlobalScope.launch(Dispatchers.Main) {
                 lotteryInfo?.let {
-                    (it.nextDrawTime ?: it.showEndTime)?.let { showTime ->
-                        showFloatBtn(TimeUtil.timeFormat(showTime,
-                            TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE))
+                    (it.nextDrawTime ?: it.endTime)?.let { showTime ->
+                        showFloatBtn(showTime)
                     }
                 }
             }
@@ -103,9 +100,10 @@ class LotteryManager {
     }
 
 
-    fun showFloatBtn(date: String) {
+    fun showFloatBtn(milli: Long) {
         var viewGroup = activity!!.findViewById<ViewGroup>(android.R.id.content)
         var targetView: View? = null
+        var dateTime = TimeUtil.timeFormat(milli, TimeUtil.YMD_HMS_FORMAT_CHANGE_LINE)
         for (index in 0..viewGroup.childCount) {
             if (viewGroup.getChildAt(index) is LotteryFloatingButton) {
                 targetView = viewGroup.getChildAt(index)
@@ -114,14 +112,14 @@ class LotteryManager {
         }
         if (targetView is LotteryFloatingButton) {
             floatRootView = targetView
-            floatRootView?.setTime(date)
+            floatRootView?.setTime(dateTime)
         } else {
             if (floatRootView == null) {
                 floatRootView = LotteryFloatingButton(activity!!)
             } else {
                 (floatRootView?.parent as ViewGroup).removeView(floatRootView)
             }
-            floatRootView?.setTime(date)
+            floatRootView?.setTime(dateTime)
             viewGroup.addView(floatRootView)
         }
     }
@@ -148,7 +146,6 @@ class LotteryManager {
     fun isLogin(): Boolean {
         return viewModel?.isLogin?.value == true
     }
-
     fun getLotteryInfo() {
         viewModel?.let {
             it.viewModelScope.launch {
