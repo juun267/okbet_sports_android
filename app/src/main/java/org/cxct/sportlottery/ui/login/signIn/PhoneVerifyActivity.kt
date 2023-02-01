@@ -8,6 +8,8 @@ import android.provider.Settings
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.gyf.immersionbar.ImmersionBar
+import kotlinx.android.synthetic.main.view_status_bar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -51,6 +53,12 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .statusBarView(v_statusbar)
+            .fitsSystemWindows(false)
+            .init()
         binding = ActivityPhoneVerifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

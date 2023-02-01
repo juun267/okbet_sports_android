@@ -31,14 +31,17 @@
                 android:padding="@dimen/margin_8"
                 android:src="@drawable/ic_arrow_login" />
 
-            <TextView
+            <com.flyjingfish.gradienttextviewlib.GradientTextView
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/btn_register"
                 android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:gradient_angle="270"
+                app:gradient_endColor="@color/color_1971FD"
+                app:gradient_startColor="@color/color_71ADFF" />
         </RelativeLayout>
 
         <LinearLayout

@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
+import org.cxct.sportlottery.util.LotteryManager
 import org.cxct.sportlottery.util.RedEnvelopeManager
 import org.cxct.sportlottery.util.commonCheckDialog
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -67,6 +68,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         super.onStart()
         startCheckToken()
         RedEnvelopeManager.instance.bind(this as BaseActivity<BaseViewModel>)
+        LotteryManager.instance.bind(this as BaseActivity<BaseViewModel>)
 
     }
 

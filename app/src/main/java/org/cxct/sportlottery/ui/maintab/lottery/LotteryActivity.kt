@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.common
+package org.cxct.sportlottery.ui.maintab.lottery
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -12,15 +12,12 @@ import android.os.Bundle
 import android.os.Message
 import android.view.View
 import android.webkit.*
-import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.android.synthetic.main.activity_web.*
-import kotlinx.android.synthetic.main.view_bettingstation_info.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bettingStation.BettingStation
 import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
@@ -29,56 +26,26 @@ import java.net.URLEncoder
 /**
  * Create by Simon Chang
  */
-open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
+open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
     companion object {
         const val KEY_URL = "key-url"
-        const val KEY_TITLE = "key-title"
-        const val KEY_TOOLBAR_VISIBILITY = "key-toolbar-visibility"
-        const val KEY_BACK_EVENT = "key-back-event"
-        const val GAME_CATEGORY_CODE = "game-category-code"
-        const val BET_STATION = "betstation"
     }
 
-    private val mTitle: String by lazy { intent?.getStringExtra(KEY_TITLE) ?: "" }
     private val mUrl: String by lazy { intent?.getStringExtra(KEY_URL) ?: "about:blank" }
-    private val mToolbarVisibility: Boolean by lazy {
-        intent?.getBooleanExtra(
-            KEY_TOOLBAR_VISIBILITY, true
-        ) ?: true
-    }
-    private val mBackEvent: Boolean by lazy {
-        intent?.getBooleanExtra(KEY_BACK_EVENT, true) ?: true
-    }
-    private val bettingStation: BettingStation? by lazy { intent?.getSerializableExtra(BET_STATION) as? BettingStation }
-    private var mUploadCallbackAboveL: ValueCallback<Array<Uri>>? = null
-    private var mUploadMessage: ValueCallback<Uri?>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
     }
 
-    fun getWebView(): WebView {
-        return web_view
-    }
-
     open fun init() {
         setStatusbar(R.color.color_232C4F_FFFFFF, true)
         setContentView(R.layout.activity_web)
-        if (!mToolbarVisibility) custom_tool_bar.visibility = View.GONE else initToolBar()
+        custom_tool_bar.visibility = View.GONE
+        web_view.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
         setCookie()
         setupWebView(web_view)
         loadUrl(web_view)
-    }
-
-    private fun initToolBar() {
-        custom_tool_bar.setOnBackPressListener {
-            onBackPressed()
-        }
-        custom_tool_bar.titleText = mTitle
-        bettingStation?.let {
-            addBetStationInfo()
-        }
     }
 
     fun setCookie() {
@@ -117,7 +84,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.javaScriptCanOpenWindowsAutomatically = true
         settings.defaultTextEncodingName = "utf-8"
         settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = false
+        settings.databaseEnabled = true
 //        settings.setAppCacheEnabled(false)
 
         settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
@@ -127,7 +94,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         settings.allowUniversalAccessFromFileURLs = true
         webView.webChromeClient = object : WebChromeClient() {
             override fun onCreateWindow(
-                view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message
+                view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message,
             ): Boolean {
                 val newWebView = WebView(view.context)
                 newWebView.webViewClient = object : WebViewClient() {
@@ -149,17 +116,6 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                 val transport = resultMsg.obj as WebView.WebViewTransport
                 transport.webView = newWebView
                 resultMsg.sendToTarget()
-                return true
-            }
-
-            // For Android 5.0+
-            override fun onShowFileChooser(
-                webView: WebView,
-                filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: FileChooserParams
-            ): Boolean {
-                mUploadCallbackAboveL = filePathCallback
-                openImageChooserActivity()
                 return true
             }
 
@@ -189,7 +145,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
 
             override fun shouldInterceptRequest(
-                view: WebView?, url: String?
+                view: WebView?, url: String?,
             ): WebResourceResponse? {
                 return super.shouldInterceptRequest(view, url)
             }
@@ -211,7 +167,7 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
             }
 
             override fun onReceivedSslError(
-                view: WebView, handler: SslErrorHandler, error: SslError
+                view: WebView, handler: SslErrorHandler, error: SslError,
             ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 //handler.proceed()
@@ -241,18 +197,6 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         webView.loadUrl(mUrl)
     }
 
-    private fun openImageChooserActivity() {
-        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-            if (mUploadCallbackAboveL != null) {
-                mUploadCallbackAboveL?.onReceiveValue(arrayOf(it!!))
-                mUploadCallbackAboveL = null
-            } else {
-                mUploadMessage?.onReceiveValue(it)
-                mUploadMessage = null
-            }
-        }.launch(arrayOf("image/*"))
-    }
-
     override fun onBackPressed() {
         if (web_view.canGoBack()) {
             web_view.goBack()
@@ -261,37 +205,22 @@ open class WebActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         }
     }
 
-    private fun addBetStationInfo() {
-        lin_betstation.visibility = View.VISIBLE
-        bettingStation?.let {
-            with(lin_betstation) {
-                tv_address.text = it.addr
-                tv_mobile.text = it.telephone
-                var startTime = if (it.officeStartTime.isNotBlank()) it.officeStartTime else "00:00"
-                var endTime = if (it.officeEndTime.isNotBlank()) it.officeEndTime else "00:00"
-                tv_time.text = startTime + "-" + endTime
-                tv_appointment_time.text = it.appointmentTime
-                lin_appointment_time.visibility =
-                    if (it.appointmentTime.isNullOrBlank()) View.GONE else View.VISIBLE
-                tv_mobile.setOnClickListener {
-                    tv_mobile.text.toString().let {
-                        if (it.isNotBlank()) {
-                            val intent = Intent();
-                            intent.action = Intent.ACTION_DIAL
-                            intent.data = Uri.parse("tel:" + it)
-                            try {
-                                startActivity(intent)
-                            } catch (e: java.lang.Exception) {
-                                e.printStackTrace()
-                            }
-                        }
-                    }
-                }
-                tv_address.setOnClickListener {
-                    var url =
-                        "https://maps.google.com/?q=@" + bettingStation!!.lon + "," + bettingStation!!.lat
-                    JumpUtil.toExternalWeb(this@WebActivity, url)
-                }
+    class LotteryJsInterface(val activity: LotteryActivity) {
+        companion object {
+            const val name = "LotteryJsInterface"
+        }
+
+        @JavascriptInterface
+        fun backClick() {
+            activity.runOnUiThread {
+                activity.onBackPressed()
+            }
+        }
+
+        @JavascriptInterface
+        fun login() {
+            activity.runOnUiThread {
+                activity.startActivity(Intent(activity, LoginActivity::class.java))
             }
         }
     }
