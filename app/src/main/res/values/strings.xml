@@ -1423,6 +1423,10 @@
     <string name="more_than_days_format">Must be more than %d days</string>
     <string name="overtime_score">Overtime</string>
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
+    <string name="draw_time">Draw Time</string>
+    <string name="closing_time">Closing Time</string>
+    <string name="end_time">End Time</string>
+    <string name="draw_countdown">Draw Countdown</string>
 
 
 </resources>

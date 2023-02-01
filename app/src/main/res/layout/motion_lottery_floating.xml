@@ -58,13 +58,16 @@
                     android:gravity="center_horizontal">
 
                     <TextView
+                        android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:singleLine="true"
+                        android:ellipsize="end"
                         android:textFontWeight="700"
-                        android:text="draw time"
+                        android:text="@string/end_time"
                         android:textColor="@color/color_FFFFFF"
-                        android:textSize="10sp" />
+                        android:textSize="9sp" />
 
                     <TextView
                         android:id="@+id/tv_time"
@@ -75,7 +78,7 @@
                         android:textFontWeight="700"
                         tools:text="2022-10-10 23:45:45"
                         android:textColor="@color/color_FFFFFF"
-                        android:textSize="10sp" />
+                        android:textSize="9sp" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

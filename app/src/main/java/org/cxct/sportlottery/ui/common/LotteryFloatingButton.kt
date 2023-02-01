@@ -26,7 +26,7 @@ class LotteryFloatingButton @JvmOverloads constructor(
     }
 
     private fun initClickEvent() {
-        rl_float_view.setOnClickListener {
+        movable_layout.setOnClickListener {
             LotteryManager.instance.clickOpenFloatBtn()
         }
         iv_close.setOnClickListener {
@@ -34,7 +34,8 @@ class LotteryFloatingButton @JvmOverloads constructor(
         }
     }
 
-    fun setTime(startdate: String) {
+    fun setTime(name: String, startdate: String) {
+        tv_name.text = name
         tv_time.text = startdate
     }
 }

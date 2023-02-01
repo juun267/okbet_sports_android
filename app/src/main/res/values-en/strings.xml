@@ -1402,4 +1402,8 @@
     <string name="str_odds_description">Odds Description</string>
     <string name="str_bet_parlay">Parlay</string>
     <string name="str_bet_way">Betting method</string>
+    <string name="draw_time">Draw Time</string>
+    <string name="closing_time">Closing Time</string>
+    <string name="end_time">End Time</string>
+    <string name="draw_countdown">Draw Countdown</string>
 </resources>

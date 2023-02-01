@@ -1392,4 +1392,8 @@
     <string name="regular_score">Chính thức</string>
     <string name="score_with_overtime">Điểm (gồm bù giờ)</string>
     <string name="self_limit_error_format">Định dạng trường không chính xác, vui lòng nhập số nguyên %d ~ %d.</string>
+    <string name="draw_time">Thời gian rút thăm</string>
+    <string name="closing_time">Thời gian đóng</string>
+    <string name="end_time">Thời gian kết thúc</string>
+    <string name="draw_countdown">Đếm ngược rút thăm</string>
 </resources>
