@@ -486,18 +486,19 @@ class MainHomeFragment :
         }
     }
 
-    private var connectFailed = false
+//    private var connectFailed = false
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            if (it == ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT) {
-                connectFailed = true
-                return@observe
-            }
+//            if (it == ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT) {
+//                connectFailed = true
+//                return@observe
+//            }
 
-            if (connectFailed && it == ServiceConnectStatus.CONNECTED) {
-                connectFailed = false
+            if (it == ServiceConnectStatus.CONNECTED) {
+//                connectFailed = false
+                unSubscribeChannelHallSport()
                 subscribeSportChannelHall()
                 viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             }
