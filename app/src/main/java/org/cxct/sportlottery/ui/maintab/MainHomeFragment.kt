@@ -439,7 +439,8 @@ class MainHomeFragment :
 
         }
         //热门盘口
-        viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
+        viewModel.hotHandicap.observe(viewLifecycleOwner) {
+            val list = it.getContentIfNotHandled()
            if ( list.isNullOrEmpty()){
                rv_hot_handicap.visibility = View.GONE
            }else{
@@ -458,8 +459,8 @@ class MainHomeFragment :
                            }
                        }
                    }
-                   hotHandicapAdapter.data.forEach {
-                       it.matchInfos.forEach {
+                   hotHandicapAdapter.data.forEach { item->
+                       item.matchInfos.forEach {
                            unSubscribeChannelHall(it.gameType, it.id)
                        }
                    }
@@ -485,15 +486,20 @@ class MainHomeFragment :
         }
     }
 
+    private var connectFailed = false
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    subscribeSportChannelHall()
-                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
-                }
+            if (it == ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT) {
+                connectFailed = true
+                return@observe
+            }
+
+            if (connectFailed && it == ServiceConnectStatus.CONNECTED) {
+                connectFailed = false
+                subscribeSportChannelHall()
+                viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             }
         }
 
@@ -862,7 +868,9 @@ class MainHomeFragment :
 
     //热门盘口订阅
     private fun subscribeChannelHall(recommend: HandicapData) {
-        recommend.matchInfos.forEach { subscribeChannelHall(it.gameType, it.id) }
+        recommend.matchInfos.forEach {
+            subscribeChannelHall(it.gameType, it.id)
+        }
     }
 
     //直播订阅
