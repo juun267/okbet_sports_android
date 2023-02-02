@@ -102,9 +102,9 @@ class MainHomeViewModel(
         get() = _hotLiveData
     private val _hotLiveData = MutableLiveData<List<HotMatchLiveData>?>()
 
-    val hotHandicap: LiveData<List<HandicapData>?>
+    val hotHandicap: LiveData<Event<List<HandicapData>?>>
         get() = _hotHandicap
-    private val _hotHandicap = MutableLiveData<List<HandicapData>?>()
+    private val _hotHandicap = MutableLiveData<Event<List<HandicapData>?>>()
 
     //賽事列表直播網址
     private val _matchLiveInfo = MutableLiveData<Event<MatchRound>?>()
@@ -419,6 +419,14 @@ class MainHomeViewModel(
         }
     }
 
+    fun getThirdGame() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                ThirdGameRepository.getThirdGame()
+            }
+        }
+    }
+
     private suspend fun getThirdGameList(): MutableList<GameCateData>? {
         doNetwork(androidContext) {
             ThirdGameRepository.getThirdGameResponse()
@@ -472,20 +480,28 @@ class MainHomeViewModel(
         }
     }
 
+    fun requestEnterThirdGame(gameData: QueryGameEntryData?) {
+        if (gameData == null) {
+            _enterThirdGameResult.postValue(
+                EnterThirdGameResult(
+                    resultType = EnterThirdGameResult.ResultType.FAIL,
+                    url = null,
+                    errorMsg = androidContext.getString(R.string.hint_game_maintenance)
+                )
+            )
+
+            return
+        }
+
+        requestEnterThirdGame("${gameData.firmType}", "${gameData.gameCode}", "${gameData.gameCategory}")
+    }
+
+
     //避免多次请求游戏
     var jumpingGame = false
-    fun requestEnterThirdGame(gameData: QueryGameEntryData?) {
+    fun requestEnterThirdGame(firmType: String, gameCode: String, gameCategory: String) {
 //        Timber.e("gameData: $gameData")
         when {
-            gameData == null -> {
-                _enterThirdGameResult.postValue(
-                    EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.FAIL,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.hint_game_maintenance)
-                    )
-                )
-            }
             loginRepository.isLogin.value != true -> {
                 _enterThirdGameResult.postValue(
                     EnterThirdGameResult(
@@ -501,20 +517,18 @@ class MainHomeViewModel(
                 }
                 jumpingGame = true
                 viewModelScope.launch {
-                    LogUtil.toJson(gameData)
-                    val thirdLoginResult = thirdGameLogin(gameData.firmType!!, gameData.gameCode!!)
-
+                    val thirdLoginResult = thirdGameLogin(firmType!!, gameCode!!)
                     //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
                     thirdLoginResult?.let {
                         if (it.success) {
                             //先调用三方游戏的登入接口, 确认返回成功200之后再接著调用自动转换额度的接口, 如果没有登入成功, 后面就不做额度自动转换的调用了
-                            autoTransfer(gameData.firmType) //第三方自動轉換
+                            autoTransfer(firmType) //第三方自動轉換
 
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.SUCCESS,
                                     url = thirdLoginResult.msg,
-                                    thirdGameCategoryCode = gameData.gameCategory
+                                    thirdGameCategoryCode = gameCategory
                                 )
                             )
                         } else {
@@ -696,7 +710,7 @@ class MainHomeViewModel(
                             if (TextUtils.isEmpty(it.leagueName)) hotHandicap.league.name else it.leagueName
                     }
                 }
-                _hotHandicap.postValue(handicapList)
+                _hotHandicap.postValue(Event(handicapList))
             }
         }
     }

@@ -132,10 +132,6 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
     }
 
     private fun initView() {
-        binding.tvRegister.setTitleLetterSpacing2F()
-        binding.tvRegister.setGradientSpan(getColor(R.color.color_71ADFF),
-            getColor(R.color.color_1971FD),
-            true)
         binding.apply {
             eetLoginPassword.transformationMethod =
                 AsteriskPasswordTransformationMethod()

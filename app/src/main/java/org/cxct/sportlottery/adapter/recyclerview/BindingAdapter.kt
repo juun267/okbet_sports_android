@@ -65,7 +65,7 @@ abstract class BindingAdapter<T, VB : ViewBinding> (data: MutableList<T>? = null
         onBinding(positionOf(item), helper.vb, item)
     }
 
-    abstract fun onBinding(position: Int, viewBinding: VB, item: T)
+    abstract fun onBinding(position: Int, binding: VB, item: T)
 }
 
 class BindingVH<VB : ViewBinding>(val vb: VB) : BaseViewHolder(vb.root)

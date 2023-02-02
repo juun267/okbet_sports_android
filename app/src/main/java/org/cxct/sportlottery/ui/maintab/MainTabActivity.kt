@@ -61,7 +61,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 import kotlin.system.exitProcess
 
 
@@ -142,6 +141,7 @@ class MainTabActivity : BaseBottomNavActivity<MainTabViewModel>(MainTabViewModel
         initObserve()
         activityInstance = this
         EventBusUtil.targetLifecycle(this)
+        LotteryManager.instance.getLotteryInfo()
     }
 
     var isWorldCupModel = false

@@ -29,7 +29,7 @@ object MainHomeItemHelper {
 //        HomeItem(R.string.home_word_cup, R.drawable.word_cup0), //世界杯
         HomeItem(R.string.home_in_play, R.drawable.icon_in_play0), //滚球
         HomeItem(R.string.home_sports, R.drawable.sport0), //体育
-        HomeItem(R.string.tiger_machine, R.drawable.icon_ok_game0), //老虎机
+        HomeItem(R.string.tiger_machine, R.drawable.ic_home_okgame_nor), //老虎机
         HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
     )
 
@@ -44,14 +44,14 @@ object MainHomeItemHelper {
         HomeItem(R.string.home_sports, R.drawable.sport0), //体育
         HomeItem(R.string.live, R.drawable.icon_on_live0), //真人
         HomeItem(R.string.home_on_game, R.drawable.icon_on_game0), //棋牌
-//        HomeItem(R.string.lottery, R.drawable.icon_on_lottery0), //彩票
+        HomeItem(R.string.lottery, R.drawable.icon_on_lottery0), //彩票
     )
 
 
     fun fillingItems(parent: LinearLayout, itemClick: (Int) -> Unit) {
 
         val itemParams = LinearLayout.LayoutParams(0, 60.dp, 1.0f)
-        val iconParams = LinearLayout.LayoutParams(30.dp, 23.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
+        val iconParams = LinearLayout.LayoutParams(30.dp, 30.dp).apply { gravity = Gravity.CENTER_HORIZONTAL }
         val nameParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = 6.dp }
 
         if (isCreditSystem()) {

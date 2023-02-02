@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -125,8 +126,6 @@ class RedEnvelopeManager {
         countdownTimer=null
         removeRedEnvelopeBtn()
     }
-
-
     fun getRain() {
         viewModel?.let{
             it.viewModelScope.launch {
@@ -151,16 +150,22 @@ class RedEnvelopeManager {
 
     }
 
-    fun showRedEnvelopeBtn(countTime:Long){
+    fun showRedEnvelopeBtn(countTime:Long) {
         var viewGroup = activity!!.findViewById<ViewGroup>(android.R.id.content)
-        val targetView = viewGroup.getChildAt(viewGroup.childCount - 1)
-        if (targetView is RedEnvelopeFloatingButton){
-            floatRootView= targetView
+        var targetView: View? = null
+        for (index in 0..viewGroup.childCount) {
+            if (viewGroup.getChildAt(index) is RedEnvelopeFloatingButton) {
+                targetView = viewGroup.getChildAt(index)
+                break
+            }
+        }
+        if (targetView is RedEnvelopeFloatingButton) {
+            floatRootView = targetView
             floatRootView?.setCountdown(countTime)
-        }else{
-            if (floatRootView==null) {
+        } else {
+            if (floatRootView == null) {
                 floatRootView = RedEnvelopeFloatingButton(activity!!)
-            }else{
+            } else {
                 (floatRootView?.parent as ViewGroup).removeView(floatRootView)
             }
             floatRootView?.setCountdown(countTime)

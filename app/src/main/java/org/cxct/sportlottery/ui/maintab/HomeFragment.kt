@@ -13,6 +13,7 @@ import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.maintab.elec.HomeElecFragment
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveFragment
+import org.cxct.sportlottery.ui.maintab.games.ThirdGamesFragment
 import org.cxct.sportlottery.ui.maintab.slot.HomeSlotFragment
 import org.cxct.sportlottery.ui.maintab.worldcup.HomeWorldCupFragment
 import org.cxct.sportlottery.util.EventBusUtil
@@ -27,9 +28,19 @@ class HomeFragment: BaseBottomNavigationFragment<MainHomeViewModel>(MainHomeView
                 Pair(MainHomeFragment::class.java, null),
                 Pair(HomeLiveFragment::class.java, null),
                 Pair(HomeWorldCupFragment::class.java, null),
-                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 4) }),
-                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
-                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 6) })
+                Pair(ThirdGamesFragment::class.java, Bundle().apply {
+                    putInt("position", 4)
+                    putString("GAME_CODE", "LIVE")
+                }),
+//                Pair(HomeSlotFragment::class.java, Bundle().apply { putInt("position", 5) }),
+                Pair(ThirdGamesFragment::class.java, Bundle().apply {
+                    putInt("position", 5)
+                    putString("GAME_CODE", "QP")
+                }),
+                Pair(ThirdGamesFragment::class.java, Bundle().apply {
+                    putInt("position", 6)
+                    putString("GAME_CODE", "CGCP")
+                })
             ))
         } else {
             FragmentHelper(childFragmentManager, R.id.fl_content, arrayOf(

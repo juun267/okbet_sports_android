@@ -1,10 +1,7 @@
 package org.cxct.sportlottery.ui.sport
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.PathMeasure
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,9 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.LinearInterpolator
-import android.widget.ImageView
-import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,7 +49,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
@@ -575,7 +568,9 @@ class SportListFragment :
             ll_sport_type.isVisible = !(it || matchType == MatchType.CS)
             iv_calendar.isVisible =
                 (matchType == MatchType.EARLY || matchType == MatchType.CS) && !it
-            sportLeagueAdapter.removePreloadItem()
+            if (it) {
+                sportLeagueAdapter.removePreloadItem()
+            }
             hideLoading()
         }
 

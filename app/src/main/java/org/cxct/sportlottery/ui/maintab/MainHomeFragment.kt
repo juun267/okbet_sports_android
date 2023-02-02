@@ -44,7 +44,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
@@ -199,7 +198,7 @@ class MainHomeFragment :
         initObservable()
         queryData()
         initSocketObservers()
-        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+//        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         EventBusUtil.targetLifecycle(this)
     }
 
@@ -243,6 +242,7 @@ class MainHomeFragment :
         }
 
         MainHomeItemHelper.fillingItems(tabLinearLayout, ::onTabClick)
+
         initHotHandicap()
         initListView()
 
@@ -438,7 +438,8 @@ class MainHomeFragment :
 
         }
         //热门盘口
-        viewModel.hotHandicap.observe(viewLifecycleOwner) {list ->
+        viewModel.hotHandicap.observe(viewLifecycleOwner) {
+            val list = it.getContentIfNotHandled()
            if ( list.isNullOrEmpty()){
                rv_hot_handicap.visibility = View.GONE
            }else{
@@ -457,8 +458,8 @@ class MainHomeFragment :
                            }
                        }
                    }
-                   hotHandicapAdapter.data.forEach {
-                       it.matchInfos.forEach {
+                   hotHandicapAdapter.data.forEach { item->
+                       item.matchInfos.forEach {
                            unSubscribeChannelHall(it.gameType, it.id)
                        }
                    }
@@ -484,15 +485,21 @@ class MainHomeFragment :
         }
     }
 
+//    private var connectFailed = false
     //用户缓存最新赔率，方便当从api拿到新赛事数据时，赋值赔率信息给新赛事
     private val leagueOddMap = HashMap<String, HotMatchInfo>()
     private fun initSocketObservers() {
         receiver.serviceConnectStatus.observe(viewLifecycleOwner) {
-            it.let {
-                if (it == ServiceConnectStatus.CONNECTED) {
-                    subscribeSportChannelHall()
-                    viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
-                }
+//            if (it == ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT) {
+//                connectFailed = true
+//                return@observe
+//            }
+
+            if (it == ServiceConnectStatus.CONNECTED) {
+//                connectFailed = false
+                unSubscribeChannelHallSport()
+                unSubscribeChannelHallAll()
+                viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             }
         }
 
@@ -861,7 +868,9 @@ class MainHomeFragment :
 
     //热门盘口订阅
     private fun subscribeChannelHall(recommend: HandicapData) {
-        recommend.matchInfos.forEach { subscribeChannelHall(it.gameType, it.id) }
+        recommend.matchInfos.forEach {
+            subscribeChannelHall(it.gameType, it.id)
+        }
     }
 
     //直播订阅
@@ -1006,7 +1015,15 @@ class MainHomeFragment :
     private inline fun getMainTabActivity() = activity as MainTabActivity
     private inline fun getHomeFragment() = parentFragment as HomeFragment
 
-    private fun onTabClick(tabName: Int) = when(tabName)  {
+    private fun onTabClick(tabName: Int) {
+        if (isCreditSystem()) {
+            loginedRun(requireContext()) { changeFragment(tabName) }
+        } else {
+            changeFragment(tabName)
+        }
+    }
+
+    private fun changeFragment(tabName: Int) = when(tabName)  {
         //点击直播跳转
         R.string.home_live -> getHomeFragment().onTabClickByPosition(1)
         //点击滚球跳转

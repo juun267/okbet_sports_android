@@ -334,7 +334,7 @@
     <string name="all_order">All bets</string>
     <string name="not_settled_order">Unsettled</string>
     <string name="settled_order">Settled bets</string>
-    <string name="start_date">Start date</string>
+    <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="no_data">No more data to display</string>
     <string name="uncheck">Unconfirmed</string>
@@ -610,7 +610,7 @@
     <string name="withdraw_log_type_admin">Manual</string>
     <string name="withdraw_log_crypto_transfer">USDT</string>
     <string name="log_detail_title">Check details</string>
-    <string name="log_detail_trans_num_sub">Order ID：</string>
+    <string name="log_detail_trans_num_sub">Transaction No.：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
     <string name="log_detail_time_sub">Time：</string>
     <string name="log_detail_status_sub">Status：</string>
@@ -1011,7 +1011,7 @@
 
     <string name="current_corner">Current Total:</string>
     <string name="cancel_auto">Rejected</string>
-    <string name="cancel_manual">Void</string>
+    <string name="cancel_manual">Refund</string>
     <string name="error_input_has_blank">Incorrect input. Use english only, don\'t enter the continuous space.</string>
 
     <!--region 確認年齡彈窗-->
@@ -1101,7 +1101,7 @@
     <string name="redenvelope_amount_sub">Lucky Money Amount ：</string>
     <string name="btn_sure">Confirm</string>
     <string name="Outlets_Reserve">Outlets  Reserve</string>
-    <string name="current_balance">Balance</string>
+    <string name="current_balance">Current balance</string>
     <string name="select_area">Select Region</string>
     <string name="select_city">Select City</string>
     <string name="outlets_address">Outlets Address</string>
@@ -1396,10 +1396,15 @@
     <string name="more_than_days_format">Must be more than %d days</string>
     <string name="overtime_score">Overtime</string>
     <string name="regular_score">Regular</string>
-    <string name="score_with_overtime">score (with overtime)</string>
+    <string name="score_with_overtime">score\n (with overtime)</string>
     <string name="self_limit_error_format">The field format is incorrect, please enter an integer %d~%d.</string>
     <string name="str_in_play_bet_confirmed">In-play bet confirmed</string>
     <string name="str_odds_description">Odds Description</string>
     <string name="str_bet_parlay">Parlay</string>
+    <string name="new_games_new_discovery">New Game, New discovery</string>
     <string name="str_bet_way">Betting method</string>
+    <string name="draw_time">Draw Time</string>
+    <string name="closing_time">Closing Time</string>
+    <string name="end_time">End Time</string>
+    <string name="draw_countdown">Draw Countdown</string>
 </resources>

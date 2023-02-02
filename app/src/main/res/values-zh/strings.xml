@@ -1400,9 +1400,14 @@
     <string name="more_than_days_format">必须多于%d天</string>
     <string name="overtime_score">加时比分</string>
     <string name="regular_score">常规比分</string>
-    <string name="score_with_overtime">总分（含加时）</string>
+    <string name="score_with_overtime">总分\n（含加时）</string>
     <string name="self_limit_error_format">资料格式不符，请输入 %d~%d 整数</string>
     <string name="str_bet_way">投注方式</string>
     <string name="str_in_play_bet_confirmed">滚球注单确认中</string>
     <string name="str_odds_description">赔率说明</string>
+    <string name="new_games_new_discovery">新游戏，新发现</string>
+    <string name="draw_time">抽奖时间</string>
+    <string name="closing_time">"抽奖关闭时间 "</string>
+    <string name="end_time">活动结束时间</string>
+    <string name="draw_countdown">抽奖倒计时</string>
 </resources>

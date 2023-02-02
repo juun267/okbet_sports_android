@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
@@ -48,10 +49,7 @@ import org.cxct.sportlottery.network.odds.list.MatchLiveData
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
-import org.cxct.sportlottery.repository.FLAG_CREDIT_OPEN
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.HandicapType
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
@@ -59,8 +57,10 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.live.HomeLiveAdapter
 import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -627,6 +627,45 @@ fun View.setBackColorWithColorMode(lightModeColor: Int, darkModeColor: Int) {
         )
     )
 }
+
+fun loginedRun(context: Context, block: ()-> Unit) {
+    if (LoginRepository.isLogin.value?: false) {
+        block.invoke()
+        return
+    }
+
+    if (context is Activity) {
+        Snackbar.make(
+            context.findViewById(android.R.id.content),
+            context.getString(R.string.login_notify),
+            Snackbar.LENGTH_LONG
+        ).apply {
+            val snackView: View = context.layoutInflater.inflate(
+                R.layout.snackbar_login_notify,
+                context.findViewById(android.R.id.content),
+                false
+            )
+            (this.view as Snackbar.SnackbarLayout).apply {
+                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                    visibility = View.INVISIBLE
+                }
+                background.alpha = 0
+                addView(snackView, 0)
+                setPadding(0, 0, 0, 0)
+            }
+
+            if (context is MainTabActivity) {
+                setAnchorView(R.id.cLBottom)
+            }
+            show()
+        }
+        return
+    }
+
+    context.startActivity(Intent(context, LoginActivity::class.java))
+}
+
+
 
 /**
  * 移除所有ItemDecorations

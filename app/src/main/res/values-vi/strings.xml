@@ -1100,8 +1100,8 @@
     <!--region 20220714 新版投注單-->
     <string name="bet_win">Thắng</string>
     <string name="bet_stake">Cược</string>
-    <string name="total_capital">Thắng：%s</string> <!--F008-->
-    <string name="total_win_amount">Cược：</string> <!--F005-->
+    <string name="total_capital">Tiền cược：%s</string> <!--F008-->
+    <string name="total_win_amount">Thắng：</string> <!--F005-->
     <string name="delete_bet">Xóa bỏ</string>
     <string name="delete_bet_all">Xóa tất cả</string>
     <string name="btn_login_bet">Đăng nhập để đặt cược</string>
@@ -1249,7 +1249,6 @@
     <string name="half_first_short">Hiệp 1</string>
     <string name="half_second_short">Hiệp 2</string>
     <string name="unbound_bank_card">Bạn chưa mặc định %1$s</string>
-    <string name="str_bet_way">Kiểu cược</string>
     <string name="change_other_ID_photos">Thay ảnh ID khác</string>
     <string name="customer_service">Nếu cần trợ giúp, vui lòng&#160;</string>
     <string name="not_sign_up">Chưa có tài khoản</string>
@@ -1386,10 +1385,16 @@
     <string name="str_in_play_bet_confirmed">Đang xác nhận cược trong trận</string>
     <string name="str_odds_description">Mô tả tỷ lệ cược</string>
     <string name="str_bet_parlay">CƯỢC XÂU</string>
+    <string name="str_bet_way">Kiểu cược</string>
+    <string name="new_games_new_discovery">Game mới, khám phá mới</string>
     <string name="pls_enter_days_format">Mời nhập số ngày (≥%d ngày)</string>
     <string name="more_than_days_format">Phải hơn %d ngày</string>
     <string name="overtime_score">Bù giờ</string>
     <string name="regular_score">Chính thức</string>
     <string name="score_with_overtime">Điểm (gồm bù giờ)</string>
     <string name="self_limit_error_format">Định dạng trường không chính xác, vui lòng nhập số nguyên %d ~ %d.</string>
+    <string name="draw_time">Thời gian rút thăm</string>
+    <string name="closing_time">Thời gian đóng</string>
+    <string name="end_time">Thời gian kết thúc</string>
+    <string name="draw_countdown">Đếm ngược rút thăm</string>
 </resources>
