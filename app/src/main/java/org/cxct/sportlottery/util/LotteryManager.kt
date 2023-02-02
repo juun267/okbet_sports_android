@@ -134,7 +134,7 @@ class LotteryManager {
             var countdownTime = ""
             if (nextDrawTime == 0L) {
                 countdownTitle = LocalUtils.getString(R.string.end_time)
-                countdownTime = TimeUtil.timeFormat(showEndTime, TimeUtil.YMD_HMS_FORMAT)
+                countdownTime = TimeUtil.timeFormat(it.endTime, TimeUtil.YMD_HMS_FORMAT)
             } else if (!isSameDay) {
                 // 1 非当天 显示 开奖时间（抽奖前 抽奖后）
                 countdownTitle = LocalUtils.getString(R.string.draw_time)
