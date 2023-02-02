@@ -44,7 +44,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.SportMenu
-import org.cxct.sportlottery.network.sport.publicityRecommend.Recommend
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
@@ -199,7 +198,7 @@ class MainHomeFragment :
         initObservable()
         queryData()
         initSocketObservers()
-        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
+//        viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
         EventBusUtil.targetLifecycle(this)
     }
 
@@ -499,7 +498,7 @@ class MainHomeFragment :
             if (it == ServiceConnectStatus.CONNECTED) {
 //                connectFailed = false
                 unSubscribeChannelHallSport()
-                subscribeSportChannelHall()
+                unSubscribeChannelHallAll()
                 viewModel.getHandicapConfig(hotHandicapAdapter.playType.toInt())
             }
         }
