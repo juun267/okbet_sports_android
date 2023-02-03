@@ -3,8 +3,9 @@ package org.cxct.sportlottery.ui.game.betList.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.layoutKeyBoard
+import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.layoutKeyBoard
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
 import org.cxct.sportlottery.databinding.ItemBetListBatchControlV3Binding
 import org.cxct.sportlottery.enum.BetStatus
@@ -119,7 +120,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             ViewType.Bet.ordinal -> BiVh(
-                ContentBetInfoItemV3Binding.inflate(layoutInflater), userBalance
+                ContentBetInfoItemV32Binding.inflate(layoutInflater), userBalance
             )
 
             ViewType.Single.ordinal -> bsiMoVh(

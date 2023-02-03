@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.item_number_keyboard_layout.view.*
+import kotlinx.android.synthetic.main.item_number_keyboard_layout2.view.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.LoginRepository
@@ -26,7 +26,7 @@ class KeyboardView @JvmOverloads constructor(
 ) {
 
     private val view: View by lazy {
-        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout, null, false)
+        LayoutInflater.from(context).inflate(R.layout.item_number_keyboard_layout2, null, false)
     }
 
     /**键盘点击事件*/
@@ -102,14 +102,14 @@ class KeyboardView @JvmOverloads constructor(
         flDot.setOnClickListener {
             insertDot()
         }
-        tvClear.setOnClickListener {
-            //清除
-            mEditText.text.clear()
-        }
-        ivClose.setOnClickListener {
-            //關閉鍵盤
-            hideKeyboard()
-        }
+//        tvClear.setOnClickListener {
+//            //清除
+//            mEditText.text.clear()
+//        }
+//        ivClose.setOnClickListener {
+//            //關閉鍵盤
+//            hideKeyboard()
+//        }
         tvMax.setOnClickListener {
             if (isLogin) {
                 plusAll(maxBetMoney)
@@ -268,10 +268,10 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     fun hideKeyboard() {
-        this.visibility = View.GONE
+   /*     this.visibility = View.GONE
         if (isShow) mEditText.isFocusable = false
 
-        isShow = false
+        isShow = false*/
     }
 
 }

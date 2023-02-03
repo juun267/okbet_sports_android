@@ -17,6 +17,7 @@ import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
@@ -36,7 +37,7 @@ import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import timber.log.Timber
 
 class BetInfoItemViewHolder(
-    val contentView: ContentBetInfoItemV3Binding,
+    val contentView: ContentBetInfoItemV32Binding,
     val userBalance: () -> Double,
 ) : BetInfoChangeViewHolder(contentView.root) {
     private var inputMaxMoney: Double = 0.0
@@ -108,7 +109,7 @@ class BetInfoItemViewHolder(
             //endregion
 
             setupDeleteButton(itemData, itemCount, onItemClickListener)
-            topSpace.visibility = if (position == 0) View.VISIBLE else View.GONE
+//            topSpace.visibility = if (position == 0) View.VISIBLE else View.GONE
 //                bottom_view.visibility = if(position == betListSize -1) View.GONE else View.VISIBLE
         }
     }
@@ -217,7 +218,10 @@ class BetInfoItemViewHolder(
 
                     itemData.realAmount = 0.0
                     //更新可贏額
-                    if (itemData.isInputBet) etWin.text.clear()
+                    if (itemData.isInputBet) {
+                        etWin.text.clear()
+                        tvCanWin.text = "可赢:--"
+                    }
                 } else {
 
                     val quota = it.toString().toDouble()
@@ -239,7 +243,10 @@ class BetInfoItemViewHolder(
                     )
 //                            Timber.d("win: $win")
                     //更新可贏額
-                    if (itemData.isInputBet) etWin.setText(TextUtil.formatInputMoney(win))
+                    if (itemData.isInputBet) {
+                        etWin.setText(TextUtil.formatInputMoney(win))
+                        tvCanWin.text = TextUtil.formatInputMoney(win)
+                    }
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()

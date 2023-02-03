@@ -63,7 +63,7 @@
                     android:layout_marginTop="45dp"
                     android:background="@color/color_202541_FFFFFF"
                     tools:itemCount="1"
-                    tools:listitem="@layout/content_bet_info_item_v3" />
+                    tools:listitem="@layout/content_bet_info_item_v3_2" />
 
                 <View
                     android:id="@+id/line_shadow"
