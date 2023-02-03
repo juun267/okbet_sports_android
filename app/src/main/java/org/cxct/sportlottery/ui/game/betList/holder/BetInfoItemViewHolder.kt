@@ -606,15 +606,20 @@ class BetInfoItemViewHolder(
             }
         }
         //加上OddsType名稱,如果是串关显示欧盘
-        val tvNamePlusOddsTypeName =
-            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"
-        tvName.text = tvNamePlusOddsTypeName
+//        val tvNamePlusOddsTypeName =
+//            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"
+//        tvName.text = tvNamePlusOddsTypeName
+
+        tvNameType.text = root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)
 
         //前面加上MatchType名稱
         itemData.matchType?.let {
             val matchTypeName = root.context.getString(it.resId)
-            tvName.text = matchTypeName.plus(" ${tvName.text}")
+//            tvName.text = matchTypeName.plus(" ${tvName.text}")
+            tvMatchType.text =  matchTypeName
         }
+
+        
     }
 
     private fun TextView.setOUStyle(isOUType: Boolean) {

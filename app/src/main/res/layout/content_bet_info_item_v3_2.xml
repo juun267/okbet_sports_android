@@ -33,21 +33,42 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tvMatchType"
+                android:text="滚球"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_FFFFFF"
+                android:background="@drawable/bg_match_type_red_circle"
+                android:layout_width="30dp"
+                android:paddingVertical="2dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
                 android:id="@+id/tv_odds_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:textStyle="bold"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="Manchester United FC (Mad)" />
 
             <TextView
+                android:layout_marginHorizontal="5dp"
+                android:layout_width="1dp"
+                android:layout_gravity="center"
+                android:background="@color/color_C9CFD7"
+                android:layout_height="12dp"/>
+
+            <TextView
                 android:id="@+id/tvContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:maxLines="1"
+                android:textStyle="bold"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="-0.5/2" />
@@ -85,24 +106,37 @@
 
         </LinearLayout>
 
+        <!--玩法名稱:讓球,獨贏..-->
+
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="14dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:textColor="@color/color_9BB3D9_535D76"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize12sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/odds_content_container"
             app:layout_constraintTop_toBottomOf="@+id/odds_content_container"
-            tools:text="让球(1-1) [歐洲盤]" />
+            tools:text="让球(1-1)" />
 
-        <!--玩法名稱:讓球,獨贏..-->
+        <TextView
+            android:id="@+id/tv_name_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_match_type_gray_circle"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/color_9BB3D9_535D76"
+            android:textSize="@dimen/textSize12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_name"
+            tools:text="欧洲盘" />
 
         <TextView
             android:id="@+id/tv_match"
@@ -129,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            app:layout_constraintWidth_max="150dp"
+            app:layout_constraintWidth_max="120dp"
             app:layout_constraintHorizontal_weight="1"
             android:maxLines="1"
             android:textColor="@color/color_A7B2C4"
@@ -262,7 +296,7 @@
                     android:paddingHorizontal="10dp"
                     android:textColor="@color/color_025BE8"
                     android:textColorHint="@color/color_455074_C9CFD7"
-                    android:textSize="@dimen/textSize12sp"
+                    android:textSize="@dimen/textSize16sp"
                     android:textStyle="bold"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
