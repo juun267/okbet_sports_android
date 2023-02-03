@@ -1335,14 +1335,16 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
                 matchStatusList.forEachIndexed { index, it ->
                     val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
                     //9表示已结束，其他代表进行中的
-                    if (index < peroid) {
-                        spanny.append(spanScore)
-                        spanny.append("  ")
-                    } else {
+                    if (index == peroid) {
                         spanny.append(spanScore,
                             ForegroundColorSpan(getColor(R.color.color_F0A536)))
+                    } else if (index < peroid) {
+                        spanny.append(spanScore)
+                        spanny.append("  ")
                     }
                 }
+                tv_peroids_score.isVisible = true
+                tv_peroids_score.text = spanny
             } else {
                 matchStatusList.forEachIndexed { index, it ->
                     val spanScore = "${it.homeScore ?: 0}-${it.awayScore ?: 0}"
