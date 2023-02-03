@@ -685,7 +685,7 @@
     <string name="match_invalid_status">Trận đấu không thể đặt cược</string>
     <string name="odds_locked">Cách chơi này không thể đặt cược</string>
     <string name="parlay_un_support">Trận đấu này không hỗ trợ cược xiên</string>
-    <string name="identity">Xác minh họ và tên</string>
+    <string name="identity">Xác minh danh tính</string>
     <string name="odds_id_not_allow_bet">Tỷ lệ cược này không cho phép đặt cược</string>
     <string name="odds_have_changed">Tỷ lệ cược chấp đã được thay đổi, vui lòng đặt cược lại</string>
     <string name="bet_info_content_has_been_changed">Tỷ lệ cược hoặc trạng thái trò chơi bạn chọn đã được thay đổi, vui lòng đặt cược lại</string>

@@ -1,41 +1,32 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListPopupWindow
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.content_security_code_style_edittext.view.*
-import kotlinx.android.synthetic.main.content_verify_identity_kyc.*
 import kotlinx.android.synthetic.main.content_verify_identity_kyc.view.*
 import kotlinx.android.synthetic.main.fragment_verify_identity_kyc.*
-import kotlinx.android.synthetic.main.view_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_status_spinner.view.*
-import kotlinx.android.synthetic.main.view_upload.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
-import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.getCompressFile
+import org.cxct.sportlottery.util.setTitleLetterSpacing
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -303,7 +294,7 @@ class VerifyKYCFragment :
 
             identity_2nd.apply {
                 this.tvUploadTip.isVisible = false
-                this.tvUploadTip2.isVisible = false
+                this.tvUploadTip2.isVisible = true
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,

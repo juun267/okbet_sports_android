@@ -18,6 +18,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
 import timber.log.Timber
 import java.io.UnsupportedEncodingException
@@ -162,7 +163,7 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
                     return true
                 }
 
-                view.loadUrl(url)
+                JumpUtil.toExternalWeb(this@LotteryActivity, url)
                 return true
             }
 

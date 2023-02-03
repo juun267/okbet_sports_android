@@ -761,7 +761,9 @@ class MainHomeFragment :
 
                     holder.imageView.setOnClickListener {
                         data?.imageLink?.let {
-                            JumpUtil.toExternalWeb(requireContext(), it)
+                            if (it.isNotBlank()) {
+                                JumpUtil.toExternalWeb(requireContext(), it)
+                            }
                         }
                     }
                 }
