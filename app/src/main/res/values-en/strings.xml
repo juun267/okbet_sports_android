@@ -79,7 +79,7 @@
     <string name="city">City</string>
     <string name="hint_city">Please enter city</string>
     <string name="we_chat">Wechat</string>
-    <string name="identity">Verification Status</string>
+    <string name="identity">ID Verification</string>
     <string name="hint_we_chat_number">Wechat ID</string>
     <string name="zalo">Zalo</string>
     <string name="hint_zalo">Zalo Account</string>
