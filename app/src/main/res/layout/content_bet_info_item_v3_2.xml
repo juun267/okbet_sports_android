@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:textColor="@color/color_FFFFFF"
                 android:background="@drawable/bg_match_type_red_circle"
                 android:layout_width="30dp"
-                android:paddingVertical="2dp"
+                android:paddingVertical="1dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
@@ -210,7 +210,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_radius_12_f8f8f8"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/bottomPaddingView"
+            app:layout_constraintBottom_toTopOf="@+id/cl_hint_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -358,7 +358,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible">
 
                 <ImageView
@@ -426,5 +425,5 @@
             </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
 

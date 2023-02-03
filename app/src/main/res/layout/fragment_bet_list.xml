@@ -59,18 +59,18 @@
                     android:id="@+id/rv_bet_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
                     android:layout_marginTop="45dp"
                     android:background="@color/color_202541_FFFFFF"
+                    android:overScrollMode="never"
                     tools:itemCount="1"
                     tools:listitem="@layout/content_bet_info_item_v3_2" />
 
-                <View
-                    android:id="@+id/line_shadow"
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:background="@drawable/bg_gradient_bottom_sheet_shadow"
-                    android:layout_gravity="bottom" />
+                <!--                <View-->
+<!--                    android:id="@+id/line_shadow"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="8dp"-->
+<!--                    android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
+<!--                    android:layout_gravity="bottom" />-->
 
             </FrameLayout>
 
@@ -78,7 +78,7 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_gradient_bet_total"
+                android:background="@color/color_FFFFFF"
                 android:orientation="vertical"
                 android:layout_above="@+id/parlayLayout">
 
@@ -278,7 +278,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/bg_gradient_bet_total"
+                android:background="@color/color_FFFFFF"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="14dp">
