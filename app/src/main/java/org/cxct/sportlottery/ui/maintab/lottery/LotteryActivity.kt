@@ -20,9 +20,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
-import timber.log.Timber
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
 
 /**
  * Create by Simon Chang
@@ -44,30 +41,10 @@ open class LotteryActivity : BaseActivity<MainViewModel>(MainViewModel::class) {
         setContentView(R.layout.activity_web)
         custom_tool_bar.visibility = View.GONE
         web_view.addJavascriptInterface(LotteryJsInterface(this), LotteryJsInterface.name)
-        setCookie()
         setupWebView(web_view)
         loadUrl(web_view)
     }
 
-    fun setCookie() {
-        try {
-            val cookieManager = CookieManager.getInstance()
-            cookieManager.setAcceptCookie(true)
-
-            val oldCookie = cookieManager.getCookie(mUrl)
-            Timber.i("Cookie:oldCookie:$oldCookie")
-
-            cookieManager.setCookie(
-                mUrl, "x-session-token=" + URLEncoder.encode(viewModel.token, "utf-8")
-            ) //cookies是在HttpClient中获得的cookie
-            cookieManager.flush()
-
-            val newCookie = cookieManager.getCookie(mUrl)
-            Timber.i("Cookie:newCookie:$newCookie")
-        } catch (e: UnsupportedEncodingException) {
-            e.printStackTrace()
-        }
-    }
 
     @SuppressLint("WebViewApiAvailability")
     fun setupWebView(webView: WebView) {

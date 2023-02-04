@@ -23,10 +23,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.ToastUtil
-import org.cxct.sportlottery.util.getCompressFile
-import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.util.*
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -283,6 +280,7 @@ class VerifyKYCFragment :
             identity_1st.apply {
                 this.tvUploadTip.isVisible = false
                 this.tvUploadTip2.isVisible = false
+                this.txv_title_num.text = LocalUtils.getString(R.string.kyc_num)
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,
@@ -295,6 +293,7 @@ class VerifyKYCFragment :
             identity_2nd.apply {
                 this.tvUploadTip.isVisible = false
                 this.tvUploadTip2.isVisible = true
+                this.txv_title_num.text = LocalUtils.getString(R.string.kyc_num2)
                 this.cl_pic.setOnClickListener {
                     PicSelectorDialog(
                         activityNotNull,

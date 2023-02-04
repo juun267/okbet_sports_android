@@ -21,6 +21,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import cn.jpush.android.api.JPushInterface
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -30,6 +31,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_register_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterOkBinding
 import org.cxct.sportlottery.network.Constants
@@ -41,8 +43,8 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.PicSelectorDialog
 import org.cxct.sportlottery.util.*
@@ -1391,7 +1393,10 @@ class RegisterOkActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::cl
             it.getContentIfNotHandled()?.let { showKycVerify ->
                 if (showKycVerify) {
                     //跳宣傳頁顯示驗證彈窗
-                    GamePublicityActivity.reStart(this@RegisterOkActivity)
+                    MainTabActivity.reStart(this@RegisterOkActivity)
+                    Handler().postDelayed({
+                        MultiLanguagesApplication.showKYCVerifyDialog(AppManager.currentActivity() as FragmentActivity)
+                    }, 1000)
                 } else {
                     //檢查充值系統
                     viewModel.checkRechargeSystem()

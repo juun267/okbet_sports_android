@@ -1143,10 +1143,10 @@
     <string name="filter">Filter</string>
 
     <string name="kyc_type">ID Type [1]</string>
-    <string name="kyc_num">ID Number</string>
+    <string name="kyc_num">ID Number [1]</string>
     <string name="kyc_upload">Upload Photo</string>
     <string name="kyc_type2">ID Type [2]</string>
-    <string name="kyc_num2">ID Number 2</string>
+    <string name="kyc_num2">ID Number [2]</string>
     <string name="kyc_upload2">Upload Photo 2</string>
     <string name="kyc_id_verification">Get Verified</string>
     <string name="kyc_valid">Valid ID</string>
