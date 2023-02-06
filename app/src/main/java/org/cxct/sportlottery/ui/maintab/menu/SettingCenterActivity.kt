@@ -186,6 +186,7 @@ class SettingCenterActivity : BaseActivity<MainViewModel>(MainViewModel::class) 
 
     private fun initBetWayView() {
         betWayAdapter.setOnItemClickListener { adapter, view, position ->
+            betWayAdapter.setSelectPos(position)
             val option: Int = when (position) {
                 0 -> {
                     OddsModeUtil.accept_any_odds

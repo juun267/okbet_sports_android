@@ -38,7 +38,7 @@ class OddBtnList @JvmOverloads constructor(
         orientation = VERTICAL
         oddBtnType = AppCompatTextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
-            setTextColor(context.getColor(R.color.color_6C7BA8))
+            setTextColor(context.getColor(R.color.color_00181E))
             setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
             setAutoSizeTextTypeUniformWithConfiguration(6, 10, 1, TypedValue.COMPLEX_UNIT_SP)
             maxLines = 3
