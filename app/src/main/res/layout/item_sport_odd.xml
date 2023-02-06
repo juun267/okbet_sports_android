@@ -444,7 +444,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_marginEnd="5dp"
-                        android:src="@drawable/ic_live"
+                        android:src="@drawable/ic_live_with_anchor"
                         android:visibility="gone"
                         tools:ignore="ContentDescription"
                         tools:visibility="visible" />

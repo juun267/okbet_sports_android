@@ -36,7 +36,7 @@
                 android:textSize="@dimen/textSize11sp"
                 android:textFontWeight="400"
                 tools:text="义大利"
-                tools:textColor="@color/color_6C7BA8" />
+                tools:textColor="@color/selector_button_odd_top_text" />
 
             <TextView
                 android:id="@+id/tv_spread"
@@ -48,7 +48,7 @@
                 android:textSize="@dimen/textSize11sp"
                 android:textFontWeight="400"
                 tools:text="-0.5/1"
-                tools:textColor="@color/color_6C7BA8" />
+                tools:textColor="@color/selector_button_odd_top_text" />
 
         </LinearLayout>
 
