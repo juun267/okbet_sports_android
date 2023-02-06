@@ -25,34 +25,33 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingVertical="3dp">
+        android:orientation="vertical">
 
         <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_row1_home"
             android:layout_width="66dp"
-            android:layout_height="38dp"
-            android:layout_marginVertical="3dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="5dp"
             app:ob_hide_item_flag="true" />
 
         <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_row1_away"
             android:layout_width="66dp"
-            android:layout_height="38dp"
-            android:layout_marginVertical="3dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="5dp"
             app:ob_hide_item_flag="true" />
 
         <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_row1_draw"
             android:layout_width="66dp"
-            android:layout_height="38dp"
-            android:layout_marginVertical="3dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="5dp"
             app:ob_hide_item_flag="true" />
 
         <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_row1_other"
             android:layout_width="66dp"
-            android:layout_height="126dp"
+            android:layout_height="142dp"
             android:layout_marginTop="5dp"
             app:ob_hide_item_flag="true"
             android:visibility="gone" />

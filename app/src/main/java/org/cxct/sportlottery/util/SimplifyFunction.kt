@@ -1270,7 +1270,7 @@ fun ImageView.setTeamLogo(icon: String?) {
 fun ImageView.setLeagueLogo(icon: String?) {
     if (icon.isNullOrEmpty()) {
         setImageResource(R.drawable.ic_league_default)
-    } else if (icon.startsWith("<defs><path d")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
+    } else if (icon.startsWith("<defs>")) { //經測試 <defs> 標籤下 起始 path d 套件無法解析
         setImageResource(R.drawable.ic_league_default)
     } else {
         if (icon.startsWith("http")) {

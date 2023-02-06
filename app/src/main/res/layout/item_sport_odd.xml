@@ -4,20 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_bbbbbb_ffffff"
+    android:background="@color/color_FFFFFF"
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/color_E8EFFD"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="0.5dp"
-        android:background="@drawable/bg_linear_gradient_withe"
+        android:background="@color/color_D4E1F1"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
@@ -144,15 +137,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingVertical="3dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
-                    android:layout_marginTop="@dimen/margin_4">
+                    android:layout_marginTop="@dimen/margin_5">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -294,7 +286,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -434,7 +427,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="12dp"
                     android:paddingRight="7dp">
@@ -511,7 +504,7 @@
                 android:id="@+id/ll_cs_text_layout"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@color/color_bbbbbb_ffffff"
+                android:background="@color/color_FFFFFF"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 tools:visibility="gone">
@@ -564,7 +557,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_league_odd_btn_pager_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
                 tools:itemCount="1"
@@ -605,17 +598,16 @@
 
     </FrameLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_D4E1F1"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    <!--    <View-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0.5dp"-->
+    <!--        android:background="@color/color_261B3A98"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/bg_dash_hor"
-        android:layerType="software"
-        app:layout_constraintTop_toTopOf="@+id/lin_match"/>
+        android:background="@color/color_261B3A98"
+        app:layout_constraintTop_toTopOf="@+id/lin_match" />
 </androidx.constraintlayout.widget.ConstraintLayout>
