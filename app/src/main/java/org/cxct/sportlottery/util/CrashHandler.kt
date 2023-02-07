@@ -3,8 +3,8 @@ package org.cxct.sportlottery.util
 import android.content.Context
 import android.text.TextUtils
 import android.util.Log
+import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import java.io.*
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,6 +27,7 @@ class CrashHandler private constructor(private val context: Context) : Thread.Un
         val stackTraceInfo = getStackTraceInfo(ex)
         Log.e("Crash", stackTraceInfo)
         saveThrowableMessage(stackTraceInfo)
+        MainTabActivity.reStart(context)
     }
 
     private fun getStackTraceInfo(t: Throwable): String {

@@ -89,7 +89,11 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
 
     private fun initObserve() {
         viewModel.loginSmsResult.observe(this, Observer {
-            showSmeTimer300()
+            if (it.success) {
+                showSmeTimer300()
+            } else {
+                it.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+            }
         })
         viewModel.validResult.observe(this, Observer {
             if (it.success) {
