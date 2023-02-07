@@ -1262,7 +1262,12 @@ fun ImageView.setTeamLogo(icon: String?) {
                 )
                 .into(this)
         } else {
-            setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
+            try {
+                setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                setImageResource(R.drawable.ic_team_default)
+            }
         }
     }
 }
@@ -1282,7 +1287,12 @@ fun ImageView.setLeagueLogo(icon: String?) {
                 )
                 .into(this)
         } else {
-            setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
+            try {
+                setImageDrawable(SvgUtil.getSvgDrawable(context, icon))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                setImageResource(R.drawable.ic_league_default)
+            }
         }
     }
 }

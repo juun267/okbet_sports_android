@@ -191,15 +191,19 @@ object ErrorUtils {
                     }
                     (url.contains(HOT_LIVE_LIST))-> {
                         @Suppress("UNCHECKED_CAST")
-                        return HotMatchLiveResult(it.code, it.msg, it.success,null) as T
+                        return HotMatchLiveResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(Constants.SEND_SMS_FORGET)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return SendSmsResult(it.code, it.msg, it.success,null) as T
+                        return SendSmsResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(INDEX_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.INDEX_SEND_LOGIN_DEVICE_SMS)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return LogoutResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(INDEX_REGISTER)) -> {
                         @Suppress("UNCHECKED_CAST")
