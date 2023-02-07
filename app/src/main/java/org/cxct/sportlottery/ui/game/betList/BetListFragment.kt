@@ -221,8 +221,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.closeAllKeyboard()
             betSingleListAdapter?.closeAllKeyboard()
             betParlayListRefactorAdapter?.closeAllKeyboard()
+            onBackPressed()
         }
-        binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
+//        binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
+        binding.tvBalance.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(0.0)}"
         binding.clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
 
         //設定本金, 可贏的systemCurrencySign
@@ -346,25 +348,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
             binding.apply {
                 clParlayList.visibility = View.GONE
-                clTitle.ivArrow.background = AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_single_bet_delete
-                )
+                clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
             }
 
         } else {
             currentBetType = 1
             betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
             refreshLlMoreOption()
-            binding.clTitle.ivArrow.background =
-                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_arrow_up_double)
+            binding.clTitle.ivArrow.setImageResource(
+                R.drawable.ic_arrow_up_double
+            )
         }
         checkAllAmountCanBet()
         refreshAllAmount()
         checkSingleAndParlayBetLayoutVisible()
-//        btnOddsChangeDes.setOnClickListener {
-////            showOddsChangeTips()
-//        }
 
         clExpandOrStacked.setOnClickListener {
             if (isOpen) {
@@ -418,7 +415,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.clTitle.ivArrow.setOnClickListener {
             onBackPressed()
         }
-        binding.clTitle.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
     }
 
     private fun initAdapter() {
@@ -726,8 +722,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
                     binding.clParlayList.gone()
                     binding.clTotalInfo.gone()
-                    binding.clTitle.ivArrow.background = AppCompatResources.getDrawable(
-                        requireContext(),
+                    binding.clTitle.ivArrow.setImageResource(
                         R.drawable.ic_single_bet_delete
                     )
                     BetInfoRepository.switchSingleMode()
@@ -738,11 +733,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     betListRefactorAdapter?.adapterBetType =
                         BetListRefactorAdapter.BetRvType.PARLAY_SINGLE
                     binding.clTotalInfo.visible()
-                    binding.clTitle.ivArrow.background =
-                        AppCompatResources.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_arrow_up_double
-                        )
+                    binding.clTitle.ivArrow.setImageResource(
+                        R.drawable.ic_arrow_up_double
+                    )
                     refreshLlMoreOption()
                     BetInfoRepository.switchParlayMode()
                     //从单关切换成串关会收起购物车，反之不会
@@ -781,7 +774,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
             it?.let { money ->
-                binding.clTitle.tvBalance.text = TextUtil.formatMoney(money ?: 0.0)
+//                binding.clTitle.tvBalance.text = TextUtil.formatMoney(money)
+//                binding.clTitle.tvBalanceCurrency.text = sConfigData?.systemCurrencySign
+                binding.tvBalance.text =
+                    "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(money)}"
                 betListRefactorAdapter?.userMoney = money
                 betSingleListAdapter?.userMoney = money
                 betParlayListRefactorAdapter?.userMoney = money
@@ -898,7 +894,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     } else {
                         btn_bet?.postDelayed({
                             setBetLoadingVisibility(false)
-                        },800)
+                        }, 800)
 //                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }

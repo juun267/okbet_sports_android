@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
@@ -35,6 +36,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import timber.log.Timber
+import kotlin.math.min
 
 class BetInfoItemViewHolder(
     val contentView: ContentBetInfoItemV32Binding,
@@ -118,7 +120,7 @@ class BetInfoItemViewHolder(
     private fun setupContainerUI(isVisible: Boolean, isLock: Boolean, cannotParlay: Boolean) {
         contentView.apply {
             //editText container
-            clEditTextContainer.isVisible = isVisible
+//            clEditTextContainer.isVisible = isVisible
 //            includeOddsLayout.flIncludeBetTipsSingle.isVisible = isVisible
             //提示文字Container
 //            llSingleTips.isVisible = isVisible
@@ -220,7 +222,7 @@ class BetInfoItemViewHolder(
                     //更新可贏額
                     if (itemData.isInputBet) {
                         etWin.text.clear()
-                        tvCanWin.text = "可赢:--"
+                        tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
                     }
                 } else {
 
@@ -229,13 +231,13 @@ class BetInfoItemViewHolder(
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
                     if (itemData.isInputBet) {
-                        val max = Math.min(inputMaxMoney, Math.max(0.0, userBalance()))
+                        val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
                         if (quota > max) {
                             etBet.apply {
                                 setText(TextUtil.formatInputMoney(max))
                                 setSelection(text.length)
                             }
-                            return@afterTextChanged
+                            return
                         }
                     }
                     val win = itemData.betAmount * getOddsAndSaveRealAmount(
@@ -245,7 +247,7 @@ class BetInfoItemViewHolder(
                     //更新可贏額
                     if (itemData.isInputBet) {
                         etWin.setText(TextUtil.formatInputMoney(win))
-                        tvCanWin.text = TextUtil.formatInputMoney(win)
+                        tvCanWin.text = "${root.context.getString(R.string.bet_win)}: ${sConfigData?.systemCurrencySign} ${TextUtil.formatInputMoney(win)}"
                     }
                 }
                 checkBetLimit(itemData)
@@ -270,12 +272,10 @@ class BetInfoItemViewHolder(
                     itemData.betWin = 0.000
                     itemData.inputBetWinStr = ""
                     itemData.inputWin = ""
-
                     itemData.realAmount = 0.0
                     //更新下注額
                     if (itemData.isInputWin) etBet.text.clear()
                 } else {
-
                     val quota = it.toString().toDouble()
                     itemData.betWin = quota
                     itemData.inputBetWinStr = it.toString()
@@ -357,7 +357,7 @@ class BetInfoItemViewHolder(
         }
         etBet.setOnFocusChangeListener { _, hasFocus ->
 //                    if (!hasFocus) layoutKeyBoard?.hideKeyboard() //兩個輸入匡會互搶focus不能這樣關閉鍵盤
-            itemData.isInputBet = hasFocus
+//            itemData.isInputBet = hasFocus
             if (hasFocus) {
                 etBet.setSelection(etBet.text.length)
             }
