@@ -11,4 +11,4 @@ data class UserRebate(
     val cateId: Int,
     @Json(name = "rebate")
     val rebate: Int,
-)
+) : java.io.Serializable

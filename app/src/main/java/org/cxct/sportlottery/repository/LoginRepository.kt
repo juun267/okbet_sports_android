@@ -20,12 +20,7 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
-import org.cxct.sportlottery.util.AesCryptoUtil
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.GameConfigManager
-import org.cxct.sportlottery.util.KV_STR_SELECT_ODDS_MODE
-import org.cxct.sportlottery.util.KvUtils
-import org.cxct.sportlottery.util.toJson
+import org.cxct.sportlottery.util.*
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
@@ -140,10 +135,8 @@ object LoginRepository {
                 //於遊客帳號添加投注項目至注單內後直接註冊正式帳號 因不會走登出流程 所以直接先清出local user info
                 clear()
 
-                isCheckToken = true
                 account = registerRequest.userName //預設存帳號
-                updateLoginData(it.loginData)
-                updateUserInfo(it.loginData)
+                setUpLoginData(it.loginData)
             }
         }
 
@@ -155,32 +148,42 @@ object LoginRepository {
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
-                isCheckToken = true
-                updateLoginData(it.loginData)
-                updateUserInfo(it.loginData)
+                if (it.loginData?.deviceValidateStatus == 1) {
+                    setUpLoginData(it.loginData)
+                }
             }
         }
 
         return loginResponse
     }
 
-    suspend fun sendLoginDeviceSms(): Response<LogoutResult> {
-        return OneBoSportApi.indexService.sendLoginDeviceSms()
+    suspend fun setUpLoginData(loginData: LoginData?) {
+        isCheckToken = true
+        updateLoginData(loginData)
+        updateUserInfo(loginData)
     }
-    suspend fun validateLoginDeviceSms(validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest): Response<LogoutResult> {
-        return OneBoSportApi.indexService.validateLoginDeviceSms(validateLoginDeviceSmsRequest)
+
+    suspend fun sendLoginDeviceSms(token: String): Response<LogoutResult> {
+        return OneBoSportApi.indexService.sendLoginDeviceSms(token)
+    }
+
+    suspend fun validateLoginDeviceSms(
+        token: String,
+        validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest,
+    ): Response<LogoutResult> {
+        return OneBoSportApi.indexService.validateLoginDeviceSms(token,
+            validateLoginDeviceSmsRequest)
     }
 
 
     suspend fun loginForGuest(): Response<LoginResult> {
 
-        val loginForGuestResponse = OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
+        val loginForGuestResponse =
+            OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
 
         if (loginForGuestResponse.isSuccessful) {
             loginForGuestResponse.body()?.let {
-                isCheckToken = true
-                updateLoginData(it.loginData)
-                updateUserInfo(it.loginData)
+                setUpLoginData(it.loginData)
             }
         }
 
