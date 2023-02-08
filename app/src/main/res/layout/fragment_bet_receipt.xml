@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
-                tools:itemCount="2"
+                tools:itemCount="1"
                 tools:listitem="@layout/item_match_receipt" />
 
             <!--            <View-->
@@ -110,17 +110,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@android:color/white">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="4dp"-->
+<!--            android:background="@android:color/white">-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@drawable/bg_gradient_bottom_sheet_shadow"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </LinearLayout>
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="4dp"-->
+<!--                android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent" />-->
+<!--        </LinearLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
@@ -211,17 +211,16 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_202541_FFFFFF"
-            android:paddingTop="10dp">
+            android:background="@color/color_202541_FFFFFF">
 
             <LinearLayout
                 android:id="@+id/lin_result_status"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:layout_marginHorizontal="14dp"
+                android:layout_marginHorizontal="10dp"
                 android:background="@drawable/drawable_bet_successful"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="15dp"
+                android:paddingHorizontal="10dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -245,11 +244,11 @@
                 android:id="@+id/lin_result_status_processing"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:layout_marginHorizontal="14dp"
+                android:layout_marginHorizontal="10dp"
                 android:background="@drawable/drawable_bet_processing"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingHorizontal="15dp"
+                android:paddingHorizontal="10dp"
                 android:visibility="gone"
                 tools:visibility="gone">
 
@@ -271,46 +270,71 @@
 
         </FrameLayout>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:background="@color/color_202541_FFFFFF"
+            android:layout_height="21dp">
+
+            <View
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_e3e8ee"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_202541_FFFFFF"
-            android:padding="@dimen/margin_14">
+            android:paddingHorizontal="14dp"
+            android:paddingBottom="14dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tv_currency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_2"
                     android:textColor="@color/color_FFFFFF_414655"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize14sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tv_balance"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     tools:text="₱" />
 
                 <TextView
                     android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_10"
                     android:textColor="@color/color_FFFFFF_414655"
-                    android:textSize="@dimen/textSize18sp"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/textSize14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/iv_arrow"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_currency"
+                    app:layout_constraintTop_toTopOf="@+id/tv_currency"
                     tools:text="9,875,241.000" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_account_history_balance"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_535D76"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_balance"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/btnLastStep"
-                android:layout_width="100dp"
+                android:layout_width="78dp"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bg_radius_8_bet_last_step"
@@ -323,7 +347,7 @@
 
             <TextView
                 android:id="@+id/btn_complete"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/bet_button_height"
                 android:layout_weight="1"
                 android:background="@drawable/button_radius_8_bet_button"
