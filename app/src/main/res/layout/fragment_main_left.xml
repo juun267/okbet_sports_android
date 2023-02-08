@@ -555,6 +555,7 @@
                     android:id="@+id/rv_language"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
                     android:paddingVertical="@dimen/dp_10"
                     android:background="@color/color_bbbbbb_ffffff"
                     android:visibility="gone"

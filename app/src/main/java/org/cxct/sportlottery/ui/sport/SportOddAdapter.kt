@@ -412,8 +412,8 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             }
 //            滚球动画 直播 显示控制
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
-            if (item.matchInfo?.isLive == 1) {
-                if (item.matchInfo?.liveVideo == 1) {
+            if (item.matchInfo?.liveVideo == 1) {
+                if (item.matchInfo?.isLive == 1) {
                     itemView.iv_live.isVisible = true
                     itemView.iv_play.isVisible = false
                 } else {
