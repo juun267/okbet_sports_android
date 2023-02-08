@@ -93,17 +93,17 @@ class LoginViewModel(
         }
     }
 
-    fun sendLoginDeviceSms() {
+    fun sendLoginDeviceSms(token: String) {
         viewModelScope.launch {
             doNetwork(androidContext) {
-                loginRepository.sendLoginDeviceSms()
+                loginRepository.sendLoginDeviceSms(token)
             }?.let { result ->
                 _loginSmsResult.postValue(result)
             }
         }
     }
 
-    fun validateLoginDeviceSms(code: String, deviceId: String) {
+    fun validateLoginDeviceSms(token: String, code: String, deviceId: String) {
 
         val validateRequest = ValidateLoginDeviceSmsRequest(
             loginEnvInfo = deviceId,
@@ -113,7 +113,7 @@ class LoginViewModel(
 
         viewModelScope.launch {
             doNetwork(androidContext) {
-                loginRepository.validateLoginDeviceSms(validateRequest)
+                loginRepository.validateLoginDeviceSms(token, validateRequest)
             }?.let { result ->
                 //手機驗證成功後, 獲取最新的用戶資料
                 if (result.success) {

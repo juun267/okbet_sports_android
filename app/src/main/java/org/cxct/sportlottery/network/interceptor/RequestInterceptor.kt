@@ -8,9 +8,7 @@ import org.cxct.sportlottery.repository.KEY_TOKEN
 import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
-
 import java.io.IOException
-import kotlin.jvm.Throws
 
 class RequestInterceptor(private val context: Context?) : Interceptor {
     private val sharedPref: SharedPreferences? by lazy {
@@ -37,7 +35,7 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
 
         builder.addHeader("x-lang", LanguageManager.getSelectLanguage(context).key)
 
-        sharedPref?.getString(KEY_TOKEN, "")?.let {
+        sharedPref?.getString(KEY_TOKEN, null)?.let {
             builder.addHeader("x-session-token", it)
         }
 
