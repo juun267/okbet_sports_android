@@ -52,7 +52,7 @@
     <string name="register_rules_2nd_half">&#160;của %s</string>
     <string name="register_not_ph_official">Tôi không phải là quan chức chính phủ và / hoặc nhân viên có liên hệ trực tiếp với hoạt động của chính phủ Philippines hoặc bất kỳ cơ quan nào của chính phủ.</string>
     <string name="register_not_ph_school">Tôi không phải là sinh viên của bất kỳ trường học, cao đẳng hoặc đại học nào ở Philippines</string>
-    <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OKbet có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
+    <string name="register_rule_okbet">Tôi hiểu rằng nếu thông tin tôi cung cấp bị phát hiện là không chính xác, OKBET có quyền áp dụng hình phạt đối với tài khoản của tôi theo Điều khoản và Điều kiện Phần 5.1 - 5.2.</string>
     <string name="register_rule_agree_all">Tôi đồng ý với tất cả các điều khoản và thoả thuận nói trên.</string>
     <string name="register_success">Đăng ký thành công</string>
     <string name="register_jump">Trang sẽ chuyển sang %s 5 giây sau đó.</string>
@@ -1273,7 +1273,7 @@
     <string name="comingsoon">Sắp ra mắt</string>
     <string name="forget_password">Quên mật khẩu</string>
     <string name="member_name">Người chơi</string>
-    <string name="login_welcome">Hi, Chào mừng OKbet~</string>
+    <string name="login_welcome">Hi, Chào mừng OKBET~</string>
     <string name="match_live">Trận đấu live</string>
     <string name="tiger_machine">Slot</string>
     <string name="hot_handicap">"Thị trường hot "</string>

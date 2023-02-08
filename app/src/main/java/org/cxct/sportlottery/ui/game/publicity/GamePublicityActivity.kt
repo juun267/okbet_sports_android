@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game_publicity.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -28,7 +28,6 @@ import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity.Companion.FROM_ACTIVITY
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -36,7 +35,6 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.news.NewsActivity
 import org.cxct.sportlottery.util.*
-import org.parceler.Parcels
 
 class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class),
     View.OnClickListener {
@@ -322,11 +320,7 @@ class GamePublicityActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel
     }
 
     private fun goRegisterPage() {
-        if (getString(R.string.app_name).equals("OKbet")) {
-            startActivity(Intent(this@GamePublicityActivity, RegisterOkActivity::class.java))
-        } else {
-            startActivity(Intent(this@GamePublicityActivity, RegisterActivity::class.java))
-        }
+        startActivity(Intent(this@GamePublicityActivity, RegisterOkActivity::class.java))
     }
 
     private fun goLoginPage() {

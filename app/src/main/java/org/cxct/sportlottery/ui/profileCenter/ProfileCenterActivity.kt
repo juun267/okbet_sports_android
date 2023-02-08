@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_profile_center.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
@@ -40,7 +40,6 @@ import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -166,12 +165,7 @@ class ProfileCenterActivity :
         }
 
         btn_register.setOnClickListener {
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this, RegisterOkActivity::class.java))
-            } else {
-                startActivity(Intent(this, RegisterActivity::class.java))
-            }
-
+            startActivity(Intent(this, RegisterOkActivity::class.java))
         }
 
         tv_odds_type.setOnClickListener {
@@ -450,12 +444,7 @@ class ProfileCenterActivity :
                             startActivity(Intent(this, ProfileCenterActivity::class.java))
                         }
                         else -> { //尚未登入
-                            if (getString(R.string.app_name).equals("OKbet")) {
-                                startActivity(Intent(this, RegisterOkActivity::class.java))
-                            } else {
-                                startActivity(Intent(this, RegisterActivity::class.java))
-                            }
-
+                            startActivity(Intent(this, RegisterOkActivity::class.java))
                         }
                     }
                     true
@@ -772,10 +761,9 @@ class ProfileCenterActivity :
     private fun updateThirdOpenUI() {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
         // 暫時隱藏入口 by Bee
-        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || baseContext.getString(R.string.app_name) != "OKbet") {
+        if (sConfigData?.creditSystem == FLAG_CREDIT_OPEN || baseContext.getString(R.string.app_name) != "OKBET") {
             btn_account_transfer.visibility = if (!thirdOpen) View.GONE else View.VISIBLE
-        }
-        else {
+        } else {
             btn_account_transfer.visibility = /*if (!thirdOpen)*/ View.GONE /*else View.VISIBLE*/
         }
         btn_other_bet_record.visibility = if (!thirdOpen) View.GONE else View.VISIBLE

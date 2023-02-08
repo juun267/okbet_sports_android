@@ -11,7 +11,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -58,16 +57,12 @@ class QPFragment(private val gameCateData: GameCateData) : BaseFragment<MainView
         hideLoading()
         when (result.resultType) {
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
-            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER ->if (getString(R.string.app_name).equals(
-                    "OKbet"
-                )
-            ) {
+            EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error),
+                result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.NEED_REGISTER ->
                 context?.startActivity(Intent(context, RegisterOkActivity::class.java))
-            } else {
-                context?.startActivity(Intent(context, RegisterActivity::class.java))
-            }
-            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
+            EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error),
+                result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {
             }
         }
