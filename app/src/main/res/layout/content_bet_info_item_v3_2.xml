@@ -320,6 +320,7 @@
                     android:layout_height="wrap_content"
                     android:text="可赢:--"
                     android:textSize="12sp"
+                    android:textColor="@color/color_414655"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textView"
                     app:layout_constraintTop_toBottomOf="@+id/textView"

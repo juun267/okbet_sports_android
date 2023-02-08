@@ -224,7 +224,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             onBackPressed()
         }
 //        binding.clTitle.tvBalance.text = TextUtil.formatMoney(0.0)
-        binding.tvBalance.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatMoney(0.0)}"
+        binding.tvBalance.text = "${sConfigData?.systemCurrencySign}${TextUtil.formatMoney(0.0)}"
         binding.clTitle.ivArrow.rotation = 180f //注單開啟後，箭頭朝下
 
         //設定本金, 可贏的systemCurrencySign

@@ -395,6 +395,7 @@
     <color name="color_111216">#111216</color>
     <color name="color_025BE8">#025BE8</color>
     <color name="color_A5A9B3">#A5A9B3</color>
+    <color name="color_EFF4FF">#EFF4FF</color>
     <color name="color_B73A20">#B73A20</color>
     <color name="background">@color/color_F0F5FA</color>
     <color name="color_A36200">#A36200</color>

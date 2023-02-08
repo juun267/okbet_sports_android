@@ -213,6 +213,7 @@ class BetInfoItemViewHolder(
         val tw: TextWatcher?
         tw = object : TextWatcher {
             override fun afterTextChanged(it: Editable?) {
+                Timber.d("textChange:${it.toString()}")
                 if (it.isNullOrEmpty()) {
                     itemData.betAmount = 0.000
                     itemData.inputBetAmountStr = ""
@@ -220,35 +221,38 @@ class BetInfoItemViewHolder(
 
                     itemData.realAmount = 0.0
                     //更新可贏額
-                    if (itemData.isInputBet) {
-                        etWin.text.clear()
-                        tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
-                    }
+//                    if (itemData.isInputBet) {
+                    etWin.text.clear()
+                    tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
+//                    }
                 } else {
 
                     val quota = it.toString().toDouble()
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-                    if (itemData.isInputBet) {
-                        val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
-                        if (quota > max) {
-                            etBet.apply {
-                                setText(TextUtil.formatInputMoney(max))
-                                setSelection(text.length)
-                            }
-                            return
+//                    if (itemData.isInputBet) {
+                    val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
+                    if (quota > max) {
+                        etBet.apply {
+                            setText(TextUtil.formatInputMoney(max))
+                            setSelection(text.length)
                         }
+                        return
                     }
+//                    }
                     val win = itemData.betAmount * getOddsAndSaveRealAmount(
                         itemData, currentOddsType
                     )
 //                            Timber.d("win: $win")
                     //更新可贏額
-                    if (itemData.isInputBet) {
-                        etWin.setText(TextUtil.formatInputMoney(win))
-                        tvCanWin.text = "${root.context.getString(R.string.bet_win)}: ${sConfigData?.systemCurrencySign} ${TextUtil.formatInputMoney(win)}"
-                    }
+//                    if (itemData.isInputBet) {
+                    etWin.setText(TextUtil.formatInputMoney(win))
+                    tvCanWin.text =
+                        "${root.context.getString(R.string.bet_win)}: ${sConfigData?.systemCurrencySign} ${
+                            TextUtil.formatInputMoney(win)
+                        }"
+//                    }
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
@@ -357,7 +361,7 @@ class BetInfoItemViewHolder(
         }
         etBet.setOnFocusChangeListener { _, hasFocus ->
 //                    if (!hasFocus) layoutKeyBoard?.hideKeyboard() //兩個輸入匡會互搶focus不能這樣關閉鍵盤
-//            itemData.isInputBet = hasFocus
+            itemData.isInputBet = hasFocus
             if (hasFocus) {
                 etBet.setSelection(etBet.text.length)
             }
@@ -610,16 +614,17 @@ class BetInfoItemViewHolder(
 //            "${tvName.text} [${root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)}]"
 //        tvName.text = tvNamePlusOddsTypeName
 
-        tvNameType.text = root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)
+        tvNameType.text =
+            root.context.getString(if (adapterBetType == BetListRefactorAdapter.BetRvType.SINGLE) currentOddsType.res else OddsType.EU.res)
 
         //前面加上MatchType名稱
         itemData.matchType?.let {
             val matchTypeName = root.context.getString(it.resId)
 //            tvName.text = matchTypeName.plus(" ${tvName.text}")
-            tvMatchType.text =  matchTypeName
+            tvMatchType.text = matchTypeName
         }
 
-        
+
     }
 
     private fun TextView.setOUStyle(isOUType: Boolean) {

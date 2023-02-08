@@ -40,7 +40,7 @@ class SingleViewHolder private constructor(itemView: View) :
         position: Int
     ) {
         itemView.apply {
-            top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
+//            top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
             val currencySign = sConfigData?.systemCurrencySign
             tv_winnable_amount_title.text =

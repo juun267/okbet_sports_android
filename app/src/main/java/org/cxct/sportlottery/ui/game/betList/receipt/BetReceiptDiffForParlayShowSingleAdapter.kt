@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
-import kotlinx.android.synthetic.main.item_match_receipt.view.top_space
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -89,7 +88,6 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
 
         fun bind(itemData: MatchOdd?, oddsType: OddsType, position: Int, matchType: MatchType?) {
             itemView.apply {
-                top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
                 //展示串單內容，其中狀態和金額不用顯示
                 tv_bet_status_single.isVisible = false
