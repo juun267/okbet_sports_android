@@ -52,7 +52,7 @@
     <string name="register_rules_2nd_half"></string>
     <string name="register_not_ph_official">I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.</string>
     <string name="register_not_ph_school">I am not a student of any school, college, or university in the Philippines.</string>
-    <string name="register_rule_okbet">I understand that should my provided information has been found incorrect, OKbet has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
+    <string name="register_rule_okbet">I understand that should my provided information has been found incorrect, OKBET has the right to impose a penalty on my account subject to its Terms and Conditions Sections 5.1 - 5.2.</string>
     <string name="register_rule_agree_all">I agree to all the above terms and conditions.</string>
     <string name="register_success">Register successfully</string>
     <string name="register_jump">The page will be jumping to %1$s 5 sec later.</string>
@@ -1016,7 +1016,7 @@
 
     <!--region 確認年齡彈窗-->
     <string name="dialog_age_verify_statement">
-        OKbet is committed to providing a safe, comfortable gaming experience for all our customers.
+        OKBET is committed to providing a safe, comfortable gaming experience for all our customers.
         \n\nFor the vast majority of people, gaming is an enjoyable leisure activity. However, we recognize that there are times when gaming ceases being fun for some customers.
         \n\nWe strongly encourage you to take some time to read our RESPONSIBLE GAMING infographic and statement before you proceed. Users aged 21 and below are strictly not allowed.
         \n\nOur responsibility is to help our customers gamble safely and responsibly, reduce the risk of harm, and help people who need treatment get it.
@@ -1038,7 +1038,7 @@
         \nStart your play in a relaxed state and with a clear mind. Don\'t be rash. While playing, quick decisions made under stress or in moments of high emotion can be harmful.
         \n\nKeep a healthy social mindset.
         \nDon\'t take the games too seriously. Being more open and friendly to people you play with makes gaming more fun and exciting.
-        \n\nIf you feel that you or a family member has a gambling problem, you may contact our customer support at: (customer service e-mail/phone). Also, OKbet has tied up with support facilities to address concerns related to gambling problems. You may directly contact the following help centers:
+        \n\nIf you feel that you or a family member has a gambling problem, you may contact our customer support at: (customer service e-mail/phone). Also, OKBET has tied up with support facilities to address concerns related to gambling problems. You may directly contact the following help centers:
         \n\nLife Change Recovery Center
         \nDr. Randy Misael S. Dellosa
         \n105 Scout Rallos Street, Kamuning
@@ -1052,17 +1052,17 @@
         \n12 Orestes Lane, Mariposa Street
         \nTel. No. (02) 502-0600; (0917) 856-0623
         \nEmail: help@bridgesofhope.ph
-        \n\nI agree to the OKbet Terms and Conditions and the states that:
-        \n1.I allow OKbet to send me updates and promotions in accordance with the Privacy Policy
-        \n2.I am over 21 years of age and have read and agree to the OKbet\'s Terms &amp; Conditions
+        \n\nI agree to the OKBET Terms and Conditions and the states that:
+        \n1.I allow OKBET to send me updates and promotions in accordance with the Privacy Policy
+        \n2.I am over 21 years of age and have read and agree to the OKBET\'s Terms &amp; Conditions
         \n3.I am not a government official and/or employee directly connected with the operation of the Philippine government or any of its agencies.
         \n4.I am not a student of any school, college, or university in the Philippines.
-        \n5.I understand that should my provided information has been found incorrect, OKbet has the right to impose a penalty on my account subject to its Terms and Conditions.
+        \n5.I understand that should my provided information has been found incorrect, OKBET has the right to impose a penalty on my account subject to its Terms and Conditions.
     </string>
-    <string name="dialog_age_verify_hint">I agree to the OKbet</string>
+    <string name="dialog_age_verify_hint">I agree to the OKBET</string>
     <string name="dialog_age_verify_confirm">I AM OVER 21 YEARS OLD</string>
     <string name="dialog_age_verify_exit">EXIT</string>
-    <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKbet Terms &amp; Conditions</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">I agree to the OKBET Terms &amp; Conditions</string>
     <!--endregion-->
 
     <string name="coming_soon">Soon</string>
@@ -1247,7 +1247,7 @@
     <string name="select_file">Select file</string>
     <string name="select_file1">Select file</string>
     <string name="error_recommend_agent">No matched</string>
-    <string name="login_welcome">Hi, Welcome to OKbet~</string>
+    <string name="login_welcome">Hi, Welcome to OKBET~</string>
     <string name="betting">Betting</string>
     <string name="other_bet">Other betting</string>
     <string name="sport_match">Matches</string>

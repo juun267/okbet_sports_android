@@ -1231,9 +1231,9 @@ fun isMultipleSitePlat(): Boolean =
     ) == "OKbet9"
 
 /**
- * 判斷當前是否為OKbet平台
+ * 判斷當前是否為OKBET平台
  */
-fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name) == "OKbet"
+fun isOKPlat(): Boolean = LocalUtils.getString(R.string.app_name).equals("OKBET", true)
 
 fun isUAT(): Boolean = BuildConfig.FLAVOR == "phuat"
 

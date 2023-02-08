@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_my_favorite.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -38,7 +37,6 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
-import org.parceler.Parcels
 
 class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
@@ -83,12 +81,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
 
         btn_register.setOnClickListener {
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this@MyFavoriteActivity, RegisterOkActivity::class.java))
-            } else {
-                startActivity(Intent(this@MyFavoriteActivity, RegisterActivity::class.java))
-            }
-
+            startActivity(Intent(this@MyFavoriteActivity, RegisterOkActivity::class.java))
         }
 
         tv_odds_type.setOnClickListener {

@@ -19,7 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
-import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
+import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -57,7 +57,6 @@ import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.game.publicity.PublicitySportEntrance
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
@@ -230,11 +229,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         btn_register.setOnClickListener {
             closeLeftMenu()
-            if (getString(R.string.app_name).equals("OKbet")) {
-                startActivity(Intent(this@GameActivity, RegisterOkActivity::class.java))
-            } else {
-                startActivity(Intent(this@GameActivity, RegisterActivity::class.java))
-            }
+            startActivity(Intent(this@GameActivity, RegisterOkActivity::class.java))
         }
 
         tv_odds_type.setOnClickListener {

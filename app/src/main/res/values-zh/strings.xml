@@ -52,7 +52,7 @@
     <string name="register_rules_2nd_half"></string>
     <string name="register_not_ph_official">我不是菲律宾政府或与其相关机构的政府官员或雇员;</string>
     <string name="register_not_ph_school">我不是菲律宾任何学校、学院或大学的学生;</string>
-    <string name="register_rule_okbet">我明白，如果我提供的信息被发现不正确，OKbet 有权根据其条款和条件第 5.1 - 5.2 条对我的帐户进行处罚。</string>
+    <string name="register_rule_okbet">我明白，如果我提供的信息被发现不正确，OKBET 有权根据其条款和条件第 5.1 - 5.2 条对我的帐户进行处罚。</string>
     <string name="register_rule_agree_all">我同意上述所有条款和条件。</string>
     <string name="register_success">注册成功</string>
     <string name="register_jump">将在5秒后跳转至%s...</string>
@@ -1014,7 +1014,7 @@
 
     <!--region 確認年齡彈窗-->
     <string name="dialog_age_verify_statement">
-        OKbet 致力于为所有客户提供安全、舒适的游戏体验。
+        OKBET 致力于为所有客户提供安全、舒适的游戏体验。
         \n\n对于绝大多数人来说，游戏是一项令人愉快的休闲活动。但是，我们意识到有时候游戏对某些客户来说不再有趣。
         \n\n我们强烈建议您在继续之前花一些时间阅读我们的博彩责任和声明。并且，严禁 21 岁及以下的用户使用。
         \n\n我们的责任是帮助我们的客户安全、负责任地赌博，降低伤害风险，并帮助需要治疗的人得到治疗。
@@ -1040,7 +1040,7 @@
         \n\n保持健康的社会心态
         \n不要把游戏看得太认真。对与你一起玩的人更加开放和友好，让游戏变得更加有趣和令人兴奋。
         \n\n如果您觉得您或您的家人有赌博问题，您可以通过以下方式联系我们的客户支持：（客户服务电子邮件/电话）。
-        \n此外，OKbet 已与支持设施合作，以解决与赌博问题相关的问题。您可以直接联系以下帮助中心：
+        \n此外，OKBET 已与支持设施合作，以解决与赌博问题相关的问题。您可以直接联系以下帮助中心：
         \n\nLife Change Recovery Center
         \nDr. Randy Misael S. Dellosa
         \n105 Scout Rallos Street, Kamuning
@@ -1054,16 +1054,16 @@
         \n12 Orestes Lane, Mariposa Street
         \nTel. No. (02) 502-0600; (0917) 856-0623
         \nEmail: help@bridgesofhope.ph
-        \n\n我同意 OKbet 条款和条件以及以下声明：
-        \n1.我允许OKbet根据隐私政策向我发送更新和促销信息
-        \n2.我已年满 21 岁并已阅读并同意 OKbet 的条款和条件
+        \n\n我同意 OKBET 条款和条件以及以下声明：
+        \n1.我允许OKBET根据隐私政策向我发送更新和促销信息
+        \n2.我已年满 21 岁并已阅读并同意 OKBET 的条款和条件
         \n3.我不是与菲律宾政府或其任何机构的运作直接相关的政府官员和/或雇员。
         \n4.我不是菲律宾任何学校、学院或大学的学生。
-        \n5.我明白，如果我提供的信息被发现不正确，OKbet 有权根据其条款和条件对我的帐户进行处罚最终权利。</string>
-    <string name="dialog_age_verify_hint">我接受并同意OKbet</string>
+        \n5.我明白，如果我提供的信息被发现不正确，OKBET 有权根据其条款和条件对我的帐户进行处罚最终权利。</string>
+    <string name="dialog_age_verify_hint">我接受并同意OKBET</string>
     <string name="dialog_age_verify_confirm">我已年满21岁</string>
     <string name="dialog_age_verify_exit">离开</string>
-    <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKbet规则与条款</string>
+    <string name="dialog_age_verify_hint_and_terms_conditions">我接受并同意OKBET规则与条款</string>
     <!--endregion-->
 
     <string name="esports">电子竞技</string>
@@ -1251,7 +1251,7 @@
     <string name="join_us_win_wealth">加入我们，共赢财富</string>
     <string name="payment_method">支付方式</string>
     <string name="error_recommend_agent">未匹配到相关代理</string>
-    <string name="login_welcome">Hi, 欢迎来到OKbet～</string>
+    <string name="login_welcome">Hi, 欢迎来到OKBET～</string>
     <string name="betting">投注</string>
     <string name="other_bet">其他投注</string>
     <string name="sport_match">场赛事</string>
