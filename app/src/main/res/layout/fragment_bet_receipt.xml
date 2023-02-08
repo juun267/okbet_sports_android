@@ -10,10 +10,10 @@
     tools:context=".ui.game.betList.receipt.BetReceiptFragment">
 
     <LinearLayout
-        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginTop="80dp"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,9 +27,10 @@
 
             <ImageView
                 android:id="@+id/iv_arrow"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="14dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+
                 android:src="@drawable/ic_arrow_down_double"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,29 +84,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="10" />
 
-            <TextView
-                android:id="@+id/tv_currency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_2"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_balance"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="₱" />
-
-            <TextView
-                android:id="@+id/tv_balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:textColor="@color/color_FFFFFF_414655"
-                android:textSize="@dimen/textSize18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_arrow"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="9,875,241.000" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -299,6 +277,36 @@
             android:layout_height="wrap_content"
             android:background="@color/color_202541_FFFFFF"
             android:padding="@dimen/margin_14">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_2"
+                    android:textColor="@color/color_FFFFFF_414655"
+                    android:textSize="@dimen/textSize16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_balance"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="₱" />
+
+                <TextView
+                    android:id="@+id/tv_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:textColor="@color/color_FFFFFF_414655"
+                    android:textSize="@dimen/textSize18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_arrow"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="9,875,241.000" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/btnLastStep"

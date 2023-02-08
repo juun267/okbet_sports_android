@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -47,6 +48,8 @@ class SingleViewHolder private constructor(itemView: View) :
                 context.getString(R.string.bet_receipt_win_quota_with_sign) + "："
             tv_bet_amount_title.text =
                 context.getString(R.string.bet_receipt_bet_quota_with_sign) + "："
+
+            tv_name_type.text = context.getString(oddsType.res)
 
             itemData.apply {
                 matchOdds?.firstOrNull()?.apply {
@@ -78,7 +81,7 @@ class SingleViewHolder private constructor(itemView: View) :
                     llcOrder.gone()
                 } else {
                     llcOrder.visible()
-                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else ":${orderNo}"
+                    tvBetOrder.text = if (orderNo.isEmpty()) "-" else "：${orderNo}"
                     tvBetTime.text = TimeUtil.timeFormat(betConfirmTime, "yyyy-MM-dd HH:mm:ss")
                 }
 
