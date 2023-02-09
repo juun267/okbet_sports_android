@@ -119,7 +119,7 @@ class MainHomeFragment :
             homeRecommendListener = HomeRecommendListener(
 
                 onItemClickListener = { matchInfo ->
-                    if (viewModel.isLogin.value != true) {
+                    if (isCreditSystem() && viewModel.isLogin.value != true) {
                         getMainTabActivity().showLoginNotify()
                     }else{
                         matchInfo?.let {
@@ -136,7 +136,7 @@ class MainHomeFragment :
                     }
 
                     avoidFastDoubleClick()
-                    if (viewModel.isLogin.value != true) {
+                    if (isCreditSystem() &&  viewModel.isLogin.value != true) {
                         getMainTabActivity().showLoginNotify()
                         return@HomeRecommendListener
                     }
