@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.*
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.core.content.ContextCompat
@@ -432,8 +434,12 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     private fun releaseWebView() {
-        wv_analyze.destroy()
-        wv_chat.destroy()
+        if(::wv_analyze.isInitialized) {
+            wv_analyze.destroy()
+        }
+        if(::wv_chat.isInitialized) {
+            wv_chat.destroy()
+        }
     }
 
     private fun initUI() {
@@ -1437,7 +1443,18 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
         }
     }
 
+
+    private lateinit var wv_analyze: WebView
+    private fun initAnalyzeWV() {
+        if(!::wv_analyze.isInitialized) {
+            wv_analyze = WebView(this)
+            wv_analyze.isNestedScrollingEnabled = false
+            ns_analyze.addView(wv_analyze, FrameLayout.LayoutParams(-1, -1))
+        }
+    }
+
     fun setupAnalyze(matchId: String) {
+        initAnalyzeWV()
         wv_analyze.apply {
             settings.javaScriptEnabled = true
 
@@ -1454,23 +1471,33 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
 
     fun loginChat(host: String, chatLiveLoginData: ChatLiveLoginData?) {
         if (chatLiveLoginData == null) {
-            var builder = StringBuilder(host + "?")
+            var builder = StringBuilder("$host?")
             builder.append("device=android")
             builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
-            LogUtil.d("builder=" + builder.toString())
+            LogUtil.d("builder=$builder")
             wv_chat.loadUrl(builder.toString())
         } else {
-            var builder = StringBuilder(host + "?")
+            var builder = StringBuilder("$host?")
             builder.append("room=" + matchInfo?.roundNo)
             builder.append("&uid=" + chatLiveLoginData.userData?.userId)
             builder.append("&token=" + URLEncoder.encode(chatLiveLoginData.liveToken))
             builder.append("&role=" + 1)
             builder.append("&device=android")
             builder.append("&lang=" + LanguageManager.getSelectLanguage(this).key)
-            LogUtil.d("builder=" + builder.toString())
+            LogUtil.d("builder=$builder")
             wv_chat.loadUrl(builder.toString())
         }
         Log.d("hjq", "loginChat=" + host)
+    }
+
+    private lateinit var wv_chat: WebView
+    private fun initChatWV() {
+        if(!::wv_chat.isInitialized) {
+            wv_chat = WebView(this)
+            val lp = FrameLayout.LayoutParams(-1, 60.dp)
+            lp.gravity = Gravity.BOTTOM
+            detailLayout.addView(wv_chat, lp)
+        }
     }
 
     fun setupInput() {
@@ -1482,6 +1509,8 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
             showChatWebView(false)
             return
         }
+
+        initChatWV()
         wv_chat.apply {
             settings.apply {
                 javaScriptEnabled = true
@@ -1557,7 +1586,15 @@ class SportDetailActivity : BaseBottomNavActivity<SportViewModel>(SportViewModel
     }
 
     fun showChatWebView(visible: Boolean) {
-        wv_chat.isVisible = visible
+        if (visible) {
+            initChatWV()
+            wv_chat.isVisible = true
+        } else {
+            if (::wv_chat.isInitialized) {
+                wv_chat.isVisible = false
+            }
+        }
+
         (cl_bet_list_bar.layoutParams as ConstraintLayout.LayoutParams).apply {
             bottomMargin = if (visible) 57.dp else 0
         }

@@ -184,6 +184,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
+        android:id="@+id/detailLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -203,19 +204,8 @@
             android:layout_height="match_parent"
             android:visibility="gone">
 
-            <WebView
-                android:id="@+id/wv_analyze"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false" />
         </androidx.core.widget.NestedScrollView>
 
-        <WebView
-            android:id="@+id/wv_chat"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="bottom"
-            android:visibility="gone" />
     </FrameLayout>
 
 
