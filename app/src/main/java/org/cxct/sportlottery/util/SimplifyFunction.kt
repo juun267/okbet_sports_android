@@ -40,13 +40,11 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.extentions.screenHeight
 import org.cxct.sportlottery.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
-import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
@@ -55,7 +53,6 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -697,51 +694,6 @@ fun isThirdTransferOpen(): Boolean {
 //    return true // for test
 }
 
-/**
- * 篩選玩法
- * 更新翻譯、排序
- */
-fun MutableList<LeagueOdd>.updateOddsSort(
-    gameType: String?,
-    playCategoryAdapter: PlayCategoryAdapter,
-) {
-    val playSelected = playCategoryAdapter.data.find { it.isSelected }
-    val selectionType = playSelected?.selectionType
-    val playSelectedCode = playSelected?.code
-    val playCateMenuCode = when (playSelected?.selectionType) {
-        SelectionType.SELECTABLE.code -> {
-            playSelected.playCateList?.find { it.isSelected }?.code
-        }
-
-        SelectionType.UN_SELECTABLE.code -> {
-            playSelected.code
-        }
-
-        else -> null
-    }
-
-    val mPlayCateMenuCode =
-        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else playSelectedCode
-
-    val oddsSortFilter =
-        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else PlayCateMenuFilterUtils.filterOddsSort(
-            gameType,
-            mPlayCateMenuCode
-        )
-    val playCateNameMapFilter =
-        if (selectionType == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-            gameType,
-            playSelectedCode,
-            mPlayCateMenuCode
-        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(gameType, mPlayCateMenuCode)
-
-    this.forEach { LeagueOdd ->
-        LeagueOdd.matchOdds.forEach { MatchOdd ->
-            MatchOdd.oddsSort = oddsSortFilter
-            MatchOdd.playCateNameMap = playCateNameMapFilter
-        }
-    }
-}
 
 fun getLevelName(context: Context, level: Int): String {
     val jsonString = LocalJsonUtil.getLocalJson(

@@ -410,9 +410,9 @@ dependencies {
     //implementation 'cn.jiguang.sdk:janalytics:2.1.4'
 
     //room
-    implementation "androidx.room:room-runtime:$version_room"
-    implementation "androidx.room:room-ktx:$version_room"
-    kapt "androidx.room:room-compiler:$version_room"
+//    implementation "androidx.room:room-runtime:$version_room"
+//    implementation "androidx.room:room-ktx:$version_room"
+//    kapt "androidx.room:room-compiler:$version_room"
 
     //NodeMediaClient
     implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.9.16'

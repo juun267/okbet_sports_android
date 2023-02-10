@@ -19,7 +19,6 @@ import com.didichuxing.doraemonkit.DoKit
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.DelicateCoroutinesApi
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
@@ -292,7 +291,6 @@ class MultiLanguagesApplication : Application() {
                 .apply()
     }
 
-    @DelicateCoroutinesApi
     fun saveUserInfo(userInfoData: UserInfo?) {
         _userInfo.postValue(userInfoData)
     }
