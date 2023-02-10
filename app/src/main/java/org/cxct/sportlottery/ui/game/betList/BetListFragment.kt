@@ -38,10 +38,6 @@ import kotlinx.android.synthetic.main.button_bet.view.cl_bet
 import kotlinx.android.synthetic.main.button_bet.view.tv_login
 import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
 import kotlinx.android.synthetic.main.fragment_bet_list.*
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.btnOddsChangeDes
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.llParlayWarn
 import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R

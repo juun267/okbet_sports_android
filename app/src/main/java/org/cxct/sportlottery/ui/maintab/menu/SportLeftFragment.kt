@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_sport_left.*
 import kotlinx.android.synthetic.main.fragment_sport_left.tvOddsChangedTips
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.event.MenuEvent

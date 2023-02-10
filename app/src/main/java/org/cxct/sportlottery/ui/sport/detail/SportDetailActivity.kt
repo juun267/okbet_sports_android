@@ -29,7 +29,6 @@ import kotlinx.android.synthetic.main.activity_detail_sport.*
 import kotlinx.android.synthetic.main.bet_bar_layout.view.*
 import kotlinx.android.synthetic.main.content_baseball_status.*
 import kotlinx.android.synthetic.main.content_bet_info_item_v3.view.tvOdds
-import kotlinx.android.synthetic.main.edittext_form.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.*
 import kotlinx.android.synthetic.main.view_detail_head_toolbar.view.*
