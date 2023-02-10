@@ -17,7 +17,6 @@ import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetR
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter.BetRvType.SINGLE
 import org.cxct.sportlottery.ui.game.betList.holder.BatchParlayConnectViewHolder as BpcVh
 import org.cxct.sportlottery.ui.game.betList.holder.BatchSingleInMoreOptionViewHolder as bsiMoVh
-import org.cxct.sportlottery.ui.game.betList.holder.BetInfoChangeViewHolder
 import org.cxct.sportlottery.ui.game.betList.holder.BetInfoItemViewHolder as BiVh
 import org.cxct.sportlottery.ui.game.betList.holder.OddsChangedWarnViewHolder as OcWvH
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener

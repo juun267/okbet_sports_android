@@ -78,6 +78,10 @@ class BetInfoItemViewHolder(
                 ivSportLogo.setImageResource(GameType.getBetListGameTypeIcon(it))
             }
 
+            rlLeftContent.setOnClickListener {
+                slideLayout.open()
+            }
+
             //不支援串關
             //僅有串關的單注才會出現此提示
             val cannotParlay =
@@ -86,17 +90,21 @@ class BetInfoItemViewHolder(
             if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                 when (adapterBetType) {
                     BetListRefactorAdapter.BetRvType.SINGLE -> {
-//                        cl_to_win.isVisible = true
+                        viewDivider.gone()
+                        tvClose.gone()
+                        slideLayout.gone()
                         setupContainerUI(isVisible = true, isLock = false, cannotParlay = false)
                     }
 
                     else -> {
-//                        cl_to_win.isVisible = false
+                        viewDivider.visible()
+                        tvClose.visible()
                         setupContainerUI(isVisible = false, isLock = false, cannotParlay)
                     }
                 }
             } else {
-                setupContainerUI(isVisible = false, isLock = true, cannotParlay)
+                //TODO 不确定去不去掉，先去掉
+//                setupContainerUI(isVisible = false, isLock = true, cannotParlay)
             }
             setupBetAmountInput(
                 itemData,
@@ -120,30 +128,32 @@ class BetInfoItemViewHolder(
     private fun setupContainerUI(isVisible: Boolean, isLock: Boolean, cannotParlay: Boolean) {
         contentView.apply {
             //editText container
-//            clEditTextContainer.isVisible = isVisible
+            llKeyboardContainer.isVisible = isVisible
+            if (isVisible){
+                layoutKeyBoard.showKeyboard(etBet,0)
+            }else{
+                layoutKeyBoard.hideKeyboard()
+            }
 //            includeOddsLayout.flIncludeBetTipsSingle.isVisible = isVisible
             //提示文字Container
 //            llSingleTips.isVisible = isVisible
+//            layoutKeyBoard.isVisible = isVisible
+//            llKeyboardContainer.isVisible = isVisible
             //不支援串關的提示
-            if (cannotParlay) {
-//                tvNoParlay.isVisible = true
-                llNoParlay.isVisible = true
-                tvBetLock.isVisible = false
-            } else {
-//                tvNoParlay.isVisible = false
-                llNoParlay.isVisible = false
-            }
+//            llNoParlay.isVisible = false
+            slideLayout.isVisible = cannotParlay
 
             //盤口關閉的提示
             if (isLock) {
-                layoutKeyBoard.hideKeyboard()
-                tvBetLock.isVisible = true
+//                layoutKeyBoard.hideKeyboard()
+//                tvBetLock.isVisible = true
+                ToastUtil.showToast(layoutKeyBoard.context,LocalUtils.getString(R.string.bet_info_bet_lock_hint))
 //                tvNoParlay.gone()
                 llNoParlay.gone()
             } else {
-                tvBetLock.isVisible = false
+//                tvBetLock.isVisible = false
             }
-            tvBetLock.text =
+            tvTipsContent.text =
                 if (cannotParlay) root.context.getString(R.string.bet_info_no_parlay_hint)
                 else root.context.getString(R.string.bet_info_bet_lock_hint)
         }
@@ -334,7 +344,7 @@ class BetInfoItemViewHolder(
             if (event.action == MotionEvent.ACTION_UP) {
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     etBet.isFocusable = true
-                    onItemClickListener.onHideKeyBoard()
+//                    onItemClickListener.onHideKeyBoard()
                     layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etBet, position
@@ -374,7 +384,7 @@ class BetInfoItemViewHolder(
             if (event.action == MotionEvent.ACTION_UP) {
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     etWin.isFocusable = true
-                    onItemClickListener.onHideKeyBoard()
+//                    onItemClickListener.onHideKeyBoard()
                     layoutKeyBoard.setupMaxBetMoney(inputWinMaxMoney)
                     layoutKeyBoard.showKeyboard(
                         etWin, position
@@ -397,7 +407,7 @@ class BetInfoItemViewHolder(
         }
 
         clItemBackground.setOnClickListener {
-            onItemClickListener.onHideKeyBoard()
+//            onItemClickListener.onHideKeyBoard()
             clItemBackground.clearFocus()
         }
     }
@@ -485,10 +495,9 @@ class BetInfoItemViewHolder(
                 setAnimation(ivOddsArrow, tvOdds, false)
             }
 
-            handler.postDelayed({
-                Timber.d("odds_change_layout隐藏 postDelay")
-                oddsChangeLayout.flIncludeBetTipsSingle?.visibility = View.GONE
-            }, totalAnimationDuration)
+//            handler.postDelayed({
+////                oddsChangeLayout.flIncludeBetTipsSingle?.visibility = View.GONE
+//            }, totalAnimationDuration)
         }
         val spread: String =
             if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT) {
@@ -775,6 +784,9 @@ class BetInfoItemViewHolder(
     ) {
         contentView.tvClose.setOnClickListener {
             onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+        }
+        contentView.tvDelete.setOnClickListener {
+            onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId,itemCount)
         }
     }
 }

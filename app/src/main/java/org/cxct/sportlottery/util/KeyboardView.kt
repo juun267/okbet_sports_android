@@ -222,6 +222,9 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun plus(count: Long) {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {
             input.toDouble() + count
@@ -231,12 +234,18 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun plusAll(all: String) {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         mEditText.setText(all)
         mEditText.setSelection(mEditText.text.length)
 
     }
 
     private fun insert(count: Long) {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val editable = mEditText.text
         val start = mEditText.selectionStart
         editable.insert(start, count.toString())
@@ -244,6 +253,9 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun insertDot() {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val editable = mEditText.text
         val start = mEditText.selectionStart
         editable.apply {
@@ -268,10 +280,10 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     fun hideKeyboard() {
-   /*     this.visibility = View.GONE
+        this.visibility = View.GONE
         if (isShow) mEditText.isFocusable = false
 
-        isShow = false*/
+        isShow = false
     }
 
 }
