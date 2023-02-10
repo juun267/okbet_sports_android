@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="SpUsage,ContentDescription,WebViewLayout,UnusedAttribute">
+
+        <TextView
+            android:id="@+id/league_text"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/color_212121_ededed"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:lineHeight="20dp"
+            android:maxLines="2"
+            android:paddingStart="16dp"
+            android:paddingEnd="34dp"
+            android:textColor="@color/color_e5e5e5_202020"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            tools:text="欧洲足球锦标赛2020" />
+
+        <ImageView
+            android:id="@+id/iv_country"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_earth" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/league_odd_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/league_text"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:itemCount="1"
+            tools:listitem="@layout/itemview_league_odd_v5" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_below="@id/league_odd_list"
+            android:background="@color/color_191919_FCFCFC" />
+        <!-- 快選元件 -->
+</RelativeLayout>
