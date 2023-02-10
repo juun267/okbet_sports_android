@@ -47,6 +47,7 @@ android {
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
             resValue "string", "facebook_app_id", ""
             resValue "string", "facebook_client_token", ""
+            resValue "string", "fb_login_protocol_scheme", ""
         }
 
         release {
@@ -58,6 +59,7 @@ android {
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
             resValue "string", "facebook_app_id", ""
             resValue "string", "facebook_client_token", ""
+            resValue "string", "fb_login_protocol_scheme", ""
         }
     }
 
