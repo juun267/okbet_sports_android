@@ -52,7 +52,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -97,27 +96,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                     val visibleRangePair = mutableListOf<Pair<Int, Int>>()
 
                     when (currentAdapter) {
-                        is LeagueAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition =
-                                    layoutManager?.findViewByPosition(leaguePosition)
-                                viewByPosition?.let {
-                                    if (getChildViewHolder(it) is LeagueAdapter.ItemViewHolder) {
-                                        val viewHolder =
-                                            getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
-                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                            .forEach { matchPosition ->
-                                                visibleRangePair.add(
-                                                    Pair(
-                                                        leaguePosition,
-                                                        matchPosition
-                                                    )
-                                                )
-                                            }
-                                    }
-                                }
-                            }
-                        }
 
                         is SportLeagueAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
@@ -390,29 +368,6 @@ fun RecyclerView.firstVisibleRange(
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             when (adapter) {
-                is LeagueAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                            val viewHolder =
-                                getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
-                            viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                .forEach { matchPosition ->
-                                    if (adapter.data.isNotEmpty()) {
-                                        Log.d(
-                                            "[subscribe]",
-                                            "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
-                                                    "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                                    "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
-                                        )
-                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                            adapter.data[leaguePosition].gameType?.key,
-                                            adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
-                                        )
-                                    }
-                                }
-                        }
-                    }
-                }
 
                 is SportOutrightAdapter -> {
                     viewByPosition?.let { view ->
