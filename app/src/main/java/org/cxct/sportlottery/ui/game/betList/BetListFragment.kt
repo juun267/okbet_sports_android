@@ -3,14 +3,7 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.view.Gravity
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.btn_close
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_rule
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_type
@@ -38,7 +30,6 @@ import kotlinx.android.synthetic.main.button_bet.view.cl_bet
 import kotlinx.android.synthetic.main.button_bet.view.tv_login
 import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
 import kotlinx.android.synthetic.main.fragment_bet_list.*
-import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
@@ -55,7 +46,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
@@ -243,7 +233,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             activity?.onBackPressed()
         }
     }
-
 
     private fun initBtnEvent() {
         binding.btnBet.apply {
@@ -456,6 +445,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betListRefactorAdapter?.closeAllKeyboard()
                 betSingleListAdapter?.closeAllKeyboard()
                 betParlayListRefactorAdapter?.closeAllKeyboard()
+                Timber.d("关闭键盘")
             }
 
             override fun saveOddsHasChanged(matchOdd: MatchOdd) {
@@ -622,8 +612,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //            }
             //endregion
             tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-            tvTotalWinnableAmount.text =
-                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
+            tvTotalWinnableAmount.text =  "${sConfigData?.systemCurrencySign} ${TextUtil.formatInputMoney(winnableAmount)}"
         }
 
         val betCount = if (currentBetType == 0) {

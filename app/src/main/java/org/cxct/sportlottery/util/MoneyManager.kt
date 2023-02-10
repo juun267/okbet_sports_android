@@ -24,12 +24,13 @@ object MoneyManager {
     private fun getRechargeConfig(context: Context): String {
         val stringBuilder = StringBuilder()
         val path = "MoneyConfigs/RechargeConfig.json"
+        var bf: BufferedReader? = null
         try {
             //获取assets资源管理器
             val assetManager: AssetManager = context.assets
 
             //通过管理器打开文件并读取
-            val bf = BufferedReader(InputStreamReader(assetManager.open(path)))
+            bf = BufferedReader(InputStreamReader(assetManager.open(path)))
             var line = bf.readLine()
             while (line != null) {
                 stringBuilder.append(line)
@@ -37,6 +38,8 @@ object MoneyManager {
             }
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            bf?.close()
         }
         return stringBuilder.toString()
     }

@@ -22,8 +22,6 @@
     <dimen name="textSize17sp">17dp</dimen>
     <dimen name="textSize18sp">18dp</dimen>
     <dimen name="textSize20sp">20dp</dimen>
-    <dimen name="textSize22sp">22dp</dimen>
-    <dimen name="textSize24sp">24dp</dimen>
     <dimen name="textSize26sp">26dp</dimen>
     <dimen name="textSize30sp">30dp</dimen>
 
@@ -52,7 +50,6 @@
     <dimen name="margin_27">27dp</dimen>
     <dimen name="margin_28">28dp</dimen>
     <dimen name="margin_30">30dp</dimen>
-    <dimen name="margin_31">31dp</dimen>
     <dimen name="margin_34">34dp</dimen>
     <dimen name="margin_36">36dp</dimen>
     <dimen name="margin_40">40dp</dimen>
@@ -62,23 +59,15 @@
     <dimen name="margin_50">50dp</dimen>
     <dimen name="margin_54">54dp</dimen>
     <dimen name="margin_68">68dp</dimen>
-    <dimen name="margin_84">84dp</dimen>
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="odd_item_horizontal">10dp</dimen>
     <dimen name="odd_item_horizontal_left">7dp</dimen>
-    <dimen name="odd_item_divide_single">3dp</dimen>
-    <dimen name="odd_item_divide_all">6dp</dimen>
 
 
-
-    <dimen name="recyclerview_item_dec_spec_sport_type">10dp</dimen>
     <dimen name="recyclerview_item_dec_spec_date">12dp</dimen>
-    <dimen name="recyclerview_item_dec_spec_play_category">12dp</dimen>
-
-    <dimen name="recyclerview_item_dec_spec_odds_detail_odds">16dp</dimen>
 
     <dimen name="recyclerview_news_item_dec_spec">10dp</dimen>
 
@@ -116,12 +105,8 @@
     <dimen name="label_space_height">8dp</dimen>
     <dimen name="icon_signifier_width">24dp</dimen>
     <dimen name="icon_signifier_height">24dp</dimen>
-    <dimen name="icon_form_signifier_width">18dp</dimen>
-    <dimen name="icon_form_signifier_height">18dp</dimen>
 
     <dimen name="quick_view_horizontal_scroll_height">224dp</dimen>
-
-    <dimen name="live_player_height">232dp</dimen>
 
     <dimen name="et_bet_height">30dp</dimen>
 
@@ -129,9 +114,6 @@
 
     <dimen name="keyboard_radius">2dp</dimen>
     <dimen name="keyboard_height">123dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
 
     <dimen name="bet_button_height">45dp</dimen>
 </resources>

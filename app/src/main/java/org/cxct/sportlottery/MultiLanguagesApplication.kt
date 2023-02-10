@@ -20,9 +20,6 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
@@ -37,7 +34,6 @@ import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.game.quick.TestViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
@@ -56,7 +52,6 @@ import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
-import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
@@ -72,7 +67,6 @@ import org.cxct.sportlottery.ui.sport.SportListViewModel
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteViewModel
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectViewModel
-import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
@@ -98,7 +92,6 @@ class MultiLanguagesApplication : Application() {
     val userInfo: LiveData<UserInfo?>
         get() =_userInfo
     private var isNewsShowed = false
-    private var isGameDetailAnimationNeedShow = false
     private var isAgeVerifyNeedShow = true
 
     val mOddsType = MutableLiveData<OddsType>()
@@ -152,10 +145,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { StatisticsViewModel(get(), get(), get(), get()) }
         viewModel { GooglePermissionViewModel(get(), get(), get()) }
-        viewModel { TestViewModel(get(), get(), get(), get()) }
         viewModel { NewsViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { RedEnveLopeModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainTabViewModel(get(), get(), get(), get(), get(), get()) }
@@ -304,7 +294,7 @@ class MultiLanguagesApplication : Application() {
 
     @DelicateCoroutinesApi
     fun saveUserInfo(userInfoData: UserInfo?) {
-        GlobalScope.launch(Dispatchers.Main) { _userInfo.value = userInfoData }
+        _userInfo.postValue(userInfoData)
     }
 
     fun userInfo(): UserInfo? {

@@ -14,13 +14,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -233,6 +231,7 @@ class BetInfoItemViewHolder(
                             return@afterTextChanged
                         }
                     }
+
                     val win = itemData.betAmount * getOddsAndSaveRealAmount(
                         itemData, currentOddsType
                     )

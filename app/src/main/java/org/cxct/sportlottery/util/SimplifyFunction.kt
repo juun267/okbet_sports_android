@@ -56,7 +56,6 @@ import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
-import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -166,12 +165,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                                 }
                             }
                         }
-                        //冠軍
-                        is OutrightLeagueOddAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                visibleRangePair.add(Pair(leaguePosition, -1))
-                            }
-                        }
+
                         //新版冠軍
                         is SportOutrightAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
@@ -419,31 +413,6 @@ fun RecyclerView.firstVisibleRange(
                                         )
                                     }
                                 }
-                        }
-                    }
-                }
-
-                is OutrightLeagueOddAdapter -> {
-                    viewByPosition?.let { view ->
-                        when (getChildViewHolder(view)) {
-                            is OutrightLeagueOddAdapter.OutrightTitleViewHolder -> {
-                                when (val outrightLeagueData =
-                                    adapter.data[leaguePosition]) {
-                                    is MatchOdd -> {
-                                        Log.d(
-                                            "[subscribe]",
-                                            "訂閱 ${outrightLeagueData.matchInfo?.name} -> " +
-                                                    "${outrightLeagueData.matchInfo?.homeName} vs " +
-                                                    "${outrightLeagueData.matchInfo?.awayName}"
-                                        )
-                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                            outrightLeagueData.matchInfo?.gameType,
-                                            outrightLeagueData.matchInfo?.id
-                                        )
-                                    }
-                                }
-
-                            }
                         }
                     }
                 }
