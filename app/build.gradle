@@ -45,6 +45,8 @@ android {
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+            resValue "string", "facebook_app_id", ""
+            resValue "string", "facebook_client_token", ""
         }
 
         release {
@@ -54,6 +56,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+            resValue "string", "facebook_app_id", ""
+            resValue "string", "facebook_client_token", ""
         }
     }
 
@@ -468,6 +472,11 @@ dependencies {
     //mmkv
     implementation 'com.tencent:mmkv:1.2.13'
     implementation 'com.github.FlyJingFish:GradientTextView:1.0.7'
+
+    //https://developers.facebook.com/docs/facebook-login/android
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+    //https://developers.google.com/identity/sign-in/android/sign-in?hl=zh-cn
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
     //compose
 //    implementation 'androidx.activity:activity-compose:1.6.1'
 //    implementation "androidx.compose.ui:ui:$compose_version"
