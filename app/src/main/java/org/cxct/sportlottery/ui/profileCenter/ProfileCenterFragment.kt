@@ -18,7 +18,6 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
 import org.cxct.sportlottery.BuildConfig
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.event.MenuEvent
@@ -30,10 +29,8 @@ import org.cxct.sportlottery.ui.aboutMe.AboutMeActivity
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
-import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -123,7 +120,6 @@ class ProfileCenterFragment :
         //優惠活動
         btn_promotion.setVisibilityByCreditSystem()
         //   btn_affiliate.setVisibilityByCreditSystem()
-        btn_feedback.setVisibilityByCreditSystem()
         mVersionUpdateViewModel.appVersionState.observe(viewLifecycleOwner) {
             if (it.isNewVersion) {
                 //下载更新要做判断 当前有没有新版本
@@ -161,15 +157,6 @@ class ProfileCenterFragment :
 
     override fun onResume() {
         super.onResume()
-        if (MultiLanguagesApplication.isNightMode) {
-            tv_appearance.text =
-                getString(R.string.appearance) + ": " + getString(R.string.night_mode)
-        } else {
-            tv_appearance.text =
-                getString(R.string.appearance) + ": " + getString(R.string.day_mode)
-        }
-        tv_language.text = LanguageManager.getLanguageStringResource(context)
-        iv_flag.setImageResource(LanguageManager.getLanguageFlag(context))
         getMoney()
     }
 
@@ -351,23 +338,6 @@ class ProfileCenterFragment :
                 getString(R.string.game_rule)
             )
         }
-        //切换语言
-        btn_language.setOnClickListener {
-            var intent = Intent(requireActivity(), SwitchLanguageActivity::class.java);
-            intent.putExtra("type", 1)
-            startActivity(intent)
-        }
-        //外觀
-        btn_appearance.setOnClickListener {
-            startActivity(Intent(requireActivity(), AppearanceActivity::class.java))
-        }
-
-        //建議反饋
-        /*   tv_feedback.setOnClickListener {
-               startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
-           }*/
-
-//        btn_time_zone.visibility = View.GONE
         //时区切换
         btn_time_zone.setOnClickListener {
             startActivity(Intent(requireActivity(), TimeZoneActivity::class.java))
@@ -395,29 +365,6 @@ class ProfileCenterFragment :
         btn_help_center.setOnClickListener {
             startActivity(Intent(requireActivity(), HelpCenterActivity::class.java))
         }
-
-        //建議反饋
-        btn_feedback.setOnClickListener {
-            startActivity(Intent(requireActivity(), FeedbackMainActivity::class.java))
-        }
-        //联系客服
-        btn_custom_serivce.setOnClickListener {
-            val serviceUrl = sConfigData?.customerServiceUrl
-            val serviceUrl2 = sConfigData?.customerServiceUrl2
-            when {
-                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    ServiceDialog().show(childFragmentManager, null)
-                }
-                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(requireContext(), serviceUrl2)
-                }
-                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(requireContext(), serviceUrl)
-                }
-            }
-        }
-
-
         //关于我们
         btn_about_us.setOnClickListener {
             startActivity(Intent(requireActivity(), AboutMeActivity::class.java))
