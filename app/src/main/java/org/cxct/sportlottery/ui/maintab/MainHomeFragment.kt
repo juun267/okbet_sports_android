@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import kotlinx.android.synthetic.main.view_toolbar_home.btn_login
 import kotlinx.android.synthetic.main.view_toolbar_home.btn_register
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus

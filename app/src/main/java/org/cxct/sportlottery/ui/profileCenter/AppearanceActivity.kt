@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.profileCenter
 
 import android.os.Bundle
-import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_appearance.*
-import kotlinx.android.synthetic.main.dialog_change_appearance.view.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R

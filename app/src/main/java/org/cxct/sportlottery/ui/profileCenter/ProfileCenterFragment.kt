@@ -17,7 +17,6 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.activity_version_update.*
 import kotlinx.android.synthetic.main.fragment_profile_center.*
-import kotlinx.android.synthetic.main.view_toolbar_main.iv_menu
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -35,7 +34,6 @@ import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.language.SwitchLanguageActivity
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
@@ -67,14 +65,6 @@ import java.io.FileNotFoundException
 class ProfileCenterFragment :
     BaseBottomNavigationFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
-    companion object {
-        fun newInstance(): ProfileCenterFragment {
-            val args = Bundle()
-            val fragment = ProfileCenterFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
     private val mVersionUpdateViewModel: VersionUpdateViewModel by viewModel()
     //簡訊驗證彈窗
     private var customSecurityDialog: CustomSecurityDialog? = null
@@ -272,7 +262,7 @@ class ProfileCenterFragment :
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                        MainActivity.reStart(this)
 //                    else
-                    GamePublicityActivity.reStart(requireContext())
+//                    GamePublicityActivity.reStart(requireContext())
                 }
             }
         }
@@ -479,7 +469,7 @@ class ProfileCenterFragment :
         }
 
         viewModel.navPublicityPage.observe(viewLifecycleOwner) {
-            GamePublicityActivity.reStart(requireContext())
+//            GamePublicityActivity.reStart(requireContext())
         }
 
         viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {

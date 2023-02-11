@@ -1,11 +1,8 @@
 package org.cxct.sportlottery.ui.splash
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
@@ -15,11 +12,8 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
-import org.cxct.sportlottery.ui.permission.GooglePermissionActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -47,14 +41,6 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
         checkLocalHost()
     }
 
-    private fun checkPermissionGranted() {
-        if(BuildConfig.CHANNEL_NAME == "spkx"){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                startActivity(Intent(this@SplashActivity, GooglePermissionActivity::class.java))
-            }
-        }
-    }
-
     private fun setupVersion() {
         val version = BuildConfig.VERSION_NAME
         tv_version_info.text = version
@@ -65,14 +51,10 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun goHomePage() {
-        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        startActivity(Intent(this@SplashActivity, MainTabActivity::class.java))
         finish()
     }
 
-    private fun goGamePage() {
-        startActivity(Intent(this@SplashActivity, GameActivity::class.java))
-        finish()
-    }
 
     private fun goMaintenancePage() {
         startActivity(Intent(this@SplashActivity, MaintenanceActivity::class.java))

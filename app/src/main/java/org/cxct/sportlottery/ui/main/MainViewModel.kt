@@ -275,18 +275,6 @@ class MainViewModel(
         }
     }
 
-    fun navActivity(navClass: Class<*>) {
-        when (navClass) {
-            ProfileCenterFragment::class.java -> {
-                if (isLogin.value == true) {
-                    _navActivity.postValue(Event(navClass))
-                } else {
-                    _navActivity.postValue(Event(LoginActivity::class.java))
-                }
-            }
-        }
-    }
-
     suspend fun allTransferOut() {
         if (isThirdTransferOpen()) {
             //若自動轉換功能開啟，離開遊戲要全額轉出
