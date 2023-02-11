@@ -17,10 +17,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
         android:layout_gravity="bottom"
-        android:orientation="vertical"
         android:layout_marginTop="@dimen/bet_list_top_padding_height"
+        android:gravity="bottom"
+        android:orientation="vertical"
         tools:ignore="SpUsage, ContentDescription">
 
         <!--<include
@@ -46,14 +46,13 @@
                     android:id="@+id/cl_title"
                     layout="@layout/bet_bar_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    />
+                    android:layout_height="44dp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/bet_list_bar_height"
-                    android:background="@color/color_80334266_E3E8EE"/>
+                    android:background="@color/color_80334266_E3E8EE" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_bet_list"
@@ -65,12 +64,12 @@
                     tools:itemCount="1"
                     tools:listitem="@layout/content_bet_info_item_v3_2" />
 
-                <!--                <View-->
-<!--                    android:id="@+id/line_shadow"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="8dp"-->
-<!--                    android:background="@drawable/bg_gradient_bottom_sheet_shadow"-->
-<!--                    android:layout_gravity="bottom" />-->
+                <View
+                    android:id="@+id/line_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
 
             </FrameLayout>
 
@@ -78,9 +77,9 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_FFFFFF"
-                android:orientation="vertical"
-                android:layout_above="@+id/parlayLayout">
+                android:layout_above="@+id/parlayLayout"
+                android:background="#f9f9f9"
+                android:orientation="vertical">
 
                 <!--串关投注-->
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -96,7 +95,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="wrap_content"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="1"
@@ -126,17 +125,17 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
                         <TextView
                             android:id="@+id/tvDeleteAll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_marginEnd="@dimen/margin_15"
-                            android:background="@drawable/bg_delete_button"
-                            android:paddingHorizontal="7dp"
+                            android:background="@drawable/icon_close"
                             android:paddingVertical="1dp"
-                            android:text="@string/delete_bet_all"
                             android:textColor="@color/color_9BB3D9_535D76"
                             android:textSize="@dimen/textSize12sp"
+                            android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.988"
@@ -154,123 +153,126 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <org.cxct.sportlottery.util.KeyboardView
+                        android:id="@+id/layoutKeyBoard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/margin_15"
+                        app:layout_constraintTop_toBottomOf="@+id/clInputLayout" />
 
-                    <!--                        <include-->
-                    <!--                            android:id="@+id/includeOddsLayout"-->
-                    <!--                            layout="@layout/include_bet_odds_tips_parlay" />-->
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-<!--                &lt;!&ndash;单项投注&ndash;&gt;-->
-<!--                <FrameLayout-->
-<!--                    android:id="@+id/cl_single_list"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:clipChildren="false"-->
-<!--                    android:clipToPadding="false"-->
-<!--                    android:visibility="gone"-->
-<!--                    tools:visibility="gone">-->
+                <!--                &lt;!&ndash;单项投注&ndash;&gt;-->
+                <!--                <FrameLayout-->
+                <!--                    android:id="@+id/cl_single_list"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:clipChildren="false"-->
+                <!--                    android:clipToPadding="false"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    tools:visibility="gone">-->
 
-<!--                    <androidx.recyclerview.widget.RecyclerView-->
-<!--                        android:id="@+id/rv_single_list"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="12.5dp"-->
-<!--                        android:layout_marginBottom="8.5dp"-->
-<!--                        android:overScrollMode="never"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        tools:itemCount="1"-->
-<!--                        tools:listitem="@layout/item_bet_list_batch_control_v3" />-->
-<!--                </FrameLayout>-->
+                <!--                    <androidx.recyclerview.widget.RecyclerView-->
+                <!--                        android:id="@+id/rv_single_list"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginTop="12.5dp"-->
+                <!--                        android:layout_marginBottom="8.5dp"-->
+                <!--                        android:overScrollMode="never"-->
+                <!--                        app:layout_constraintTop_toTopOf="parent"-->
+                <!--                        tools:itemCount="1"-->
+                <!--                        tools:listitem="@layout/item_bet_list_batch_control_v3" />-->
+                <!--                </FrameLayout>-->
 
 
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:id="@+id/cl_total_info"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:paddingHorizontal="15dp"-->
-<!--                    android:paddingTop="8dp"-->
-<!--                    android:visibility="gone"-->
-<!--                    tools:visibility="visible">-->
+                <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--                    android:id="@+id/cl_total_info"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:paddingHorizontal="15dp"-->
+                <!--                    android:paddingTop="8dp"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    tools:visibility="visible">-->
 
-<!--                    <androidx.constraintlayout.widget.Guideline-->
-<!--                        android:id="@+id/total_info_guide_line"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:orientation="vertical"-->
-<!--                        app:layout_constraintGuide_percent="0.5" />-->
+                <!--                    <androidx.constraintlayout.widget.Guideline-->
+                <!--                        android:id="@+id/total_info_guide_line"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:orientation="vertical"-->
+                <!--                        app:layout_constraintGuide_percent="0.5" />-->
 
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/ll_total_stake"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent">-->
+                <!--                    <LinearLayout-->
+                <!--                        android:id="@+id/ll_total_stake"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintStart_toStartOf="parent"-->
+                <!--                        app:layout_constraintTop_toTopOf="parent">-->
 
-<!--                        <TextView-->
-<!--                            android:id="@+id/title_all_bet"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/total_capital"-->
-<!--                            android:textColor="@color/color_9BB3D9_535D76"-->
-<!--                            android:textSize="@dimen/textSize12sp"-->
-<!--                            android:textStyle="bold"-->
-<!--                            app:layout_constraintStart_toStartOf="parent"-->
-<!--                            app:layout_constraintTop_toTopOf="parent"/>-->
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/title_all_bet"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:text="@string/total_capital"-->
+                <!--                            android:textColor="@color/color_9BB3D9_535D76"-->
+                <!--                            android:textSize="@dimen/textSize12sp"-->
+                <!--                            android:textStyle="bold"-->
+                <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                <!--                            app:layout_constraintTop_toTopOf="parent"/>-->
 
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_total_bet_amount"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="start"-->
-<!--                            android:textColor="@color/color_FFFFFF_414655"-->
-<!--                            android:textSize="@dimen/textSize12sp"-->
-<!--                            android:textStyle="bold"-->
-<!--                            app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintStart_toEndOf="@+id/title_all_bet"-->
-<!--                            app:layout_constraintTop_toTopOf="@+id/title_all_bet"-->
-<!--                            tools:text="0.000"/>-->
-<!--                    </LinearLayout>-->
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/tv_total_bet_amount"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:gravity="start"-->
+                <!--                            android:textColor="@color/color_FFFFFF_414655"-->
+                <!--                            android:textSize="@dimen/textSize12sp"-->
+                <!--                            android:textStyle="bold"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"-->
+                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                            app:layout_constraintStart_toEndOf="@+id/title_all_bet"-->
+                <!--                            app:layout_constraintTop_toTopOf="@+id/title_all_bet"-->
+                <!--                            tools:text="0.000"/>-->
+                <!--                    </LinearLayout>-->
 
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/ll_est_winning"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="right"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="@+id/total_info_guide_line"-->
-<!--                        app:layout_constraintTop_toTopOf="parent">-->
+                <!--                    <LinearLayout-->
+                <!--                        android:id="@+id/ll_est_winning"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:gravity="right"-->
+                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                        app:layout_constraintStart_toStartOf="@+id/total_info_guide_line"-->
+                <!--                        app:layout_constraintTop_toTopOf="parent">-->
 
-<!--                        <TextView-->
-<!--                            android:id="@+id/title_winnable_amount"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/total_win_amount"-->
-<!--                            android:textColor="@color/color_9BB3D9_535D76"-->
-<!--                            android:textSize="@dimen/textSize12sp"-->
-<!--                            android:textStyle="bold"-->
-<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                            app:layout_constraintStart_toStartOf="parent"-->
-<!--                            app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />-->
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/title_winnable_amount"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:text="@string/total_win_amount"-->
+                <!--                            android:textColor="@color/color_9BB3D9_535D76"-->
+                <!--                            android:textSize="@dimen/textSize12sp"-->
+                <!--                            android:textStyle="bold"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                <!--                            app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />-->
 
-<!--                        <TextView-->
-<!--                            android:id="@+id/tv_total_winnable_amount"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:gravity="end"-->
-<!--                            android:textColor="@color/color_DB6372"-->
-<!--                            android:textSize="@dimen/textSize12sp"-->
-<!--                            android:textStyle="bold"-->
-<!--                            app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"-->
-<!--                            app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"-->
-<!--                            tools:text="0.000" />-->
-<!--                    </LinearLayout>-->
+                <!--                        <TextView-->
+                <!--                            android:id="@+id/tv_total_winnable_amount"-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:gravity="end"-->
+                <!--                            android:textColor="@color/color_DB6372"-->
+                <!--                            android:textSize="@dimen/textSize12sp"-->
+                <!--                            android:textStyle="bold"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"-->
+                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                            app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"-->
+                <!--                            app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"-->
+                <!--                            tools:text="0.000" />-->
+                <!--                    </LinearLayout>-->
 
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+                <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -281,18 +283,17 @@
                 android:background="@color/color_FFFFFF"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
                 android:paddingHorizontal="14dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:id="@+id/btnParlaySingle"
                     android:layout_width="78dp"
                     android:layout_height="40dp"
+                    android:layout_marginRight="5dp"
                     android:background="@drawable/bg_radius_8_bet_parlay"
                     android:gravity="center"
                     android:text="@string/bet_parlay"
-                    android:layout_marginRight="5dp"
                     android:textColor="@color/color_25BF63"
                     android:textSize="@dimen/textSize16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -351,10 +352,10 @@
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
-                    android:textSize="12sp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_535D76"
                     android:text="@string/text_account_history_balance"
+                    android:textColor="@color/color_535D76"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/btnParlaySingle" />
 

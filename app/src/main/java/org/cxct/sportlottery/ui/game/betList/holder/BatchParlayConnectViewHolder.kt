@@ -7,9 +7,10 @@ import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.KeyboardView
 
 //串關
-class BatchParlayConnectViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
+class BatchParlayConnectViewHolder(itemView: View, keyboardView: KeyboardView) : BatchParlayViewHolder(itemView,keyboardView) {
     fun bind(
         itemData: ParlayOdd?,
         currentOddsType: OddsType,

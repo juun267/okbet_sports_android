@@ -3,34 +3,20 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.btn_close
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_rule
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_type
@@ -38,10 +24,6 @@ import kotlinx.android.synthetic.main.button_bet.view.cl_bet
 import kotlinx.android.synthetic.main.button_bet.view.tv_login
 import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
 import kotlinx.android.synthetic.main.fragment_bet_list.*
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.btnOddsChangeDes
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.ivClearCarts
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay.tvAcceptOddsChange
-import kotlinx.android.synthetic.main.include_bet_odds_tips_parlay_warn.llParlayWarn
 import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -59,7 +41,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
@@ -71,7 +52,6 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.OkPopupWindow
 import timber.log.Timber
 import java.lang.Exception
@@ -447,9 +427,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 (rv_parlay_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
                     rv_parlay_list, RecyclerView.State(), position
                 )
-                betParlayListRefactorAdapter?.apply {
-                    BetListRcvUtil.setWrapHeight(rv_parlay_list, this)
-                }
+//                betParlayListRefactorAdapter?.apply {
+//                    BetListRcvUtil.setWrapHeight(rv_parlay_list, this)
+//                }
             }
 
             override fun onHideKeyBoard() {
@@ -521,10 +501,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         betListRefactorAdapter =
-            BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }
-        betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener)
+            BetListRefactorAdapter(binding.layoutKeyBoard,adapterItemClickListener) { getUserBalance() }
+        betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener,binding.layoutKeyBoard)
         betParlayListRefactorAdapter =
-            BetListRefactorAdapter(adapterItemClickListener) { getUserBalance() }.apply {
+            BetListRefactorAdapter(binding.layoutKeyBoard,adapterItemClickListener,) { getUserBalance() }.apply {
                 adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
             }
     }

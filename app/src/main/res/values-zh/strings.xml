@@ -565,7 +565,6 @@
     <string name="bet_list_single_type">单项投注</string>
     <string name="bet_list_parlay_type">串关投注</string>
     <string name="bet_list_view_more_options">更多投注选项</string>
-    <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠军等投注项目不可进行串关</string>
     <string name="bet_list_receipt">注单收据</string>
     <string name="complete">完成</string>
     <string name="winnable_amount_colon">可赢额：</string>
@@ -1077,6 +1076,7 @@
     <!--region 注單模塊調整-->
     <string name="bet_info_bet_lock_hint">注单盘口已关闭</string>
     <string name="bet_info_no_parlay_hint">赛事暂无支持串关</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事,不同球种,冠\n军等投注项目不可进行串关</string>
     <string name="function">常用功能</string>
     <string name="sport_relative">体育相关</string>
     <string name="setting">设置</string>

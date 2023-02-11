@@ -40,34 +40,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.30" />
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/tv_parlay_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_18"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="@dimen/margin_14"
                     android:textColor="@color/color_9BB3D9_535D76"
                     android:textSize="@dimen/textSize12sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/guideline_start"
                     app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"
-                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
                     tools:text="3串1*26" />
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/btn_rule"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="@dimen/margin_14"-->
-<!--                    android:padding="@dimen/margin_4"-->
-<!--                    android:visibility="gone"-->
-<!--                    android:src="@drawable/ic_question_mark"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/tv_parlay_type"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/tv_parlay_type" />-->
+                <TextView
+                    android:id="@+id/tvCanWin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/color_414655"
+                    android:text="@string/total_win_amount"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
+                    app:layout_constraintStart_toStartOf="@+id/tv_parlay_type"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_parlay_type" />
+
+                <TextView
+                    app:layout_constraintStart_toEndOf="@+id/tvCanWin"
+                    app:layout_constraintTop_toTopOf="@+id/tvCanWin"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvCanWin"
+                    android:layout_width="wrap_content"
+                    android:text="₱28,392,817"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_E23434"
+                    android:layout_height="wrap_content"/>
+
 
                 <include
                     layout="@layout/content_bet_info_item_quota_detail_v2"
@@ -84,24 +91,36 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
                     app:parlayOdd="@{parlayOdd}" />
 
+                <TextView
+                    android:id="@+id/tvBet"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="@string/bet_info_bet"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    app:layout_constraintEnd_toStartOf="@+id/et_bet_parlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <EditText
                     android:id="@+id/et_bet_parlay"
+                    android:layout_marginStart="10dp"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/et_bet_height"
-                    android:layout_marginEnd="18dp"
+                    android:layout_marginEnd="14dp"
                     android:layout_weight="6"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"
+                    android:gravity="end|center_vertical"
                     android:inputType="numberDecimal"
                     android:letterSpacing="0.05"
                     android:maxLength="14"
                     android:paddingHorizontal="10dp"
+                    android:scrollIndicators="end"
                     android:textColor="@color/color_025BE8"
                     android:textSize="@dimen/textSize12sp"
                     android:textStyle="bold"
-                    android:gravity="end|center_vertical"
-                    android:scrollIndicators="end"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    app:layout_constraintStart_toEndOf="@+id/tvBet"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -117,93 +136,83 @@
                     app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"
                     tools:text="@string/hint_bet_limit_range" />
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_symbol_count"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="*"-->
-<!--                    android:textColor="@color/color_535D76"-->
-<!--                    android:textSize="@dimen/textSize12sp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:layout_constraintStart_toEndOf="@+id/tv_parlay_type"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_symbol_count"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="*"-->
+                <!--                    android:textColor="@color/color_535D76"-->
+                <!--                    android:textSize="@dimen/textSize12sp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/tv_parlay_type"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/tv_com_count"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginEnd="@dimen/margin_24"-->
-<!--                    android:textColor="@color/color_535D76"-->
-<!--                    android:textSize="@dimen/textSize12sp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:layout_constraintBottom_toBottomOf="@id/et_bet_parlay"-->
-<!--                    app:layout_constraintStart_toEndOf="@+id/tv_symbol_count"-->
-<!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"-->
-<!--                    tools:text="26" />-->
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_com_count"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginEnd="@dimen/margin_24"-->
+                <!--                    android:textColor="@color/color_535D76"-->
+                <!--                    android:textSize="@dimen/textSize12sp"-->
+                <!--                    android:textStyle="bold"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@id/et_bet_parlay"-->
+                <!--                    app:layout_constraintStart_toEndOf="@+id/tv_symbol_count"-->
+                <!--                    app:layout_constraintTop_toTopOf="@+id/et_bet_parlay"-->
+                <!--                    tools:text="26" />-->
 
                 <!--region 提示文字 -->
-<!--                <LinearLayout-->
-<!--                    android:visibility="gone"-->
-<!--                    android:id="@+id/ll_hint_container"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginHorizontal="18dp"-->
-<!--                    app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/et_bet_parlay"-->
-<!--                    android:orientation="vertical">-->
+                <!--                <LinearLayout-->
+                <!--                    android:visibility="gone"-->
+                <!--                    android:id="@+id/ll_hint_container"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginHorizontal="18dp"-->
+                <!--                    app:layout_constraintBottom_toTopOf="@+id/layoutKeyBoard"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/et_bet_parlay"-->
+                <!--                    android:orientation="vertical">-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tvBalanceInsufficientMessageParlay"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="end"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:paddingTop="@dimen/margin_8"-->
-<!--                        android:text="@string/bet_info_bet_balance_insufficient"-->
-<!--                        android:textColor="@color/color_E23434_E23434"-->
-<!--                        android:textSize="@dimen/textSize12sp"-->
-<!--                        android:visibility="gone"-->
-<!--                        tools:visibility="visible" />-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/tvBalanceInsufficientMessageParlay"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:gravity="end"-->
+                <!--                        android:includeFontPadding="false"-->
+                <!--                        android:paddingTop="@dimen/margin_8"-->
+                <!--                        android:text="@string/bet_info_bet_balance_insufficient"-->
+                <!--                        android:textColor="@color/color_E23434_E23434"-->
+                <!--                        android:textSize="@dimen/textSize12sp"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        tools:visibility="visible" />-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tvErrorMessageParlay"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="end"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:paddingTop="@dimen/margin_8"-->
-<!--                        android:text="@string/bet_info_list_minimum_limit_amount"-->
-<!--                        android:textColor="@color/color_E23434_E23434"-->
-<!--                        android:textSize="@dimen/textSize12sp"-->
-<!--                        android:visibility="gone"-->
-<!--                        tools:visibility="visible" />-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/tvErrorMessageParlay"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:gravity="end"-->
+                <!--                        android:includeFontPadding="false"-->
+                <!--                        android:paddingTop="@dimen/margin_8"-->
+                <!--                        android:text="@string/bet_info_list_minimum_limit_amount"-->
+                <!--                        android:textColor="@color/color_E23434_E23434"-->
+                <!--                        android:textSize="@dimen/textSize12sp"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        tools:visibility="visible" />-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/tvPleaseEnterCorrectAmountParlay"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="end"-->
-<!--                        android:includeFontPadding="false"-->
-<!--                        android:paddingTop="@dimen/margin_8"-->
-<!--                        android:text="@string/please_enter_correct_amount"-->
-<!--                        android:textColor="@color/color_E23434_E23434"-->
-<!--                        android:textSize="@dimen/textSize12sp"-->
-<!--                        android:visibility="gone"-->
-<!--                        tools:visibility="visible" />-->
-<!--                </LinearLayout>-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/tvPleaseEnterCorrectAmountParlay"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:gravity="end"-->
+                <!--                        android:includeFontPadding="false"-->
+                <!--                        android:paddingTop="@dimen/margin_8"-->
+                <!--                        android:text="@string/please_enter_correct_amount"-->
+                <!--                        android:textColor="@color/color_E23434_E23434"-->
+                <!--                        android:textSize="@dimen/textSize12sp"-->
+                <!--                        android:visibility="gone"-->
+                <!--                        tools:visibility="visible" />-->
+                <!--                </LinearLayout>-->
                 <!--endregion 提示文字 -->
 
-                <org.cxct.sportlottery.util.KeyboardView
-                    android:id="@+id/layoutKeyBoard"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/keyboard_height"
-                    android:layout_marginHorizontal="@dimen/margin_18"
-                    android:paddingTop="@dimen/margin_15"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@+id/et_bet_parlay"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

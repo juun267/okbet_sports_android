@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.et_bet_parlay
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.layoutKeyBoard
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.ll_control_connect
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tv_hint_parlay_default
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tv_parlay_type
@@ -21,10 +20,14 @@ import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
 import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
 
-abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class BatchParlayViewHolder(
+    itemView: View,
+    private val keyboardView: KeyboardView
+) : RecyclerView.ViewHolder(itemView) {
     private var mUserMoney: Double = 0.0
     private var mUserLogin: Boolean = false
     private var inputMaxMoney: Double = 0.0
@@ -54,9 +57,10 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
             val multipleOdds = betList?.let { getMultipleOdds(it) }
 
             itemView.tv_parlay_type?.text =
-                if (position==0){
-                    getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())+multipleOdds
-                }else{
+                if (position == 0) {
+                    getParlayName(itemData.parlayType).plus("*")
+                        .plus(itemData.num.toString()) + multipleOdds
+                } else {
                     getParlayName(itemData.parlayType).plus("*").plus(itemData.num.toString())
                 }
             setupBetAmountInput(
@@ -116,7 +120,7 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
             onFocusChangeListener = null
 
             if (data.isInputBet) {
-                layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
+                keyboardView.setupMaxBetMoney(inputMaxMoney)
             }
             checkBetLimitParlay(data)
 
@@ -168,8 +172,8 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
             et_bet_parlay.setOnTouchListener { view, event ->
                 if (event.action == MotionEvent.ACTION_UP) {
                     et_bet_parlay.isFocusable = true
-                    layoutKeyBoard.setupMaxBetMoney(inputMaxMoney)
-                    layoutKeyBoard.showKeyboard(
+                    keyboardView.setupMaxBetMoney(inputMaxMoney)
+                    keyboardView.showKeyboard(
                         et_bet_parlay, position, isParlay = true
                     )
                     onSelectedPositionListener.onSelectChange(
@@ -181,14 +185,16 @@ abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(i
             }
 
             et_bet_parlay.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) layoutKeyBoard?.hideKeyboard()
+//                if (!hasFocus) keyboardView?.hideKeyboard()
                 data.isInputBet = hasFocus
-                if (hasFocus) et_bet_parlay.setSelection(et_bet_parlay.text.length)
+                if (hasFocus) {
+                    et_bet_parlay.setSelection(et_bet_parlay.text.length)
+                }
                 setEtBetParlayBackground(data)
             }
 
             ll_control_connect.setOnClickListener {
-                onItemClickListener.onHideKeyBoard()
+//                onItemClickListener.onHideKeyBoard()
                 clearFocus()
             }
         }
