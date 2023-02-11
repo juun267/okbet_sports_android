@@ -1,8 +1,6 @@
 package org.cxct.sportlottery.ui.maintab.slot
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.bottom_navigation_item.*
 import kotlinx.android.synthetic.main.fragment_home_slot.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
 import org.cxct.sportlottery.R
@@ -22,7 +19,6 @@ import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
@@ -83,10 +79,10 @@ class HomeSlotFragment :
             (activity as MainTabActivity).jumpToHome(0)
         }
         btn_register.setOnClickListener {
-            startRegister(requireContext())
+            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().startLogin()
         }
         iv_money_refresh.setOnClickListener {
             iv_money_refresh.startAnimation(RotateAnimation(0f,
@@ -208,7 +204,7 @@ class HomeSlotFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""

@@ -3,40 +3,23 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.Single
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.btn_close
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_rule
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_type
-import kotlinx.android.synthetic.main.button_bet.view.cl_bet
-import kotlinx.android.synthetic.main.button_bet.view.tv_login
-import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
+import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
+import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.publicity_promotion_announcement_view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
@@ -55,22 +38,18 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.results.StatusType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.widget.OkPopupWindow
 import timber.log.Timber
-import java.lang.Exception
 
 /**
  * @app_destination 滿版注單(點擊賠率彈出)
@@ -250,7 +229,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             tv_login.setOnClickListener {
                 needUpdateBetLimit = true
                 MultiLanguagesApplication.mInstance.doNotReStartPublicity = true
-                startActivity(Intent(requireContext(), LoginActivity::class.java))
+                requireActivity().startLogin()
             }
 
             cl_bet.setOnClickListener {
@@ -430,7 +409,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (viewModel.getLoginBoolean()) {
                     startActivity(Intent(context, MoneyRechargeActivity::class.java))
                 } else {
-                    startActivity(Intent(context, LoginActivity::class.java))
+                    requireActivity().startLogin()
                 }
             }
 

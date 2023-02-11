@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.maintab.elec
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import org.cxct.sportlottery.extentions.fitsSystemStatus
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
@@ -112,10 +110,10 @@ class HomeElecFragment :
             (activity as MainTabActivity).jumpToHome(0)
         }
         btn_register.setOnClickListener {
-            startRegister(requireContext())
+            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().startLogin()
         }
         iv_money_refresh.setOnClickListener {
             iv_money_refresh.startAnimation(RotateAnimation(0f,
@@ -238,7 +236,7 @@ class HomeElecFragment :
                 getString(R.string.prompt),
                 result.errorMsg ?: ""
             ) {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(
                 getString(R.string.error),
                 result.errorMsg ?: ""

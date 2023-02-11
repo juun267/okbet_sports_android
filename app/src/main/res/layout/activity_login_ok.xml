@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/okbet_bg_login"
+    tools:ignore="SpUsage">
+
+    <include
+        android:id="@+id/v_top"
+        layout="@layout/view_status_bar" />
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="26dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@drawable/ic_arrow_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+    <ImageButton
+        android:id="@+id/btn_custom_serivce"
+        android:layout_width="26dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="24dp"
+        android:background="@null"
+        android:contentDescription="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@drawable/ic_customer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="151dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/logo_okbet_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_register"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:text="@string/login_welcome"
+        android:textColor="@color/color_414655"
+        android:textFontWeight="500"
+        android:textSize="@dimen/textSize20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="30dp"
+        android:layout_marginTop="50dp"
+        android:elevation="2dp"
+        android:background="@drawable/bg_white_radius_28_top"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/label_register"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="34dp">
+
+            <FrameLayout
+                android:id="@+id/fl_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/lin_login_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintText="@string/account_hint"
+                        app:iconSignifier="@drawable/ic_login"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/member_account"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_account"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                    <LinearLayout
+                        android:id="@+id/block_valid_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                            android:id="@+id/et_verification_code"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="center_vertical"
+                            app:hintText="@string/hint_verification_code"
+                            app:iconSignifier="@drawable/ic_valid"
+                            app:isResponsiveIconColor="false"
+                            app:labelText="@string/verification_code"
+                            app:labelTextStyle="normal"
+                            app:primaryColor="@color/color_AFAFB1">
+
+                            <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                                android:id="@+id/eet_verification_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textColor="@color/color_FFFFFF_DE000000"
+                                android:textSize="@dimen/textSize14sp" />
+
+                        </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                        <Button
+                            android:id="@+id/btn_send_sms"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/btn_send_sms"
+                            android:text="发送"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="@dimen/textSize14sp"
+                            android:alpha="0.5"
+                            android:enabled="false" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lin_login_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:hintText="@string/account_hint"
+                        app:iconSignifier="@drawable/ic_login"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/member_account"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+
+                    <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
+                        android:id="@+id/et_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        app:endIcon="@drawable/ic_eye_close"
+                        app:hintText="@string/password_hint"
+                        app:iconSignifier="@drawable/ic_icon_okbet_login_password"
+                        app:isResponsiveIconColor="false"
+                        app:labelText="@string/login_password"
+                        app:labelTextStyle="normal"
+                        app:primaryColor="@color/color_AFAFB1">
+
+                        <org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
+                            android:id="@+id/eet_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:textColor="@color/color_FFFFFF_DE000000"
+                            android:textSize="@dimen/textSize14sp" />
+
+                    </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_pwd_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:button="@drawable/effect_login_select_checkbox"
+                android:paddingStart="6dp"
+                android:text="密码登录"
+                android:textColor="@color/color_025BE8_025BE8"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fl_input" />
+
+            <TextView
+                android:id="@+id/tv_code_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:button="@drawable/effect_login_select_checkbox"
+                android:paddingStart="6dp"
+                android:text="验证码登录"
+                android:textColor="@color/color_025BE8_025BE8"
+                android:textSize="@dimen/textSize14sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fl_input" />
+
+            <TextView
+                android:id="@+id/tv_forget_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@null"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/forget_password_question"
+                android:textColor="@color/color_9BB3D9_535D76"
+                android:textSize="@dimen/textSize14sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fl_input" />
+
+            <Button
+                android:id="@+id/btn_login"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="@dimen/margin_50"
+                android:background="@drawable/ic_submit"
+                android:text="登录 / 注册"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize17sp"
+                android:alpha="0.5"
+                android:enabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fl_input" />
+
+            <LinearLayout
+                android:id="@+id/lin_third"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_14"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login">
+
+                <!--                <com.google.android.gms.common.SignInButton-->
+                <!--                    android:id="@+id/facebook_btn"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content" />-->
+
+                <!--                <com.facebook.login.widget.LoginButton-->
+                <!--                    android:id="@+id/google_btn"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_gravity="center_horizontal"-->
+                <!--                    android:layout_marginTop="30dp"-->
+                <!--                    android:layout_marginBottom="30dp" />-->
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/bottom_liences"
+        layout="@layout/bottom_register_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_48"
+        android:layout_marginBottom="@dimen/margin_20"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

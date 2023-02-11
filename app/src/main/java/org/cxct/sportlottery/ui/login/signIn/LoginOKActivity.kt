@@ -3,13 +3,15 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
-import com.bumptech.glide.Glide
-import com.facebook.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -17,34 +19,40 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.android.synthetic.main.activity_login_code.*
+import kotlinx.android.synthetic.main.activity_login_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ActivityLoginCodeBinding
+import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
+import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.MD5Util
+import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
 
 
 /**
  * @app_destination 登入
  */
-class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
+class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private val loginScope = CoroutineScope(Dispatchers.Main)
 
-    private lateinit var binding: ActivityLoginCodeBinding
+    private lateinit var binding: ActivityLoginOkBinding
     private val callbackManager = CallbackManager.Factory.create()
 
     companion object {
@@ -60,33 +68,33 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             .statusBarView(v_statusbar)
             .fitsSystemWindows(false)
             .init()
-        binding = ActivityLoginCodeBinding.inflate(layoutInflater)
+        binding = ActivityLoginOkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupBackButton()
+        initOnClick()
         setupAccount()
+        setupPassword()
         setupValidCode()
         setupLoginButton()
-        setupGoogle()
-        setupFacebook()
-        setupRegisterButton()
+//        setupGoogle()
+//        setupFacebook()
         setupServiceButton()
         initObserve()
-        setLetterSpace()
         viewModel.focusChangeCheckAllInputComplete()
     }
 
-    private fun setLetterSpace() {
-        if (LanguageManager.getSelectLanguage(this) == LanguageManager.Language.ZH) {
-            binding.btnLogin.letterSpacing = 0.6f
-        }
-    }
-
-    private fun setupBackButton() {
+    private fun initOnClick() {
         binding.btnBack.setOnClickListener { finish() }
+        tv_pwd_login.setOnClickListener { switchLoginType(true) }
+        tv_code_login.setOnClickListener { switchLoginType(false) }
+        tv_forget_password.setOnClickListener {
+            startActivity(Intent(this@LoginOKActivity,
+                ForgetPasswordActivity::class.java))
+        }
     }
 
     private fun setupAccount() {
         binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
+        binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         if (!viewModel.account.isNullOrBlank()) {
             binding.eetAccount.setText(viewModel.account)
@@ -96,6 +104,41 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
+    private fun setupPassword() {
+        if (!viewModel.password.isNullOrBlank()) {
+            binding.eetPassword.setText(viewModel.password)
+        }
+        binding.etPassword.endIconImageButton.setOnClickListener {
+            if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                binding.eetPassword.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
+                binding.etPassword.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                binding.etPassword.setEndIcon(R.drawable.ic_eye_open)
+                binding.eetPassword.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
+            }
+            binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
+        }
+        //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
+        if (binding.eetPassword.text.toString().isEmpty()) {
+            binding.etPassword.endIconImageButton.visibility = View.GONE
+        } else {
+            binding.etPassword.endIconImageButton.visibility = View.VISIBLE
+        }
+        binding.etPassword.setSimpleTextChangeWatcher(object : SimpleTextChangedWatcher {
+            override fun onTextChanged(theNewText: String?, isError: Boolean) {
+                if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
+                    binding.etPassword.endIconImageButton.visibility = View.VISIBLE
+                }
+
+            }
+        })
+        binding.btnLogin.requestFocus()
+        if (binding.eetAccount.text.length > 0) {
+            adjustEnableLoginButton(true)
+        }
+    }
 
     private fun setupValidCode() {
         if (sConfigData?.enableValidCode == FLAG_OPEN) {
@@ -104,7 +147,7 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         } else {
             binding.blockValidCode.visibility = View.GONE
         }
-        binding.ivReturn.setOnClickListener { updateValidCode() }
+        binding.btnSendSms.setOnClickListener { updateValidCode() }
     }
 
     private fun setupLoginButton() {
@@ -128,6 +171,7 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         loading()
 
         val account = binding.eetAccount.text.toString()
+        val password = binding.eetPassword.text.toString()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = binding.eetVerificationCode.text.toString()
         val deviceSn = JPushInterface.getRegistrationID(applicationContext)
@@ -137,17 +181,17 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val deviceId = Settings.Secure.getString(
             applicationContext.contentResolver, Settings.Secure.ANDROID_ID
         )
-//        val loginRequest = LoginRequest(
-//            account = account,
-//            password = MD5Util.MD5Encode(password),
-//            loginSrc = LOGIN_SRC,
-//            deviceSn = deviceSn,
-//            validCodeIdentity = validCodeIdentity,
-//            validCode = validCode,
-//            appVersion = BuildConfig.VERSION_NAME,
-//            loginEnvInfo = deviceId,
-//        )
-//        viewModel.login(loginRequest, password)
+        val loginRequest = LoginRequest(
+            account = account,
+            password = MD5Util.MD5Encode(password),
+            loginSrc = LOGIN_SRC,
+            deviceSn = deviceSn,
+            validCodeIdentity = validCodeIdentity,
+            validCode = validCode,
+            appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME,
+            loginEnvInfo = deviceId,
+        )
+        viewModel.login(loginRequest, password)
 
     }
 
@@ -156,10 +200,10 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             .requestEmail()
             .build()
         var mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        google_btn.setOnClickListener {
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
+//        google_btn.setOnClickListener {
+//            val signInIntent = mGoogleSignInClient.signInIntent
+//            startActivityForResult(signInIntent, RC_SIGN_IN)
+//        }
     }
 
     private fun setupFacebook() {
@@ -178,32 +222,23 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     TODO("Not yet implemented")
                 }
             })
-        facebook_btn.setOnClickListener {
-            LoginManager.getInstance()
-                .retrieveLoginStatus(this@LoginCodeActivity, object : LoginStatusCallback {
-                    override fun onCompleted(accessToken: AccessToken) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onError(exception: Exception) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onFailure() {
-                        TODO("Not yet implemented")
-                    }
-
-                })
-        }
-    }
-
-    private fun setupRegisterButton() {
-        binding.tvSignUp.setVisibilityByCreditSystem()
-        binding.linRegister.isVisible = !isUAT()
-        binding.tvSignUp.setOnClickListener {
-            startRegister(this@LoginCodeActivity)
-            finish()
-        }
+//        facebook_btn.setOnClickListener {
+//            LoginManager.getInstance()
+//                .retrieveLoginStatus(this@LoginCodeActivity, object : LoginStatusCallback {
+//                    override fun onCompleted(accessToken: AccessToken) {
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                    override fun onError(exception: Exception) {
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                    override fun onFailure() {
+//                        TODO("Not yet implemented")
+//                    }
+//
+//                })
+//        }
     }
 
     private fun setupServiceButton() {
@@ -215,10 +250,10 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                     ServiceDialog().show(supportFragmentManager, null)
                 }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@LoginCodeActivity, serviceUrl2)
+                    JumpUtil.toExternalWeb(this@LoginOKActivity, serviceUrl2)
                 }
                 !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(this@LoginCodeActivity, serviceUrl)
+                    JumpUtil.toExternalWeb(this@LoginOKActivity, serviceUrl)
                 }
             }
         }
@@ -257,7 +292,7 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         if (loginResult.success) {
             if (loginResult.loginData?.deviceValidateStatus == 0) {
                 PhoneVerifyActivity.loginData = loginResult.loginData
-                startActivity(Intent(this@LoginCodeActivity, PhoneVerifyActivity::class.java))
+                startActivity(Intent(this@LoginOKActivity, PhoneVerifyActivity::class.java))
             } else {
                 this.run {
 //                    if (sConfigData?.thirdOpen == FLAG_OPEN)
@@ -281,19 +316,19 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
-        if (validCodeResult?.success == true) {
-            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
-            Glide.with(this)
-                .load(bitmap)
-                .into(binding.ivVerification)
-        } else {
-            updateValidCode()
-            //et_verification_code.setVerificationCode(null)
-            ToastUtil.showToastInCenter(
-                this@LoginCodeActivity,
-                getString(R.string.get_valid_code_fail_point)
-            )
-        }
+//        if (validCodeResult?.success == true) {
+//            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
+//            Glide.with(this)
+//                .load(bitmap)
+//                .into(binding.ivVerification)
+//        } else {
+//            updateValidCode()
+//            //et_verification_code.setVerificationCode(null)
+//            ToastUtil.showToastInCenter(
+//                this@LoginCodeActivity,
+//                getString(R.string.get_valid_code_fail_point)
+//            )
+//        }
     }
 
     private fun showErrorDialog(errorMsg: String?) {
@@ -342,8 +377,16 @@ class LoginCodeActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w("hjq", "signInResult:failed code=" + e.statusCode)
+            e.printStackTrace()
             updateUiWithResult(null)
         }
+    }
+
+    private fun switchLoginType(pwdLogin: Boolean) {
+        lin_login_pwd.isVisible = pwdLogin
+        lin_login_code.isVisible = !pwdLogin
+        tv_pwd_login.isVisible = !pwdLogin
+        tv_code_login.isVisible = pwdLogin
+        tv_forget_password.isVisible = pwdLogin
     }
 }

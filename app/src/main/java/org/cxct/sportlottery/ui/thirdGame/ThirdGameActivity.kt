@@ -17,7 +17,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
@@ -29,6 +28,7 @@ import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.EventBusUtil
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.util.startLogin
 
 open class ThirdGameActivity : WebActivity() {
 
@@ -111,7 +111,7 @@ open class ThirdGameActivity : WebActivity() {
                 false
             }
             else -> {
-                startActivity(Intent(this, LoginActivity::class.java))
+                startLogin()
                 false
             }
         }

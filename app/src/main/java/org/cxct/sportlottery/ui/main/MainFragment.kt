@@ -354,7 +354,7 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
             }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error),
                 result.errorMsg ?: "") {}
-            EnterThirdGameResult.ResultType.NEED_REGISTER -> context?.run { startRegister(this) }
+            EnterThirdGameResult.ResultType.NEED_REGISTER -> requireActivity().startRegister()
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error),
                 result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {
