@@ -673,8 +673,8 @@
     <string name="odd_type_title">Thể loại kèo</string>
     <string name="odd_type_eu">EU</string>
     <string name="odd_type_hk">HK</string>
-    <string name="odd_type_mys">Kèo Malay</string>
-    <string name="odd_type_idn">Kèo Indo</string>
+    <string name="odd_type_mys">MY</string>
+    <string name="odd_type_idn">ID</string>
     <string name="submit_time">thời gian gửi</string>
     <string name="feedback_time">Thời gian phản hồi</string>
     <string name="not_reply_yet">Chưa có phản hồi</string>
