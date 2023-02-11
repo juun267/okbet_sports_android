@@ -58,14 +58,6 @@
 
     <!-- 导航 没有选中的样式 -->
 
-    <style name="LightBackgroundBottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
-
     <style name="NoUppercaseTab" parent="TextAppearance.Design.Tab">
         <item name="android:textStyle">normal</item>
         <item name="textAllCaps">false</item>

@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.Spanned
-import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
