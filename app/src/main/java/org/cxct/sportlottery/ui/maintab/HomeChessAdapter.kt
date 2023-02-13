@@ -16,14 +16,14 @@ import org.cxct.sportlottery.util.ScreenUtil
 class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
     BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(0, data) {
 
-    private val itemWith by lazy { (ScreenUtil.getScreenWidth(context) - 40.dp) / 2 }
+    private val params by lazy {  ViewGroup.LayoutParams((ScreenUtil.getScreenWidth(context) - 40.dp) / 2, -2) }
     private val options = RequestOptions.bitmapTransform(RoundedCorners(8.dp))
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .placeholder(R.drawable.icon_chess_and_card)
 
     override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val imageView = ImageView(context)
-        imageView.layoutParams = ViewGroup.LayoutParams(itemWith, -2)
+        imageView.layoutParams = params
         imageView.adjustViewBounds = true
         imageView.scaleType = ImageView.ScaleType.FIT_XY
         return BaseViewHolder(imageView)
