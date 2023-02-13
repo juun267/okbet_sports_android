@@ -207,7 +207,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.tvSignUp.setVisibilityByCreditSystem()
         binding.linRegister.isVisible = !isUAT()
         binding.tvSignUp.setOnClickListener {
-            startRegister(this@LoginActivity)
+            startRegister()
             finish()
         }
     }

@@ -16,10 +16,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.setWebViewCommonBackgroundColor
+import org.cxct.sportlottery.util.startLogin
 
 
 /**
@@ -85,7 +85,7 @@ class StatisticsDialog : BaseBottomSheetFragment<StatisticsViewModel>(Statistics
 
         vBinding.gameToolbar.btnLogin.setOnClickListener {
             dismiss()
-            startActivity(Intent(MultiLanguagesApplication.appContext, LoginActivity::class.java))
+            requireActivity().startLogin()
         }
 
         vBinding.gameToolbar.btnRegister.setOnClickListener {

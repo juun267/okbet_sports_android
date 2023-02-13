@@ -54,7 +54,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.dialog.ThirdGameDialog
 import org.cxct.sportlottery.ui.game.publicity.PublicityAnnouncementMarqueeAdapter
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -273,10 +272,10 @@ class MainHomeFragment :
             getMainTabActivity().showLeftFrament(0, 0)
         }
         btn_register.setOnClickListener {
-            startRegister(requireContext())
+            requireActivity().startRegister()
         }
         btn_login.setOnClickListener {
-            startActivity(Intent(requireActivity(), LoginActivity::class.java))
+            requireActivity().startLogin()
         }
         iv_money_refresh.setOnClickListener {
             iv_money_refresh.startAnimation(RotateAnimation(0f,

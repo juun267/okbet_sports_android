@@ -57,7 +57,7 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginOKActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -662,7 +662,7 @@ fun loginedRun(context: Context, block: ()-> Unit) {
         return
     }
 
-    context.startActivity(Intent(context, LoginActivity::class.java))
+    context.startActivity(Intent(context, LoginOKActivity::class.java))
 }
 
 
@@ -1331,15 +1331,20 @@ fun Context.copyToClipboard(copyText: String) {
     ToastUtil.showToastInCenter(this, this.getString(R.string.bet_slip_id_is_copied))
 }
 
-fun startRegister(context: Context) {
+fun Activity.startRegister() {
     if (isUAT()) {
         return
     }
-    context?.startActivity(
-        Intent(
-            context,
-            if (isOKPlat()) RegisterOkActivity::class.java else RegisterActivity::class.java)
+    this.startActivity(Intent(this,
+        if (isOKPlat())
+            RegisterOkActivity::class.java
+        else
+            RegisterActivity::class.java)
     )
+}
+
+fun Activity.startLogin() {
+    this.startActivity(Intent(this, LoginOKActivity::class.java))
 }
 
 fun View.refreshMoneyLoading() {

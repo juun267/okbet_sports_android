@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
@@ -88,10 +87,10 @@ class TransactionStatusActivity :
         }
 
         btn_login.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
+            startLogin()
         }
         btn_register.setOnClickListener {
-            startRegister(this)
+            startRegister()
         }
 
         tv_odds_type.setOnClickListener {

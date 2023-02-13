@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
@@ -50,6 +51,10 @@ class LoginViewModel(
         get() = _accountMsg
     private val _accountMsg = MutableLiveData<Pair<String?, Boolean>>()
 
+    val userNameMsg: LiveData<Pair<String?, Boolean>>
+        get() = _userNameMsg
+    private val _userNameMsg = MutableLiveData<Pair<String?, Boolean>>()
+
     val passwordMsg: LiveData<Pair<String?, Boolean>>
         get() = _passwordMsg
     private val _passwordMsg = MutableLiveData<Pair<String?, Boolean>>()
@@ -64,6 +69,12 @@ class LoginViewModel(
 
     val account by lazy { loginRepository.account }
     val password by lazy { loginRepository.password }
+
+    var loginType = 0
+        set(value) {
+            field = value
+            checkAllInputComplete()
+        }
 
     var isRememberPWD
         get() = loginRepository.isRememberPWD
@@ -87,6 +98,21 @@ class LoginViewModel(
                 if (result.loginData?.deviceValidateStatus == 1)
                     userInfoRepository.getUserInfo()
 //                result.loginData?.discount = 0.4f //後台修復中 測試用
+                _loginResult.postValue(result)
+                AFInAppEventUtil.login(result.loginData?.uid.toString())
+            }
+        }
+    }
+
+    fun loginOrReg(loginRequest: LoginRequest) {
+        viewModelScope.launch {
+            //預設存帳號
+            loginRepository.account = loginRequest.account
+
+            doNetwork(androidContext) {
+                loginRepository.loginOrReg(loginRequest)
+            }?.let { result ->
+                userInfoRepository.getUserInfo()
                 _loginResult.postValue(result)
                 AFInAppEventUtil.login(result.loginData?.uid.toString())
             }
@@ -150,15 +176,46 @@ class LoginViewModel(
         }
     }
 
+    fun loginOrRegSendValidCode(loginCodeRequest: LoginCodeRequest) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)
+            }
+//            _validCodeResult.postValue(result)
+        }
+    }
+
+    /**
+     * 手机号/邮箱
+     */
     fun checkAccount(username: String): String? {
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyLengthRange(username, 4, 16) -> {
+            !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
                 LocalUtils.getString(R.string.error_member_account)
             }
             else -> null
         }
         _accountMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
+    }
+
+    /**
+     * 手机号/邮箱/用户名
+     */
+    fun checkUserName(username: String): String? {
+        val msg = when {
+            username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username) || VerifyConstUtil.verifyLengthRange(
+                username,
+                4,
+                16)) -> {
+                LocalUtils.getString(R.string.error_member_account)
+            }
+            else -> null
+        }
+        _userNameMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete()
         return msg
     }
@@ -180,7 +237,8 @@ class LoginViewModel(
 
     fun checkValidCode(validCode: String): String? {
         val msg = when {
-            validCode.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code_forget)
             else -> null
         }
         _validateCodeMsg.value = Pair(msg, msg == null)
@@ -193,14 +251,20 @@ class LoginViewModel(
     }
 
     private fun checkAllInputComplete(): Boolean {
-        if (checkInputPair(accountMsg)) {
-            return false
-        }
-        if (checkInputPair(passwordMsg)) {
-            return false
-        }
-        if (sConfigData?.enableValidCode == FLAG_OPEN && checkInputPair(validateCodeMsg)) {
-            return false
+        if (loginType == 0) {
+            if (checkInputPair(accountMsg)) {
+                return false
+            }
+            if (checkInputPair(validateCodeMsg)) {
+                return false
+            }
+        } else {
+            if (checkInputPair(userNameMsg)) {
+                return false
+            }
+            if (checkInputPair(passwordMsg)) {
+                return false
+            }
         }
         return true
     }

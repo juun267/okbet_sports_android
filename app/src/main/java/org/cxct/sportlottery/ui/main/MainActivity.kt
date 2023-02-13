@@ -20,7 +20,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
@@ -131,10 +130,10 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         }
 
         btn_login.setOnClickListener {
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            startLogin()
         }
         btn_register.setOnClickListener {
-            startRegister(this@MainActivity)
+            startRegister()
         }
 
         iv_language.setOnClickListener {

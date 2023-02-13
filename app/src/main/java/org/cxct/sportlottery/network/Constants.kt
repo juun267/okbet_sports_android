@@ -317,6 +317,30 @@ object Constants {
     const val INDEX_PROMOTENOTICE =
         "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
 
+    //登录或注册(新版优化登录注册->使用)
+    const val LOGIN_OR_REG = "/api/front/index/loginOrReg"
+
+    //登录或注册获取验证码(新版优化登录注册->使用)
+    const val LOGIN_OR_REG_SEND_VALIDCODE = "/api/front/index/loginOrRegSendValidCode"
+
+    // facebook登录或注册(新版优化登录注册->使用)
+    const val FACEBOOK_LOGIN = "/api/front/index/facebookLogin"
+
+    // google登录或注册(新版优化登录注册->使用)
+    const val GOOGLE_LOGIN = "/api/front/index/googleLogin"
+
+    // 发送邮箱验证码(新版优化登录注册->使用)
+    const val SEND_EMAIL_CODE = "/api/front/index/sendEmailCode"
+
+    // 校验邮箱验证码
+    const val VALIDATE_EMAIL_CODE = "/api/front/index/validateEmailCode"
+
+    //绑定谷歌登录(绑定现有账户)
+    const val BIND_GOOGLE = "/api/front/index/bindGoogle"
+
+    //绑定facebook登录(绑定现有账户)
+    const val BIND_FACEBOOK = "/api/front/index/bindFacebook"
+
     //parlay limit
     const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
 
