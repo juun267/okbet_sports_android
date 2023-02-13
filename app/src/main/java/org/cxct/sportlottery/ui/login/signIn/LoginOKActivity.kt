@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -26,10 +27,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
-import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -40,6 +41,7 @@ import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.setTitleLetterSpacing
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
@@ -58,6 +60,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     companion object {
         private const val SELF_LIMIT = 1130
         private const val RC_SIGN_IN = 0x123
+        const val LOGIN_TYPE_CODE = 0
+        const val LOGIN_TYPE_PWD = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +79,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupPassword()
         setupValidCode()
         setupLoginButton()
-//        setupGoogle()
-//        setupFacebook()
+        setupGoogle()
+        setupFacebook()
         setupServiceButton()
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
@@ -84,8 +88,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun initOnClick() {
         binding.btnBack.setOnClickListener { finish() }
-        tv_pwd_login.setOnClickListener { switchLoginType(true) }
-        tv_code_login.setOnClickListener { switchLoginType(false) }
+        tv_pwd_login.setOnClickListener { switchLoginType(LOGIN_TYPE_PWD) }
+        tv_code_login.setOnClickListener { switchLoginType(LOGIN_TYPE_CODE) }
         tv_forget_password.setOnClickListener {
             startActivity(Intent(this@LoginOKActivity,
                 ForgetPasswordActivity::class.java))
@@ -95,6 +99,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun setupAccount() {
         binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
+        binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
         binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
         if (!viewModel.account.isNullOrBlank()) {
             binding.eetAccount.setText(viewModel.account)
@@ -136,17 +141,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         })
         binding.btnLogin.requestFocus()
         if (binding.eetAccount.text.length > 0) {
-            adjustEnableLoginButton(true)
+            binding.btnLogin.adjustEnableButton(true)
         }
     }
 
     private fun setupValidCode() {
-        if (sConfigData?.enableValidCode == FLAG_OPEN) {
-            binding.blockValidCode.visibility = View.VISIBLE
-            updateValidCode()
-        } else {
-            binding.blockValidCode.visibility = View.GONE
-        }
         binding.btnSendSms.setOnClickListener { updateValidCode() }
     }
 
@@ -158,8 +157,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun updateValidCode() {
-        val data = viewModel.validCodeResult.value?.validCodeData
-        viewModel.getValidCode(data?.identity)
+        val account = binding.eetAccount.text.toString()
+        viewModel.loginOrRegSendValidCode(LoginCodeRequest(account, ""))
         binding.eetVerificationCode.apply {
             if (text.isNotBlank()) {
                 text = null
@@ -169,62 +168,104 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun login() {
         loading()
-
-        val account = binding.eetAccount.text.toString()
-        val password = binding.eetPassword.text.toString()
-        val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
-        val validCode = binding.eetVerificationCode.text.toString()
         val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-//        val deviceSn =
-//            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
-//        Timber.d("UUID = $deviceSn")
-        val deviceId = Settings.Secure.getString(
-            applicationContext.contentResolver, Settings.Secure.ANDROID_ID
-        )
-        val loginRequest = LoginRequest(
-            account = account,
-            password = MD5Util.MD5Encode(password),
-            loginSrc = LOGIN_SRC,
-            deviceSn = deviceSn,
-            validCodeIdentity = validCodeIdentity,
-            validCode = validCode,
-            appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME,
-            loginEnvInfo = deviceId,
-        )
-        viewModel.login(loginRequest, password)
-
+        val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
+            Settings.Secure.ANDROID_ID)
+        var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
+        if (lin_login_code.isVisible) {
+            val account = binding.eetAccount.text.toString()
+            val smsCode = binding.eetVerificationCode.text.toString()
+            val loginRequest = LoginRequest(
+                account = account,
+                password = null,
+                loginSrc = LOGIN_SRC,
+                deviceSn = deviceSn,
+                appVersion = appVersion,
+                loginEnvInfo = deviceId,
+                SecurityCode = smsCode,
+            )
+            viewModel.loginOrReg(loginRequest)
+        } else {
+            val account = binding.eetUsername.text.toString()
+            val password = binding.eetPassword.text.toString()
+            val loginRequest = LoginRequest(
+                account = account,
+                password = MD5Util.MD5Encode(password),
+                loginSrc = LOGIN_SRC,
+                deviceSn = deviceSn,
+                appVersion = appVersion,
+                loginEnvInfo = deviceId,
+                SecurityCode = null,
+            )
+            viewModel.login(loginRequest, password)
+        }
     }
 
     private fun setupGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.server_client_id))
             .requestEmail()
             .build()
         var mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        google_btn.setOnClickListener {
-//            val signInIntent = mGoogleSignInClient.signInIntent
-//            startActivityForResult(signInIntent, RC_SIGN_IN)
-//        }
+        btn_google.setOnClickListener {
+            val signInIntent = mGoogleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+
+//            val oneTapClient = Identity.getSignInClient(this)
+//            var signInRequest = BeginSignInRequest.builder()
+//                .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
+//                    .setSupported(true)
+//                    .build())
+//                .setGoogleIdTokenRequestOptions(
+//                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+//                        .setSupported(true)
+//                        // Your server's client ID, not your Android client ID.
+//                        .setServerClientId(getString(R.string.server_client_id))
+//                        // Only show accounts previously used to sign in.
+//                        .setFilterByAuthorizedAccounts(true)
+//                        .build())
+//                // Automatically sign in when exactly one credential is retrieved.
+//                .setAutoSelectEnabled(true)
+//                .build()
+//
+//            oneTapClient.beginSignIn(signInRequest)
+//                .addOnSuccessListener(this) { result ->
+//                    try {
+//                        startIntentSenderForResult(
+//                            result.pendingIntent.intentSender, RC_SIGN_IN,
+//                            null, 0, 0, 0, null)
+//                    } catch (e: IntentSender.SendIntentException) {
+//                        Log.e("hjq", "Couldn't start One Tap UI: ${e.localizedMessage}")
+//                    }
+//                }
+//                .addOnFailureListener(this) { e ->
+//                    // No saved credentials found. Launch the One Tap sign-up flow, or
+//                    // do nothing and continue presenting the signed-out UI.
+//                    Log.d("hjq", e.localizedMessage)
+//                }
+        }
+
     }
 
     private fun setupFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<com.facebook.login.LoginResult> {
                 override fun onSuccess(result: com.facebook.login.LoginResult) {
-                    TODO("Not yet implemented")
+                    LogUtil.toJson(result)
                 }
 
                 override fun onError(error: FacebookException) {
-                    TODO("Not yet implemented")
+                    error.printStackTrace()
                 }
 
                 override fun onCancel() {
-                    TODO("Not yet implemented")
+                    Log.d("hjq", "onCancel")
                 }
             })
-//        facebook_btn.setOnClickListener {
+        btn_feedback.setOnClickListener {
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
 //            LoginManager.getInstance()
-//                .retrieveLoginStatus(this@LoginCodeActivity, object : LoginStatusCallback {
+//                .retrieveLoginStatus(this@LoginOKActivity, object : LoginStatusCallback {
 //                    override fun onCompleted(accessToken: AccessToken) {
 //                        TODO("Not yet implemented")
 //                    }
@@ -238,7 +279,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //                    }
 //
 //                })
-//        }
+        }
     }
 
     private fun setupServiceButton() {
@@ -265,6 +306,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 it.first,
                 false
             )
+            binding.btnSendSms.adjustEnableButton(it.first.isNullOrBlank())
         }
         viewModel.validateCodeMsg.observe(this) {
             binding.etVerificationCode.setError(
@@ -272,8 +314,21 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 false
             )
         }
+        viewModel.passwordMsg.observe(this) {
+            binding.etPassword.setError(
+                it.first,
+                false
+            )
+        }
+        viewModel.passwordMsg.observe(this) {
+            binding.etPassword.setError(
+                it.first,
+                false
+            )
+        }
+
         viewModel.loginEnable.observe(this) {
-            adjustEnableLoginButton(it)
+            binding.btnLogin.adjustEnableButton(it)
         }
 
         viewModel.loginResult.observe(this, Observer {
@@ -346,13 +401,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         dialog.show(supportFragmentManager, null)
     }
 
-    private fun adjustEnableLoginButton(isEnable: Boolean) {
+    private fun View.adjustEnableButton(isEnable: Boolean) {
         if (isEnable) {
-            binding.btnLogin.isEnabled = true
-            binding.btnLogin.alpha = 1.0f
+            isEnabled = true
+            alpha = 1.0f
         } else {
-            binding.btnLogin.isEnabled = false
-            binding.btnLogin.alpha = 0.5f
+            isEnabled = false
+            alpha = 0.5f
         }
     }
 
@@ -363,7 +418,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         if (requestCode === RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
     }
@@ -382,11 +437,15 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    private fun switchLoginType(pwdLogin: Boolean) {
-        lin_login_pwd.isVisible = pwdLogin
-        lin_login_code.isVisible = !pwdLogin
-        tv_pwd_login.isVisible = !pwdLogin
-        tv_code_login.isVisible = pwdLogin
-        tv_forget_password.isVisible = pwdLogin
+    private fun switchLoginType(loginType: Int) {
+        viewModel.loginType = loginType
+        (loginType == 0).let {
+            lin_login_pwd.isVisible = !it
+            lin_login_code.isVisible = it
+            tv_pwd_login.isVisible = it
+            tv_code_login.isVisible = !it
+            tv_forget_password.isVisible = !it
+        }
+
     }
 }

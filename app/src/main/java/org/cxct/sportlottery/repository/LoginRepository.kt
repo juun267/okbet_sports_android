@@ -157,6 +157,20 @@ object LoginRepository {
         return loginResponse
     }
 
+    suspend fun loginOrReg(loginRequest: LoginRequest): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.loginOrReg(loginRequest)
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                if (it.loginData?.deviceValidateStatus == 1) {
+                    setUpLoginData(it.loginData)
+                }
+            }
+        }
+
+        return loginResponse
+    }
+
     suspend fun setUpLoginData(loginData: LoginData?) {
         isCheckToken = true
         updateLoginData(loginData)

@@ -159,13 +159,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
+                            android:alpha="0.5"
                             android:background="@drawable/btn_send_sms"
+                            android:enabled="false"
                             android:text="发送"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
-                            android:textSize="@dimen/textSize14sp"
-                            android:alpha="0.5"
-                            android:enabled="false" />
+                            android:textSize="@dimen/textSize14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -293,6 +293,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login">
+
+                <Button
+                    android:id="@+id/btn_google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="google" />
+
+                <Button
+                    android:id="@+id/btn_feedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="facebook" />
 
                 <!--                <com.google.android.gms.common.SignInButton-->
                 <!--                    android:id="@+id/facebook_btn"-->
