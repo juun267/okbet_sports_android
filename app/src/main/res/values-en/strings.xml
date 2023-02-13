@@ -1275,7 +1275,7 @@
     <string name="to_back_login">Back to login page</string>
     <string name="new_login_password">New Login Password</string>
     <string name="new_login_password_confirm">Confirm new login password</string>
-    <string name="has_send_message_to_phone">A verification code has been sent to your phone: </string>
+    <string name="has_send_message_to_phone">A verification code has been sent to your phone</string>
     <string name="get_phone_code">Obtain</string>
     <string name="reget_phone_code">Reacquire</string>
     <string name="error_confirm_password_forget">Password confirmation does not match</string>
@@ -1407,4 +1407,5 @@
     <string name="closing_time">Closing Time</string>
     <string name="end_time">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
+    <string name="recover_password">Recover password</string>
 </resources>

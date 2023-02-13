@@ -20,9 +20,11 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -33,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -1356,4 +1360,28 @@ fun View.refreshMoneyLoading() {
         0.5f).apply {
         duration = 1000
     })
+}
+
+// 绑定'联系客服'点击事件
+fun View.setServiceClick(fragmentManager: FragmentManager) = setOnClickListener {
+
+    val serviceUrl = sConfigData?.customerServiceUrl
+    val serviceUrl2 = sConfigData?.customerServiceUrl2
+    when {
+        !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+            ServiceDialog().show(fragmentManager, null)
+        }
+        serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                JumpUtil.toExternalWeb(context, serviceUrl2)
+        }
+        !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                JumpUtil.toExternalWeb(context, serviceUrl)
+        }
+    }
+}
+
+
+fun View.setBtnEnable(enable: Boolean) {
+    this.isEnabled = enable
+    this.alpha = if(enable) { 1.0f } else { 0.5f }
 }

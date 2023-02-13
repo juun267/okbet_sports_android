@@ -75,7 +75,7 @@ class ForgetPasswordActivity :BaseActivity<ForgetViewModel>(ForgetViewModel::cla
         binding.ivReturn.setOnClickListener { updateValidCode() }
         binding.btnSendSms.setOnClickListener {
             //先校验手机号码
-            viewModel.getSendSms(phone = eet_phone_num.text.toString(),userName = eet_account_forget.text.toString())
+            viewModel.getSendSms(phone = eet_phone_num.text.toString(),/*userName = eet_account_forget.text.toString()*/)
         }
         binding.btnPut.setOnClickListener{
             if (page ==3){

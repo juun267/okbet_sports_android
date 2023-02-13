@@ -210,12 +210,12 @@ class ForgetViewModel(
      * @phoneNum 手机号码
      *  获取短信你验证码
      */
-    fun getSendSms(phone: String,userName: String) {
+    fun getSendSms(phone: String/*, userName: String*/) {
         //先检测手机号 暂时做假数据处理
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.sendSmsForget(
-                    SendSmsRequest(phone,userName)
+                    SendSmsRequest(phone)
                 )
             }
             _smsResult.postValue(result)

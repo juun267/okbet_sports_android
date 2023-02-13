@@ -30,7 +30,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
-import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
+import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
@@ -199,7 +199,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //                getString(R.string.prompt),
 //                getString(R.string.desc_forget_password)
 //            ) {}
-            startActivity(Intent(this@LoginActivity, ForgetPasswordActivity::class.java))
+            startActivity(Intent(this@LoginActivity, ForgetWaysActivity::class.java))
         }
     }
 

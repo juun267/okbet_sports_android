@@ -37,3 +37,17 @@
 -keep public class com.miui.referrer.** {*;}
 -keep class com.qiniu.qmedia.** {*;}
 -keep class com.qiniu.qplayer2ext.** {*;}
+
+#====== 网易滑块验证 ============ start
+-keepattributes *Annotation*
+-keep public class com.netease.nis.captcha.**{*;}
+
+-keep public class android.webkit.**
+
+-keepattributes SetJavaScriptEnabled
+-keepattributes JavascriptInterface
+
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+#====== 网易滑块验证 ============ end

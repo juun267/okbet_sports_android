@@ -1291,7 +1291,7 @@
     <string name="error_confirm_password_forget">Password confirmation does not match</string>
     <string name="tips_password_success">Password has been changed successfully, please log in again!</string>
     <string name="to_back_login">Back to login page</string>
-    <string name="has_send_message_to_phone">A verification code has been sent to your phone: </string>
+    <string name="has_send_message_to_phone">A verification code has been sent to your phone</string>
     <string name="hint_game_maintenance">The game is under maintenance, please try again later</string>
     <string name="get_phone_code">Obtain</string>
     <string name="reget_phone_code">Reacquire</string>
@@ -1429,5 +1429,6 @@
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="new_games_new_discovery">New Game, New discovery</string>
+    <string name="recover_password">Recover password</string>
 
 </resources>
