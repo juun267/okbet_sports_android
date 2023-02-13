@@ -32,6 +32,7 @@ import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
 import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.game.betList.BetListViewModel
 import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
@@ -154,6 +155,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { CancelAccountViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
+        viewModel { BetListViewModel(get(), get(), get(), get(), get(), get(), get()) }
+
     }
 
     private val repoModule = module {
@@ -170,7 +173,6 @@ class MultiLanguagesApplication : Application() {
         single { WithdrawRepository }
         single { PlayQuotaComRepository() }
         single { MyFavoriteRepository() }
-        single { SelfLimitRepository() }
     }
 
 
