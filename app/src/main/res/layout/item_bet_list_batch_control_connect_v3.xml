@@ -57,29 +57,30 @@
                     android:id="@+id/tvCanWin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/color_414655"
                     android:text="@string/total_win_amount"
+                    android:textColor="@color/color_414655"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/et_bet_parlay"
                     app:layout_constraintStart_toStartOf="@+id/tv_parlay_type"
                     app:layout_constraintTop_toBottomOf="@+id/tv_parlay_type" />
 
                 <TextView
-                    app:layout_constraintStart_toEndOf="@+id/tvCanWin"
-                    app:layout_constraintTop_toTopOf="@+id/tvCanWin"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvCanWin"
+                    android:id="@+id/tvCanWinAmount"
                     android:layout_width="wrap_content"
-                    android:text="₱28,392,817"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_E23434"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="@color/color_E23434"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintBottom_toBottomOf="@+id/tvCanWin"
+                    app:layout_constraintStart_toEndOf="@+id/tvCanWin"
+                    app:layout_constraintTop_toTopOf="@+id/tvCanWin"
+                    tools:text="₱28,392,817" />
 
 
                 <include
+                    android:id="@+id/item_parlay_quota_detail"
                     layout="@layout/content_bet_info_item_quota_detail_v2"
                     android:layout_width="0dp"
-                    android:id="@+id/item_parlay_quota_detail"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_24"
                     android:layout_marginTop="@dimen/margin_8"
@@ -93,20 +94,20 @@
 
                 <TextView
                     android:id="@+id/tvBet"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/bet_info_bet"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/et_bet_parlay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/et_bet_parlay"
-                    android:layout_marginStart="10dp"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/et_bet_height"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="14dp"
                     android:layout_weight="6"
                     android:background="@drawable/bg_radius_2_edittext_unfocus"

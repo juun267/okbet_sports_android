@@ -500,13 +500,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        betListRefactorAdapter =
-            BetListRefactorAdapter(binding.layoutKeyBoard,adapterItemClickListener) { getUserBalance() }
-        betSingleListAdapter = BetSingleListAdapter(adapterItemClickListener,binding.layoutKeyBoard)
-        betParlayListRefactorAdapter =
-            BetListRefactorAdapter(binding.layoutKeyBoard,adapterItemClickListener,) { getUserBalance() }.apply {
-                adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
-            }
+        betListRefactorAdapter = BetListRefactorAdapter(
+            binding.layoutKeyBoard, adapterItemClickListener
+        ) { getUserBalance() }
+        betSingleListAdapter =
+            BetSingleListAdapter(adapterItemClickListener, binding.layoutKeyBoard)
+        betParlayListRefactorAdapter = BetListRefactorAdapter(
+            binding.layoutKeyBoard,
+            adapterItemClickListener,
+        ) { getUserBalance() }.apply {
+            adapterBetType = BetListRefactorAdapter.BetRvType.PARLAY
+        }
     }
 
     private fun checkAllAmountCanBet() {
@@ -563,25 +567,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        binding.apply {
-            val totalBetString = TextUtil.formatForOdd(totalBetAmount)
-            val winnableString = TextUtil.formatForOdd(winnableAmount)
-            //region 依照語系or長度自動換行
-//            val needChangeLineLength = 7
-//            if (LanguageManager.getSelectLanguage(context) == LanguageManager.Language.VI) {
-//                llTotalStake.orientation = LinearLayout.VERTICAL
-//                llEstWinning.orientation = LinearLayout.VERTICAL
-//                llEstWinning.gravity = Gravity.START
-//            } else {
-//                llTotalStake.orientation = LinearLayout.HORIZONTAL
-//                llEstWinning.orientation = LinearLayout.HORIZONTAL
-//                llEstWinning.gravity = Gravity.END
-//            }
-            //endregion
-//            tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
-//            tvTotalWinnableAmount.text =
+//        binding.tvTotalBetAmount.text = TextUtil.formatForOdd(totalBetAmount)
+//        binding.tvTotalWinnableAmount.text =
 //                "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnableAmount)}"
-        }
+
 
         val betCount = if (currentBetType == 0) {
             list.count { it.betAmount > 0 }
@@ -634,7 +623,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun getComboWinnable(betAmount: Double, odds: Double, num: Int): Double {
-        var winnable = betAmount.toBigDecimal().multiply(odds.toBigDecimal())
+        val winnable = betAmount.toBigDecimal().multiply(odds.toBigDecimal())
         return winnable.subtract(betAmount.toBigDecimal().multiply(num.toBigDecimal())).toDouble()
     }
 

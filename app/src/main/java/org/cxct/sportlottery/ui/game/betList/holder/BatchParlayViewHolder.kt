@@ -7,13 +7,11 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.et_bet_parlay
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.ll_control_connect
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tv_hint_parlay_default
-import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.tv_parlay_type
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
@@ -133,6 +131,7 @@ abstract class BatchParlayViewHolder(
                             data.betAmount = 0.000
                             data.inputBetAmountStr = ""
                             data.input = null
+                            refreshSingleWinAmount(null)
                         } else {
                             val quota = it.toString().toDouble()
                             data.betAmount = quota
@@ -151,6 +150,7 @@ abstract class BatchParlayViewHolder(
                         }
                         checkBetLimitParlay(data)
                         onItemClickListener.refreshBetInfoTotal()
+                        refreshSingleWinAmount(data)
                     }
 
                     override fun beforeTextChanged(
@@ -205,6 +205,7 @@ abstract class BatchParlayViewHolder(
             if (mHasBetClosed) {
                 et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
                 et_bet_parlay.isEnabled = false
+                tv_hint_parlay_default.text = "盘口已关闭，无法投注"
             } else {
                 et_bet_parlay.isEnabled = true
                 if (itemData.amountError) {
@@ -222,11 +223,14 @@ abstract class BatchParlayViewHolder(
                 inputMaxMoney.toLong().toString()
             )
             if (LoginRepository.isLogin.value == true) {
-                //限額用整數提示
-                tv_hint_parlay_default.text = betHint
                 val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
                 tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
-
+                if (mHasBetClosed){
+                    tv_hint_parlay_default.text = "盘口已关闭，无法投注"
+                }else{
+                    //限額用整數提示
+                    tv_hint_parlay_default.text = betHint
+                }
             } else {
                 tv_hint_parlay_default.isVisible = false
             }
@@ -252,6 +256,16 @@ abstract class BatchParlayViewHolder(
             itemData.amountError = if (balanceError) true else amountError
         }
         setEtBetParlayBackground(itemData)
+    }
+
+    private fun refreshSingleWinAmount(itemData: ParlayOdd?) {
+        if (itemData == null) {
+            itemView.tvCanWinAmount.text = "${sConfigData?.systemCurrencySign} --"
+        }else{
+            val w = itemData.betAmount.toBigDecimal().multiply(itemData.odds.toBigDecimal())
+            val winnable = w.subtract(itemData.betAmount.toBigDecimal().multiply(itemData.num.toBigDecimal())).toDouble()
+            itemView.tvCanWinAmount.text = "${sConfigData?.systemCurrencySign} ${TextUtil.formatForOdd(winnable)}"
+        }
     }
 
 

@@ -77,16 +77,14 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/color_F9F9F9"
                 android:layout_above="@+id/parlayLayout"
-                android:background="#f9f9f9"
                 android:orientation="vertical">
-
                 <!--串关投注-->
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/cl_parlay_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clipToPadding="false"
                     android:orientation="vertical"
                     android:paddingTop="10dp"
                     android:visibility="gone"
@@ -95,12 +93,11 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="1"
                         tools:listitem="@layout/item_bet_list_batch_control_connect_v3" />
-
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/clExpandOrStacked"
@@ -161,118 +158,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/clInputLayout" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <!--                &lt;!&ndash;单项投注&ndash;&gt;-->
-                <!--                <FrameLayout-->
-                <!--                    android:id="@+id/cl_single_list"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:clipChildren="false"-->
-                <!--                    android:clipToPadding="false"-->
-                <!--                    android:visibility="gone"-->
-                <!--                    tools:visibility="gone">-->
-
-                <!--                    <androidx.recyclerview.widget.RecyclerView-->
-                <!--                        android:id="@+id/rv_single_list"-->
-                <!--                        android:layout_width="match_parent"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginTop="12.5dp"-->
-                <!--                        android:layout_marginBottom="8.5dp"-->
-                <!--                        android:overScrollMode="never"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent"-->
-                <!--                        tools:itemCount="1"-->
-                <!--                        tools:listitem="@layout/item_bet_list_batch_control_v3" />-->
-                <!--                </FrameLayout>-->
-
-
-                <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-                <!--                    android:id="@+id/cl_total_info"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:paddingHorizontal="15dp"-->
-                <!--                    android:paddingTop="8dp"-->
-                <!--                    android:visibility="gone"-->
-                <!--                    tools:visibility="visible">-->
-
-                <!--                    <androidx.constraintlayout.widget.Guideline-->
-                <!--                        android:id="@+id/total_info_guide_line"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:orientation="vertical"-->
-                <!--                        app:layout_constraintGuide_percent="0.5" />-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:id="@+id/ll_total_stake"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintStart_toStartOf="parent"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent">-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/title_all_bet"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="@string/total_capital"-->
-                <!--                            android:textColor="@color/color_9BB3D9_535D76"-->
-                <!--                            android:textSize="@dimen/textSize12sp"-->
-                <!--                            android:textStyle="bold"-->
-                <!--                            app:layout_constraintStart_toStartOf="parent"-->
-                <!--                            app:layout_constraintTop_toTopOf="parent"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/tv_total_bet_amount"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:gravity="start"-->
-                <!--                            android:textColor="@color/color_FFFFFF_414655"-->
-                <!--                            android:textSize="@dimen/textSize12sp"-->
-                <!--                            android:textStyle="bold"-->
-                <!--                            app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"-->
-                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                            app:layout_constraintStart_toEndOf="@+id/title_all_bet"-->
-                <!--                            app:layout_constraintTop_toTopOf="@+id/title_all_bet"-->
-                <!--                            tools:text="0.000"/>-->
-                <!--                    </LinearLayout>-->
-
-                <!--                    <LinearLayout-->
-                <!--                        android:id="@+id/ll_est_winning"-->
-                <!--                        android:layout_width="0dp"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:gravity="right"-->
-                <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                        app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                        app:layout_constraintStart_toStartOf="@+id/total_info_guide_line"-->
-                <!--                        app:layout_constraintTop_toTopOf="parent">-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/title_winnable_amount"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="@string/total_win_amount"-->
-                <!--                            android:textColor="@color/color_9BB3D9_535D76"-->
-                <!--                            android:textSize="@dimen/textSize12sp"-->
-                <!--                            android:textStyle="bold"-->
-                <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                            app:layout_constraintStart_toStartOf="parent"-->
-                <!--                            app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />-->
-
-                <!--                        <TextView-->
-                <!--                            android:id="@+id/tv_total_winnable_amount"-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:gravity="end"-->
-                <!--                            android:textColor="@color/color_DB6372"-->
-                <!--                            android:textSize="@dimen/textSize12sp"-->
-                <!--                            android:textStyle="bold"-->
-                <!--                            app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"-->
-                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                            app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"-->
-                <!--                            app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"-->
-                <!--                            tools:text="0.000" />-->
-                <!--                    </LinearLayout>-->
-
-                <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -375,51 +260,6 @@
                 <!--endregion bet loading view-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <!-- 選項關閉提示 -->
-            <!--<LinearLayout
-                android:id="@+id/ll_odds_close_warn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/ll_bet"
-                android:background="@color/color_232628_EAF4FE"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/margin_8"
-                android:paddingTop="3dp"
-                android:paddingEnd="@dimen/margin_8"
-                android:paddingBottom="3dp"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <TextView
-                    android:id="@+id/tv_odds_closed_changed"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    android:text="@string/bet_info_odd_content_changed"
-                    android:textAlignment="center"
-                    android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="3dp"
-                    android:text="@string/bet_info_odd_content_close"
-                    android:textAlignment="center"
-                    android:textColor="@color/color_E44438_e44438"
-                    android:textSize="@dimen/textSize12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bet_info_remove_closed"
-                    android:textColor="@color/color_317FFF_0760D4"
-                    android:textSize="@dimen/textSize12sp" />
-            </LinearLayout>-->
-
         </RelativeLayout>
 
     </LinearLayout>

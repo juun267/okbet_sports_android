@@ -34,7 +34,7 @@ object BetListRcvUtil {
         val measuredHeight = getMeasuredHeight(itemCount, recyclerView, adapter)
         val layoutParams = LinearLayoutCompat.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            measuredHeight * itemCount + 123f.dpToPx.toInt()   /*这个 123f 为键盘高度 @see org.cxct.sportlottery.util.KeyboardView */
+            measuredHeight * itemCount  /*这个 123f 为键盘高度 @see org.cxct.sportlottery.util.KeyboardView */
         )
         recyclerView.layoutParams = layoutParams
     }
