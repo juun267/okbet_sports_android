@@ -1,7 +1,10 @@
 package org.cxct.sportlottery.ui.maintab
 
+import android.view.ViewGroup
+import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -11,22 +14,27 @@ import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 
 class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
-    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_poker_game,data) {
+    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(0, data) {
+
+    private val itemWith by lazy { (ScreenUtil.getScreenWidth(context) - 40.dp) / 2 }
+    private val options = RequestOptions.bitmapTransform(RoundedCorners(8.dp))
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .placeholder(R.drawable.icon_chess_and_card)
+
+    override fun onCreateDefViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        val imageView = ImageView(context)
+        imageView.layoutParams = ViewGroup.LayoutParams(itemWith, -2)
+        imageView.adjustViewBounds = true
+        imageView.scaleType = ImageView.ScaleType.FIT_XY
+        return BaseViewHolder(imageView)
+    }
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
-        var itemWith = (ScreenUtil.getScreenWidth(context) - 30.dp - 10.dp) / 2
-        helper.itemView.layoutParams.apply {
-            width = itemWith
-            helper.itemView.layoutParams = this
-        }
+
         Glide.with(context)
             .load(item.entryImage)
-            .apply(
-                RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontTransform()
-                    .placeholder(R.drawable.icon_chess_and_card))
-            .into(helper.getView(R.id.iv_poker_bg))
+            .apply(options)
+            .into((helper.itemView as ImageView))
 
     }
 
