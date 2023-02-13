@@ -32,10 +32,6 @@
         <item name="android:taskCloseExitAnimation">@anim/pop_left_to_right_exit</item>
     </style>
 
-    <style name="TabTextSize">
-        <item name="android:textSize">@dimen/textSize14sp</item>
-    </style>
-
     <style name="MyDialogStyle">
         <item name="android:windowBackground">@color/transparent_black_50</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -58,34 +54,9 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
-    <style name="AppSearchView" parent="Widget.AppCompat.Light.SearchView">
-        <item name="android:textSize">@dimen/textSize13sp</item>
-    </style>
-
     <!-- 导航 选中的样式 -->
-    <style name="bottom_nav_title_active">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/textSize12sp</item>
-    </style>
 
     <!-- 导航 没有选中的样式 -->
-    <style name="bottom_nav_title_inactive">
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">@dimen/textSize12sp</item>
-    </style>
-
-    <style name="LightBackgroundBottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
-
-    <style name="LeftMenu">
-        <item name="android:windowEnterAnimation">@anim/pop_left_to_right_enter_opaque</item>
-        <item name="android:windowExitAnimation">@anim/push_right_to_left_exit_opaque</item>
-    </style>
 
     <style name="NoUppercaseTab" parent="TextAppearance.Design.Tab">
         <item name="android:textStyle">normal</item>
@@ -111,11 +82,4 @@
 <!--        <item name="android:paddingBottom">10dp</item>-->
     </style>
 
-    <style name="TextBoldStyle">
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextNormalStyle">
-        <item name="android:textStyle">normal</item>
-    </style>
 </resources>

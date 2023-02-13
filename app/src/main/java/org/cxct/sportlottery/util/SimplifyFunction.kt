@@ -40,13 +40,11 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.extentions.screenHeight
 import org.cxct.sportlottery.extentions.translationXAnimation
 import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.index.config.VerifySwitchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchLiveData
-import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.OutrightItem
 import org.cxct.sportlottery.network.service.close_play_cate.ClosePlayCateEvent
 import org.cxct.sportlottery.repository.*
@@ -54,9 +52,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.StatusSpinnerAdapter
 import org.cxct.sportlottery.ui.game.ServiceDialog
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
-import org.cxct.sportlottery.ui.game.outright.OutrightLeagueOddAdapter
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
@@ -101,27 +96,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                     val visibleRangePair = mutableListOf<Pair<Int, Int>>()
 
                     when (currentAdapter) {
-                        is LeagueAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                val viewByPosition =
-                                    layoutManager?.findViewByPosition(leaguePosition)
-                                viewByPosition?.let {
-                                    if (getChildViewHolder(it) is LeagueAdapter.ItemViewHolder) {
-                                        val viewHolder =
-                                            getChildViewHolder(it) as LeagueAdapter.ItemViewHolder
-                                        viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                            .forEach { matchPosition ->
-                                                visibleRangePair.add(
-                                                    Pair(
-                                                        leaguePosition,
-                                                        matchPosition
-                                                    )
-                                                )
-                                            }
-                                    }
-                                }
-                            }
-                        }
 
                         is SportLeagueAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
@@ -166,12 +140,7 @@ fun RecyclerView.addScrollWithItemVisibility(
                                 }
                             }
                         }
-                        //冠軍
-                        is OutrightLeagueOddAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                visibleRangePair.add(Pair(leaguePosition, -1))
-                            }
-                        }
+
                         //新版冠軍
                         is SportOutrightAdapter -> {
                             getVisibleRangePosition().forEach { leaguePosition ->
@@ -399,54 +368,6 @@ fun RecyclerView.firstVisibleRange(
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             when (adapter) {
-                is LeagueAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is LeagueAdapter.ItemViewHolder) {
-                            val viewHolder =
-                                getChildViewHolder(view) as LeagueAdapter.ItemViewHolder
-                            viewHolder.itemView.league_odd_list.getVisibleRangePosition()
-                                .forEach { matchPosition ->
-                                    if (adapter.data.isNotEmpty()) {
-                                        Log.d(
-                                            "[subscribe]",
-                                            "訂閱 ${adapter.data[leaguePosition].league.name} -> " +
-                                                    "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.homeName} vs " +
-                                                    "${adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.awayName}"
-                                        )
-                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                            adapter.data[leaguePosition].gameType?.key,
-                                            adapter.data[leaguePosition].matchOdds[matchPosition].matchInfo?.id
-                                        )
-                                    }
-                                }
-                        }
-                    }
-                }
-
-                is OutrightLeagueOddAdapter -> {
-                    viewByPosition?.let { view ->
-                        when (getChildViewHolder(view)) {
-                            is OutrightLeagueOddAdapter.OutrightTitleViewHolder -> {
-                                when (val outrightLeagueData =
-                                    adapter.data[leaguePosition]) {
-                                    is MatchOdd -> {
-                                        Log.d(
-                                            "[subscribe]",
-                                            "訂閱 ${outrightLeagueData.matchInfo?.name} -> " +
-                                                    "${outrightLeagueData.matchInfo?.homeName} vs " +
-                                                    "${outrightLeagueData.matchInfo?.awayName}"
-                                        )
-                                        (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                            outrightLeagueData.matchInfo?.gameType,
-                                            outrightLeagueData.matchInfo?.id
-                                        )
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
 
                 is SportOutrightAdapter -> {
                     viewByPosition?.let { view ->
@@ -728,51 +649,6 @@ fun isThirdTransferOpen(): Boolean {
 //    return true // for test
 }
 
-/**
- * 篩選玩法
- * 更新翻譯、排序
- */
-fun MutableList<LeagueOdd>.updateOddsSort(
-    gameType: String?,
-    playCategoryAdapter: PlayCategoryAdapter,
-) {
-    val playSelected = playCategoryAdapter.data.find { it.isSelected }
-    val selectionType = playSelected?.selectionType
-    val playSelectedCode = playSelected?.code
-    val playCateMenuCode = when (playSelected?.selectionType) {
-        SelectionType.SELECTABLE.code -> {
-            playSelected.playCateList?.find { it.isSelected }?.code
-        }
-
-        SelectionType.UN_SELECTABLE.code -> {
-            playSelected.code
-        }
-
-        else -> null
-    }
-
-    val mPlayCateMenuCode =
-        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else playSelectedCode
-
-    val oddsSortFilter =
-        if (selectionType == SelectionType.SELECTABLE.code) playCateMenuCode else PlayCateMenuFilterUtils.filterOddsSort(
-            gameType,
-            mPlayCateMenuCode
-        )
-    val playCateNameMapFilter =
-        if (selectionType == SelectionType.SELECTABLE.code) PlayCateMenuFilterUtils.filterSelectablePlayCateNameMap(
-            gameType,
-            playSelectedCode,
-            mPlayCateMenuCode
-        ) else PlayCateMenuFilterUtils.filterPlayCateNameMap(gameType, mPlayCateMenuCode)
-
-    this.forEach { LeagueOdd ->
-        LeagueOdd.matchOdds.forEach { MatchOdd ->
-            MatchOdd.oddsSort = oddsSortFilter
-            MatchOdd.playCateNameMap = playCateNameMapFilter
-        }
-    }
-}
 
 fun getLevelName(context: Context, level: Int): String {
     val jsonString = LocalJsonUtil.getLocalJson(

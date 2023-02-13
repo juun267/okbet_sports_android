@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dot"> •&#160;</string>
-    <string name="dot2">‧</string>
     <string name="greet">Hi!</string>
     <string name="tilde">～</string>
     <string name="start">*</string>
-    <string name="verse_">&#160;&#160;v&#160;&#160;</string>
-    <string name="verse_2">&#160;&#160;V&#160;&#160;</string>
     <string name="verse_3">&#160;&#160;VS&#160;&#160;</string>
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="id">ID</string>
     <string name="verse_upper">VS</string>
-    <string name="app">APP</string>
     <string name="colon">:</string>
 
 
@@ -31,7 +27,6 @@
     <string name="bet_count">个</string>
 
     <!--game hall-->
-    <string name="match_type_row_btn_double">1 X 2</string>
 
     <!--keyboard-->
     <string name="keyboard_code_delete">-5</string>
@@ -48,7 +43,6 @@
     <string name="time_up">00:00</string>
 
     <!--date time concat-->
-    <string name="concat_date_time">%1$s %1$s</string>
 
     <!--svg format-->
     <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%5$s&lt;/svg&gt;</string>
@@ -60,5 +54,4 @@
     <string name="language_en">English</string>
     <string name="language_vi">Tiếng Việt</string>
     <string name="language_th">ภาษาไทย</string>
-    <string name="language_id">Indonesia</string>
 </resources>

@@ -31,7 +31,6 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.maintab.HomeFragment
 import org.cxct.sportlottery.ui.maintab.HomeTabAdapter
@@ -438,15 +437,6 @@ class HomeLiveFragment :
         }
     }
 
-    private fun goLoginPage() {
-        startActivity(Intent(context, LoginActivity::class.java))
-    }
-
-
-    private fun goGamePage() {
-        GameActivity.reStart(activity ?: requireActivity())
-        activity?.finish()
-    }
 
     private fun addOddsDialog(
         gameTypeCode: String,

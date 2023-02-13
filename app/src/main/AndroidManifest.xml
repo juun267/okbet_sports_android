@@ -64,35 +64,11 @@
             android:name=".ui.profileCenter.identity.VerifyIdentityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".ui.permission.GooglePermissionActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.profileCenter.creditrecord.CreditRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.favorite.MyFavoriteActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.transactionStatus.TransactionStatusActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.main.accountHistory.AccountHistoryActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.main.accountHistory.BetListActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.vip.VipActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.game.GameActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.game.publicity.GamePublicityActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.feedback.FeedbackMainActivity"
             android:screenOrientation="portrait"
@@ -146,10 +122,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.main.MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.login.signIn.LoginActivity"
             android:screenOrientation="portrait"

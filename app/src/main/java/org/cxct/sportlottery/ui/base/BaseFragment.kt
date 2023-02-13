@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.LayoutInflater
@@ -17,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.GameActivity
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.reflect.KClass
 
@@ -230,14 +228,14 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     }
 
     fun back() {
-        if (activity is GameActivity) {
-            val gameActivity = activity as GameActivity
-            if (gameActivity.isFromPublicity) {
-                gameActivity.finish()
-                gameActivity.isFromPublicity = false
-                return
-            }
-        }
+//        if (activity is GameActivity) {
+//            val gameActivity = activity as GameActivity
+//            if (gameActivity.isFromPublicity) {
+//                gameActivity.finish()
+//                gameActivity.isFromPublicity = false
+//                return
+//            }
+//        }
 
         findNavController().navigateUp()
     }

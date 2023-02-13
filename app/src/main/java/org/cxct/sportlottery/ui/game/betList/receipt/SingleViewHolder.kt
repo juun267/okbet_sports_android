@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.Spanned
-import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +13,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
@@ -32,13 +30,19 @@ class SingleViewHolder private constructor(itemView: View) :
         }
     }
 
-    fun bind(
-        betConfirmTime: Long? = 0,
-        itemData: BetResult,
-        oddsType: OddsType,
-        interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?,
-        position: Int
-    ) {
+    // 投注失败，当前盘口赔率返回的值通过odds字段返回的。其余赔率字段为：null
+    fun getOdds(matchOdd: MatchOdd, oddsType: OddsType): Double {
+        return when (oddsType) {
+            OddsType.EU -> matchOdd?.odds ?: 0.0
+            OddsType.HK -> matchOdd?.hkOdds ?: matchOdd?.odds ?: 0.0
+            //Martin
+            OddsType.MYS -> matchOdd?.malayOdds ?: matchOdd?.odds ?: 0.0
+            OddsType.IDN -> matchOdd?.indoOdds ?: matchOdd?.odds ?: 0.0
+        }
+    }
+
+
+    fun bind(betConfirmTime: Long? = 0,itemData: BetResult, oddsType: OddsType, interfaceStatusChangeListener: BetReceiptDiffAdapter.InterfaceStatusChangeListener?, position: Int) {
         itemView.apply {
             top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 

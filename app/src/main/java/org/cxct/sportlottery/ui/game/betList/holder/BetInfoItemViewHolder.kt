@@ -14,14 +14,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.extentions.gone
-import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -234,6 +231,7 @@ class BetInfoItemViewHolder(
                             return@afterTextChanged
                         }
                     }
+
                     val win = itemData.betAmount * getOddsAndSaveRealAmount(
                         itemData, currentOddsType
                     )
@@ -474,10 +472,10 @@ class BetInfoItemViewHolder(
                 setAnimation(ivOddsArrow, tvOdds, false)
             }
 
-            handler.postDelayed({
-                Timber.d("odds_change_layout隐藏 postDelay")
-                oddsChangeLayout.flIncludeBetTipsSingle?.visibility = View.GONE
-            }, totalAnimationDuration)
+//            handler.postDelayed({
+//                Timber.d("odds_change_layout隐藏 postDelay")
+//                oddsChangeLayout.flIncludeBetTipsSingle?.visibility = View.GONE
+//            }, totalAnimationDuration)
         }
         val spread: String =
             if (itemData.matchOdd.spread.isEmpty() || !PlayCate.needShowSpread(itemData.matchOdd.playCode) || itemData.matchType == MatchType.OUTRIGHT) {

@@ -25,9 +25,6 @@ import kotlinx.android.synthetic.main.hot_gaming_include.*
 import kotlinx.android.synthetic.main.hot_handicap_include.*
 import kotlinx.android.synthetic.main.hot_live_match_include.*
 import kotlinx.android.synthetic.main.view_toolbar_home.*
-import kotlinx.android.synthetic.main.view_toolbar_home.btn_login
-import kotlinx.android.synthetic.main.view_toolbar_home.btn_register
-import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
@@ -43,7 +40,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.third_game.third_games.hot.HandicapData
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchInfo
 import org.cxct.sportlottery.network.third_game.third_games.hot.HotMatchLiveData
@@ -119,7 +115,7 @@ class MainHomeFragment :
             homeRecommendListener = HomeRecommendListener(
 
                 onItemClickListener = { matchInfo ->
-                    if (viewModel.isLogin.value != true) {
+                    if (isCreditSystem() && viewModel.isLogin.value != true) {
                         getMainTabActivity().showLoginNotify()
                     }else{
                         matchInfo?.let {
@@ -136,7 +132,7 @@ class MainHomeFragment :
                     }
 
                     avoidFastDoubleClick()
-                    if (viewModel.isLogin.value != true) {
+                    if (isCreditSystem() &&  viewModel.isLogin.value != true) {
                         getMainTabActivity().showLoginNotify()
                         return@HomeRecommendListener
                     }
@@ -719,7 +715,6 @@ class MainHomeFragment :
 
     private fun queryData() {
         mPublicityVersionUpdateViewModel.checkAppVersion()
-        viewModel.getPublicitySportMenu()
         viewModel.getAnnouncement()
         viewModel.getConfigData()
         viewModel.getMoney()
@@ -921,21 +916,6 @@ class MainHomeFragment :
         } else {
             eventFun()
         }
-    }
-
-    /**
-     * 點擊準備進入指定球種
-     */
-    private fun enterTheSport(sportMenu: SportMenu) {
-
-        if (sportMenu.entranceType != null) {
-            jumpToTheSport(sportMenu.entranceType!!, sportMenu.gameType)
-            return
-        }
-
-        viewModel.setSportClosePromptMessage(
-            MultiLanguagesApplication.appContext.getString(sportMenu.gameType.string)
-        )
     }
 
     /**

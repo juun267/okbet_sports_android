@@ -24,11 +24,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.publicity.GamePublicityActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
-import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.sport.SportListFragment
 import org.cxct.sportlottery.ui.sport.SportTabViewModel
 import org.cxct.sportlottery.ui.sport.outright.SportOutrightFragment
@@ -242,22 +238,6 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
             updateUiWithResult(it)
         }
     }
-
-    fun setupBetData(fastBetDataBean: FastBetDataBean) {
-        viewModel.updateMatchBetListData(fastBetDataBean)
-    }
-
-    fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
-        if (thirdGameCategory != null) {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-                .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
-            startActivity(intent)
-            return
-        }
-
-        GamePublicityActivity.reStart(requireContext())
-    }
-
 
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
