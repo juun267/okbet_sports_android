@@ -227,7 +227,7 @@ abstract class BatchParlayViewHolder(
                 val etBetHasInput = !et_bet_parlay.text.isNullOrEmpty()
                 tv_hint_parlay_default.isVisible = !etBetHasInput //僅輸入金額以後隱藏
                 if (mHasBetClosed){
-                    tv_hint_parlay_default.text = "盘口已关闭，无法投注"
+                    tv_hint_parlay_default.text = LocalUtils.getString(R.string.str_market_is_closed)
                 }else{
                     //限額用整數提示
                     tv_hint_parlay_default.text = betHint

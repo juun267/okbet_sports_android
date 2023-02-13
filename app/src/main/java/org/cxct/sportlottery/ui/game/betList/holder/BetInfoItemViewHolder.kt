@@ -99,7 +99,7 @@ class BetInfoItemViewHolder(
                 }
             } else {
                 //TODO 不确定去不去掉，先去掉
-//                setupContainerUI(isVisible = false, isLock = true, cannotParlay)
+                setupContainerUI(isVisible = false, isLock = true, cannotParlay)
                 viewDivider.visible()
             }
             setupBetAmountInput(
@@ -133,9 +133,8 @@ class BetInfoItemViewHolder(
 
             //盤口關閉的提示
             if (isLock) {
-                tvTipsContent.text =
-                    if (cannotParlay) LocalUtils.getString(R.string.bet_info_no_parlay_hint)
-                    else LocalUtils.getString(R.string.bet_info_bet_lock_hint)
+                tvTipsContent.text = LocalUtils.getString(R.string.bet_info_bet_lock_hint)
+//                if (cannotParlay) LocalUtils.getString(R.string.bet_info_no_parlay_hint)
             }
 
         }

@@ -255,18 +255,18 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/margin_14"
                     android:paddingTop="10dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_input"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_begin="0dp" />
+                        app:layout_constraintGuide_percent="0.5" />
 
                     <TextView
                         android:id="@+id/tv_bet"
@@ -333,7 +333,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="10dp"
                     android:visibility="gone"
-                    tools:visibility="gone" />
+                    tools:visibility="visible" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
