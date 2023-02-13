@@ -1410,4 +1410,5 @@
     <string name="closing_time">"抽奖关闭时间 "</string>
     <string name="end_time">活动结束时间</string>
     <string name="draw_countdown">抽奖倒计时</string>
+    <string name="str_market_is_closed">盘口已关闭，无法投注</string>
 </resources>

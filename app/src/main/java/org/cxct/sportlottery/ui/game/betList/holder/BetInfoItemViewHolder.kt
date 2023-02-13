@@ -12,6 +12,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.*
@@ -518,7 +519,20 @@ class BetInfoItemViewHolder(
             inputStr.replace("\n", "-")
         }
 
-        val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
+        val inPlay = System.currentTimeMillis() > (itemData.matchOdd.startTime ?: 0)
+
+        if(inPlay){
+            tvMatchType.visible()
+            tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+            tvMatchType.background =  AppCompatResources.getDrawable(root.context,R.drawable.bg_match_type_red_circle)
+        }else if (itemData.matchType==MatchType.OUTRIGHT){
+            tvMatchType.gone()
+        }else{
+            tvMatchType.visible()
+            tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+            tvMatchType.background =  AppCompatResources.getDrawable(root.context,R.drawable.bg_match_type_green_circle)
+        }
+
         when {
             itemData.betPlayCateNameMap.isNullOrEmpty() -> {
                 tvName.text = when (inPlay && itemData.matchType != MatchType.OUTRIGHT) {
@@ -531,7 +545,9 @@ class BetInfoItemViewHolder(
                         )
                     }
 
-                    else -> itemData.matchOdd.playCateName
+                    else ->{
+                        itemData.matchOdd.playCateName
+                    }
                 }
             }
 
@@ -549,7 +565,9 @@ class BetInfoItemViewHolder(
                         )
                     }
 
-                    else -> nameOneLine(playCateName)
+                    else -> {
+                        nameOneLine(playCateName)
+                    }
                 }
             }
         }

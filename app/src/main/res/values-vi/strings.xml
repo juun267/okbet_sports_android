@@ -1397,4 +1397,5 @@
     <string name="closing_time">Thời gian đóng</string>
     <string name="end_time">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
+    <string name="str_market_is_closed">Thị trường đã đóng, không thể đặt cược</string>
 </resources>

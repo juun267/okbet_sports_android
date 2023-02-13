@@ -19,6 +19,7 @@ import org.cxct.sportlottery.ui.game.betList.listener.OnSelectedPositionListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.KeyboardView
+import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
 
@@ -205,7 +206,7 @@ abstract class BatchParlayViewHolder(
             if (mHasBetClosed) {
                 et_bet_parlay.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
                 et_bet_parlay.isEnabled = false
-                tv_hint_parlay_default.text = "盘口已关闭，无法投注"
+                tv_hint_parlay_default.text = LocalUtils.getString(R.string.str_market_is_closed)
             } else {
                 et_bet_parlay.isEnabled = true
                 if (itemData.amountError) {

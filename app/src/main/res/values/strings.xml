@@ -1429,5 +1429,5 @@
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="new_games_new_discovery">New Game, New discovery</string>
-
+    <string name="str_market_is_closed">Market is closed and no bets can be placed.</string>
 </resources>

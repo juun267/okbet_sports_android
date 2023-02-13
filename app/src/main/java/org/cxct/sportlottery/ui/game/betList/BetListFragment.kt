@@ -333,6 +333,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 clParlayList.visibility = View.GONE
                 clTitle.ivArrow.setImageResource(R.drawable.ic_single_bet_delete)
             }
+            line_shadow.gone()
 
         } else {
             currentBetType = 1
@@ -341,6 +342,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             binding.clTitle.ivArrow.setImageResource(
                 R.drawable.ic_arrow_up_double
             )
+            line_shadow.visible()
         }
         checkAllAmountCanBet()
         refreshAllAmount()
