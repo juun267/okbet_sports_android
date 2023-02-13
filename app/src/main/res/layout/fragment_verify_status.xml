@@ -69,7 +69,7 @@
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/home_card_text_color"
                 android:textSize="@dimen/textSize14sp"
-                android:text="@string/live_chat" />
+                android:text="@string/kyc_contact_service_hilight" />
         </LinearLayout>
 
         <include

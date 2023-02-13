@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ui.menu.ChangeLanguageDialog"
     tools:ignore="SpUsage,RtlSymmetry">
 
 

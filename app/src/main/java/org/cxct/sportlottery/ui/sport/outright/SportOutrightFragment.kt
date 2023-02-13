@@ -43,7 +43,6 @@ import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketGridManager
 import org.cxct.sportlottery.ui.game.hall.adapter.*
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.sport.*
@@ -628,9 +627,9 @@ class SportOutrightFragment: BaseBottomNavigationFragment<SportListViewModel>(Sp
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
-        val intent = Intent(activity, MainActivity::class.java)
-            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
-        startActivity(intent)
+//        val intent = Intent(activity, MainActivity::class.java)
+//            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+//        startActivity(intent)
     }
 
 

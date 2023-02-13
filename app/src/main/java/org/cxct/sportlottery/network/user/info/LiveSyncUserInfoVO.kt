@@ -24,4 +24,4 @@ data class LiveSyncUserInfoVO(
     val testFlag: Int?,
     @Json(name = "loginSrc")
     val loginSrc: Int = 2,
-)
+) : java.io.Serializable

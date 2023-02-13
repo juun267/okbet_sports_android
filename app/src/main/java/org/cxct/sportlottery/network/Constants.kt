@@ -7,6 +7,7 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.KvUtils
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.isMultipleSitePlat
@@ -22,7 +23,23 @@ object Constants {
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     var currentFilename: String? = null //當前選擇的apk name
     private var mBaseUrl = ""
+        set(value) {
+            field = value
+            if (!field.isEmpty())
+                KvUtils.put("host", value)
+        }
+        get() {
+            return if (field.isEmpty()) KvUtils.decodeString("host") else field
+        }
     private var mSocketUrl = ""
+        set(value) {
+            field = value
+            if (!field.isNullOrEmpty())
+                KvUtils.put("socket_host", value)
+        }
+        get() {
+            return if (field.isNullOrEmpty()) KvUtils.decodeString("socket_host") else field
+        }
 
 
     fun setBaseUrl(baseUrl: String) {
@@ -251,9 +268,9 @@ object Constants {
 
     //抽奖活动H5地址
     fun getLotteryH5Url(context: Context, token: String? = ""): String {
-        val language = getLanguageTag1(context)
+        val language = getLanguageTag(context)
         val base = getH5BaseUrl()
-        return base + "mobile/${language}/sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
+        return base + "sports-rule/#/${language}sweepstakes?platform=${context.getString(R.string.app_name)}&d=android&token=${token}"
     }
 
     //web页面增加夜间模式参数

@@ -13,8 +13,6 @@
     <dimen name="dayOfMonthMinHeight">0dp</dimen>
     <dimen name="dayOfMonthPaddingBottom">0dp</dimen>
 
-    <dimen name="strip_height">24dp</dimen>
-
     <dimen name="dayOfMonthCircleWidth">34dp</dimen>
     <dimen name="dayOfMonthCircleHeight">34dp</dimen>
 

@@ -64,7 +64,6 @@
                     android:textColor="@color/color_FFFFFF_535D76"
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tv_home_vs"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="域堡ahsfshgfaksghasgklhlhkhgahklg" />
@@ -81,7 +80,6 @@
                     android:textSize="@dimen/textSize12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_home_vs"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="赫尔辛格ahsgasghiasghasighaisghsg" />
             </LinearLayout>

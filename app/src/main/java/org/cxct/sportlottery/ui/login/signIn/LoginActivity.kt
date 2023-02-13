@@ -268,6 +268,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         hideLoading()
         if (loginResult.success) {
             if (loginResult.loginData?.deviceValidateStatus == 0) {
+                PhoneVerifyActivity.loginData = loginResult.loginData
                 startActivity(Intent(this@LoginActivity, PhoneVerifyActivity::class.java))
             } else {
                 this.run {

@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_account_history.view.*
-import kotlinx.android.synthetic.main.view_account_history_title_bar.view.*
-import kotlinx.android.synthetic.main.view_status_selector.view.cl_root
-import kotlinx.android.synthetic.main.view_status_spinner.view.*
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,16 +17,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.setTextWithStrokeWidth
-import timber.log.Timber
 
 class AccountHistoryAdapter(
-    private val clickListener: ItemClickListener,
-    private val backClickListener: BackClickListener? = null,
-    private val sportSelectListener: SportSelectListener? = null
+    private val clickListener: ItemClickListener
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
@@ -208,15 +200,6 @@ class AccountHistoryAdapter(
 class ItemClickListener(val clickListener: (data: Row) -> Unit) {
     fun onClick(data: Row) = clickListener(data)
 }
-
-class SportSelectListener(val selectedListener: (sport: String?) -> Unit) {
-    fun onSelect(sport: String?) = selectedListener(sport)
-}
-
-class BackClickListener(val clickListener: () -> Unit) {
-    fun onClick() = clickListener()
-}
-
 
 sealed class DataItem {
 

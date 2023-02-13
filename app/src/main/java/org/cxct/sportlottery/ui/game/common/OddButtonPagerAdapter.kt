@@ -870,7 +870,7 @@ class OddButtonPagerViewHolder constructor(
     }
 
     private val textSpanned by lazy {
-        ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#6C7BA8"))
+        ForegroundColorSpan(Color.parseColor(if (MultiLanguagesApplication.isNightMode) "#a3a3a3" else "#00181E"))
     }
     private val colorSpanned = ForegroundColorSpan(Color.parseColor("#b73a20"))
 

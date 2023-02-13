@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.fragment_news.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentNewsBinding
 import org.cxct.sportlottery.network.common.NewsType
@@ -156,9 +158,8 @@ class NewsFragment : BaseFragment<NewsViewModel>(NewsViewModel::class) {
 
     private fun initObservers() {
         viewModel.newsList.observe(viewLifecycleOwner, {
-            it?.let {
-                newsAdapter.newsList = it
-            }
+            newsAdapter.newsList = it
+            lin_empty.isVisible = it.isEmpty()
         })
 
         viewModel.showAllNews.observe(viewLifecycleOwner, {

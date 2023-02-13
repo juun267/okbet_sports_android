@@ -17,36 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.content_baseball_status.view.*
 import kotlinx.android.synthetic.main.item_sport_odd.view.*
-import kotlinx.android.synthetic.main.item_sport_odd.view.content_baseball_status
-import kotlinx.android.synthetic.main.item_sport_odd.view.ic_attack_c
-import kotlinx.android.synthetic.main.item_sport_odd.view.ic_attack_h
-import kotlinx.android.synthetic.main.item_sport_odd.view.iv_animation
-import kotlinx.android.synthetic.main.item_sport_odd.view.iv_play
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_neutral
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_cards_away
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_cards_home
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_chart
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_favorite
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_name_away
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_name_home
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_play_count
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_point_away_bottom
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_point_home_bottom
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_score_away
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_score_away_bottom
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_score_home
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_score_home_bottom
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_status
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_time
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_total_score_away_bottom
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_odd_match_total_score_home_bottom
-import kotlinx.android.synthetic.main.item_sport_odd.view.league_spt
-import kotlinx.android.synthetic.main.item_sport_odd.view.linear_layout
-import kotlinx.android.synthetic.main.item_sport_odd.view.ll_cs_text_layout
-import kotlinx.android.synthetic.main.item_sport_odd.view.rv_league_odd_btn_pager_main
-import kotlinx.android.synthetic.main.item_sport_odd.view.tv_correct_1
-import kotlinx.android.synthetic.main.item_sport_odd.view.tv_correct_2
-import kotlinx.android.synthetic.main.itemview_league_odd_v5.view.*
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.MatchSource
@@ -412,10 +382,18 @@ class SportOddAdapter(private val matchType: MatchType, private val oddBtnCacheP
             }
 //            滚球动画 直播 显示控制
             //itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
-            itemView.iv_live.isVisible =
-                item.matchInfo?.isLive == 1
-            itemView.iv_play.isVisible =
-                item.matchInfo?.liveVideo == 1
+            if (item.matchInfo?.liveVideo == 1) {
+                if (item.matchInfo?.isLive == 1) {
+                    itemView.iv_live.isVisible = true
+                    itemView.iv_play.isVisible = false
+                } else {
+                    itemView.iv_live.isVisible = false
+                    itemView.iv_play.isVisible = true
+                }
+            } else {
+                itemView.iv_live.isVisible = false
+                itemView.iv_play.isVisible = false
+            }
             itemView.iv_animation.isVisible =
                 !(item.matchInfo?.trackerId.isNullOrEmpty()) && MultiLanguagesApplication.getInstance()
                     ?.getGameDetailAnimationNeedShow() == true

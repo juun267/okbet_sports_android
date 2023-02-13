@@ -411,7 +411,7 @@ open class OddsOutrightButton @JvmOverloads constructor(
         if (status) {
             ll_odd_outright.tag = ll_odd_outright.flashAnimation(1000,2,0.3f).apply {
                 addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
+                    override fun onAnimationEnd(animation: Animator?) {
                         resetOddsValueState()
                     }
                 })

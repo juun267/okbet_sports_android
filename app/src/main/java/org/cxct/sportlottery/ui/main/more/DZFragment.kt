@@ -11,7 +11,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterOkActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
@@ -78,14 +77,7 @@ class DZFragment(private val gameCateData: GameCateData, private val defaultSele
             EnterThirdGameResult.ResultType.SUCCESS -> context?.run { JumpUtil.toThirdGameWeb(this, result.url ?: "") }
             EnterThirdGameResult.ResultType.FAIL -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NEED_REGISTER ->
-                if (getString(R.string.app_name).equals(
-                        "OKbet"
-                    )
-                ) {
-                    context?.startActivity(Intent(context, RegisterOkActivity::class.java))
-                } else {
-                    context?.startActivity(Intent(context, RegisterActivity::class.java))
-                }
+                context?.startActivity(Intent(context, RegisterOkActivity::class.java))
 
             EnterThirdGameResult.ResultType.GUEST -> showErrorPromptDialog(getString(R.string.error), result.errorMsg ?: "") {}
             EnterThirdGameResult.ResultType.NONE -> {

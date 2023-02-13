@@ -22,7 +22,6 @@
     <string name="error_register_id_exist">มีชื่อบัญชีนี้อยู่แล้ว</string>
     <string name="confirm_password">ยืนยันรหัสผ่าน</string>
     <string name="hint_confirm_password">กรุณาใส่รหัสผ่านอีกครั้ง</string>
-    <string name="hint_confirm_new_password">กรุณาใส่รหัสผ่านอีกครั้ง</string>
     <string name="register_not_ph_official">ฉันไม่ใช่ข้าราชการหรือลูกจ้างของรัฐบาลฟิลิปปินส์หรือหน่วยงานที่เกี่ยวข้อง</string>
     <string name="register_not_ph_school">ฉันไม่ใช่นักเรียนของโรงเรียน วิทยาลัย หรือมหาวิทยาลัยใดๆ ในฟิลิปปินส์</string>
     <string name="register_rule_okbet">ฉันเข้าใจว่าหากพบว่าข้อมูลที่ฉันได้ให้ไว้ไม่ถูกต้อง OkBet ขอสงวนสิทธิ์ในการกำหนดบทลงโทษในบัญชีของฉันตามข้อ 5.1 - 5.2 ของข้อกำหนดและเงื่อนไข</string>
@@ -42,18 +41,11 @@
     <string name="service_1">ฝ่ายบริการลูกค้า1</string>
     <string name="service_2">ฝ่ายบริการลูกค้า2</string>
     <string name="official_partner">พันธมิตรอย่างเป็นทางการ</string>
-    <string name="recommend_match">เฉลี่ยรายเดือนของ 10,000 เกมสด</string>
-    <string name="recommend_best_odd">อัตราต่อรองที่ดีที่สุด</string>
-    <string name="recommend_safe">ปลอดภัย ใช้งานง่าย และรวดเร็ว</string>
     <string name="text_search">ค้นหาการแข่งขัน</string>
     <string name="text_search_history">ประวัติการค้นหา</string>
     <string name="text_clear">ลบล้าง</string>
-    <string name="text_top_search">การค้นหายอดนิยม</string>
-    <string name="text_search_refresh">เปลี่ยน</string>
     <string name="text_search_no_result">ผลการค้นหาว่างเปล่า</string>
-    <string name="text_search_try_another">ลองค้นหาคำอื่น</string>
     <string name="date_row_live">ในการเล่น</string>
-    <string name="home_tab_at_start_2">เริ่มการแข่งขัน</string>
     <string name="my_favorite">การแข่งขันของฉัน</string>
     <string name="home_tan_main">หน้าหลัก</string>
     <string name="home_tab_in_play">กลิ้งลูกบอล</string>
@@ -82,13 +74,9 @@
     <string name="financial_bets">การพนันทางการเงิน</string>
     <string name="coming_soon">เร็วๆ นี้</string>
     <string name="sport_game">กีฬา</string>
-    <string name="hot_recommend">คำแนะนำยอดนิยม</string>
     <string name="message_no_sport_game">ขณะนี้ไม่มีกิจกรรมสำหรับ %1$s</string>
-    <string name="label_match_recommend">แนะนำทัวร์นาเมนต์</string>
-    <string name="label_highlight">จุดเด่น</string>
     <string name="game_postponed">เกมเลื่อนออกไป</string>
     <string name="btn_submit">ส่ง</string>
-    <string name="league_filter_all">แสดงกิจกรรมทั้งหมด</string>
     <string name="display_more">แสดงเพิ่มเติม</string>
     <string name="odds_detail_less">แสดงน้อยลง</string>
     <string name="date_row_today">การแข่งวันนี้</string>
@@ -110,19 +98,12 @@
     <string name="commission_detail">รายละเอียด</string>
     <string name="back_to_top">กลับไปด้านบน</string>
     <string name="login_notify">กรุณาเข้าสู่ระบบเพื่อใช้คุณสมบัตินี้</string>
-    <string name="my_favorite_empty_title">การแข่งขันของฉัน</string>
-    <string name="my_favorite_empty_msg">การเลือกไอคอนด้านบนจะเพิ่มไปที่กิจกรรมของฉัน\nคุณสามารถจัดกลุ่มพวกเขาและเข้าถึงกิจกรรมทั้งหมดที่คุณสนใจได้อย่างง่ายดาย</string>
-    <string name="myfavorite_notify_detail_add">เพิ่มใน แฮนดิแคป ของฉัน</string>
     <string name="myfavorite_notify_league_add">เพิ่มใน ลีก ของฉัน</string>
     <string name="myfavorite_notify_match_add">เพิ่มในกิจกรรมของฉันแล้ว</string>
-    <string name="myfavorite_notify_detail_remove">ลบออกจาก แฮนดิแคป ของฉัน</string>
     <string name="myfavorite_notify_league_remove">ลบออกจาก ลีก ของฉัน</string>
     <string name="myfavorite_notify_match_remove">ลบออกจาก การแข่งขัน ของฉัน</string>
     <string name="bet_slip">ใบเดิมพัน</string>
-    <string name="bet_list_single_type">เดิมพันเดี่ยว</string>
-    <string name="bet_list_empty">สลิปเดิมพันว่างเปล่า</string>
     <string name="bet_info_win_quota">จำนวนเงินที่ชนะ</string>
-    <string name="bet_info_input_quota">ใส่จำนวนเงิน</string>
     <string name="bet_receipt_all_bet">เดิมพันทั้งหมด</string>
     <string name="bet_info_list_win_quota">จำนวนที่ชนะได้：</string>
     <string name="keyboard_max">ใหญ่สุด</string>
@@ -131,8 +112,7 @@
     <string name="edt_hint_deposit_money">จำกัด%1$s%2$s～%3$s</string>
     <string name="conspire">พาร์เลย์</string>
     <string name="bet_info_content_has_been_changed">อัตราต่อรองหรือสถานะของเกมที่คุณเลือกมีการเปลี่ยนแปลง โปรดเดิมพันใหม่</string>
-    <string name="bet_info_list_minimum_limit_amount">เงินเดิมพันน้อยกว่าจำนวนขั้นต่ำ</string>
-    <string name="bet_info_list_maximum_limit_amount">จำนวนเงินเดิมพันมากกว่าวงเงินเดิมพัน</string> <!--F039-->
+    <!--F039-->
     <string name="bet_info_add_bet_success">เดิมพันสำเร็จ</string>
     <string name="bet_succeeded">คุณวางเดิมพันสำเร็จแล้ว</string>
     <string name="complete">เสร็จ</string>
@@ -143,15 +123,10 @@
     <string name="bet_list_single_warn">การเลือกเดี่ยวทั้งหมดสามารถเติมเดิมพันเดียวกันได้</string>
     <string name="confirmed">ยืนยัน</string>
     <string name="bet_fail_btn">พนันไม่สำเร็จ</string>
-    <string name="mix_bet_list">พิธีการศุลกากรที่ครอบคลุม</string>
     <string name="bet_notify_max_limit">เพิ่มมากถึง 10 ตัวเลือกในสลิปเดิมพัน</string>
-    <string name="actual_bet">เดิมพันจริง</string>
     <string name="bet_info_odd_content_changed2">อัตราต่อรองเปลี่ยนจาก %1$s เป็น %2$s</string>
-    <string name="bet_list_receipt">ใบเสร็จการเดิมพัน</string>
     <string name="bet_info_no_parlay_hint">ขณะนี้ไม่มีการสนับสนุนควบคู่</string>
     <string name="bet_list_single">เดิมพันเดี่ยว</string>
-    <string name="bet_list_parlay_type">การเดิมพันลูกโซ่</string>
-    <string name="bet_list_view_more_options">ดูตัวเลือกหลายตัวเลือกทั้งหมด</string>
     <string name="parlay_2_fold">2 สาย 1</string>
     <string name="parlay_2_fold_rule">2 สแต็คเป็นเดิมพันเดี่ยวประกอบด้วย 2 การเลือก การเลือกทั้งหมดจะต้องชนะจึงจะได้รับเงินคืน เมื่อมีการเลือกเหตุการณ์เพิ่มเติม 2 สแต็คสามารถรวมกันเป็นมัลติเชน ตัวอย่างเช่น สามารถจัด 3 เหตุการณ์รวมกันได้ 3 2 สาย 1, บอลประเภทต่าง ๆ และรูปแบบการเล่นชิงแชมป์ไม่สามารถใช้สำหรับการเดิมพันสตริงได้</string>
     <string name="parlay_3_fold">3 สาย 1</string>
@@ -202,12 +177,9 @@
     <string name="total_profit_and_loss">กำไรขาดทุนรวม</string>
     <string name="label_account_history">ประวัติบัญชี</string>
     <string name="all_sport">กีฬาทั้งหมด</string>
-    <string name="account_history_overview">ภาพรวมประวัติบัญชี</string>
-    <string name="bet_num_and_bet_date">หมายเลขเดิมพัน / วันที่ชำระเงิน</string>
     <string name="bet_amount">จำนวนเงินเดิมพัน</string>
     <string name="bet_receipt_bet_quota">จำนวนเงินเดิมพัน：</string>
     <string name="win_lose">ชนะ / แพ้</string> <!--I006-->
-    <string name="win_lose_mark">ชนะ / แพ้：</string>
     <string name="bet_fail">เดิมพันล้มเหลว</string>
     <string name="total">ทั้งหมด</string>
     <string name="text_combo_title">เดิมพันแบบพาร์เลย์</string>
@@ -225,7 +197,6 @@
     <string name="bet_time">เวลาเดิมพัน</string>
     <string name="bet_item">รายการเดิมพัน</string>
     <string name="league_name">ชื่อการแข่งขัน</string>
-    <string name="game_tab_league_odd">การแข่งขัน</string>
     <string name="game_odds">อัตราต่อรองแบบแฮนดิแคป</string>
     <string name="all_order">เดิมพันทั้งหมด</string>
     <string name="uncheck">ยังไม่ยืนยัน</string>
@@ -242,15 +213,12 @@
     <string name="remark_by_own_source">ไม่สามารถสร้างได้เนื่องจากการทบทวนกลไก</string>
     <string name="congratulation_win">ยินดีด้วย เดิมพันต่อท้าย: %s ชนะ: %s</string>
     <string name="warning_cancel">เตือนคุณว่าส่วนต่อท้ายการเดิมพัน: %s ถูกยกเลิก</string>
-    <string name="bottom_nav_game">การแข่งขัน</string>
     <string name="search">ค้นหา</string>
     <string name="recharge_state_success">ความสำเร็จ</string>
     <string name="select_all">เลือกทั้งหมด</string>
     <string name="start_date">วันที่เริ่มต้น</string>
     <string name="end_date">วันที่สิ้นสุด</string>
     <string name="champion">แชมป์</string>
-    <string name="premium_odds">อัตราต่อรองพรีเมี่ยม</string>
-    <string name="game_soon">เริ่มการแข่งขัน</string>
     <string name="first_half_game">ครึ่งแรก</string>
     <string name="second_half_game">ครึ่งหลัง</string>
     <string name="title_payer">บัญชีผู้ใช้</string>
@@ -261,15 +229,12 @@
     <string name="id">ไอดี</string>
     <string name="credit_bet_remark">ข้อสังเกต</string>
     <string name="log_detail_reason">ข้อสังเกต</string>
-    <string name="hint_remark">ข้อสังเกต：%1$s</string>
     <string name="title_qr_pay">สแกนรหัสเพื่อชำระเงิน</string>
     <string name="submit">ส่ง</string>
     <string name="title_bank">เลือกธนาคาร</string>
     <string name="select_crypto_address">เลือกที่อยู่</string>
-    <string name="select_crypto_card">เลือกที่อยู่</string>
     <string name="title_main_account">เลือกบัญชี</string>
     <string name="verification_code">รหัสยืนยัน</string>
-    <string name="register_verification_code">รหัสยืนยัน</string>
     <string name="withdrawal_pwd">รหัสผ่านการถอน</string>
     <string name="hint_withdrawal_pwd">รหัสผ่านคือ 4 ตัวเลข)</string>
     <string name="hint_withdrawal_new_password">รหัสผ่านคือ 4 ตัวเลข</string>
@@ -282,7 +247,6 @@
     <string name="security_pb">คำถามปลอดภัย</string>
     <string name="whats_app">WhatsApp</string>
     <string name="error_input_empty">ต้องระบุข้อมูลในช่องนี้</string>
-    <string name="error_incompatible_format">อักขระที่คุณป้อนไม่ตรงกัน</string>
     <string name="select_bank">เลือกธนาคาร</string>
     <string name="no_data">ไม่มีข้อมูลอีกต่อไป</string>
     <string name="text_account_history_balance">ยอดเหลือ</string>
@@ -300,15 +264,13 @@
     <string name="text_us_east_time_bet_record">คำนวณตามเวลาสหรัฐอเมริกาฝั่งตะวันออก (UTC-4)</string>
     <string name="profile_center">ศูนย์ส่วนบุคคล</string>
     <string name="member_level">ระดับสมาชิก</string>
-    <string name="odd_type_title">ประเภทวิธีแทงบอล</string>
     <string name="odd_type_eu">EU</string>
     <string name="odd_type_hk">HK</string>
     <string name="odd_type_mys">MY</string>
     <string name="odd_type_idn">ID</string>
     <string name="text_chose_language">กลับไปหน้าหลัก</string>
-    <string name="go_back_home_page">กลับไปที่บ้าน</string> <!--J721-->
+    <!--J721-->
     <string name="left_menu_odds_type_setting">ตั้งค่าแบบฟอร์ม</string>
-    <string name="infomation_center">ศูนย์ข้อมูล</string>
     <string name="appearance">ภายนอก</string>
     <string name="day_mode">โหมดกลางวัน</string>
     <string name="night_mode">โหมดกลางคืน</string>
@@ -332,19 +294,11 @@
     <string name="lottery">หวย</string>
     <string name="sport">กีฬา</string>
     <string name="live">คนจริง</string>
-    <string name="electric">อิเล็กทรอนิกส์</string>
-    <string name="jackpot">หมากรุกและไพ่</string>
     <string name="fishing">ตกปลา</string>
-    <string name="live_game">ความบันเทิงสด</string>
     <string name="esports">eSports</string>
-    <string name="poker_game">เกมกระดาน</string>
-    <string name="fish_game">เกมตกปลา</string>
     <string name="lottery_description">กว่า 100 วิธีในการชนะลอตเตอรี! ให้ผู้เล่นมีเนื้อหาเกมที่หลากหลาย</string>
-    <string name="main_footer_desc">มีใบอนุญาตทางกฎหมายที่ออกโดย European Malta Gaming Authority (MGA), UK GC Oversight Commission (Gambling Commission) และคณะกรรมการการเล่นเกมของรัฐบาลฟิลิปปินส์ (PAGCOR)\nจดทะเบียนในหมู่เกาะบริติชเวอร์จิน เป็นบริษัทเกมทางกฎหมายที่ได้รับการยอมรับจากสมาคมเกมนานาชาติ โปรดตรวจสอบให้แน่ใจว่าคุณมีอายุอย่างน้อย 18 ปีก่อนที่จะลงทะเบียนและสนุกไปกับมัน!</string>
     <string name="more">มากกว่า</string>
     <string name="bottom_nav_home">หน้าแรก</string>
-    <string name="bottom_nav_promotion">กิจกรรม</string>
-    <string name="bottom_nav_chat">ที่จะสนทนากับ</string>
     <string name="bottom_nav_my_account">ของฉัน</string>
     <string name="game_settlement">ผลลัพธ์</string>
     <string name="league">ลีก</string>
@@ -357,7 +311,6 @@
     <string name="third">สาม</string>
     <string name="fourth">สี่</string>
     <string name="fifth">ห้า</string>
-    <string name="game_tab_outright_odd">แชมป์</string>
     <string name="game_yellow_card">การ์ด</string>
     <string name="game_corner_kick">เตะมุม</string>
     <string name="first_session">ช่วงที่ 1</string>
@@ -379,13 +332,6 @@
     <string name="profit_and_loss">กำไรและขาดทุน</string>
     <string name="game_name">ชื่อเกม</string>
     <string name="log_detail_trans_num_sub2">หมายเลขธุรกรรม</string>
-    <string name="credit_bet_amount_all">วงเงินสินเชื่อทั้งหมด</string>
-    <string name="credit_bet_amount_remain">วงเงินคงเหลือ</string>
-    <string name="credit_bet_settle">การตั้งถิ่นฐาน</string>
-    <string name="credit_record_remain">นับถอยหลังสู่การตั้งถิ่นฐาน</string>
-    <string name="credit_record_deactivate">เครดิตถูกปิดการใช้งาน</string>
-    <string name="credit_record_status_unsettle">ยังไม่ถึงวันที่เรียกเก็บเงิน</string>
-    <string name="user_id">ID ผู้ใช้</string>
     <string name="account_balance">ยอดเงินในบัญชี</string>
     <string name="text_security_money">เงินฝาก: %1$s</string>
     <string name="text_security_money2">เหลืออีก %1$s วัน</string>
@@ -393,7 +339,6 @@
     <string name="profile_info">ข้อมูลส่วนบุคคล</string>
     <string name="account_transfer">การแปลงโควต้า</string>
     <string name="fund_detail">รายละเอียดเงินทุน</string>
-    <string name="credit_bet_record">ประวัติวัฏจักร</string>
     <string name="sport_bet_record">ประวัติการเดิมพันกีฬา</string>
     <string name="other_bet_record">บันทึกการเดิมพันอื่นๆ</string>
     <string name="news_center">ศูนย์ข้อความ</string>
@@ -409,9 +354,6 @@
     <string name="online_gcash">GCash</string>
     <string name="online_grab">GrabPay</string>
     <string name="recharge_channel_paymaya">PayMaya</string>
-    <string name="recharge_channel_momopay">MoMoPay</string>
-    <string name="recharge_channel_zalopay">ZaloPay</string>
-    <string name="recharge_channel_viettelpay">ViettelPay</string>
     <string name="online_maya">PayMaya</string>
     <string name="recharge_channel_online">ชำระเงินออนไลน์</string>
     <string name="txv_transfer_pay">เงินโอน</string>
@@ -434,7 +376,6 @@
     <string name="title_reupload_pic">อัปโหลดภาพหน้าจอการชำระเงินอีกครั้ง</string>
     <string name="title_click_upload_pic">โปรดคลิกเพื่ออัปโหลดภาพหน้าจอของการชำระเงินที่สำเร็จ</string>
     <string name="title_recharge_address">ที่อยู่เงินฝาก</string>
-    <string name="btn_recharge">เติมเงิน</string>
     <string name="title_transaction_id">รหัสธุรกรรมบล็อคเชน</string>
     <string name="hint_transaction_id">โปรดป้อนรหัสบล็อคเชนของคุณ</string>
     <string name="error_hashcode">ข้อผิดพลาดรูปแบบรหัสธุรกรรมบล็อคเชน</string>
@@ -445,7 +386,7 @@
     <string name="hint_we_chat_number">กรุณากรอก WeChat ID</string>
     <string name="edt_hint_wx_id">กรุณากรอก WeChat ID</string>
     <string name="title_nick_name">ชื่อเล่นส่วนตัว</string>
-    <string name="hint_nickname">กรุณากรอกชื่อ</string> <!--J547-->
+    <!--J547-->
     <string name="title_bank_account">เลขบัญชี</string>
     <string name="please_enter_bank_card_rule">กรุณาใส่หมายเลขบัตรธนาคาร</string>
     <string name="title_pay_msg">ข้อมูลการชำระเงิน</string>
@@ -458,9 +399,6 @@
     <string name="gcash_recharge_hint">กรุณาเข้าสู่ระบบสมาชิกเพื่อตรวจสอบว่ามีการใช้บัญชี GCash ก่อนการฝากเงินในแต่ละครั้งหรือไม่ บริษัทไม่สามารถตรวจสอบและไม่รับผิดชอบใดๆ หากทำการฝากเงินเข้าบัญชีที่หมดอายุ!</string>
     <string name="grabpay_recharge_hint">กรุณาเข้าสู่ระบบสมาชิกเพื่อตรวจสอบว่ามีการใช้บัญชี GrabPay ก่อนการฝากเงินในแต่ละครั้งหรือไม่ บริษัทไม่สามารถตรวจสอบและไม่รับผิดชอบใดๆ หากทำการฝากเงินเข้าบัญชีที่หมดอายุ!</string>
     <string name="paymaya_recharge_hint">กรุณาเข้าสู่ระบบสมาชิกเพื่อตรวจสอบว่ามีการใช้บัญชี PayMaya ก่อนการฝากเงินในแต่ละครั้งหรือไม่ บริษัทไม่สามารถตรวจสอบและไม่รับผิดชอบใดๆ หากทำการฝากเงินเข้าบัญชีที่หมดอายุ!</string>
-    <string name="momopay_recharge_hint">กรุณาเข้าสู่ระบบสมาชิกเพื่อตรวจสอบว่ามีการใช้บัญชี MoMoPay ก่อนการฝากเงินในแต่ละครั้งหรือไม่ บริษัทไม่สามารถตรวจสอบและไม่รับผิดชอบใดๆ หากทำการฝากเงินเข้าบัญชีที่หมดอายุ!</string>
-    <string name="zalopay_recharge_hint">กรุณาเข้าสู่ระบบสมาชิกเพื่อตรวจสอบว่ามีการใช้บัญชี ZaloPay ก่อนการฝากเงินในแต่ละครั้งหรือไม่ บริษัทไม่สามารถตรวจสอบและไม่รับผิดชอบใดๆ หากทำการฝากเงินเข้าบัญชีที่หมดอายุ!</string>
-    <string name="viettelpay_recharge_hint">กรุณาเข้าสู่ระบบสมาชิกเพื่อตรวจสอบว่ามีการใช้บัญชี ViettelPay ก่อนการฝากเงินในแต่ละครั้งหรือไม่ บริษัทไม่สามารถตรวจสอบและไม่รับผิดชอบใดๆ หากทำการฝากเงินเข้าบัญชีที่หมดอายุ!</string>
     <string name="money_recharge_hint2">โปรดรีเฟรชหน้าทุกครั้งที่คุณฝากเงินเพื่อรับบัญชีเรียกเก็บเงินล่าสุด เพื่อหลีกเลี่ยงไม่ให้ฝากเงินเข้าบัญชีที่หมดอายุ และคุณไม่สามารถชดเชยรายการที่ไม่ถูกต้องได้</string>
     <string name="recharge_channel_crypto">โอนเงินเสมือน</string>
     <string name="online_bank">ธนาคารออนไลน์</string>
@@ -503,9 +441,7 @@
     <string name="text_crypto_add_success">ผูกสกุลเงินเสมือนสำเร็จแล้ว</string>
     <string name="text_crypto_delete_success">ลบสกุลเงินเสมือนเรียบร้อยแล้ว</string>
     <string name="text_e_wallet_add_success">ผูก eWallet สำเร็จ</string>
-    <string name="text_pay_maya_add_success">ผูก Paymaya สำเร็จ</string>
     <string name="text_e_wallet_delete_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
-    <string name="text_pay_maya_delete_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
     <string name="text_money_get_success">การถอนสำเร็จ กรุณารอเจ้าหน้าที่บริการลูกค้าตรวจสอบ</string>
     <string name="please_setting_money_card">โปรดตั้งค่าบัตรธนาคาร/สกุลเงินเสมือน/eWallet ก่อน</string>
     <string name="please_setting_bank_card">กรุณาตั้งค่าบัตรธนาคารก่อน</string>
@@ -529,11 +465,9 @@
     <string name="error_withdraw_password">รหัสผ่านที่คุณป้อนไม่ถูกต้อง</string>
     <string name="error_withdraw_password_for_new">รหัสผ่านต้องประกอบด้วยตัวเลข 4 ตัว</string> <!--J170-->
     <string name="withdraw_amount">จำนวนเงินที่ถอน</string>
-    <string name="error_withdraw_amount_bank">รูปแบบจำนวนเงินที่ถอนหรือมูลค่าไม่ถูกต้อง</string>
     <string name="error_withdraw_amount_bigger_than_balance">จำนวนถอนมากกว่ายอดเงินในบัญชี</string>
     <string name="withdraw_handling_fee_hint">อัตราค่าธรรมเนียม: %s ค่าธรรมเนียมที่ต้องชำระ: %s%s</string>
     <string name="withdraw_number">จำนวนการถอน</string>
-    <string name="error_withdraw_amount_crypto">รูปแบบหรือมูลค่าของจำนวนเงินที่ถอนไม่ถูกต้อง</string>
     <string name="commission_deducted_amount">จำนวนเงินที่หัก</string>
     <string name="notice">เคล็ดลับ</string>
     <string name="commission_desc_1">เมื่อรหัสที่ใช้งานได้ไม่ถึง เพื่อป้องกันการถอนที่ผิดปกติ จะต้องหักเปอร์เซ็นต์ที่แน่นอนของจำนวนเงินที่เติมเงินเป็นค่าธรรมเนียมการถอนก่อนกำหนด</string>
@@ -612,7 +546,6 @@
     <string name="withdraw_log_type_bank_trans">ถอนธนาคาร</string>
     <string name="withdraw_log_type_admin">เดบิตพื้นหลัง</string>
     <string name="withdraw_log_crypto_transfer">ถอนสกุลเงินเสมือน</string>
-    <string name="withdraw_log_ewallet">การถอนเงิน eWallet</string>
     <string name="recharge_log_order_time">เวลาสั่ง</string>
     <string name="recharge_log_channel_type">ประเภทช่อง</string>
     <string name="recharge_log_order_state">สถานะการสั่งซื้อ</string>
@@ -637,7 +570,6 @@
     <string name="inquire">สอบถาม</string>
     <string name="inbox">กล่องจดหมาย (%1$s)</string>
     <string name="unread_letters">จดหมายที่ยังไม่ได้อ่าน (%1$s)</string>
-    <string name="index">ตัวเลข</string>
     <string name="title">ชื่อ</string>
     <string name="record_time">เวลา</string>
     <string name="news_tab_plat">แพลตฟอร์ม</string>
@@ -684,8 +616,6 @@
     <string name="feedback_tabName_record">บันทึกข้อเสนอแนะ</string>
     <string name="write_suggestion">กรอกข้อเสนอแนะ</string>
     <string name="can_input_1_to_500_word">สามารถป้อนอักขระได้ 1-500 ตัว</string>
-    <string name="submit_time">เวลายื่น</string>
-    <string name="feedback_time">เวลาตอบรับ</string>
     <string name="feedback_not_reply_yet">รอผลตอบรับ</string>
     <string name="feedback_replied">ตอบข้อเสนอแนะ</string>
     <string name="feedback_submit_succeed">ส่งคำติชมเรียบร้อยแล้ว</string>
@@ -708,15 +638,10 @@
     <string name="add_time_first_half_game">การแข่งขันล่วงเวลา ครึ่งแรก</string>
     <string name="add_time_second_half_game">การแข่งขันล่วงเวลา ครึ่งหลัง</string>
     <string name="odds_detail_play_type_bts_n">ไม่ใช่ทั้งสองทีมทำคะแนน</string>
-    <string name="statistics_title">สถิติ</string>
     <string name="current_corner">ยอดรวมปัจจุบัน</string>
-    <string name="ou_hdp_hdp_title">แฮนดิแคป</string>
     <string name="ou_hdp_1x2_title">เอเชียนแฮนดิแคป</string>
     <string name="odds_detail_play_type_bts_y">ทั้งสองทีมทำแต้ม</string>
-    <string name="game_tab_price_boosts_odd">อัตราต่อรองพรีเมี่ยม</string>
     <string name="champion_play">แชมป์</string>
-    <string name="text_bet_not_success">สถานะสลิปพนันสด</string>
-    <string name="text_bet_not_success3">กำลังดำเนินการเดิมพันของคุณ โปรดตรวจสอบ</string>
     <string name="customer_service_title">บริการลูกค้า</string>
     <string name="service_connect">ติดต่อ</string>
     <string name="upload_title">อัพโหลดเอกสารประจำตัว</string>
@@ -763,10 +688,6 @@
     <string name="self_limit_fix_confirm">ยืนยันการเปลี่ยนแปลง</string>
     <string name="self_limit_fix_confirm_done">การปรับเปลี่ยนมีผล</string>
     <string name="withdraw_log_state_un_pass">ไม่ผ่าน</string>
-    <string name="passed">ผ่าน</string>
-    <string name="verifying">กำลังยืนยัน</string>
-    <string name="verify_failed">การตรวจสอบล้มเหลว</string>
-    <string name="match_type_row_in_play">กลิ้งลูกบอล</string>
     <string name="title_name">ชื่อ:</string>
     <string name="title_account">บัญชีผู้ใช้:</string>
     <string name="title_fee_rate">・ค่าธรรมเนียมการจัดการ：</string>
@@ -783,68 +704,25 @@
     <string name="odds_detail_play_type_dc_2X">2/X</string>
     <string name="message_recharge_maintain">ระบบเกี่ยวกับเงินฝากอยู่หว่างการอัพเกรด,รอสักครู่</string>
 
-    <string name="casino">คาสิโน</string>
     <string name="poker">โป๊กเกอร์</string>
-    <string name="poker_on">ONGame</string>
     <string name="slot">สล็อต</string>
     <string name="correct">บัวตั่น</string>
 
     <string name="kyc_type">ประเภทของใบรับรอง</string>
     <string name="kyc_num">หมายเลขประจำตัวประชาชน</string>
-    <string name="kyc_upload">อัพโหลดรูปบัตรประชาชน</string>
     <string name="kyc_type2">เอกสารประเภท 2</string>
     <string name="kyc_num2">หมายเลขประจำตัว 2</string>
-    <string name="kyc_upload2">อัปโหลดรูปประจำตัว 2</string>
-    <string name="kyc_id_verification">การตรวจสอบชื่อจริง</string>
-    <string name="kyc_valid">เอกสารที่ถูกต้อง</string>
-    <string name="kyc_valid2">เอกสารที่ถูกต้อง2</string>
-    <string name="kyc_id_type">กรุณาเลือกประเภทใบรับรอง</string>
-    <string name="kyc_input_id_number">กรุณากรอกหมายเลขประจำตัวประชาชน</string>
     <string name="kyc_pick_upload_id">โปรดเลือกอัปโหลดเอกสารระบุตัวตน</string>
-    <string name="kyc_pick_upload_id2">โปรดอัปโหลดเอกสารที่ถูกต้องเพื่อยืนยันตัวตนของคุณ</string>
     <string name="kyc_size_2_mb">ขนาดไฟล์ไม่เกิน 2MB</string>
     <string name="kyc_contact_service">ปัญหาการเผชิญหน้า? กรุณาติดต่อฝ่ายบริการลูกค้าออนไลน์</string>
-    <string name="kyc_reset">รีเซ็ต</string>
     <string name="kyc_verify_first">กรุณาดำเนินการตรวจสอบชื่อจริงก่อน</string>
     <string name="kyc_go_verify">ไปที่การรับรองทันที</string>
     <string name="kyc_you_wait">ส่งข้อมูลการยืนยันชื่อจริงของคุณแล้ว โปรดรอการตรวจสอบและรับรอง</string>
-    <string name="kyc_service_verify">ติดต่อฝ่ายบริการลูกค้าเพื่อตรวจสอบสิทธิ์</string>
     <string name="kyc_verify_successful">คุณได้ทำการยืนยันชื่อจริงเรียบร้อยแล้ว!</string>
     <string name="kyc_unverified">ไม่ได้รับการรับรอง</string>
-    <string name="kyc_verifying">อยู่ระหว่างการพิจารณา</string>
     <string name="kyc_passed">ผ่าน</string>
-    <string name="kyc_status">สถานะ KYC</string>
-    <string name="kyc_all_status">KYC สถานะเต็ม</string>
-    <string name="kyc_kyc_unverified">KYC ไม่ได้รับการยืนยัน</string>
-    <string name="kyc_kyc_verifying">KYC อยู่ระหว่างการพิจารณา</string>
-    <string name="kyc_kyc_passed">KYC ผ่าน</string>
-    <string name="kyc_valid_id">เอกสารที่ถูกต้อง</string>
-    <string name="kyc_valid_id2">เอกสารที่ถูกต้อง2</string>
-    <string name="kyc_valid_id_type">กรุณาเลือกประเภทใบรับรอง</string>
     <string name="kyc_enter_id_num">กรุณากรอกหมายเลขประจำตัวประชาชน</string>
-    <string name="kyc_screenshot_id">ภาพหน้าจอของวิดีโอ</string>
-    <string name="kyc_screenshot_id2">ภาพหน้าจอของวิดีโอ 2</string>
-    <string name="kyc_screenshot_id_upload">โปรดเลือกอัปโหลดไฟล์ภาพหน้าจอวิดีโอ</string>
-    <string name="kyc_pass">ที่ได้รับการอนุมัติ</string>
-    <string name="kyc_reject">ปฏิเสธ</string>
-    <string name="kyc_sure_pass">คุณแน่ใจหรือไม่ว่าต้องการสมัครผ่านการตรวจสอบชื่อจริงของ [ชื่อผู้ใช้]</string>
     <string name="btn_sure">แน่นอน</string>
-    <string name="kyc_sure_reject">คุณแน่ใจหรือไม่ว่าต้องการปฏิเสธแอปพลิเคชันยืนยันชื่อจริงสำหรับ [ชื่อผู้ใช้]</string>
-    <string name="kyc_reason">กรุณาใส่เหตุผลในการปฏิเสธ</string>
-    <string name="kyc_resule">การแจ้งเตือนผลการตรวจสอบ KYC</string>
-    <string name="kyc_open">เปิด</string>
-    <string name="kyc_open_now">คุณแน่ใจว่าจะเปิดใช้งาน?</string>
-    <string name="kyc_close_now">ยืนยันปิด?</string>
-    <string name="kyc_upload_count">จำนวนเอกสารที่อัพโหลดที่แผนกต้อนรับ</string>
-    <string name="kyc_1">1.0</string>
-    <string name="kyc_2">2.0</string>
-    <string name="kyc_system_setting">การกำหนดค่าการแจ้งเตือนระบบ</string>
-    <string name="kyc_inbox_system">การกำหนดค่าที่เกี่ยวข้องกับการส่งข้อความในไซต์</string>
-    <string name="kyc_operations">ผลการตรวจสอบ KYC สลับข้อความในไซต์</string>
-    <string name="kyc_notification_passed">การตรวจสอบเนื้อหาข้อมูลผ่าน KYC</string>
-    <string name="kyc_notification_reject">ปฏิเสธเนื้อหาข้อมูลการตรวจสอบ KYC</string>
-    <string name="kyc_notice_system">การกำหนดค่าที่เกี่ยวข้องกับ SMS</string>
-    <string name="kyc_text_operations">สวิตช์ SMS ผลการตรวจสอบ KYC</string>
     <string name="hint_no_file_selected">ไม่ได้เลือกไฟล์</string>
     <string name="hint_file_selected">ไฟล์ที่เลือก</string>
     <string name="kyc_contact_service_hilight">บริการออนไลน์</string>
@@ -858,9 +736,8 @@
     <string name="appointment_time">การนัดหมาย</string>
     <string name="select_date">กรุณาเลือกวันที่</string>
     <string name="select_time">กรุณาเลือกเวลา</string>
-    <string name="current_time">เวลาปัจจุบัน</string>
 
-    <string name="dialog_age_verify_statement">OKbet มุ่งมั่นที่จะมอบประสบการณ์การเล่นเกมที่ปลอดภัยและสะดวกสบายให้กับลูกค้าทุกคน
+    <string name="dialog_age_verify_statement">OKBET มุ่งมั่นที่จะมอบประสบการณ์การเล่นเกมที่ปลอดภัยและสะดวกสบายให้กับลูกค้าทุกคน
 \n\nสำหรับคนส่วนใหญ่ การเล่นเกมเป็นกิจกรรมยามว่างที่สนุกสนาน อย่างไรก็ตาม เราตระหนักดีว่าบางครั้งเกมอาจไม่สนุกสำหรับลูกค้าบางรายอีกต่อไป
 \n\nเราขอแนะนำให้คุณใช้เวลาสักครู่เพื่ออ่านความรับผิดชอบและคำชี้แจงในการเล่นเกมของเราก่อนดำเนินการต่อ ห้ามใช้โดยผู้ใช้อายุ 21 ปีขึ้นไปโดยเด็ดขาด
 \n\nความรับผิดชอบของเราคือช่วยให้ลูกค้าเล่นการพนันได้อย่างปลอดภัยและมีความรับผิดชอบ ลดความเสี่ยงของการบาดเจ็บ และช่วยเหลือผู้ที่ต้องการได้รับการรักษา
@@ -886,7 +763,7 @@
 \n\nรักษาความคิดทางสังคมที่ดี
 \nอย่าจริงจังกับเกมมากเกินไป เปิดกว้างและเป็นมิตรกับผู้คนที่คุณเล่นด้วย ทำให้เกมสนุกและน่าตื่นเต้นยิ่งขึ้น
 \n\nหากคุณรู้สึกว่าคุณหรือครอบครัวมีปัญหาเรื่องการพนัน คุณสามารถติดต่อฝ่ายสนับสนุนลูกค้าของเราได้ที่: (อีเมล/โทรศัพท์บริการลูกค้า)
-\nนอกจากนี้ OKbet ได้ร่วมมือกับสิ่งอำนวยความสะดวกเพื่อแก้ไขปัญหาที่เกี่ยวข้องกับปัญหาการพนัน คุณสามารถติดต่อศูนย์ช่วยเหลือต่อไปนี้ได้โดยตรง:
+\nนอกจากนี้ OKBET ได้ร่วมมือกับสิ่งอำนวยความสะดวกเพื่อแก้ไขปัญหาที่เกี่ยวข้องกับปัญหาการพนัน คุณสามารถติดต่อศูนย์ช่วยเหลือต่อไปนี้ได้โดยตรง:
 \n\nศูนย์ฟื้นฟูการเปลี่ยนแปลงชีวิต
 \nดร. แรนดี มิซาเอล เอส. เดลโลซา
 \n105 Scout Rallos Street, คามูนิง
@@ -900,12 +777,12 @@
 \n12 Orestes Lane, Mariposa Street
 \nหมายเลขโทรศัพท์ (02) 502-0600; (0917) 856-0623
 \nอีเมล: help@bridgesofhope.ph
-\n\nฉันยอมรับข้อกำหนดและเงื่อนไขของ OKbet และคำชี้แจงต่อไปนี้:
-\n1. ฉันอนุญาตให้ OKbet ส่งการอัปเดตและโปรโมชั่นตามนโยบายความเป็นส่วนตัว
-\n2. ฉันอายุมากกว่า 21 ปีและได้อ่านและยอมรับข้อกำหนดและเงื่อนไขของ OKbet แล้ว
+\n\nฉันยอมรับข้อกำหนดและเงื่อนไขของ OKBET และคำชี้แจงต่อไปนี้:
+\n1. ฉันอนุญาตให้ OKBET ส่งการอัปเดตและโปรโมชั่นตามนโยบายความเป็นส่วนตัว
+\n2. ฉันอายุมากกว่า 21 ปีและได้อ่านและยอมรับข้อกำหนดและเงื่อนไขของ OKBET แล้ว
 \n3. ฉันไม่ใช่ข้าราชการและ/หรือพนักงานที่เกี่ยวข้องโดยตรงกับการดำเนินงานของรัฐบาลฟิลิปปินส์หรือหน่วยงานใดๆ
 \n4. ฉันไม่ใช่นักเรียนของโรงเรียน วิทยาลัย หรือมหาวิทยาลัยใดๆ ในฟิลิปปินส์
-\n5. ฉันเข้าใจว่า OKbet มีสิทธิ์สุดท้ายในการลงโทษบัญชีของฉันตามข้อกำหนดและเงื่อนไขหากพบว่าข้อมูลที่ฉันได้ให้ไว้ไม่ถูกต้อง</string>
+\n5. ฉันเข้าใจว่า OKBET มีสิทธิ์สุดท้ายในการลงโทษบัญชีของฉันตามข้อกำหนดและเงื่อนไขหากพบว่าข้อมูลที่ฉันได้ให้ไว้ไม่ถูกต้อง</string>
     <string name="txv_recharge_money">・จำนวนเงินฝาก: %1$s %2$s</string>
     <string name="hint_security_answer">กรุณาใส่คำตอบของคุณ</string>
     <string name="hint_register_identity">กรุณากรอกหมายเลขประจำตัวประชาชนของท่าน</string>
@@ -915,7 +792,6 @@
     <string name="hint_whats_app">โปรดป้อนบัญชี WhatsApp ของคุณ</string>
     <string name="hint_zalo">โปรดป้อนหมายเลขบัญชี Zalo ของคุณ</string>
     <string name="btm_navigation_hint">%1$s เป็นเครื่องหมายการค้าจดทะเบียน แบรนด์ และชื่อธุรกิจที่เป็นเจ้าของโดย Ekxinum Inc. ควบคุมและอนุญาตโดย Philippine Amusement and Gaming Corporation (PAGCOR)</string>
-    <string name="credit_record_day">%s วัน</string>
     <string name="account_hint">กรุณาใส่บัญชีสมาชิกของคุณ</string>
     <string name="hint_pay2">2. หากไม่มีการตอบสนองเป็นเวลานาน โปรดติดต่อฝ่ายบริการลูกค้า</string>
     <string name="january">มกราคม</string>
@@ -932,7 +808,6 @@
     <string name="may">อาจ</string>
     <string name="choose_a_photo_from_the_album">เลือกรูปภาพจากอัลบั้ม</string>
     <string name="allow_location_permission">อนุญาตให้เข้าถึงตำแหน่ง</string>
-    <string name="google_location_permission_description">อนุญาตคำขอการให้สิทธิ์ตำแหน่งในเบื้องหลัง คุณสามารถค้นหากิจกรรมใกล้ตำแหน่งของคุณ และคุณสามารถติดตามข่าวกรองเกี่ยวกับเหตุการณ์เหล่านั้นได้</string>
     <string name="june">มิถุนายน</string>
     <string name="internal_download">ดาวน์โหลดภายใน</string>
     <string name="third_game_ky">Kaiyuan หมากรุกและไพ่</string>
@@ -947,24 +822,19 @@
     <string name="add_time_first_plat">ค่าล่วงเวลาไตรมาสแรก</string>
     <string name="add_time_second_plat">ช่วงต่อเวลาพิเศษไตรมาสที่ 2</string>
     <string name="loading">กำลังโหลด</string>
-    <string name="grant_location_permission_on_setting">ไปที่การตั้งค่า เปิดใช้งานการอนุญาตตำแหน่ง</string>
     <string name="april">เมษายน</string>
     <string name="external_download">ดาวน์โหลดภายนอก</string>
     <string name="unknown_error">ความผิดพลาดที่ไม่ทราบสาเหตุ</string>
-    <string name="match_type_row_btn_bs">ให้ลูก &amp; ขนาด</string>
     <string name="third_game_cgcp">สร้างลอตเตอรี</string>
     <string name="title_address">ที่อยู่:</string>
-    <string name="error_recharge_account">จำนวนเงินฝากหรือมูลค่าไม่ถูกต้อง</string>
     <string name="install">ติดตั้ง</string>
-    <string name="search_game_nearby">ค้นหากิจกรรมใกล้คุณ</string>
     <string name="redenvelope_record">บันทึกซองจดหมายสีแดง</string>
     <string name="redenvelope_amount_sub">จำนวนซองแดง:</string>
     <string name="message_network_timeout">การเชื่อมต่อเครือข่ายหมดเวลา. กรุณาลองอีกครั้ง.</string>
-    <string name="dialog_age_verify_hint">ฉันยอมรับและตกลงกับ OKbet</string>
+    <string name="dialog_age_verify_hint">ฉันยอมรับและตกลงกับ OKBET</string>
     <string name="third_game_sbty">Sabah Sports</string>
     <string name="expire_date">เวลาหมดอายุใบรับรอง</string>
     <string name="visit_first">มาและไป</string>
-    <string name="bottom_sheet_title_play_type">เปลี่ยนรูปแบบการเล่น</string>
     <string name="not_reply_yet">ยังไม่มีผลตอบรับ</string>
     <string name="take_a_picture">ถ่ายภาพ</string>
     <string name="version_name">เวอร์ชัน %s</string>
@@ -985,30 +855,23 @@
     <string name="message_network_no_connect">หมดเวลาการเชื่อมต่ออินเทอร์เน็ต โปรดเชื่อมต่อใหม่</string>
     <string name="edt_hint_nick_name">กรุณาใส่ชื่อเล่นส่วนตัว</string>
     <string name="edt_hint_check_real_name">กรุณาใส่ชื่อรับรอง</string>
-    <string name="game_filter_row_search_hint">กรุณากรอกชื่อลีก</string>
     <string name="denied_read_memory_card">ปฏิเสธการอนุญาตอ่านการ์ดหน่วยความจำ</string>
     <string name="title_choose_pay_gap">เลือกบัญชีชำระเงิน</string>
     <string name="title_choose_pay_bank">เลือกธนาคารชำระเงิน</string>
     <string name="title_choose_pay_channel">เลือกช่องทางการชำระเงิน</string>
     <string name="bank_list_not_bink">คุณยังไม่ได้ผูก %1$s</string>
-    <string name="no_announcement">ยังไม่มีประกาศ</string>
-    <string name="games_lobby">ล็อบบี้เกม</string>
     <string name="login_account">เข้าสู่ระบบบัญชี</string>
     <string name="redenvelope_close_hint">คุณแน่ใจหรือว่าปิดการนับถอยหลังซองจดหมายสีแดง? \nปิดการนับถอยหลังเพื่อไม่ให้เข้าสู่ซองจดหมายสีแดง</string>
-    <string name="credit_record_quota">การตั้งถิ่นฐานทั้งหมด:</string>
     <string name="text_crypto_modify_success">แก้ไขความสำเร็จของสกุลเงินเสมือน</string>
     <string name="text_bank_card_modify_success">แก้ไขบัตรธนาคารสำเร็จ</string>
     <string name="text_e_wallet_modify_success">แก้ไข eWallet สำเร็จ</string>
-    <string name="text_paymaya_add_success">แก้ไข Paymaya สำเร็จ</string>
     <string name="bank_list_add">เพิ่ม %1$s</string>
     <string name="add_credit_or_virtual">เพิ่ม %1$s</string>
-    <string name="label_in_play_games">เปตอง</string>
     <string name="error_url_fail">ที่อยู่กระโดดผิด</string>
     <string name="error">ความผิดพลาด</string>
     <string name="error_password_format">ต้องใช้อักขระที่เป็นตัวอักษรและตัวเลขคละกัน 6 ถึง 20 ตัว</string>
     <string name="third_game_df">ตกปลาเต๋อเฟิง</string>
     <string name="third_game_ag">แพลตฟอร์ม AG</string>
-    <string name="cg_lottery">CG ลอตเตอรี</string>
     <string name="third_game_vncp">CG หวยเวียดนาม</string>
     <string name="btm_navigation_copyright">COPYRIGHT © 2023 %1$s ALL RIGHTS RESERVED</string>
     <string name="third_game_cq9">CQ9 อิเล็กทรอนิกส์</string>
@@ -1017,11 +880,8 @@
     <string name="online_zalopay">ZaloPay</string>
     <string name="online_viettelpay">ViettelPay</string>
     <string name="online_recharge_card_pay">ท็อปอาร์ตการ์ด</string>
-    <string name="goal_buster">ประตูบัสเตอร์</string>
     <string name="third_game_ibo">IBO สด</string>
     <string name="third_game_ogplus">OG+ของจริง</string>
-    <string name="sec">ส</string>
-    <string name="verse">วี</string>
     <string name="recharge_log_recharge_amount">จำนวนเงินฝาก</string>
     <string name="title_deposit_money">จำนวนเงินฝาก</string>
     <string name="spt_number_3_2">2 ชนะใน 3 เซ็ต</string>
@@ -1042,7 +902,6 @@
     <string name="record_recharge">บันทึกการฝากเงิน</string>
     <string name="title_recharge_time">เวลาฝาก</string>
     <string name="title_recharge_account">บัญชีเงินฝาก</string>
-    <string name="error_recharge_amount">รูปแบบจำนวนเงินฝากหรือข้อผิดพลาดของมูลค่า</string>
     <string name="current_withdrawal_password">รหัสผ่านการถอนปัจจุบัน</string>
     <string name="current_login_password">รหัสผ่านเข้าสู่ระบบปัจจุบัน</string>
     <string name="redenvelope_trantype_received">รับซองแดง</string>
@@ -1058,7 +917,6 @@
     <string name="front_side_result">ผลการสแกนด้านหน้าของเอกสาร</string>
     <string name="register_identity">หมายเลขประจำตัวประชาชน</string>
     <string name="verification_status">การยืนยันตัวตน</string>
-    <string name="date_row_other">ตลาดต้นอื่น ๆ</string>
     <string name="upload_dialog_camera">ภาพถ่าย</string>
     <string name="service">ให้บริการ</string>
     <string name="error_verification_code">รหัสยืนยันการลงทะเบียนผิดพลาด</string>
@@ -1090,7 +948,6 @@
     <string name="upload_dialog_content">โปรดถ่ายรูปหรือเลือกรูปภาพจากอัลบั้ม</string>
     <string name="register_identity_photo_hint_front">กรุณาคลิกอัพโหลดรูปด้านหน้าบัตรประจำตัวประชาชนของคุณ</string>
     <string name="register_identity_photo_hint_back">กรุณาคลิกอัพโหลดภาพด้านหลังบัตรประจำตัวประชาชนของคุณ</string>
-    <string name="desc_forget_password">กรุณาติดต่อฝ่ายบริการลูกค้า</string>
     <string name="hint_security_code">โปรดป้อนรหัสยืนยัน #1</string>
     <string name="self_limit_submit_input_password_hint">กรุณาใส่รหัสผ่าน</string>
     <string name="self_limit_input_password_for_confirm">โปรดป้อนรหัสผ่านเข้าสู่ระบบเพื่อยืนยันการสมัครของคุณ</string>
@@ -1099,7 +956,6 @@
     <string name="select_id_type">เลือกประเภท ID</string>
     <string name="verify_failed_please_retry">การตรวจสอบสิทธิ์ล้มเหลว โปรดลองอีกครั้ง</string>
     <string name="dialog_security_error">รหัสยืนยันไม่ถูกต้อง</string>
-    <string name="function">ฟังก์ชั่นทั่วไป</string>
     <string name="current_versionIs_the_latest_version">ซอฟต์แวร์ของคุณเป็นเวอร์ชันล่าสุด</string>
     <string name="face_scan_result">ผลการสแกนใบหน้า</string>
     <string name="get_security_code">รับรหัสยืนยัน</string>
@@ -1123,8 +979,6 @@
     <string name="self_limit_per_bet_limit_user_none">ไม่มี</string>
 
     <string name="bet_stake">อาจารย์ใหญ่</string>
-    <string name="confirm_single_bets">ยืนยัน %d เดิมพันเดี่ยว</string>
-    <string name="confirm_multiple_bets">ยืนยัน %d เดิมพันหลายรายการ</string>
     <string name="text_account_history_bet">เดิมพัน</string>
     <string name="error_amount_limit_exceeded">เกินขีดจำกัดจำนวนเงินฝาก</string>
     <string name="total_win_amount">จำนวนที่ชนะได้：</string> <!--F005-->
@@ -1136,46 +990,40 @@
     <string name="btn_remove_closed_selections">ลบตัวเลือกที่ปิดอยู่</string>
 
 
-    <string name="third_game_coming_soon">เร็วๆ นี้</string> <!--M013-->
-    <string name="more_info">ข้อความเพิ่มเติม</string>
-    <string name="month_jan">ม.ค</string> <!--M205-->
-    <string name="month_feb">ก.พ</string> <!--M208-->
-    <string name="month_mar">มี.ค</string> <!--M213-->
-    <string name="month_apr">เม.ย</string> <!--M246-->
-    <string name="month_may">พ.ค</string> <!--M222-->
-    <string name="month_jun">ม.ย</string> <!--M227-->
-    <string name="month_jul">ก.ค</string> <!--M206-->
-    <string name="month_aug">ส.ค</string> <!--M209-->
-    <string name="month_sep">ก.ย</string> <!--M207-->
-    <string name="month_oct">ต.ค</string> <!--M212-->
-    <string name="month_nov">พ.ย</string> <!--M210-->
-    <string name="month_dec">ธ.ค</string> <!--M211-->
+    <!--M013-->
+    <!--M205-->
+    <!--M208-->
+    <!--M213-->
+    <!--M246-->
+    <!--M222-->
+    <!--M227-->
+    <!--M206-->
+    <!--M209-->
+    <!--M207-->
+    <!--M212-->
+    <!--M210-->
+    <!--M211-->
     <string name="language_setting">ภาษา</string> <!--M169-->
     <string name="register_rule_agree_all">ฉันยอมรับข้อกำหนดและเงื่อนไขข้างต้นทั้งหมด</string> <!--A039-->
     <string name="register_nation">ประเทศ</string> <!--A050-->
     <string name="register_currency">สกุลเงิน</string> <!--A051-->
     <string name="hint_verification_code_by_sms">กรุณากรอกรหัสยืนยันทาง SMS</string> <!--M354-->
 
-    <string name="transfer_time">เวลาในการแปลง</string> <!--J662-->
+    <!--J662-->
     <string name="bet_receipt_win_quota">จำนวนที่ชนะได้</string>
-    <string name="winnable_amount_colon">จำนวนที่ชนะได้</string>
     <string name="main_tab_favorite">เก็บรายการแข่งขัน</string>
     <string name="cruel_write_off">ลบบัญชี</string>
     <string name="cancel_account">ลบบัญชี</string>
     <string name="match_analyze">รายละเอียดการแข่งขัน</string>
     <string name="half">ครึ่ง</string>
-    <string name="customer_service_help">หากคุณต้องการความช่วยเหลือ โปรดติดต่อฝ่ายบริการลูกค้า</string>
     <string name="click_upload_id_photo">คลิกเพื่ออัพโหลดรูปบัตรประจำตัว</string>
     <string name="main_tab_sport">กีฬา</string>
     <string name="main_tab_betlist">เดิมพัน</string>
     <string name="main_tab_mine">ของฉัน</string>
-    <string name="main_tab_home">หน้าหลัก</string>
     <string name="skin_mode">ผิวหนัง：วัน/คืน</string>
-    <string name="download">ดาวน์โหลด</string>
     <string name="live_streaming">ถ่ายทอดสด</string>
     <string name="transaction_record">รายละเอียดบันทึกการทำธุรกรรม</string>
     <string name="current_version">เวอร์ชั่นปัจจุบัน</string>
-    <string name="join_us_win_wealth">เข้าร่วมกับเราชนะความรวย</string>
     <string name="payment_method">วิธีการชำระเงิน</string>
     <string name="select_file">เลือกไฟล์</string>
     <string name="select_file1">เลือกไฟล์</string>
@@ -1187,12 +1035,9 @@
     <string name="other_bet">เติมพันอย่างอื่น</string>
     <string name="sport_match">การแข่งขันในรอบ</string>
     <string name="remove_account_warning">คุณแน่ใจไหมว่าจะลบบัญชี</string>
-    <string name="my_message">ข้อความ</string>
-    <string name="register_and_login">ลงทะเบียน/เข้าสู่ระบบ</string>
     <string name="km">กิโลเมตร</string>
     <string name="league_filter">คัดเลือกเหตุการณ์</string>
     <string name="outlet">เดิมพัน</string>
-    <string name="no_more">ไม่มีมากกว่านี้แล้ว</string>
     <string name="my_bank_card">ของฉัน1$s</string>
     <string name="local_time">เวลาปัจจุบัน</string>
     <string name="half_first_short">ครึ่งแรก</string>
@@ -1209,13 +1054,7 @@
     <string name="to_back_login">ย้อนกลับหน้าหลัก</string>
     <string name="new_login_password">รหัสผ่านใหม่เข้าสู่ระบบ</string>
     <string name="new_login_password_confirm">ยืนยันรหัสผ่านใหม่</string>
-    <string name="error_confirm_password_forget">รหัสไม่ถูก</string>
-    <string name="tips_password_success">รหัสผ่านแก้ไขเรียบร้อยแล้ว, กรุณาเข้าสู่ระบบใหม่</string>
     <string name="please_get_forget_password">กรุณาหารหัสผ่าน OKBet ของคุณ!</string>
-    <string name="please_set_forget_password">กรุณาตั้งรหัสผ่านบัญชีใหม่ของคุณ!</string>
-    <string name="has_send_message_to_phone">รหัสยืนยันถูกส่งไปยังโทรศัพท์ของคุณแล้ว</string>
-    <string name="get_phone_code">รับรหัส</string>
-    <string name="reget_phone_code">รับใหม่อีกครั้ง</string>
     <string name="reget_phone_code_for">รับใหม่อีกครั้ง</string>
     <string name="error_wechat">ข้อผิดพลาดรูปแบบ WeChat ID</string>
     <string name="comingsoon">เร็วๆ นี้</string>
@@ -1223,7 +1062,7 @@
     <string name="member_name">ผู้เล่น</string>
     <string name="my_favorite_empty">คุณยังไม่ได้บันทึกการแข่ง</string>
     <string name="not_settled">เดิมพันไม่มั่นคง</string>
-    <string name="login_welcome">Hi, ยินดีต้อนรับสู่ OKbet~</string>
+    <string name="login_welcome">Hi, ยินดีต้อนรับสู่ OKBET~</string>
     <string name="not_sign_up">ยังไม่มีบัญชี</string>
     <string name="new_games_beta">เกมใหม่เบต้า</string>
     <string name="match_live">Giải Vô địch Quốc gia Ý</string>
@@ -1231,7 +1070,6 @@
     <string name="text_1">1</string>
     <string name="text_2">2</string>
     <string name="text_x">X</string>
-    <string name="check_bet_detail">รายละเอียดการเดิมพัน</string>
     <string name="win_line">เจ้าบ้าน&amp;ทีมเยือน</string>
     <string name="ou_hdp_hdp">แฮนดิแคป</string>
     <string name="less_than_the">Uเล็ก</string>
@@ -1240,14 +1078,11 @@
     <string name="home_slot">สล็อต</string>
     <string name="deadline">กำหนดสิ้นสุด</string>
     <string name="check_all_inplay">ดูบอลทั้งหมดที่กำลังเล่นอยู่</string>
-    <string name="error_phone_num">เบอร์โทรศัพท์ไม่ถูกต้อง</string>
     <string name="tips_login_password_success">เปลี่ยนแปลงรหัสผ่านสำเร็จ กรุณาทำการล็อกอินอีกครั้ง</string>
     <string name="error_tips_confirm_password">รหัสผ่านไม่เหมือนกัน กรุณากรอกใหม่อีกครั้ง</string>
     <string name="hide_confirm_password">ยืนยันรหัสผ่านใหม่</string>
     <string name="error_new_password">รหัสผ่่าน 6-20 ตัวต้องมีทั้งตัวเลขและตัวอักษร</string>
     <string name="error_verification_code_forget">รหัสยืนยันไม่ถูกต้อง</string>
-    <string name="pay_maya">Paymaya</string>
-    <string name="no_file">ไม่ได้เลือกไฟล์</string>
     <string name="new_games">เกมใหม่เบต้า</string>
     <string name="bet_info_add_bet_failed">แพ้พนัน</string>
     <string name="cancel_manual">คืนเงิน</string>

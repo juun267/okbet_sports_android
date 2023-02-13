@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="2dp"
         android:lineSpacingExtra="3dp"
-        android:text="Copyright © 2023 OKbet ALL RIGHTS RESERVED"
+        android:text="Copyright © 2023 OKBET ALL RIGHTS RESERVED"
         android:textColor="@color/color_A7B2C4"
         android:textSize="@dimen/textSize10sp" />
 

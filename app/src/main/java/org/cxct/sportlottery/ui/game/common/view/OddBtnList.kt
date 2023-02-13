@@ -26,42 +26,41 @@ class OddBtnList @JvmOverloads constructor(
     private var oddBtnDraw: OddsButton2? = null
     private var oddBtnOther: OddsButton2? = null
 
-    val oddWidth = 64.dp
-    val marging = 5.dp
-    val oddBtnParams = LayoutParams(oddWidth, 44.dp).apply {
+    val oddWidth = 66.dp
+    val marging = context.dp2px(4.5f)
+    val oddBtnParams = LayoutParams(oddWidth, 43.dp).apply {
         topMargin = marging
     }
 
 
     init {
-        setPadding(0, 0, 6.dp, marging)
+        setPadding(0, 0, 6.dp, 0)
         orientation = VERTICAL
         oddBtnType = AppCompatTextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
-            setTextColor(context.getColor(R.color.color_6C7BA8))
+            setTextColor(context.getColor(R.color.color_00181E))
             setAutoSizeTextTypeWithDefaults(TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM)
             setAutoSizeTextTypeUniformWithConfiguration(6, 10, 1, TypedValue.COMPLEX_UNIT_SP)
             maxLines = 3
             gravity = Gravity.CENTER
         }
-
-        val odd_btn_row1_typeParam = LayoutParams(oddWidth, 30.dp)
-        addView(oddBtnType, odd_btn_row1_typeParam)
+        addView(oddBtnType, LayoutParams(oddWidth, 29.dp))
 
         oddBtnHome = createOddBtn()
         oddBtnAway = createOddBtn()
-
-        addView(oddBtnHome, LayoutParams(oddWidth, 44.dp).apply {
-            topMargin = 6.dp
+        addView(oddBtnHome, LayoutParams(oddWidth, 43.dp).apply {
+            topMargin = context.dp2px(4.5f)
         })
-        addView(oddBtnAway, oddBtnParams)
+        addView(oddBtnAway, LayoutParams(oddWidth, 43.dp).apply {
+            topMargin = context.dp2px(4.5f)
+        })
 
     }
 
     fun getOtherOddsBtn(): OddsButton2 {
         if (oddBtnOther == null) {
             oddBtnOther = createOddBtn()
-            addView(oddBtnOther, LayoutParams(66.dp, 126.dp).apply { topMargin = 5.dp })
+            addView(oddBtnOther, LayoutParams(66.dp, 142.dp).apply { topMargin = 5.dp })
         }
         return oddBtnOther!!
     }

@@ -1,6 +1,5 @@
  package org.cxct.sportlottery.network.bet.settledList
 
-import org.cxct.sportlottery.network.common.IdParams
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 

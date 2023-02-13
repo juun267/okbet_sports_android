@@ -10,8 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.view_status_bar.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityPhoneVerifyBinding
+import org.cxct.sportlottery.network.index.login.LoginData
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -25,6 +29,10 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
     private lateinit var binding: ActivityPhoneVerifyBinding
     private var mSmsTimer: Timer? = null
 
+    companion object {
+        var loginData: LoginData? = null
+    }
+
     override fun onClick(v: View?) {
         when (v) {
             binding.btnSubmit -> {
@@ -33,6 +41,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                         this.contentResolver, Settings.Secure.ANDROID_ID
                     )
                     viewModel.validateLoginDeviceSms(
+                        loginData?.token ?: "",
                         binding.eetVerificationCode.text.toString(),
                         deviceId
                     )
@@ -42,7 +51,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                 this@PhoneVerifyActivity.onBackPressed()
             }
             binding.btnSendSms -> {
-                viewModel.sendLoginDeviceSms()
+                viewModel.sendLoginDeviceSms(loginData?.token ?: "")
             }
 
             binding.constraintLayout -> {
@@ -89,14 +98,23 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
 
     private fun initObserve() {
         viewModel.loginSmsResult.observe(this, Observer {
-            showSmeTimer300()
+            if (it.success) {
+                showSmeTimer300()
+            } else {
+                it.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+            }
         })
         viewModel.validResult.observe(this, Observer {
             if (it.success) {
 //                if (sConfigData?.thirdOpen == FLAG_OPEN)
 //                    MainActivity.reStart(this)
 //                else
-                MainTabActivity.reStart(this)
+                GlobalScope.launch {
+                    LoginRepository.setUpLoginData(loginData)
+                }.let {
+                    MainTabActivity.reStart(this)
+                }
+
             } else {
                 binding.etVerificationCode.setError(
                     getString(R.string.dialog_security_error),

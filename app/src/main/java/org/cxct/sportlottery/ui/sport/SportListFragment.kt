@@ -41,7 +41,6 @@ import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.ui.maintab.SportFragment
@@ -49,7 +48,6 @@ import org.cxct.sportlottery.ui.sport.detail.SportDetailActivity
 import org.cxct.sportlottery.ui.sport.favorite.LeagueListener
 import org.cxct.sportlottery.ui.sport.filter.LeagueSelectActivity
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.widget.VerticalDecoration
 import org.greenrobot.eventbus.Subscribe
 import timber.log.Timber
 import java.util.*
@@ -403,7 +401,7 @@ class SportListFragment :
 
         this.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         adapter = sportLeagueAdapter
-        addItemDecoration(VerticalDecoration(context, R.drawable.bg_divide_light_blue_8))
+//        addItemDecoration(VerticalDecoration(context, R.drawable.bg_divide_light_blue_8))
         game_list.addOnScrollListener(object : OnScrollListener() {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -868,10 +866,10 @@ class SportListFragment :
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
-        val intent = Intent(activity, MainActivity::class.java).putExtra(
-            MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
-        )
-        startActivity(intent)
+//        val intent = Intent(activity, MainActivity::class.java).putExtra(
+//            MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory
+//        )
+//        startActivity(intent)
     }
 
     private fun addOddsDialog(

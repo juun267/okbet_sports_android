@@ -33,10 +33,7 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountResult
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface IndexService {
@@ -45,10 +42,13 @@ interface IndexService {
     suspend fun login(@Body loginRequest: LoginRequest): Response<LoginResult>
 
     @POST(INDEX_SEND_LOGIN_DEVICE_SMS)
-    suspend fun sendLoginDeviceSms(): Response<LogoutResult>
+    suspend fun sendLoginDeviceSms(@Header("x-session-token") token: String): Response<LogoutResult>
 
     @POST(INDEX_VALIDATE_LOGIN_DEVICE_SMS)
-    suspend fun validateLoginDeviceSms(@Body validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest): Response<LogoutResult>
+    suspend fun validateLoginDeviceSms(
+        @Header("x-session-token") token: String,
+        @Body validateLoginDeviceSmsRequest: ValidateLoginDeviceSmsRequest,
+    ): Response<LogoutResult>
 
     @POST(INDEX_LOGOUT)
     suspend fun logout(@Body logoutRequest: LogoutRequest): Response<LogoutResult>

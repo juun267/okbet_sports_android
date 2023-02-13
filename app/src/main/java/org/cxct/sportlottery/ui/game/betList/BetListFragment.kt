@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.btn_close
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_rule
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.tv_parlay_type
+import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.cl_bet
 import kotlinx.android.synthetic.main.button_bet.view.tv_login
 import kotlinx.android.synthetic.main.button_bet.view.tv_remove_closed_selections
@@ -42,7 +44,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.ScrollCenterLayoutManager
-import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.game.betList.adapter.BetSingleListAdapter
 import org.cxct.sportlottery.ui.game.betList.listener.OnItemClickListener
@@ -54,7 +55,6 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.OkPopupWindow
 import timber.log.Timber
-import java.lang.Exception
 
 /**
  * @app_destination 滿版注單(點擊賠率彈出)
@@ -62,7 +62,7 @@ import java.lang.Exception
  * 畫面會依照注單數量(viewModel.betInfoList)動態調整高度
  * if (size == 1) { 單一注單 } else { 多筆注單 or 空注單 }
  */
-class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
 
 
     companion object {
@@ -232,7 +232,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             activity?.onBackPressed()
         }
     }
-
 
     private fun initBtnEvent() {
         binding.btnBet.apply {

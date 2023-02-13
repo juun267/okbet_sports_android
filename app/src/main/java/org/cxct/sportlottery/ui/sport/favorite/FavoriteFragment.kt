@@ -350,44 +350,52 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
             }
         }
 
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
-            it?.let { matchStatusChangeEvent ->
-                favoriteAdapter.data.forEachIndexed { index, leagueOdd ->
-                    if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
-                        leagueOdd.matchOdds.find { m ->
-                            m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
-                        }?.let { mo ->
-                            leagueOdd.matchOdds.remove(mo)
-                            if (leagueOdd.matchOdds.size > 0) {
-                                favoriteAdapter.notifyItemChanged(index)
-                            } else {
-                                unSubscribeChannelHall(leagueOdd)
-                                favoriteAdapter.data.remove(leagueOdd)
-                                favoriteAdapter.notifyItemRemoved(index)
-                            }
-                        }
-                    }
-                }
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner) { matchStatusChangeEvent->
 
-                val leagueOdds = favoriteAdapter.data
+            if (matchStatusChangeEvent == null) {
+                return@observe
+            }
 
-                leagueOdds.forEachIndexed { index, leagueOdd ->
-                    if (SocketUpdateUtil.updateMatchStatus(
-                            gameType = gameType?.key,
-                            leagueOdd.matchOdds?.toMutableList(),
-                            matchStatusChangeEvent,
-                            context
-                        ) &&
-                        leagueOdd.unfoldStatus == FoldState.UNFOLD.code
-                    ) {
-                        if (leagueOdd.matchOdds.isNullOrEmpty()) {
+            val unSubscribed = mutableListOf<LeagueOdd>()
+            favoriteAdapter.data.forEachIndexed { index, leagueOdd ->
+                if (matchStatusChangeEvent.matchStatusCO?.status == GameMatchStatus.FINISH.value) {
+                    leagueOdd.matchOdds.find { m ->
+                        m.matchInfo?.id == matchStatusChangeEvent.matchStatusCO.matchId
+                    }?.let { mo ->
+                        leagueOdd.matchOdds.remove(mo)
+                        if (leagueOdd.matchOdds.size > 0) {
+                            favoriteAdapter.notifyItemChanged(index)
+                        } else {
                             unSubscribeChannelHall(leagueOdd)
-                            favoriteAdapter.data.remove(leagueOdd)
-                            favoriteAdapter.notifyItemRemoved(index)
+                            unSubscribed.add(leagueOdd)
+//                            favoriteAdapter.data.remove(leagueOdd)
+//                            favoriteAdapter.notifyItemRemoved(index)
                         }
                     }
                 }
             }
+
+            removeLeagues(unSubscribed)
+
+            favoriteAdapter.data.forEach { leagueOdd ->
+                if (SocketUpdateUtil.updateMatchStatus(
+                        gameType = gameType?.key,
+                        leagueOdd.matchOdds?.toMutableList(),
+                        matchStatusChangeEvent,
+                        context
+                    ) &&
+                    leagueOdd.unfoldStatus == FoldState.UNFOLD.code
+                ) {
+                    if (leagueOdd.matchOdds.isNullOrEmpty()) {
+                        unSubscribeChannelHall(leagueOdd)
+                        unSubscribed.add(leagueOdd)
+//                        favoriteAdapter.data.remove(leagueOdd)
+//                        favoriteAdapter.notifyItemRemoved(index)
+                    }
+                }
+            }
+
+            removeLeagues(unSubscribed)
         }
 
         receiver.matchClock.observe(this.viewLifecycleOwner) {
@@ -487,6 +495,17 @@ class FavoriteFragment : BaseBottomNavigationFragment<FavoriteViewModel>(Favorit
                 favoriteAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    private fun removeLeagues(leagueOdd: MutableList<LeagueOdd>) {
+        leagueOdd.forEach {
+            val index = favoriteAdapter.data.indexOf(it)
+            if (index >= 0) {
+                favoriteAdapter.data.removeAt(index)
+                favoriteAdapter.notifyItemRemoved(index)
+            }
+        }
+        leagueOdd.clear()
     }
 
     private fun updateGameList(index: Int, leagueOdd: LeagueOdd) {

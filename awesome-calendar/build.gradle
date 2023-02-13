@@ -30,12 +30,11 @@ ext {
 
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdk 31
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdk 23
+        targetSdk 31
         versionCode 1
         versionName "2.0.0"
 

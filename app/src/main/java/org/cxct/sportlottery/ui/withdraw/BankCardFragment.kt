@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alipay.zoloz.hardware.camera.widget.utils.FocusAreaUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
@@ -32,8 +31,9 @@ import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
  */
 class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
     private var transferType: TransferType = TransferType.BANK
+
     //TODO 虚拟币添加后续样式修改
-    private lateinit var mBankSelectorBottomSheetDialog: BottomSheetDialog
+    private var mBankSelectorBottomSheetDialog: BottomSheetDialog? = null
     private lateinit var mBankSelectorAdapter: BankSelectorAdapter
     private val mNavController by lazy { findNavController() }
     private val args: BankCardFragmentArgs by navArgs()
@@ -175,7 +175,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
     private fun setupBankSelector(rechCfgData: MoneyRechCfgData) {
         mBankSelectorBottomSheetDialog = BottomSheetDialog(requireContext())
-        mBankSelectorBottomSheetDialog.apply {
+        mBankSelectorBottomSheetDialog?.apply {
             val bankSelectorBottomSheetView =
                 layoutInflater.inflate(R.layout.dialog_bottom_sheet_bank_card, null)
             setContentView(bankSelectorBottomSheetView)
@@ -262,7 +262,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
 
         item_bank_selector.setOnClickListener {
-            mBankSelectorBottomSheetDialog.show()
+            mBankSelectorBottomSheetDialog?.show()
         }
 
         btn_submit.setOnClickListener {
@@ -300,7 +300,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         )
                     }
                 }
-
             }
         }
 
@@ -351,7 +350,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                         }
                     }
                     updateBankSelectorList()
-                    mBankSelectorBottomSheetDialog.lv_bank_item.scrollToPosition(0)
+                    mBankSelectorBottomSheetDialog?.lv_bank_item?.scrollToPosition(0)
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -498,7 +497,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer { rechCfgData ->
             setupBankSelector(rechCfgData)
             updateBankSelectorList()
-            mBankSelectorBottomSheetDialog.lv_bank_item.scrollToPosition(0)
+            mBankSelectorBottomSheetDialog?.lv_bank_item?.scrollToPosition(0)
             viewModel.getCryptoBindList(args.editBankCard)
         })
 
