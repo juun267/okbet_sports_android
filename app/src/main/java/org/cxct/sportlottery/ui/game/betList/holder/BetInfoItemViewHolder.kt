@@ -15,16 +15,12 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.include_bet_odds_tips_single.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemV32Binding
-import org.cxct.sportlottery.databinding.ContentBetInfoItemV3Binding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.LoginRepository
@@ -37,7 +33,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.BetPlayCateFunction.getNameMap
 import timber.log.Timber
-import kotlin.math.min
 
 class BetInfoItemViewHolder(
     val contentView: ContentBetInfoItemV32Binding,
