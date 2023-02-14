@@ -103,7 +103,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="55dp"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="1"
