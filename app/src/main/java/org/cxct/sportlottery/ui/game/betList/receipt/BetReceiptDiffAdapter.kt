@@ -26,6 +26,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     lateinit var refreshBetStatusFunction: (Long) -> Unit
     lateinit var refreshBetStatusFinishFunction: () -> Unit
+    lateinit var parlayOrSingleFunction: () -> Unit
 
     var interfaceStatusChangeListener: InterfaceStatusChangeListener? = null
 
@@ -57,27 +58,30 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         singleList: List<BetResult>,
         parlayList: List<BetResult>,
         betParlayList: List<ParlayOdd>,
-        betConfirmTime: Long
+        betConfirmTime: Long,
+        parlayOrSingle: ((ItemType) -> Unit)? = null,
     ) {
-        adapterScope.launch {
+        this@BetReceiptDiffAdapter.betParlayList = betParlayList
+        this@BetReceiptDiffAdapter.betConfirmTime = betConfirmTime
 
-            this@BetReceiptDiffAdapter.betParlayList = betParlayList
-            this@BetReceiptDiffAdapter.betConfirmTime = betConfirmTime
-
-            val parlayItem = if (parlayList.isNotEmpty()) parlayList.map {
+        val parlayItem = if (parlayList.isNotEmpty()) {
+            parlayList.map {
                 //標記串關第一項(NC1), 第一項需顯示賠率, 以parlayType做比對, 有投注的第一項不一定是NC1
-                if (betParlayList.first().parlayType == it.parlayType) DataItem.ParlayData(
-                    it, true
-                ) else DataItem.ParlayData(it)
+                parlayOrSingle?.invoke(ItemType.PARLAY)
+                if (betParlayList.first().parlayType == it.parlayType) {
+                    DataItem.ParlayData(it, true)
+                } else {
+                    DataItem.ParlayData(it)
+                }
             }
-            else listOf()
-
-            items = singleList.map { DataItem.SingleData(it) } + parlayItem
-
-            withContext(Dispatchers.Main) {
-                submitList(items)
-            }
+        } else {
+            parlayOrSingle?.invoke(ItemType.SINGLE)
+            listOf()
         }
+
+        items = singleList.map { DataItem.SingleData(it) } + parlayItem
+
+        submitList(items)
     }
 
     fun updateListStatus(sportBet: SportBet) {

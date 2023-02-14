@@ -34,8 +34,7 @@ import timber.log.Timber
 /**
  * @app_destination 注單收據
  */
-class BetReceiptFragment :
-    BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
+class BetReceiptFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::class) {
 
     private var betResultData: Receipt? = null
 
@@ -111,7 +110,13 @@ class BetReceiptFragment :
                     betResultData?.parlayBets ?: listOf(),
                     this@BetReceiptFragment.betParlayList ?: listOf(),
                     betResultData?.betConfirmTime ?: 0
-                )
+                ) { it2 ->
+                    if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
+                        line_shadow.gone()
+                    } else {
+                        line_shadow.visible()
+                    }
+                }
             }
         }
         //投注結果
@@ -131,7 +136,13 @@ class BetReceiptFragment :
                                     betResultData?.parlayBets ?: listOf(),
                                     this@BetReceiptFragment.betParlayList ?: listOf(),
                                     betResultData?.betConfirmTime ?: 0
-                                )
+                                ) { it2 ->
+                                    if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
+                                        line_shadow.gone()
+                                    } else {
+                                        line_shadow.visible()
+                                    }
+                                }
                             }
                         }
                     } else {
@@ -238,7 +249,13 @@ class BetReceiptFragment :
                         betResultData?.parlayBets ?: listOf(),
                         this@BetReceiptFragment.betParlayList ?: listOf(),
                         betResultData?.betConfirmTime ?: 0
-                    )
+                    ) { it2 ->
+                        if (it2 == BetReceiptDiffAdapter.ItemType.SINGLE) {
+                            line_shadow.gone()
+                        } else {
+                            line_shadow.visible()
+                        }
+                    }
                 }
                 interfaceStatusChangeListener =
                     object : BetReceiptDiffAdapter.InterfaceStatusChangeListener {
@@ -314,7 +331,7 @@ class BetReceiptFragment :
         Timber.d("滑动位置:${betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0}")
         rv_bet_receipt.postDelayed({
             rv_bet_receipt.scrollToPosition(betReceiptDiffAdapter?.items?.size?.minus(1) ?: 0)
-        },100)
+        }, 100)
 
         if (betFailed.first) {
             //投注失败
