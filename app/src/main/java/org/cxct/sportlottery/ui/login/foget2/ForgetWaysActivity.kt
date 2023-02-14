@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.login.foget2
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import kotlinx.android.synthetic.main.activity_forget_ways.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.bindFinish
@@ -30,7 +29,6 @@ class ForgetWaysActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::class) 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("For Test", "=====>>> ${this@ForgetWaysActivity::class.java.simpleName} onActivityResult $resultCode")
         if (resultCode == Activity.RESULT_OK) {
             finishWithOK()
         }

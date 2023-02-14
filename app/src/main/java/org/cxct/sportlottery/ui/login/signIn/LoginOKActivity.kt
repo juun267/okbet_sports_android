@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.extentions.startActivity
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -38,7 +39,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
-import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
+import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LogUtil
@@ -90,10 +91,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnBack.setOnClickListener { finish() }
         tv_pwd_login.setOnClickListener { switchLoginType(LOGIN_TYPE_PWD) }
         tv_code_login.setOnClickListener { switchLoginType(LOGIN_TYPE_CODE) }
-        tv_forget_password.setOnClickListener {
-            startActivity(Intent(this@LoginOKActivity,
-                ForgetPasswordActivity::class.java))
-        }
+        tv_forget_password.setOnClickListener { startActivity(ForgetWaysActivity::class.java) }
     }
 
     private fun setupAccount() {

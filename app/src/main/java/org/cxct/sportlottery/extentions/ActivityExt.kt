@@ -87,12 +87,12 @@ fun LifecycleOwner.doWhenLife(lifeEvent: Lifecycle.Event, interval: Int = 0, blo
     })
 }
 
-fun Activity.finishWithOK() {
+inline fun Activity.finishWithOK() {
     setResult(Activity.RESULT_OK)
     finish()
 }
 
-fun Activity.startActivity(activity: Class<out Activity>) {
+inline fun Activity.startActivity(activity: Class<out Activity>) {
     startActivity(Intent(this, activity))
 }
 

@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.Nullable
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.exception.DoNoConnectException
@@ -105,6 +107,17 @@ abstract class BaseViewModel(
 
     enum class NetWorkResponseType(val code: Int) {
         REQUEST_TOO_FAST(400)
+    }
+
+    fun <T: BaseResult> doRequest(context: Context,
+                                  apiFun: suspend () -> Response<T>,
+                                  callback: (T?) -> Unit) {
+        viewModelScope.launch/*(Dispatchers.IO)*/ {
+            val result = doNetwork(context, true, apiFun)
+            withContext(Dispatchers.Main) {
+                callback.invoke(result)
+            }
+        }
     }
 
     //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息

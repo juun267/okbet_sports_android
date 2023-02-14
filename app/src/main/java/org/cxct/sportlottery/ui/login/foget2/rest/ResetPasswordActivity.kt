@@ -25,15 +25,17 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
 
     companion object {
 
-        fun start(activity: Activity, userName: String) {
+        fun start(activity: Activity, userName: String, byPhoneNumber: Boolean = true) {
             val intent = Intent(activity, ResetPasswordActivity::class.java)
             intent.putExtra("userName", userName)
+            intent.putExtra("byPhoneNumber", byPhoneNumber)
             activity.startActivityForResult(intent, 100)
         }
     }
 
     private val binding by lazy { ActivityRestPasswordBinding.inflate(layoutInflater) }
     private val userName by lazy { "${intent.getSerializableExtra("userName")}" }
+    private val byPhoneNumber by lazy { intent.getBooleanExtra("byPhoneNumber", true) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,7 +123,12 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         loading()
         binding.btnNext.setBtnEnable(false)
         val encodedPassword = MD5Util.MD5Encode(confirmPassword)
-        viewModel.resetPassword(userName, encodedPassword, encodedPassword)
+
+        if (byPhoneNumber) {
+            viewModel.resetPassword(userName, encodedPassword, encodedPassword)
+        } else {
+            viewModel.resetPassWorkByEmail(userName, encodedPassword)
+        }
     }
 
     private fun initObserver() = viewModel.run {
@@ -129,12 +136,16 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         resetPasswordResult.observe(this@ResetPasswordActivity) {
             hideLoading()
             binding.btnNext.setBtnEnable(true)
-            if (it?.success == true) {
-                onResetSuccess(userName)
+            if (it?.success != true) {
+                ToastUtil.showToast(this@ResetPasswordActivity, it?.msg,Toast.LENGTH_LONG)
                 return@observe
             }
 
-            ToastUtil.showToast(this@ResetPasswordActivity, it?.msg,Toast.LENGTH_LONG)
+            onResetSuccess(userName)
+            val msg = it.ResetPasswordData?.msg
+            if (!msg.isEmptyStr()) {
+                ToastUtil.showToast(this@ResetPasswordActivity, msg)
+            }
         }
     }
 

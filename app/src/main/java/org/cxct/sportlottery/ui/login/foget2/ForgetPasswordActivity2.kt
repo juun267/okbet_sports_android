@@ -44,7 +44,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
     private val ways by lazy { intent.getIntExtra("retrieveWays", 1) }
     private var inputPhoneNo: String? = null // 输入的手机号，不为空即为输入的号码格式正确
     private var inputEmail: String? = null // 输入的邮箱，不为空即为输入的号码格式正确
-    private var smsCode: String? = null // 短信验证码
+    private var smsCode: String? = null // 短信或者邮箱验证码
     private var userName: String? = null
 
     private inline fun isPhoneWays() = 1 == ways
@@ -109,7 +109,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         if (isPhoneWays()) {
             viewModel.getSendSms("$inputPhoneNo")
         } else {
-
+            viewModel.sendEmail("$inputEmail")
         }
     }
 
@@ -131,7 +131,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         if (isPhoneWays()) {
             viewModel.getCheckPhone("$inputPhoneNo", "$smsCode")
         } else {
-
+            viewModel.checkEmailCode("$inputEmail", "$smsCode")
         }
     }
 
@@ -144,11 +144,11 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
             }
 
             if (result.success){
-                ResetPasswordActivity.start(this@ForgetPasswordActivity2, "$userName")
+                ResetPasswordActivity.start(this@ForgetPasswordActivity2, "$userName", isPhoneWays())
                 return@observe
             }
 
-            if (result.code == 2765|| result.code == 2766){
+            if (result.code == 2765|| result.code == 2766) {
                 binding.etPhone.setError(result.msg,false)
             } else {
                 binding.etSmsValidCode.setError(result.msg,false)
@@ -163,7 +163,10 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
             userName = smsResult.ResetPasswordData?.userName
             REQUEST_CODE_TIMESTAMP = System.currentTimeMillis()
             codeCountDown(REQUEST_CODE_INTERVAL)
-            ToastUtil.showToast(this@ForgetPasswordActivity2, R.string.has_send_message_to_phone, Toast.LENGTH_SHORT)
+            val msg = smsResult.ResetPasswordData?.msg
+            if(!msg.isEmptyStr()) {
+                ToastUtil.showToast(this@ForgetPasswordActivity2, msg, Toast.LENGTH_SHORT)
+            }
             return
         }
 

@@ -34,7 +34,7 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         // ex : builder.addHeader("appKey", BuildConfig.APP_KEY)
 
         builder.addHeader("x-lang", LanguageManager.getSelectLanguage(context).key)
-        builder.addHeader("x-session-platform-code", "spplat1")
+//        builder.addHeader("x-session-platform-code", "spplat1")
 
         sharedPref?.getString(KEY_TOKEN, null)?.let {
             builder.addHeader("x-session-token", it)
