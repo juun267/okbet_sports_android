@@ -130,6 +130,7 @@ class SportFragment : BaseBottomNavigationFragment<SportTabViewModel>(SportTabVi
     }
 
     private fun initTabLayout() {
+        tabLayout.setBackgroundColor(requireContext().getColor(R.color.color_FFFFFF))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 selectTab(tab?.position)

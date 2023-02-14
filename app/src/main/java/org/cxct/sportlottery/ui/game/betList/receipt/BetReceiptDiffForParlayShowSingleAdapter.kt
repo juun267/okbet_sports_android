@@ -4,6 +4,7 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -16,6 +17,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.extentions.gone
+import org.cxct.sportlottery.extentions.visible
 import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -92,6 +95,18 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                 //展示串單內容，其中狀態和金額不用顯示
                 tv_bet_status_single.isVisible = false
                 match_receipt_bet_layout.isVisible = false
+                val inPlay = System.currentTimeMillis() > (itemData?.startTime ?: 0)
+                if(inPlay){
+                    tvMatchType.visible()
+                    tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+                    tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
+                }else if (matchType== MatchType.OUTRIGHT){
+                    tvMatchType.gone()
+                }else{
+                    tvMatchType.visible()
+                    tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+                    tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+                }
 
                 itemData?.apply {
                     val formatForOdd =
@@ -104,6 +119,8 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                         if (matchType != MatchType.OUTRIGHT) spread else ""
                     )
                     tv_odds.text = "@ $formatForOdd"
+
+                    tv_name_type.text = context.getString(oddsType.res)
 
                     tv_league.text = leagueName
                     tv_team_names.setTeamNames(15, homeName, awayName)

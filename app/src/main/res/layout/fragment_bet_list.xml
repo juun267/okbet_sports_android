@@ -65,16 +65,16 @@
                     tools:listitem="@layout/content_bet_info_item_v3_2" />
 
 
-
             </FrameLayout>
 
             <FrameLayout
-                android:background="#ffff"
                 android:id="@+id/line_shadow"
-                android:layout_marginBottom="-12dp"
-                android:layout_above="@+id/ll_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_container"
+                android:layout_marginBottom="-12dp"
+                android:background="#ffff">
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="22dp"
@@ -87,8 +87,8 @@
                 android:id="@+id/ll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_gradient_bet_top_corner"
                 android:layout_above="@+id/parlayLayout"
+                android:background="@drawable/bg_gradient_bet_top_corner"
                 android:orientation="vertical">
                 <!--串关投注-->
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -103,7 +103,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="55dp"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="1"

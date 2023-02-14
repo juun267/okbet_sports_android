@@ -94,11 +94,13 @@
             android:background="@color/color_202541_FFFFFF">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:paddingTop="10dp"
                 android:id="@+id/rv_bet_receipt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 tools:itemCount="1"
+                android:clipToPadding="false"
                 tools:listitem="@layout/item_match_receipt" />
 
             <!--            <View-->
@@ -207,6 +209,18 @@
                 tools:text="0.000 RMB" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:background="#ffff"
+            android:id="@+id/line_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -221,6 +235,7 @@
                 android:background="@drawable/drawable_bet_successful"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="10dp"
+                android:layout_marginTop="10dp"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -241,6 +256,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:id="@+id/lin_result_status_processing"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
