@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/ll_container"
                 android:layout_marginBottom="-12dp"
-                android:background="#ffff">
+                android:background="#ffffff">
 
                 <View
                     android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_parlay_list"
                         android:layout_width="match_parent"
-                        android:layout_height="55dp"
+                        android:layout_height="50dp"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="1"

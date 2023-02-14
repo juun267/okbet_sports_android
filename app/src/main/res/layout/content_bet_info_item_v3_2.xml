@@ -258,8 +258,7 @@
                     android:visibility="visible"
                     app:layout_constraintBottom_toTopOf="@id/llKeyboardContainer"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:visibility="visible">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_input"
@@ -331,9 +330,8 @@
                     android:id="@+id/layoutKeyBoard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    android:paddingTop="10dp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 

@@ -1,10 +1,16 @@
 package org.cxct.sportlottery.ui.game.betList.holder
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -73,9 +79,9 @@ class BetInfoItemViewHolder(
 //            GameType.getGameType(itemData.matchOdd.gameType)?.let {
 //                ivSportLogo.setImageResource(GameType.getBetListGameTypeIcon(it))
 //            }
-//            slideLayout.setOnClickListener {
-//                slideLayout.open()
-//            }
+            slideLayout.setOnClickListener {
+                slideLayout.open()
+            }
 
             //不支援串關
             //僅有串關的單注才會出現此提示
@@ -203,12 +209,10 @@ class BetInfoItemViewHolder(
                     tvCanWin.text = "${root.context.getString(R.string.bet_win)}: --"
 //                    }
                 } else {
-
                     val quota = it.toString().toDouble()
                     itemData.betAmount = quota
                     itemData.inputBetAmountStr = it.toString()
                     itemData.input = it.toString()
-//                    if (itemData.isInputBet) {
                     val max = inputMaxMoney.coerceAtMost(0.0.coerceAtLeast(userBalance()))
                     if (quota > max) {
                         etBet.apply {
@@ -217,18 +221,17 @@ class BetInfoItemViewHolder(
                         }
                         return
                     }
-//                    }
                     val win = itemData.betAmount * getOddsAndSaveRealAmount(
                         itemData, currentOddsType
                     )
-//                            Timber.d("win: $win")
                     //更新可贏額
-//                    if (itemData.isInputBet) {
-                    tvCanWin.text =
-                        "${root.context.getString(R.string.bet_win)}: ${sConfigData?.systemCurrencySign} ${
-                            TextUtil.formatInputMoney(win)
-                        }"
-//                    }
+                    val strTvCanWin = "${root.context.getString(R.string.bet_win)}：${sConfigData?.systemCurrencySign} ${TextUtil.formatInputMoney(win)}"
+                    val canWinSpannable = SpannableString(strTvCanWin)
+                    canWinSpannable.setSpan(ForegroundColorSpan(root.context.getColor(R.color.color_E23434)), "${LocalUtils.getString(R.string.bet_win)}：".length,strTvCanWin.length,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    canWinSpannable.setSpan(StyleSpan(Typeface.BOLD), "${LocalUtils.getString(R.string.bet_win)}：".length,strTvCanWin.length,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    tvCanWin.text = canWinSpannable
                 }
                 checkBetLimit(itemData)
                 onItemClickListener.refreshBetInfoTotal()
@@ -244,58 +247,6 @@ class BetInfoItemViewHolder(
             ) {
             }
         }
-
-        val tw2: TextWatcher?
-        tw2 = object : TextWatcher {
-            override fun afterTextChanged(it: Editable?) {
-                if (it.isNullOrEmpty()) {
-                    itemData.betWin = 0.000
-                    itemData.inputBetWinStr = ""
-                    itemData.inputWin = ""
-                    itemData.realAmount = 0.0
-                    //更新下注額
-                    if (itemData.isInputWin) etBet.text.clear()
-                } else {
-                    val quota = it.toString().toDouble()
-                    itemData.betWin = quota
-                    itemData.inputBetWinStr = it.toString()
-                    itemData.inputWin = TextUtil.formatInputMoney(quota)
-                    if (itemData.isInputWin) {
-                        val balance = userBalance()
-                        val maxWin = if (balance > 0) {
-                            Math.min(
-                                inputWinMaxMoney,
-                                balance * getOddsAndSaveRealAmount(itemData, currentOddsType)
-                            )
-                        } else {
-                            inputWinMaxMoney
-                        }
-
-                    }
-
-                    val bet = itemData.betWin / getOddsAndSaveRealAmount(
-                        itemData, currentOddsType
-                    )
-//                            Timber.d("bet: $bet")
-                    //更新下注額
-                    if (itemData.isInputWin) etBet.setText(TextUtil.formatInputMoney(bet))
-                }
-                setEtBackground(itemData)
-                onItemClickListener.refreshBetInfoTotal()
-            }
-
-            override fun beforeTextChanged(
-                s: CharSequence?, start: Int, count: Int, after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence?, start: Int, before: Int, count: Int
-            ) {
-            }
-        }
-
-        //etBet.keyListener = null
 
         etBet.addTextChangedListener(tw)
         etBet.tag = tw
