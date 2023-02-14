@@ -271,6 +271,9 @@ class KeyboardView @JvmOverloads constructor(
     }
 
     private fun delete() {
+        if (!this::mEditText.isInitialized){
+            return
+        }
         val editable = mEditText.text
         val start = mEditText.selectionStart
         if (start > 0) {

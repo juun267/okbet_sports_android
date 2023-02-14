@@ -79,7 +79,7 @@ class BetInfoItemViewHolder(
 //            GameType.getGameType(itemData.matchOdd.gameType)?.let {
 //                ivSportLogo.setImageResource(GameType.getBetListGameTypeIcon(it))
 //            }
-            slideLayout.setOnClickListener {
+            rlLeftContent.setOnClickListener {
                 slideLayout.open()
             }
 
