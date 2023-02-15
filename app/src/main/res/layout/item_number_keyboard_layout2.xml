@@ -201,10 +201,10 @@
             android:textStyle="bold">
 
             <TextView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
                 android:layout_gravity="center"
-                android:background="@drawable/bg_circle_gray6_f414655" />
+                android:background="@drawable/bg_rectangle_gray6_f414655" />
 
         </FrameLayout>
 
