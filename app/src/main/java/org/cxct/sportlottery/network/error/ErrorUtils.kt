@@ -7,6 +7,8 @@ import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.Constants.BETTING_STATION_QUERY_INVITE
+import org.cxct.sportlottery.network.Constants.BIND_FACEBOOK
+import org.cxct.sportlottery.network.Constants.BIND_GOOGLE
 import org.cxct.sportlottery.network.Constants.FACEBOOK_LOGIN
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
@@ -600,6 +602,14 @@ object ErrorUtils {
                         return OddsChangeOptionResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(FACEBOOK_LOGIN)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(BIND_GOOGLE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(BIND_FACEBOOK)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OddsChangeOptionResult(it.code, it.msg, it.success) as T
                     }
