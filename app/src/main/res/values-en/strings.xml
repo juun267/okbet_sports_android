@@ -1415,7 +1415,7 @@
     <string name="mobile">Mobile</string>
     <string name="login_again">Please Login Again.</string>
     <string name="change_password">Change Password</string>
-    <string name="login_hint_account">phone number/email</string>
+    <string name="login_hint_account">Phone Number / Email</string>
     <string name="password_login">Password Login</string>
     <string name="or">Or</string>
     <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
