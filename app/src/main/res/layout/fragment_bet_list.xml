@@ -164,7 +164,7 @@
                         android:id="@+id/layoutKeyBoard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/margin_15"
+                        android:paddingTop="@dimen/margin_5"
                         app:layout_constraintTop_toBottomOf="@+id/clInputLayout" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
