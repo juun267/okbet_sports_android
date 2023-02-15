@@ -43,6 +43,8 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
         setContentView(binding.root)
         initView()
         initObserver()
+
+        onResetSuccess(userName)
     }
 
     private fun initView() = binding.run {
@@ -151,9 +153,12 @@ class ResetPasswordActivity: BaseActivity<ForgetViewModel>(ForgetViewModel::clas
 
     private fun onResetSuccess(userName: String) = binding.run {
         tvUserName.text =  getString(R.string.member_name) + ": " + userName
+        tvResetSucceed.text = getString(R.string.change_password) + "\n" + getString(R.string.recharge_state_success) + "!"
         clSuccess.visible()
         clPassword.gone()
-        btnNext.setText(R.string.complete)
+        clLiveChat.gone()
+        btnNext.setText(R.string.to_back_login)
+        setResult(Activity.RESULT_OK)
     }
 
 }

@@ -1408,4 +1408,11 @@
     <string name="end_time">End Time</string>
     <string name="draw_countdown">Draw Countdown</string>
     <string name="recover_password">Recover password</string>
+    <string name="need_help">Need Help?</string>
+    <string name="reset_pwd_by_mobile">Retrieve Password via Phone Number</string>
+    <string name="reset_pwd_by_email">Retrieve Password via Email</string>
+    <string name="email_address">Email address</string>
+    <string name="mobile">Mobile</string>
+    <string name="login_again">Please Login Again.</string>
+    <string name="change_password">Change Password</string>
 </resources>

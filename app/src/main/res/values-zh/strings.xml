@@ -1411,4 +1411,11 @@
     <string name="end_time">活动结束时间</string>
     <string name="draw_countdown">抽奖倒计时</string>
     <string name="recover_password">密码找回</string>
+    <string name="need_help">需要帮助?</string>
+    <string name="reset_pwd_by_mobile">通过手机号码找回密码</string>
+    <string name="reset_pwd_by_email">通过邮箱找回密码</string>
+    <string name="email_address">邮箱地址</string>
+    <string name="mobile">手机</string>
+    <string name="login_again">请重新登录.</string>
+    <string name="change_password">修改密码</string>
 </resources>

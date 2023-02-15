@@ -1398,4 +1398,11 @@
     <string name="end_time">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
     <string name="recover_password">Tìm lại mật khẩu</string>
+    <string name="need_help">cần giúp đỡ?</string>
+    <string name="reset_pwd_by_mobile">Lấy lại mật khẩu bằng SĐT</string>
+    <string name="reset_pwd_by_email">Lấy lại mật khẩu bằng email</string>
+    <string name="email_address">Địa chỉ email</string>
+    <string name="mobile">SĐT</string>
+    <string name="login_again">Vui lòng đăng nhập lại.</string>
+    <string name="change_password">Đổi mật khẩu</string>
 </resources>
