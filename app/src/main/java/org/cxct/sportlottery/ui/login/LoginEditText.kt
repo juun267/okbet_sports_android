@@ -25,6 +25,10 @@ import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.isEmptyStr
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LocalUtils
+import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
+import org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
 
 class LoginEditText @JvmOverloads constructor(
     context: Context,
@@ -330,4 +334,45 @@ fun EditText.onFocusChange(onFocusChange: (String) -> Unit) {
 fun EditText.checkRegisterListener(onCheck: (String) -> Unit) {
     this.afterTextChanged { onCheck(it) }
     this.onFocusChange { onCheck(it) }
+}
+
+fun EditText.checkPhoneNum(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?) -> Unit)?) {
+    checkRegisterListener { phoneNum->
+        val msg = when {
+            phoneNum.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyPhone(phoneNum) -> {
+                LocalUtils.getString(R.string.error_phone_number)
+            }
+            else -> null
+        }
+
+        textFieldBoxes.setError(msg, false)
+        onResult?.invoke(if (msg == null) phoneNum else null)
+    }
+}
+
+fun EditText.checkSMSCode(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?) -> Unit)?) {
+    checkRegisterListener { smsCode->
+        val msg = when {
+            smsCode.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifySMSCode(smsCode, 4) -> LocalUtils.getString(R.string.error_verification_code_by_sms)
+            else -> null
+        }
+
+        textFieldBoxes.setError(msg, false)
+        onResult?.invoke(if (msg == null) smsCode else null)
+    }
+}
+
+fun EditText.checkEmail(textFieldBoxes: TextFormFieldBoxes, onResult: ((String?) -> Unit)?) {
+    checkRegisterListener { email->
+        val msg = when {
+            email.isNullOrEmpty() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyMail(email) -> LocalUtils.getString(R.string.error_e_mail)
+            else -> null
+        }
+
+        textFieldBoxes.setError(msg, false)
+        onResult?.invoke(if (msg == null) email else null)
+    }
 }

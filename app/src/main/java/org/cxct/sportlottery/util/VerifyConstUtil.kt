@@ -182,4 +182,8 @@ object VerifyConstUtil {
         return Pattern.matches("[$ENGLISH_WORD$NUMBER]{6,256}", hashCode)
     }
 
+    fun verifySMSCode(securityCode: CharSequence, length: Int = 6): Boolean {
+        return Pattern.matches("[$NUMBER]{$length}", securityCode)
+    }
+
 }

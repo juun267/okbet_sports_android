@@ -21,6 +21,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.layout_loading.view.*
+import kotlinx.android.synthetic.main.view_status_bar.*
 import kotlinx.coroutines.launch
 import me.jessyan.autosize.AutoSizeCompat
 import org.cxct.sportlottery.BuildConfig
@@ -459,5 +460,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         if (hasHandler) {
             mHandler.removeCallbacksAndMessages(null)
         }
+    }
+
+    fun setStatusBarDarkFont(view: View? = null) {
+        ImmersionBar.with(this)
+            .statusBarDarkFont(true)
+            .transparentStatusBar()
+            .statusBarView(view)
+            .fitsSystemWindows(false)
+            .init()
     }
 }

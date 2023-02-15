@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.Constants.BIND_FACEBOOK
 import org.cxct.sportlottery.network.Constants.BIND_GOOGLE
 import org.cxct.sportlottery.network.Constants.CANCEL_ACCOUNT
 import org.cxct.sportlottery.network.Constants.FACEBOOK_LOGIN
+import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_VALIDATE_EMAIL
 import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
 import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
@@ -20,7 +21,9 @@ import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
 import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
 import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
+import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD_BY_EMAIL
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_CODE
+import org.cxct.sportlottery.network.Constants.SEND_EMAIL_FORGET
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.Constants.VALIDATE_USER
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -89,8 +92,17 @@ interface IndexService {
     @POST(RESET_FORGET_PASSWORD)
     suspend fun resetPassWord(@Body resetPasswordRequest: ResetPasswordRequest): Response<ResetPasswordResult>
 
+    @POST(RESET_FORGET_PASSWORD_BY_EMAIL)
+    suspend fun resetPassWordByEmail(@Body resetPasswordRequest: ResetPasswordRequest): Response<ResetPasswordResult>
+
     @POST(SEND_SMS_FORGET)
     suspend fun sendSmsForget(@Body sendSmsRequest: SendSmsRequest): Response<SendSmsResult>
+
+    @POST(SEND_EMAIL_FORGET)
+    suspend fun sendEmailForget(@Body params: Map<String, String>): Response<SendSmsResult>
+
+    @POST(FORGET_PASSWORD_VALIDATE_EMAIL)
+    suspend fun validateEmailCode(@Body params: Map<String, String>): Response<ForgetSmsResult>
 
     @POST(VALIDATE_USER)
     suspend fun checkValidateUser(@Body sendSmsRequest: ValidateUserRequest): Response<ValidateUserResult>

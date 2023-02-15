@@ -1262,7 +1262,7 @@
     <string name="new_login_password">Mật khẩu đăng nhập mới</string>
     <string name="new_login_password_confirm">Xác nhận mật khẩu đăng nhập mới</string>
     <string name="to_back_login">Trở về trang đăng nhập</string>
-     <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn: </string>
+     <string name="has_send_message_to_phone">Mã xác minh đã gửi đến SĐT của bạn</string>
     <string name="get_phone_code">Nhận</string>
     <string name="reget_phone_code">Nhận lại</string>
     <string name="reget_phone_code_for">Nhận lại</string>
@@ -1397,6 +1397,14 @@
     <string name="closing_time">Thời gian đóng</string>
     <string name="end_time">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
+    <string name="recover_password">Tìm lại mật khẩu</string>
+    <string name="need_help">cần giúp đỡ?</string>
+    <string name="reset_pwd_by_mobile">Lấy lại mật khẩu bằng SĐT</string>
+    <string name="reset_pwd_by_email">Lấy lại mật khẩu bằng email</string>
+    <string name="email_address">Địa chỉ email</string>
+    <string name="mobile">SĐT</string>
+    <string name="login_again">Vui lòng đăng nhập lại.</string>
+    <string name="change_password">Đổi mật khẩu</string>
     <string name="login_terms_conditions">Điều Khoản Và Điều Kiện</string>
     <string name="login_privacy_policy">Chính Sách Bảo Mật</string>
     <string name="hint_link_google">Link account with Facebook</string>
