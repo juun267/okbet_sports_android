@@ -1397,4 +1397,8 @@
     <string name="closing_time">Thời gian đóng</string>
     <string name="end_time">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
+    <string name="login_terms_conditions">Điều Khoản Và Điều Kiện</string>
+    <string name="login_privacy_policy">Chính Sách Bảo Mật</string>
+    <string name="hint_link_google">Link account with Facebook</string>
+    <string name="hint_link_facebook">Link account with Facebook</string>
 </resources>

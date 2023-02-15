@@ -40,7 +40,10 @@ class LoginViewModel(
         get() = _validCodeResult
     val validResult: LiveData<LogoutResult>
         get() = _validResult
+    val isLoading: LiveData<Boolean> //使用者餘額
+        get() = _isLoading
 
+    private val _isLoading = MutableLiveData<Boolean>()
     private val _loginFormState = MutableLiveData<LoginFormState>()
     private val _loginResult = MutableLiveData<LoginResult>()
     private val _loginSmsResult = MutableLiveData<LogoutResult>()
@@ -88,7 +91,7 @@ class LoginViewModel(
             loginRepository.account = loginRequest.account
 
             //勾選時記住密碼
-            loginRepository.password = if (loginRepository.isRememberPWD) originalPassword else null
+//            loginRepository.password = if (loginRepository.isRememberPWD) originalPassword else null
 
             doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
@@ -115,6 +118,36 @@ class LoginViewModel(
                 userInfoRepository.getUserInfo()
                 _loginResult.postValue(result)
                 AFInAppEventUtil.login(result.loginData?.uid.toString())
+            }
+        }
+    }
+
+    fun loginGoogle(token: String) {
+        loading()
+        viewModelScope.launch {
+            //預設存帳號
+            doNetwork(androidContext) {
+                loginRepository.googleLogin(token)
+            }?.let { result ->
+                userInfoRepository.getUserInfo()
+                _loginResult.postValue(result)
+                AFInAppEventUtil.login(result.loginData?.uid.toString())
+                hideLoading()
+            }
+        }
+    }
+
+    fun loginFacebook(token: String) {
+        loading()
+        viewModelScope.launch {
+            //預設存帳號
+            doNetwork(androidContext) {
+                loginRepository.facebookLogin(token)
+            }?.let { result ->
+                userInfoRepository.getUserInfo()
+                _loginResult.postValue(result)
+                AFInAppEventUtil.login(result.loginData?.uid.toString())
+                hideLoading()
             }
         }
     }
@@ -181,7 +214,7 @@ class LoginViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)
             }
-//            _validCodeResult.postValue(result)
+            _validCodeResult.postValue(result)
         }
     }
 
@@ -272,4 +305,13 @@ class LoginViewModel(
     private fun checkInputPair(data: LiveData<Pair<String?, Boolean>>): Boolean {
         return data.value?.first != null || data.value?.second != true
     }
+
+    private fun loading() {
+        _isLoading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _isLoading.postValue(false)
+    }
+
 }

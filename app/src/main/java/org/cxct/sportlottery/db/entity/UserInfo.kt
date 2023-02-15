@@ -78,7 +78,7 @@ data class UserInfo(
     val perBetLimit: Int? = null,
 
     @ColumnInfo(name = "oddsChangeOption")
-    var oddsChangeOption:Int? = null ,
+    var oddsChangeOption: Int? = null,
 
     val uwEnableTime: Long? = 0,
 
@@ -87,4 +87,8 @@ data class UserInfo(
     val firstRechTime: String? = null, //首充时间
 
     val currencySign: String? = null, //幣種
+
+    var facebookBind: Boolean = false,
+
+    var googleBind: Boolean = false,
 )

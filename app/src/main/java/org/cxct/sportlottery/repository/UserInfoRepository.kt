@@ -210,7 +210,9 @@ object UserInfoRepository {
             uwEnableTime = userInfoData.uwEnableTime,
             maxPayout = userInfoData.maxPayout,
             firstRechTime = userInfoData.firstRechTime,
-            oddsChangeOption = userInfoData.oddsChangeOption
+            oddsChangeOption = userInfoData.oddsChangeOption,
+            googleBind = userInfoData.googleBind,
+            facebookBind = userInfoData.facebookBind,
         )
 
 }

@@ -53,5 +53,7 @@ data class UserInfoData(
     @Json(name = "currency") val currency: String?,
     @Json(name = "nationCode") val nationCode: String?,
     @Json(name = "liveSyncUserInfoVO") val liveSyncUserInfoVO: LiveSyncUserInfoVO?,
-    @Json(name = "oddsChangeOption") val oddsChangeOption: Int?
+    @Json(name = "oddsChangeOption") val oddsChangeOption: Int?,
+    @Json(name = "facebookBind") var facebookBind: Boolean,
+    @Json(name = "googleBind") var googleBind: Boolean,
 )

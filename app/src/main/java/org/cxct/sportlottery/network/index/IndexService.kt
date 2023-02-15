@@ -23,15 +23,11 @@ import org.cxct.sportlottery.network.Constants.RESET_FORGET_PASSWORD
 import org.cxct.sportlottery.network.Constants.SEND_EMAIL_CODE
 import org.cxct.sportlottery.network.Constants.SEND_SMS_FORGET
 import org.cxct.sportlottery.network.Constants.VALIDATE_USER
-import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.forgetPassword.*
-import org.cxct.sportlottery.network.index.login.LoginCodeRequest
-import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
+import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
@@ -40,6 +36,7 @@ import org.cxct.sportlottery.network.index.sendSms.SmsRequest
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
+import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountResult
 import retrofit2.Response
 import retrofit2.http.*
@@ -118,13 +115,14 @@ interface IndexService {
 
 
     @POST(LOGIN_OR_REG_SEND_VALIDCODE)
-    suspend fun loginOrRegSendValidCode(@Body loginCodeRequest: LoginCodeRequest): Response<LoginResult>
+    suspend fun loginOrRegSendValidCode(@Body loginCodeRequest: LoginCodeRequest): Response<ValidCodeResult>
 
     @POST(FACEBOOK_LOGIN)
-    suspend fun facebookLogin(@Field("token") token: String): Response<LoginResult>
+    suspend fun facebookLogin(@Body loginTokenRequest: LoginTokenRequest): Response<LoginResult>
+
 
     @POST(GOOGLE_LOGIN)
-    suspend fun googleLogin(@Field("token") token: String): Response<LoginResult>
+    suspend fun googleLogin(@Body loginTokenRequest: LoginTokenRequest): Response<LoginResult>
 
 
     @POST(SEND_EMAIL_CODE)
@@ -134,8 +132,8 @@ interface IndexService {
     ): Response<ValidateUserResult>
 
     @POST(BIND_GOOGLE)
-    suspend fun bindGoogle(@Field("token") token: String): Response<BaseResult>
+    suspend fun bindGoogle(@Body loginTokenRequest: LoginTokenRequest): Response<AuthBindResult>
 
     @POST(BIND_FACEBOOK)
-    suspend fun bindFacebook(@Field("token") token: String): Response<BaseResult>
+    suspend fun bindFacebook(@Body loginTokenRequest: LoginTokenRequest): Response<AuthBindResult>
 }

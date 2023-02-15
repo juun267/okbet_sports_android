@@ -927,7 +927,7 @@
     <string name="responsible">博彩责任</string>
     <string name="terms_conditions">规则与条款</string>
     <string name="privacy_policy">隐私与政策</string>
-    <string name="help">是否需要帮助？</string>
+    <string name="help">需要帮助？</string>
     <string name="official_partner">官方合作伙伴</string>
     <string name="faqs">常见问题</string>
     <string name="live_chat">在线客服</string>
@@ -1410,4 +1410,16 @@
     <string name="closing_time">"抽奖关闭时间 "</string>
     <string name="end_time">活动结束时间</string>
     <string name="draw_countdown">抽奖倒计时</string>
+    <string name="login_hint_account">手机号码 / 邮箱</string>
+    <string name="password_login">密码登录</string>
+    <string name="or">或</string>
+    <string name="login_privacy">注册即表示您确认您已年满 21 岁, 并且同意我们的隐私保护 和 规则条款</string>
+    <string name="login_terms_conditions">规则条款</string>
+    <string name="login_privacy_policy">隐私保护</string>
+    <string name="otp_login">验证码登录</string>
+    <string name="auth_login">登录授权</string>
+    <string name="set">设置</string>
+    <string name="google">Google</string>
+    <string name="hint_link_google">Link account with Facebook</string>
+    <string name="hint_link_facebook">Link account with Facebook</string>
 </resources>

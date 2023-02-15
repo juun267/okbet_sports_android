@@ -25,55 +25,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_top" />
 
-    <ImageButton
-        android:id="@+id/btn_custom_serivce"
-        android:layout_width="26dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="24dp"
-        android:background="@null"
-        android:contentDescription="@null"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:src="@drawable/ic_customer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_back" />
-
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="151dp"
         android:layout_height="60dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="120dp"
         android:src="@drawable/logo_okbet_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/label_register"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="@dimen/margin_10"
-        android:text="@string/login_welcome"
-        android:textColor="@color/color_414655"
-        android:textFontWeight="500"
-        android:textSize="@dimen/textSize20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivLogo" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:paddingBottom="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="35dp"
         android:elevation="2dp"
-        android:background="@drawable/bg_white_radius_28_top"
+        android:layout_marginHorizontal="5dp"
+        android:background="@drawable/bg_login_card_backgroud"
         android:overScrollMode="never"
         android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/label_register"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/ivLogo">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -99,10 +73,10 @@
                         android:id="@+id/et_account"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hintText="@string/account_hint"
+                        app:hintText="@string/login_hint_account"
                         app:iconSignifier="@drawable/ic_login"
                         app:isResponsiveIconColor="false"
-                        app:labelText="@string/member_account"
+                        app:labelText="@string/login_account"
                         app:labelTextStyle="normal"
                         app:primaryColor="@color/color_AFAFB1">
 
@@ -118,19 +92,17 @@
 
                     </org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes>
 
-                    <LinearLayout
+                    <FrameLayout
                         android:id="@+id/block_valid_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
 
                         <org.cxct.sportlottery.widget.boundsEditText.TextFormFieldBoxes
                             android:id="@+id/et_verification_code"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="1"
                             android:layout_gravity="center_vertical"
                             app:hintText="@string/hint_verification_code"
                             app:iconSignifier="@drawable/ic_valid"
@@ -143,6 +115,7 @@
                                 android:id="@+id/eet_verification_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="100dp"
                                 android:ellipsize="end"
                                 android:imeOptions="actionNext"
                                 android:inputType="number"
@@ -157,8 +130,10 @@
                             android:id="@+id/btn_send_sms"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
+                            android:layout_height="45dp"
+                            android:minWidth="85dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_gravity="right"
                             android:alpha="0.5"
                             android:background="@drawable/btn_send_sms"
                             android:enabled="false"
@@ -166,7 +141,7 @@
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize14sp" />
-                    </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -233,7 +208,7 @@
                 android:layout_marginTop="8dp"
                 android:button="@drawable/effect_login_select_checkbox"
                 android:paddingStart="6dp"
-                android:text="密码登录"
+                android:text="@string/password_login"
                 android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -261,8 +236,8 @@
                 android:background="@null"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@string/forget_password_question"
-                android:textColor="@color/color_9BB3D9_535D76"
+                android:text="@string/forget_password"
+                android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize14sp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -275,7 +250,7 @@
                 android:layout_height="46dp"
                 android:layout_marginTop="@dimen/margin_50"
                 android:background="@drawable/ic_submit"
-                android:text="登录 / 注册"
+                android:text="@string/btn_login"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/textSize17sp"
@@ -286,39 +261,102 @@
 
             <LinearLayout
                 android:id="@+id/lin_third"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_14"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_30"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login">
 
-                <Button
-                    android:id="@+id/btn_google"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/color_E3E8EE" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:text="@string/or" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/color_E3E8EE" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="google" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_feedback"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/btn_google"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:src="@drawable/ic_google" />
+
+                    <ImageView
+                        android:id="@+id/btn_facebook"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_marginLeft="@dimen/margin_45"
+                        android:src="@drawable/ic_facebook" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvPrivacy"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="facebook" />
+                    android:layout_marginTop="13dp"
+                    android:gravity="left"
+                    android:textColor="@color/color_535D76"
+                    android:textColorLink="@color/color_025BE8"
+                    android:textSize="@dimen/textSize13sp"
+                    android:lineSpacingExtra="3dp"
+                    android:text="@string/login_privacy" />
 
-                <!--                <com.google.android.gms.common.SignInButton-->
-                <!--                    android:id="@+id/facebook_btn"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content" />-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="30dp">
 
-                <!--                <com.facebook.login.widget.LoginButton-->
-                <!--                    android:id="@+id/google_btn"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_gravity="center_horizontal"-->
-                <!--                    android:layout_marginTop="30dp"-->
-                <!--                    android:layout_marginBottom="30dp" />-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:textColor="@color/color_535D76"
+                        android:textColorLink="@color/color_025BE8"
+                        android:textSize="@dimen/textSize13sp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="@string/help" />
+
+                    <TextView
+                        android:id="@+id/tv_customer_service"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:drawablePadding="3dp"
+                        android:gravity="left"
+                        android:drawableLeft="@drawable/ic_customer_service"
+                        android:textColor="@color/color_025BE8"
+                        android:textSize="@dimen/textSize13sp"
+                        android:text="@string/customer_service_title" />
+                </LinearLayout>
             </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

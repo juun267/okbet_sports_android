@@ -169,12 +169,12 @@ object VerifyConstUtil {
 
     //驗證碼 //數字 4位
     fun verifyValidCode(validCode: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER]{6}", validCode)
+        return Pattern.matches("[$NUMBER]{4}", validCode)
     }
 
     //簡訊驗證碼 //數字 4位
     fun verifySecurityCode(securityCode: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER]{6}", securityCode)
+        return Pattern.matches("[$NUMBER]{4}", securityCode)
     }
 
     //区块链交易ID //长度大于等于6位,小于256位

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F0F5FA"
+    android:orientation="vertical"
+    tools:context=".ui.profileCenter.nickname.ModifyProfileInfoActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/view_base_tool_bar_no_drawer" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/color_FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="14dp">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/ic_google"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_535D76"
+                    android:textSize="14sp"
+                    android:text="@string/google" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/color_C9CFD7"
+                    android:textSize="14sp"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:text="@string/hint_link_google" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_check_google"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:paddingHorizontal="@dimen/margin_15"
+                android:drawablePadding="12dp"
+                android:minWidth="80dp"
+                android:gravity="center"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="14sp"
+                android:background="@drawable/button_radius_8_bet_button"
+                android:drawableLeft="@drawable/ic_checked_white"
+                android:text="@string/linked" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginHorizontal="14dp"
+            android:alpha="0.5"
+            android:background="@color/color_E3E8EE" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="14dp">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:src="@drawable/ic_facebook"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="14dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_535D76"
+                    android:textSize="14sp"
+                    android:text="@string/facebook" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/color_C9CFD7"
+                    android:textSize="14sp"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:text="@string/hint_link_facebook" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_check_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:minWidth="80dp"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/margin_15"
+                android:drawablePadding="12dp"
+                android:textColor="@color/color_535D76"
+                android:textSize="14sp"
+                android:background="@drawable/bg_stroke_radius_8_gray"
+                android:text="@string/link" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="14dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/color_535D76"
+            android:textColorLink="@color/color_025BE8"
+            android:textSize="@dimen/textSize13sp"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/help" />
+
+        <TextView
+            android:id="@+id/tv_customer_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawablePadding="3dp"
+            android:gravity="left"
+            android:drawableLeft="@drawable/ic_customer_service"
+            android:textColor="@color/color_025BE8"
+            android:textSize="@dimen/textSize13sp"
+            android:text="@string/customer_service_title" />
+    </LinearLayout>
+
+</LinearLayout>

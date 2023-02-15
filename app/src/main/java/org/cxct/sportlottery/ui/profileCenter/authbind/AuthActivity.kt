@@ -1,0 +1,112 @@
+package org.cxct.sportlottery.ui.profileCenter.authbind
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.util.AuthManager
+import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LogUtil
+import org.cxct.sportlottery.util.setStartDrawable
+
+/**
+ * @app_destination 修改暱稱
+ */
+class AuthActivity : BaseSocketActivity<AuthViewModel>(AuthViewModel::class) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStatusbar(R.color.color_232C4F_FFFFFF, true)
+        setContentView(R.layout.activity_auth)
+        tv_toolbar_title.text = getString(R.string.auth_login)
+        initButton()
+        setupServiceButton()
+        initObserve()
+        viewModel.getUserInfo()
+    }
+
+
+    private fun initButton() {
+        btn_toolbar_back.setOnClickListener {
+            finish()
+        }
+
+        tv_check_google.setOnClickListener {
+            AuthManager.authGoogle(this@AuthActivity)
+        }
+        tv_check_facebook.setOnClickListener {
+            AuthManager.authFacebook(this@AuthActivity, { token ->
+                viewModel.bindFacebook(token)
+            }, { errorMsg ->
+                errorMsg?.let {
+                    showErrorPromptDialog(it) { }
+                }
+            })
+        }
+    }
+
+
+    private fun initObserve() {
+        viewModel.userInfo.observe(this) {
+            LogUtil.toJson(it)
+            it?.let {
+                tv_check_google.setChecked(it.googleBind)
+                tv_check_facebook.setChecked(it.facebookBind)
+            }
+        }
+    }
+
+
+    fun TextView.setChecked(checked: Boolean) {
+        if (checked) {
+            text = getString(R.string.linked)
+            setBackgroundResource(R.drawable.button_radius_8_bet_button)
+            setStartDrawable(R.drawable.ic_checked_white)
+            isEnabled = false
+            setTextColor(getColor(R.color.color_FFFFFF))
+        } else {
+            text = getString(R.string.link)
+            setBackgroundResource(R.drawable.bg_stroke_radius_8_gray)
+            setStartDrawable(0)
+            isEnabled = true
+            setTextColor(getColor(R.color.color_535D76))
+        }
+    }
+
+    private fun setupServiceButton() {
+        tv_customer_service.setOnClickListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(supportFragmentManager, null)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@AuthActivity, serviceUrl2)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(this@AuthActivity, serviceUrl)
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        AuthManager.facebookCallback(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+        AuthManager.googleCallback(requestCode, resultCode, data) { success, msg ->
+            msg?.let {
+                if (success) {
+                    viewModel.bindGoogle(it)
+                } else {
+                    showErrorPromptDialog(it) {}
+                }
+            }
+        }
+    }
+}

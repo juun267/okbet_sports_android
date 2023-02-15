@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.CustomSecurityDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
+import org.cxct.sportlottery.ui.profileCenter.authbind.AuthActivity
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.identity.VerifyIdentityActivity
@@ -168,6 +169,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         btn_pwd_setting.setOnClickListener {
             securityCodeEnter = SecurityCodeEnterType.PW
             viewModel.checkNeedToShowSecurityDialog()//檢查有需不需要簡訊認證
+        }
+        //登录授权
+        lin_auth.setOnClickListener {
+            startActivity(Intent(this@ProfileActivity, AuthActivity::class.java))
         }
         //QQ號碼
         ll_qq_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.QQNumber) }

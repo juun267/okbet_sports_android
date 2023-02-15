@@ -16,6 +16,8 @@ import com.adjust.sdk.AdjustConfig
 import com.adjust.sdk.LogLevel
 import com.appsflyer.AppsFlyerLib
 import com.didichuxing.doraemonkit.DoKit
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.github.jokar.multilanguages.library.MultiLanguage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -54,6 +56,7 @@ import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.news.NewsViewModel
 import org.cxct.sportlottery.ui.permission.GooglePermissionViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.authbind.AuthViewModel
 import org.cxct.sportlottery.ui.profileCenter.cancelaccount.CancelAccountViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
 import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
@@ -167,6 +170,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { CancelAccountViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MainHomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { ForgetViewModel(get(), get(), get(), get()) }
+        viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -247,9 +251,8 @@ class MultiLanguagesApplication : Application() {
             DoKit.Builder(this) //性能监控模块
                 .build()
         }
-
-
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     private fun initAdjustSDK() {

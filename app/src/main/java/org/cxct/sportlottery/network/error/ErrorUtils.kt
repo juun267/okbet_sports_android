@@ -7,12 +7,14 @@ import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
 import org.cxct.sportlottery.network.Constants.BETTING_STATION_QUERY_INVITE
+import org.cxct.sportlottery.network.Constants.FACEBOOK_LOGIN
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYDETAIL
 import org.cxct.sportlottery.network.Constants.FEEDBACK_QUERYLIST
 import org.cxct.sportlottery.network.Constants.FEEDBACK_REPLY
 import org.cxct.sportlottery.network.Constants.FEEDBACK_SAVE
 import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
 import org.cxct.sportlottery.network.Constants.GET_TWO_FACTOR_STATUS
+import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
 import org.cxct.sportlottery.network.Constants.HOT_LIVE_LIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_EXIST
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
@@ -25,6 +27,8 @@ import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
 import org.cxct.sportlottery.network.Constants.LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
+import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG
+import org.cxct.sportlottery.network.Constants.LOGIN_OR_REG_SEND_VALIDCODE
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
@@ -576,10 +580,26 @@ object ErrorUtils {
                     }
                     (url.contains(QUERY_GAME_ENTRY_CONFIG)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return QueryGameEntryConfigResult(it.code, it.msg, it.success,null) as T
+                        return QueryGameEntryConfigResult(it.code, it.msg, it.success, null) as T
                     }
 
-                    (url.contains(ODDS_CHANGE_OPTION)) ->{
+                    (url.contains(ODDS_CHANGE_OPTION)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(LOGIN_OR_REG)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(LOGIN_OR_REG_SEND_VALIDCODE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(GOOGLE_LOGIN)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                    }
+                    (url.contains(FACEBOOK_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OddsChangeOptionResult(it.code, it.msg, it.success) as T
                     }

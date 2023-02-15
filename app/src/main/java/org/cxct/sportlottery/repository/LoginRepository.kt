@@ -12,14 +12,12 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
-import org.cxct.sportlottery.network.index.login.LoginData
-import org.cxct.sportlottery.network.index.login.LoginRequest
-import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
+import org.cxct.sportlottery.network.index.login.*
 import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.util.*
 import retrofit2.Response
 
@@ -148,9 +146,7 @@ object LoginRepository {
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
-                if (it.loginData?.deviceValidateStatus == 1) {
-                    setUpLoginData(it.loginData)
-                }
+                setUpLoginData(it.loginData)
             }
         }
 
@@ -162,12 +158,62 @@ object LoginRepository {
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
-                if (it.loginData?.deviceValidateStatus == 1) {
-                    setUpLoginData(it.loginData)
-                }
+                setUpLoginData(it.loginData)
             }
         }
 
+        return loginResponse
+    }
+
+    suspend fun googleLogin(token: String): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.googleLogin(LoginTokenRequest(token))
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                setUpLoginData(it.loginData)
+            }
+        }
+
+        return loginResponse
+    }
+
+    suspend fun facebookLogin(token: String): Response<LoginResult> {
+        val loginResponse = OneBoSportApi.indexService.facebookLogin(LoginTokenRequest(token))
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                setUpLoginData(it.loginData)
+            }
+        }
+
+        return loginResponse
+    }
+
+    suspend fun bindGoogle(token: String): Response<AuthBindResult> {
+        val loginResponse = OneBoSportApi.indexService.bindGoogle(LoginTokenRequest(token))
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                MultiLanguagesApplication.getInstance()?.userInfo()?.let {
+                    it.googleBind = true
+                    MultiLanguagesApplication.getInstance()?.saveUserInfo(it)
+                }
+            }
+        }
+        return loginResponse
+    }
+
+    suspend fun bindFaceBook(token: String): Response<AuthBindResult> {
+        val loginResponse = OneBoSportApi.indexService.bindFacebook(LoginTokenRequest(token))
+
+        if (loginResponse.isSuccessful) {
+            loginResponse.body()?.let {
+                MultiLanguagesApplication.getInstance()?.userInfo()?.let {
+                    it.facebookBind = true
+                    MultiLanguagesApplication.getInstance()?.saveUserInfo(it)
+                }
+            }
+        }
         return loginResponse
     }
 

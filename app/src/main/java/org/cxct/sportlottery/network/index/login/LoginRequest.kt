@@ -10,5 +10,5 @@ data class LoginRequest(
     var validCode: String? = null,
     var appVersion: String? = null,
     var loginEnvInfo: String? = null, //登入环境信息
-    var SecurityCode: String? = null, //短信或者邮件验证码
+    var securityCode: String? = null, //短信或者邮件验证码
 )

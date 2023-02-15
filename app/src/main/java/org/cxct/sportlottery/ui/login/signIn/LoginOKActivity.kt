@@ -2,23 +2,15 @@ package org.cxct.sportlottery.ui.login.signIn
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.login.LoginManager
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.android.synthetic.main.activity_login_ok.*
 import kotlinx.android.synthetic.main.view_status_bar.*
@@ -27,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityLoginOkBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -40,11 +33,9 @@ import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget.ForgetPasswordActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.LogUtil
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.setTitleLetterSpacing
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
+import java.util.*
 
 
 /**
@@ -55,11 +46,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private val loginScope = CoroutineScope(Dispatchers.Main)
 
     private lateinit var binding: ActivityLoginOkBinding
-    private val callbackManager = CallbackManager.Factory.create()
 
     companion object {
         private const val SELF_LIMIT = 1130
-        private const val RC_SIGN_IN = 0x123
         const val LOGIN_TYPE_CODE = 0
         const val LOGIN_TYPE_PWD = 1
     }
@@ -79,8 +68,8 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupPassword()
         setupValidCode()
         setupLoginButton()
-        setupGoogle()
-        setupFacebook()
+        setupAuthLogin()
+        setupPrivacy()
         setupServiceButton()
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
@@ -150,6 +139,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupLoginButton() {
+        btn_login.text = "${getString(R.string.btn_login)} / ${getString(R.string.btn_register)}"
         binding.btnLogin.setOnClickListener {
             login()
         }
@@ -182,7 +172,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 deviceSn = deviceSn,
                 appVersion = appVersion,
                 loginEnvInfo = deviceId,
-                SecurityCode = smsCode,
+                securityCode = smsCode,
             )
             viewModel.loginOrReg(loginRequest)
         } else {
@@ -195,95 +185,53 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 deviceSn = deviceSn,
                 appVersion = appVersion,
                 loginEnvInfo = deviceId,
-                SecurityCode = null,
+                securityCode = null,
+                validCode = null
             )
             viewModel.login(loginRequest, password)
         }
     }
 
-    private fun setupGoogle() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.server_client_id))
-            .requestEmail()
-            .build()
-        var mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    private fun setupAuthLogin() {
         btn_google.setOnClickListener {
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-
-//            val oneTapClient = Identity.getSignInClient(this)
-//            var signInRequest = BeginSignInRequest.builder()
-//                .setPasswordRequestOptions(BeginSignInRequest.PasswordRequestOptions.builder()
-//                    .setSupported(true)
-//                    .build())
-//                .setGoogleIdTokenRequestOptions(
-//                    BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-//                        .setSupported(true)
-//                        // Your server's client ID, not your Android client ID.
-//                        .setServerClientId(getString(R.string.server_client_id))
-//                        // Only show accounts previously used to sign in.
-//                        .setFilterByAuthorizedAccounts(true)
-//                        .build())
-//                // Automatically sign in when exactly one credential is retrieved.
-//                .setAutoSelectEnabled(true)
-//                .build()
-//
-//            oneTapClient.beginSignIn(signInRequest)
-//                .addOnSuccessListener(this) { result ->
-//                    try {
-//                        startIntentSenderForResult(
-//                            result.pendingIntent.intentSender, RC_SIGN_IN,
-//                            null, 0, 0, 0, null)
-//                    } catch (e: IntentSender.SendIntentException) {
-//                        Log.e("hjq", "Couldn't start One Tap UI: ${e.localizedMessage}")
-//                    }
-//                }
-//                .addOnFailureListener(this) { e ->
-//                    // No saved credentials found. Launch the One Tap sign-up flow, or
-//                    // do nothing and continue presenting the signed-out UI.
-//                    Log.d("hjq", e.localizedMessage)
-//                }
+            AuthManager.authGoogle(this@LoginOKActivity)
         }
-
+        btn_facebook.setOnClickListener {
+            AuthManager.authFacebook(this@LoginOKActivity, { token ->
+                viewModel.loginFacebook(token)
+            }, { errorMsg ->
+                showErrorDialog(errorMsg)
+            })
+        }
     }
 
-    private fun setupFacebook() {
-        LoginManager.getInstance().registerCallback(callbackManager,
-            object : FacebookCallback<com.facebook.login.LoginResult> {
-                override fun onSuccess(result: com.facebook.login.LoginResult) {
-                    LogUtil.toJson(result)
-                }
-
-                override fun onError(error: FacebookException) {
-                    error.printStackTrace()
-                }
-
-                override fun onCancel() {
-                    Log.d("hjq", "onCancel")
-                }
-            })
-        btn_feedback.setOnClickListener {
-            LoginManager.getInstance().logInWithReadPermissions(this, listOf("public_profile"));
-//            LoginManager.getInstance()
-//                .retrieveLoginStatus(this@LoginOKActivity, object : LoginStatusCallback {
-//                    override fun onCompleted(accessToken: AccessToken) {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                    override fun onError(exception: Exception) {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                    override fun onFailure() {
-//                        TODO("Not yet implemented")
-//                    }
-//
-//                })
-        }
+    private fun setupPrivacy() {
+        binding.tvPrivacy.makeLinks(
+            Pair(
+                applicationContext.getString(R.string.login_privacy_policy),
+                View.OnClickListener {
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getPrivacyRuleUrl(this),
+                        resources.getString(R.string.privacy_policy)
+                    )
+                })
+        )
+        binding.tvPrivacy.makeLinks(
+            Pair(
+                applicationContext.getString(R.string.login_terms_conditions),
+                View.OnClickListener {
+                    JumpUtil.toInternalWeb(
+                        this,
+                        Constants.getAgreementRuleUrl(this),
+                        resources.getString(R.string.login_terms_conditions)
+                    )
+                })
+        )
     }
 
     private fun setupServiceButton() {
-        binding.btnCustomSerivce.setOnClickListener {
+        binding.tvCustomerService.setOnClickListener {
             val serviceUrl = sConfigData?.customerServiceUrl
             val serviceUrl2 = sConfigData?.customerServiceUrl2
             when {
@@ -301,6 +249,14 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.isLoading.observe(this) {
+            if (it) {
+                loading()
+            } else {
+                hideLoading()
+            }
+        }
+
         viewModel.accountMsg.observe(this) {
             binding.etAccount.setError(
                 it.first,
@@ -358,7 +314,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
                 }
             }
         } else {
-            updateValidCode()
             if (loginResult.code == SELF_LIMIT) {
                 showSelfLimitFrozeErrorDialog(loginResult.msg)
             } else {
@@ -371,19 +326,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
-//        if (validCodeResult?.success == true) {
-//            val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
-//            Glide.with(this)
-//                .load(bitmap)
-//                .into(binding.ivVerification)
-//        } else {
-//            updateValidCode()
-//            //et_verification_code.setVerificationCode(null)
-//            ToastUtil.showToastInCenter(
-//                this@LoginCodeActivity,
-//                getString(R.string.get_valid_code_fail_point)
-//            )
-//        }
+        if (validCodeResult?.success == true) {
+            showCountDown()
+        } else {
+            validCodeResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+        }
     }
 
     private fun showErrorDialog(errorMsg: String?) {
@@ -413,27 +360,16 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager.onActivityResult(requestCode, resultCode, data)
+        AuthManager.facebookCallback(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
-
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-
-            // Signed in successfully, show authenticated UI.
-//            updateUiWithResult(account)
-        } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            e.printStackTrace()
-            updateUiWithResult(null)
+        AuthManager.googleCallback(requestCode, resultCode, data) { success, msg ->
+            if (success) {
+                msg?.let {
+                    viewModel.loginGoogle(it)
+                }
+            } else {
+                showErrorDialog(msg)
+            }
         }
     }
 
@@ -446,6 +382,44 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             tv_code_login.isVisible = !it
             tv_forget_password.isVisible = !it
         }
-
     }
+
+    private var mSmsTimer: Timer? = null
+    private fun showCountDown() {
+        try {
+            stopSmeTimer()
+
+            var sec = 90
+            mSmsTimer = Timer()
+            mSmsTimer?.schedule(object : TimerTask() {
+                override fun run() {
+                    Handler(Looper.getMainLooper()).post {
+                        if (sec-- > 0) {
+                            binding.btnSendSms.adjustEnableButton(false)
+                            binding.btnSendSms.text = "${sec}s"
+                        } else {
+                            stopSmeTimer()
+                            binding.btnSendSms.adjustEnableButton(true)
+                            binding.btnSendSms.text =
+                                getString(R.string.get_security_code)
+                        }
+                    }
+                }
+            }, 0, 1000) //在 0 秒後，每隔 1000L 毫秒執行一次
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+            stopSmeTimer()
+            binding.btnSendSms.adjustEnableButton(true)
+            binding.btnSendSms.text = getString(R.string.get_verification_code)
+        }
+    }
+
+    private fun stopSmeTimer() {
+        if (mSmsTimer != null) {
+            mSmsTimer?.cancel()
+            mSmsTimer = null
+        }
+    }
+
 }
