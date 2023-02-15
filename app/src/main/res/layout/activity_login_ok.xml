@@ -137,7 +137,7 @@
                             android:alpha="0.5"
                             android:background="@drawable/btn_send_sms"
                             android:enabled="false"
-                            android:text="发送"
+                            android:text="@string/get_phone_code"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/textSize14sp" />
@@ -155,7 +155,7 @@
                         android:id="@+id/et_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hintText="@string/account_hint"
+                        app:hintText="@string/login_hint_account_all"
                         app:iconSignifier="@drawable/ic_login"
                         app:isResponsiveIconColor="false"
                         app:labelText="@string/member_account"

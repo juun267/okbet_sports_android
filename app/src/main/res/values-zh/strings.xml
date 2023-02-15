@@ -1425,9 +1425,12 @@
     <string name="login_terms_conditions">规则条款</string>
     <string name="login_privacy_policy">隐私保护</string>
     <string name="otp_login">验证码登录</string>
-    <string name="auth_login">登录授权</string>
-    <string name="set">设置</string>
+    <string name="auth_login">授权登录</string>
+    <string name="set">设定</string>
     <string name="google">Google</string>
-    <string name="hint_link_google">Link account with Facebook</string>
-    <string name="hint_link_facebook">Link account with Facebook</string>
+    <string name="hint_link_google">关联Google账号</string>
+    <string name="hint_link_facebook">关联Facebook账号</string>
+    <string name="linked">已关联</string>
+    <string name="link">关联</string>
+    <string name="login_hint_account_all">用户名 / 手机号码 / 邮箱</string>
 </resources>
