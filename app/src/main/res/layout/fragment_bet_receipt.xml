@@ -367,7 +367,11 @@
                 android:layout_weight="1"
                 android:background="@drawable/button_radius_8_bet_button"
                 android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="@dimen/textSize16sp"
+                android:autoSizeMinTextSize="@dimen/textSize8sp"
                 android:text="@string/btn_sure"
+                android:maxLines="1"
                 android:textColor="@color/color_E8EFFD"
                 android:textSize="@dimen/textSize16sp"
                 android:visibility="visible" />

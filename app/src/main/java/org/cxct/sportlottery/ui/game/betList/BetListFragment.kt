@@ -281,7 +281,12 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
              * @see singleParlayList
              */
             val currentParlayList = getCurrentParlayList()
-            if (currentParlayList.isEmpty()) return@apply
+            if (currentParlayList.isEmpty()) {
+                EventBusUtil.post(BetModeChangeEvent(SINGLE))
+                return@apply
+            }else{
+                EventBusUtil.post(BetModeChangeEvent(PARLAY))
+            }
             Timber.d("currentParlayList.size():${currentParlayList.size}")
             if (currentParlayList.any {
                     val isEmpty = it.parlayType.isNotEmpty()
@@ -646,6 +651,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun setCurrentBetModeSingle() {
         currentBetType = SINGLE
         BetInfoRepository.setCurrentBetState(SINGLE)
+
         betListRefactorAdapter?.adapterBetType = BetListRefactorAdapter.BetRvType.SINGLE
     }
 
@@ -663,9 +669,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 BetInfoRepository.setCurrentBetState(PARLAY)
                 btnParlaySingle.text = getString(R.string.bet_single)
             }
-//            betListRefactorAdapter?.closeAllKeyboard()
-//            betSingleListAdapter?.closeAllKeyboard()
-//            betParlayListRefactorAdapter?.closeAllKeyboard()
+
             when (currentBetType) {
                 //單項投注
                 SINGLE -> {
@@ -756,17 +760,10 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 //注單列表沒東西時關閉fragment
                 if (list.size == 0) {
                     setCurrentBetModeSingle()
+                    EventBusUtil.post(BetModeChangeEvent(SINGLE))
                     activity?.supportFragmentManager?.popBackStack()
                     return@observe
                 }
-                //依照注單數量動態調整高度
-//                if (list.size == 1) {
-//                    //單一注單
-//                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-//                } else {
-//                    //多筆注單
-//                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
-//                }
                 binding.clTitle.tvBetListCount.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
                 betSingleListAdapter?.betList = list
