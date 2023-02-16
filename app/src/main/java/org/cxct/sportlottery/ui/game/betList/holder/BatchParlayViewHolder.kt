@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_bet_info_item_v3_2.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect_v3.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.util.KeyboardView
 import org.cxct.sportlottery.util.LocalUtils
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getMultipleOdds
+import timber.log.Timber
 
 abstract class BatchParlayViewHolder(
     itemView: View,
@@ -106,6 +108,7 @@ abstract class BatchParlayViewHolder(
         position: Int
     ) {
         itemView.apply {
+
             et_bet_parlay.apply {
                 //第1步：為了避免TextWatcher在第2步被調用，提前移除
                 if (tag is TextWatcher) {
@@ -122,7 +125,6 @@ abstract class BatchParlayViewHolder(
                 keyboardView.setupMaxBetMoney(inputMaxMoney)
             }
             checkBetLimitParlay(data)
-
             et_bet_parlay.apply {
                 /* set listener */
                 val tw: TextWatcher?
@@ -184,6 +186,8 @@ abstract class BatchParlayViewHolder(
                 }
                 false
             }
+
+    Timber.d("position:${position}")
 
             et_bet_parlay.setOnFocusChangeListener { _, hasFocus ->
 //                if (!hasFocus) keyboardView?.hideKeyboard()

@@ -1,14 +1,12 @@
 package org.cxct.sportlottery.ui.game.betList.receipt
 
-import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.extentions.gone
 import org.cxct.sportlottery.extentions.visible
@@ -17,7 +15,6 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.game.betList.adapter.BetListRefactorAdapter
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -47,6 +44,22 @@ class SingleViewHolder private constructor(itemView: View) :
         itemView.apply {
 //            top_space.visibility = if (position == 0) View.VISIBLE else View.GONE
 
+            val inPlay = System.currentTimeMillis() > (itemData.matchOdds?.get(0)?.startTime ?: 0)
+
+
+            if(inPlay){
+                tvMatchType.visible()
+                tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+                tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
+            }else if (itemData.matchType==MatchType.OUTRIGHT){
+                tvMatchType.gone()
+            }else{
+                tvMatchType.visible()
+                tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+                tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+            }
+
+
             val currencySign = sConfigData?.systemCurrencySign
             tv_winnable_amount_title.text =
                 context.getString(R.string.bet_receipt_win_quota_with_sign) + "："
@@ -63,13 +76,17 @@ class SingleViewHolder private constructor(itemView: View) :
                         ) else TextUtil.formatForOdd(
                             getOdds(this, oddsType)
                         )
-                    tv_play_content.text = setSpannedString(
-                        PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
-                        playName,
-                        if (matchType != MatchType.OUTRIGHT) spread else "",
-                        formatForOdd,
-                        context.getString(getOddTypeRes(this, oddsType))
-                    )
+//                    tv_play_content.text = setSpannedString(
+//                        PlayCate.needShowSpread(playCateCode) && (matchType != MatchType.OUTRIGHT),
+//                        playName,
+//                        if (matchType != MatchType.OUTRIGHT) spread else "",
+//                        formatForOdd,
+//                        context.getString(getOddTypeRes(this, oddsType))
+//                    )
+
+                    tv_play_content.text = playName
+                    tvSpread.text = if(matchType!=MatchType.OUTRIGHT) spread else ""
+
                     tv_odds.text = "@ $formatForOdd"
 
                     tv_league.text = leagueName
@@ -103,30 +120,5 @@ class SingleViewHolder private constructor(itemView: View) :
                 }
             }
         }
-    }
-
-    private fun setSpannedString(
-        isShowSpread: Boolean,
-        playName: String?,
-        spread: String?,
-        formatForOdd: String,
-        oddsType: String
-    ): Spanned {
-        val color_FFFFFF_414655 =
-            MultiLanguagesApplication.getChangeModeColorCode("#414655", "#FFFFFF")
-//            val color_e5e5e5_333333 = MultiLanguagesApplication.getChangeModeColorCode("#333333", "#e5e5e5")
-//            val color_F75452_b73a20 = MultiLanguagesApplication.getChangeModeColorCode("#B73A20", "#F75452")
-
-        val playNameStr =
-            if (!playName.isNullOrEmpty()) "<font color=$color_FFFFFF_414655>$playName</font> " else ""
-        val spreadStr =
-            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=$color_FFFFFF_414655>$spread</font> " else ""
-
-//            return HtmlCompat.fromHtml(
-//                playNameStr +
-//                        spreadStr +
-//                        "<font color=$color_e5e5e5_333333>@ $formatForOdd</font> ", HtmlCompat.FROM_HTML_MODE_LEGACY
-//            )
-        return HtmlCompat.fromHtml(playNameStr + spreadStr, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 }

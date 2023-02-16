@@ -48,13 +48,14 @@
 
             <TextView
                 android:id="@+id/tvMatchType"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:paddingHorizontal="5dp"
                 android:background="@drawable/bg_match_type_red_circle"
                 android:gravity="center"
                 android:paddingVertical="1dp"
-                android:text="滚球"
+                tools:text="滚球"
                 android:layout_marginEnd="5dp"
                 android:textColor="@color/color_FFFFFF"
                 android:textSize="10sp" />
@@ -64,13 +65,32 @@
             <!--playName + spread--> <!--new-->
             <TextView
                 android:id="@+id/tv_play_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:maxWidth="180dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/color_FFFFFF_414655"
                 android:textSize="@dimen/textSize15sp"
-                tools:text="日本奥运队 1.5/2" />
+                tools:text="日本奥运队" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="13dp"
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="5dp"
+                android:background="@color/color_C9CFD7" />
+
+            <TextView
+                android:id="@+id/tvSpread"
+                android:text="1.5/2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_FFFFFF_414655"/>
 
             <TextView
                 android:id="@+id/tv_odds"
@@ -79,6 +99,7 @@
                 android:fontFamily="@font/din_regular"
                 android:textColor="@color/color_025BE8_025BE8"
                 android:textSize="@dimen/textSize16sp"
+                android:layout_gravity="end"
                 android:textStyle="bold"
                 tools:text="\@ 0.89" />
 
@@ -112,6 +133,7 @@
         <TextView
             android:id="@+id/tv_match_type"
             android:layout_width="0dp"
+
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"

@@ -61,7 +61,7 @@
                     android:layout_marginTop="45dp"
                     android:background="@color/color_202541_FFFFFF"
                     android:overScrollMode="never"
-                    tools:itemCount="1"
+                    tools:itemCount="2"
                     tools:listitem="@layout/content_bet_info_item_v3_2" />
 
 
@@ -113,6 +113,7 @@
                         android:id="@+id/clExpandOrStacked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        tools:visibility="visible"
                         android:orientation="horizontal">
 
                         <TextView
@@ -120,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:drawableEnd="@drawable/ic_arrow_down_blue"
+                            android:drawableEnd="@drawable/ic_arrow_up_blue"
                             android:drawablePadding="4dp"
                             android:gravity="center"
                             android:paddingVertical="15dp"
@@ -142,7 +143,7 @@
                             android:paddingVertical="1dp"
                             android:textColor="@color/color_9BB3D9_535D76"
                             android:textSize="@dimen/textSize12sp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.988"

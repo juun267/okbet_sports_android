@@ -82,4 +82,10 @@
 <!--        <item name="android:paddingBottom">10dp</item>-->
     </style>
 
+    <declare-styleable name="SwipeMenuLayout">
+        <attr format="boolean" name="swipeEnable"/>
+        <attr format="boolean" name="ios"/>
+        <attr format="boolean" name="leftSwipe"/>
+    </declare-styleable>
+
 </resources>

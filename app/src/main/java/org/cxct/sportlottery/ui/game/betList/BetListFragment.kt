@@ -352,7 +352,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
                     null
                 )
             } else {
@@ -361,7 +361,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
                     null,
-                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_up_blue, null),
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_down_blue, null),
                     null
                 )
 
@@ -403,9 +403,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun initAdapter() {
         val adapterItemClickListener = object : OnItemClickListener {
             override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                betListRefactorAdapter?.closeAllKeyboard()
-                betSingleListAdapter?.closeAllKeyboard()
-                betParlayListRefactorAdapter?.closeAllKeyboard()
+//                betListRefactorAdapter?.closeAllKeyboard()
+//                betSingleListAdapter?.closeAllKeyboard()
+//                betParlayListRefactorAdapter?.closeAllKeyboard()
                 viewModel.removeBetInfoItem(oddsId)
             }
 
@@ -502,9 +502,13 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
 
         betListRefactorAdapter = BetListRefactorAdapter(
             binding.layoutKeyBoard, adapterItemClickListener
-        ) { getUserBalance() }
+        ) {
+            getUserBalance()
+        }
+
         betSingleListAdapter =
             BetSingleListAdapter(adapterItemClickListener, binding.layoutKeyBoard)
+
         betParlayListRefactorAdapter = BetListRefactorAdapter(
             binding.layoutKeyBoard,
             adapterItemClickListener,
@@ -756,25 +760,23 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     return@observe
                 }
                 //依照注單數量動態調整高度
-                if (list.size == 1) {
-                    //單一注單
-                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-                } else {
-                    //多筆注單
-                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
-                }
-                if (list.isNotEmpty()) {
-                    binding.clTitle.tvBetListCount.text = list.size.toString()
-                    betListRefactorAdapter?.betList = list
-                    betSingleListAdapter?.betList = list
-                    betParlayListRefactorAdapter?.betList = list
+//                if (list.size == 1) {
+//                    //單一注單
+//                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+//                } else {
+//                    //多筆注單
+//                    binding.llRoot.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
+//                }
+                binding.clTitle.tvBetListCount.text = list.size.toString()
+                betListRefactorAdapter?.betList = list
+                betSingleListAdapter?.betList = list
+                betParlayListRefactorAdapter?.betList = list
 
-                    checkSingleAndParlayBetLayoutVisible()
+                checkSingleAndParlayBetLayoutVisible()
 
-                    subscribeChannel(list)
-                    refreshAllAmount(list)
-                    checkAllAmountCanBet()
-                }
+                subscribeChannel(list)
+                refreshAllAmount(list)
+                checkAllAmountCanBet()
             }
         }
 
@@ -1057,13 +1059,6 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
      * @反波膽也不能串關
      */
     private fun showHideCantParlayWarn(show: Boolean) {
-        //TODO 現在只有串關投注才會顯示次提示
-//        if (show && (betListRefactorAdapter?.betList?.size ?: 0) > 1) {
-//            llParlayWarn.visible()
-//        } else {
-//            llParlayWarn.gone()
-//        }
-
         when (currentBetType) {
             //單項投注
             SINGLE -> {

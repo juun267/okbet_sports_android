@@ -1205,7 +1205,7 @@
     <string name="stacked_combination">收起组合</string>
     <string name="bet_parlay">+串关</string>
     <string name="str_bet_parlay">串</string>
-    <string name="bet_single">单注</string>
+    <string name="bet_single">单关</string>
     <string name="str_if_accept_odds_changes_title">是否接受赔率变化说明</string>
     <string name="str_if_accept_odds_changes_des_subtitle">因为赛事赔率可能随时会产生变化（特别是滚球阶段）。为了让您有能更好的下注体验。您可以选择以下三种投注方式。</string>
     <string name="str_if_accept_odds_changes_des1">1.接受任何赔率变化—选择该选项时.我们会按照最新的赔率给您生成注单。</string>

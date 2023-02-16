@@ -927,7 +927,7 @@
     <string name="text_account_history_time">Giờ giao dịch</string>
     <string name="text_account_history_number">Số đơn hàng</string>
     <string name="text_account_history_amount">Số tiền giao dịch</string>
-    <string name="text_account_history_balance">Sự cân bằng</string>
+    <string name="text_account_history_balance">Số dư</string>
 
     <string name="text_account_history_bet">Cá cược</string>
     <string name="text_account_history_recharge">Nạp điện</string>
@@ -1174,8 +1174,8 @@
     <string name="accept_any_change_in_odds">Nhận mọi thay đổi</string>
     <string name="accept_better_change_in_odds">Nhận thay đổi tốt hơn</string>
     <string name="accept_never_change_in_odds">Không nhận thay đổi</string>
-    <string name="expand_more_combinations">Hiện tổ hợp</string>
-    <string name="stacked_combination">Ẩn tổ hợp</string>
+    <string name="expand_more_combinations">Hiện</string>
+    <string name="stacked_combination">Ẩn</string>
     <string name="bet_parlay">+Xâu</string>
     <string name="bet_single">Đơn</string>
     <string name="str_if_accept_odds_changes_title">Có nhận thay đổi tỷ lệ cược không?</string>
@@ -1186,7 +1186,7 @@
     <string name="str_if_accept_odds_changes_des3">3. Không nhận thay đổi - khi bạn chọn tùy chọn này: Nếu tỷ lệ cược mới nhất khác với tỷ lệ cược bạn đã chọn, chúng tôi sẽ không tạo đơn cược và nhắc bạn về những thay đổi tỷ lệ cược.</string>
     <string name="str_ok_i_got_it">Tôi biết rồi.</string>
     <string name="str_return_last_step">Trở về</string>
-    <string name="str_bet_other_game">Cược thị trường khác</string>
+    <string name="str_bet_other_game">Đặt cược khác</string>
     <string name="str_check_bets">Chi tiết</string>
     <string name="str_press_again_to_exit_the_program">Vui lòng xác nhận lại lối thoát</string>
     <string name="str_odds_changed">Tỷ lệ cược thay đổi</string>
@@ -1227,5 +1227,5 @@
     <string name="closing_time">Thời gian đóng</string>
     <string name="end_time">Thời gian kết thúc</string>
     <string name="draw_countdown">Đếm ngược rút thăm</string>
-    <string name="str_market_is_closed">Thị trường đã đóng, không thể đặt cược</string>
+    <string name="str_market_is_closed">Thị trường đã đóng</string>
 </resources>

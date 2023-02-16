@@ -1198,8 +1198,8 @@
     <string name="accept_any_change_in_odds">Accept any odds</string>
     <string name="accept_better_change_in_odds">Accept better odds</string>
     <string name="accept_never_change_in_odds">Never accept odds change</string>
-    <string name="expand_more_combinations">More combinations</string>
-    <string name="stacked_combination">Hide combination</string>
+    <string name="expand_more_combinations">More</string>
+    <string name="stacked_combination">Hide</string>
     <string name="bet_parlay">+Parlay</string>
     <string name="bet_single">Single</string>
     <string name="str_if_accept_odds_changes_title">Whether to accept the odds change</string>
@@ -1254,5 +1254,5 @@
     <string name="draw_countdown">Draw Countdown</string>
 
     <string name="new_games_new_discovery">New Game, New discovery</string>
-    <string name="str_market_is_closed">Market is closed and no bets can be placed.</string>
+    <string name="str_market_is_closed">Market closed</string>
 </resources>
