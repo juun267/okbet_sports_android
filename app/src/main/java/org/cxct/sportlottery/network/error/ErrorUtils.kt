@@ -148,6 +148,7 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Ot
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.uploadImg.UploadVerifyPhotoResult
+import org.cxct.sportlottery.network.user.authbind.AuthBindResult
 import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -599,19 +600,19 @@ object ErrorUtils {
                     }
                     (url.contains(GOOGLE_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                        return LoginResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(FACEBOOK_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                        return LoginResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(BIND_GOOGLE)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                        return AuthBindResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(BIND_FACEBOOK)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                        return AuthBindResult(it.code, it.msg, it.success, null) as T
                     }
 
                 }

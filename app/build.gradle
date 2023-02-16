@@ -48,7 +48,7 @@ android {
             resValue "string", "facebook_app_id", "2339087372931297"
             resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
             resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
-            resValue "string", "server_client_id", "467151803753-66v655s6mqbs13c36lmhau40nvt600j7.apps.googleusercontent.com"
+            resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
         }
 
         release {
@@ -58,10 +58,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
-            resValue "string", "facebook_app_id", "598902724905865"
-            resValue "string", "facebook_client_token", "1eb3df70aa75bcc5ec0e239b57441a11"
-            resValue "string", "fb_login_protocol_scheme", ""
-            resValue "string", "server_client_id", "704666486208-ge6g0d2ph49umovfupl30po69acddh55.apps.googleusercontent.com"
+            resValue "string", "facebook_app_id", "2339087372931297"
+            resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
+            resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
+            resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
         }
     }
 

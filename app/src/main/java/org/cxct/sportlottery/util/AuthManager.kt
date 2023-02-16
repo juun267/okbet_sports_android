@@ -10,9 +10,7 @@ import com.facebook.appevents.AppEventsLogger
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 
@@ -77,8 +75,12 @@ object AuthManager {
         if (requestCode === RC_SIGN_IN) {
             try {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                return callback.invoke(true, account.idToken)
+                if (task.isSuccessful) {
+                    return callback.invoke(true, task.result.idToken)
+                } else {
+                    task.exception?.printStackTrace()
+                    return callback.invoke(false, task.exception?.message)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 return callback.invoke(false, e.message)
