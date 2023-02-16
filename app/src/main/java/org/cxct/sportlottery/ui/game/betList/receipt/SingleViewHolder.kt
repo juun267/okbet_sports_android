@@ -48,15 +48,17 @@ class SingleViewHolder private constructor(itemView: View) :
 
 
             if(inPlay){
-                tvMatchType.visible()
-                tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
-                tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
-            }else if (itemData.matchType==MatchType.OUTRIGHT){
-                tvMatchType.gone()
+                tvTypeMatch.visible()
+                tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+                tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
             }else{
-                tvMatchType.visible()
-                tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
-                tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+                tvTypeMatch.visible()
+                tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+                tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+            }
+
+            if (itemData.matchType == MatchType.OUTRIGHT) {
+                tvTypeMatch.gone()
             }
 
 
@@ -91,7 +93,12 @@ class SingleViewHolder private constructor(itemView: View) :
 
                     tv_league.text = leagueName
                     tv_team_names.setTeamNames(15, homeName, awayName)
-                    tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
+                    if (matchType != MatchType.OUTRIGHT) {
+                        tv_match_type.tranByPlayCode(playCode, playCateCode, playCateName, rtScore)
+                    }else{
+                        tv_match_type.text = "冠军体育"
+                    }
+
                 }
 
                 tv_bet_amount.text = "$currencySign${TextUtil.formatForOdd(itemData.stake ?: 0.0)}"

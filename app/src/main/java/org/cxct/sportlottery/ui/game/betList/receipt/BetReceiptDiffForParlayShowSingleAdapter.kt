@@ -97,16 +97,18 @@ class BetReceiptDiffForParlayShowSingleAdapter : ListAdapter<MatchOdd, RecyclerV
                 match_receipt_bet_layout.isVisible = false
                 val inPlay = System.currentTimeMillis() > (itemData?.startTime ?: 0)
                 if(inPlay){
-                    tvMatchType.visible()
-                    tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
-                    tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
-                }else if (matchType== MatchType.OUTRIGHT){
-                    tvMatchType.gone()
+                    tvTypeMatch.visible()
+                    tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
+                    tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_red_circle)
                 }else{
-                    tvMatchType.visible()
-                    tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
-                    tvMatchType.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
+                    tvTypeMatch.visible()
+                    tvTypeMatch.text = LocalUtils.getString(R.string.home_tab_early) //早盘
+                    tvTypeMatch.background =  AppCompatResources.getDrawable(context,R.drawable.bg_match_type_green_circle)
                 }
+
+                if (matchType== MatchType.OUTRIGHT){
+                    tvTypeMatch.gone()
+            }
 
                 itemData?.apply {
                     val formatForOdd =

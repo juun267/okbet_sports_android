@@ -142,7 +142,6 @@ class BetInfoItemViewHolder(
                 tvTipsContent.text = LocalUtils.getString(R.string.bet_info_bet_lock_hint)
 //                if (cannotParlay) LocalUtils.getString(R.string.bet_info_no_parlay_hint)
             }
-
         }
     }
 
@@ -481,13 +480,15 @@ class BetInfoItemViewHolder(
             tvMatchType.text = LocalUtils.getString(R.string.home_tab_in_play) //滚球
             tvMatchType.background =
                 AppCompatResources.getDrawable(root.context, R.drawable.bg_match_type_red_circle)
-        } else if (itemData.matchType == MatchType.OUTRIGHT) {
-            tvMatchType.gone()
         } else {
             tvMatchType.visible()
             tvMatchType.text = LocalUtils.getString(R.string.home_tab_early) //早盘
             tvMatchType.background =
                 AppCompatResources.getDrawable(root.context, R.drawable.bg_match_type_green_circle)
+        }
+
+        if (itemData.matchType == MatchType.OUTRIGHT) {
+            tvMatchType.gone()
         }
 
         when {
