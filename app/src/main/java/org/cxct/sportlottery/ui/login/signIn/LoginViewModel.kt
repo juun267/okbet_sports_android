@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.login.ValidateLoginDeviceSmsRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
+import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeRequest
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.*
@@ -38,6 +39,8 @@ class LoginViewModel(
         get() = _loginSmsResult
     val validCodeResult: LiveData<ValidCodeResult?>
         get() = _validCodeResult
+    val msgCodeResult: LiveData<SmsResult?>
+        get() = _msgCodeResult
     val validResult: LiveData<LogoutResult>
         get() = _validResult
     val isLoading: LiveData<Boolean> //使用者餘額
@@ -49,10 +52,15 @@ class LoginViewModel(
     private val _loginSmsResult = MutableLiveData<LogoutResult>()
     private val _validCodeResult = MutableLiveData<ValidCodeResult?>()
     private val _validResult = MutableLiveData<LogoutResult>()
+    private val _msgCodeResult = MutableLiveData<SmsResult?>()
 
     val accountMsg: LiveData<Pair<String?, Boolean>>
         get() = _accountMsg
     private val _accountMsg = MutableLiveData<Pair<String?, Boolean>>()
+
+    val msgCodeMsg: LiveData<Pair<String?, Boolean>>
+        get() = _msgCodeMsg
+    private val _msgCodeMsg = MutableLiveData<Pair<String?, Boolean>>()
 
     val userNameMsg: LiveData<Pair<String?, Boolean>>
         get() = _userNameMsg
@@ -214,7 +222,7 @@ class LoginViewModel(
             val result = doNetwork(androidContext) {
                 OneBoSportApi.indexService.loginOrRegSendValidCode(loginCodeRequest)
             }
-            _validCodeResult.postValue(result)
+            _msgCodeResult.postValue(result)
         }
     }
 
@@ -275,6 +283,17 @@ class LoginViewModel(
             else -> null
         }
         _validateCodeMsg.value = Pair(msg, msg == null)
+        focusChangeCheckAllInputComplete()
+        return msg
+    }
+
+    fun checkMsgCode(validCode: String): String? {
+        val msg = when {
+            validCode.isNullOrBlank() -> LocalUtils.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyValidCode(validCode) -> LocalUtils.getString(R.string.error_verification_code_forget)
+            else -> null
+        }
+        _msgCodeMsg.value = Pair(msg, msg == null)
         focusChangeCheckAllInputComplete()
         return msg
     }

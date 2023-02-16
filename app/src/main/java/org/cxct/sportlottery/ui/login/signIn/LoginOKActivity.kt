@@ -24,13 +24,13 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginCodeRequest
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
-import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.SelfLimitFrozeErrorDialog
 import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.ui.login.VerifyCodeDialog
 import org.cxct.sportlottery.ui.login.checkRegisterListener
 import org.cxct.sportlottery.ui.login.foget2.ForgetWaysActivity
 import org.cxct.sportlottery.ui.maintab.MainTabActivity
@@ -74,6 +74,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupServiceButton()
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
+        binding.eetAccount.setText("9668551025")
     }
 
     private fun initOnClick() {
@@ -87,7 +88,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.eetAccount.checkRegisterListener { viewModel.checkAccount(it) }
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
-        binding.eetVerificationCode.checkRegisterListener { viewModel.checkValidCode(it) }
+        binding.eetVerificationCode.checkRegisterListener { viewModel.checkMsgCode(it) }
         if (!viewModel.account.isNullOrBlank()) {
             binding.eetAccount.setText(viewModel.account)
         }
@@ -133,7 +134,11 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupValidCode() {
-        binding.btnSendSms.setOnClickListener { updateValidCode() }
+        binding.btnSendSms.setOnClickListener {
+            VerifyCodeDialog(callBack = { identity, validCode ->
+                updateValidCode(identity, validCode)
+            }).show(supportFragmentManager, null)
+        }
     }
 
     private fun setupLoginButton() {
@@ -144,9 +149,9 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.btnLogin.setTitleLetterSpacing()
     }
 
-    private fun updateValidCode() {
+    private fun updateValidCode(validCodeIdentity: String?, validCode: String) {
         val account = binding.eetAccount.text.toString()
-        viewModel.loginOrRegSendValidCode(LoginCodeRequest(account, ""))
+        viewModel.loginOrRegSendValidCode(LoginCodeRequest(account, validCodeIdentity, validCode))
         binding.eetVerificationCode.apply {
             if (text.isNotBlank()) {
                 text = null
@@ -194,12 +199,13 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         btn_google.setOnClickListener {
             AuthManager.authGoogle(this@LoginOKActivity)
         }
+
         btn_facebook.setOnClickListener {
-            AuthManager.authFacebook(this@LoginOKActivity, { token ->
-                viewModel.loginFacebook(token)
-            }, { errorMsg ->
-                showErrorDialog(errorMsg)
-            })
+//            AuthManager.authFacebook(this@LoginOKActivity, { token ->
+//                viewModel.loginFacebook(token)
+//            }, { errorMsg ->
+//                showErrorDialog(errorMsg)
+//            })
         }
     }
 
@@ -262,7 +268,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             )
             binding.btnSendSms.adjustEnableButton(it.first.isNullOrBlank())
         }
-        viewModel.validateCodeMsg.observe(this) {
+        viewModel.msgCodeMsg.observe(this) {
             binding.etVerificationCode.setError(
                 it.first,
                 false
@@ -291,8 +297,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             }
         })
 
-        viewModel.validCodeResult.observe(this, Observer {
-            updateUiWithResult(it)
+        viewModel.msgCodeResult.observe(this, Observer {
+            if (it?.success == true) {
+                showCountDown()
+            } else {
+                it?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
+            }
         })
     }
 
@@ -323,14 +333,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
     }
 
-    private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
-        if (validCodeResult?.success == true) {
-            showCountDown()
-        } else {
-            validCodeResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
-        }
-    }
-
     private fun showErrorDialog(errorMsg: String?) {
         val dialog = CustomAlertDialog(this)
         dialog.setMessage(errorMsg)
@@ -344,16 +346,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val dialog = SelfLimitFrozeErrorDialog()
         dialog.setMessage(errorMsg)
         dialog.show(supportFragmentManager, null)
-    }
-
-    private fun View.adjustEnableButton(isEnable: Boolean) {
-        if (isEnable) {
-            isEnabled = true
-            alpha = 1.0f
-        } else {
-            isEnabled = false
-            alpha = 0.5f
-        }
     }
 
 

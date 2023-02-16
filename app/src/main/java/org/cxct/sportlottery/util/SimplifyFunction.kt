@@ -20,11 +20,9 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -36,7 +34,6 @@ import kotlinx.android.synthetic.main.item_favorite.view.*
 import kotlinx.android.synthetic.main.itemview_league_v5.view.*
 import kotlinx.android.synthetic.main.view_account_balance_2.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -594,6 +591,16 @@ fun TextView.setTitleLetterSpacing2F() {
             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> 0.2F
             else -> 0F
         }
+}
+
+fun View.adjustEnableButton(isEnable: Boolean) {
+    if (isEnable) {
+        isEnabled = true
+        alpha = 1.0f
+    } else {
+        isEnabled = false
+        alpha = 0.5f
+    }
 }
 
 /**

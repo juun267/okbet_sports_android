@@ -204,7 +204,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return SendSmsResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(INDEX_LOGIN)) -> {
+                    (url.endsWith(INDEX_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }
@@ -212,7 +212,7 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return LogoutResult(it.code, it.msg, it.success) as T
                     }
-                    (url.contains(INDEX_REGISTER)) -> {
+                    (url.endsWith(INDEX_REGISTER)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return LoginResult(it.code, it.msg, it.success, null) as T
                     }
@@ -590,13 +590,13 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return OddsChangeOptionResult(it.code, it.msg, it.success) as T
                     }
-                    (url.contains(LOGIN_OR_REG)) -> {
+                    (url.endsWith(LOGIN_OR_REG_SEND_VALIDCODE)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                        return SmsResult(it.code, it.msg, it.success) as T
                     }
-                    (url.contains(LOGIN_OR_REG_SEND_VALIDCODE)) -> {
+                    (url.endsWith(LOGIN_OR_REG)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OddsChangeOptionResult(it.code, it.msg, it.success) as T
+                        return LoginResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(GOOGLE_LOGIN)) -> {
                         @Suppress("UNCHECKED_CAST")

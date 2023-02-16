@@ -5,8 +5,8 @@ import org.cxct.sportlottery.network.Constants.BIND_FACEBOOK
 import org.cxct.sportlottery.network.Constants.BIND_GOOGLE
 import org.cxct.sportlottery.network.Constants.CANCEL_ACCOUNT
 import org.cxct.sportlottery.network.Constants.FACEBOOK_LOGIN
-import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_VALIDATE_EMAIL
 import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_SMS
+import org.cxct.sportlottery.network.Constants.FORGET_PASSWORD_VALIDATE_EMAIL
 import org.cxct.sportlottery.network.Constants.GOOGLE_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
@@ -127,7 +127,7 @@ interface IndexService {
 
 
     @POST(LOGIN_OR_REG_SEND_VALIDCODE)
-    suspend fun loginOrRegSendValidCode(@Body loginCodeRequest: LoginCodeRequest): Response<ValidCodeResult>
+    suspend fun loginOrRegSendValidCode(@Body loginCodeRequest: LoginCodeRequest): Response<SmsResult>
 
     @POST(FACEBOOK_LOGIN)
     suspend fun facebookLogin(@Body loginTokenRequest: LoginTokenRequest): Response<LoginResult>

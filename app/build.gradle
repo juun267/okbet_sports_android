@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
 
-        applicationId "org.cxct.sportlottery"
+        applicationId "com.okbet.ph"
         minSdk 23
         targetSdk 31
         versionName "1.1.35"
@@ -22,11 +22,28 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-
         ndk {
-            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/          \
+            abiFilters 'arm64-v8a', 'armeabi-v7a'/*, 'armeabi'*/ /*, 'x86','x86_64'*/           \
 
         }
+        resValue "string", "app_name", "OKBET"
+        buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
+        buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+        buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
+        buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
+        buildConfigField 'Boolean', 'MOCK', 'false'
+        manifestPlaceholders = [
+                JPUSH_PKGNAME          : applicationId,
+                JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
+                NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
+                INVITE_CODE            : ""
+        ]
+        resValue "string", "facebook_app_id", "2339087372931297"
+        resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
+        resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
+        resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
+
     }
 
     signingConfigs {
@@ -42,26 +59,16 @@ android {
         debug {
             minifyEnabled false
             zipAlignEnabled true
+            debuggable true
             signingConfig signingConfigs.release
             versionNameSuffix ".debug"
-            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
-            resValue "string", "facebook_app_id", "2339087372931297"
-            resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
-            resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
-            resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
         }
-
         release {
             minifyEnabled false
             zipAlignEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
-            resValue "string", "facebook_app_id", "2339087372931297"
-            resValue "string", "facebook_client_token", "45b5e13714025f8083e5d9ae9300fd0f"
-            resValue "string", "fb_login_protocol_scheme", "fb2339087372931297"
-            resValue "string", "server_client_id", "1037678190731-qqog3vk9ndm5ovjsk7rpm4nqf5cbm071.apps.googleusercontent.com"
         }
     }
 
@@ -76,154 +83,56 @@ android {
     productFlavors {
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            resValue "string", "app_name", "OKBET"
             applicationId "com.happysport.sl.test"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : ""
             ]
         }
         OkbetPH {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : ""
-            ]
         }
         //okbet预发环境 app-phuat.abaoooiap.com
         phuat {
             buildConfigField "String", "CHANNEL_NAME", "\"yfp2\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : ""
-            ]
         }
         google {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "google", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE: ""
+                    JPUSH_CHANNEL: "google",
             ]
         }
         huawei {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "huawei", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "huawei8"
+                    JPUSH_CHANNEL: "huawei",
+                    INVITE_CODE  : "huawei8"
             ]
         }
         xiaomi {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "xiaomi", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "xiaomi8"
+                    JPUSH_CHANNEL: "xiaomi",
+                    INVITE_CODE  : "xiaomi8"
             ]
         }
         oppo {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "oppo", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "oppo8"
+                    JPUSH_CHANNEL: "oppo",
+                    INVITE_CODE  : "oppo8"
             ]
         }
         vivo {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "vivo", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "vivo8"
+                    JPUSH_CHANNEL: "vivo",
+                    INVITE_CODE  : "vivo8"
             ]
         }
         samgsung {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "samgsung", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "samsung8"
+                    JPUSH_CHANNEL: "samgsung",
+                    INVITE_CODE  : "samsung8"
             ]
         }
         inmobi {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.ph"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "6ce6dade62a7563b526bf021", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "inmobi", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config",
-                    INVITE_CODE            : "inmobi"
+                    JPUSH_CHANNEL: "inmobi",
+                    INVITE_CODE  : "inmobi"
             ]
         }
         //okbet9测试环境
@@ -231,14 +140,9 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"cdplat1\""
             resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.cdplat1"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "0ef3e0b1b397bd252f23b2ac", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    JPUSH_PKGNAME: applicationId,
+                    JPUSH_APPKEY : "0ef3e0b1b397bd252f23b2ac",
             ]
         }
         //okbet9正式环境
@@ -246,30 +150,9 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"spk9\""
             resValue "string", "app_name", "OKbet9"
             applicationId "com.okbet.spcd"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "0cf211236261e69cc4bf682e", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
-            ]
-        }
-
-        //現金網預發布
-        sabaplat1 {
-            buildConfigField "String", "CHANNEL_NAME", "\"sabaplat1\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbet.sabaplat1"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
-            buildConfigField "String", "SYSTEM_CURREMCY", "\"PHP\""
-            buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+                    JPUSH_PKGNAME: applicationId,
+                    JPUSH_APPKEY : "0cf211236261e69cc4bf682e",
             ]
         }
     }
