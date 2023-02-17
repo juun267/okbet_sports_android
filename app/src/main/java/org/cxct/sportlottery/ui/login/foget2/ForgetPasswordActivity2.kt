@@ -16,6 +16,7 @@ import org.cxct.sportlottery.ui.login.checkPhoneNum
 import org.cxct.sportlottery.ui.login.checkSMSCode
 import org.cxct.sportlottery.ui.login.foget.ForgetViewModel
 import org.cxct.sportlottery.ui.login.foget2.rest.ResetPasswordActivity
+import org.cxct.sportlottery.util.CountDownUtil
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.util.setBtnEnable
 import org.cxct.sportlottery.util.setServiceClick
@@ -26,9 +27,6 @@ import org.cxct.sportlottery.util.setServiceClick
 class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::class) {
 
     companion object {
-
-        private const val REQUEST_CODE_INTERVAL = 60 // 重新发送验证码的时间间隔(单位:秒)
-        private var REQUEST_CODE_TIMESTAMP = 0L // 发送验证码的时间戳
 
         fun startByPhoneWays(context: Activity) = start(context, 1) // 1: 通过手机号方式修改密码
         fun startByEmailWays(context: Activity)  = start(context, 2) // 2:通过邮箱方式修改密码
@@ -97,17 +95,14 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
     private fun onNewSMSStatus()  {
 
         val inputEffective = inputPhoneNo != null || inputEmail != null
-//        val timeLeft = System.currentTimeMillis() - REQUEST_CODE_TIMESTAMP
 
-        if (!inputEffective/* || timeLeft > REQUEST_CODE_INTERVAL * 1000*/) {
+//        if (!inputEffective) {
             binding.btnSendSms.setBtnEnable(inputEffective)
             setNextBtnStatus()
-            return
-        }
+//            return
+//        }
 
-        if (binding.btnSendSms.tag == null) {
-            codeCountDown(REQUEST_CODE_INTERVAL /*- (timeLeft / 1000).toInt()*/)
-        }
+//        codeCountDown()
     }
 
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
@@ -119,11 +114,16 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         }
     }
 
-    private fun codeCountDown(time: Int) = binding.btnSendSms.run  {
-        tag = time
-        countDown(time, { setBtnEnable(false) }
-            , { text = "${it}s" }
-            , {
+    private fun codeCountDown() = binding.btnSendSms.run  {
+        if (tag != null) {
+            return@run
+        }
+
+        tag = this
+        CountDownUtil.smsCountDown(this@ForgetPasswordActivity2,
+            { setBtnEnable(false) },
+            { text = "${it}s" },
+            {
                 tag = null
                 setBtnEnable(true)
                 setTextColor(Color.WHITE)
@@ -167,8 +167,8 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
         hideLoading()
         if (smsResult?.success == true) {
             userName = smsResult.ResetPasswordData?.userName
-            REQUEST_CODE_TIMESTAMP = System.currentTimeMillis()
-            codeCountDown(REQUEST_CODE_INTERVAL)
+            codeCountDown()
+//            CountDownUtil.targSMSTimeStamp()
             val msg = smsResult.ResetPasswordData?.msg
             if(!msg.isEmptyStr()) {
                 ToastUtil.showToast(this@ForgetPasswordActivity2, msg, Toast.LENGTH_SHORT)
@@ -176,7 +176,7 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
             return
         }
 
-        binding.btnSendSms.isEnabled = true
+        binding.btnSendSms.setBtnEnable(true)
         //做异常处理
         if (smsResult?.code == 2765 || smsResult?.code == 2766) {
             binding.etPhone.setError(smsResult.msg,false)

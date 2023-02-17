@@ -6,7 +6,6 @@ import android.view.View
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.cxct.sportlottery.network.common.BaseResult
 import retrofit2.Response
@@ -98,31 +97,4 @@ inline fun Activity.startActivity(activity: Class<out Activity>) {
 
 fun Activity.bindFinish(vararg views: View) {
     views.forEach { it.setOnClickListener { finish() } }
-}
-
-fun LifecycleOwner.countDown(time: Int = 60,
-                             start: () -> Unit,
-                             next: (Int) -> Unit,
-                             end: () -> Unit) {
-
-    if (time <= 0) {
-        end.invoke()
-        return
-    }
-
-    lifecycleScope.launch {
-        flow {
-            (time downTo 0).forEach {
-                delay(1000)
-                emit(it)
-            }
-        }.onStart {
-            start.invoke()
-        }.onCompletion {
-            end.invoke()
-        }.catch {
-        }.collect {
-            next.invoke(it)
-        }
-    }
 }
