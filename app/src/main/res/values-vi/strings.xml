@@ -1253,5 +1253,7 @@
     <string name="verification_not_correct">Mã xác nhận sai</string>
     <string name="edit">Sửa</string>
     <string name="send">Gửi</string>
+    <string name="pls_enter_correct_mobile_email">Mời nhập chính xác SĐT/Email</string>
+    <string name="pls_enter_correct_mobile_email_username">Mời nhập chính xác Tên người dùng/SĐT/Email</string>
     <string name="live_service">Trò Chuyện Trực Tuyến</string>
 </resources>

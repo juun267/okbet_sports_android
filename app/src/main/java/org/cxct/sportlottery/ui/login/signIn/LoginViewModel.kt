@@ -233,7 +233,7 @@ class LoginViewModel(
         val msg = when {
             username.isBlank() -> LocalUtils.getString(R.string.error_input_empty)
             !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username)) -> {
-                LocalUtils.getString(R.string.error_member_account)
+                LocalUtils.getString(R.string.pls_enter_correct_mobile_email)
             }
             else -> null
         }
@@ -251,8 +251,8 @@ class LoginViewModel(
             !(VerifyConstUtil.verifyPhone(username) || VerifyConstUtil.verifyMail(username) || VerifyConstUtil.verifyLengthRange(
                 username,
                 4,
-                16)) -> {
-                LocalUtils.getString(R.string.error_member_account)
+                20)) -> {
+                LocalUtils.getString(R.string.pls_enter_correct_mobile_email_username)
             }
             else -> null
         }

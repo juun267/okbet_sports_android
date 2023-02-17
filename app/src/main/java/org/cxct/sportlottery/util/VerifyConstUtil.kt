@@ -44,7 +44,7 @@ object VerifyConstUtil {
     }
 
     fun verifyAccount(account: CharSequence): Boolean {
-        return Pattern.matches("([_$ENGLISH_WORD$NUMBER]+){4,16}$", account)
+        return Pattern.matches("([_$ENGLISH_WORD$NUMBER]+){4,20}$", account)
     }
 
     fun verifyCombinationAccount(account: CharSequence): Boolean {

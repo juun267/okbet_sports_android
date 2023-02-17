@@ -56,7 +56,6 @@ class VerifyCodeDialog(val callBack: (identity: String?, validCode: String) -> U
         initObserve()
         setupValidCode()
         initClick()
-        eet_verification_code.requestFocus()
     }
 
     private fun initClick() {
