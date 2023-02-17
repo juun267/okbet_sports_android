@@ -981,7 +981,7 @@
     <!--endregion-->
 
     <!--region 注單模塊調整-->
-    <string name="bet_info_bet_lock_hint">Markets of your bet has changed</string>
+    <string name="bet_info_bet_lock_hint">Markets of bet is closed</string>
     <string name="bet_info_no_parlay_hint">The match hasn\'t supported parlay</string>
     <!--endregion-->
     <string name="timezone_change">Time Zone</string>

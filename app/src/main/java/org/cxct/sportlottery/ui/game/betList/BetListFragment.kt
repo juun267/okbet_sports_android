@@ -258,7 +258,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             getString(R.string.bet_parlay)
         } else {
             refreshLlMoreOption()
-            getString(R.string.bet_single)
+            "+" + getString(R.string.bet_single)
         }
     }
 
@@ -361,7 +361,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
                     null
                 )
             } else {
-                betParlayListRefactorAdapter?.closeAllKeyboard()
+//                betParlayListRefactorAdapter?.closeAllKeyboard()
                 tvExpandOrStacked.text = getString(R.string.stacked_combination)
                 tvExpandOrStacked.setCompoundDrawablesWithIntrinsicBounds(
                     null,
@@ -377,7 +377,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             isOpen = !isOpen
         }
 
-        //串关赔率的接受任何赔率变化
+        //串关赔率的接受任何赔率变化+
         val userInfo = MultiLanguagesApplication.getInstance()?.userInfo()
         val currentOddsChangeOp = userInfo?.oddsChangeOption ?: 0
         currentBetOption = currentOddsChangeOp
@@ -429,9 +429,9 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
             }
 
             override fun onShowParlayKeyboard(position: Int) {
-                (rv_parlay_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
-                    rv_parlay_list, RecyclerView.State(), position
-                )
+//                (rv_parlay_list.layoutManager as ScrollCenterLayoutManager).smoothScrollToPosition(
+//                    rv_parlay_list, RecyclerView.State(), position
+//                )
 //                betParlayListRefactorAdapter?.apply {
 //                    BetListRcvUtil.setWrapHeight(rv_parlay_list, this)
 //                }
@@ -658,7 +658,7 @@ class BetListFragment : BaseSocketFragment<BetListViewModel>(BetListViewModel::c
     private fun switchCurrentBetMode() {
         if (mIsEnabled) {
             avoidFastDoubleClick()
-            if (btnParlaySingle.text == getString(R.string.bet_single)) {
+            if (btnParlaySingle.text == "+"+getString(R.string.bet_single)) {
                 //玩法变成单注
                 currentBetType = SINGLE
                 BetInfoRepository.setCurrentBetState(SINGLE)

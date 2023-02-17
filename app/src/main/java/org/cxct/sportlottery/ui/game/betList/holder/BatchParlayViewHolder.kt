@@ -33,6 +33,8 @@ abstract class BatchParlayViewHolder(
     private var inputMaxMoney: Double = 0.0
     private var inputMinMoney: Double = 0.0
     private var mHasBetClosed: Boolean = false
+    private var isTouched = false
+
     protected fun setupParlayItem(
         itemData: ParlayOdd?,
         currentOddsType: OddsType,
@@ -113,27 +115,25 @@ abstract class BatchParlayViewHolder(
                     removeTextChangedListener(tag as TextWatcher)
                 }
                 //第2步：移除TextWatcher之後，設置EditText的value
-                if (data.input != null) setText(data.inputBetAmountStr) else text.clear()
-//                setSelection(text.length)
+                if (data.input != null) {
+                    setText(data.inputBetAmountStr)
+                } else {
+                    text.clear()
+                }
+                setSelection(text.length)
             }
 
-            if (position == 0) {
-                et_bet_parlay.requestFocus()
-                data.isInputBet = true
-//                keyboardView.setupMaxBetMoney(inputMaxMoney)
-                keyboardView.showKeyboard(
-                    et_bet_parlay, position
-                )
-            }
+//            if (!isTouched && position == 0) {
+//                Timber.d("1 进来了- - - -- - - - - - - :isTouched:${isTouched}")
+//                et_bet_parlay.requestFocus()
+//                data.isInputBet = true
+//                keyboardView.showKeyboard(et_bet_parlay,0)
+//            }
 
             onFocusChangeListener = null
 
-            if (data.isInputBet) {
-                keyboardView.setupMaxBetMoney(inputMaxMoney)
-            }
             checkBetLimitParlay(data)
             et_bet_parlay.apply {
-                /* set listener */
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
@@ -173,15 +173,17 @@ abstract class BatchParlayViewHolder(
                     ) {
                     }
                 }
-
                 removeTextChangedListener(tw)
                 addTextChangedListener(tw)
                 tag = tw
             }
 
             et_bet_parlay.setOnTouchListener { view, event ->
+                isTouched = true
+                Timber.d("2 进来了- - - -- - - - - - - :isTouched:${isTouched}")
                 if (event.action == MotionEvent.ACTION_UP) {
-                    et_bet_parlay.isFocusable = true
+//                    et_bet_parlay.isFocusable = true
+                    et_bet_parlay.requestFocus()
                     keyboardView.setupMaxBetMoney(inputMaxMoney)
                     keyboardView.showKeyboard(
                         et_bet_parlay, position, isParlay = true
@@ -197,7 +199,7 @@ abstract class BatchParlayViewHolder(
             Timber.d("position:${position}")
 
             et_bet_parlay.setOnFocusChangeListener { _, hasFocus ->
-//                if (!hasFocus) keyboardView?.hideKeyboard()
+//                if (!hasFocus) keyboardView.hideKeyboard()
                 data.isInputBet = hasFocus
                 if (hasFocus) {
                     et_bet_parlay.setSelection(et_bet_parlay.text.length)
@@ -206,7 +208,6 @@ abstract class BatchParlayViewHolder(
             }
 
             ll_control_connect.setOnClickListener {
-//                onItemClickListener.onHideKeyBoard()
                 clearFocus()
             }
         }
