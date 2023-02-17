@@ -1061,8 +1061,8 @@
 
     <string name="bet_receipt_bet_quota_with_sign_money">Tiền Cược：</string>
     <string name="bet_receipt_win_quota_with_sign_max">Thắng：</string>
-    <string name="bet_record_single">Singles</string>
-    <string name="bet_record_parlay">Parlay</string>
+    <string name="bet_record_single">Cược đơn</string>
+    <string name="bet_record_parlay">Cược xâu</string>
     <string name="bet_slip_id_is_copied">Bet Slip ID is copied to clipboard</string>
     <string name="main_tab_favorite">Yêu thích</string>
     <string name="my_favorite_empty">Bạn vẫn chưa có trận đấu yêu thích</string>
@@ -1253,4 +1253,5 @@
     <string name="verification_not_correct">Mã xác nhận sai</string>
     <string name="edit">Sửa</string>
     <string name="send">Gửi</string>
+    <string name="live_service">Trò Chuyện Trực Tuyến</string>
 </resources>

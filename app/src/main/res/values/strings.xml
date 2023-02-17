@@ -1282,5 +1282,6 @@
     <string name="edit">Edit</string>
     <string name="verification_not_correct">Verification Code is not correct</string>
     <string name="send">Send</string>
+    <string name="live_service">Customer Service</string>
 
 </resources>
