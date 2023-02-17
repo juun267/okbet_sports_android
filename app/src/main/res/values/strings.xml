@@ -807,7 +807,7 @@
     <string name="text_cant_play">An error occurred. Please try again later.</string>
     <string name="text_security_money">Security deposit: %1$s</string>
     <string name="text_security_money2">%1$s days left</string>
-    <string name="customer_service_title">Customer</string>
+    <string name="customer_service_title">Customer Service</string>
 
     <!--自我禁制-->
     <string name="self_limit">Self-exclusion</string>
@@ -867,7 +867,7 @@
     <string name="self_limit_froze_impotent_2">We will keep your balance during the set period of self-exclusion.</string>
     <string name="self_limit_froze_impotent_3">If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.</string>
     <string name="self_limit_froze_impotent_4">During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.</string>
-    <string name="self_limit_froze_impotent_5">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
+    <string name="self_limit_froze_impotent_5" translatable="false">During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.</string>
     <string name="self_limit_froze_impotent_6">After the self-exclusion expires, your account will be automatically reactivated.</string>
     <string name="text_chose_language">Select your language</string>
     <!-- 複式串關詳情 -->
@@ -1268,7 +1268,7 @@
     <string name="password_login">Password Login</string>
     <string name="or">Or</string>
     <string name="login_privacy">By Signing up, you are confirming that you are above 21 years old, and agreed to our Privacy Policy and Terms &amp; Conditions.</string>
-    <string name="login_terms_conditions">Terms &amp; Condition</string>
+    <string name="login_terms_conditions">Terms &amp; Conditions</string>
     <string name="login_privacy_policy">Privacy Policy</string>
     <string name="otp_login">OTP Login</string>
     <string name="auth_login">Authorization Login</string>
@@ -1282,5 +1282,7 @@
     <string name="edit">Edit</string>
     <string name="verification_not_correct">Verification Code is not correct</string>
     <string name="send">Send</string>
+    <string name="pls_enter_correct_mobile_email">Please enter the correct mobile/email</string>
+    <string name="pls_enter_correct_mobile_email_username">Please enter the correct username/mobile/email</string>
 
 </resources>
