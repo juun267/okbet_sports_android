@@ -625,11 +625,14 @@ class BetInfoItemViewHolder(
     private fun setEtBackground(itemData: BetInfoListData) {
         contentView.apply {
             if (itemData.amountError) {
+                Timber.d("setEtBackground error")
                 etBet.setBackgroundResource(R.drawable.bg_radius_2_edittext_error)
             } else {
                 if (itemData.isInputBet) {
+                    Timber.d("setEtBackground itemData.isInputBet true")
                     etBet.setBackgroundResource(R.drawable.bg_radius_2_edittext_focus)
                 } else {
+                    Timber.d("setEtBackground itemData.isInputBet false")
                     etBet.setBackgroundResource(R.drawable.bg_radius_2_edittext_unfocus)
                 }
             }

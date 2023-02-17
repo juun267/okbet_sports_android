@@ -216,7 +216,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/btn_bet"
                     app:layout_constraintStart_toStartOf="@+id/btn_bet"
                     app:layout_constraintTop_toTopOf="@+id/btn_bet"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
