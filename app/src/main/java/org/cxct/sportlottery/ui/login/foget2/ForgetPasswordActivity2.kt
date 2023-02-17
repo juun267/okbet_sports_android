@@ -97,16 +97,16 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
     private fun onNewSMSStatus()  {
 
         val inputEffective = inputPhoneNo != null || inputEmail != null
-        val timeLeft = System.currentTimeMillis() - REQUEST_CODE_TIMESTAMP
+//        val timeLeft = System.currentTimeMillis() - REQUEST_CODE_TIMESTAMP
 
-        if (!inputEffective || timeLeft > REQUEST_CODE_INTERVAL * 1000) {
+        if (!inputEffective/* || timeLeft > REQUEST_CODE_INTERVAL * 1000*/) {
             binding.btnSendSms.setBtnEnable(inputEffective)
             setNextBtnStatus()
             return
         }
 
         if (binding.btnSendSms.tag == null) {
-            codeCountDown(60 - (timeLeft / 1000).toInt())
+            codeCountDown(REQUEST_CODE_INTERVAL /*- (timeLeft / 1000).toInt()*/)
         }
     }
 
