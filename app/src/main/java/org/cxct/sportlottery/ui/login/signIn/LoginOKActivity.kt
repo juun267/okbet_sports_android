@@ -156,12 +156,12 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun login() {
-        loading()
         val deviceSn = JPushInterface.getRegistrationID(applicationContext)
         val deviceId = Settings.Secure.getString(applicationContext.contentResolver,
             Settings.Secure.ANDROID_ID)
         var appVersion = org.cxct.sportlottery.BuildConfig.VERSION_NAME
         if (lin_login_code.isVisible) {
+            loading()
             val account = binding.eetAccount.text.toString()
             val smsCode = binding.eetVerificationCode.text.toString()
             val loginRequest = LoginRequest(
@@ -176,7 +176,7 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             viewModel.loginOrReg(loginRequest)
         } else {
             VerifyCodeDialog(callBack = { identity, validCode ->
-
+                loading()
                 val account = binding.eetUsername.text.toString()
                 val password = binding.eetPassword.text.toString()
                 val loginRequest = LoginRequest(
