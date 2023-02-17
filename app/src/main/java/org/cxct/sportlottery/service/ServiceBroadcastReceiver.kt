@@ -35,14 +35,11 @@ import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
-import org.cxct.sportlottery.util.EncryptUtil
-import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.convertToIndoOdds
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.sortOddsMap
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -243,6 +240,7 @@ open class ServiceBroadcastReceiver(
                 val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                     channel = channelStr
                 }
+
                 //query為耗時任務不能在主線程, LiveData需在主線程更新
                 mUserId?.let { userId ->
                     val discount = userInfoRepository?.getDiscount(userId)
@@ -253,20 +251,11 @@ open class ServiceBroadcastReceiver(
                         it.filterMenuPlayCate()
                         it.sortOddsMap()
                     }
-                    data?.let { socketEvent ->
-                        withContext(Dispatchers.Main) {
-                            oddsChangeListener?.onChange(socketEvent)
-                        }
-                        betInfoRepository.updateMatchOdd(socketEvent)
-                    }
+
+                    data?.let { onOddsEvent(it) }
 
                 } ?: run {
-                    data?.let { socketEvent ->
-                        withContext(Dispatchers.Main) {
-                            oddsChangeListener?.onChange(socketEvent)
-                        }
-                        betInfoRepository.updateMatchOdd(socketEvent)
-                    }
+                    data?.let { onOddsEvent(it) }
                 }
             }
             EventType.LEAGUE_CHANGE -> {
@@ -318,6 +307,15 @@ open class ServiceBroadcastReceiver(
             }
         }
 
+    }
+
+    private suspend fun onOddsEvent(socketEvent: OddsChangeEvent) {
+        oddsChangeListener?.let {
+            withContext(Dispatchers.Main) {
+                it.onChange(socketEvent)
+            }
+        }
+        betInfoRepository.updateMatchOdd(socketEvent)
     }
 
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {

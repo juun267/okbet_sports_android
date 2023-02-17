@@ -13,7 +13,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.CategoryOdds
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.odds_change.get
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SocketUpdateUtil.updateOddStatus
@@ -156,27 +155,32 @@ class SportOutrightAdapter2(val lifecycle: LifecycleOwner, val onItemClick:(Int,
             }
 
 //            // 如果一级列表下面为空，就向该一级列表下插入二级列表
-            for ((key, value) in oddsChangeEvent.odds.entries) {
-                if (value.isNullOrEmpty()) {
-                    continue
-                }
-                insertSecondList(matchOdd, key, oddsChangeEvent.dynamicMarkets?.get(key)?.get() ?: "", value)
-            }
+//            // 返回的数据有不属于该联赛玩法的赔率，不进行新增显示
+//            for ((key, value) in oddsChangeEvent.odds.entries) {
+//                if (value.isNullOrEmpty()) {
+//                    continue
+//                }
+//
+//                insertSecondList(matchOdd, key, oddsChangeEvent.dynamicMarkets?.get(key)?.get() ?: "", value)
+//            }
         } else {
+
             for ((key, value) in oddsChangeEvent.odds.entries) {
                 if (value.isNullOrEmpty()) {
                     continue
                 }
+
                 if (oddsMap.containsKey(key)) {
                     var oddList = oddsMap[key]
                     if (oddList == null) { // 二级节点下面增加三级节点列表
-                        oddsMap[key] = value
+                        oddsMap[key] = oddList
                         nodeReplaceChildData(matchOdd.categoryOddsMap[key]!!, value)
                     } else {
                         isNeedRefresh = updateMatchOdds(key, matchOdd, oddList, value)
                     }
                 } else { // 一级节点下面增加二级节点
-                    insertSecondList(matchOdd, key, oddsChangeEvent.dynamicMarkets?.get(key)?.get() ?: "", value)
+                    // 返回的数据有不属于该联赛玩法的赔率，不进行新增显示
+//                    insertSecondList(matchOdd, key, oddsChangeEvent.dynamicMarkets?.get(key)?.get() ?: "", value)
                 }
             }
         }

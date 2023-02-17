@@ -14,8 +14,6 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalUtils
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -59,26 +57,16 @@ data class MatchOdd(
         it.key == oddsMap?.keys?.firstOrNull()
     }?.toMutableMap()
 
-    //僅給冠軍重組賠率項資料結構使用
-    var outrightOddsList: MutableList<Any> = mutableListOf()
-
     override val childNode: MutableList<BaseNode>
-        get() = _nodes
-
-    @IgnoredOnParcel
-    private val _nodes by lazy {
-        val oddsNode = mutableListOf<BaseNode>()
-        oddsMap?.entries?.toMutableList()?.forEach {
-            val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
-            oddsNode.add(categoryOdds)
-            categoryOddsMap[it.key] = categoryOdds
+        get() {
+            val oddsNode = mutableListOf<BaseNode>()
+            oddsMap?.entries?.toMutableList()?.forEach {
+                val categoryOdds = CategoryOdds(dynamicMarkets?.get(it.key)?.get() ?: "", this, it.key,it.value?: mutableListOf())
+                oddsNode.add(categoryOdds)
+                categoryOddsMap[it.key] = categoryOdds
+            }
+            return oddsNode
         }
-        oddsNode
-    }
-
-    fun plusPlayCateOdds(playCate: String, oddList: MutableList<Odd>) {
-        childNode?.add(CategoryOdds(dynamicMarkets?.get(playCate)?.get() ?: "", this, playCate,oddList))
-    }
 
     @IgnoredOnParcel
     var oddIdsMap: MutableMap<String, MutableMap<String, Odd>> = mutableMapOf()  //用于本地计算

@@ -61,7 +61,6 @@ import org.cxct.sportlottery.ui.maintab.live.ItemHomeLiveHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.sport.SportLeagueAdapter
 import org.cxct.sportlottery.ui.sport.favorite.FavoriteAdapter
-import org.cxct.sportlottery.ui.sport.outright.SportOutrightAdapter
 import org.cxct.sportlottery.util.DisplayUtil.dpToPx
 import org.cxct.sportlottery.widget.FakeBoldSpan
 import org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
@@ -138,13 +137,6 @@ fun RecyclerView.addScrollWithItemVisibility(
                                             }
                                     }
                                 }
-                            }
-                        }
-
-                        //新版冠軍
-                        is SportOutrightAdapter -> {
-                            getVisibleRangePosition().forEach { leaguePosition ->
-                                visibleRangePair.add(Pair(leaguePosition, -1))
                             }
                         }
 
@@ -368,29 +360,6 @@ fun RecyclerView.firstVisibleRange(
         getVisibleRangePosition().forEach { leaguePosition ->
             val viewByPosition = layoutManager?.findViewByPosition(leaguePosition)
             when (adapter) {
-
-                is SportOutrightAdapter -> {
-                    viewByPosition?.let { view ->
-                        if (getChildViewHolder(view) is SportOutrightAdapter.OutrightLeagueViewHolder) {
-                            val outrightLeagueData = adapter.data[leaguePosition]
-                            if (outrightLeagueData is OutrightItem) {
-                                outrightLeagueData.matchOdd.apply {
-                                    Log.d(
-                                        "[subscribe]",
-                                        "訂閱 ${matchInfo?.name} -> " +
-                                                "${matchInfo?.homeName} vs " +
-                                                "${matchInfo?.awayName}"
-                                    )
-                                    (activity as BaseSocketActivity<*>).subscribeChannelHall(
-                                        matchInfo?.gameType,
-                                        matchInfo?.id
-                                    )
-                                }
-
-                            }
-                        }
-                    }
-                }
 
                 is FavoriteAdapter -> {
                     viewByPosition?.let { view ->
