@@ -387,7 +387,7 @@ dependencies {
 //    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 //    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
-    implementation 'io.github.yidun:captcha:3.4.3' // 网易图形验证
+//    implementation 'io.github.yidun:captcha:3.4.3' // 网易图形验证
 }
 repositories {
     mavenCentral()
