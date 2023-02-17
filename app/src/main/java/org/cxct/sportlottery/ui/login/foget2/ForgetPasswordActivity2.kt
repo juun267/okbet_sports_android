@@ -96,13 +96,15 @@ class ForgetPasswordActivity2: BaseActivity<ForgetViewModel>(ForgetViewModel::cl
 
         val inputEffective = inputPhoneNo != null || inputEmail != null
 
-//        if (!inputEffective) {
+        if (!inputEffective) {
             binding.btnSendSms.setBtnEnable(inputEffective)
             setNextBtnStatus()
-//            return
-//        }
+            return
+        }
 
-//        codeCountDown()
+        if (binding.btnSendSms.tag == null) {
+            binding.btnSendSms.setBtnEnable(true)
+        }
     }
 
     private fun sendCode(identity: String?, validCode: String) = binding.btnSendSms.run {
