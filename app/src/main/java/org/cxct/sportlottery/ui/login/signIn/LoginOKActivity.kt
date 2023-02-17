@@ -74,7 +74,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupServiceButton()
         initObserve()
         viewModel.focusChangeCheckAllInputComplete()
-        binding.eetAccount.setText("9668551025")
     }
 
     private fun initOnClick() {
@@ -89,9 +88,6 @@ class LoginOKActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         binding.eetPassword.checkRegisterListener { viewModel.checkPassword(it) }
         binding.eetUsername.checkRegisterListener { viewModel.checkUserName(it) }
         binding.eetVerificationCode.checkRegisterListener { viewModel.checkMsgCode(it) }
-        if (!viewModel.account.isNullOrBlank()) {
-            binding.eetAccount.setText(viewModel.account)
-        }
         binding.etAccount.endIconImageButton.setOnClickListener {
             binding.eetAccount.text = null
         }
