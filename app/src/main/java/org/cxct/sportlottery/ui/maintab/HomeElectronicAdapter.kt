@@ -8,8 +8,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 
-class HomeElectronicAdapter(data: MutableList<QueryGameEntryData>):
-    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_electronics_game,data) {
+class HomeElectronicAdapter:
+    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_electronics_game) {
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
 

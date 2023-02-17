@@ -10,8 +10,7 @@ import org.cxct.sportlottery.network.third_game.third_games.QueryGameEntryData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.ScreenUtil
 
-class HomeChessAdapter(data: MutableList<QueryGameEntryData>):
-    BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_poker_game,data) {
+class HomeChessAdapter: BaseQuickAdapter<QueryGameEntryData, BaseViewHolder>(R.layout.item_poker_game) {
 
     override fun convert(helper: BaseViewHolder, item: QueryGameEntryData) {
         var itemWith = (ScreenUtil.getScreenWidth(context) - 30.dp - 10.dp) / 2
